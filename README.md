@@ -1,4 +1,4 @@
-# British & Irish Lions tour 2017 #
+# British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
 Project using React Native + Redux + React Native Navigator + [React Native Easy Grid](https://github.com/GeekyAnts/react-native-easy-grid) + ES5 & ES6 + JSX + NativeBase
