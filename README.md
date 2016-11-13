@@ -20,26 +20,20 @@ Project using React Native + Redux + React Native Navigator + [React Native Easy
 
 ### Setup the project ###
 
-* Clone the git repo -> git@bitbucket.org:apdmageprojects/LionsOfficial2017.git
-* cd to the local project directory then run the command line below
-
-```
-#!script
-
-npm install
-rnpm link
-```
-
+1.    Clone the git repo -> git@bitbucket.org:apdmageprojects/LionsOfficial.git
+2.    cd to the local project directory
+3.    $ npm install
+4.    $ rnpm link
 
 
 ### Run the app on the iOS emulator ###
 
-1.   cd /Users/tdnumerique/Documents/LionsOfficial
+1.   cd to the local project directory
 2.   $ react-native run-ios --simulator "iPhone 6s"
 
 **- or -**
 
-1. Open /Users/tdnumerique/Documents/LionsOfficial/ios/LionsOfficial.xcodeproj in Xcode
+1.    Open /Users/tdnumerique/Documents/LionsOfficial/ios/LionsOfficial.xcodeproj in Xcode
 2.    Hit the Run button
 
 ### Run your app on the Android emulator ###
