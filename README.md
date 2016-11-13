@@ -1,21 +1,21 @@
 # British & Irish Lions tour 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-Project using React Native + Redux + React Native Navigator + [React Native Easy Grid](https://github.com/GeekyAnts/react-native-easy-grid) + ES6 + JSX + NativeBase + [CodePush](https://microsoft.github.io/code-push/)
+Project using React Native + Redux + React Native Navigator + [React Native Easy Grid](https://github.com/GeekyAnts/react-native-easy-grid) + ES6 + JSX + NativeBase
 
 ### System Requirements ###
 
 * [Homebrew](http://brew.sh/)
 * [Xcode >= 8.0](https://developer.apple.com/xcode/)
 * [Java development kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* Java version "1.8.0_51"
-* [Android SDK => 23.0.1](https://developer.android.com/studio/index.html)
+* Java "1.8.0_51"
+* [Android SDK](https://developer.android.com/studio/index.html)
 * [node >= v6.4.0](https://nodejs.org/en/)
 * [npm >= v3.10.3](https://www.npmjs.com/)
 * [rnpm](https://github.com/rnpm/rnpm)
 * [Watchman](https://www.npmjs.com/package/watchman)
 * react CLI >= 15.3.1
-* [react-native 0.36](https://facebook.github.io/react-native/docs/getting-started.html)
+* [react-native 0.37](https://facebook.github.io/react-native/docs/getting-started.html)
 * [redux >= 3.5.2](http://redux.js.org)
 
 ### Setup the project ###
