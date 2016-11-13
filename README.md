@@ -35,7 +35,7 @@ rnpm link
 ### Run the app on the iOS emulator ###
 
 1.   cd /Users/tdnumerique/Documents/LionsOfficial
-2.   react-native run-ios
+2.   $ react-native run-ios --simulator "iPhone 6s"
 
 **- or -**
 
@@ -45,8 +45,8 @@ rnpm link
 ### Run your app on the Android emulator ###
 
 1.    Have an Android emulator running (quickest way to get started), or a device connected
-2.    cd /Users/tdnumerique/Documents/LionsOfficial
-3.    react-native run-android
+2.    $ cd /Users/tdnumerique/Documents/LionsOfficial
+3.    $ react-native run-android
 
 
 ### Font Icon use in the project ###
