@@ -59,12 +59,13 @@ const styles = styleSheetCreate({
         paddingRight:10
     },
     footerSplit: {
+        flex: 1,
         borderLeftWidth:1,
         borderLeftColor:'rgba(255,255,255,0.15)',
         height:50
     },
     footerLink: {
-        flexDirection: 'row',
+        flex: 1,
         marginTop: 4
     },
     footerLinkText: {
