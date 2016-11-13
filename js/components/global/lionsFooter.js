@@ -1,0 +1,156 @@
+'use strict'
+
+import React, { Component } from 'react'
+import { Linking, Image } from 'react-native'
+import { View, Text, Button, Icon, Thumbnail } from 'native-base'
+import { styleSheetCreate } from '../../themes/lions-stylesheet'
+import styleVar from '../../themes/variable'
+import ButtonFeedback from '../utility/buttonFeedback'
+
+const styles = styleSheetCreate({
+    container: {
+        height: 230,
+        width: null,
+    },
+    primary:{
+        height: 170,
+        width: null
+    },
+    backgroundHidden:{
+        opacity:0
+    },
+    logosRow: {
+        flexDirection:'row',
+        justifyContent: 'space-between'
+    },
+    logosRight: {
+        paddingRight:20
+    },
+    logoFooter: {
+        width: 120,
+        height: 40,
+        marginLeft: 10,
+        marginTop: 20
+    },
+    logowhiteFooter: {
+        width: 28,
+        height: 42,
+        marginTop: 22,
+        android: {
+            marginTop: 21
+        }
+    },
+    textFooter: {
+        fontFamily: styleVar.fontGeorgia,
+        fontSize: 13,
+        opacity: 0.75,
+        marginTop: 33,
+        marginRight: 7,
+        android: {
+          marginTop: 40
+        }
+    },
+    socialFooterRow: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginLeft: 50,
+        marginRight: 50,
+        marginTop: 20
+    },
+    socialFooterIcon: {
+        fontSize: 24
+    },
+    socialFooterImgIcon: {
+        marginTop: 2
+    },
+    textCorpRow: {
+        alignSelf: 'center',
+        marginTop: 10
+    },
+    textCorp: {
+        alignSelf: 'center',
+        fontFamily: styleVar.fontGeorgia,
+        fontSize: 13,
+        opacity: 0.75,
+        paddingBottom: 33,
+        android: {
+            paddingBottom: 17
+        }
+    },
+    secondary: {
+        height: 70,
+        width: null
+    }
+})
+
+export default class Footer extends Component {
+	constructor(props) {
+      super(props)
+	}
+
+	goToURL(url) {
+      Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+              Linking.openURL(url)
+          } else {
+              // console.log('This device doesnt support URI: ' + url)
+          }
+      })
+  }
+
+  render(){
+        return (
+            this.props.isLoaded === true ?
+                  <View style={styles.container}>
+                    <Image source={require('../../../images/footer/bg.jpg')} style={styles.primary}>
+
+                        <View style={styles.logosRow}>
+                          <View style={styles.logosLeft}>
+                            <Image
+                               transparent
+                               source={require('../../../images/lions-logofull.png')}
+                               style={styles.logoFooter}
+                               resizeMode={Image.resizeMode.contain} />
+                           </View>
+
+                            <View style={styles.logosRight}>
+                              <Image
+                                 transparent
+                                 source={require('../../../images/footer/nzlogo.png')}
+                                 style={styles.logowhiteFooter}
+                                 resizeMode={Image.resizeMode.contain} />
+                            </View>
+                        </View>
+
+                        <View style={styles.socialFooterRow}>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.facebook.com/BritishandIrishLions')} style={styles.socialFooter }>
+                                <Icon name="logo-facebook" style={styles.socialFooterIcon} />
+                            </ButtonFeedback>
+                            <ButtonFeedback onPress={() => this.goToURL('https://twitter.com/lionsofficial')} style={styles.socialFooter }>
+                                <Icon name="logo-twitter" style={styles.socialFooterIcon} />
+                            </ButtonFeedback>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.youtube.com/channel/UC5Pw6iUW8Dgmb_JSEqzXH3w?&ab_channel=TheBritish&IrishLions')} style={styles.socialFooter }>
+                                <Icon name="logo-youtube" style={styles.socialFooterIcon} />
+                            </ButtonFeedback>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.linkedin.com/company/the-british-and-irish-lions')} style={styles.socialFooter }>
+                                <Icon name="logo-linkedin" style={styles.socialFooterIcon} />
+                            </ButtonFeedback>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.instagram.com/britishandirishlions/')} style={styles.socialFooter }>
+                                <Icon name="logo-instagram" style={styles.socialFooterIcon} />
+                            </ButtonFeedback>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.periscope.tv/LionsOfficial/')} style={styles.socialFooter}>
+                                <Thumbnail square size={19} style={styles.socialFooterImgIcon} source={require('../../../images/periscopeIcon.png')} />
+                            </ButtonFeedback>
+                        </View>
+
+                        <View style={styles.textCorpRow}>
+                          <Text style={styles.textCorp}>© 2016 British Irish Lions Limited</Text>
+                        </View>
+
+                    </Image>
+                      <Image source={require('../../../images/footer/allforone.png')} style={styles.secondary}></Image>
+                  </View>
+            : null
+        )
+    }
+}

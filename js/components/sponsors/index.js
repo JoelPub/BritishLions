@@ -1,0 +1,104 @@
+'use strict'
+
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Image, View, Linking } from 'react-native'
+import { drillDown } from '../../actions/content'
+import { Container, Content, Text } from 'native-base'
+import { Grid, Col, Row } from 'react-native-easy-grid'
+import theme from '../../themes/base-theme'
+import styles from './styles'
+import shapes from '../../themes/shapes'
+import LionsHeader from '../global/lionsHeader'
+import EYSFooter from '../global/eySponsoredFooter'
+import LionsFooter from '../global/lionsFooter'
+import ButtonFeedback from '../utility/buttonFeedback'
+
+// For mapping a static image only, since require() is not working with concatenating a dynamic variable
+// should be delete this code once api is ready.
+import Data from '../../../contents/sponsors/data'
+
+class Sponsors extends Component {
+
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <= 9; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k])
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+
+        return newData
+    }
+
+    _drillDown(data) {
+        this.props.drillDown(data, 'sponsorDetails')
+    }
+
+    render() {
+        return (
+            <Container theme={theme}>
+                <View style={styles.container}>
+                    <LionsHeader title='SPONSORS' />
+                    <Content>
+                        {
+                            this._mapJSON(Data).map((rowData, index) => {
+                                return (
+                                    <Grid key={index}>
+                                        {
+                                            rowData.map((item, key) => {
+                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
+
+                                                return (
+                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                        <ButtonFeedback
+                                                            style={stylesArr}
+                                                            onPress={() => this._drillDown(item)}>
+
+                                                            <View style={styles.gridBoxTouchableView}>
+                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                    <Image transparent
+                                                                        resizeMode='contain'
+                                                                        source={item.image}
+                                                                        style={styles.gridBoxImg} />
+                                                                </View>
+
+                                                                <View style={[shapes.triangle]} />
+                                                                <View style={styles.gridBoxTitle}>
+                                                                    <Text style={styles.gridBoxTitleText}>{item.title.toUpperCase()}</Text>
+                                                                </View>
+                                                            </View>
+                                                        </ButtonFeedback>
+                                                    </Col>
+                                                )
+                                            }, this)
+                                        }
+                                    </Grid>
+                                )
+                            }, this)
+                        }
+                        <LionsFooter isLoaded={true} />
+                    </Content>
+                    < EYSFooter />
+                </View>
+            </Container>
+        )
+    }
+}
+
+function bindAction(dispatch) {
+    return {
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect(null, bindAction)(Sponsors)

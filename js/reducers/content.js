@@ -1,0 +1,44 @@
+'use strict'
+
+import type { Action } from '../actions/types'
+import { PUSH_CONTENT_ITEM, SET_CONTENT } from '../actions/content'
+// import { REHYDRATE } from 'redux-persist/constants'
+
+export type State = {
+    contentState: Array<string>,
+    isLoaded: Bool,
+    contentItem: number
+}
+
+const initialState = {
+    contentState: [],
+    isLoaded: false,
+    contentItem: {}
+}
+
+export default function (state:State = initialState, action:Action): State {
+
+    if (action.type === SET_CONTENT) {
+        return {
+            ...state,
+            contentState: action.contentList,
+            isLoaded: true
+        }
+    }
+
+    if (action.type === PUSH_CONTENT_ITEM) {
+        return {
+            ...state,
+            drillDownItem: action.item
+        }
+    }
+
+    // if (action.type === REHYDRATE) {
+    //   const savedData = action['payload']['content'] || state
+    //   return {
+    //     ...savedData
+    //   }
+    // }
+
+    return state
+}

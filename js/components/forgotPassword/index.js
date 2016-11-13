@@ -1,0 +1,128 @@
+'use strict'
+
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Keyboard, Image, Dimensions } from 'react-native'
+import { replaceRoute, popRoute } from '../../actions/route'
+import { Container, Content, Text, Icon, Input, View } from 'native-base'
+import { Grid, Col, Row } from 'react-native-easy-grid'
+import theme from '../login/login-theme'
+import styles from '../login/login-layout-theme'
+import ErrorHandler from '../utility/errorhandler/index'
+import ButtonFeedback from '../utility/buttonFeedback'
+
+class ForgotPassword extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            email: '',
+            visibleHeight: Dimensions.get('window').height,
+            offset: {
+                x:0,
+                y:0
+            },
+            errorCheck: {
+                email: null,
+                submit: false
+            },
+        }
+        this.constructor.childContextTypes = {
+        theme: React.PropTypes.object,
+        }
+    }
+
+    keyboardWillShow (e) {
+        let newSize = Dimensions.get('window').height - e.endCoordinates.height
+        this.setState({offset :{y: 80}})
+    }
+
+    keyboardWillHide (e) {
+        this.setState({offset :{y: 0}})
+    }
+
+    componentDidMount () {
+        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    popRoute() {
+        this.props.popRoute()
+    }
+
+    onSuccessValidate = (parameter) => {
+        if(parameter) {
+            this.popRoute()
+        }
+        else {
+            this.setState({errorCheck:{submit:false}, offset:{y:0}})
+        }
+    }
+
+    render() {
+        return (
+            <Container>
+                <View theme={theme}>
+                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
+                        <Content style={styles.main}>
+                            <View style={styles.content} contentOffset={this.state.offset}>
+                                <View style={styles.pageTitle}>
+                                    <Text style={styles.pageTitleText}>FORGOT PASSWORD</Text>
+                                </View>
+
+                                <View style={styles.guther}>
+
+                                    <ErrorHandler
+                                        errorCheck={this.state.errorCheck}
+                                        callbackParent={this.onSuccessValidate} />
+
+                                    <View style={styles.inputGroup}>
+                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Input placeholder='Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                    </View>
+                                    
+                                    <ButtonFeedback rounded label='SUBMIT' style={styles.button} onPress={() => {this.setState({errorCheck:{email:this.state.email,submit:true}})}} />
+                                </View>
+                            </View>
+                        </Content>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
+                            <Icon name='md-close' style={styles.pageCloseIcon} />
+                        </ButtonFeedback>
+                        <View style={styles.footer}>
+                            <Grid>
+                                <Col style={styles.borderRight}>
+                                    <ButtonFeedback
+                                        style={styles.footerBtn}
+                                        onPress={() => this.popRoute()}>
+                                            <Icon name='md-arrow-back' style={styles.footerBtnIcon} />
+                                            <Text style={styles.footerBtnText}> BACK TO LOGIN</Text>
+                                    </ButtonFeedback>
+                                </Col>
+                                <Col>
+                                    <ButtonFeedback
+                                        style={styles.footerBtn}
+                                        onPress={() => this.replaceRoute('signUp')}>
+                                            <Icon name='md-contact' style={[styles.footerBtnIcon]} />
+                                            <Text style={styles.footerBtnText}> JOIN THE PRIDE</Text>
+                                    </ButtonFeedback>
+                                </Col>
+                            </Grid>
+                        </View>
+                    </Image>
+                </View>
+            </Container>
+        )
+    }
+}
+
+function bindAction(dispatch) {
+    return {
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        popRoute: () => dispatch(popRoute())
+    }
+}
+
+export default connect(null, bindAction)(ForgotPassword)

@@ -1,0 +1,97 @@
+'use strict'
+
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Image, View, ActivityIndicator } from 'react-native'
+import { fetchContent, drillDown } from '../../actions/content'
+import { Container, Content, Text, Button, Icon } from 'native-base'
+import LionsHeader from '../global/lionsHeader'
+import EYSFooter from '../global/eySponsoredFooter'
+import LionsFooter from '../global/lionsFooter'
+import ButtonFeedback from '../utility/buttonFeedback'
+import styles from './styles'
+import theme from '../../themes/base-theme'
+import loader from '../../themes/loader-position'
+import shapes from '../../themes/shapes'
+
+class Galleries extends Component {
+    constructor(props) {
+         super(props)
+         this.state = {
+              isLoaded: false
+         }
+    }
+
+    _drillDown(data) {
+        this.props.drillDown(data, 'galleriesDetails')
+    }
+
+    componentDidMount() {
+        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php')
+    }
+
+    componentWillReceiveProps() {
+      this.setState({
+        isLoaded: this.props.isLoaded || true
+      })
+    }
+
+    render() {
+        return (
+            <Container theme={theme}>
+                <View style={styles.background}>
+                    <LionsHeader title='GALLERIES' />
+                    {
+                        this.state.isLoaded?
+                            <Content>
+                              {
+                                   this.props.galleriesFeed.map(function(data, index) {
+                                        return (
+                                           <ButtonFeedback
+                                                style={styles.btn}
+                                                key={index}
+                                                onPress={() => this._drillDown(data)}>
+                                                <Image
+                                                    source={require('../../../images/placeholder/banner.png')}
+                                                    style={styles.galleriesImage}>
+                                                    <Image source={{uri: data.image}} style={styles.galleriesImage} />
+                                                </Image>
+                                                <View style={[shapes.triangle, styles.triangle]} />
+                                                <View style={styles.galleriesContent}>
+                                                    <Text numberOfLines={1} style={styles.galleriesHeader}>
+                                                        {data.title? data.title.toUpperCase() : ' '}
+                                                    </Text>
+                                                </View>
+                                            </ButtonFeedback>
+                                        )
+                                    }, this)
+                                }
+                                <LionsFooter isLoaded={this.props.isLoaded} />
+                            </Content>
+                          :
+                            <ActivityIndicator
+                              style={loader.centered}
+                              size='large'
+                            />
+                    }
+                    <EYSFooter />
+                </View>
+            </Container>
+        )
+    }
+
+}
+
+function bindAction(dispatch) {
+    return {
+        fetchContent: (url)=>dispatch(fetchContent(url)),
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect((state) => {
+    return {
+        galleriesFeed: state.content.contentState,
+        isLoaded: state.content.isLoaded
+    }
+}, bindAction)(Galleries)
