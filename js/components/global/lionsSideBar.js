@@ -8,6 +8,7 @@ import { Container, Content, Footer, View, Text, Button, Icon } from 'native-bas
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
+import  { Grid, Col, Row } from 'react-native-easy-grid'
 
 const styles = styleSheetCreate({
     background: {
@@ -48,36 +49,28 @@ const styles = styleSheetCreate({
     },
     footer: {
         height: 50,
-        backgroundColor: '#000',
-        justifyContent: 'center'
+        backgroundColor: '#000'
     },
     footerWrapper: {
-        flexDirection:'row',
-        flex:1,
-        justifyContent:'space-between',
-        paddingLeft:21,
-        paddingRight:10
-    },
-    footerSplit: {
-        flex: 1,
-        borderLeftWidth:1,
-        borderLeftColor:'rgba(255,255,255,0.15)',
-        height:50
+        paddingLeft:10,
+        height: 50
     },
     footerLink: {
-        flex: 1,
-        marginTop: 4
+        flexDirection:'row',
+        paddingLeft: 2,
+        height:50
+    },
+    linkLogin: {
+        justifyContent: 'flex-end',
+        borderLeftWidth:1,
+        borderLeftColor:'rgba(255,255,255,0.15)'
     },
     footerLinkText: {
-        flex: 1,
         textAlign: 'right',
         color: '#FFF',
-        paddingTop: 15,
+        paddingTop: 17,
         fontSize: 24,
-        fontFamily: styleVar.fontCondensed,
-        android: {
-            paddingTop: 10
-        }
+        fontFamily: styleVar.fontCondensed
     },
     footerLinkIcon: {
         width: 34,
@@ -154,15 +147,20 @@ class LionsSidebar extends Component {
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
-                        <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
-                            <Icon name='md-contact' style={styles.footerLinkIcon} />
-                            <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
-                        </ButtonFeedback>
-                        <View style={styles.footerSplit}></View>
-                        <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('login')}>
-                            <Text style={styles.footerLinkText}>SIGN IN</Text>
-                            <Icon name='md-log-in' style={styles.footerLinkIcon} />
-                        </ButtonFeedback>
+                        <Grid>
+                            <Col size={60}>
+                                <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
+                                    <Icon name='md-contact' style={styles.footerLinkIcon} />
+                                    <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
+                                </ButtonFeedback>
+                            </Col>
+                            <Col size={40}>
+                                <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
+                                    <Text style={styles.footerLinkText}>SIGN IN</Text>
+                                    <Icon name='md-log-in' style={styles.footerLinkIcon} />
+                                </ButtonFeedback>
+                            </Col>
+                        </Grid>
                     </View>
                 </Footer>
             </Container>

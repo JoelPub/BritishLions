@@ -61,6 +61,7 @@ module.exports = styleSheetCreate({
             paddingLeft: 0,
             marginLeft: 20,
             marginRight: 16,
+            marginTop: 13
         }
     },
     timeIconInverse: {

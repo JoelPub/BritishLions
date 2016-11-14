@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, ScrollView } from 'react-native'
+import { Keyboard, Image, Dimensions, ScrollView, Platform } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -10,7 +10,7 @@ import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
-
+var _scrollView: ScrollView
 class MyAccount extends Component {
     constructor(props) {
         super(props)
@@ -40,7 +40,18 @@ class MyAccount extends Component {
 
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
+        this.setState({offset :{y: 120}})
+    }
+    showK(){
+        if(Platform.OS ==='android') {
+            _scrollView.scrollTo({y:300})
+        }
+        
+    }
+    hideK(){
+        if(Platform.OS ==='android') {
+            _scrollView.scrollTo({y:0})
+        }
     }
 
     keyboardWillHide (e) {
@@ -83,8 +94,9 @@ class MyAccount extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <Content style={styles.main}>
-                            <ScrollView style={styles.content} contentOffset={this.state.offset}>
+                            <ScrollView style={styles.content} contentOffset={this.state.offset} 
+                            ref={(scrollView) => { _scrollView = scrollView; }} 
+                            >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
                                 </View>
@@ -109,7 +121,7 @@ class MyAccount extends Component {
                                 </View>
 
                                 <View style={styles.split}></View>
-                                <View style={styles.guther}>
+                                <View style={[styles.guther,styles.extendBlock]}>
                                     
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheckEmail}
@@ -117,13 +129,12 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
                                     
                                     <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
                                 </View>
                             </ScrollView>
-                        </Content>
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>

@@ -137,7 +137,8 @@ module.exports = styleSheetCreate({
     },
     footer: {
         backgroundColor: styleVar.brandDarkColor,
-        width: styleVar.deviceWidth
+        width: styleVar.deviceWidth,
+        height: 75
     },
     footerBtn: {
         width: styleVar.deviceWidth / 2,
@@ -208,5 +209,10 @@ module.exports = styleSheetCreate({
         marginBottom:35,
         marginLeft:30,
         marginRight:30
+    },
+    extendBlock: {
+        android: {
+            marginBottom:300
+        }
     }
 })

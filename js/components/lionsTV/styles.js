@@ -76,6 +76,9 @@ module.exports = styleSheetCreate({
         marginTop: 5,
         color: '#fff',
         textAlign: 'center',
+        android: {
+            marginTop: 10
+        }
     },
     timeIconDetail: {
         color: styleVar.colorText
