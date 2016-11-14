@@ -16,7 +16,7 @@ class LionsStore extends Component {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.container}>
-                    <LionsHeader title='official STORE' />
+                    <LionsHeader title='OFFICIAL STORE' />
                     <Content>
                         <Image source={require('../../../images/content/storeBanner.png')} style={styles.pagePoster} />
                         <View style={styles.linkWrapper}>
