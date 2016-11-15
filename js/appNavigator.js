@@ -17,7 +17,8 @@ import ForgotPassword from './components/forgotPassword'
 import MyAccount from './components/myAccount'
 import Terms from './components/terms'
 import News from './components/news/'
-import NewsDetails from './components/news/details'
+import NewsDetails1 from './components/news/details1'
+import NewsDetails2 from './components/news/details2'
 import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
@@ -30,7 +31,8 @@ import GalleriesDetails from './components/galleries/details'
 import Fixtures from './components/fixtures'
 import FixtureDetails from './components/fixtures/details'
 import Sponsors from './components/sponsors'
-import SponsorDetails from './components/sponsors/details'
+import SponsorDetails1 from './components/sponsors/details1'
+import SponsorDetails2 from './components/sponsors/details2'
 import Unions from './components/unions'
 import UnionDetails from './components/unions/details'
 import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBackground'
@@ -189,8 +191,10 @@ class AppNavigator extends Component {
                 return <SignUp navigator={navigator} />
             case 'news':
                 return <News navigator={navigator} />
-            case 'newsDetails':
-                return <NewsDetails navigator={navigator} />
+            case 'newsDetails1':
+                return <NewsDetails1 navigator={navigator} />
+            case 'newsDetails2':
+                return <NewsDetails2 navigator={navigator} />
             case 'lionsSideBar':
                 return <LionsSideBar navigator={navigator} />
             case 'lionsStore':
@@ -215,8 +219,10 @@ class AppNavigator extends Component {
                 return <FixtureDetails navigator={navigator} />
             case 'sponsors':
                 return <Sponsors navigator={navigator} />
-            case 'sponsorDetails':
-                return <SponsorDetails navigator={navigator} />
+            case 'sponsorDetails1':
+                return <SponsorDetails1 navigator={navigator} />
+            case 'sponsorDetails2':
+                return <SponsorDetails2 navigator={navigator} />
             case 'unions':
                 return <Unions navigator={navigator} />
             case 'unionDetails':
