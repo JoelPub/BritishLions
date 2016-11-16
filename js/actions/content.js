@@ -5,7 +5,8 @@ import { pushNewRoute, replaceRoute} from './route'
 import { alertBox } from './../components/utility/alertBox'
 
 export const SET_CONTENT = 'SET_CONTENT'
-export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM'
+export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM' 
+export const PUSH_CONTENT_ITEM_SUB = 'PUSH_CONTENT_ITEM_SUB'
 export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 
 export function fetchContent(url):Action {
@@ -43,9 +44,26 @@ export function setContent({contentList}):Action {
     }
 }
 
+export function saveContent(contentList):Action {
+    return (dispatch, getState) => {
+        setTimeout(() => {
+            dispatch(setContent({
+                contentList
+            }))
+        }, 400)
+    }
+}
+
 export function pushContentItem({item}):Action {
     return {
         type: PUSH_CONTENT_ITEM,
+        item
+    }
+}
+
+export function pushContentItemSub({item}):Action {
+    return {
+        type: PUSH_CONTENT_ITEM_SUB,
         item
     }
 }
@@ -57,9 +75,21 @@ export function drillDown(item, route:string):Action {
     }
 }
 
-export function drillReplace(item, route:string):Action {
+export function drillReplace(item, route:string, isSub):Action {
     return (dispatch, getState) => {
-      dispatch(pushContentItem({item}))
+      if(isSub) {
+          dispatch(pushContentItem({item}))
+      } else {
+          dispatch(pushContentItemSub({item}))
+      }
+      
       dispatch(replaceRoute(route))
     }
 }
+
+
+
+
+
+
+

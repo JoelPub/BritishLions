@@ -25,8 +25,7 @@ class Unions extends Component {
     }
 
     _drillDown(item, route) {
-        let data = Object.assign(item, {'json': this.props.unionsFeed})
-        this.props.drillDown(data, route)
+        this.props.drillDown(item, route)
     }
 
     componentDidMount() {

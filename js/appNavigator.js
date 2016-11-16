@@ -18,6 +18,7 @@ import MyAccount from './components/myAccount'
 import Terms from './components/terms'
 import News from './components/news/'
 import NewsDetails from './components/news/details'
+import NewsDetailsSub from './components/news/detailsSub'
 import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
@@ -31,8 +32,10 @@ import Fixtures from './components/fixtures'
 import FixtureDetails from './components/fixtures/details'
 import Sponsors from './components/sponsors'
 import SponsorDetails from './components/sponsors/details'
+import SponsorDetailsSub from './components/sponsors/detailsSub'
 import Unions from './components/unions'
 import UnionDetails from './components/unions/details'
+import UnionDetailsSub from './components/unions/detailsSub'
 import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBackground'
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
@@ -191,6 +194,8 @@ class AppNavigator extends Component {
                 return <News navigator={navigator} />
             case 'newsDetails':
                 return <NewsDetails navigator={navigator} />
+            case 'newsDetailsSub':
+                return <NewsDetailsSub navigator={navigator} />
             case 'lionsSideBar':
                 return <LionsSideBar navigator={navigator} />
             case 'lionsStore':
@@ -217,10 +222,14 @@ class AppNavigator extends Component {
                 return <Sponsors navigator={navigator} />
             case 'sponsorDetails':
                 return <SponsorDetails navigator={navigator} />
+            case 'sponsorDetailsSub':
+                return <SponsorDetailsSub navigator={navigator} />
             case 'unions':
                 return <Unions navigator={navigator} />
             case 'unionDetails':
                 return <UnionDetails navigator={navigator} />
+            case 'unionDetailsSub':
+                return <UnionDetailsSub navigator={navigator} />
             case 'lionsTv':
                 return <LionsTV navigator={navigator} />
             case 'lionsTvDetails':
