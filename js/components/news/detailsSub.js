@@ -16,7 +16,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
 
 
-class NewsDetails extends Component {
+class NewsDetailsSub extends Component {
 
     render() {
         return (
@@ -61,7 +61,7 @@ class NewsDetails extends Component {
                                value={this.props.article.article}
                                stylesheet={htmlStyles}
                              />
-                            <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                            <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', true]} />
                         </View>
 
                         <LionsFooter isLoaded={true} />
@@ -77,6 +77,6 @@ class NewsDetails extends Component {
 
 export default connect((state) => {
     return {
-        article: state.content.drillDownItem
+        article: state.content.drillDownItemSub
     }
-}, null)(NewsDetails)
+}, null)(NewsDetailsSub)

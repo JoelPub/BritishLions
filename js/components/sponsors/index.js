@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Linking } from 'react-native'
-import { drillDown } from '../../actions/content'
+import { drillDown, saveContent } from '../../actions/content'
 import { Container, Content, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -42,6 +42,10 @@ class Sponsors extends Component {
 
     _drillDown(data) {
         this.props.drillDown(data, 'sponsorDetails')
+    }
+
+    componentDidMount() {
+        this.props.saveContent(Data)
     }
 
     render() {
@@ -97,7 +101,8 @@ class Sponsors extends Component {
 
 function bindAction(dispatch) {
     return {
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        saveContent: (data, route)=>dispatch(saveContent(data, route))
     }
 }
 

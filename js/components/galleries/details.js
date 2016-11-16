@@ -64,8 +64,6 @@ class Gallery extends Component {
                             </Text>
                         </View>
 
-                        <PaginationButton label='NEXT SPONSOR' next={true} data={[null, 0, 'galleriesDetails']} />
-
                         <LionsFooter isLoaded={true} />
                     </Content>
 

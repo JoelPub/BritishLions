@@ -32,19 +32,20 @@ const styles = styleSheetCreate({
 class PaginationButton extends Component {
 	constructor(props){
 		super(props)
+
+        this._items = this.props.json
+        this._currentID = this.props.data[0]
+        this._route = this.props.data[1]
+        this._isSub = this.props.data[2]? this.props.data[2] : false
 	}
 
-    _paginate(data) {
-        let items = data[0]
-        let currentID = data[1]
-        let route = data[2]
-
-
-        let index = this._findID(items, currentID)
-        let item = items[index + 1]
+    _paginate() {
+        let index = this._findID(this._items, this._currentID)
+        let item = this._items[index + 1]
+        let routeAdd = this._isSub? '' : 'Sub'
 
         if(item) {
-            this._drillReplace(item, route)
+            this.props.drillReplace(item, this._route + routeAdd, this._isSub)
         }
     }
 
@@ -54,16 +55,12 @@ class PaginationButton extends Component {
         })
     }
 
-    _drillReplace(item, route) {
-        let data = Object.assign(item, {'json': this.props.data[0]})
-        this.props.drillReplace(data, route)
-    }
+    _isButtonShow() {
 
-    _isButtonShow(data) {
-        if(data[0]) {
-            let index = this._findID(data[0], data[1])
+        if(this._items) {
+            let index = this._findID(this._items, this._currentID)
 
-            if(data[0][index + 1]) {
+            if(this._items[index + 1]) {
                 return true
             }
 
@@ -75,12 +72,11 @@ class PaginationButton extends Component {
         let otherStyles = this.props.style || {}
         let label = this.props.label || ' '
         let icon = this.props.next? <Icon name='md-arrow-forward' style={styles.buttonIcon} /> : null
-        let data = this.props.data? this.props.data : []
-        let isButtonShow = this._isButtonShow(data)
+        let isButtonShow = this._isButtonShow()
 
         return (
             isButtonShow === true?
-                <ButtonFeedback rounded style={otherStyles} onPress={() => this._paginate(data)}>
+                <ButtonFeedback rounded style={otherStyles} onPress={() => this._paginate()}>
                     <Text style={styles.buttonText}>{label} {icon}</Text>
                 </ButtonFeedback>
             : null
@@ -90,8 +86,12 @@ class PaginationButton extends Component {
 
 function bindAction(dispatch) {
     return {
-        drillReplace: (data, route)=>dispatch(drillReplace(data, route))
+        drillReplace: (data, route, tpl)=>dispatch(drillReplace(data, route, tpl))
     }
 }
 
-export default connect(null, bindAction)(PaginationButton)
+export default connect((state) => {
+    return {
+        json: state.content.contentState
+    }
+}, bindAction)(PaginationButton)
