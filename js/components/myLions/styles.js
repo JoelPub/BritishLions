@@ -231,5 +231,96 @@ module.exports = styleSheetCreate({
         fontSize: styleVar.textFontSize,
         lineHeight: styleVar.textLineHeight,
         marginBottom: 20
-    }
+    },
+    resultRow: {
+        width: styleVar.deviceWidth,
+        height:135,
+        marginTop:1
+    },
+    searchImg: {
+        flex:9,
+    },
+    resultDesc: {
+        flex:16,
+        backgroundColor:'rgb(208,7,41)',
+        height:135
+    },
+    resultRowBtn: {
+        flex:1,
+        flexDirection:'row',
+        width: styleVar.deviceWidth,
+        height:135,
+        marginTop:1
+    },
+    resultRowTitleText: {
+        fontSize:24,
+        lineHeight:24,
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        paddingLeft:22,
+        marginTop:43,
+    },
+    resultRowSubtitleText: {
+        fontSize:18,
+        lineHeight:18,
+        textAlign:'left',
+        fontFamily: styleVar.fontGeorgia,
+        paddingLeft:22,
+        marginTop:4
+    },
+    btnSearchPlayer: {
+        backgroundColor:'rgb(208,7,41)',
+        height:50,
+        width:50,
+        borderRadius:50,
+        position:'absolute',
+        top:19,
+        right:23,
+        justifyContent:'center',
+        alignItems:'center',
+        padding:0,
+        margin:0
+    },
+    searchIcon: {
+        fontSize:36,
+        color:'rgb(255,255,255)'
+    },
+    resultContainer: {
+        flex:1,
+        backgroundColor:'rgba(38,38,38,0.9)',
+        paddingTop:20,
+        android: {
+            paddingTop:0
+        }
+    },
+    searchContainer: {
+        flexDirection:'row',
+        height:50,
+        backgroundColor:'rgb(38,38,38)'
+    },
+    searchBox: {
+        flex:6,
+        backgroundColor:'rgb(255,255,255)',
+        marginBottom:5,
+        marginTop:5,
+        paddingBottom:0,
+        marginLeft:5,
+        height:40
+    },
+    searchInput: {
+        fontSize:16,
+        marginRight:5,
+        color:'rgb(128,127,131)'
+    },
+    btnCancel: {
+        paddingLeft:5,
+        height:24,
+        width:24,
+        position:'absolute',
+        right:12,
+        top:12
+    },
+    rtnIcon: {
+        fontSize:24
+    },
 })
