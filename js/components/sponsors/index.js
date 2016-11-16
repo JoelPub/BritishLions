@@ -41,7 +41,7 @@ class Sponsors extends Component {
     }
 
     _drillDown(data) {
-        this.props.drillDown(data, 'sponsorDetails1')
+        this.props.drillDown(data, 'sponsorDetails')
     }
 
     componentDidMount() {

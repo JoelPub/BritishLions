@@ -19,7 +19,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 // should be delete this code once api is ready.
 import JSON from '../../../contents/sponsors/data'
 
-class SponsorDetails2 extends Component {
+class SponsorDetails extends Component {
     constructor(props){
         super(props)
     }
@@ -35,29 +35,29 @@ class SponsorDetails2 extends Component {
                         <View style={styles.content}>
 
                             <View style={styles.wrapper}>
-                                <Text style={styles.wrapperTitle}>{this.props.details2.title.toUpperCase()}</Text>
+                                <Text style={styles.wrapperTitle}>{this.props.details.title.toUpperCase()}</Text>
 
-                                {this.props.details2.partner? <Text style={styles.wrapperPartner}>{this.props.details2.partner}</Text> : null }
+                                {this.props.details.partner? <Text style={styles.wrapperPartner}>{this.props.details.partner}</Text> : null }
                             </View>
 
                             <Image transparent
                                     resizeMode='contain'
-                                    source={this.props.details2.image}
+                                    source={this.props.details.image}
                                     style={styles.banner} />
 
                             <View style={styles.shareLinkWrapper}>
-                                <ExternalLink style={styles.shareLink} url={this.props.details2.url}>
-                                    <Text style={styles.shareLinkText}><Icon name='md-open' style={styles.shareLinkIcon} /> {this.props.details2.label.toUpperCase()}</Text>
+                                <ExternalLink style={styles.shareLink} url={this.props.details.url}>
+                                    <Text style={styles.shareLinkText}><Icon name='md-open' style={styles.shareLinkIcon} /> {this.props.details.label.toUpperCase()}</Text>
                                 </ExternalLink>
                             </View>
 
                             <View style={styles.description}>
                                 <HTMLView
-                                    value={this.props.details2.description}
+                                    value={this.props.details.description}
                                     stylesheet={htmlStyles}
                                     onLinkPress={(url) => goToURL(url)}
                                 />
-                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton} next={true} data={[this.props.details2.id, 'sponsorDetails', 1]} />
+                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton} next={true} data={[this.props.details.id, 'sponsorDetails']} />
                             </View>
                         </View>
 
@@ -72,6 +72,6 @@ class SponsorDetails2 extends Component {
 
 export default connect((state) => {
     return {
-        details2: state.content.drillDownItem2
+        details: state.content.drillDownItem
     }
-}, null)(SponsorDetails2)
+}, null)(SponsorDetails)

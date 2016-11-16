@@ -11,7 +11,7 @@ export type Action =
     | { type: 'CLOSE_DRAWER' }
     | { type: 'SET_CONTENT' }
     | { type: 'PUSH_CONTENT_ITEM'}
-    | { type: 'PUSH_CONTENT_ITEM2'}
+    | { type: 'PUSH_CONTENT_ITEM_SUB'}
     | { type: 'REPLACE_CONTENT_ITEM'}
     | { type: 'SET_COUNTDOWN_TIMER_END'}
 

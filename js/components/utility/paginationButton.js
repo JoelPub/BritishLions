@@ -36,15 +36,16 @@ class PaginationButton extends Component {
         this._items = this.props.json
         this._currentID = this.props.data[0]
         this._route = this.props.data[1]
-        this._templateNumber = this.props.data[2]
+        this._isSub = this.props.data[2]? this.props.data[2] : false
 	}
 
     _paginate() {
         let index = this._findID(this._items, this._currentID)
         let item = this._items[index + 1]
+        let routeAdd = this._isSub? '' : 'Sub'
 
         if(item) {
-            this.props.drillReplace(item, this._route + this._templateNumber, this._templateNumber)
+            this.props.drillReplace(item, this._route + routeAdd, this._isSub)
         }
     }
 

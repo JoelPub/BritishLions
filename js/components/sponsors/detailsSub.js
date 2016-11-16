@@ -19,7 +19,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 // should be delete this code once api is ready.
 import JSON from '../../../contents/sponsors/data'
 
-class SponsorDetails1 extends Component {
+class SponsorDetailsSub extends Component {
     constructor(props){
         super(props)
     }
@@ -57,7 +57,7 @@ class SponsorDetails1 extends Component {
                                     stylesheet={htmlStyles}
                                     onLinkPress={(url) => goToURL(url)}
                                 />
-                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton} next={true} data={[this.props.details.id, 'sponsorDetails', 2]} />
+                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton} next={true} data={[this.props.details.id, 'sponsorDetails', true]} />
                             </View>
                         </View>
 
@@ -72,6 +72,6 @@ class SponsorDetails1 extends Component {
 
 export default connect((state) => {
     return {
-        details: state.content.drillDownItem
+        details: state.content.drillDownItemSub
     }
-}, null)(SponsorDetails1)
+}, null)(SponsorDetailsSub)

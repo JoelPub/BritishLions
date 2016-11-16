@@ -22,7 +22,7 @@ class News extends Component {
     }
     _drillDown(item) {
         let data = Object.assign(item, {'json': this.props.newsFeed})
-        this.props.drillDown(data, 'newsDetails1')
+        this.props.drillDown(data, 'newsDetails')
     }
     componentDidMount() {
       this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php')

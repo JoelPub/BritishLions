@@ -6,7 +6,7 @@ import { alertBox } from './../components/utility/alertBox'
 
 export const SET_CONTENT = 'SET_CONTENT'
 export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM' 
-export const PUSH_CONTENT_ITEM2 = 'PUSH_CONTENT_ITEM2'
+export const PUSH_CONTENT_ITEM_SUB = 'PUSH_CONTENT_ITEM_SUB'
 export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 
 export function fetchContent(url):Action {
@@ -61,9 +61,9 @@ export function pushContentItem({item}):Action {
     }
 }
 
-export function pushContentItem2({item}):Action {
+export function pushContentItemSub({item}):Action {
     return {
-        type: PUSH_CONTENT_ITEM2,
+        type: PUSH_CONTENT_ITEM_SUB,
         item
     }
 }
@@ -75,14 +75,14 @@ export function drillDown(item, route:string):Action {
     }
 }
 
-export function drillReplace(item, route:string, template):Action {
+export function drillReplace(item, route:string, isSub):Action {
     return (dispatch, getState) => {
-      if(template === 1) {
+      if(isSub) {
           dispatch(pushContentItem({item}))
       } else {
-          dispatch(pushContentItem2({item}))
+          dispatch(pushContentItemSub({item}))
       }
-
+      
       dispatch(replaceRoute(route))
     }
 }
