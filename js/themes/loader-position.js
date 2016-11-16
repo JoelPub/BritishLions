@@ -1,16 +1,14 @@
 'use strict'
 
-import { Dimensions } from 'react-native'
 import { styleSheetCreate } from './lions-stylesheet'
+import styleVar from './variable'
 
-var deviceHeight = Dimensions.get('window').height
 
 module.exports = styleSheetCreate({
     centered: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: deviceHeight,
-      marginTop: -50
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: styleVar.deviceHeight,
+		marginTop: -50
     }
-
 })
