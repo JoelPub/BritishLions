@@ -20,7 +20,7 @@ import Swiper from 'react-native-swiper'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
 
-class UnionDetails extends Component {
+class UnionDetailsSub extends Component {
     constructor(props){
         super(props)
     }
@@ -161,7 +161,7 @@ class UnionDetails extends Component {
                                         </Row>
                                     </Grid>
                                 </View>
-                                <PaginationButton label='NEXT UNION' style={styles.paginateButton} next={true} data={[this.props.details.id, 'unionDetails', false]} />
+                                <PaginationButton label='NEXT UNION' style={styles.paginateButton} next={true} data={[this.props.details.id, 'unionDetails', true]} />
                             </View>
                         </View>
 
@@ -176,6 +176,6 @@ class UnionDetails extends Component {
 
 export default connect((state) => {
     return {
-        details: state.content.drillDownItem
+        details: state.content.drillDownItemSub
     }
-}, null)(UnionDetails)
+}, null)(UnionDetailsSub)

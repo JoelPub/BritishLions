@@ -20,9 +20,9 @@ class News extends Component {
               isLoaded: false
          }
     }
-    _drillDown(item, route) {
+    _drillDown(item) {
         let data = Object.assign(item, {'json': this.props.newsFeed})
-        this.props.drillDown(data, route)
+        this.props.drillDown(data, 'newsDetails')
     }
     componentDidMount() {
       this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php')
@@ -47,7 +47,7 @@ class News extends Component {
                                              <ButtonFeedback
                                                  key={index}
                                                  style={styles.listLink}
-                                                 onPress={() => this._drillDown(data, 'newsDetails')}>
+                                                 onPress={() => this._drillDown(data)}>
                                                   <Image source={{uri: data.thumb}} style={[styles.newsImage]} />
                                                   <View style={styles.newsContent}>
                                                       <Text numberOfLines={2} style={styles.newsHeader}>
