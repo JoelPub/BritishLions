@@ -232,7 +232,20 @@ module.exports = styleSheetCreate({
         lineHeight: styleVar.textLineHeight,
         marginBottom: 20
     },
-    resultRow: {
+    btnSearchPlayer: {
+        backgroundColor:'rgb(208,7,41)',
+        height:50,
+        width:50,
+        borderRadius:50,
+        position:'absolute',
+        top:19,
+        right:23,
+        justifyContent:'center',
+        alignItems:'center',
+        padding:0,
+        margin:0
+    },
+        resultRow: {
         width: styleVar.deviceWidth,
         height:135,
         marginTop:1
@@ -268,19 +281,6 @@ module.exports = styleSheetCreate({
         paddingLeft:22,
         marginTop:4
     },
-    btnSearchPlayer: {
-        backgroundColor:'rgb(208,7,41)',
-        height:50,
-        width:50,
-        borderRadius:50,
-        position:'absolute',
-        top:19,
-        right:23,
-        justifyContent:'center',
-        alignItems:'center',
-        padding:0,
-        margin:0
-    },
     searchIcon: {
         fontSize:36,
         color:'rgb(255,255,255)'
@@ -310,7 +310,12 @@ module.exports = styleSheetCreate({
     searchInput: {
         fontSize:16,
         marginRight:5,
-        color:'rgb(128,127,131)'
+        color:'rgb(128,127,131)',
+        paddingBottom:8,
+        paddingLeft:13,
+        android: {
+            paddingBottom:17
+        }
     },
     btnCancel: {
         paddingLeft:5,

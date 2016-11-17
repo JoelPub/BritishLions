@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal } from 'react-native'
+import { Image, View, Modal, ScrollView } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -15,16 +15,17 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
+import FilterListingModal from '../utility/filterListingModal'
 
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
         this.state = {
-        modalVisible: false,
-        transparent: true,
-        resultVisible: false
-    }
+            modalVisible: false,
+            transparent: true,
+            resultVisible: false
+        }
     
     }
 
@@ -33,11 +34,26 @@ class MyLionsPlayerList extends Component {
     }
 
     _setModalVisible=(visible) => {
-        this.setState({modalVisible:visible,resultVisible:!visible,transparent:visible})
+        this.setState({
+            modalVisible:visible,
+            resultVisible:!visible,
+            transparent:visible
+        })
+    }
+
+    onCloseFilter = () => {
+        this.setState({
+            modalVisible:false,
+            transparent: true,
+            resultVisible: false
+        })
     }
 
     searchPlayer = (keywords) => {
-        this.setState({resultVisible:true,transparent:false})
+        this.setState({
+            resultVisible:true,
+            transparent:false
+        })
     }
 
     render() {
@@ -59,10 +75,12 @@ class MyLionsPlayerList extends Component {
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
                     </Image>
-                    <Modal
-                        visible={this.state.modalVisible}
-                        transparent={this.state.transparent}
-                        onRequestClose={()=>this._setModalVisible(false)}>
+                    
+                    <FilterListingModal 
+                        modalVisible={this.state.modalVisible} 
+                        resultVisible={this.state.resultVisible} 
+                        transparent={this.state.transparent}  
+                        callbackParent={this.onCloseFilter}>
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
@@ -75,67 +93,67 @@ class MyLionsPlayerList extends Component {
                                 </View>
                             </View>
                             {this.state.resultVisible&&
-                            <View>
+                            <ScrollView>
                                 <View style={styles.resultRow}>
-                                        <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                            <View style={styles.searchImg}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                     />
-                                            </View>
-                                            <View style={styles.resultDesc}>
-                                                <Text style={styles.resultRowTitleText}>JAMES HASKELL</Text>
-                                                <Text style={styles.resultRowSubtitleText}>Flanker</Text>
-                                            </View>
-                                        </ButtonFeedback>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='contain'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>JAMES HASKELL</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Flanker</Text>
+                                        </View>
+                                    </ButtonFeedback>
                                 </View>
                                 <View style={styles.resultRow}>
-                                        <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                            <View style={styles.searchImg}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                     />
-                                            </View>
-                                            <View style={styles.resultDesc}>
-                                                <Text style={styles.resultRowTitleText}>ELLIS GENGE</Text>
-                                                <Text style={styles.resultRowSubtitleText}>Scrum Half</Text>
-                                            </View>
-                                        </ButtonFeedback>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='contain'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>ELLIS GENGE</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Scrum Half</Text>
+                                        </View>
+                                    </ButtonFeedback>
                                 </View>
                                 <View style={styles.resultRow}>
-                                        <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                            <View style={styles.searchImg}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                     />
-                                            </View>
-                                            <View style={styles.resultDesc}>
-                                                <Text style={styles.resultRowTitleText}>ROY THOMPSON</Text>
-                                                <Text style={styles.resultRowSubtitleText}>Main</Text>
-                                            </View>
-                                        </ButtonFeedback>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='contain'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>ROY THOMPSON</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Main</Text>
+                                        </View>
+                                    </ButtonFeedback>
                                 </View>
                                 <View style={styles.resultRow}>
-                                        <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                            <View style={styles.searchImg}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                     />
-                                            </View>
-                                            <View style={styles.resultDesc}>
-                                                <Text style={styles.resultRowTitleText}>JAY WOLLISH</Text>
-                                                <Text style={styles.resultRowSubtitleText}>BRIDA</Text>
-                                            </View>
-                                        </ButtonFeedback>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='contain'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>JAY WOLLISH</Text>
+                                            <Text style={styles.resultRowSubtitleText}>BRIDA</Text>
+                                        </View>
+                                    </ButtonFeedback>
                                 </View>
-                            </View>
+                            </ScrollView>
                         }
                         </View>
-                    </Modal>
+                    </FilterListingModal >
 
                     <Content>
                         <Grid>
