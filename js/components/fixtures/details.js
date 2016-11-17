@@ -35,8 +35,9 @@ class FixtureDetails extends Component {
     }
 
     calendarAddEvent(params){
-        let dateOfEvent = new Date(params.details.date).toISOString() // UTC Format
-        let endDateOfEvent = new Date(params.details.date)
+        let utcString = Platform.OS === 'android'?' UTC ':''
+        let dateOfEvent = new Date(params.details.date+utcString).toISOString() // UTC Format
+        let endDateOfEvent = new Date(params.details.date+utcString)
         endDateOfEvent.setHours(endDateOfEvent.getHours() + 1) // Add 1 hour for Event, to provide time range display
         let endTime = endDateOfEvent.toISOString() // UTC Format
 
