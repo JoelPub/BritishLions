@@ -26,7 +26,7 @@ class LionsStore extends Component {
                         <View style={styles.linkWrapper}>
                             <ExternalLink url='https://www.lionsrugby.com'>
                                 <Text style={styles.pageLinkText}>
-                                    <Icon name='md-open' style={styles.pageLinkIcon} /> VISIT THE official LIONS WEBSITE
+                                    <Icon name='md-open' style={styles.pageLinkIcon} /> VISIT THE OFFICIAL LIONS WEBSITE
                                 </Text>
                             </ExternalLink>
                         </View>
