@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ActivityIndicator, RefreshControl, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
-import { Container, Content, Text, Button, Icon } from 'native-base'
+import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -17,6 +17,8 @@ import styles from './styles'
 class News extends Component {
     constructor(props) {
          super(props)
+
+         this.url = 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'
          this.state = {
               isLoaded: false,
               isRefreshing: false,
@@ -29,21 +31,21 @@ class News extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php')
+        this.props.fetchContent(this.url)
     }
 
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true,
-            isRefreshing: false,
+            isRefreshing: this.props.isRefreshing,
             newsFeed: this.props.newsFeed
         })
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php')
-    };
+        this.props.fetchContent(this.url)
+    }
 
     render() {
         return (
@@ -63,7 +65,7 @@ class News extends Component {
                                         titleColor = {refresh.titleColor}
                                         colors = {refresh.colors}
                                         progressBackgroundColor = {refresh.background}
-                                      />
+                                    />
                             }>
                                 {
                                     this.props.newsFeed.map(function(data, index) {
@@ -106,8 +108,9 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-  return {
-    newsFeed: state.content.contentState,
-    isLoaded: state.content.isLoaded
-  }
+    return {
+        newsFeed: state.content.contentState,
+        isLoaded: state.content.isLoaded,
+        isRefreshing: state.content.isRefreshing
+    }
 }, bindAction)(News)

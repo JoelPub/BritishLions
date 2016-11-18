@@ -16,26 +16,27 @@ export function fetchContent(url):Action {
         //   'otherparam=2'
         // ].join('&')
         return (
-          fetch(url, {
-          // fetch(`http://arudata.lionsrugby.com/aru/feeds/mobile/news_articles_json.php?${params}`, {
-             method: 'GET'
-           })
-          .then((response) => response.json())
-          .then((responseData) => {
-              setTimeout(() => {
-                  dispatch(setContent({
-                      contentList: responseData
-                  }))
-              }, 400)
-          })
-          .catch((error) => {
-              // Caching Network connection
-              alertBox('No Network', 'No Internet connectivity. Cached data will be shown where possible. ', 'Dismiss')
-          })
-          .done()
-      )
+            fetch(url, {
+                // fetch(`http://arudata.lionsrugby.com/aru/feeds/mobile/news_articles_json.php?${params}`, {
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+                setTimeout(() => {
+                    dispatch(setContent({
+                        contentList: responseData
+                    }))
+                }, 400)
+            })
+            .catch((error) => {
+                // Caching Network connection
+                alertBox('No Network', 'No Internet connectivity. Cached data will be shown where possible. ', 'Dismiss')
+            })
+            .done()
+        )
     }
 }
+
 
 export function setContent({contentList}):Action {
     return {

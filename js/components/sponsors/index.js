@@ -102,7 +102,7 @@ class Sponsors extends Component {
 function bindAction(dispatch) {
     return {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
-        saveContent: (data, route)=>dispatch(saveContent(data, route))
+        saveContent: (data)=>dispatch(saveContent(data))
     }
 }
 
