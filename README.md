@@ -61,7 +61,7 @@ $ npm test
 
 
 ### Font Icon use in the project ###
-http://ionicframework.com/docs/v2/ionicons/
+Material design -> http://ionicframework.com/docs/v2/ionicons/
 
 ### Generating App Icon ###
 [makeappicon](http://makeappicon.com/)
