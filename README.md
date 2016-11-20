@@ -1,7 +1,7 @@
 # British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-Project build using React Native + Redux + ES5 & ES6 + JSX + jest
+Project build using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios)
 
 ### System Requirements ###
 
@@ -22,11 +22,11 @@ Project build using React Native + Redux + ES5 & ES6 + JSX + jest
 
 1.    Clone the git repo -> git@bitbucket.org:apdmageprojects/LionsOfficial.git
 2.    cd to the local project directory
-3.    $ npm install
+3.    $ npm i
 4.    $ rnpm link
 
 
-### Run the app using iOS emulator ###
+### Run the app for IOS ###
 
 
 ```
@@ -39,7 +39,7 @@ $ react-native run-ios --simulator "iPhone 6s"
 
 Hit the Run button in xcode
 
-### Run your app using Android emulator ###
+### Run the app for Android ###
 
 1.    Have an Android emulator running (quickest way to get started), or a device connected
 3.    
