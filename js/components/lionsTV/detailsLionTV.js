@@ -11,8 +11,20 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import { shareTextWithTitle } from '../utility/socialShare'
+import YouTube from 'react-native-youtube'
 
 class DetailsLionsTV extends Component {
+
+  constructor(props) {
+         super(props)
+         this.state = {
+              isReady: false,
+              status: null,
+              quality: null,
+              error: null,
+              isPlaying: true
+                 }
+    }
 
   convertToUppercase(data) {
     return data.toUpperCase()
@@ -30,21 +42,37 @@ class DetailsLionsTV extends Component {
               <Content>
                   <View style={[styles.lionsTvGalleryContent, styles.lionsTvGalleryContentDetail]}>
                       <Text numberOfLines={2} style={[styles.headline, styles.headlineDetail]}>
-                          {this.convertToUppercase(this.props.details.headline)}
+                          {this.convertToUppercase(this.props.details.snippet.title)}
                       </Text>
                       <View style={styles.lionsTVDateWrapper}>
                           <Icon name='md-time' style={[styles.timeIcon, styles.timeIconDetail]} />
-                          <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {this.props.details.date} at {this.props.details.time}</Text>
+                          <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {new Date(this.props.details.snippet.publishedAt).toLocaleDateString()} at {new Date(this.props.details.snippet.publishedAt).toLocaleTimeString()}</Text>
                       </View>
                   </View>
-                  <WebView
+                  <YouTube
+                    ref='youtubePlayer'
+                    videoId= {this.props.details.contentDetails.upload.videoId} // The YouTube video ID
+                    apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
+                    hidden={false}
+                    rel={true}
+                    showinfo={false}
+                    playsInline={true}    // control whether the video should play inline
+                    //onError={(e)=>{console.log(e.error}}
+                    play={this.state.isPlaying}
+                    onReady={(e)=>{this.setState({isReady: true})}}
+                    onChangeState={(e)=>{this.setState({status: e.state})}}
+                    onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
+                    onError={(e)=>{this.setState({error: e.error})}}
+                    style={styles.youtubePlayerView}
+                  />
+                  {/*<WebView
                       style={styles.youtubePlayerView}
                       javaScriptEnabled={true}
-                      source={{uri: this.convertToEmbed(this.props.details.multimedia[0].url)}}
-                  />
+                      source={{uri: this.convertToEmbed(this.props.details.contentDetails.upload.videoId)}}
+                  />*/}
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
-                          onPress={shareTextWithTitle.bind(this, this.props.details.headline, this.props.details.link)}
+                          onPress={shareTextWithTitle.bind(this, this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)}
                           style={styles.shareLink}>
                           <Text style={styles.shareLinkText}>SHARE</Text>
                           <Icon name='md-share-alt' style={styles.shareLinkIcon} />
@@ -52,7 +80,7 @@ class DetailsLionsTV extends Component {
                   </View>
                   <View style={styles.description}>
                       <Text style={styles.paragraph}>
-                        {this.props.details.article}
+                        {this.props.details.snippet.description}
                       </Text>
                   </View>
                   <LionsFooter isLoaded={true} />

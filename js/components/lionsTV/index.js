@@ -25,7 +25,7 @@ class LionsTV extends Component {
         this.props.drillDown(data, route)
     }
     componentDidMount() {
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/tv.php')
+        this.props.fetchContent('https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY')
     }
     componentWillReceiveProps() {
       this.setState({
@@ -41,7 +41,7 @@ class LionsTV extends Component {
                         this.state.isLoaded?
                             <Content>
                                 {
-                                   this.props.videosFeed.map(function(data, index) {
+                                   this.props.videosFeed.items.map(function(data, index) {
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}
@@ -50,16 +50,16 @@ class LionsTV extends Component {
                                                 <Image
                                                     source={require('../../../images/placeholder/banner.png')}
                                                     style={styles.placeholderImage}>
-                                                    <Image source={{uri: data.image}} style={styles.lionsTvGalleryImage}/>
+                                                    <Image source={{uri: data.snippet.thumbnails.standard.url}} style={styles.lionsTvGalleryImage}/>
                                                 </Image>
                                                 <View style={[shapes.triangle, {marginTop: -11}]} />
                                                 <View style={styles.lionsTvGalleryContent}>
                                                     <Text numberOfLines={2} style={styles.headline}>
-                                                        {data.headline ? data.headline.toUpperCase() : ' '}
+                                                        {data.snippet.title ? data.snippet.title.toUpperCase() : ' '}
                                                     </Text>
                                                     <View style={styles.lionsTVDateWrapper}>
                                                         <Icon name='md-time' style={ styles.timeIcon} />
-                                                        <Text style={styles.lionsTVDateText}> {data.date} at {data.time}</Text>
+                                                        <Text style={styles.lionsTVDateText}> {new Date(data.snippet.publishedAt).toLocaleDateString()} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
                                                     </View>
                                                 </View>
                                             </ButtonFeedback>

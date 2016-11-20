@@ -4,7 +4,8 @@ import { alertBox } from './alertBox'
 export function shareTextWithTitle (text, url) {
     Share.share({
         title: text,
-        message: text + ' ' + url
+        message: text + ' ' + url,
+        url: url
     }, {
         dialogTitle: 'Share via',
         // excludedActivityTypes: [
