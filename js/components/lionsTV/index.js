@@ -53,7 +53,7 @@ class LionsTV extends Component {
                                                 </ImagePlaceholder>
                                                 <View style={[shapes.triangle, {marginTop: -11}]} />
                                                 <View style={styles.lionsTvGalleryContent}>
-                                                    <Text numberOfLines={2} style={styles.headline}>
+                                                    <Text numberOfLines={4} style={styles.headline}>
                                                         {data.headline ? data.headline.toUpperCase() : ' '}
                                                     </Text>
                                                     <View style={styles.lionsTVDateWrapper}>

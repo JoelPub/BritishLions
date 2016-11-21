@@ -30,7 +30,7 @@ class DetailsLionsTV extends Component {
               <LionsHeader title='LIONS TV' back={true} />
               <Content>
                   <View style={[styles.lionsTvGalleryContent, styles.lionsTvGalleryContentDetail]}>
-                      <Text numberOfLines={2} style={[styles.headline, styles.headlineDetail]}>
+                      <Text numberOfLines={4} style={[styles.headline, styles.headlineDetail]}>
                           {this.convertToUppercase(this.props.details.headline)}
                       </Text>
                       <View style={styles.lionsTVDateWrapper}>

@@ -34,7 +34,7 @@ class NewsDetails extends Component {
                                     resizeMode='cover'
                                     source={require('../../../images/shadows/rectangle.png')}
                                     style={styles.newsPosterContent}>
-                                    <Text numberOfLines={2} style={styles.newsPosterHeader}>
+                                    <Text numberOfLines={3} style={styles.newsPosterHeader}>
                                         {this.props.article.headline.toUpperCase()}
                                     </Text>
                                     <View style={[styles.newsDateWrapper, styles.newsDateWrapperInverse]}>
