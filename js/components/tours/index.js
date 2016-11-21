@@ -9,7 +9,9 @@ import styles from '../../themes/static-page'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink from '../utility/externalLink'
+import styleVar from '../../themes/variable'
 
 class Tours extends Component {
     render() {
@@ -18,7 +20,9 @@ class Tours extends Component {
                 <View style={styles.container}>
                     <LionsHeader title='SUPPORTER TOURS' />
                     <Content>
-                        <Image source={require('../../../images/content/toursBanner.png')} style={styles.pagePoster} />
+                        <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
+                            <Image source={require('../../../images/content/toursBanner.png')} style={styles.pagePoster} />
+                        </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
                             <ExternalLink url='https://tours.lionsrugby.com'>
                                 <Text style={styles.pageLinkText}>

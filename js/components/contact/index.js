@@ -9,8 +9,10 @@ import styles from '../../themes/static-page'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink from '../utility/externalLink'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import styleVar from '../../themes/variable'
 
 class LionsStore extends Component {
     render() {
@@ -22,7 +24,9 @@ class LionsStore extends Component {
                 <View style={styles.container}>
                     <LionsHeader title='CONTACT' />
                     <Content>
-                        <Image source={require('../../../images/header/blionsBanner.jpg')} style={styles.pagePoster} />
+                        <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
+                            <Image source={require('../../../images/header/blionsBanner.jpg')} style={styles.pagePoster} />
+                        </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
                             <ExternalLink url='https://www.lionsrugby.com'>
                                 <Text style={styles.pageLinkText}>

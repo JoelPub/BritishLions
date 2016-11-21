@@ -17,8 +17,7 @@ module.exports = styleSheetCreate({
     },
     newsImage: {
         width: (styleVar.deviceWidth / 3),
-        height: (styleVar.deviceHeight / 3.7),
-        backgroundColor: '#f8f8f8'
+        height: (styleVar.deviceHeight / 3.7)
     },
     newsContent: {
         flexDirection: 'column',
@@ -132,6 +131,7 @@ module.exports = styleSheetCreate({
         lineHeight: 25,
         paddingTop: 9,
         marginBottom: -5,
+        backgroundColor: 'transparent',
         android: {
             marginBottom: 0,
             lineHeight: 38,
@@ -145,6 +145,7 @@ module.exports = styleSheetCreate({
         paddingLeft: 20,
         paddingBottom: 15,
         paddingRight: 20,
+        backgroundColor: 'transparent',
         android: {
             paddingBottom: 10
         }

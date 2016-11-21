@@ -10,6 +10,7 @@ import styles from './styles'
 import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import EYSFooter from '../global/eySponsoredFooter'
 
@@ -33,19 +34,21 @@ class Fixtures extends Component {
                           {
                              data.map(function(item) {
                                 return (
-                                      <ButtonFeedback key={item.id}
-                                          style={styles.btn}
-                                          onPress={() => this._drillDown(item)}>
-                                          <Image
-                                            resizeMode='cover' 
-                                            style={styles.fixtureImg}
-                                            source={images[item.id]} />
-                                          <View style={[shapes.triangle, {marginTop: -11}]} />
-                                          <View style={styles.fixtureBanner} >
-                                              <Text style={styles.dateText}>{item.date.toUpperCase()}</Text>
-                                              <Text style={styles.teamText}>{item.title}</Text>
-                                          </View>
-                                      </ButtonFeedback>
+                                    <ButtonFeedback key={item.id}
+                                        style={styles.btn}
+                                        onPress={() => this._drillDown(item)}>
+                                        <ImagePlaceholder height={170}>
+                                            <Image
+                                                resizeMode='cover' 
+                                                style={styles.fixtureImg}
+                                                source={images[item.id]} />
+                                        </ImagePlaceholder>
+                                        <View style={[shapes.triangle, {marginTop: -11}]} />
+                                        <View style={styles.fixtureBanner} >
+                                          <Text style={styles.dateText}>{item.date.toUpperCase()}</Text>
+                                          <Text style={styles.teamText}>{item.title}</Text>
+                                        </View>
+                                    </ButtonFeedback>
                                   )
                               }, this)
                           }

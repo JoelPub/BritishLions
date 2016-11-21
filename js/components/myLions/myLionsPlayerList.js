@@ -3,8 +3,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
-import { Container, Content, Text, Button, Icon } from 'native-base'
+import { Image, View, Modal, ScrollView } from 'react-native'
+import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -12,17 +12,50 @@ import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
+import styleVar from '../../themes/variable'
+import FilterListingModal from '../global/filterListingModal'
 
 class MyLionsPlayerList extends Component {
+
     constructor(props){
         super(props)
+        this.state = {
+            modalVisible: false,
+            transparent: true,
+            resultVisible: false
+        }
+    
     }
 
     _drillDown(route, index) {
         this.props.pushNewRoute('myLionsPlayerDetails')
+    }
+
+    _setModalVisible=(visible) => {
+        this.setState({
+            modalVisible:visible,
+            resultVisible:!visible,
+            transparent:visible
+        })
+    }
+
+    onCloseFilter = () => {
+        this.setState({
+            modalVisible:false,
+            transparent: true,
+            resultVisible: false
+        })
+    }
+
+    searchPlayer = (keywords) => {
+        this.setState({
+            resultVisible:true,
+            transparent:false
+        })
     }
 
     render() {
@@ -39,7 +72,94 @@ class MyLionsPlayerList extends Component {
                             src={require('../../../contents/my-lions/nations/england.png')} />
 
                         <Text style={styles.headerTitle}>ENGLAND</Text>
+
+                        <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
+                            <Icon name='md-search' style={styles.searchIcon}/>
+                        </ButtonFeedback>
                     </Image>
+                    
+                    <FilterListingModal 
+                        modalVisible={this.state.modalVisible} 
+                        resultVisible={this.state.resultVisible} 
+                        transparent={this.state.transparent}  
+                        callbackParent={this.onCloseFilter}>
+                        <View style={styles.resultContainer}>
+                            <View style={styles.searchContainer}>
+                                <View style={styles.searchBox}>
+                                    <Input placeholder='Search for Player' onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                </View>
+                                <View style={{flex:1}}>
+                                    <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
+                                        <Icon name='md-close' style={styles.rtnIcon}/>
+                                    </ButtonFeedback>
+                                </View>
+                            </View>
+                            {this.state.resultVisible&&
+                            <ScrollView>
+                                <View style={styles.resultRow}>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='stretch'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>JAMES HASKELL</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Flanker</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                </View>
+                                <View style={styles.resultRow}>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='stretch'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>ELLIS GENGE</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Scrum Half</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                </View>
+                                <View style={styles.resultRow}>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='stretch'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>ROY THOMPSON</Text>
+                                            <Text style={styles.resultRowSubtitleText}>Main</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                </View>
+                                <View style={styles.resultRow}>
+                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
+                                        <View style={styles.searchImg}>
+                                            <Image transparent
+                                                resizeMode='stretch'
+                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
+                                                 />
+                                        </View>
+                                        <View style={styles.resultDesc}>
+                                            <Text style={styles.resultRowTitleText}>JAY WOLLISH</Text>
+                                            <Text style={styles.resultRowSubtitleText}>BRIDA</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                </View>
+                            </ScrollView>
+                        }
+                        </View>
+                    </FilterListingModal >
 
                     <Content>
                         <Grid>
@@ -47,10 +167,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(1)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -66,10 +190,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(2)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -91,10 +219,14 @@ class MyLionsPlayerList extends Component {
 
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -111,10 +243,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(4)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />

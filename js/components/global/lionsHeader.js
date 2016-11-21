@@ -30,10 +30,10 @@ const styles = styleSheetCreate({
         lineHeight: 28,
         alignSelf: 'center',
         fontFamily: styleVar.fontCondensed,
-        marginTop: -12,
+        marginTop: -13,
         backgroundColor: 'transparent',
         android: {
-        	marginTop: -2
+        	marginTop: -4
         }
     },
     logoHeader: {

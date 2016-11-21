@@ -12,7 +12,9 @@ import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
+import styleVar from '../../themes/variable'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -70,10 +72,14 @@ class Sponsors extends Component {
 
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styles.gridBoxImgWrapper}>
-                                                                    <Image transparent
-                                                                        resizeMode='contain'
-                                                                        source={item.image}
-                                                                        style={styles.gridBoxImg} />
+                                                                    <ImagePlaceholder
+                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                        <Image transparent
+                                                                            resizeMode='contain'
+                                                                            source={item.image}
+                                                                            style={styles.gridBoxImg} />
+                                                                    </ImagePlaceholder>
                                                                 </View>
 
                                                                 <View style={[shapes.triangle]} />

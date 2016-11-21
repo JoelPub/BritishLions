@@ -1,7 +1,7 @@
 # British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-Project build using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios)
+Project using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios) + JSON Web Tokens
 
 ### System Requirements ###
 
@@ -42,6 +42,7 @@ Hit the Run button in xcode
 ### Run the app for Android ###
 
 1.    Have an Android emulator running (quickest way to get started), or a device connected
+2.    You will need a file transfer software such as https://www.android.com/filetransfer/ install on your machine in order to emulate on your device
 3.    
 ```
 #!terminal
@@ -62,9 +63,6 @@ $ npm test
 
 ### Font Icon use in the project ###
 Material design -> http://ionicframework.com/docs/v2/ionicons/
-
-### Generating App Icon ###
-[makeappicon](http://makeappicon.com/)
 
 ### Market place guidelines ###
 Apple store: https://developer.apple.com/app-store/review/guidelines/
