@@ -34,7 +34,7 @@ class DetailsLionsTV extends Component {
     return url.replace('watch?v=', '/embed/')
   }
 
-goToURL(url) {
+  goToURL(url) {
       Linking.canOpenURL(url).then(supported => {
           if (supported) {
               Linking.openURL(url)

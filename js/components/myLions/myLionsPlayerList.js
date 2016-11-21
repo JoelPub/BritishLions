@@ -15,7 +15,7 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
-import FilterListingModal from '../utility/filterListingModal'
+import FilterListingModal from '../global/filterListingModal'
 
 class MyLionsPlayerList extends Component {
 
