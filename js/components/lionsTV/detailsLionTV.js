@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, NativeModules, WebView } from 'react-native'
+import { Linking,Image, View, NativeModules, WebView, Alert } from 'react-native'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
@@ -34,6 +34,16 @@ class DetailsLionsTV extends Component {
     return url.replace('watch?v=', '/embed/')
   }
 
+goToURL(url) {
+      Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+              Linking.openURL(url)
+          } else {
+              Alert.alert('This device doesnt support URI: ' + url);
+          }
+      })
+  }
+
   render(){
     return(
       <Container theme={theme}>
@@ -49,7 +59,8 @@ class DetailsLionsTV extends Component {
                           <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {new Date(this.props.details.snippet.publishedAt).toLocaleDateString()} at {new Date(this.props.details.snippet.publishedAt).toLocaleTimeString()}</Text>
                       </View>
                   </View>
-                  <YouTube
+
+                <YouTube
                     ref='youtubePlayer'
                     videoId= {this.props.details.contentDetails.upload.videoId} // The YouTube video ID
                     apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
@@ -62,14 +73,21 @@ class DetailsLionsTV extends Component {
                     onReady={(e)=>{this.setState({isReady: true})}}
                     onChangeState={(e)=>{this.setState({status: e.state})}}
                     onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
-                    onError={(e)=>{this.setState({error: e.error})}}
+                    onError={(e)=>{
+                        this.setState({error: e.error})
+                        Alert.alert(
+                                      'Warning',
+                                      'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
+                                      +'you can also watch the video through browser by clicking "Watch the video now" button',
+                                      [
+                                          {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
+                                          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                                      ]
+                                  )
+                    }}
                     style={styles.youtubePlayerView}
                   />
-                  {/*<WebView
-                      style={styles.youtubePlayerView}
-                      javaScriptEnabled={true}
-                      source={{uri: this.convertToEmbed(this.props.details.contentDetails.upload.videoId)}}
-                  />*/}
+
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
                           onPress={shareTextWithTitle.bind(this, this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)}
