@@ -6,9 +6,11 @@ import { Image, View, Platform } from 'react-native'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
+import styleVar from '../../themes/variable'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
 import { shareTextWithTitle } from '../utility/socialShare'
@@ -25,11 +27,10 @@ class NewsDetails extends Component {
 
                     <LionsHeader back={true} title='NEWS' />
                     <Content>
-                        <Image
-                            source={require('../../../images/placeholder/banner.png')}
-                            style={styles.bannerWrapper}>
+                        <ImagePlaceholder height={270}>
                             <Image source={{uri: this.props.article.image}} style={styles.banner}>
-                                <Image transparent
+                                <Image 
+                                    transparent
                                     resizeMode='cover'
                                     source={require('../../../images/shadows/rectangle.png')}
                                     style={styles.newsPosterContent}>
@@ -44,7 +45,7 @@ class NewsDetails extends Component {
                                     </View>
                                 </Image>
                             </Image>
-                        </Image>
+                        </ImagePlaceholder>
 
                         <View style={styles.shareWrapper}>
                             {this.props.article.author ? <Text style={styles.author} numberOfLines={1}>By {this.props.article.author}</Text> : null}

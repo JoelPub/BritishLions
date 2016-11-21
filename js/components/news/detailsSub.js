@@ -9,6 +9,7 @@ import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
 import { shareTextWithTitle } from '../utility/socialShare'
@@ -25,9 +26,7 @@ class NewsDetailsSub extends Component {
 
                     <LionsHeader back={true} title='NEWS' />
                     <Content>
-                        <Image
-                            source={require('../../../images/placeholder/banner.png')}
-                            style={styles.bannerWrapper}>
+                        <ImagePlaceholder height={270}>
                             <Image source={{uri: this.props.article.image}} style={styles.banner}>
                                 <Image transparent
                                     resizeMode='cover'
@@ -44,7 +43,7 @@ class NewsDetailsSub extends Component {
                                     </View>
                                 </Image>
                             </Image>
-                        </Image>
+                        </ImagePlaceholder>
 
                         <View style={styles.shareWrapper}>
                             {this.props.article.author ? <Text style={styles.author} numberOfLines={1}>By {this.props.article.author}</Text> : null}

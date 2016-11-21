@@ -8,6 +8,7 @@ import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -47,11 +48,9 @@ class LionsTV extends Component {
                                                 style={styles.btn}
                                                 key={index}
                                                 onPress={() => this._drillDown(data, 'lionsTvDetails')}>
-                                                <Image
-                                                    source={require('../../../images/placeholder/banner.png')}
-                                                    style={styles.placeholderImage}>
+                                                <ImagePlaceholder height={211}>
                                                     <Image source={{uri: data.image}} style={styles.lionsTvGalleryImage}/>
-                                                </Image>
+                                                </ImagePlaceholder>
                                                 <View style={[shapes.triangle, {marginTop: -11}]} />
                                                 <View style={styles.lionsTvGalleryContent}>
                                                     <Text numberOfLines={2} style={styles.headline}>

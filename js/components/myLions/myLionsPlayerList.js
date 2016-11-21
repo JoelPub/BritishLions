@@ -12,9 +12,11 @@ import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
+import styleVar from '../../themes/variable'
 
 class MyLionsPlayerList extends Component {
     constructor(props){
@@ -47,10 +49,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(1)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -66,10 +72,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(2)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -91,10 +101,14 @@ class MyLionsPlayerList extends Component {
 
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />
@@ -111,10 +125,14 @@ class MyLionsPlayerList extends Component {
                                 <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(4)}>
                                     <View style={styles.gridBoxTouchableView}>
                                         <View style={styles.gridBoxImgWrapper}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                style={styles.gridBoxImg} />
+                                            <ImagePlaceholder 
+                                                width = {styleVar.deviceWidth / 2 - 1}
+                                                height = {styleVar.deviceWidth / 2}>
+                                                <Image transparent
+                                                    resizeMode='contain'
+                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
+                                                    style={styles.gridBoxImg} />
+                                            </ImagePlaceholder>
                                         </View>
 
                                         <View style={[shapes.triangle]} />

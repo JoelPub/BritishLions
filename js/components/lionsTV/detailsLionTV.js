@@ -8,6 +8,7 @@ import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import { shareTextWithTitle } from '../utility/socialShare'
@@ -37,11 +38,13 @@ class DetailsLionsTV extends Component {
                           <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {this.props.details.date} at {this.props.details.time}</Text>
                       </View>
                   </View>
-                  <WebView
-                      style={styles.youtubePlayerView}
-                      javaScriptEnabled={true}
-                      source={{uri: this.convertToEmbed(this.props.details.multimedia[0].url)}}
-                  />
+                    <ImagePlaceholder height={300}>
+                        <WebView
+                            style={styles.youtubePlayerView}
+                            javaScriptEnabled={true}
+                            source={{uri: this.convertToEmbed(this.props.details.multimedia[0].url)}}
+                        />
+                    </ImagePlaceholder>
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
                           onPress={shareTextWithTitle.bind(this, this.props.details.headline, this.props.details.link)}
