@@ -64,9 +64,6 @@ $ npm test
 ### Font Icon use in the project ###
 Material design -> http://ionicframework.com/docs/v2/ionicons/
 
-### Generating App Icon ###
-[makeappicon](http://makeappicon.com/)
-
 ### Market place guidelines ###
 Apple store: https://developer.apple.com/app-store/review/guidelines/
 
