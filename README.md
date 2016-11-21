@@ -1,7 +1,7 @@
 # British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-Project build using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios)
+Project using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios) + JSON Web Tokens
 
 ### System Requirements ###
 
