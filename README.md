@@ -42,6 +42,7 @@ Hit the Run button in xcode
 ### Run the app for Android ###
 
 1.    Have an Android emulator running (quickest way to get started), or a device connected
+2.    You will need a file transfer software such as https://www.android.com/filetransfer/ install on your machine in order to emulate on your device
 3.    
 ```
 #!terminal
