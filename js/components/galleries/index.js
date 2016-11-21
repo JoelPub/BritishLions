@@ -54,7 +54,7 @@ class Galleries extends Component {
                                                 <Image
                                                     source={require('../../../images/placeholder/banner.png')}
                                                     style={styles.galleriesImage}>
-                                                    <Image source={{uri: data.image}} style={styles.galleriesImage} />
+                                                    <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
                                                 </Image>
                                                 <View style={[shapes.triangle, styles.triangle]} />
                                                 <View style={styles.galleriesContent}>
