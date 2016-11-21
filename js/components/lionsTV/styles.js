@@ -101,7 +101,7 @@ module.exports = styleSheetCreate({
     youtubePlayerView: {
         flex:1,
         alignSelf: 'stretch',
-        height: 300,
+        height: 211,
         backgroundColor: 'black'
     },
     shareWrapper: {

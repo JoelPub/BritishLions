@@ -245,13 +245,16 @@ module.exports = styleSheetCreate({
         padding:0,
         margin:0
     },
-        resultRow: {
+    resultRow: {
         width: styleVar.deviceWidth,
         height:135,
         marginTop:1
     },
     searchImg: {
         flex:9,
+    },
+    playerImg: {
+        width: styleVar.deviceWidth*9/25,
     },
     resultDesc: {
         flex:16,

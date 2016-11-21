@@ -98,8 +98,9 @@ class MyLionsPlayerList extends Component {
                                     <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
                                         <View style={styles.searchImg}>
                                             <Image transparent
-                                                resizeMode='contain'
+                                                resizeMode='stretch'
                                                 source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
                                                  />
                                         </View>
                                         <View style={styles.resultDesc}>
@@ -112,8 +113,9 @@ class MyLionsPlayerList extends Component {
                                     <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
                                         <View style={styles.searchImg}>
                                             <Image transparent
-                                                resizeMode='contain'
+                                                resizeMode='stretch'
                                                 source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
                                                  />
                                         </View>
                                         <View style={styles.resultDesc}>
@@ -126,8 +128,9 @@ class MyLionsPlayerList extends Component {
                                     <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
                                         <View style={styles.searchImg}>
                                             <Image transparent
-                                                resizeMode='contain'
+                                                resizeMode='stretch'
                                                 source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
                                                  />
                                         </View>
                                         <View style={styles.resultDesc}>
@@ -140,8 +143,9 @@ class MyLionsPlayerList extends Component {
                                     <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
                                         <View style={styles.searchImg}>
                                             <Image transparent
-                                                resizeMode='contain'
+                                                resizeMode='stretch'
                                                 source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
+                                                style={styles.playerImg}
                                                  />
                                         </View>
                                         <View style={styles.resultDesc}>
