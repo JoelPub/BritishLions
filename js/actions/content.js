@@ -14,15 +14,18 @@ export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 export function fetchContent(url):Action {
     return (dispatch, getState) => {
         return (
-            axios.get(url)
+            axios({
+                method: 'get',
+                url
+            })
             // Passing resquest's response to dispacher
-            .then(function (response) {
+            .then(function(response) {
                 dispatch(setContent({
-                    contentList: response.data
+                    payload: response.data
                 }))
             })
-            // Handling error
-            .catch(function (error) {
+            // Handling error (status > 300) -> default
+            .catch(function(error) {
                 alertBox(
                   'An Error Occured',
                   'Please make sure the network is connected and reload the page. ',
@@ -33,18 +36,18 @@ export function fetchContent(url):Action {
     }
 }
 
-export function setContent({contentList}):Action {
+export function setContent({payload}):Action {
     return {
         type: SET_CONTENT,
-        contentList
+        payload
     }
 }
 
-export function saveContent(contentList):Action {
+export function saveContent(payload):Action {
     return (dispatch, getState) => {
         setTimeout(() => {
             dispatch(setContent({
-                contentList
+                payload
             }))
         }, 400)
     }

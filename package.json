@@ -7,9 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.15.2",
+    "native-base": "0.4.9",
+    "qs": "^6.3.0",
     "react": "15.3.2",
     "react-native": "0.37.0",
-    "native-base": "0.4.9",
     "react-native-easy-grid": "^0.1.6",
     "react-native-htmlview": "^0.5.0",
     "react-native-lightbox": "^0.6.0",
@@ -21,8 +23,7 @@
     "redux": "^3.5.2",
     "redux-persist": "^3.2.2",
     "redux-thunk": "^2.1.0",
-    "rx": "^4.1.0",
-    "axios": "^0.15.2"
+    "rx": "^4.1.0"
   },
   "jest": {
     "preset": "jest-react-native"

@@ -2,7 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Image } from 'react-native'
+import { Keyboard, Dimensions, Image, ScrollView } from 'react-native'
+import axios from 'axios'
+import qs from 'qs'
 import { pushNewRoute, popRoute, replaceRoute } from '../../actions/route'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -14,6 +16,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 class Login extends Component {
     constructor(props) {
         super(props)
+        this._scrollView = ScrollView
         this.state = {
             email: '',
             password: '',
@@ -52,12 +55,45 @@ class Login extends Component {
     popRoute() {
         this.props.popRoute()
     }
-    onSuccessValidate = (parameter) => {
-        if(parameter) {
+
+    _userSignIn = () => {
+        console.log(this.state)
+        axios.post(
+            'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create',
+            qs.stringify({
+                'username': this.state.email,
+                'password': this.state.password,
+                'grant_type': 'password'
+            })
+        )
+        .then(function(response) {
+            console.log(response.data)
             this.replaceRoute('news')
+            // TODO display toast box with message "You are logged in!"
+        }.bind(this))
+        .catch(function(error) {
+            // TODO: handling HTTP Errors
+            // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Forbidden (SSL required), Internal Server Error (server error), OK (success).
+            // Show an alert message using the toast box
+            console.log(error)
+        })
+    }
+
+    _handleSignIn = (isFormValidate) => {
+        if(isFormValidate) {
+            this._userSignIn()
         }
         else {
-            this.setState({errorCheck:{submit:false}, offset:{y:0}})
+            this.setState({
+                errorCheck:{
+                    submit: false
+                }
+            })
+            this._scrollView.scrollTo({
+                x: 0,
+                y: 0,
+                false
+            })
         }
     }
 
@@ -66,7 +102,7 @@ class Login extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <Content style={styles.main} contentOffset={this.state.offset}>
+                        <ScrollView style={styles.main} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
@@ -77,7 +113,7 @@ class Login extends Component {
 
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this.onSuccessValidate}/>
+                                        callbackParent={this._handleSignIn}/>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
@@ -92,7 +128,7 @@ class Login extends Component {
                                     <ButtonFeedback rounded label='SIGN IN' onPress={() => {this.setState({errorCheck:{email:this.state.email,password:this.state.password,submit:true}})}}/>
                                 </View>
                             </View>
-                        </Content>
+                        </ScrollView>
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
