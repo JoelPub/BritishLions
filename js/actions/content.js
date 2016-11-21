@@ -4,36 +4,32 @@ import type { Action } from './types'
 import { pushNewRoute, replaceRoute} from './route'
 import { alertBox } from './../components/utility/alertBox'
 
+import axios from 'axios'
+
 export const SET_CONTENT = 'SET_CONTENT'
-export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM' 
+export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM'
 export const PUSH_CONTENT_ITEM_SUB = 'PUSH_CONTENT_ITEM_SUB'
 export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 
 export function fetchContent(url):Action {
     return (dispatch, getState) => {
-        // const params = [
-        //   'number=20',
-        //   'otherparam=2'
-        // ].join('&')
         return (
-          fetch(url, {
-          // fetch(`http://arudata.lionsrugby.com/aru/feeds/mobile/news_articles_json.php?${params}`, {
-             method: 'GET'
-           })
-          .then((response) => response.json())
-          .then((responseData) => {
-              setTimeout(() => {
-                  dispatch(setContent({
-                      contentList: responseData
-                  }))
-              }, 400)
-          })
-          .catch((error) => {
-              // Caching Network connection
-              alertBox('No Network', 'No Internet connectivity. Cached data will be shown where possible. ', 'Dismiss')
-          })
-          .done()
-      )
+            axios.get(url)
+            // Passing resquest's response to dispacher
+            .then(function (response) {
+                dispatch(setContent({
+                    contentList: response.data
+                }))
+            })
+            // Handling error
+            .catch(function (error) {
+                alertBox(
+                  'An Error Occured',
+                  'Please make sure the network is connected and reload the page. ',
+                  'Dismiss'
+                )
+            })
+        )
     }
 }
 
@@ -82,14 +78,7 @@ export function drillReplace(item, route:string, isSub):Action {
       } else {
           dispatch(pushContentItemSub({item}))
       }
-      
+
       dispatch(replaceRoute(route))
     }
 }
-
-
-
-
-
-
-

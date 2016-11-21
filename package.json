@@ -22,7 +22,8 @@
     "redux": "^3.5.2",
     "redux-persist": "^3.2.2",
     "redux-thunk": "^2.1.0",
-    "rx": "^4.1.0"
+    "rx": "^4.1.0",
+    "axios": "^0.15.2"
   },
   "jest": {
     "preset": "jest-react-native"

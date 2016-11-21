@@ -1,7 +1,7 @@
 # British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-Project using React Native + Redux + React Native Navigator + [React Native Easy Grid](https://github.com/GeekyAnts/react-native-easy-grid) + ES5 & ES6 + JSX + NativeBase
+Project using React Native + Redux + ES5 & ES6 + JSX + [jest](https://facebook.github.io/jest/) + [Axios](https://github.com/mzabriskie/axios) + JSON Web Tokens
 
 ### System Requirements ###
 
@@ -22,29 +22,46 @@ Project using React Native + Redux + React Native Navigator + [React Native Easy
 
 1.    Clone the git repo -> git@bitbucket.org:apdmageprojects/LionsOfficial.git
 2.    cd to the local project directory
-3.    $ npm install
+3.    $ npm i
 4.    $ rnpm link
 
 
-### Run the app on the iOS emulator ###
+### Run the app for IOS ###
 
-1.   cd to the local project directory
-2.   $ react-native run-ios --simulator "iPhone 6s"
+
+```
+#!terminal
+
+$ react-native run-ios --simulator "iPhone 6s"
+```
 
 **- or -**
 
-1.    Open /Users/tdnumerique/Documents/LionsOfficial/ios/LionsOfficial.xcodeproj in Xcode
-2.    Hit the Run button
+Hit the Run button in xcode
 
-### Run your app on the Android emulator ###
+### Run the app for Android ###
 
 1.    Have an Android emulator running (quickest way to get started), or a device connected
-2.    $ cd /Users/tdnumerique/Documents/LionsOfficial
-3.    $ react-native run-android
+3.    
+```
+#!terminal
+
+$ react-native run-android
+```
+
+
+### Run tests ###
+
+
+```
+#!terminal
+
+$ npm test
+```
 
 
 ### Font Icon use in the project ###
-http://ionicframework.com/docs/v2/ionicons/
+Material design -> http://ionicframework.com/docs/v2/ionicons/
 
 ### Generating App Icon ###
 [makeappicon](http://makeappicon.com/)
