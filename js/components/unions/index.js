@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Linking, ActivityIndicator } from 'react-native'
-import { fetchContent,drillDown } from '../../actions/content'
+import { drillDown, saveContent } from '../../actions/content'
 import { Container, Content, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -12,8 +12,15 @@ import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import loader from '../../themes/loader-position'
+import styleVar from '../../themes/variable'
+
+
+// For mapping a static image only, since require() is not working with concatenating a dynamic variable
+// should be delete this code once api is ready.
+import Data from '../../../contents/unions/data'
 
 class Unions extends Component {
 
@@ -25,11 +32,11 @@ class Unions extends Component {
     }
 
     _drillDown(item, route) {
-        this.props.drillDown(item, route)
+        this.props.drillDown(item, 'unionDetails')
     }
 
     componentDidMount() {
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=388')
+        this.props.saveContent(Data)
     }
 
     componentWillReceiveProps() {
@@ -61,54 +68,50 @@ class Unions extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader title='UNIONS' />
-                    {
-                        this.state.isLoaded?
-                            <Content>
-                                {
-                                    this._mapJSON(this.props.unionsFeed).map((rowData, index) => {
-                                        return (
-                                            <Grid key={index}>
-                                                {
-                                                    rowData.map((item, key) => {
-                                                        let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
+                    <Content>
+                        {
+                            this._mapJSON(Data).map((rowData, index) => {
+                                return (
+                                    <Grid key={index}>
+                                        {
+                                            rowData.map((item, key) => {
+                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
 
-                                                        return (
-                                                            <Col style={styles.gridBoxCol} key={key}>
-                                                                <ButtonFeedback
-                                                                    style={stylesArr}
-                                                                    onPress={() => this._drillDown(item,'unionDetails')}>
+                                                return (
+                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                        <ButtonFeedback
+                                                            style={stylesArr}
+                                                            onPress={() => this._drillDown(item)}>
 
-                                                                    <View style={styles.gridBoxTouchableView}>
-                                                                        <View style={styles.gridBoxImgWrapper}>
-                                                                            <Image transparent
-                                                                                resizeMode='contain'
-                                                                                source={{uri: item.logo}}
-                                                                                style={styles.gridBoxImgWithPadding} />
-                                                                        </View>
+                                                            <View style={styles.gridBoxTouchableView}>
+                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                    <ImagePlaceholder
+                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                        <Image transparent
+                                                                            resizeMode='contain'
+                                                                            source={item.logo}
+                                                                            style={styles.gridBoxImg} />
+                                                                    </ImagePlaceholder>
+                                                                </View>
 
-                                                                        <View style={[shapes.triangle]} />
-                                                                        <View style={styles.gridBoxTitle}>
-                                                                            <Text style={styles.gridBoxTitleText}>{item.displayname.toUpperCase()}</Text>
-                                                                        </View>
-                                                                    </View>
-                                                                </ButtonFeedback>
-                                                            </Col>
-                                                        )
-                                                    }, this)
-                                                }
-                                            </Grid>
-                                        )
-                                    }, this)
-                                }
-                                <LionsFooter isLoaded={true} />
-                            </Content>
-                            :
-                            <ActivityIndicator
-                                style={loader.centered}
-                                size='large'
-                            />
-                      }
-                    < EYSFooter />
+                                                                <View style={[shapes.triangle]} />
+                                                                <View style={styles.gridBoxTitle}>
+                                                                    <Text style={styles.gridBoxTitleText}>{item.displayname.toUpperCase()}</Text>
+                                                                </View>
+                                                            </View>
+                                                        </ButtonFeedback>
+                                                    </Col>
+                                                )
+                                            }, this)
+                                        }
+                                    </Grid>
+                                )
+                            }, this)
+                        }
+                        <LionsFooter isLoaded={true} />
+                    </Content>
+                    <EYSFooter />
                 </View>
             </Container>
         )
@@ -117,14 +120,9 @@ class Unions extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
+        saveContent: (data)=>dispatch(saveContent(data)),
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
 
-export default connect((state) => {
-  return {
-    unionsFeed: state.content.contentState,
-    isLoaded: state.content.isLoaded
-  }
-}, bindAction)(Unions)
+export default connect(null, bindAction)(Unions)
