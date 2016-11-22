@@ -1,4 +1,3 @@
-/* @flow */
 'use strict'
 
 import React from 'react'
@@ -23,7 +22,7 @@ export default class SpinnerNB extends NativeBaseComponent {
 
     render() {
         return(
-           <ProgressBar  {...this.prepareRootProps()} 
+           <ProgressBar  {...this.prepareRootProps()}
                 styleAttr = {this.props.size ? this.props.size : 'Large' }
                 color={this.props.color ? this.props.color : this.props.inverse ? this.getTheme().inverseSpinnerColor :
                                                         this.getTheme().defaultSpinnerColor}  />

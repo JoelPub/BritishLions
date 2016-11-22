@@ -19,7 +19,6 @@ import styleVar from '../../themes/variable'
 class News extends Component {
     constructor(props) {
          super(props)
-
          this.url = 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'
          this.state = {
               isLoaded: false,
@@ -27,15 +26,16 @@ class News extends Component {
               newsFeed: {}
          }
     }
-
     _drillDown(item) {
         this.props.drillDown(item, 'newsDetails')
     }
-
+    _onRefresh() {
+        this.setState({isRefreshing: true})
+        this.props.fetchContent(this.url)
+    }
     componentDidMount() {
         this.props.fetchContent(this.url)
     }
-
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true,
@@ -43,12 +43,6 @@ class News extends Component {
             newsFeed: this.props.newsFeed
         })
     }
-
-    _onRefresh() {
-        this.setState({isRefreshing: true})
-        this.props.fetchContent(this.url)
-    }
-
     render() {
         return (
             <Container theme={theme}>
@@ -76,7 +70,7 @@ class News extends Component {
                                                 key={index}
                                                 style={styles.listLink}
                                                 onPress={() => this._drillDown(data)}>
-                                                <ImagePlaceholder 
+                                                <ImagePlaceholder
                                                     width = {styleVar.deviceWidth / 3}
                                                     height = {styleVar.deviceHeight / 3.7}>
                                                     <Image source={{uri: data.thumb}} style={[styles.newsImage]} />

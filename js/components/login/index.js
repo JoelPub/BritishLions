@@ -10,6 +10,7 @@ import { Container, Content, Text, Input, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from './login-theme'
 import styles from './login-layout-theme'
+import { updateToken } from '../utility/JWT'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
 
@@ -20,6 +21,7 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
+            serviceUrl: 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -52,10 +54,9 @@ class Login extends Component {
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
-    _userSignIn = () => {
-        console.log(this.state)
+    _createToken = () => {
         axios.post(
-            'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create',
+            this.state.serviceUrl,
             qs.stringify({
                 'username': this.state.email,
                 'password': this.state.password,
@@ -63,17 +64,20 @@ class Login extends Component {
             })
         )
         .then(function(response) {
-            //console.log(response.data)
-            // TODO display toast box with message "You are logged in!"
-            // The toast box appear for a couple of second then the user is redirected to the news page or the page the user came from before
-            this._replaceRoute('news')
+            if (response.request._response) {
+              let data = JSON.parse(response.request._response)
+              updateToken('LIONS_2017_ACCESS_TOKEN', data.access_token)
+              updateToken('LIONS_2017_REFRESH_TOKEN', data.refresh_token)
+              this._replaceRoute('news')
+            } else {
+              Alert.alert(
+                'Access not granted',
+                'Please try again later.',
+                [{text: 'DISMISS'}]
+              )
+            }
         }.bind(this))
         .catch(function(error) {
-          console.log(error)
-          // TODO: handling HTTP Errors by didplaying meaninfull messages to the user
-          // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Conflict 409 (email address already signed up), Forbidden (SSL required), Internal Server Error (server error), OK (success).
-          // TODO replace the below alert by a toast box
-          // The toast box appear for a couple of second then disappear
           Alert.alert(
             'An error occured',
             '' + error,
@@ -83,7 +87,9 @@ class Login extends Component {
     }
     _handleSignIn = (isFormValidate) => {
         if(isFormValidate) {
-            this._userSignIn()
+          // TODO Make sure the _createToken function does fire twice on double click
+          // Use the _.Throttle function from Lodash
+          this._createToken()
         }
         else {
             this.setState({
@@ -111,7 +117,6 @@ class Login extends Component {
                                     style={styles.pageLogo} />
 
                                 <View style={styles.guther}>
-
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignIn}/>

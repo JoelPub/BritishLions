@@ -24,6 +24,7 @@ class SignUp extends Component {
             newEvent: false,
             newPartners: false,
             tc: false,
+            serviceUrl: 'https://api-ukchanges.co.uk/lionsrugby/api/users',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -61,7 +62,7 @@ class SignUp extends Component {
     _userSignUp = () => {
         axios({
             method: 'post',
-            url: 'https://api-ukchanges.co.uk/lionsrugby/api/users',
+            url: this.state.serviceUrl,
             data: {
               firstName: this.state.firstName,
               lastName: this.state.lastName,
@@ -73,8 +74,6 @@ class SignUp extends Component {
             }
         })
         .then(function(response) {
-          // TODO replace the below alert by a toast box
-          // The toast box appear for a couple of second then the user is redirected to the login page
           Alert.alert(
             'Your account has been created successfully!',
             '',
@@ -82,10 +81,6 @@ class SignUp extends Component {
           )
         }.bind(this))
         .catch(function(error) {
-            // TODO: handling HTTP Errors by didplaying meaninfull messages to the user
-            // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Conflict 409 (email address already signed up), Forbidden (SSL required), Internal Server Error (server error), OK (success).
-            // TODO replace the below alert by a toast box
-            // The toast box appear for a couple of second then disappear
             Alert.alert(
               'An error occured',
               '' + error,
