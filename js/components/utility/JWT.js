@@ -2,9 +2,13 @@
 
 import { Alert, AsyncStorage } from 'react-native'
 
-export async function updateToken(item, selectedValue) {
+const ACCESS_TOKEN = 'lionsOfficialAccessToken'
+const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
+
+export async function updateToken(accessTokenID, refreshTokenID) {
     try {
-        await AsyncStorage.setItem(item, selectedValue)
+        await AsyncStorage.setItem('ACCESS_TOKEN', accessTokenID)
+        await AsyncStorage.setItem('REFRESH_TOKEN', refreshTokenID)
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -16,8 +20,8 @@ export async function updateToken(item, selectedValue) {
 
 export async function removeToken() {
     try {
-        await AsyncStorage.removeItem('LIONS_2017_ACCESS_TOKEN')
-        await AsyncStorage.removeItem('LIONS_2017_REFRESH_TOKEN')
+        await AsyncStorage.removeItem('ACCESS_TOKEN')
+        await AsyncStorage.removeItem('REFRESH_TOKEN')
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -28,13 +32,13 @@ export async function removeToken() {
 }
 
 export async function getAccessToken() {
-    await AsyncStorage.getItem('LIONS_2017_ACCESS_TOKEN', (err, result) => {
+    await AsyncStorage.getItem('ACCESS_TOKEN', (err, result) => {
       return result
     })
 }
 
 export async function getRefreshToken() {
-    await AsyncStorage.getItem('LIONS_2017_REFRESH_TOKEN', (err, result) => {
+    await AsyncStorage.getItem('REFRESH_TOKEN', (err, result) => {
       return result
     })
 }

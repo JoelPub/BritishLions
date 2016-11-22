@@ -65,10 +65,9 @@ class Login extends Component {
         )
         .then(function(response) {
             if (response.request._response) {
-              let data = JSON.parse(response.request._response)
-              updateToken('LIONS_2017_ACCESS_TOKEN', data.access_token)
-              updateToken('LIONS_2017_REFRESH_TOKEN', data.refresh_token)
-              this._replaceRoute('news')
+                let data = JSON.parse(response.request._response)
+                updateToken(data.access_token, data.refresh_token)
+                this._replaceRoute('news')
             } else {
               Alert.alert(
                 'Access not granted',

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
+import { removeToken } from '../utility/JWT'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -100,8 +101,11 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
-    _signOutHandler = () => {
-
+    _signOut = () => {
+        removeToken()
+        this.setState({
+            isAccessGranted: false
+        })
     }
     render(){
         return (
@@ -173,7 +177,7 @@ class LionsSidebar extends Component {
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOutHandler}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
