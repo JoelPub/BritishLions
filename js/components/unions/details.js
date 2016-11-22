@@ -48,21 +48,21 @@ class UnionDetails extends Component {
 
                             <Lightbox navigator={this.props.navigator}>
                                 <Image transparent
-                                        resizeMode='contain'
-                                        source={{uri: this.props.details.logo}}
-                                        style={styles.banner} />
+                                    resizeMode='contain'
+                                    source={this.props.details.logo}
+                                    style={styles.banner} />
                             </Lightbox>
                             <Lightbox navigator={this.props.navigator}>
                                 <Image transparent
-                                        resizeMode='contain'
-                                        source={require('../../../contents/unions/england.png')}
-                                        style={styles.banner} />
+                                    resizeMode='contain'
+                                    source={require('../../../contents/unions/england.png')}
+                                    style={styles.banner} />
                             </Lightbox>
                             <Lightbox navigator={this.props.navigator}>
                                 <Image transparent
-                                        resizeMode='contain'
-                                        source={require('../../../contents/unions/ireland.png')}
-                                        style={styles.banner} />
+                                    resizeMode='contain'
+                                    source={require('../../../contents/unions/ireland.png')}
+                                    style={styles.banner} />
                             </Lightbox>
 
                             </Swiper>
