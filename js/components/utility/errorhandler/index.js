@@ -48,7 +48,7 @@ export default class ErrorHandler extends Component {
 							tcMsg: null,
 							show: false
 					})
-					if ( nextState.continue ) {
+					if ( nextState.continue || (!this.state.continue&&!nextState.continue) ) {
 						this.validationCheck(nextProps,nextState)
 					}					
 			}
@@ -63,7 +63,6 @@ export default class ErrorHandler extends Component {
 	}
 
 	validationCheck(nextProps,nextState) {
-		if(nextProps.errorCheck.submit === true && this.state.continue === true) {
 			if (nextProps.errorCheck.tc === false ||
 					!blankCheck(nextProps.errorCheck.firstName) ||
 					!!(nextProps.errorCheck.firstName) && nextProps.errorCheck.firstName.length>50 ||
@@ -153,7 +152,6 @@ export default class ErrorHandler extends Component {
         	else {
         		this.props.callbackParent(true)
         	}
-    	}
 
     	function blankCheck(parameter) {
     		if(parameter == null || (typeof parameter === 'undefined')) {
