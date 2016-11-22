@@ -23,7 +23,7 @@ export default function (state:State = initialState, action:Action): State {
     if (action.type === SET_CONTENT) {
         return {
             ...state,
-            contentState: action.contentList,
+            contentState: action.payload,
             isLoaded: true,
             isRefreshing: false
         }
