@@ -28,7 +28,7 @@ export function fetchContent(url):Action {
             .catch(function(error) {
                 alertBox(
                   'An Error Occured',
-                  'Please make sure the network is connected and reload the page. ',
+                  'Please make sure the network is connected and reload the app. ',
                   'Dismiss'
                 )
             })

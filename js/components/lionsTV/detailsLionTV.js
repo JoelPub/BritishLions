@@ -24,7 +24,7 @@ class DetailsLionsTV extends Component {
               quality: null,
               error: null,
               isPlaying: true
-                 }
+        }
     }
 
   convertToUppercase(data) {
@@ -77,14 +77,14 @@ class DetailsLionsTV extends Component {
                     onError={(e)=>{
                         this.setState({error: e.error})
                         Alert.alert(
-                                      'Warning',
-                                      'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
-                                      +'you can also watch the video through browser by clicking "Watch the video now" button',
-                                      [
-                                          {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
-                                          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-                                      ]
-                                  )
+                            'Warning',
+                            'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
+                            +'you can also watch the video through browser by clicking "Watch the video now" button',
+                            [
+                                {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
+                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                            ]
+                        )
                     }}
                     style={styles.youtubePlayerView}
                   />

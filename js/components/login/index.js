@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Image, ScrollView } from 'react-native'
+import { Keyboard, Dimensions, Image, ScrollView, Alert } from 'react-native'
 import axios from 'axios'
 import qs from 'qs'
-import { pushNewRoute, popRoute, replaceRoute } from '../../actions/route'
+import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from './login-theme'
@@ -46,16 +46,12 @@ class Login extends Component {
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
-    replaceRoute(route) {
+    _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
-    pushNewRoute(route) {
+    _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
-    popRoute() {
-        this.props.popRoute()
-    }
-
     _userSignIn = () => {
         console.log(this.state)
         axios.post(
@@ -67,18 +63,24 @@ class Login extends Component {
             })
         )
         .then(function(response) {
-            console.log(response.data)
-            this.replaceRoute('news')
+            //console.log(response.data)
             // TODO display toast box with message "You are logged in!"
+            // The toast box appear for a couple of second then the user is redirected to the news page or the page the user came from before
+            this._replaceRoute('news')
         }.bind(this))
         .catch(function(error) {
-            // TODO: handling HTTP Errors
-            // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Forbidden (SSL required), Internal Server Error (server error), OK (success).
-            // Show an alert message using the toast box
-            console.log(error)
+          console.log(error)
+          // TODO: handling HTTP Errors by didplaying meaninfull messages to the user
+          // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Conflict 409 (email address already signed up), Forbidden (SSL required), Internal Server Error (server error), OK (success).
+          // TODO replace the below alert by a toast box
+          // The toast box appear for a couple of second then disappear
+          Alert.alert(
+            'An error occured',
+            '' + error,
+            [{text: 'DISMISS'}]
+          )
         })
     }
-
     _handleSignIn = (isFormValidate) => {
         if(isFormValidate) {
             this._userSignIn()
@@ -96,7 +98,6 @@ class Login extends Component {
             })
         }
     }
-
     render() {
         return (
             <Container>
@@ -130,7 +131,7 @@ class Login extends Component {
                             </View>
                         </ScrollView>
 
-                        <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 
@@ -139,7 +140,7 @@ class Login extends Component {
                                 <Col style={styles.borderRight}>
                                     <ButtonFeedback
                                         style={styles.footerBtn}
-                                        onPress={() => this.pushNewRoute('signUp')}>
+                                        onPress={() => this._pushNewRoute('signUp')}>
                                             <Icon name='md-contact' style={styles.footerBtnIcon} />
                                             <Text style={styles.footerBtnText}> JOIN THE PRIDE</Text>
                                     </ButtonFeedback>
@@ -147,7 +148,7 @@ class Login extends Component {
                                 <Col>
                                     <ButtonFeedback
                                         style={styles.footerBtn}
-                                        onPress={() => this.pushNewRoute('forgotPassword')}>
+                                        onPress={() => this._pushNewRoute('forgotPassword')}>
                                             <Text style={styles.footerBtnText}>FORGOT PASSWORD</Text>
                                     </ButtonFeedback>
                                 </Col>
@@ -163,8 +164,7 @@ class Login extends Component {
 function bindActions(dispatch){
     return {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        popRoute: () => dispatch(popRoute())
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
     }
 }
 

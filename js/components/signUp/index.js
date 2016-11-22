@@ -42,28 +42,22 @@ class SignUp extends Component {
             theme: React.PropTypes.object,
         }
     }
-
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
        this.setState({offset :{y: 80}})
     }
-
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
-
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
-
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
-
-    _popRoute = () => {
+    _popRoute() {
         this.props.popRoute()
     }
-
     _userSignUp = () => {
         axios({
             method: 'post',
@@ -80,6 +74,7 @@ class SignUp extends Component {
         })
         .then(function(response) {
           // TODO replace the below alert by a toast box
+          // The toast box appear for a couple of second then the user is redirected to the login page
           Alert.alert(
             'Your account has been created successfully!',
             '',
@@ -87,14 +82,18 @@ class SignUp extends Component {
           )
         }.bind(this))
         .catch(function(error) {
-            // TODO: handling HTTP Errors
+            // TODO: handling HTTP Errors by didplaying meaninfull messages to the user
             // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Conflict 409 (email address already signed up), Forbidden (SSL required), Internal Server Error (server error), OK (success).
-            // Show an alert message using the toast box
-            console.log(error)
+            // TODO replace the below alert by a toast box
+            // The toast box appear for a couple of second then disappear
+            Alert.alert(
+              'An error occured',
+              '' + error,
+              [{text: 'DISMISS'}]
+            )
         })
     }
-
-   _handleSignUp = (isFormValidate) => {
+    _handleSignUp = (isFormValidate) => {
         if(isFormValidate) {
             this._userSignUp()
         } else {
@@ -110,12 +109,10 @@ class SignUp extends Component {
             })
         }
     }
-
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
         Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
-
     render() {
         return (
             <Container>
