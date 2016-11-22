@@ -72,20 +72,34 @@ class MyAccount extends Component {
     }
 
     onSuccessValidateEmail = (parameter) => {
+        this.setState({
+            errorCheckEmail:{
+                submit: false
+            }
+        })
         if(parameter) {
             this.popRoute()
         }
         else {
-            this.setState({errorCheckEmail:{submit:false}, offset:{y:0}})
+            this.setState({
+             offset:{y:0}
+            })
         }
     }
 
     onSuccessValidatePassword = (parameter) => {
+        this.setState({
+            errorCheckPassword:{
+                submit: false
+            }
+        })
         if(parameter) {
             this.popRoute()
         }
         else {
-            this.setState({errorCheckPassword:{submit:false}, offset:{y:0}})
+            this.setState({
+                offset:{y:0}
+            })
         }
     }
 

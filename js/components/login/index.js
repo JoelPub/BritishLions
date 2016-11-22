@@ -82,15 +82,15 @@ class Login extends Component {
         })
     }
     _handleSignIn = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
         if(isFormValidate) {
             this._userSignIn()
         }
         else {
-            this.setState({
-                errorCheck:{
-                    submit: false
-                }
-            })
             this._scrollView.scrollTo({
                 x: 0,
                 y: 0,
