@@ -92,7 +92,8 @@ module.exports = styleSheetCreate({
         lineHeight: 18,
         textAlign: 'center',
         android: {
-            marginTop: 0
+            marginTop: -2,
+            lineHeight: 23,
         }
     },
     titleBarLink: {

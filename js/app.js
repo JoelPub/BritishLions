@@ -1,32 +1,32 @@
 'use strict'
 
+import React, { Component } from 'React'
 import AppNavigator from './appNavigator'
-import React, { Component } from 'react'
-import { NetInfo } from 'react-native'
+import configureStore from './configureStore'
+import { Provider } from 'react-redux'
+import { StyleSheet, View } from 'react-native'
 
-class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isNetworkAvailable: false
+function app():React.Component {
+
+    class Root extends Component {
+
+        constructor() {
+            super()
+            this.state = {
+                isLoading: false,
+                store: configureStore(()=> this.setState({isLoading: false}))
+            }
+        }
+
+        render() {
+            return (
+                <Provider store={this.state.store}>
+                    <AppNavigator store={this.state.store} />
+                </Provider>
+            )
         }
     }
-
-    _networkCheck() {
-        NetInfo.isConnected.fetch().then(isConnected => {
-            this.setState({
-                isNetworkAvailable: isConnected
-            })
-        })
-    }
-
-    componentWillMount () {
-        this._networkCheck()
-    }
-
-    render() {
-        return <AppNavigator store={this.props.store} />
-    }
+    return Root
 }
 
-export default App
+export default app

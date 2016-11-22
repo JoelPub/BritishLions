@@ -1,6 +1,6 @@
 'use strict'
 
 import { AppRegistry } from 'react-native'
-import setup from './js/setup'
+import app from './js/app'
 
-AppRegistry.registerComponent('LionsOfficial', setup)
+AppRegistry.registerComponent('LionsOfficial', app)

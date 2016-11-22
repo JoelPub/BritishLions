@@ -9,7 +9,9 @@ import styles from '../../themes/static-page'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink from '../utility/externalLink'
+import styleVar from '../../themes/variable'
 
 class LionsStore extends Component {
     render() {
@@ -18,11 +20,15 @@ class LionsStore extends Component {
                 <View style={styles.container}>
                     <LionsHeader title='OFFICIAL STORE' />
                     <Content>
-                        <Image source={require('../../../images/content/storeBanner.png')} style={styles.pagePoster} />
+                        <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
+                            <Image 
+                                source={require('../../../images/content/storeBanner.png')} 
+                                style={styles.pagePoster} />
+                        </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
                             <ExternalLink url='http://store.lionsrugby.com'>
                                 <Text style={styles.pageLinkText}>
-                                    <Icon name='md-open' style={styles.pageLinkIcon} />  SHOP AT THE LIONS official SHOP
+                                    <Icon name='md-open' style={styles.pageLinkIcon} />  SHOP AT THE LIONS OFFICIAL SHOP
                                 </Text>
                             </ExternalLink>
                         </View>

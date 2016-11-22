@@ -8,6 +8,7 @@ import { Container, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import theme from '../../themes/base-theme'
@@ -51,11 +52,9 @@ class Galleries extends Component {
                                                 style={styles.btn}
                                                 key={index}
                                                 onPress={() => this._drillDown(data)}>
-                                                <Image
-                                                    source={require('../../../images/placeholder/banner.png')}
-                                                    style={styles.galleriesImage}>
-                                                    <Image source={{uri: data.image}} style={styles.galleriesImage} />
-                                                </Image>
+                                                <ImagePlaceholder height={180}>
+                                                    <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
+                                                </ImagePlaceholder>
                                                 <View style={[shapes.triangle, styles.triangle]} />
                                                 <View style={styles.galleriesContent}>
                                                     <Text numberOfLines={1} style={styles.galleriesHeader}>
