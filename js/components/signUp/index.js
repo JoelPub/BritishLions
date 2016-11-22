@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Switch, Dimensions, Platform, ScrollView } from 'react-native'
+import { Keyboard, Image, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
+import axios from 'axios'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -14,69 +15,104 @@ import ButtonFeedback from '../utility/buttonFeedback'
 class SignUp extends Component {
     constructor(props) {
         super(props)
-
         this._scrollView = ScrollView
-
         this.state = {
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             email: '',
             password: '',
-            term: false,
+            newEvent: false,
+            newPartners: false,
+            tc: false,
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
                 y:0
             },
             errorCheck: {
-                firstname: null,
-                lastname: null,
+                firstName: null,
+                lastName: null,
                 email: null,
                 password: null,
-                term: null,
+                tc: false,
                 submit: false
-            },
+            }
         }
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
         }
     }
-
-    componentDidMount () {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
        this.setState({offset :{y: 80}})
     }
-
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
-
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
-
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
-
     _popRoute() {
         this.props.popRoute()
     }
-
-   _onSuccessValidate = (parameter) => {
-        if(parameter) {
-            this._popRoute()
+    _userSignUp = () => {
+        axios({
+            method: 'post',
+            url: 'https://api-ukchanges.co.uk/lionsrugby/api/users',
+            data: {
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              email: this.state.email,
+              password: this.state.password,
+              newEvent: this.state.newEvent,
+              newPartners: this.state.newPartners,
+              tc: this.state.tc
+            }
+        })
+        .then(function(response) {
+          // TODO replace the below alert by a toast box
+          // The toast box appear for a couple of second then the user is redirected to the login page
+          Alert.alert(
+            'Your account has been created successfully!',
+            '',
+            [{text: 'SIGN IN', onPress: () => this._popRoute()}]
+          )
+        }.bind(this))
+        .catch(function(error) {
+            // TODO: handling HTTP Errors by didplaying meaninfull messages to the user
+            // Possible HTTP returned codes: Bad request 400 (invalid data submitted), Conflict 409 (email address already signed up), Forbidden (SSL required), Internal Server Error (server error), OK (success).
+            // TODO replace the below alert by a toast box
+            // The toast box appear for a couple of second then disappear
+            Alert.alert(
+              'An error occured',
+              '' + error,
+              [{text: 'DISMISS'}]
+            )
+        })
+    }
+    _handleSignUp = (isFormValidate) => {
+        if(isFormValidate) {
+            this._userSignUp()
         } else {
-            this.setState({errorCheck:{submit:false}})
-            this._scrollView.scrollTo({x:0, y: 0, false});
+            this.setState({
+                errorCheck:{
+                    submit: false
+                }
+            })
+            this._scrollView.scrollTo({
+                x: 0,
+                y: 0,
+                false
+            })
         }
     }
-
+    componentDidMount () {
+        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
     render() {
         return (
             <Container>
@@ -91,36 +127,36 @@ class SignUp extends Component {
                                 <View style={styles.guther}>
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this._onSuccessValidate}/>
+                                        callbackParent={this._handleSignUp}/>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({firstname:event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
+                                        <Input onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({lastname:event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
+                                        <Input onChange={(event) => this.setState({lastName: event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({email:event.nativeEvent.text})} placeholder='Email' style={styles.input}/>
+                                        <Input onChange={(event) => this.setState({email: event.nativeEvent.text})} placeholder='Email' style={styles.input}/>
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
+                                        <Input onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
                                     </View>
 
                                     <View style={styles.switchInputWrapper}>
                                         <Grid>
                                             <Col style={{width: Platform.OS === 'android'? 60 : 63}}>
                                                 <Switch
-                                                    onValueChange = {(value) => this.setState({news: value})}
+                                                    onValueChange = {(value) => this.setState({newEvent: value})}
                                                     style = {styles.switchInput}
-                                                    thumbTintColor ='#FFF'
-                                                    tintColor = '#FFF'
+                                                    thumbTintColor ='#fff'
+                                                    tintColor = '#fff'
                                                     onTintColor = '#6cb61b'
-                                                    value = {this.state.news} />
+                                                    value = {this.state.newEvent} />
                                             </Col>
                                             <Col>
                                                 <Text style={styles.switchLabelText}>
@@ -133,12 +169,12 @@ class SignUp extends Component {
                                         <Grid>
                                             <Col style={{width: Platform.OS === 'android'? 60 : 63}}>
                                                 <Switch
-                                                    onValueChange = {(value) => this.setState({lionRugby: value})}
+                                                    onValueChange = {(value) => this.setState({newPartners: value})}
                                                     style = {styles.switchInput}
-                                                    thumbTintColor = '#FFF'
-                                                    tintColor = '#FFF'
+                                                    thumbTintColor = '#fff'
+                                                    tintColor = '#fff'
                                                     onTintColor = '#6cb61b'
-                                                    value={this.state.lionRugby} />
+                                                    value={this.state.newPartners} />
                                             </Col>
                                             <Col>
                                                 <Text style={styles.switchLabelText}>
@@ -151,12 +187,12 @@ class SignUp extends Component {
                                         <Grid>
                                             <Col style={{width: Platform.OS === 'android'? 60 : 63}}>
                                                 <Switch
-                                                    onValueChange = {(value) => this.setState({term: value})}
+                                                    onValueChange = {(value) => this.setState({tc: value})}
                                                     style = {styles.switchInput}
-                                                    thumbTintColor = '#FFF'
-                                                    tintColor = '#FFF'
+                                                    thumbTintColor = '#fff'
+                                                    tintColor = '#fff'
                                                     onTintColor = '#6cb61b'
-                                                    value={this.state.term} />
+                                                    value={this.state.tc} />
                                             </Col>
                                             <Col>
                                                 <Text style={styles.switchLabelText}>
@@ -166,11 +202,23 @@ class SignUp extends Component {
                                         </Grid>
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
-                                        label="REGISTER" 
-                                        style={styles.button} 
-                                        onPress={() => {this.setState({errorCheck:{firstname:this.state.firstname,lastname:this.state.lastname,email:this.state.email,password:this.state.password,term:this.state.term,submit:true}})}} />
+                                    <ButtonFeedback
+                                        rounded
+                                        label='REGISTER'
+                                        style={styles.button}
+                                        onPress={() => {
+                                          this.setState({
+                                            errorCheck: {
+                                              firstName: this.state.firstName,
+                                              lastName: this.state.lastName,
+                                              email: this.state.email,
+                                              password: this.state.password,
+                                              tc: this.state.tc,
+                                              submit: true
+                                            }
+                                          })
+                                        }} />
+
                                 </View>
                             </View>
                         </ScrollView>

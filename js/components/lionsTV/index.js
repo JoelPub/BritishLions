@@ -8,6 +8,7 @@ import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -54,7 +55,7 @@ class LionsTV extends Component {
                                                 </Image>
                                                 <View style={[shapes.triangle, {marginTop: -11}]} />
                                                 <View style={styles.lionsTvGalleryContent}>
-                                                    <Text numberOfLines={2} style={styles.headline}>
+                                                    <Text numberOfLines={4} style={styles.headline}>
                                                         {data.snippet.title ? data.snippet.title.toUpperCase() : ' '}
                                                     </Text>
                                                     <View style={styles.lionsTVDateWrapper}>

@@ -1,11 +1,12 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Linking, Image } from 'react-native'
-import { View, Text, Button, Icon, Thumbnail } from 'native-base'
+import { Linking, Image, View, Text } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
+
 
 const styles = styleSheetCreate({
     container: {
@@ -58,18 +59,24 @@ const styles = styleSheetCreate({
         marginTop: 20
     },
     socialFooterIcon: {
-        fontSize: 24
+        fontSize: 24,
+        color: '#FFF',
+        backgroundColor: 'transparent'
     },
     socialFooterImgIcon: {
-        marginTop: 2
+        marginTop: 2,
+        height: 19,
+        width: 19,
     },
     textCorpRow: {
         alignSelf: 'center',
-        marginTop: 10
+        marginTop: 10,
+        backgroundColor: 'transparent'
     },
     textCorp: {
         alignSelf: 'center',
         fontFamily: styleVar.fontGeorgia,
+        color: '#FFF',
         fontSize: 13,
         opacity: 0.75,
         paddingBottom: 33,
@@ -89,36 +96,36 @@ export default class Footer extends Component {
 	}
 
 	goToURL(url) {
-      Linking.canOpenURL(url).then(supported => {
-          if (supported) {
-              Linking.openURL(url)
-          } else {
-              // console.log('This device doesnt support URI: ' + url)
-          }
-      })
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url)
+            } else {
+                // console.log('This device doesnt support URI: ' + url)
+            }
+        })
   }
 
   render(){
         return (
             this.props.isLoaded === true ?
-                  <View style={styles.container}>
+                <View style={styles.container}>
                     <Image source={require('../../../images/footer/bg.jpg')} style={styles.primary}>
 
                         <View style={styles.logosRow}>
-                          <View style={styles.logosLeft}>
-                            <Image
-                               transparent
-                               source={require('../../../images/lions-logofull.png')}
-                               style={styles.logoFooter}
-                               resizeMode={Image.resizeMode.contain} />
-                           </View>
+                            <View style={styles.logosLeft}>
+                                <Image
+                                    transparent
+                                    source={require('../../../images/lions-logofull.png')}
+                                    style={styles.logoFooter}
+                                    resizeMode={Image.resizeMode.contain} />
+                            </View>
 
                             <View style={styles.logosRight}>
-                              <Image
-                                 transparent
-                                 source={require('../../../images/footer/nzlogo.png')}
-                                 style={styles.logowhiteFooter}
-                                 resizeMode={Image.resizeMode.contain} />
+                                <Image
+                                    transparent
+                                    source={require('../../../images/footer/nzlogo.png')}
+                                    style={styles.logowhiteFooter}
+                                    resizeMode={Image.resizeMode.contain} />
                             </View>
                         </View>
 
@@ -139,17 +146,17 @@ export default class Footer extends Component {
                                 <Icon name="logo-instagram" style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.periscope.tv/LionsOfficial/')} style={styles.socialFooter}>
-                                <Thumbnail square size={19} style={styles.socialFooterImgIcon} source={require('../../../images/periscopeIcon.png')} />
+                                <Image style={styles.socialFooterImgIcon} resizeMode='contain' source={require('../../../images/periscopeIcon.png')} />
                             </ButtonFeedback>
                         </View>
 
                         <View style={styles.textCorpRow}>
-                          <Text style={styles.textCorp}>© 2016 British Irish Lions Limited</Text>
+                            <Text style={styles.textCorp}>© 2016 British Irish Lions Limited</Text>
                         </View>
 
                     </Image>
-                      <Image source={require('../../../images/footer/allforone.png')} style={styles.secondary}></Image>
-                  </View>
+                    <Image source={require('../../../images/footer/allforone.png')} style={styles.secondary}></Image>
+                </View>
             : null
         )
     }

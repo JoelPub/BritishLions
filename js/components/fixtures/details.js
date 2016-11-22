@@ -11,6 +11,7 @@ import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
 import Countdown from '../global/countdown'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 
 
@@ -89,10 +90,12 @@ class FixtureDetails extends Component {
                                 <Text style={[styles.dateText, styles.dateTextDetail]}>{this.props.details.date.toUpperCase()}</Text>
                                 <Text style={[styles.teamText, styles.teamTextDetail]}>{this.props.details.title}</Text>
                             </View>
-                            <Image
-                                resizeMode='cover' 
-                                style={styles.fixtureImg}
-                                source={images[this.props.details.id]} />
+                            <ImagePlaceholder height={170}>
+                                <Image
+                                    resizeMode='cover' 
+                                    style={styles.fixtureImg}
+                                    source={images[this.props.details.id]} />
+                            </ImagePlaceholder>
                             <View style={styles.titleBar}>
                                 <Text style={styles.titleBarText}>{this.props.details.stadium}</Text>
                             </View>

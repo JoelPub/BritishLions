@@ -7,24 +7,28 @@ import { PUSH_CONTENT_ITEM, PUSH_CONTENT_ITEM_SUB, SET_CONTENT } from '../action
 export type State = {
     contentState: Array<string>,
     isLoaded: Bool,
-    contentItem: number
+    isRefreshing: Bool,
+    contentItem: number,
 }
 
 const initialState = {
     contentState: [],
     isLoaded: false,
+    isRefreshing: false,
     contentItem: {}
 }
 
 export default function (state:State = initialState, action:Action): State {
-
+    
     if (action.type === SET_CONTENT) {
         return {
             ...state,
-            contentState: action.contentList,
-            isLoaded: true
+            contentState: action.payload,
+            isLoaded: true,
+            isRefreshing: false
         }
     }
+
 
     if (action.type === PUSH_CONTENT_ITEM) {
         return {

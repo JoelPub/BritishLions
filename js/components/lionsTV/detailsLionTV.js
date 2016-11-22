@@ -8,6 +8,7 @@ import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import { shareTextWithTitle } from '../utility/socialShare'
@@ -23,7 +24,7 @@ class DetailsLionsTV extends Component {
               quality: null,
               error: null,
               isPlaying: true
-                 }
+        }
     }
 
   convertToUppercase(data) {
@@ -51,7 +52,7 @@ class DetailsLionsTV extends Component {
               <LionsHeader title='LIONS TV' back={true} />
               <Content>
                   <View style={[styles.lionsTvGalleryContent, styles.lionsTvGalleryContentDetail]}>
-                      <Text numberOfLines={2} style={[styles.headline, styles.headlineDetail]}>
+                      <Text numberOfLines={4} style={[styles.headline, styles.headlineDetail]}>
                           {this.convertToUppercase(this.props.details.snippet.title)}
                       </Text>
                       <View style={styles.lionsTVDateWrapper}>
@@ -60,7 +61,7 @@ class DetailsLionsTV extends Component {
                       </View>
                   </View>
 
-                <YouTube
+                  <YouTube
                     ref='youtubePlayer'
                     videoId= {this.props.details.contentDetails.upload.videoId} // The YouTube video ID
                     apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
@@ -76,14 +77,14 @@ class DetailsLionsTV extends Component {
                     onError={(e)=>{
                         this.setState({error: e.error})
                         Alert.alert(
-                                      'Warning',
-                                      'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
-                                      +'you can also watch the video through browser by clicking "Watch the video now" button',
-                                      [
-                                          {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
-                                          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-                                      ]
-                                  )
+                            'Warning',
+                            'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
+                            +'you can also watch the video through browser by clicking "Watch the video now" button',
+                            [
+                                {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
+                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                            ]
+                        )
                     }}
                     style={styles.youtubePlayerView}
                   />

@@ -126,5 +126,8 @@ module.exports = styleSheetCreate({
     },
     triangle: {
         marginTop: -11
+    },
+    galleryPoster: {
+        backgroundColor: styleVar.colorGrey2
     }
 })
