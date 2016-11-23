@@ -16,6 +16,15 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
 import { shareTextWithTitle } from '../utility/socialShare'
+const renderPagination = (index, total, context) => {
+  return (
+    <View style={styles.swiperNumber}>
+      <Text style={styles.swiperNumberText}>
+        {index + 1} of {total}
+      </Text>
+    </View>
+  )
+}
 
 class Gallery extends Component {
     
@@ -27,26 +36,24 @@ class Gallery extends Component {
                     <Content>
                         <View style={styles.galleryDetailHeader}>
                             <Text style={styles.galleryDetailHeaderText}>
-                                WARREN GATLAND ANNOUNCEMENT
+                                {this.props.content.title}
                             </Text>
                         </View>
 
                         <View>
                             <Swiper
                                 height={270}
-                                loop={false}
-                                dot={<View style={Slider.swiperDot} />}
-                                activeDot={<View style={Slider.swiperActiveDot}
-                                showsButtons={true} />} >
-                                <Lightbox navigator={this.props.navigator}>
-                                    <Image style={Slider.galleryPoster} source={require('../../../images/content/toursBanner.png')} />
-                                </Lightbox>
-                                <Lightbox navigator={this.props.navigator}>
-                                    <Image style={Slider.galleryPoster} source={require('../../../images/content/competitionsBanner.png')} />
-                                </Lightbox>
-                                <Lightbox navigator={this.props.navigator}>
-                                    <Image style={Slider.galleryPoster} source={require('../../../images/content/storeBanner.png')} />
-                                </Lightbox>
+                                renderPagination={renderPagination}
+                                loop={false}>
+                                {
+                                    this.props.content.images.map((img,index)=>{
+                                        return(
+                                             <Lightbox key={index} navigator={this.props.navigator}>
+                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} />
+                                            </Lightbox>
+                                            )
+                                    })
+                                }
                             </Swiper>
                         </View>
 
@@ -61,7 +68,7 @@ class Gallery extends Component {
 
                         <View style={styles.description}>
                             <Text style={styles.paragraph}>
-                                Warrent Gatland was today announced as the Head Coach of The British & Irish Lions 2017 Tour to New Zealand.
+                                {this.props.content.title}
                             </Text>
                         </View>
 
