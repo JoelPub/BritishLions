@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
+import { removeToken } from '../utility/JWT'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -82,20 +83,30 @@ const styles = styleSheetCreate({
 })
 
 class LionsSidebar extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isAccessGranted: false
+        }
+    }
     navigateTo(route) {
         setTimeout(() => {
           this.props.replaceOrPushRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
-
     resetRoute(route) {
         setTimeout(() => {
           this.props.resetRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
-
+    _signOut = () => {
+        removeToken()
+        this.setState({
+            isAccessGranted: false
+        })
+    }
     render(){
         return (
             <Container style={styles.background}>
@@ -147,20 +158,32 @@ class LionsSidebar extends Component {
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
-                        <Grid>
-                            <Col size={60}>
-                                <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
-                                    <Icon name='md-contact' style={styles.footerLinkIcon} />
-                                    <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
-                                </ButtonFeedback>
-                            </Col>
-                            <Col size={40}>
-                                <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
-                                    <Text style={styles.footerLinkText}>SIGN IN</Text>
-                                    <Icon name='md-log-in' style={styles.footerLinkIcon} />
-                                </ButtonFeedback>
-                            </Col>
-                        </Grid>
+                          { !this.state.isAccessGranted
+                          ?
+                              <Grid>
+                                  <Col size={100}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
+                                          <Text style={styles.footerLinkText}>SIGN IN</Text>
+                                          <Icon name='md-log-in' style={styles.footerLinkIcon} />
+                                      </ButtonFeedback>
+                                  </Col>
+                              </Grid>
+                          :
+                              <Grid>
+                                  <Col size={60}>
+                                      <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
+                                          <Icon name='md-contact' style={styles.footerLinkIcon} />
+                                          <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
+                                      </ButtonFeedback>
+                                  </Col>
+                                  <Col size={40}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
+                                          <Text style={styles.footerLinkText}>SIGN OUT</Text>
+                                          <Icon name='md-log-in' style={styles.footerLinkIcon} />
+                                      </ButtonFeedback>
+                                  </Col>
+                              </Grid>
+                          }
                     </View>
                 </Footer>
             </Container>
