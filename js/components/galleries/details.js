@@ -27,6 +27,15 @@ const renderPagination = (index, total, context) => {
 }
 
 class Gallery extends Component {
+
+    renderContent() {
+        return (
+            <View>
+                <Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>
+                <Image style={Slider.galleryPoster} source={{uri:this.children.props.source.uri}} />
+            </View>
+            )
+    }
     
     render() {
         return (
@@ -42,14 +51,15 @@ class Gallery extends Component {
 
                         <View>
                             <Swiper
+                                ref='swiper'
                                 height={270}
                                 renderPagination={renderPagination}
                                 loop={false}>
                                 {
                                     this.props.content.images.map((img,index)=>{
                                         return(
-                                             <Lightbox key={index} navigator={this.props.navigator}>
-                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} />
+                                             <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent}>
+                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} caption={img.caption}/>
                                             </Lightbox>
                                             )
                                     })

@@ -130,6 +130,11 @@ module.exports = styleSheetCreate({
     galleryPoster: {
         backgroundColor: styleVar.colorGrey2
     },
+    galleryPosterCaption:{
+        color:'white',
+        textAlign:'center',
+        fontSize:20
+    },
     swiperNumber: {
         position: 'absolute',
         bottom: 10,
