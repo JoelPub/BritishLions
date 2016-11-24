@@ -23,6 +23,7 @@ import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
 import MyLionsPlayerList from './components/myLions/myLionsPlayerList'
+import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
 import Competition from './components/competition'
 import Tours from './components/tours'
@@ -204,6 +205,8 @@ class AppNavigator extends Component {
                 return <MyLions navigator={navigator} />
             case 'myLionsPlayerList':
                 return <MyLionsPlayerList navigator={navigator} />
+            case 'myLionsFavoriteList':
+                return <MyLionsFavoriteList navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
             case 'competition':
