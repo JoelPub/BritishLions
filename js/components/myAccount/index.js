@@ -108,7 +108,7 @@ class MyAccount extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                            <ScrollView style={styles.content} contentOffset={this.state.offset} 
+                            <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
                             ref={(scrollView) => { _scrollView = scrollView; }} 
                             >
                                 <View style={styles.pageTitle}>

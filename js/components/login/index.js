@@ -43,11 +43,11 @@ class Login extends Component {
     }
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardZWillHide', this.keyboardWillHide.bind(this))
+        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
+        this.setState({offset :{y: 150}})
     }
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
@@ -114,7 +114,7 @@ class Login extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.main} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
