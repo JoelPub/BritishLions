@@ -54,11 +54,18 @@ class ForgotPassword extends Component {
     }
 
     onSuccessValidate = (parameter) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
         if(parameter) {
             this.popRoute()
         }
         else {
-            this.setState({errorCheck:{submit:false}, offset:{y:0}})
+            this.setState({
+                offset:{y:0}
+            })
         }
     }
 

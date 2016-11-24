@@ -48,7 +48,9 @@ export default class ErrorHandler extends Component {
 							tcMsg: null,
 							show: false
 					})
-					this.validationCheck(nextProps,nextState)
+					if ( nextState.continue || (!this.state.continue&&!nextState.continue) ) {
+						this.validationCheck(nextProps,nextState)
+					}					
 			}
 			return nextProps.errorCheck.submit === true
 	}
@@ -61,12 +63,17 @@ export default class ErrorHandler extends Component {
 	}
 
 	validationCheck(nextProps,nextState) {
-		if(nextProps.errorCheck.submit === true && this.state.continue === true) {
 			if (nextProps.errorCheck.tc === false ||
 					!blankCheck(nextProps.errorCheck.firstName) ||
+					!!(nextProps.errorCheck.firstName) && nextProps.errorCheck.firstName.length>50 ||
 					!blankCheck(nextProps.errorCheck.lastName) ||
+					!!(nextProps.errorCheck.lastName) && nextProps.errorCheck.lastName.length>50 ||
 					!blankCheck(nextProps.errorCheck.email) ||
+					!!(nextProps.errorCheck.email) && nextProps.errorCheck.email.length>256 ||
 					!blankCheck(nextProps.errorCheck.password) ||
+					!!(nextProps.errorCheck.password) && nextProps.errorCheck.password.length<8 ||
+					!!(nextProps.errorCheck.password) && nextProps.errorCheck.password.length>50 ||
+					!!(nextProps.errorCheck.password) && (/^(?![a-zA-Z]+$)(?![a-z\d]+$)(?![A-Z\d]+$)[a-zA-Z\d]{8,}$/.test(nextProps.errorCheck.password) === false) ||
 					!blankCheck(nextProps.errorCheck.confirmPassword) ||
 					((
 						nextProps.errorCheck.password !== nextProps.errorCheck.confirmPassword) && ( typeof nextProps.errorCheck.confirmPassword !== 'undefined' )) ||
@@ -82,14 +89,29 @@ export default class ErrorHandler extends Component {
 	                    firstNameMsg: 'First Name is required'
 	                })
 	            }
+	            else if(!!(nextProps.errorCheck.firstName) && nextProps.errorCheck.firstName.length>50) {
+	            	this.setState({
+	                    firstNameMsg: 'First Name is too long'
+	                })
+	            }
 	            if(!blankCheck(nextProps.errorCheck.lastName)) {
 	                this.setState({
 	                    lastNameMsg: 'Last Name is required'
 	                })
 	            }
+	            else if(!!(nextProps.errorCheck.lastName) && nextProps.errorCheck.lastName.length>50) {
+	            	this.setState({
+	                    lastNameMsg: 'Last Name is too long'
+	                })
+	            }
 	            if(!blankCheck(nextProps.errorCheck.email)) {
 	               this.setState({
 	                    emailMsg: 'Email address is required'
+	                })
+	            }
+	            else if(!!(nextProps.errorCheck.email) && nextProps.errorCheck.email.length>256) {
+	            	this.setState({
+	                    emailMsg: 'Email address is too long'
 	                })
 	            }
 	            else if (!!(nextProps.errorCheck.email) && (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(nextProps.errorCheck.email) === false)) {
@@ -100,6 +122,21 @@ export default class ErrorHandler extends Component {
 	            if(!blankCheck(nextProps.errorCheck.password) || !blankCheck(nextProps.errorCheck.confirmPassword)) {
 	                this.setState({
 	                    passwordMsg: 'Password is required'
+	                })
+	            }
+	            else if(!!(nextProps.errorCheck.password) && nextProps.errorCheck.password.length>50) {
+	            	this.setState({
+	                    passwordMsg: 'Password is too long'
+	                })
+	            }
+	            else if(!!(nextProps.errorCheck.password) && nextProps.errorCheck.password.length<8) {
+	            	this.setState({
+	                    passwordMsg: 'Password is too short'
+	                })
+	            }
+	            else if(!!(nextProps.errorCheck.password) && (/^(?![a-zA-Z]+$)(?![a-z\d]+$)(?![A-Z\d]+$)[a-zA-Z\d]{8,}$/.test(nextProps.errorCheck.password) === false)) {
+	            	this.setState({
+	                    passwordMsg: 'Password must contain a digit, an upper and a lower case letter'
 	                })
 	            }
 	            else if((nextProps.errorCheck.password !== nextProps.errorCheck.confirmPassword) && (typeof nextProps.errorCheck.confirmPassword !== 'undefined')) {
@@ -115,7 +152,6 @@ export default class ErrorHandler extends Component {
         	else {
         		this.props.callbackParent(true)
         	}
-    	}
 
     	function blankCheck(parameter) {
     		if(parameter == null || (typeof parameter === 'undefined')) {

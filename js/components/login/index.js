@@ -43,7 +43,7 @@ class Login extends Component {
     }
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
+        this.setState({offset :{y: 130}})
     }
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
@@ -85,17 +85,17 @@ class Login extends Component {
         })
     }
     _handleSignIn = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
         if(isFormValidate) {
           // TODO Make sure the _createToken function does fire twice on double click
           // Use the _.Throttle function from Lodash
           this._createToken()
         }
         else {
-            this.setState({
-                errorCheck:{
-                    submit: false
-                }
-            })
             this._scrollView.scrollTo({
                 x: 0,
                 y: 0,

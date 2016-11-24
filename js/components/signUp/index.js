@@ -88,15 +88,16 @@ class SignUp extends Component {
             )
         })
     }
+    
     _handleSignUp = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
         if(isFormValidate) {
             this._userSignUp()
         } else {
-            this.setState({
-                errorCheck:{
-                    submit: false
-                }
-            })
             this._scrollView.scrollTo({
                 x: 0,
                 y: 0,
