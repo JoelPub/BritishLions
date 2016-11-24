@@ -43,7 +43,7 @@ class Login extends Component {
     }
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
+        this.setState({offset :{y: 130}})
     }
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
