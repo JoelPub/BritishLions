@@ -43,7 +43,7 @@ class Login extends Component {
     }
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardZWillHide', this.keyboardWillHide.bind(this))
+        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height

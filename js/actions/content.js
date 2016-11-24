@@ -12,9 +12,6 @@ export const PUSH_CONTENT_ITEM_SUB = 'PUSH_CONTENT_ITEM_SUB'
 export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 
 export function fetchContent(url):Action {
-
-    console.log('called..')
-    
     return (dispatch, getState) => {
         return (
             axios({
