@@ -54,14 +54,17 @@ const styles = styleSheetCreate({
     },
     footerWrapper: {
         paddingLeft:10,
-        height: 50
+        height: 50,
     },
     footerLink: {
         flexDirection:'row',
         paddingLeft: 2,
-        height:50
+        height: 50
     },
-    linkLogin: {
+    footerLinkSignIn: {
+        justifyContent: 'flex-end'
+    },
+    linkLeftSeperator: {
         justifyContent: 'flex-end',
         borderLeftWidth:1,
         borderLeftColor:'rgba(255,255,255,0.15)'
@@ -161,8 +164,8 @@ class LionsSidebar extends Component {
                           { !this.state.isAccessGranted
                           ?
                               <Grid>
-                                  <Col size={100}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
+                                  <Col>
+                                      <ButtonFeedback style={[styles.footerLink, styles.footerLinkSignIn]} onPress={() => this.navigateTo('login')}>
                                           <Text style={styles.footerLinkText}>SIGN IN</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
@@ -177,7 +180,7 @@ class LionsSidebar extends Component {
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
+                                      <ButtonFeedback style={[styles.footerLink, styles.linkLeftSeperator]} onPress={() => this._signOut}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
