@@ -11,6 +11,7 @@ import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import { debounce } from 'lodash'
 
 class SignUp extends Component {
     constructor(props) {
@@ -42,6 +43,9 @@ class SignUp extends Component {
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
         }
+
+        // debounce
+        this._handleSignUp = debounce(this._handleSignUp, 1000)
     }
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
@@ -134,7 +138,7 @@ class SignUp extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({email: event.nativeEvent.text})} placeholder='Email' style={styles.input}/>
+                                        <Input onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
                                     </View>
 
                                     <View style={styles.inputGroup}>

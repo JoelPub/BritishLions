@@ -13,6 +13,7 @@ import styles from './login-layout-theme'
 import { updateToken } from '../utility/JWT'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import { debounce } from 'lodash'
 
 class Login extends Component {
     constructor(props) {
@@ -36,6 +37,9 @@ class Login extends Component {
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
         }
+
+        // debounce
+        this._handleSignIn = debounce(this._handleSignIn, 1000)
     }
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
@@ -54,7 +58,8 @@ class Login extends Component {
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
-    _createToken = () => {
+
+    _createToken() {
         axios.post(
             this.state.serviceUrl,
             qs.stringify({
@@ -69,28 +74,29 @@ class Login extends Component {
                 updateToken(data.access_token, data.refresh_token)
                 this._replaceRoute('news')
             } else {
-              Alert.alert(
-                'Access not granted',
-                'Please try again later.',
-                [{text: 'DISMISS'}]
-              )
+                Alert.alert(
+                    'Access not granted',
+                    'Please try again later.',
+                    [{text: 'DISMISS'}]
+                )
             }
         }.bind(this))
         .catch(function(error) {
-          Alert.alert(
-            'An error occured',
-            '' + error,
-            [{text: 'DISMISS'}]
-          )
+            Alert.alert(
+                'An error occured',
+                '' + error,
+                [{text: 'DISMISS'}]
+            )
         })
     }
     _handleSignIn = (isFormValidate) => {
         if(isFormValidate) {
-          // TODO Make sure the _createToken function does fire twice on double click
-          // Use the _.Throttle function from Lodash
-          this._createToken()
-        }
-        else {
+            // TODO Make sure the _createToken function does fire twice on double click
+            // Use the _.Throttle function from Lodash
+
+            this._createToken()
+          
+        } else {
             this.setState({
                 errorCheck:{
                     submit: false
@@ -122,7 +128,7 @@ class Login extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input placeholder='Email' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input placeholder='Email' keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
                                     <View style={styles.inputGroup}>

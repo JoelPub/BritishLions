@@ -81,7 +81,7 @@ class ForgotPassword extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input placeholder='Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input placeholder='Email' keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
                                     
                                     <ButtonFeedback rounded label='SUBMIT' style={styles.button} onPress={() => {this.setState({errorCheck:{email:this.state.email,submit:true}})}} />
