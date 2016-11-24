@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
-import { removeToken } from '../utility/JWT'
+import { removeToken, getAccessToken } from '../utility/JWT'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -54,14 +54,17 @@ const styles = styleSheetCreate({
     },
     footerWrapper: {
         paddingLeft:10,
-        height: 50
+        height: 50,
     },
     footerLink: {
         flexDirection:'row',
         paddingLeft: 2,
-        height:50
+        height: 50
     },
-    linkLogin: {
+    footerLinkSignIn: {
+        justifyContent: 'flex-end'
+    },
+    linkLeftSeperator: {
         justifyContent: 'flex-end',
         borderLeftWidth:1,
         borderLeftColor:'rgba(255,255,255,0.15)'
@@ -95,17 +98,36 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
+
     resetRoute(route) {
         setTimeout(() => {
           this.props.resetRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
-    _signOut = () => {
+
+    componentWillMount() {
+        getAccessToken().then((token) => {
+            this.setState({
+                isAccessGranted: token
+            })
+        }).catch((err) => {
+            console.log('err', err)
+        })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+
+    _signOut() {
         removeToken()
+
         this.setState({
             isAccessGranted: false
         })
+
+        this.navigateTo('news')
     }
     render(){
         return (
@@ -158,11 +180,10 @@ class LionsSidebar extends Component {
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
-                          { !this.state.isAccessGranted
-                          ?
+                          { !this.state.isAccessGranted?
                               <Grid>
-                                  <Col size={100}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
+                                  <Col>
+                                      <ButtonFeedback style={[styles.footerLink, styles.footerLinkSignIn]} onPress={() => this.navigateTo('login')}>
                                           <Text style={styles.footerLinkText}>SIGN IN</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
@@ -177,7 +198,7 @@ class LionsSidebar extends Component {
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
+                                      <ButtonFeedback style={[styles.footerLink, styles.linkLeftSeperator]} onPress={this._signOut.bind(this)}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>

@@ -32,7 +32,7 @@ export async function removeToken() {
 }
 
 export async function getAccessToken() {
-    await AsyncStorage.getItem('ACCESS_TOKEN', (err, result) => {
+    return await AsyncStorage.getItem('ACCESS_TOKEN', (err, result) => {
       return result
     })
 }
