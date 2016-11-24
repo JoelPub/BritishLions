@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Linking,Image, View, NativeModules, WebView, Alert } from 'react-native'
+import { Linking,Image, View, NativeModules, WebView, Alert, TouchableOpacity } from 'react-native'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
@@ -63,32 +63,35 @@ class DetailsLionsTV extends Component {
 
                   <YouTube
                     ref='youtubePlayer'
-                    videoId= {this.props.details.contentDetails.upload.videoId} // The YouTube video ID
+                    videoId= {this.props.details.contentDetails.upload.videoId}
                     apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
                     hidden={false}
                     rel={true}
                     showinfo={false}
-                    playsInline={true}    // control whether the video should play inline
-                    //onError={(e)=>{console.log(e.error}}
+                    playsInline={true}
+                    loop={false}
+
                     play={this.state.isPlaying}
                     onReady={(e)=>{this.setState({isReady: true})}}
                     onChangeState={(e)=>{this.setState({status: e.state})}}
                     onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
                     onError={(e)=>{
                         this.setState({error: e.error})
-                        Alert.alert(
-                            'Warning',
-                            'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
-                            +'you can also watch the video through browser by clicking "Watch the video now" button',
-                            [
-                                {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
-                                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-                            ]
-                        )
+                        if(!this.state.isReady)
+                        {
+                            Alert.alert(
+                                          'Warning',
+                                          'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
+                                          +'you can also watch the video through browser by clicking "Watch the video now" button',
+                                          [
+                                              {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
+                                              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                                          ]
+                                      )
+                          }
                     }}
                     style={styles.youtubePlayerView}
                   />
-
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
                           onPress={shareTextWithTitle.bind(this, this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)}
@@ -97,6 +100,7 @@ class DetailsLionsTV extends Component {
                           <Icon name='md-share-alt' style={styles.shareLinkIcon} />
                       </ButtonFeedback>
                   </View>
+
                   <View style={styles.description}>
                       <Text style={styles.paragraph}>
                         {this.props.details.snippet.description}
