@@ -24,7 +24,7 @@ class DetailsLionsTV extends Component {
               quality: null,
               error: null,
               isPlaying: true
-                 }
+        }
     }
 
   convertToUppercase(data) {

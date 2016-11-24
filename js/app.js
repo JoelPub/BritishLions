@@ -7,9 +7,7 @@ import { Provider } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
 
 function app():React.Component {
-
     class Root extends Component {
-
         constructor() {
             super()
             this.state = {
@@ -17,7 +15,6 @@ function app():React.Component {
                 store: configureStore(()=> this.setState({isLoading: false}))
             }
         }
-
         render() {
             return (
                 <Provider store={this.state.store}>

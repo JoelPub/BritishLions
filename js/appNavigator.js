@@ -9,7 +9,7 @@ import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
 import Navigator from 'Navigator'
 
-// Templates used in the project
+// Templates/pages
 import SplashPage from './components/splashscreen/'
 import Login from './components/login/'
 import SignUp from './components/signUp/'
@@ -65,9 +65,9 @@ Navigator.prototype.replaceWithAnimation = function (route) {
 
 export var globalNav = {}
 
-const reducerCreate = params=>{
+const reducerCreate = params => {
     const defaultReducer = Reducer(params)
-    return (state, action)=>{
+    return (state, action) => {
         var currentState = state
         if(currentState){
             while (currentState.children){

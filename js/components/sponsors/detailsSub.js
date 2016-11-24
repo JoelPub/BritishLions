@@ -9,6 +9,7 @@ import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
+import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink, { goToURL } from '../utility/externalLink'
 import PaginationButton from '../utility/paginationButton'
 import HTMLView from 'react-native-htmlview'
@@ -39,11 +40,13 @@ class SponsorDetailsSub extends Component {
 
                                 {this.props.details.partner? <Text style={styles.wrapperPartner}>{this.props.details.partner}</Text> : null }
                             </View>
-
-                            <Image transparent
+                            
+                            <ImagePlaceholder height={187}>
+                                <Image transparent
                                     resizeMode='contain'
-                                    source={this.props.details.image}
+                                    source={this.props.details.banner}
                                     style={styles.banner} />
+                            </ImagePlaceholder>
 
                             <View style={styles.shareLinkWrapper}>
                                 <ExternalLink style={styles.shareLink} url={this.props.details.url}>
