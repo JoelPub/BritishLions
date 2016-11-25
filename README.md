@@ -1,7 +1,7 @@
 # British & Irish Lions Offical 2017 #
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
-### Technologu stack ###
+### Technology stack ###
 * React Native 
 * Redux 
 * ES5 
