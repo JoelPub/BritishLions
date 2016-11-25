@@ -15,7 +15,7 @@ module.exports = styleSheetCreate({
         flex: 1
     },
     content: {
-        paddingBottom: 80
+        paddingBottom: 100
     },
     pageClose: {
         backgroundColor: 'rgba(0,0,0,0.2)',

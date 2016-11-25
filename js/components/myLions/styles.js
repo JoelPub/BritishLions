@@ -32,6 +32,9 @@ module.exports = styleSheetCreate({
             paddingTop: 6,
         }
     },
+    headerContainer: {
+        backgroundColor:'#af001e'
+    },
     imageCircle: {
         alignSelf: 'center',
         marginTop: 10,
@@ -82,6 +85,14 @@ module.exports = styleSheetCreate({
         flexDirection: 'row',
         justifyContent: 'center',
         paddingBottom: 25
+    },
+    button: {
+        height: 45,
+        backgroundColor: styleVar.brandLightColor,
+        marginTop:19,
+        marginBottom:20,
+        marginLeft:30,
+        marginRight:30,
     },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
@@ -149,6 +160,9 @@ module.exports = styleSheetCreate({
     gridBoxImgWithPadding: {
         width: 80,
         height: 80,
+    },
+    gridBoxDescWrapper: {        
+        width: styleVar.deviceWidth / 2,
     },
     gridBoxTitle: {
         position: 'relative',

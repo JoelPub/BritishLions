@@ -3,7 +3,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView } from 'react-native'
+import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
+import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -15,26 +16,42 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
-import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
+import loader from '../../themes/loader-position'
 
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
+        this.url = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.props.unionFeed.id}`
+        this.id = this.props.unionFeed.id
+        this.logo=this.props.unionFeed.logo
+        this.personallogo=this.props.unionFeed.image
+        this.name=this.props.unionFeed.displayname.toUpperCase()
         this.state = {
+            isLoaded: false,
             modalVisible: false,
             transparent: true,
-            resultVisible: false
+            resultVisible: false,
+            unionFeed:{}
         }
     
     }
 
-    _drillDown(route, index) {
-        this.props.pushNewRoute('myLionsPlayerDetails')
+    _drillDown(item, route) {
+        this.props.drillDown(item,route)
+   }
+    componentDidMount() {
+        this.props.fetchContent(this.url)
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            unionFeed: this.props.unionFeed,
+            isLoaded: true
+        })
+    }
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
@@ -57,27 +74,46 @@ class MyLionsPlayerList extends Component {
             transparent:false
         })
     }
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k])
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
+    }
 
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
+                    {this.state.isLoaded&&
                     <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
                         <ImageCircle
                             size={100}
                             containerStyle={styles.imageCircle}
                             containerBgColor='#fff'
                             containerPadding={20}
-                            src={require('../../../contents/my-lions/nations/england.png')} />
+                            src={this.logo} />
 
-                        <Text style={styles.headerTitle}>ENGLAND</Text>
+                        <Text style={styles.headerTitle}>{this.name}</Text>
 
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
                     </Image>
-                    
+                    }
                     <FilterListingModal 
                         modalVisible={this.state.modalVisible} 
                         resultVisible={this.state.resultVisible} 
@@ -160,112 +196,53 @@ class MyLionsPlayerList extends Component {
                         }
                         </View>
                     </FilterListingModal >
-
+                {
+                    this.state.isLoaded?
                     <Content>
-                        <Grid>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(1)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>JAMES</Text>
-                                            <Text style={styles.gridBoxTitleText}>HASKELL</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Flanker</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(2)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>ELLIS</Text>
-                                            <Text style={styles.gridBoxTitleText}>GENGE</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Scrum Half</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                        </Grid>
-                        <Grid>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback
-                                    style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]}
-                                    onPress={() => this._drillDown(3)}>
-
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>ROY</Text>
-                                            <Text style={styles.gridBoxTitleText}>THOMPSON</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Main</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(4)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>JAY</Text>
-                                            <Text style={styles.gridBoxTitleText}>WOLLISH</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>BRIDA</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                        </Grid>
+                    {
+                            this._mapJSON(this.props.playerFeed[this.id]).map((rowData, index) => {
+                                return (
+                                    <Grid key={index}>
+                                        {
+                                            rowData.map((item, key) => {
+                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
+                                                Object.assign(item,{logo:this.personallogo,country:this.name})
+                                                return (
+                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                            <View style={styles.gridBoxTouchableView}>
+                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                    <ImagePlaceholder 
+                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                        <Image transparent
+                                                                            resizeMode='contain'
+                                                                            source={{uri:item.image}}
+                                                                            style={styles.gridBoxImg} />
+                                                                    </ImagePlaceholder>
+                                                                </View>
+                                                                <View style={styles.gridBoxDescWrapper}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styles.gridBoxTitle}>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name}</Text>
+                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                                                    </View>
+                                                                </View>
+                                                            </View>
+                                                        </ButtonFeedback>
+                                                    </Col>
+                                                )
+                                            }, this)
+                                        }
+                                    </Grid>
+                                )
+                            }, this)
+                        }
+                        
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </Content>:
+                        <ActivityIndicator style={loader.centered} size='large' />
+                    }
                     < EYSFooter />
                 </View>
             </Container>
@@ -275,9 +252,15 @@ class MyLionsPlayerList extends Component {
 
 function bindAction(dispatch) {
     return {
-        pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
-        pushNewsItem: (index)=>dispatch(pushNewsItem(index))
+        fetchContent: (url)=>dispatch(fetchContent(url)),
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
     }
 }
 
-export default connect(null, bindAction)(MyLionsPlayerList)
+export default connect((state) => {
+    return {
+        unionFeed: state.content.drillDownItem,
+        playerFeed: state.content.contentState,
+        isLoaded: state.content.isLoaded
+    }
+}, bindAction)(MyLionsPlayerList)
