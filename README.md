@@ -9,6 +9,7 @@
 * [**jest**](https://facebook.github.io/jest/) for testing and linting
 * [**Axios**](https://github.com/mzabriskie/axios) for the async request handling
 * Authentication flow with **JSON Web Tokens**
+* GIT for the version control management
 
 ### System Requirements ###
 
