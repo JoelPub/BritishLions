@@ -2,14 +2,13 @@
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
 ### Technology stack ###
-* React Native
-* Redux 
-* ES5 
-* ES6 
-* JSX 
-* [jest](https://facebook.github.io/jest/) 
-* [Axios](https://github.com/mzabriskie/axios) 
-* Authentication with JSON Web Tokens
+* **React Native**, **JSX** and **Flex** as the basis for the application’s presentation layer
+* **Redux** for the unidirectional data managment
+* **ES5** and **ES6** for JavaScript code
+* **Babel** for ES6 → ES5 transpiling 
+* [**jest**](https://facebook.github.io/jest/) for testing and linting
+* [**Axios**](https://github.com/mzabriskie/axios) for the async request handling
+* Authentication flow with **JSON Web Tokens**
 
 ### System Requirements ###
 
