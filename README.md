@@ -2,7 +2,7 @@
 ## Delivery of a native IOS and Android mobile app using React Native framework ##
 
 ### Technology stack ###
-* React Native 
+* React Native
 * Redux 
 * ES5 
 * ES6 
