@@ -64,7 +64,7 @@ class MyLions extends Component {
                 <View style={styles.container}>
                     <View style={styles.headerContainer}>
                         <LionsHeader title='MY LIONS' />
-                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._drillDown(null,'myLionsFavoriteList')} />
+                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._drillDown(Data,'myLionsFavoriteList')} />
                     </View>
                     <Content>
                          {

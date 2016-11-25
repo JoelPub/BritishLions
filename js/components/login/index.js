@@ -91,6 +91,11 @@ class Login extends Component {
     }
 
     _handleSignIn = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
         if(isFormValidate) {
             // TODO Make sure the _createToken function does fire twice on double click
             // Use the _.Throttle function from Lodash

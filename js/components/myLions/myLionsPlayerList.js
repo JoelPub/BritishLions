@@ -33,8 +33,7 @@ class MyLionsPlayerList extends Component {
             isLoaded: false,
             modalVisible: false,
             transparent: true,
-            resultVisible: false,
-            unionFeed:{}
+            resultVisible: false
         }
     
     }
@@ -48,7 +47,6 @@ class MyLionsPlayerList extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            unionFeed: this.props.unionFeed,
             isLoaded: true
         })
     }
