@@ -34,18 +34,22 @@ class NewsDetails extends Component {
                                     resizeMode='cover'
                                     source={require('../../../images/shadows/rectangle.png')}
                                     style={styles.newsPosterContent}>
-                                    <Text numberOfLines={3} style={styles.newsPosterHeader}>
-                                        {this.props.article.headline.toUpperCase()}
-                                    </Text>
-                                    <View style={[styles.newsDateWrapper, styles.newsDateWrapperInverse]}>
-                                        <Icon name='md-time' style={[styles.timeIcon, styles.timeIconInverse]} />
-                                        <Text style={[styles.newsDateText, styles.newsDateTextInverse]}>
-                                            {this.props.article.date} at {this.props.article.time}
-                                        </Text>
-                                    </View>
+
                                 </Image>
                             </Image>
                         </ImagePlaceholder>
+
+                        <View>
+                            <Text numberOfLines={3} style={styles.newsPosterHeader}>
+                                {this.props.article.headline.toUpperCase()}
+                            </Text>
+                            <View style={[styles.newsDateWrapper, styles.newsDateWrapperInverse]}>
+                                <Icon name='md-time' style={[styles.timeIcon, styles.timeIconInverse]} />
+                                <Text style={[styles.newsDateText]}>
+                                    {this.props.article.date} at {this.props.article.time}
+                                </Text>
+                            </View>
+                        </View>
 
                         <View style={styles.shareWrapper}>
                             {this.props.article.author ? <Text style={styles.author} numberOfLines={1}>By {this.props.article.author}</Text> : null}
