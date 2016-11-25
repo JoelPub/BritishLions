@@ -6,10 +6,10 @@
 * **Redux** for the unidirectional data managment
 * **ES5** and **ES6** for JavaScript code
 * **Babel** for ES6 → ES5 transpiling 
-* [**jest**](https://facebook.github.io/jest/) for testing and linting
+* [**Jest**](https://facebook.github.io/jest/) for testing and linting
 * [**Axios**](https://github.com/mzabriskie/axios) for the async request handling
 * Authentication flow with **JSON Web Tokens**
-* GIT for the version control management
+* **Git** for the version control management
 
 ### System Requirements ###
 
