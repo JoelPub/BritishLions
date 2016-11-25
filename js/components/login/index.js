@@ -39,7 +39,7 @@ class Login extends Component {
         }
 
         // debounce
-        this._handleSignIn = debounce(this._handleSignIn, 1000)
+        this._handleSignIn = debounce(this._handleSignIn, 500, {leading: true, maxWait: 0, trailing: false})
     }
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
@@ -89,6 +89,7 @@ class Login extends Component {
             )
         })
     }
+
     _handleSignIn = (isFormValidate) => {
         if(isFormValidate) {
             // TODO Make sure the _createToken function does fire twice on double click
@@ -109,6 +110,7 @@ class Login extends Component {
             })
         }
     }
+    
     render() {
         return (
             <Container>

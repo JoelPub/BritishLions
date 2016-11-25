@@ -10,6 +10,7 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
+import { debounce } from 'lodash'
 
 const styles = styleSheetCreate({
     background: {
@@ -91,7 +92,11 @@ class LionsSidebar extends Component {
         this.state = {
             isAccessGranted: false
         }
+
+        // debounce
+        this.navigateTo = debounce(this.navigateTo, 500, {leading: true, maxWait: 0, trailing: false})
     }
+
     navigateTo(route) {
         setTimeout(() => {
           this.props.replaceOrPushRoute(route)

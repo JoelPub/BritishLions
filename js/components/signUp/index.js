@@ -45,7 +45,7 @@ class SignUp extends Component {
         }
 
         // debounce
-        this._handleSignUp = debounce(this._handleSignUp, 1000)
+        this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
     }
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
