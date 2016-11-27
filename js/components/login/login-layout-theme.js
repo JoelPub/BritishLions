@@ -18,7 +18,8 @@ module.exports = styleSheetCreate({
         paddingBottom: 100
     },
     pageClose: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        // backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'transparent',
         width: 49,
         height: 50,
         position: 'absolute',
