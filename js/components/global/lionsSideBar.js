@@ -56,17 +56,14 @@ const styles = styleSheetCreate({
     },
     footerWrapper: {
         paddingLeft:10,
-        height: 50,
+        height: 50
     },
     footerLink: {
         flexDirection:'row',
         paddingLeft: 2,
-        height: 50
+        height:50
     },
-    footerLinkSignIn: {
-        justifyContent: 'flex-end'
-    },
-    linkLeftSeperator: {
+    linkLogin: {
         justifyContent: 'flex-end',
         borderLeftWidth:1,
         borderLeftColor:'rgba(255,255,255,0.15)'
@@ -101,14 +98,12 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
-
     resetRoute(route) {
         setTimeout(() => {
           this.props.resetRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
-
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
@@ -172,8 +167,8 @@ class LionsSidebar extends Component {
                     <View style={styles.footerWrapper}>
                           { !this.props.isAccessGranted?
                               <Grid>
-                                  <Col>
-                                      <ButtonFeedback style={[styles.footerLink, styles.footerLinkSignIn]} onPress={() => this.navigateTo('login')}>
+                                  <Col size={100}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
                                           <Text style={styles.footerLinkText}>SIGN IN</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
@@ -188,7 +183,7 @@ class LionsSidebar extends Component {
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink, styles.linkLeftSeperator]} onPress={this._signOut.bind(this)}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
