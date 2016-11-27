@@ -64,7 +64,12 @@ module.exports = styleSheetCreate({
         }
     },
     timeIconInverse: {
-        color: '#fff'
+        marginLeft:20,
+        marginBottom:15,
+        android: {
+            paddingLeft: 20,
+            marginLeft: 20
+        }
     },
     newsDateText: {
         fontFamily: 'Georgia',
@@ -127,10 +132,14 @@ module.exports = styleSheetCreate({
     },
     newsPosterHeader: {
         fontFamily: styleVar.fontCondensed,
+        color: 'rgb(175,0,30)',
         fontSize: 31,
         lineHeight: 25,
         paddingTop: 9,
+        marginTop:15,
         marginBottom: -5,
+        marginRight:20,
+        marginLeft:20,
         backgroundColor: 'transparent',
         android: {
             marginBottom: 0,

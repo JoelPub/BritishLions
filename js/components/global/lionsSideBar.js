@@ -2,14 +2,16 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
-import { removeToken, getAccessToken } from '../utility/JWT'
+import { removeToken, getAccessToken } from '../utility/asyncStorageServices'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
+import { debounce } from 'lodash'
 
 const styles = styleSheetCreate({
     background: {
@@ -88,10 +90,11 @@ const styles = styleSheetCreate({
 class LionsSidebar extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            isAccessGranted: false
-        }
+
+        // debounce
+        this.navigateTo = debounce(this.navigateTo, 500, {leading: true, maxWait: 0, trailing: false})
     }
+
     navigateTo(route) {
         setTimeout(() => {
           this.props.replaceOrPushRoute(route)
@@ -106,30 +109,17 @@ class LionsSidebar extends Component {
         this.props.closeDrawer()
     }
 
-    componentWillMount() {
-        getAccessToken().then((token) => {
-            this.setState({
-                isAccessGranted: token
-            })
-        }).catch((err) => {
-            console.log('err', err)
-        })
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
 
     _signOut() {
+        this.props.setAccessGranted(false)
         removeToken()
-
-        this.setState({
-            isAccessGranted: false
-        })
-
         this.navigateTo('news')
     }
     render(){
+
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
@@ -180,7 +170,7 @@ class LionsSidebar extends Component {
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
-                          { !this.state.isAccessGranted?
+                          { !this.props.isAccessGranted?
                               <Grid>
                                   <Col>
                                       <ButtonFeedback style={[styles.footerLink, styles.footerLinkSignIn]} onPress={() => this.navigateTo('login')}>
@@ -212,12 +202,18 @@ class LionsSidebar extends Component {
     }
 }
 
-function bindAction(dispatch) {
+function bindActions(dispatch) {
     return {
         closeDrawer: ()=>dispatch(closeDrawer()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
-        resetRoute:(route)=>dispatch(resetRoute(route))
+        resetRoute:(route)=>dispatch(resetRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
-export default connect(null, bindAction)(LionsSidebar)
+
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindActions)(LionsSidebar)
