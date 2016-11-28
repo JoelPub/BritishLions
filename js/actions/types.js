@@ -14,6 +14,7 @@ export type Action =
     | { type: 'PUSH_CONTENT_ITEM_SUB'}
     | { type: 'REPLACE_CONTENT_ITEM'}
     | { type: 'SET_COUNTDOWN_TIMER_END'}
+    | { type: 'SET_ACCESS_GRANTED'}
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

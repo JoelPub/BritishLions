@@ -2,8 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setAccessGranted } from './actions/token'
+import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
+import axios from 'axios'
+import qs from 'qs'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
@@ -83,6 +87,71 @@ class AppNavigator extends Component {
 
     constructor(props){
         super(props)
+
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+    }
+
+    _refreshToken() {    
+        getRefreshToken().then((refreshToken) => {
+            axios.post(
+                this.serviceUrl,
+                qs.stringify({
+                    'refresh_token': refreshToken,
+                    'grant_type': 'refresh_token'
+                })
+            )
+            .then(function(res) {
+                let statusCode = res.status
+                let accessToken = res.data.access_token
+                let refreshToken = res.data.refresh_token
+                
+                if( statusCode === 200 && accessToken && refreshToken ) {
+                    // Update token 
+                    updateToken(accessToken, refreshToken)
+                    // Flag user access granted
+                    this.props.setAccessGranted(true);
+                } else {
+                    // No need to handle this error, 
+                    // if all data is valid server will provide a access_token and refresh_token
+                    // with status code of '200' or 'OK'
+                }
+            }.bind(this))
+            .catch(function(error) {
+                let statusCode = error.response.status
+                // The server response one of the following:
+                // 400 - Bad Request (invalid data submitted)
+                // 403 - Forbidden (SSL required)
+                // 500 - Internal Server Error (server error)
+                
+                // TODO: 
+                // - Do we need to handle this error? 
+                // - What will we need to prompt to user? 
+
+                // flag the user that is not logged in
+                removeToken() // Make sure to remove user's device token
+                this.props.setAccessGranted(false) 
+            }.bind(this))
+        }).catch((error) => {
+            // We can't get the existing refresh token of the user here
+            // In this situation, user will not logged in
+            
+            removeToken() // Make sure to remove user's device token
+            this.props.setAccessGranted(false)
+        })
+    } 
+
+    componentWillMount() {
+        getAccessToken().then((accessToken) => {
+            if (accessToken) {
+                this._refreshToken()
+            }
+        }).catch((error) => {
+            // Nothing to do here since user don't have an existing ACCESS TOKEN
+            // In this situation, user is not logged in
+
+            removeToken() // Make sure to remove user's device token
+            this.props.setAccessGranted(false)
+        })
     }
 
     componentDidMount() {
@@ -112,9 +181,11 @@ class AppNavigator extends Component {
     popRoute() {
         this.props.popRoute()
     }
+
     openDrawer() {
         this._drawer.open()
     }
+
     closeDrawer() {
         if(this.props.store.getState().drawer.drawerState == 'opened') {
             this._drawer.close()
@@ -249,7 +320,8 @@ class AppNavigator extends Component {
 function bindAction(dispatch) {
     return {
         closeDrawer: () => dispatch(closeDrawer()),
-        popRoute: () => dispatch(popRoute())
+        popRoute: () => dispatch(popRoute()),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 

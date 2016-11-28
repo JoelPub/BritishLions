@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setAccessGranted } from '../../actions/token'
 import { Keyboard, Dimensions, Image, ScrollView, Alert } from 'react-native'
 import axios from 'axios'
 import qs from 'qs'
@@ -10,7 +11,7 @@ import { Container, Content, Text, Input, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from './login-theme'
 import styles from './login-layout-theme'
-import { updateToken } from '../utility/JWT'
+import { updateToken } from '../utility/asyncStorageServices'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { debounce } from 'lodash'
@@ -41,20 +42,25 @@ class Login extends Component {
         // debounce
         this._handleSignIn = debounce(this._handleSignIn, 500, {leading: true, maxWait: 0, trailing: false})
     }
+
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
         Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
+
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
         this.setState({offset :{y: 150}})
     }
+
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
+
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
@@ -72,6 +78,7 @@ class Login extends Component {
             if (response.request._response) {
                 let data = JSON.parse(response.request._response)
                 updateToken(data.access_token, data.refresh_token)
+                this.props.setAccessGranted(true);
                 this._replaceRoute('news')
             } else {
                 Alert.alert(
@@ -96,10 +103,8 @@ class Login extends Component {
                 submit: false
             }
         })
-        if(isFormValidate) {
-            // TODO Make sure the _createToken function does fire twice on double click
-            // Use the _.Throttle function from Lodash
 
+        if(isFormValidate) {
             this._createToken()
           
         } else {
@@ -181,8 +186,13 @@ class Login extends Component {
 function bindActions(dispatch){
     return {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
-export default connect(null, bindActions)(Login)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindActions)(Login)
