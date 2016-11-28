@@ -4,8 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from './actions/token'
 import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
-import axios from 'axios'
-import qs from 'qs'
+import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
 import { BackAndroid, Platform, StatusBar, View, Alert } from 'react-native'
 import { closeDrawer } from './actions/drawer'
@@ -93,44 +92,24 @@ class AppNavigator extends Component {
 
     _refreshToken() {    
         getRefreshToken().then((refreshToken) => {
-            axios.post(
-                this.serviceUrl,
-                qs.stringify({
-                    'refresh_token': refreshToken,
-                    'grant_type': 'refresh_token'
-                })
-            )
-            .then(function(res) {
-                let statusCode = res.status
+            removeToken() // Make sure to remove user's device token first
+            this.props.setAccessGranted(false) // make the flag false
+
+            let data = {
+                'refresh_token': refreshToken,
+                'grant_type': 'refresh_token'
+            }
+
+            service(this.serviceUrl, data, (res) => {
                 let accessToken = res.data.access_token
                 let refreshToken = res.data.refresh_token
-                
-                if( statusCode === 200 && accessToken && refreshToken ) {
-                    // Update token 
-                    updateToken(accessToken, refreshToken)
-                    // Flag user access granted
-                    this.props.setAccessGranted(true);
-                } else {
-                    // No need to handle this error, 
-                    // if all data is valid server will provide a access_token and refresh_token
-                    // with status code of '200' or 'OK'
-                }
-            }.bind(this))
-            .catch(function(error) {
-                let statusCode = error.response.status
-                // The server response one of the following:
-                // 400 - Bad Request (invalid data submitted)
-                // 403 - Forbidden (SSL required)
-                // 500 - Internal Server Error (server error)
-                
-                // TODO: 
-                // - Do we need to handle this error? 
-                // - What will we need to prompt to user? 
+                console.log('refresh_token: granted')
+                // Update token 
+                updateToken(accessToken, refreshToken)
+                // Flag user access granted
+                this.props.setAccessGranted(true)
 
-                // flag the user that is not logged in
-                removeToken() // Make sure to remove user's device token
-                this.props.setAccessGranted(false) 
-            }.bind(this))
+            })
         }).catch((error) => {
             // We can't get the existing refresh token of the user here
             // In this situation, user will not logged in

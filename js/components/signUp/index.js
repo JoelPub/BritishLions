@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Keyboard, Image, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
-import axios from 'axios'
+import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -25,7 +25,6 @@ class SignUp extends Component {
             newEvent: false,
             newPartners: false,
             tc: false,
-            serviceUrl: 'https://api-ukchanges.co.uk/lionsrugby/api/users',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -44,63 +43,60 @@ class SignUp extends Component {
             theme: React.PropTypes.object,
         }
 
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/users'
+
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
     }
+
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
        this.setState({offset :{y: 80}})
     }
+
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
+
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
+
     _popRoute() {
         this.props.popRoute()
     }
-    _userSignUp = () => {
-        axios({
-            method: 'post',
-            url: this.state.serviceUrl,
-            data: {
-              firstName: this.state.firstName,
-              lastName: this.state.lastName,
-              email: this.state.email,
-              password: this.state.password,
-              newEvent: this.state.newEvent,
-              newPartners: this.state.newPartners,
-              tc: this.state.tc
-            }
-        })
-        .then(function(response) {
-          Alert.alert(
-            'Your account has been created successfully!',
-            '',
-            [{text: 'SIGN IN', onPress: () => this._popRoute()}]
-          )
-        }.bind(this))
-        .catch(function(error) {
-            Alert.alert(
-              'An error occured',
-              '' + error,
-              [{text: 'DISMISS'}]
-            )
-        })
+
+    _userSignUp() {
+        Alert.alert(
+            'Messages',
+            'Your account has been created successfully.',
+            [{text: 'SIGN IN', onPress: () => this._replaceRoute('login')}]
+        )
     }
     
-    _handleSignUp = (isFormValidate) => {
+    _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
                 submit: false
             }
         })
         if(isFormValidate) {
-            this._userSignUp()
+            let data = {
+                'firstName': this.state.firstName,
+                'lastName': this.state.lastName,
+                'email': this.state.email,
+                'password': this.state.password,
+                'newEvent': this.state.newEvent,
+                'newPartners': this.state.newPartners,
+                'tc': this.state.tc
+            }
+
+            service(this.serviceUrl, data, this._userSignUp.bind(this))
+
         } else {
             this._scrollView.scrollTo({
                 x: 0,
@@ -109,10 +105,12 @@ class SignUp extends Component {
             })
         }
     }
+
     componentDidMount () {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
         Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
+
     render() {
         return (
             <Container>
@@ -127,24 +125,24 @@ class SignUp extends Component {
                                 <View style={styles.guther}>
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this._handleSignUp}/>
+                                        callbackParent={this._handleSignUp.bind(this)}/>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
+                                        <Input defaultValue={this.state.firstName} onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({lastName: event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
+                                        <Input defaultValue={this.state.lastName} onChange={(event) => this.setState({lastName: event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
+                                        <Input defaultValue={this.state.email} onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
+                                        <Input defaultValue={this.state.password} onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
                                     </View>
 
                                     <View style={styles.switchInputWrapper}>

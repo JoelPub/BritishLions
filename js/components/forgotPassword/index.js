@@ -2,14 +2,16 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions } from 'react-native'
+import { Keyboard, Image, Dimensions, Alert } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
+import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import { debounce } from 'lodash'
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -26,9 +28,15 @@ class ForgotPassword extends Component {
                 submit: false
             },
         }
+
         this.constructor.childContextTypes = {
-        theme: React.PropTypes.object,
+            theme: React.PropTypes.object
         }
+
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/password/reset'
+
+        // debounce
+        this._onValidateSuccess = debounce(this._onValidateSuccess, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     keyboardWillShow (e) {
@@ -45,6 +53,10 @@ class ForgotPassword extends Component {
         Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+
     replaceRoute(route) {
         this.props.replaceRoute(route)
     }
@@ -53,20 +65,39 @@ class ForgotPassword extends Component {
         this.props.popRoute()
     }
 
-    onSuccessValidate = (parameter) => {
+    _onValidateSuccess(isFormValidate) {
         this.setState({
-            errorCheck:{
+            errorCheck: {
                 submit: false
             }
         })
-        if(parameter) {
-            this.popRoute()
-        }
-        else {
+
+        if(isFormValidate) {
+            let data = {
+                'email': this.state.email
+            }
+
+            service(this.serviceUrl, data, this._resetPassword.bind(this))
+        } else {
             this.setState({
                 offset:{y:0}
             })
         }
+    }
+
+    _resetPassword(res) {
+        // successful sent to the server
+        // reset the email field
+        this.setState({ email: ''})
+        
+        Alert.alert(
+            'Messages',
+            'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
+            [{
+                text: 'OK', 
+                onPress: () => this.replaceRoute('login')
+            }]
+        )
     }
 
     render() {
@@ -84,11 +115,11 @@ class ForgotPassword extends Component {
 
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this.onSuccessValidate} />
+                                        callbackParent={this._onValidateSuccess.bind(this)} />
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input placeholder='Email' keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
                                     
                                     <ButtonFeedback rounded label='SUBMIT' style={styles.button} onPress={() => {this.setState({errorCheck:{email:this.state.email,submit:true}})}} />

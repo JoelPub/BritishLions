@@ -89,7 +89,7 @@ class LionsSidebar extends Component {
         super(props)
 
         // debounce
-        this.navigateTo = debounce(this.navigateTo, 500, {leading: true, maxWait: 0, trailing: false})
+        this.navigateTo = debounce(this.navigateTo, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     navigateTo(route) {
@@ -104,6 +104,7 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
+    
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
