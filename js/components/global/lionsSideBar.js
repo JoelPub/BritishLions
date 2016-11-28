@@ -183,7 +183,7 @@ class LionsSidebar extends Component {
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
