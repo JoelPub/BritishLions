@@ -29,6 +29,7 @@ class MyLionsPlayerList extends Component {
         this.logo=this.props.unionFeed.logo
         this.personallogo=this.props.unionFeed.image
         this.name=this.props.unionFeed.displayname.toUpperCase()
+        this.playerFeed=[]
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -39,16 +40,23 @@ class MyLionsPlayerList extends Component {
     }
 
     _drillDown(item, route) {
-        this.props.drillDown(item,route)
+        this.props.drillDown(item,route)       
+        this.setState({
+            isLoaded: false
+        })
    }
     componentDidMount() {
         this.props.fetchContent(this.url)
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            isLoaded: true
-        })
+        if(nextProps.playerFeed!== undefined&&nextProps.playerFeed[this.id]!== undefined) {
+        
+                this.playerFeed=nextProps.playerFeed[this.id]
+               this.setState({
+                    isLoaded: true
+                })
+           }
     }
     _setModalVisible=(visible) => {
         this.setState({
@@ -198,13 +206,13 @@ class MyLionsPlayerList extends Component {
                     this.state.isLoaded?
                     <Content>
                     {
-                            this._mapJSON(this.props.playerFeed[this.id]).map((rowData, index) => {
+                            this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
                                                 let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-                                                Object.assign(item,{logo:this.personallogo,country:this.name})
+                                                Object.assign(item,{logo:this.personallogo,country:this.name,isFav:false})
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
