@@ -8,7 +8,7 @@
 * **Babel** for ES6 → ES5 transpiling 
 * [**Jest**](https://facebook.github.io/jest/) for testing and linting
 * [**Axios**](https://github.com/mzabriskie/axios) for the async request handling
-* Authentication flow with **JSON Web Tokens**
+* Authentication flow with **JSON Web Tokens** via email address, Facebook or Google+ SDK
 * **Git** for the version control management
 
 ### System Requirements ###
