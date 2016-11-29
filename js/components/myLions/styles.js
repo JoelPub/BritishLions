@@ -102,6 +102,9 @@ module.exports = styleSheetCreate({
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
     },
+    btnLeftRed: {
+        backgroundColor: 'rgb(175, 0, 30)',
+    },
     btnRed: {
         backgroundColor: 'rgb(208, 7, 42)',
     },
@@ -269,6 +272,7 @@ module.exports = styleSheetCreate({
     },
     playerImg: {
         width: styleVar.deviceWidth*9/25,
+        height: 135,
     },
     resultDesc: {
         flex:16,
@@ -284,7 +288,7 @@ module.exports = styleSheetCreate({
     },
     resultRowTitleText: {
         fontSize:24,
-        lineHeight:24,
+        lineHeight:26,
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         paddingLeft:22,
@@ -292,7 +296,7 @@ module.exports = styleSheetCreate({
     },
     resultRowSubtitleText: {
         fontSize:18,
-        lineHeight:18,
+        lineHeight:21,
         textAlign:'left',
         fontFamily: styleVar.fontGeorgia,
         paddingLeft:22,

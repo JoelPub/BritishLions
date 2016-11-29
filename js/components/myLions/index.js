@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View } from 'react-native'
-import { drillDown } from '../../actions/content'
+import { showList } from '../../actions/player'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -29,8 +29,8 @@ class MyLions extends Component {
          }
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item, route)
+    _showList(item, route) {
+        this.props.showList(item, route)
         this.setState({
             isLoaded: false
         })
@@ -61,7 +61,7 @@ class MyLions extends Component {
     }
     _myLions(){
         this.props.isAccessGranted?
-        this._drillDown(Data,'myLionsFavoriteList')
+        this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
         :alertBox(
                     'An Error Occured',
                     'Please login',
@@ -90,7 +90,7 @@ class MyLions extends Component {
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback
                                                             style={stylesArr}
-                                                            onPress={() => this._drillDown(item,'myLionsPlayerList')}>
+                                                            onPress={() => this._showList({'uniondata':Data,'unionId':item.id,'logo':item.logo,'name':item.displayname.toUpperCase()},'myLionsPlayerList')}>
 
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styles.gridBoxImgWrapper}>
@@ -129,7 +129,7 @@ class MyLions extends Component {
 
 function bindAction(dispatch) {
     return {
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        showList: (data, route)=>dispatch(showList(data, route))
     }
 }
 

@@ -50,7 +50,6 @@ class MyLionsPlayerDetails extends Component {
                 )
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.tokenResponse!== undefined&&nextProps.tokenResponse.playerList!== undefined) {
             this.playerList=nextProps.tokenResponse.playerList.split('|')
             this.setState({
                 isFav:(this.playerList.indexOf(this.playerid)!==-1)
@@ -59,7 +58,6 @@ class MyLionsPlayerDetails extends Component {
                 alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?'Added':'Removed')
                 this.edit=false
             }
-        }
     }
 
     _myLions(route) {
@@ -93,7 +91,7 @@ class MyLionsPlayerDetails extends Component {
                         </View>
 
                         <View style={styles.buttons}>
-                            <ButtonFeedback onPress={()=> this._editPlayer()} style={[styles.btn, styles.btnLeft, styles.btnGreen]}>
+                            <ButtonFeedback onPress={()=> this._editPlayer()} style={[styles.btn, styles.btnLeft, this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
                                 <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'}</Text>
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>

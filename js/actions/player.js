@@ -1,6 +1,7 @@
 'use strict'
 
 import type { Action } from './types'
+import { pushNewRoute, replaceRoute} from './route'
 import { alertBox } from './../components/utility/alertBox'
 import axios from 'axios'
 import qs from 'qs'
@@ -8,6 +9,7 @@ import { getAccessToken } from '../components/utility/asyncStorageServices'
 
 export const GET_PLAYERLIST = 'GET_PLAYERLIST'
 export const GET_PLAYERS_DETAIL = 'GET_PLAYERS_DETAIL'
+export const PUSH_UNION = 'PUSH_UNION'
 
 
 export function editFavList(favEditUrl,favUrl,playerid):Action {
@@ -141,17 +143,30 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
     }
 }
 
-export function getPlayerlist({payload}):Action {
+function getPlayerlist({payload}):Action {
     return {
         type: GET_PLAYERLIST,
         payload
     }
 }
 
-export function getPlayersDetail({payload}):Action {
+function getPlayersDetail({payload}):Action {
     return {
         type: GET_PLAYERS_DETAIL,
         payload
     }
 }
 
+function pushUnion({item}):Action {
+    return {
+        type: PUSH_UNION,
+        item
+    }
+}
+
+export function showList(item, route:string):Action {
+    return (dispatch, getState) => {
+        dispatch(pushUnion({item}))
+        dispatch(pushNewRoute(route))
+    }
+}

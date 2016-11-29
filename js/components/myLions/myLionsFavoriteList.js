@@ -21,7 +21,6 @@ import { drillDown } from '../../actions/content'
 import { getFavDetail } from '../../actions/player'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
-import Data from '../../../contents/unions/data'
 import refresh from '../../themes/refresh-control'
 
 class MyLionsFavoriteList extends Component {
@@ -30,7 +29,7 @@ class MyLionsFavoriteList extends Component {
         super(props)
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
-        this.unionFeed=Data
+        this.unionFeed=this.props.unionFeed
         this.playerids =[]
         this.playerFeed=[]
         this.state = {
@@ -53,15 +52,8 @@ class MyLionsFavoriteList extends Component {
                 )
 
     }
-    componentWillUnmount() {
-        this.setState({
-            isLoaded: false
-        })
-    }
     componentWillReceiveProps(nextProps) {
         
-        if(nextProps.playerFeed!== undefined&&nextProps.playerFeed.tokenData!== undefined) {
-            
             this.setState({
                 isLoaded: true,
                 isRefreshing: this.props.isRefreshing,
@@ -80,16 +72,12 @@ class MyLionsFavoriteList extends Component {
                     })
                 }
             }
-        }
  
 
     }
 
     _drillDown(item, route) {
         this.props.drillDown(item,route)
-        this.setState({
-            isLoaded: false
-        })
    }
 
     _mapJSON(data, colMax = 2) {
@@ -149,7 +137,7 @@ class MyLionsFavoriteList extends Component {
                                         {
                                             rowData.map((item, key) => {
                                                 let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-                                                let union=this.unionFeed.find((n)=> n.id===item.countryid)
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===item.countryid)
                                                 Object.assign(item,{logo:union.image,country:union.displayname.toUpperCase(),isFav:true})
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
@@ -203,7 +191,7 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        unionFeed: state.content.drillDownItem,
+        unionFeed: state.player.union,
         playerFeed: state.player.playerDetail,
         isLoaded: state.player.isLoaded,
         isRefreshing: state.player.isRefreshing
