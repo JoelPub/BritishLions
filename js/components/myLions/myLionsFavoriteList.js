@@ -204,7 +204,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         unionFeed: state.content.drillDownItem,
-        playerFeed: state.player.contentState,
+        playerFeed: state.player.playerDetail,
         isLoaded: state.player.isLoaded,
         isRefreshing: state.player.isRefreshing
     }
