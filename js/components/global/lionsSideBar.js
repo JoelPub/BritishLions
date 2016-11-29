@@ -114,8 +114,8 @@ class LionsSidebar extends Component {
         removeToken()
         this.navigateTo('news')
     }
+    
     render(){
-
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>

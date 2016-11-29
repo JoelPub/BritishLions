@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { Keyboard, Image, Dimensions, ScrollView, Platform, Alert } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../login/login-theme'
@@ -86,6 +88,12 @@ class MyAccount extends Component {
         this.props.popRoute()
     }
 
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
+    }
+
     _onSuccessValidateEmail(isFormValidate) {
         this.setState({
             errorCheckEmail: {
@@ -94,7 +102,21 @@ class MyAccount extends Component {
         })
 
         if(isFormValidate) {
-            this.popRoute()
+            let data = {
+                'newEmail': this.state.email
+            }
+            service(this.changeEmailServiceUrl, data, (res) => {
+                // reset the fields
+                this.setState({
+                    email: ''
+                })
+
+                Alert.alert(
+                    'Messages',
+                    'Your email is successfully changed.',
+                    [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                )
+            }, true)
         }
         else {
             this.setState({
@@ -175,7 +197,7 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input defaultValue={this.state.email} onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
                                     
                                     <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
@@ -194,7 +216,8 @@ class MyAccount extends Component {
 function bindAction(dispatch) {
     return {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        popRoute: () => dispatch(popRoute())
+        popRoute: () => dispatch(popRoute()),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 

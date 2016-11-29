@@ -103,13 +103,13 @@ class AppNavigator extends Component {
             service(this.serviceUrl, data, (res) => {
                 let accessToken = res.data.access_token
                 let refreshToken = res.data.refresh_token
-                console.log('refresh_token: granted')
+                
                 // Update token 
                 updateToken(accessToken, refreshToken)
                 // Flag user access granted
                 this.props.setAccessGranted(true)
 
-            })
+            }, false, true)
         }).catch((error) => {
             // We can't get the existing refresh token of the user here
             // In this situation, user will not logged in

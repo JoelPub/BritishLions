@@ -22,8 +22,6 @@ function errorSlice(errObj) {
 }
 
 function errorHandler(error) {
-	console.log('errorHandler: ', error.response)
-
 	let statusCode = error.response.status
 	let errorType = error.response.data.error
 	let errorDescription = error.response.data.error_description || ''
@@ -61,7 +59,7 @@ function errorHandler(error) {
 }
 
 
-function callApi(url, data, callback) {
+function callApi(url, data, callback, isRefreshToken) {
 	axios.post(
 	    url,
 	    qs.stringify(data)
@@ -72,18 +70,24 @@ function callApi(url, data, callback) {
 		}
 	    
 	}).catch(function(error) {
-	    errorHandler(error)
+		// console.log('errorHandler: ', error.response)
+		// no need to prompt a message if the request is from 
+		// appNavigator.js and its about refreshing of token
+		if (!isRefreshToken) {
+			errorHandler(error)
+		}
+	    
 	})
 }
 
-export function service(url, data, callback, token = false) {
+export function service(url, data, callback, isRequiredToken = false,  isRefreshToken = false) {
 	// TODO: Add a condition that will handle the network problem
 	// if (NetInfo.isConnected) {}
-	if (token) {
+	if (isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
-				callApi(url, data, callback)
+				callApi(url, data, callback, isRefreshToken)
 			} else {
 				Alert.alert(
 				    'Messages',
@@ -99,7 +103,7 @@ export function service(url, data, callback, token = false) {
             )
     	})
 	} else {
-		callApi(url, data, callback)
+		callApi(url, data, callback, isRefreshToken)
 	}
 
 }
