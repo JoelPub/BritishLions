@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Alert } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
@@ -89,7 +90,7 @@ class LionsSidebar extends Component {
         super(props)
 
         // debounce
-        this.navigateTo = debounce(this.navigateTo, 500, {leading: true, maxWait: 0, trailing: false})
+        this.navigateTo = debounce(this.navigateTo, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     navigateTo(route) {
@@ -104,17 +105,27 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
+    
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
 
     _signOut() {
-        this.props.setAccessGranted(false)
-        removeToken()
-        this.navigateTo('news')
+        Alert.alert(
+            'Confirmation',
+            'Are you sure you want to logout?',
+            [
+                {text: 'Yes', onPress: () => {
+                    this.props.setAccessGranted(false)
+                    removeToken()
+                    this.navigateTo('news')
+                }},
+                {text: 'No'}
+            ]
+        )   
     }
+    
     render(){
-
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>

@@ -14,24 +14,60 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
+import { editFavList, getFavList } from '../../actions/player'
+import { pushNewRoute } from '../../actions/route'
+import { alertBox } from '../utility/alertBox'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
         super(props)
+        this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
+        this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954',
+        this.playerid = this.props.detail.id
+        this.playerList = []
+        this.edit =false
+        this.state ={
+            isFav : this.props.isFav
+        }  
+    }
+    componentWillMount() {
+        this.props.getFavList(this.favUrl)
     }
 
-    _addPlayer() {
-        Alert.alert(
-            'Add Player',
-            'adding player..',
+    _editPlayer() {
+        this.edit=true
+        this.props.isAccessGranted?
+        (
+            this.state.isFav?
+            this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid)
+            :this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid)
         )
+        :alertBox(
+                    'An Error Occured',
+                    'Please login',
+                    'Dismiss'
+                )
+    }
+    componentWillReceiveProps(nextProps) {
+            this.playerList=nextProps.tokenResponse.playerList.split('|')
+            this.setState({
+                isFav:(this.playerList.indexOf(this.playerid)!==-1)
+            })
+            if (this.edit) {
+                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?'Added':'Removed')
+                this.edit=false
+            }
     }
 
-    _myLions() {
-        Alert.alert(
-            'My Lions',
-            'viewing my lions..',
-        )
+    _myLions(route) {
+        this.props.isAccessGranted?
+        this.props.pushNewRoute(route)
+        :alertBox(
+                    'An Error Occured',
+                    'Please login',
+                    'Dismiss'
+                )
     }
 
     render() {
@@ -55,10 +91,10 @@ class MyLionsPlayerDetails extends Component {
                         </View>
 
                         <View style={styles.buttons}>
-                            <ButtonFeedback onPress={()=> this._addPlayer()} style={[styles.btn, styles.btnLeft, styles.btnGreen]}>
-                                <Text style={styles.btnText}>ADD</Text>
+                            <ButtonFeedback onPress={()=> this._editPlayer()} style={[styles.btn, styles.btnLeft, this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
+                                <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'}</Text>
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={()=> this._myLions()} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                            <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
                                 <Text style={styles.btnText}>MY LIONS</Text>
                             </ButtonFeedback>
                         </View>
@@ -112,10 +148,19 @@ class MyLionsPlayerDetails extends Component {
         )
     }
 }
-
+function bindAction(dispatch) {
+    return {
+        getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
+        editFavList: (favEditUrl,favUrl,playerid) =>dispatch(editFavList(favEditUrl,favUrl,playerid)),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+    }
+}
 
 export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
+        tokenResponse: state.player.playerList,
+        isLoaded: state.player.isLoaded,
+        isAccessGranted: state.token.isAccessGranted
     }
-}, null)(MyLionsPlayerDetails)
+}, bindAction)(MyLionsPlayerDetails)
