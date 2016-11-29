@@ -6,7 +6,8 @@ import axios from 'axios'
 import qs from 'qs'
 import { getAccessToken } from '../components/utility/asyncStorageServices'
 
-export const SET_PLAYER = 'SET_PLAYER'
+export const GET_PLAYERLIST = 'GET_PLAYERLIST'
+export const GET_PLAYERS_DETAIL = 'GET_PLAYERS_DETAIL'
 
 
 export function editFavList(favEditUrl,favUrl,playerid):Action {
@@ -27,7 +28,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                                 favUrl
                             )
                             .then(function(response){
-                                dispatch(setPlayer({
+                                dispatch(getPlayerlist({
                                     payload: {playerList:response.data}
                                 }))
                             })
@@ -81,7 +82,7 @@ export function getFavList(favUrl):Action {
                             favUrl
                         )
                         .then(function(tokenresponse){
-                            dispatch(setPlayer({
+                            dispatch(getPlayerlist({
                                 payload: {playerList:tokenresponse.data}
                             }))
                         })
@@ -112,7 +113,7 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
                                     soticUrl
                                 )
                                 .then(function(response){
-                                    dispatch(setPlayer({
+                                    dispatch(getPlayersDetail({
                                         payload: {tokenData:tokenresponse.data,soticData:response.data}
                                     }))
                                 })
@@ -140,9 +141,16 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
     }
 }
 
-export function setPlayer({payload}):Action {
+export function getPlayerlist({payload}):Action {
     return {
-        type: SET_PLAYER,
+        type: GET_PLAYERLIST,
+        payload
+    }
+}
+
+export function getPlayersDetail({payload}):Action {
+    return {
+        type: GET_PLAYERS_DETAIL,
         payload
     }
 }

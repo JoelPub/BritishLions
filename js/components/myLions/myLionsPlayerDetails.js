@@ -161,7 +161,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
-        tokenResponse: state.player.contentState,
+        tokenResponse: state.player.playerList,
         isLoaded: state.player.isLoaded,
         isAccessGranted: state.token.isAccessGranted
     }

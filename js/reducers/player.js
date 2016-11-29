@@ -1,16 +1,19 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { SET_PLAYER } from '../actions/player'
+import { GET_PLAYERLIST } from '../actions/player'
+import { GET_PLAYERS_DETAIL } from '../actions/player'
 
 export type State = {
-    contentState: Array<string>,
+    playerList: Array<string>,
+    playerDetail: Array<string>,
     isLoaded: Bool,
     isRefreshing: Bool,
 }
 
 const initialState = {
-    contentState: [],
+    playerList: [],
+    playerDetail: [],
     isLoaded: false,
     isRefreshing: false,
     contentItem: {}
@@ -18,10 +21,18 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
     
-    if (action.type === SET_PLAYER) {
+    if (action.type === GET_PLAYERLIST) {
         return {
             ...state,
-            contentState: action.payload,
+            playerList: action.payload,
+            isLoaded: true
+        }
+    }
+
+    if (action.type === GET_PLAYERS_DETAIL) {
+        return {
+            ...state,
+            playerDetail: action.payload,
             isLoaded: true,
             isRefreshing: false
         }
