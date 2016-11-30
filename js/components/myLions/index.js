@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View } from 'react-native'
-import { drillDown, saveContent } from '../../actions/content'
+import { showList } from '../../actions/player'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -18,6 +18,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import Data from '../../../contents/unions/data'
+import { alertBox } from '../utility/alertBox'
 
 class MyLions extends Component {
 
@@ -28,12 +29,13 @@ class MyLions extends Component {
          }
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item, route)
+    _showList(item, route) {
+        this.props.showList(item, route)
+        this.setState({
+            isLoaded: false
+        })
     }
-    componentDidMount() {
-        this.props.saveContent(Data)
-    }
+    
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true
@@ -57,6 +59,15 @@ class MyLions extends Component {
         }
         return newData
     }
+    _myLions(){
+        this.props.isAccessGranted?
+        this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
+        :alertBox(
+                    'An Error Occured',
+                    'Please login',
+                    'Dismiss'
+                )
+    }
 
     render() {
         return (
@@ -64,7 +75,7 @@ class MyLions extends Component {
                 <View style={styles.container}>
                     <View style={styles.headerContainer}>
                         <LionsHeader title='MY LIONS' />
-                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._drillDown(Data,'myLionsFavoriteList')} />
+                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._myLions()} />
                     </View>
                     <Content>
                          {
@@ -79,7 +90,7 @@ class MyLions extends Component {
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback
                                                             style={stylesArr}
-                                                            onPress={() => this._drillDown(item,'myLionsPlayerList')}>
+                                                            onPress={() => this._showList({'uniondata':Data,'unionId':item.id,'logo':item.logo,'name':item.displayname.toUpperCase()},'myLionsPlayerList')}>
 
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styles.gridBoxImgWrapper}>
@@ -118,9 +129,12 @@ class MyLions extends Component {
 
 function bindAction(dispatch) {
     return {
-        saveContent: (data)=>dispatch(saveContent(data)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        showList: (data, route)=>dispatch(showList(data, route))
     }
 }
 
-export default connect(null, bindAction)(MyLions)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+},  bindAction)(MyLions)

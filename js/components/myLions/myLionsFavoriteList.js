@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { Image, View, Modal, ScrollView, RefreshControl, ActivityIndicator } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -17,96 +17,62 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { getAccessToken } from '../utility/asyncStorageServices'
-import { fetchContent, drillDown } from '../../actions/content'
-import axios from 'axios'
+import { drillDown } from '../../actions/content'
+import { getFavDetail } from '../../actions/player'
 import loader from '../../themes/loader-position'
+import { alertBox } from '../utility/alertBox'
+import refresh from '../../themes/refresh-control'
 
 class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
-        this.favurl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
-        this.playerid =[]
-        this.url = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403`
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.unionFeed=this.props.unionFeed
+        this.playerids =[]
         this.playerFeed=[]
         this.state = {
+            isRefreshing: false,
             isLoaded: false
         }    
     }
     componentDidMount() {
-        getAccessToken().then((token) => {
-            if(token!=='') {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                axios.get(
-                    this.favurl
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback)
+    }
+    _onRefresh() {
+        this.setState({isRefreshing: true})
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback)
+    }
+    errCallback() {
+        alertBox(
+                    'An Error Occured',
+                    'Please login',
+                    'Dismiss'
                 )
-                .then(function(response) {
-                    if (response.data) {
-                        this.playerid=response.data.split('|')
-                        this.playerid.map((p,i)=>{
-                        })
-                        this.props.fetchContent(this.url)
-                    } else {
-                        Alert.alert(
-                            'Access not granted',
-                            'Please try again later.',
-                            [{text: 'DISMISS'}]
-                        )
-                    }
-                }.bind(this))
-                .catch(function(error) {
-                        if(error.response.status===401) {
-                            Alert.alert(
-                                'Your login session expired, please login again',
-                                ''+error,
-                                [{text:'DISMISS'}]
-                                )
-                        }
-                        else {
-                            Alert.alert(
-                                'An error occured',
-                                '' + error,
-                                [{text: 'DISMISS'}]
-                            )
-                    }
-                })
-
-            }
-            else {                
-                    Alert.alert(
-                        'please login',
-                        [{text:'DISMISS'}]
-                        )
-            }
-        }).catch((err) => {
-                            Alert.alert(
-                                'An error occured',
-                                '' + error,
-                                [{text: 'DISMISS'}]
-                            )
-        })
 
     }
     componentWillReceiveProps(nextProps) {
-        this.playerFeed=[]
-        for (var u in nextProps.playerFeed) {
-            if(nextProps.playerFeed[u].length>0) {
-                nextProps.playerFeed[u].map((player,index)=>{
-                    this.playerid.map((id,j)=>{
-                        if(player.id===id) {
-                        Object.assign(player,{'countryid':u})
-                        this.playerFeed.push(player)
-                        }
+        
+            this.setState({
+                isLoaded: true,
+                isRefreshing: this.props.isRefreshing,
+            })
+            this.playerFeed=[]
+            this.playerids=nextProps.playerFeed.tokenData.split('|')
+            for (var u in nextProps.playerFeed.soticData) {
+                if(nextProps.playerFeed.soticData[u].length>0) {
+                    nextProps.playerFeed.soticData[u].map((player,index)=>{
+                        this.playerids.map((id,j)=>{
+                            if(player.id===id) {
+                            Object.assign(player,{'countryid':u})
+                            this.playerFeed.push(player)
+                            }
+                        })
                     })
-                })
+                }
             }
-        }
  
-        this.setState({
-            isLoaded: true
-        })
 
     }
 
@@ -151,7 +117,19 @@ class MyLionsFavoriteList extends Component {
 
                      {
                     this.state.isLoaded?
-                    <Content>
+                    <ScrollView
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={()=> { this._onRefresh() }}
+                                        tintColor = {refresh.tintColor}
+                                        title = {refresh.title}
+                                        titleColor = {refresh.titleColor}
+                                        colors = {refresh.colors}
+                                        progressBackgroundColor = {refresh.background}
+                                    />
+                            }>
+                            <Content>
                         {
                             this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
@@ -159,8 +137,8 @@ class MyLionsFavoriteList extends Component {
                                         {
                                             rowData.map((item, key) => {
                                                 let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-                                                let union=this.unionFeed.find((n)=> n.id==='125')
-                                                Object.assign(item,{logo:union.image,country:union.displayname.toUpperCase()})
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===item.countryid)
+                                                Object.assign(item,{logo:union.image,country:union.displayname.toUpperCase(),isFav:true})
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
@@ -193,7 +171,8 @@ class MyLionsFavoriteList extends Component {
                             }, this)
                         }
                         <LionsFooter isLoaded={true} />
-                    </Content>:
+                    </Content>
+                    </ScrollView>:
                         <ActivityIndicator style={loader.centered} size='large' />
                     }
                     < EYSFooter />
@@ -205,15 +184,16 @@ class MyLionsFavoriteList extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
+        getFavDetail: (favUrl,playerFullUrl,errorCallbck) =>dispatch(getFavDetail(favUrl,playerFullUrl,errorCallbck)),
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
 
 export default connect((state) => {
     return {
-        unionFeed: state.content.drillDownItem,
-        playerFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        unionFeed: state.player.union,
+        playerFeed: state.player.playerDetail,
+        isLoaded: state.player.isLoaded,
+        isRefreshing: state.player.isRefreshing
     }
 }, bindAction)(MyLionsFavoriteList)

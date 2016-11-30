@@ -7,11 +7,13 @@ import route from './route'
 import content from './content'
 import timer from './timer'
 import token from './token'
+import player from './player'
 
 export default combineReducers({
 	drawer,
   	route,
 	content,
 	timer,
-	token
+	token,
+	player
 })
