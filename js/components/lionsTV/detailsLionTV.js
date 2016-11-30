@@ -77,8 +77,8 @@ class DetailsLionsTV extends Component {
                     onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
                     onError={(e)=>{
                         this.setState({error: e.error})
-                        /*if(!this.state.isReady)
-                        {*/
+                        if(!this.state.isReady)
+                        {
                             Alert.alert(
                                           'Warning',
                                            'Looks like something went wrong when attempting to play the video.'
@@ -89,7 +89,7 @@ class DetailsLionsTV extends Component {
                                               {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
                                           ]
                                       )
-                          /*}*/
+                          }
                     }}
                     style={styles.youtubePlayerView}
                   />
