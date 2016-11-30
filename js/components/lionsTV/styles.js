@@ -98,11 +98,23 @@ module.exports = styleSheetCreate({
     description: {
         padding: 20
     },
+    playerWrapper:{
+        flex:1,
+        height:211
+    },
     youtubePlayerView: {
         flex:1,
         alignSelf: 'stretch',
         height: 211,
         backgroundColor: 'black'
+    },
+    posterWrapper:{
+        flex:1,
+        height:211,
+        marginTop:-211
+    },
+    poster:{
+        height:211
     },
     shareWrapper: {
         backgroundColor: styleVar.colorGrey,
