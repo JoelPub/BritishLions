@@ -69,8 +69,32 @@ class MyLionsPlayerList extends Component {
 
     searchPlayer = (keywords) => {
         this.searchResult=[]
-        if(keywords.trim()!=='') {
-            this.searchResult=this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.toLowerCase())!==-1) 
+        let tempArr=this.playerFeed
+            if(keywords.trim()!=='') {
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())===0) )
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())!==-1) )
+            for (let i=0;i<keywords.length;i++ ) {
+                if(keywords.charAt(i).match(/[A-Z]/gi)) {
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(keywords.charAt(i).toLowerCase())!==-1) 
+                }               
+            }
+            if (tempArr.length>0) {
+                this.searchResult=this.searchResult.concat(tempArr)
+            }
+
+            this.searchResult.map((item,index)=>{
+                let arr=[]
+                for(let j=index+1; j<this.searchResult.length; j++) {                    
+                    if(item.id===this.searchResult[j].id){
+                        arr=arr.concat(j)
+                    }
+                }
+                if (arr.length>0) {
+                    arr.reverse().map((start,index)=>{
+                        this.searchResult.splice(start,1)
+                    })
+                }
+            })
             this.searchResult.length>0?  
                 this.setState({
                     resultVisible:true,
@@ -83,6 +107,10 @@ class MyLionsPlayerList extends Component {
         }
         else {
             this.searchResult=[]
+            this.setState({
+                    resultVisible:false,
+                    transparent:true
+                })
         }
     }
     _mapJSON(data, colMax = 2) {

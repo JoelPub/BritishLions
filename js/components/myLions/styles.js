@@ -264,7 +264,7 @@ module.exports = styleSheetCreate({
     },
     resultRow: {
         width: styleVar.deviceWidth,
-        height:135,
+        height:styleVar.deviceWidth*9/25,
         marginTop:1
     },
     searchImg: {
@@ -272,18 +272,18 @@ module.exports = styleSheetCreate({
     },
     playerImg: {
         width: styleVar.deviceWidth*9/25,
-        height: 135,
+        height: styleVar.deviceWidth*9/25,
     },
     resultDesc: {
         flex:16,
         backgroundColor:'rgb(208,7,41)',
-        height:135
+        height:styleVar.deviceWidth*9/25
     },
     resultRowBtn: {
         flex:1,
         flexDirection:'row',
         width: styleVar.deviceWidth,
-        height:135,
+        height:styleVar.deviceWidth*9/25,
         marginTop:1
     },
     resultRowTitleText: {

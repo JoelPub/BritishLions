@@ -23,7 +23,9 @@ class DetailsLionsTV extends Component {
               status: null,
               quality: null,
               error: null,
-              isPlaying: true
+              isPlaying: true,
+              poster: true,
+              videoId:null
         }
     }
 
@@ -45,6 +47,20 @@ class DetailsLionsTV extends Component {
       })
   }
 
+  componentWillMount(){
+    setTimeout(()=>{
+      this.setState({
+        poster:false
+      })
+    },3000)
+    
+  }
+  componentDidMount(){
+    this.setState({
+        videoId:this.props.details.contentDetails.upload.videoId
+    })
+  }
+
   render(){
     return(
       <Container theme={theme}>
@@ -61,38 +77,50 @@ class DetailsLionsTV extends Component {
                       </View>
                   </View>
 
-                  <YouTube
-                    ref='youtubePlayer'
-                    videoId= {this.props.details.contentDetails.upload.videoId}
-                    apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
-                    hidden={false}
-                    rel={true}
-                    showinfo={false}
-                    playsInline={true}
-                    loop={false}
-
-                    play={this.state.isPlaying}
-                    onReady={(e)=>{this.setState({isReady: true})}}
-                    onChangeState={(e)=>{this.setState({status: e.state})}}
-                    onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
-                    onError={(e)=>{
+                  <View style={styles.playerWrapper}>
+                    {
+                    this.state.videoId!==null&& 
+                        <YouTube
+                        ref='youtubePlayer'
+                        videoId= {this.state.videoId}
+                        apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
+                        hidden={false}
+                        rel={true}
+                        showinfo={false}
+                        playsInline={true}
+                        loop={false}
+                        play={this.state.isPlaying}
+                        onReady={(e)=>{this.setState({isReady: true,})}}
+                        onChangeState={(e)=>{this.setState({status: e.state})}}
+                        onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
+                        onError={(e)=>{
                         this.setState({error: e.error})
-                        if(!this.state.isReady)
-                        {
-                            Alert.alert(
-                                          'Warning',
-                                           'Looks like something went wrong when attempting to play the video.'
-                                           + '\nPlease make sure you have the YouTube app installed on your device.\n\n'
-                                           + 'Alternatively, you can watch the video through your device\'s browser via the link below.',
-                                          [
-                                              {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
-                                              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-                                          ]
-                                      )
-                          }
-                    }}
-                    style={styles.youtubePlayerView}
-                  />
+                            if(!this.state.isReady)
+                            {
+                                Alert.alert(
+                                              'Warning',
+                                               'Looks like something went wrong when attempting to play the video.'
+                                               + '\nPlease make sure you have the YouTube app installed on your device.\n\n'
+                                               + 'Alternatively, you can watch the video through your device\'s browser via the link below.',
+                                              [
+                                                  {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
+                                                  {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                                              ]
+                                          )
+                              }
+                        }}
+                        style={styles.youtubePlayerView}
+                      />
+                }
+                {
+                   
+                    this.state.poster&&
+                    <View style={styles.posterWrapper}>
+                      <Image source={{uri: this.props.details.snippet.thumbnails.standard.url}} style={styles.poster}/>
+                    </View>
+                    }
+                  </View>
+                 
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
                           onPress={shareTextWithTitle.bind(this, this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)}

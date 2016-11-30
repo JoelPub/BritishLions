@@ -38,18 +38,23 @@ class MyLionsFavoriteList extends Component {
         }    
     }
     componentDidMount() {
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback)
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
     }
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback)
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
     }
     errCallback() {
+        
         alertBox(
                     'An Error Occured',
-                    'Please login',
+                    'Your session expired, please login',
                     'Dismiss'
                 )
+        this.setState({
+                isLoaded: true,
+                isRefreshing: false,
+            })
 
     }
     componentWillReceiveProps(nextProps) {
