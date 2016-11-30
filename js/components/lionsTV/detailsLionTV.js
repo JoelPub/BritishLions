@@ -77,18 +77,19 @@ class DetailsLionsTV extends Component {
                     onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
                     onError={(e)=>{
                         this.setState({error: e.error})
-                        if(!this.state.isReady)
-                        {
+                        /*if(!this.state.isReady)
+                        {*/
                             Alert.alert(
                                           'Warning',
-                                          'Looks like there is something wrong when tring to play the video, please make sure you have Youtube app installed in your device. Alternatively, '
-                                          +'you can also watch the video through browser by clicking "Watch the video now" button',
+                                           'Looks like something went wrong when attempting to play the video.'
+                                           + '\nPlease make sure you have the YouTube app installed on your device.\n\n'
+                                           + 'Alternatively, you can watch the video through your device\'s browser via the link below.',
                                           [
                                               {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
                                               {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
                                           ]
                                       )
-                          }
+                          /*}*/
                     }}
                     style={styles.youtubePlayerView}
                   />
