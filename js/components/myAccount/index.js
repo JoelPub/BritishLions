@@ -228,7 +228,7 @@ class MyAccount extends Component {
 
                                         <View style={styles.inputGroup}>
                                             <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                            <Input defaultValue={this.state.email} onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                            <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                         </View>
                                         
                                         <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />

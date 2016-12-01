@@ -69,8 +69,6 @@ const styles = styleSheetCreate({
     },
     linkLogin: {
         justifyContent: 'flex-end',
-        borderLeftWidth:1,
-        borderLeftColor:'rgba(255,255,255,0.15)'
     },
     footerLinkText: {
         textAlign: 'right',
