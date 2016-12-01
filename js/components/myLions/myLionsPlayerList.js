@@ -139,15 +139,8 @@ class MyLionsPlayerList extends Component {
                     <LionsHeader back={true} title='MY LIONS' />
                     {this.state.isLoaded&&
                     <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={20}
-                            src={this.unionFeed.logo} />
-
+                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
                         <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
