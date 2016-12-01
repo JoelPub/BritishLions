@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, Platform, Alert } from 'react-native'
 import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -29,7 +30,7 @@ class MyLionsPlayerDetails extends Component {
         this.edit =false
         this.state ={
             isFav : this.props.isFav
-        }  
+        }
     }
     componentWillMount() {
         this.props.getFavList(this.favUrl)
@@ -79,7 +80,7 @@ class MyLionsPlayerDetails extends Component {
 
                     <LionsHeader back={true} title='MY LIONS' />
 
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <ImageCircle
                             size={100}
                             containerStyle={styles.imageCircle}
@@ -100,7 +101,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.btnText}>MY LIONS</Text>
                             </ButtonFeedback>
                         </View>
-                    </Image>
+                    </LinearGradient>
 
                     <Content>
                         <Grid style={styles.detailsGrid}>

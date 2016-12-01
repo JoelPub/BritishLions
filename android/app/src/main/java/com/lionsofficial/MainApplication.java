@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.lionsofficial.reactPackager.calendarReactPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
+import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new calendarReactPackage(),
-          new ReactNativeYouTube()
+          new ReactNativeYouTube(),
+          new LinearGradientPackage()
       );
     }
   };

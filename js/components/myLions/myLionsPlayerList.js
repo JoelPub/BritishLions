@@ -7,6 +7,7 @@ import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -19,6 +20,7 @@ import ImageCircle from '../utility/imageCircle'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
+
 
 class MyLionsPlayerList extends Component {
 
@@ -36,11 +38,11 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false
         }
-    
+
     }
 
     _drillDown(item, route) {
-        this.props.drillDown(item,route)       
+        this.props.drillDown(item,route)
         this.setState({
             isLoaded: false
         })
@@ -51,7 +53,7 @@ class MyLionsPlayerList extends Component {
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.playerFeed!== undefined&&nextProps.playerFeed[this.id]!== undefined) {
-        
+
                 this.playerFeed=nextProps.playerFeed[this.id]
                this.setState({
                     isLoaded: true
@@ -100,12 +102,14 @@ class MyLionsPlayerList extends Component {
     }
 
     render() {
+      // Later on in your styles..
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
                     {this.state.isLoaded&&
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <ImageCircle
                             size={100}
                             containerStyle={styles.imageCircle}
@@ -118,12 +122,12 @@ class MyLionsPlayerList extends Component {
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                     }
-                    <FilterListingModal 
-                        modalVisible={this.state.modalVisible} 
-                        resultVisible={this.state.resultVisible} 
-                        transparent={this.state.transparent}  
+                    <FilterListingModal
+                        modalVisible={this.state.modalVisible}
+                        resultVisible={this.state.resultVisible}
+                        transparent={this.state.transparent}
                         callbackParent={this.onCloseFilter}>
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
@@ -205,6 +209,7 @@ class MyLionsPlayerList extends Component {
                 {
                     this.state.isLoaded?
                     <Content>
+
                     {
                             this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
@@ -218,7 +223,7 @@ class MyLionsPlayerList extends Component {
                                                         <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styles.gridBoxImgWrapper}>
-                                                                    <ImagePlaceholder 
+                                                                    <ImagePlaceholder
                                                                         width = {styleVar.deviceWidth / 2 - 1}
                                                                         height = {styleVar.deviceWidth / 2}>
                                                                         <Image transparent
@@ -244,7 +249,7 @@ class MyLionsPlayerList extends Component {
                                 )
                             }, this)
                         }
-                        
+
                         <LionsFooter isLoaded={true} />
                     </Content>:
                         <ActivityIndicator style={loader.centered} size='large' />
