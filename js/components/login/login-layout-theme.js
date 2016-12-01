@@ -213,7 +213,7 @@ module.exports = styleSheetCreate({
     },
     extendBlock: {
         android: {
-            marginBottom:300
+            marginBottom:100
         }
     }
 })

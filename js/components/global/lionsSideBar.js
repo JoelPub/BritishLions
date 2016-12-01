@@ -61,8 +61,11 @@ const styles = styleSheetCreate({
     },
     footerLink: {
         flexDirection:'row',
-        paddingLeft: 2,
-        height:50
+        height:50,
+    },
+    linkAccount: {
+        borderRightWidth:1,
+        borderRightColor:'rgba(255,255,255,0.15)'
     },
     linkLogin: {
         justifyContent: 'flex-end',
@@ -195,13 +198,13 @@ class LionsSidebar extends Component {
                               </Grid>
                           :
                               <Grid>
-                                  <Col size={60}>
-                                      <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
+                                  <Col size={55}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this.navigateTo('myAccount')}>
                                           <Icon name='md-contact' style={styles.footerLinkIcon} />
                                           <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
                                       </ButtonFeedback>
                                   </Col>
-                                  <Col size={40}>
+                                  <Col size={45}>
                                       <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
