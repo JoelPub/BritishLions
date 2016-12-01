@@ -840,7 +840,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.Official.LionsOfficial;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.official.LionsOfficial;
 				PRODUCT_NAME = LionsOfficial;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -869,7 +869,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.Official.LionsOfficial;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.official.LionsOfficial;
 				PRODUCT_NAME = LionsOfficial;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
