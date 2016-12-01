@@ -78,13 +78,8 @@ class MyLionsPlayerDetails extends Component {
                     <LionsHeader back={true} title='MY LIONS' />
 
                     <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={10}
-                            src={{uri:this.props.detail.image}} />
 
+                        <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
                         <View style={styles.headerPlayerDetails}>
                             <Text style={styles.headerPlayerName}>{this.props.detail.name}</Text>
                             <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
