@@ -55,7 +55,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                     else {               
                         alertBox(
                             'An Error Occured',
-                            'Please login',
+                            'Your session expired, please login',
                             'Dismiss'
                         )
                     }
@@ -65,7 +65,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                 .catch(function(error) {
                             alertBox(
                             'An Error Occured',
-                            'Please login',
+                            'Your session expired, please login',
                             'Dismiss'
                             )
                         })
