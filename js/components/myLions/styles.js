@@ -38,7 +38,6 @@ module.exports = styleSheetCreate({
     imageCircle: {
         alignSelf: 'center',
         marginTop: 10,
-        resizeMode:'stretch',
         width:100,
         height:100,
         borderRadius:50,
