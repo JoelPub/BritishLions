@@ -145,10 +145,18 @@ class LionsSidebar extends Component {
                         <Text style={styles.linkText}>GALLERIES</Text>
                         <Icon name='md-image' style={styles.icon} />
                     </ButtonFeedback>
-                    <ButtonFeedback onPress={() => this.navigateTo('myLions')} style={styles.links}>
-                        <Text style={styles.linkText}>MY LIONS</Text>
-                        <Icon name='md-heart' style={styles.icon} />
-                    </ButtonFeedback>
+                    
+                    { 
+                        this.props.isAccessGranted?
+                            <ButtonFeedback onPress={() => this.navigateTo('myLions')} style={styles.links}>
+                                <Text style={styles.linkText}>MY LIONS</Text>
+                                <Icon name='md-heart' style={styles.icon} />
+                            </ButtonFeedback>
+                        : 
+                            null
+                    }
+
+
                     <ButtonFeedback onPress={() => this.navigateTo('lionsStore')} style={styles.links}>
                         <Text style={styles.linkText}>OFFICIAL STORE</Text>
                         <Icon name='md-ribbon' style={styles.icon} />

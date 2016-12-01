@@ -101,27 +101,37 @@ class MyAccount extends Component {
             }
         })
 
-        if(isFormValidate) {
-            let data = {
-                'newEmail': this.state.email
-            }
-            service(this.changeEmailServiceUrl, data, (res) => {
-                // reset the fields
-                this.setState({
-                    email: ''
-                })
+        if(this.props.isAccessGranted) {
+            if(isFormValidate) {
+                let data = {
+                    'newEmail': this.state.email
+                }
+                service(this.changeEmailServiceUrl, data, (res) => {
+                    // reset the fields
+                    this.setState({
+                        email: ''
+                    })
 
-                Alert.alert(
-                    'Messages',
-                    'Your email is successfully changed.',
-                    [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
-                )
-            }, true)
-        }
-        else {
-            this.setState({
-                offset:{y:0}
-            })
+                    Alert.alert(
+                        'Messages',
+                        'Your email is successfully changed.',
+                        [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                    )
+                }, true)
+            } else {
+                this.setState({
+                    offset:{y:0}
+                })
+            }
+        } else {
+            Alert.alert(
+                'Messages',
+                'Please sign in your account first.',
+                [{
+                    text: 'SIGN IN', 
+                    onPress: () => { this.props.replaceRoute('login') }
+                }]
+            )
         }
     }
 
@@ -132,28 +142,39 @@ class MyAccount extends Component {
             }
         })
 
-        if(isFormValidate) {
-            let data = {
-                'newPassword': this.state.confirmPassword
-            }
+        if(this.props.isAccessGranted) {
+            if(isFormValidate) {
+                let data = {
+                    'newPassword': this.state.confirmPassword
+                }
 
-            service(this.changePasswordServiceUrl, data, (res) => {
-                // reset the fields
+                service(this.changePasswordServiceUrl, data, (res) => {
+                    // reset the fields
+                    this.setState({
+                        password: '',
+                        confirmPassword: ''
+                    })
+
+                    Alert.alert(
+                        'Messages',
+                        'Your password is successfully changed.',
+                        [{text: 'OK'}]
+                    )
+                }, true)
+            } else {
                 this.setState({
-                    password: '',
-                    confirmPassword: ''
+                    offset:{y:0}
                 })
-
-                Alert.alert(
-                    'Messages',
-                    'Your password is successfully changed.',
-                    [{text: 'OK'}]
-                )
-            }, true)
+            }
         } else {
-            this.setState({
-                offset:{y:0}
-            })
+            Alert.alert(
+                'Messages',
+                'Please sign in your account first.',
+                [{
+                    text: 'SIGN IN', 
+                    onPress: () => { this.props.replaceRoute('login') }
+                }]
+            )
         }
     }
 
@@ -221,4 +242,8 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null, bindAction)(MyAccount)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindAction)(MyAccount)

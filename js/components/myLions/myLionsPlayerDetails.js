@@ -15,8 +15,7 @@ import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { editFavList, getFavList } from '../../actions/player'
-import { pushNewRoute } from '../../actions/route'
-import { alertBox } from '../utility/alertBox'
+import { pushNewRoute, replaceRoute } from '../../actions/route'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -35,20 +34,30 @@ class MyLionsPlayerDetails extends Component {
         this.props.getFavList(this.favUrl)
     }
 
-    _editPlayer() {
-        this.edit=true
-        this.props.isAccessGranted?
-        (
-            this.state.isFav?
-            this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid)
-            :this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid)
+    _requireLogin() {
+        Alert.alert(
+            'Messages',
+            'Please sign in your account first.',
+            [{
+                text: 'SIGN IN', 
+                onPress: () => { this.props.replaceRoute('login') }
+            }]
         )
-        :alertBox(
-                    'An Error Occured',
-                    'Please login',
-                    'Dismiss'
-                )
     }
+
+    _editPlayer() {
+        this.edit = true
+        this.props.isAccessGranted?
+            (
+                this.state.isFav? 
+                    this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid)
+                :
+                    this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid)
+            )
+        :
+            this._requireLogin()     
+    }
+
     componentWillReceiveProps(nextProps) {
             this.playerList=nextProps.tokenResponse.playerList.split('|')
             this.setState({
@@ -61,13 +70,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _myLions(route) {
-        this.props.isAccessGranted?
-        this.props.pushNewRoute(route)
-        :alertBox(
-                    'An Error Occured',
-                    'Please login',
-                    'Dismiss'
-                )
+        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._requireLogin()         
     }
 
     render() {
@@ -152,7 +155,8 @@ function bindAction(dispatch) {
     return {
         getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
         editFavList: (favEditUrl,favUrl,playerid) =>dispatch(editFavList(favEditUrl,favUrl,playerid)),
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route))
     }
 }
 
