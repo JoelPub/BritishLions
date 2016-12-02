@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
+import { Image, View, Alert } from 'react-native'
 import { showList } from '../../actions/player'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -15,10 +15,9 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { pushNewRoute } from '../../actions/route'
+import { replaceRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import Data from '../../../contents/unions/data'
-import { alertBox } from '../utility/alertBox'
 
 class MyLions extends Component {
 
@@ -59,14 +58,19 @@ class MyLions extends Component {
         }
         return newData
     }
+
     _myLions(){
         this.props.isAccessGranted?
-        this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
-        :alertBox(
-                    'An Error Occured',
-                    'Please login',
-                    'Dismiss'
-                )
+            this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
+        :
+            Alert.alert(
+                'Messages',
+                'Please sign in your account first.',
+                [{
+                    text: 'SIGN IN', 
+                    onPress: () => { this.props.replaceRoute('login') }
+                }]
+            )
     }
 
     render() {
@@ -129,6 +133,7 @@ class MyLions extends Component {
 
 function bindAction(dispatch) {
     return {
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
         showList: (data, route)=>dispatch(showList(data, route))
     }
 }
