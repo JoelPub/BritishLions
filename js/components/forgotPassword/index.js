@@ -11,6 +11,7 @@ import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 
 class ForgotPassword extends Component {
@@ -27,6 +28,7 @@ class ForgotPassword extends Component {
                 email: null,
                 submit: false
             },
+            isShowOverlayLoader: false
         }
 
         this.constructor.childContextTypes = {
@@ -73,12 +75,17 @@ class ForgotPassword extends Component {
         })
 
         if(isFormValidate) {
+            this.setState({ isShowOverlayLoader: true })
+
             let options = {
                 url: this.serviceUrl,
                 data: {
                     'email': this.state.email
                 },
-                successCallback: this._resetPassword.bind(this)
+                successCallback: this._resetPassword.bind(this),
+                errorCallback: () => {
+                    this.setState({ isShowOverlayLoader: false })
+                }
             }
 
             service(options)
@@ -92,7 +99,10 @@ class ForgotPassword extends Component {
     _resetPassword(res) {
         // successful sent to the server
         // reset the email field
-        this.setState({ email: ''})
+        this.setState({ 
+            email: '',
+            isShowOverlayLoader: false
+        })
         
         Alert.alert(
             'Messages',
@@ -116,7 +126,6 @@ class ForgotPassword extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
-
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._onValidateSuccess.bind(this)} />
@@ -130,9 +139,13 @@ class ForgotPassword extends Component {
                                 </View>
                             </View>
                         </Content>
+
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
+
+                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+
                         <View style={styles.footer}>
                             <Grid>
                                 <Col style={styles.borderRight}>

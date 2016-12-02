@@ -11,6 +11,7 @@ import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 
 class SignUp extends Component {
@@ -37,7 +38,8 @@ class SignUp extends Component {
                 password: null,
                 tc: false,
                 submit: false
-            }
+            },
+            isShowOverlayLoader: false
         }
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
@@ -79,7 +81,8 @@ class SignUp extends Component {
             password: '',
             newEvent: false,
             newPartners: false,
-            tc: false
+            tc: false,
+            isShowOverlayLoader: false
         })
 
         Alert.alert(
@@ -95,7 +98,10 @@ class SignUp extends Component {
                 submit: false
             }
         })
+
         if(isFormValidate) {
+            this.setState({ isShowOverlayLoader: true })
+
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -107,7 +113,10 @@ class SignUp extends Component {
                     'newPartners': this.state.newPartners,
                     'tc': this.state.tc
                 },
-                successCallback: this._userSignUp.bind(this)
+                successCallback: this._userSignUp.bind(this),
+                errorCallback: () => {
+                    this.setState({ isShowOverlayLoader: false })
+                }
             }
 
             service(options)
@@ -239,6 +248,8 @@ class SignUp extends Component {
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
+
+                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
 
                         <View style={styles.footer}>
                             <Grid>

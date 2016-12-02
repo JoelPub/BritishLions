@@ -13,6 +13,7 @@ import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 
 var _scrollView: ScrollView
@@ -40,6 +41,8 @@ class MyAccount extends Component {
                 confirmPassword: null,
                 submit: false
             },
+
+            isShowOverlayLoader: false
         }
 
         this.constructor.childContextTypes = {
@@ -104,6 +107,8 @@ class MyAccount extends Component {
     }
 
     _signInRequired() {
+        this.setState({ isShowOverlayLoader: false })
+
         Alert.alert(
             'An error occured',
             'Please sign in your account first.',
@@ -123,6 +128,8 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
+                this.setState({ isShowOverlayLoader: true })
+
                 let options = {
                     url: this.changeEmailServiceUrl,
                     data: {
@@ -131,17 +138,21 @@ class MyAccount extends Component {
                     successCallback: (res) => {
                         // reset the fields
                         this.setState({
-                            email: ''
+                            email: '',
+                            isShowOverlayLoader: false
+                        }, () => {
+                            Alert.alert(
+                                'Messages',
+                                'Your email is successfully changed.',
+                                [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                            )
                         })
-
-                        Alert.alert(
-                            'Messages',
-                            'Your email is successfully changed.',
-                            [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
-                        )
                     },
                     isRequiredToken: true,
-                    authorizationCallback: this._signInRequired.bind(this)
+                    authorizationCallback: this._signInRequired.bind(this),
+                    errorCallback: () => {
+                        this.setState({ isShowOverlayLoader: false })
+                    }
                 }
 
                 service(options)
@@ -164,26 +175,34 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
+                this.setState({ isShowOverlayLoader: true })
+
                 let options = {
                     url: this.changePasswordServiceUrl,
                     data: {
                         'newPassword': this.state.confirmPassword
                     },
                     successCallback: (res) => {
-                        // reset the fields
+                        // reset the fields and hide the loader
                         this.setState({
                             password: '',
-                            confirmPassword: ''
+                            confirmPassword: '',
+                            isShowOverlayLoader: false
+                        }, () => {
+                            Alert.alert(
+                                'Messages',
+                                'Your password is successfully changed.',
+                                [{text: 'OK'}]
+                            )
                         })
 
-                        Alert.alert(
-                            'Messages',
-                            'Your password is successfully changed.',
-                            [{text: 'OK'}]
-                        )
+                        
                     },
                     isRequiredToken: true,
-                    authorizationCallback: this._signInRequired.bind(this)
+                    authorizationCallback: this._signInRequired.bind(this),
+                    errorCallback: () => {
+                        this.setState({ isShowOverlayLoader: false })
+                    }
                 }
 
                 service(options)
@@ -202,49 +221,52 @@ class MyAccount extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                            <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
-                            ref={(scrollView) => { _scrollView = scrollView; }} 
-                            >
-                                <KeyboardAvoidingView behavior="position" style={{paddingBottom:0}}>
-                                    <View style={styles.pageTitle}>
-                                        <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
+                        <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
+                        ref={(scrollView) => { _scrollView = scrollView; }} 
+                        >
+                            <KeyboardAvoidingView behavior="position" style={{paddingBottom:0}}>
+                                <View style={styles.pageTitle}>
+                                    <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
+                                </View>
+
+                                <View style={styles.guther}>
+
+                                    <ErrorHandler
+                                        errorCheck={this.state.errorCheckPassword}
+                                        callbackParent={this._onSuccessValidatePassword.bind(this)} />
+
+                                    <View style={styles.inputGroup}>
+                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
+                                        <Input defaultValue={this.state.password} onFocus={()=>this.keyboardFocus()} onBlur={()=>this.keyboardBlur()}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <View style={styles.guther}>
-
-                                        <ErrorHandler
-                                            errorCheck={this.state.errorCheckPassword}
-                                            callbackParent={this._onSuccessValidatePassword.bind(this)} />
-
-                                        <View style={styles.inputGroup}>
-                                            <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                            <Input defaultValue={this.state.password} onFocus={()=>this.keyboardFocus()} onBlur={()=>this.keyboardBlur()}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
-                                        </View>
-
-                                        <View style={styles.inputGroup}>
-                                            <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                            <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
-                                        </View>
-
-                                        <ButtonFeedback rounded label='SUBMIT PASSWORD' style={styles.button} onPress={() => {this.setState({errorCheckPassword:{password:this.state.password,confirmPassword:this.state.confirmPassword,submit:true}})}} />
+                                    <View style={styles.inputGroup}>
+                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
+                                        <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <View style={styles.split}></View>
+                                    <ButtonFeedback rounded label='SUBMIT PASSWORD' style={styles.button} onPress={() => {this.setState({errorCheckPassword:{password:this.state.password,confirmPassword:this.state.confirmPassword,submit:true}})}} />
+                                </View>
 
-                                    <View style={styles.guther}>
-                                        <ErrorHandler
-                                            errorCheck={this.state.errorCheckEmail}
-                                            callbackParent={this._onSuccessValidateEmail.bind(this)} />
+                                <View style={styles.split}></View>
 
-                                        <View style={styles.inputGroup}>
-                                            <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                            <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
-                                        </View>
-                                        
-                                        <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
+                                <View style={styles.guther}>
+                                    <ErrorHandler
+                                        errorCheck={this.state.errorCheckEmail}
+                                        callbackParent={this._onSuccessValidateEmail.bind(this)} />
+
+                                    <View style={styles.inputGroup}>
+                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
+                                    
+                                    <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
+                                </View>
+                            </KeyboardAvoidingView>
+                        </ScrollView>
+                        
+                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>

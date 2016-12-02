@@ -109,7 +109,7 @@ export function service(options) {
 			} else {
 				Alert.alert(
 				    'Messages',
-				    'Please login your account.',
+				    'Please sign in your account.',
 				    [{text: 'DISMISS'}]
 				)
 			}

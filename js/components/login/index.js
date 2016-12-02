@@ -13,7 +13,9 @@ import theme from './login-theme'
 import styles from './login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
+
 
 class Login extends Component {
     constructor(props) {
@@ -32,6 +34,7 @@ class Login extends Component {
                 password: null,
                 submit: false
             },
+            isShowOverlayLoader: false
         }
 
         this.constructor.childContextTypes = {
@@ -70,10 +73,11 @@ class Login extends Component {
         let accessToken = res.data.access_token
         let refreshToken = res.data.refresh_token
 
-        // reset the fields
+        // reset the fields and hide loader
         this.setState({
             email: '',
-            password: ''
+            password: '',
+            isShowOverlayLoader: false
         })
 
         updateToken(accessToken, refreshToken)
@@ -90,6 +94,8 @@ class Login extends Component {
         })
 
         if(isFormValidate) {
+            this.setState({ isShowOverlayLoader: true })
+
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -97,11 +103,13 @@ class Login extends Component {
                     'password': this.state.password,
                     'grant_type': 'password'
                 },
-                successCallback: this._createToken.bind(this)
+                successCallback: this._createToken.bind(this),
+                errorCallback: () => {
+                    this.setState({ isShowOverlayLoader: false })
+                }
             }
 
             service(options)
-
         } else {
             this.setState({
                 errorCheck:{
@@ -148,10 +156,12 @@ class Login extends Component {
                                 </View>
                             </View>
                         </ScrollView>
-
+                
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
+
+                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
 
                         <View style={styles.footer}>
                             <Grid>
