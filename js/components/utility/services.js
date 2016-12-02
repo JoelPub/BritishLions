@@ -21,7 +21,7 @@ function errorSlice(errObj) {
 	return msgs
 }
 
-function errorHandler(error) {
+function errorHandler(error, opt) {
 	let statusCode = error.response.status
 	let errorType = error.response.data.error
 	let errorDescription = error.response.data.error_description || ''
@@ -34,9 +34,6 @@ function errorHandler(error) {
 		case 403: // Forbidden (SSL required)
 			errorDescription = 'Something went wrong with your request. Please try again later.'
 			break 
-		case 401:
-			errorDescription = 'Authorization has been denied. Please try again later.'
-			break
 		case 409: 
 			alertTitle = 'Messages'
 			errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
@@ -51,43 +48,64 @@ function errorHandler(error) {
 			break
 	}
 
-	Alert.alert(
-		alertTitle,
-		errorDescription,
-		[alertButton]
-	)
+	if(statusCode === 401) {
+		// if Authorization has been denied.
+		if (opt.authorizationCallback) {
+			opt.authorizationCallback(error)
+		}
+	} else {
+		Alert.alert(
+			alertTitle,
+			errorDescription,
+			[alertButton]
+		)
+	}
 }
 
 
-function callApi(url, data, callback, isRefreshToken) {
+function callApi(opt) {
 	axios.post(
-	    url,
-	    qs.stringify(data)
+	    opt.url,
+	    qs.stringify(opt.data)
 	).then(function(res) {
-
-		if (callback) {
-			callback(res)
+		if (opt.successCallback) {
+			opt.successCallback(res)
 		}
-	    
 	}).catch(function(error) {
 		// console.log('errorHandler: ', error.response)
 		// no need to prompt a message if the request is from 
 		// appNavigator.js and its about refreshing of token
-		if (!isRefreshToken) {
-			errorHandler(error)
+		if (!opt.isRefreshToken) {
+			errorHandler(error, opt)
 		}
-	    
+
+		if (opt.errorCallback) {
+			opt.errorCallback(error)
+		}
 	})
 }
 
-export function service(url, data, callback, isRequiredToken = false,  isRefreshToken = false) {
+export function service(options) {
+	let defaults = {
+		url: '',
+		data: {},
+		successCallback: null,
+		errorCallback: null,
+		authorizationCallback: null, 
+		isRequiredToken: false, 
+		enableErrorPrompt: false, 
+		isRefreshToken: false
+	}
+
+	let opt = Object.assign(defaults, options)
+
 	// TODO: Add a condition that will handle the network problem
 	// if (NetInfo.isConnected) {}
-	if (isRequiredToken) {
+	if (opt.isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
-				callApi(url, data, callback, isRefreshToken)
+				callApi(opt)
 			} else {
 				Alert.alert(
 				    'Messages',
@@ -103,9 +121,8 @@ export function service(url, data, callback, isRequiredToken = false,  isRefresh
             )
     	})
 	} else {
-		callApi(url, data, callback, isRefreshToken)
+		callApi(opt)
 	}
-
 }
 
 

@@ -90,13 +90,17 @@ class Login extends Component {
         })
 
         if(isFormValidate) {
-            let data = {
-                'username': this.state.email,
-                'password': this.state.password,
-                'grant_type': 'password'
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'username': this.state.email,
+                    'password': this.state.password,
+                    'grant_type': 'password'
+                },
+                successCallback: this._createToken.bind(this)
             }
 
-            service(this.serviceUrl, data, this._createToken.bind(this))
+            service(options)
 
         } else {
             this.setState({

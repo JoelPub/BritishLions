@@ -95,21 +95,26 @@ class AppNavigator extends Component {
             removeToken() // Make sure to remove user's device token first
             this.props.setAccessGranted(false) // make the flag false
 
-            let data = {
-                'refresh_token': refreshToken,
-                'grant_type': 'refresh_token'
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'refresh_token': refreshToken,
+                    'grant_type': 'refresh_token'
+                },
+                successCallback: (res) => {
+                    let accessToken = res.data.access_token
+                    let refreshToken = res.data.refresh_token
+                    
+                    // Update token 
+                    updateToken(accessToken, refreshToken)
+                    // Flag user access granted
+                    this.props.setAccessGranted(true)
+                },
+                isRefreshToken: true
             }
 
-            service(this.serviceUrl, data, (res) => {
-                let accessToken = res.data.access_token
-                let refreshToken = res.data.refresh_token
-                
-                // Update token 
-                updateToken(accessToken, refreshToken)
-                // Flag user access granted
-                this.props.setAccessGranted(true)
+            service(options)
 
-            }, false, true)
         }).catch((error) => {
             // We can't get the existing refresh token of the user here
             // In this situation, user will not logged in

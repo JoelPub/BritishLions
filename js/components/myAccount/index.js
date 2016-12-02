@@ -103,6 +103,17 @@ class MyAccount extends Component {
         this.replaceRoute('login')
     }
 
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account first.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
     _onSuccessValidateEmail(isFormValidate) {
         this.setState({
             errorCheckEmail: {
@@ -112,35 +123,35 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
-                let data = {
-                    'newEmail': this.state.email
-                }
-                service(this.changeEmailServiceUrl, data, (res) => {
-                    // reset the fields
-                    this.setState({
-                        email: ''
-                    })
+                let options = {
+                    url: this.changeEmailServiceUrl,
+                    data: {
+                        'newEmail': this.state.email
+                    },
+                    successCallback: (res) => {
+                        // reset the fields
+                        this.setState({
+                            email: ''
+                        })
 
-                    Alert.alert(
-                        'Messages',
-                        'Your email is successfully changed.',
-                        [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
-                    )
-                }, true)
+                        Alert.alert(
+                            'Messages',
+                            'Your email is successfully changed.',
+                            [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                        )
+                    },
+                    isRequiredToken: true,
+                    authorizationCallback: this._signInRequired.bind(this)
+                }
+
+                service(options)
             } else {
                 this.setState({
                     offset:{y:0}
                 })
             }
         } else {
-            Alert.alert(
-                'Messages',
-                'Please sign in your account first.',
-                [{
-                    text: 'SIGN IN', 
-                    onPress: () => { this.props.replaceRoute('login') }
-                }]
-            )
+            this._signInRequired()
         }
     }
 
@@ -153,37 +164,36 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
-                let data = {
-                    'newPassword': this.state.confirmPassword
+                let options = {
+                    url: this.changePasswordServiceUrl,
+                    data: {
+                        'newPassword': this.state.confirmPassword
+                    },
+                    successCallback: (res) => {
+                        // reset the fields
+                        this.setState({
+                            password: '',
+                            confirmPassword: ''
+                        })
+
+                        Alert.alert(
+                            'Messages',
+                            'Your password is successfully changed.',
+                            [{text: 'OK'}]
+                        )
+                    },
+                    isRequiredToken: true,
+                    authorizationCallback: this._signInRequired.bind(this)
                 }
 
-                service(this.changePasswordServiceUrl, data, (res) => {
-                    // reset the fields
-                    this.setState({
-                        password: '',
-                        confirmPassword: ''
-                    })
-
-                    Alert.alert(
-                        'Messages',
-                        'Your password is successfully changed.',
-                        [{text: 'OK'}]
-                    )
-                }, true)
+                service(options)
             } else {
                 this.setState({
                     offset:{y:0}
                 })
             }
         } else {
-            Alert.alert(
-                'Messages',
-                'Please sign in your account first.',
-                [{
-                    text: 'SIGN IN', 
-                    onPress: () => { this.props.replaceRoute('login') }
-                }]
-            )
+            this._signInRequired()
         }
     }
 

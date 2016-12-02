@@ -73,11 +73,15 @@ class ForgotPassword extends Component {
         })
 
         if(isFormValidate) {
-            let data = {
-                'email': this.state.email
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'email': this.state.email
+                },
+                successCallback: this._resetPassword.bind(this)
             }
 
-            service(this.serviceUrl, data, this._resetPassword.bind(this))
+            service(options)
         } else {
             this.setState({
                 offset:{y:0}

@@ -71,6 +71,17 @@ class SignUp extends Component {
     }
 
     _userSignUp() {
+        // reset the fields
+        this.setState({
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            newEvent: false,
+            newPartners: false,
+            tc: false
+        })
+
         Alert.alert(
             'Messages',
             'Your account has been created successfully.',
@@ -85,17 +96,21 @@ class SignUp extends Component {
             }
         })
         if(isFormValidate) {
-            let data = {
-                'firstName': this.state.firstName,
-                'lastName': this.state.lastName,
-                'email': this.state.email,
-                'password': this.state.password,
-                'newEvent': this.state.newEvent,
-                'newPartners': this.state.newPartners,
-                'tc': this.state.tc
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'firstName': this.state.firstName,
+                    'lastName': this.state.lastName,
+                    'email': this.state.email,
+                    'password': this.state.password,
+                    'newEvent': this.state.newEvent,
+                    'newPartners': this.state.newPartners,
+                    'tc': this.state.tc
+                },
+                successCallback: this._userSignUp.bind(this)
             }
 
-            service(this.serviceUrl, data, this._userSignUp.bind(this))
+            service(options)
 
         } else {
             this._scrollView.scrollTo({
