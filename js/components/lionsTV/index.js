@@ -43,6 +43,10 @@ class LionsTV extends Component {
                             <Content>
                                 {
                                    this.props.videosFeed.items.map(function(data, index) {
+                                    let year=data.snippet.publishedAt.substr(0,4)
+                                    let publishDate=new Date(data.snippet.publishedAt).toLocaleDateString()
+                                    let month=publishDate.split('/')[0]?publishDate.split('/')[0]:''
+                                    let day=publishDate.split('/')[1]?publishDate.split('/')[1]:''
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}
@@ -60,7 +64,7 @@ class LionsTV extends Component {
                                                     </Text>
                                                     <View style={styles.lionsTVDateWrapper}>
                                                         <Icon name='md-time' style={ styles.timeIcon} />
-                                                        <Text style={styles.lionsTVDateText}> {new Date(data.snippet.publishedAt).toLocaleDateString()} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
+                                                        <Text style={styles.lionsTVDateText}> {`${day}/${month}/${year}`} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
                                                     </View>
                                                 </View>
                                             </ButtonFeedback>
