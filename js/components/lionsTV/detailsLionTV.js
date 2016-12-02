@@ -27,6 +27,10 @@ class DetailsLionsTV extends Component {
               poster: true,
               videoId:null
         }
+        this.year=this.props.details.snippet.publishedAt.substr(0,4)
+        this.publishDate=new Date(this.props.details.snippet.publishedAt).toLocaleDateString()
+        this.month=this.publishDate.split('/')[0]?this.publishDate.split('/')[0]:''
+        this.day=this.publishDate.split('/')[1]?this.publishDate.split('/')[1]:''
     }
 
   convertToUppercase(data) {
@@ -73,7 +77,7 @@ class DetailsLionsTV extends Component {
                       </Text>
                       <View style={styles.lionsTVDateWrapper}>
                           <Icon name='md-time' style={[styles.timeIcon, styles.timeIconDetail]} />
-                          <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {new Date(this.props.details.snippet.publishedAt).toLocaleDateString()} at {new Date(this.props.details.snippet.publishedAt).toLocaleTimeString()}</Text>
+                          <Text style={[styles.lionsTVDateText, styles.lionsTVDateTextDetail]}> {`${this.day}/${this.month}/${this.year}`} at {new Date(this.props.details.snippet.publishedAt).toLocaleTimeString()}</Text>
                       </View>
                   </View>
 
