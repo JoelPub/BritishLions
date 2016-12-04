@@ -7,6 +7,7 @@ import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
@@ -89,12 +90,12 @@ class ForgotPassword extends Component {
         // successful sent to the server
         // reset the email field
         this.setState({ email: ''})
-        
+
         Alert.alert(
             'Messages',
             'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
             [{
-                text: 'OK', 
+                text: 'OK',
                 onPress: () => this.replaceRoute('login')
             }]
         )
@@ -104,7 +105,7 @@ class ForgotPassword extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                         <Content style={styles.main}>
                             <View style={styles.content} contentOffset={this.state.offset}>
                                 <View style={styles.pageTitle}>
@@ -121,7 +122,7 @@ class ForgotPassword extends Component {
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
-                                    
+
                                     <ButtonFeedback rounded label='SUBMIT' style={styles.button} onPress={() => {this.setState({errorCheck:{email:this.state.email,submit:true}})}} />
                                 </View>
                             </View>
@@ -149,7 +150,7 @@ class ForgotPassword extends Component {
                                 </Col>
                             </Grid>
                         </View>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )

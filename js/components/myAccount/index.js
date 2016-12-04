@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, ScrollView, Platform, Alert } from 'react-native'
+import { Keyboard, Dimensions, ScrollView, Platform, Alert } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
@@ -60,7 +61,7 @@ class MyAccount extends Component {
     showK(){
         if(Platform.OS ==='android') {
             _scrollView.scrollTo({y:300})
-        } 
+        }
     }
 
     hideK(){
@@ -139,9 +140,9 @@ class MyAccount extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                            <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
-                            ref={(scrollView) => { _scrollView = scrollView; }} 
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
+                            <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset}
+                            ref={(scrollView) => { _scrollView = scrollView; }}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
@@ -177,14 +178,14 @@ class MyAccount extends Component {
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Input onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
-                                    
+
                                     <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
                                 </View>
                             </ScrollView>
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )
