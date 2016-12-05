@@ -197,16 +197,22 @@ class MyLionsPlayerList extends Component {
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
                                                 let union=this.unionFeed.uniondata.find((n)=> n.id===this.unionFeed.unionId)
-                                                Object.assign(item,{logo:union.image,country:union.displayname.toUpperCase(),isFav:false})
+                                                Object.assign(item, {
+                                                    logo: union.image, 
+                                                    country: union.displayname.toUpperCase(),
+                                                    isFav: false
+                                                })
+
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                        <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder 
-                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        width = {styleVar.deviceWidth / 2}
                                                                         height = {styleVar.deviceWidth / 2}>
                                                                         <Image transparent
                                                                             resizeMode='contain'
@@ -216,7 +222,7 @@ class MyLionsPlayerList extends Component {
                                                                 </View>
                                                                 <View style={styles.gridBoxDescWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styleGridBoxTitle}>
                                                                         <Text style={styles.gridBoxTitleText}>{item.name}</Text>
                                                                         <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
                                                                     </View>

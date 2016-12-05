@@ -3,7 +3,7 @@
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 
-const gridBorderColor = 'rgb(216, 217, 218)'
+const gridBorderColor = 'rgb(239, 239, 240)'
 
 module.exports = styleSheetCreate({
     container: {
@@ -144,10 +144,6 @@ module.exports = styleSheetCreate({
         alignSelf: 'stretch',
         backgroundColor: '#fff'
     },
-    gridBoxTouchableLeft: {
-        borderRightWidth: 1,
-        borderRightColor: gridBorderColor
-    },
     gridBoxTouchableView: {
         alignSelf: 'stretch',
         backgroundColor: '#FFF'
@@ -158,18 +154,22 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         marginBottom: -12,
         width: styleVar.deviceWidth / 2,
-        height: styleVar.deviceWidth / 2
+        height: styleVar.deviceWidth / 2,
+    },
+    gridBoxImgWrapperRight: {
+        borderRightWidth: 2,
+        borderRightColor: gridBorderColor
     },
     gridBoxImg: {
-        width: styleVar.deviceWidth / 2 - 1,
-        height: styleVar.deviceWidth / 2,
+        width: styleVar.deviceWidth / 2,
+        height: styleVar.deviceWidth / 2
     },
     gridBoxImgWithPadding: {
         width: 80,
         height: 80,
     },
     gridBoxDescWrapper: {        
-        width: styleVar.deviceWidth / 2,
+        width: styleVar.deviceWidth / 2
     },
     gridBoxTitle: {
         position: 'relative',
@@ -182,6 +182,10 @@ module.exports = styleSheetCreate({
             paddingTop: 12,
             paddingBottom: 4
         }
+    },
+    gridBoxTitleRight: {     
+        borderRightWidth: 1,
+        borderRightColor: gridBorderColor
     },
     gridBoxTitleText: {
         textAlign: 'center',

@@ -88,16 +88,17 @@ class MyLions extends Component {
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback
-                                                            style={stylesArr}
+                                                            style={styles.gridBoxTouchable}
                                                             onPress={() => this._showList({'uniondata':Data,'unionId':item.id,'logo':item.logo,'name':item.displayname.toUpperCase()},'myLionsPlayerList')}>
 
                                                             <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder
                                                                         width = {styleVar.deviceWidth / 2 - 1}
                                                                         height = {styleVar.deviceWidth / 2}>
@@ -109,7 +110,7 @@ class MyLions extends Component {
                                                                 </View>
 
                                                                 <View style={[shapes.triangle]} />
-                                                                <View style={styles.gridBoxTitle}>
+                                                                <View style={styleGridBoxTitle}>
                                                                     <Text style={styles.gridBoxTitleText}>{item.displayname.toUpperCase()}</Text>
                                                                 </View>
                                                             </View>
