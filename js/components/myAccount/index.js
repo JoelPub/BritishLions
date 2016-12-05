@@ -2,13 +2,14 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, ScrollView, Platform, Alert, KeyboardAvoidingView  } from 'react-native'
+import { Keyboard, Dimensions, ScrollView, Platform, Alert, KeyboardAvoidingView  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
@@ -69,8 +70,7 @@ class MyAccount extends Component {
                 y: 0,
                 false
             })
-        } 
-        
+        }
     }
 
     keyboardBlur(){
@@ -220,11 +220,13 @@ class MyAccount extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
-                        ref={(scrollView) => { _scrollView = scrollView; }} 
-                        >
-                            <KeyboardAvoidingView behavior="position" style={{paddingBottom:0}}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
+                            <ScrollView
+                                style={styles.content}
+                                keyboardShouldPersistTaps={true}
+                                contentOffset={this.state.offset}
+                                ref={(scrollView) => { _scrollView = scrollView; }}
+                            >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
                                 </View>
@@ -259,10 +261,9 @@ class MyAccount extends Component {
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
-                                    
+
                                     <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
                                 </View>
-                            </KeyboardAvoidingView>
                         </ScrollView>
                         
                         <OverlayLoader visible={this.state.isShowOverlayLoader} />
@@ -270,7 +271,7 @@ class MyAccount extends Component {
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )

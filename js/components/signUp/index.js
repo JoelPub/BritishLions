@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
@@ -91,7 +92,7 @@ class SignUp extends Component {
             [{text: 'SIGN IN', onPress: () => this._replaceRoute('login')}]
         )
     }
-    
+
     _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
@@ -139,7 +140,7 @@ class SignUp extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                         <ScrollView style={styles.main}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
@@ -270,7 +271,7 @@ class SignUp extends Component {
                                 </Col>
                             </Grid>
                         </View>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )

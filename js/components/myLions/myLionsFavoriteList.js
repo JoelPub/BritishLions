@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, Modal, ScrollView, RefreshControl, ActivityIndicator } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -34,7 +35,7 @@ class MyLionsFavoriteList extends Component {
         this.state = {
             isRefreshing: false,
             isLoaded: false
-        }    
+        }
     }
     componentDidMount() {
         this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
@@ -127,16 +128,11 @@ class MyLionsFavoriteList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={20}
-                            src={require('../../../contents/my-lions/nations/lions.png')} />
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                        <Image source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageCircle}/>
 
                         <Text style={styles.headerTitle}>MY LIONS</Text>
-                    </Image>
+                    </LinearGradient>
 
                      {
                     this.state.isLoaded?

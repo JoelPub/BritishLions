@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image } from 'react-native'
 import { replaceRoute, pushNewRoute, popRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -34,7 +34,7 @@ class Terms extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                         <Content style={styles.main}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
@@ -54,7 +54,7 @@ class Terms extends Component {
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.popRoute()}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )

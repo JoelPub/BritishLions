@@ -8,6 +8,7 @@ import { fetchContent } from '../../actions/content'
 import { showDetail} from '../../actions/player'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -20,6 +21,7 @@ import ImageCircle from '../utility/imageCircle'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
+
 
 class MyLionsPlayerList extends Component {
 
@@ -35,7 +37,7 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false
         }
-    
+
     }
 
     _showDetail(item, route) {
@@ -46,11 +48,10 @@ class MyLionsPlayerList extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        
-            this.playerFeed=nextProps.playerFeed[this.unionFeed.unionId]
-            this.setState({
-                isLoaded: true
-            })
+        this.playerFeed=nextProps.playerFeed[this.unionFeed.unionId]
+        this.setState({
+            isLoaded: true
+        })
     }
     _setModalVisible=(visible) => {
         this.setState({
@@ -134,23 +135,26 @@ class MyLionsPlayerList extends Component {
     }
 
     render() {
+      // Later on in your styles..
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
                     {this.state.isLoaded&&
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
+
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
+                        <Text style={styles.headerTitle}>{this.name}</Text>
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                     }
-                    <FilterListingModal 
-                        modalVisible={this.state.modalVisible} 
-                        resultVisible={this.state.resultVisible} 
-                        transparent={this.state.transparent}  
+                    <FilterListingModal
+                        modalVisible={this.state.modalVisible}
+                        resultVisible={this.state.resultVisible}
+                        transparent={this.state.transparent}
                         callbackParent={this.onCloseFilter}>
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
@@ -192,6 +196,7 @@ class MyLionsPlayerList extends Component {
                 {
                     this.state.isLoaded?
                     <Content>
+
                     {
                             this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
@@ -238,7 +243,7 @@ class MyLionsPlayerList extends Component {
                                 )
                             }, this)
                         }
-                        
+
                         <LionsFooter isLoaded={true} />
                     </Content>:
                         <ActivityIndicator style={loader.centered} size='large' />
