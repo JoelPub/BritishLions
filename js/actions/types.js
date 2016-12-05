@@ -18,6 +18,7 @@ export type Action =
     | { type: 'GET_PLAYERLIST' }
     | { type: 'GET_PLAYERS_DETAIL' }
     | { type: 'PUSH_UNION' }
+    | { type: 'PUSH_DETAIL' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

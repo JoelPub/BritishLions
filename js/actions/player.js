@@ -2,7 +2,7 @@
 
 import type { Action } from './types'
 import { pushNewRoute, replaceRoute} from './route'
-import { alertBox } from './../components/utility/alertBox'
+import { alertBox } from '../components/utility/alertBox'
 import axios from 'axios'
 import qs from 'qs'
 import { getAccessToken } from '../components/utility/asyncStorageServices'
@@ -10,9 +10,10 @@ import { getAccessToken } from '../components/utility/asyncStorageServices'
 export const GET_PLAYERLIST = 'GET_PLAYERLIST'
 export const GET_PLAYERS_DETAIL = 'GET_PLAYERS_DETAIL'
 export const PUSH_UNION = 'PUSH_UNION'
+export const PUSH_DETAIL = 'PUSH_DETAIL'
 
 
-export function editFavList(favEditUrl,favUrl,playerid):Action {
+export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
     return (dispatch, getState) => {
         return(
             getAccessToken()
@@ -31,43 +32,27 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                             )
                             .then(function(response){
                                 dispatch(getPlayerlist({
-                                    payload: {playerList:response.data}
+                                    payload: response.data
                                 }))
                             })
                             .catch(function(error){
-                                alertBox(
-                                  'An Error Occured',
-                                  'fetch data error',
-                                  'Dismiss'
-                                    )
+                                errorCallback()
                             })
                             
                         })
                         .catch(function(error) {
-                            alertBox(
-                                'An Error Occured',
-                                'Update player list error',
-                                'Dismiss'
-                            )
+                            errorCallback(error)
                         })
 
                     }
                     else {               
-                        alertBox(
-                            'An Error Occured',
-                            'Your session expired, please login',
-                            'Dismiss'
-                        )
+                        errorCallback()
                     }
                 }
 
                     )
                 .catch(function(error) {
-                            alertBox(
-                            'An Error Occured',
-                            'Your session expired, please login',
-                            'Dismiss'
-                            )
+                            errorCallback()
                         })
             )
     }
@@ -85,7 +70,7 @@ export function getFavList(favUrl):Action {
                         )
                         .then(function(tokenresponse){
                             dispatch(getPlayerlist({
-                                payload: {playerList:tokenresponse.data}
+                                payload: tokenresponse.data
                             }))
                         })
                         .catch(function(error){
@@ -128,7 +113,7 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
                             }
                         }.bind(this))
                         .catch(function(error) {
-                           errorCallback()
+                           errorCallback(error)
                         })
 
                     }
@@ -140,6 +125,20 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
                    errorCallback()
                 })
             )
+    }
+}
+
+export function showList(item, route:string):Action {
+    return (dispatch, getState) => {
+        dispatch(pushUnion({item}))
+        dispatch(pushNewRoute(route))
+    }
+}
+
+export function showDetail(item, route:string):Action {
+    return (dispatch, getState) => {
+        dispatch(pushDetail({item}))
+        dispatch(pushNewRoute(route))
     }
 }
 
@@ -164,9 +163,9 @@ function pushUnion({item}):Action {
     }
 }
 
-export function showList(item, route:string):Action {
-    return (dispatch, getState) => {
-        dispatch(pushUnion({item}))
-        dispatch(pushNewRoute(route))
+function pushDetail({item}):Action {
+    return {
+        type: PUSH_DETAIL,
+        item
     }
 }

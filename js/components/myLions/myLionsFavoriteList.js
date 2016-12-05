@@ -17,8 +17,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { drillDown } from '../../actions/content'
-import { getFavDetail } from '../../actions/player'
+import { getFavDetail , showDetail} from '../../actions/player'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
@@ -44,30 +43,51 @@ class MyLionsFavoriteList extends Component {
         this.setState({isRefreshing: true})
         this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
     }
-    errCallback() {
-        
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account first.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+    errCallback(error) {
+    if(error&&error.response&&error.response.status=== 401) {
+        this._signInRequired()
+    }
+    else {
         alertBox(
                     'An Error Occured',
-                    'Your session expired, please login',
+                    'Something went wrong with your request. Please try again later.',
                     'Dismiss'
                 )
+    }
         this.setState({
                 isLoaded: true,
                 isRefreshing: false,
             })
 
     }
+
     componentWillReceiveProps(nextProps) {
-        
             this.setState({
                 isLoaded: true,
                 isRefreshing: this.props.isRefreshing,
             })
             this.playerFeed=[]
-            this.playerids=nextProps.playerFeed.tokenData.split('|')
-            for (var u in nextProps.playerFeed.soticData) {
-                if(nextProps.playerFeed.soticData[u].length>0) {
-                    nextProps.playerFeed.soticData[u].map((player,index)=>{
+            this.playerids=nextProps.playerList.split('|')
+            for (var u in nextProps.playerFeed) {
+                if(nextProps.playerFeed[u].length>0) {
+                    nextProps.playerFeed[u].map((player,index)=>{
                         this.playerids.map((id,j)=>{
                             if(player.id===id) {
                             Object.assign(player,{'countryid':u})
@@ -77,13 +97,11 @@ class MyLionsFavoriteList extends Component {
                     })
                 }
             }
- 
-
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item,route)
-   }
+    _showDetail(item, route) {
+        this.props.showDetail(item,route)
+    }
 
     _mapJSON(data, colMax = 2) {
         let i = 0
@@ -143,7 +161,7 @@ class MyLionsFavoriteList extends Component {
                                             rowData.map((item, key) => {
                                                 let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
                                                 let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                let union = this.unionFeed.uniondata.find((n)=> n.id===item.countryid)
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===item.countryid)
                                                 Object.assign(item, {
                                                     logo: union.image, 
                                                     country: union.displayname.toUpperCase(),
@@ -152,7 +170,7 @@ class MyLionsFavoriteList extends Component {
                                                 
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder 
@@ -167,7 +185,7 @@ class MyLionsFavoriteList extends Component {
                                                                 <View style={styles.gridBoxDescWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styleGridBoxTitle}>
-                                                                        <Text style={styles.gridBoxTitleText}>{item.name}</Text>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
                                                                         <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
                                                                     </View>
                                                                 </View>
@@ -196,13 +214,14 @@ class MyLionsFavoriteList extends Component {
 function bindAction(dispatch) {
     return {
         getFavDetail: (favUrl,playerFullUrl,errorCallbck) =>dispatch(getFavDetail(favUrl,playerFullUrl,errorCallbck)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        showDetail: (data, route)=>dispatch(showDetail(data, route))
     }
 }
 
 export default connect((state) => {
     return {
         unionFeed: state.player.union,
+        playerList: state.player.playerList,
         playerFeed: state.player.playerDetail,
         isLoaded: state.player.isLoaded,
         isRefreshing: state.player.isRefreshing

@@ -4,7 +4,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
-import { fetchContent, drillDown } from '../../actions/content'
+import { fetchContent } from '../../actions/content'
+import { showDetail} from '../../actions/player'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -37,9 +38,9 @@ class MyLionsPlayerList extends Component {
     
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item,route) 
-   }
+    _showDetail(item, route) {
+        this.props.showDetail(item,route)
+    }
     componentDidMount() {
         this.props.fetchContent(this.url)
     }
@@ -167,7 +168,7 @@ class MyLionsPlayerList extends Component {
                                 {this.searchResult.map((item,index)=>{
                                     return(
                                         <View style={styles.resultRow} key={index}>
-                                            <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(item,'myLionsPlayerDetails')}}>
+                                            <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(item,'myLionsPlayerDetails')}}>
                                                 <View style={styles.searchImg}>
                                                     <Image transparent
                                                         resizeMode='stretch'
@@ -176,7 +177,7 @@ class MyLionsPlayerList extends Component {
                                                          />
                                                 </View>
                                                 <View style={styles.resultDesc}>
-                                                    <Text style={styles.resultRowTitleText}>{item.name}</Text>
+                                                    <Text style={styles.resultRowTitleText}>{item.name.toUpperCase()}</Text>
                                                     <Text style={styles.resultRowSubtitleText}>{item.position}</Text>
                                                 </View>
                                             </ButtonFeedback>
@@ -208,7 +209,7 @@ class MyLionsPlayerList extends Component {
 
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
                                                                 <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder 
@@ -223,7 +224,7 @@ class MyLionsPlayerList extends Component {
                                                                 <View style={styles.gridBoxDescWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styleGridBoxTitle}>
-                                                                        <Text style={styles.gridBoxTitleText}>{item.name}</Text>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
                                                                         <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
                                                                     </View>
                                                                 </View>
@@ -252,7 +253,7 @@ class MyLionsPlayerList extends Component {
 function bindAction(dispatch) {
     return {
         fetchContent: (url)=>dispatch(fetchContent(url)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        showDetail: (data, route)=>dispatch(showDetail(data, route)),
     }
 }
 

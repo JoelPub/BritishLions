@@ -16,6 +16,7 @@ import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { editFavList, getFavList } from '../../actions/player'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { alertBox } from '../utility/alertBox'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -27,22 +28,42 @@ class MyLionsPlayerDetails extends Component {
         this.playerList = []
         this.edit =false
         this.state ={
-            isFav : this.props.isFav
+            isFav : this.props.detail.isFav
         }  
     }
     componentWillMount() {
-        this.props.getFavList(this.favUrl)
+        // this.props.getFavList(this.favUrl)
     }
 
-    _requireLogin() {
+   _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
+    }
+
+    _signInRequired() {
         Alert.alert(
-            'Messages',
+            'An error occured',
             'Please sign in your account first.',
             [{
                 text: 'SIGN IN', 
-                onPress: () => { this.props.replaceRoute('login') }
+                onPress: this._reLogin.bind(this)
             }]
         )
+    }
+
+    errCallback(error) {
+    if(error&&error.response&&error.response.status=== 401) {
+        this._signInRequired()
+    }
+    else {
+        alertBox(
+                    'An Error Occured',
+                    'Something went wrong with your request. Please try again later.',
+                    'Dismiss'
+                )
+    }
+
     }
 
     _editPlayer() {
@@ -50,16 +71,16 @@ class MyLionsPlayerDetails extends Component {
         this.props.isAccessGranted?
             (
                 this.state.isFav? 
-                    this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid)
+                    this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
                 :
-                    this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid)
+                    this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
             )
         :
             this._requireLogin()     
     }
 
     componentWillReceiveProps(nextProps) {
-            this.playerList=nextProps.tokenResponse.playerList.split('|')
+            this.playerList=nextProps.playerList.split('|')
             this.setState({
                 isFav:(this.playerList.indexOf(this.playerid)!==-1)
             })
@@ -70,7 +91,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _myLions(route) {
-        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._requireLogin()         
+        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._signInRequired()         
     }
 
     render() {
@@ -149,7 +170,7 @@ class MyLionsPlayerDetails extends Component {
 function bindAction(dispatch) {
     return {
         getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
-        editFavList: (favEditUrl,favUrl,playerid) =>dispatch(editFavList(favEditUrl,favUrl,playerid)),
+        editFavList: (favEditUrl,favUrl,playerid,errorCallbck) =>dispatch(editFavList(favEditUrl,favUrl,playerid,errorCallbck)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route))
     }
@@ -157,8 +178,8 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        detail: state.content.drillDownItem,
-        tokenResponse: state.player.playerList,
+        detail: state.player.detail,
+        playerList: state.player.playerList,
         isLoaded: state.player.isLoaded,
         isAccessGranted: state.token.isAccessGranted
     }
