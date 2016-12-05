@@ -1,7 +1,6 @@
 'use strict'
 
 import type { Action } from './types'
-import axios from 'axios'
 
 export const SET_ACCESS_GRANTED = 'SET_ACCESS_GRANTED'
 

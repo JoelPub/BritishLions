@@ -73,14 +73,14 @@ function callApi(opt) {
 		}
 	}).catch(function(error) {
 		// console.log('errorHandler: ', error.response)
+		if (opt.errorCallback) {
+			opt.errorCallback(error)
+		}
+		
 		// no need to prompt a message if the request is from 
 		// appNavigator.js and its about refreshing of token
 		if (!opt.isRefreshToken) {
 			errorHandler(error, opt)
-		}
-
-		if (opt.errorCallback) {
-			opt.errorCallback(error)
 		}
 	})
 }
@@ -107,6 +107,10 @@ export function service(options) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
 				callApi(opt)
 			} else {
+				if (opt.errorCallback) {
+					opt.errorCallback('Invalid Access Token')
+				}
+
 				Alert.alert(
 				    'Messages',
 				    'Please sign in your account.',
@@ -114,6 +118,10 @@ export function service(options) {
 				)
 			}
 		}).catch((error) => {
+			if (opt.errorCallback) {
+				opt.errorCallback('No Access Token')
+			}
+
             Alert.alert(
                 'An error occured',
                 '' + error,

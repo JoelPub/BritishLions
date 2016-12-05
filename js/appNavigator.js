@@ -127,12 +127,14 @@ class AppNavigator extends Component {
     componentWillMount() {
         getAccessToken().then((accessToken) => {
             if (accessToken) {
-                this._refreshToken()
+                this._refreshToken() // update the token
+            } else {
+                removeToken() // Make sure to remove user's device token
+                this.props.setAccessGranted(false)
             }
         }).catch((error) => {
             // Nothing to do here since user don't have an existing ACCESS TOKEN
             // In this situation, user is not logged in
-
             removeToken() // Make sure to remove user's device token
             this.props.setAccessGranted(false)
         })
