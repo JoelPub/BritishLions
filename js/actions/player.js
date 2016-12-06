@@ -12,6 +12,7 @@ export const GET_PLAYERS_DETAIL = 'GET_PLAYERS_DETAIL'
 export const PUSH_UNION = 'PUSH_UNION'
 export const PUSH_DETAIL = 'PUSH_DETAIL'
 
+export const INVALID_TOKEN = 'INVALID_TOKEN'
 
 export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
     return (dispatch, getState) => {
@@ -58,31 +59,64 @@ export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
     }
 }
 
-export function getFavList(favUrl):Action {
+export function getUnionDetail(unionUrl,favUrl):Action {
     return (dispatch, getState) => {
-        return(
-            getAccessToken()
-                .then((token)=> {
-                    if(!!token&&token!=='') {
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                        axios.get(
-                            favUrl
-                        )
-                        .then(function(tokenresponse){
-                            dispatch(getPlayerlist({
-                                payload: tokenresponse.data
-                            }))
-                        })
-                        .catch(function(error){
-                        })
-                    }
-                    
-                })
-                .catch((err) => {
-                })
+        return (
+            axios.get(
+                unionUrl
             )
+            .then(function(response) {
+                if(response.data) {
+                    getAccessToken()
+                    .then((token)=> {
+                        if(!!token&&token!=='') {
+                            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                            axios.get(
+                                favUrl
+                            )
+                            .then(function(tokenresponse){
+                                dispatch(getPlayersDetail({
+                                    payload: {tokenData:tokenresponse.data,soticData:response.data}
+                                }))
+                            })
+                            .catch(function(error){
+                                dispatch(getPlayersDetail({
+                                    payload: {tokenData:null,soticData:response.data}
+                                }))
+                            })
+                        }
+                        else {
+                            dispatch(getPlayersDetail({
+                                payload: {tokenData:null,soticData:response.data}
+                            }))
+                        }
+                        
+                    })
+                    .catch((err) => {
+                        dispatch(getPlayersDetail({
+                            payload: {tokenData:null,soticData:response.data}
+                        }))
+                    })
+                }
+                else {
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+            })
+            .catch(function(error) {
+                alertBox(
+                  'An Error Occured',
+                  'Please make sure the network is connected and reload the app. ',
+                  'Dismiss'
+                )
+            })
+        )
     }
 }
+
 
 export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
     return (dispatch, getState) => {
@@ -118,11 +152,37 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
 
                     }
                     else {
-                        errorCallback()
+                        errorCallback(INVALID_TOKEN)
                     }
                 })
                 .catch((err) => {
                    errorCallback()
+                })
+            )
+    }
+}
+
+export function getFavList(favUrl):Action {
+    return (dispatch, getState) => {
+        return(
+            getAccessToken()
+                .then((token)=> {
+                    if(!!token&&token!=='') {
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                        axios.get(
+                            favUrl
+                        )
+                        .then(function(tokenresponse){
+                            dispatch(getPlayerlist({
+                                payload: tokenresponse.data
+                            }))
+                        })
+                        .catch(function(error){
+                        })
+                    }
+                    
+                })
+                .catch((err) => {
                 })
             )
     }
@@ -155,6 +215,7 @@ function getPlayersDetail({payload}):Action {
         payload
     }
 }
+
 
 function pushUnion({item}):Action {
     return {

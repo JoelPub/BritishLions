@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, RefreshControl, ActivityIndicator } from 'react-native'
+import { Image, View, Modal, ScrollView, RefreshControl, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -16,12 +16,14 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
-import { pushNewRoute } from '../../actions/route'
+import { replaceRoute,pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { getFavDetail , showDetail} from '../../actions/player'
+import { getFavDetail , showDetail, INVALID_TOKEN} from '../../actions/player'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 
 class MyLionsFavoriteList extends Component {
 
@@ -50,6 +52,10 @@ class MyLionsFavoriteList extends Component {
         this.replaceRoute('login')
     }
 
+    replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
     _signInRequired() {
         Alert.alert(
             'An error occured',
@@ -62,7 +68,7 @@ class MyLionsFavoriteList extends Component {
     }
 
     errCallback(error) {
-    if(error&&error.response&&error.response.status=== 401) {
+    if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
         this._signInRequired()
     }
     else {
@@ -210,7 +216,9 @@ class MyLionsFavoriteList extends Component {
 function bindAction(dispatch) {
     return {
         getFavDetail: (favUrl,playerFullUrl,errorCallbck) =>dispatch(getFavDetail(favUrl,playerFullUrl,errorCallbck)),
-        showDetail: (data, route)=>dispatch(showDetail(data, route))
+        showDetail: (data, route)=>dispatch(showDetail(data, route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 

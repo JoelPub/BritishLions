@@ -4,8 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
-import { fetchContent } from '../../actions/content'
-import { showDetail} from '../../actions/player'
+import { getUnionDetail,showDetail} from '../../actions/player'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -28,9 +27,11 @@ class MyLionsPlayerList extends Component {
     constructor(props){
         super(props)
         this.unionFeed=this.props.unionFeed
-        this.url = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFeed=[]
         this.searchResult=[]
+        this.playerList = []
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -44,7 +45,7 @@ class MyLionsPlayerList extends Component {
         this.props.showDetail(item,route)
     }
     componentDidMount() {
-        this.props.fetchContent(this.url)
+        this.props.getUnionDetail(this.unionUrl,this.favUrl)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,6 +53,9 @@ class MyLionsPlayerList extends Component {
         this.setState({
             isLoaded: true
         })
+        
+        this.playerList=nextProps.playerList.split('|')
+
     }
     _setModalVisible=(visible) => {
         this.setState({
@@ -210,7 +214,7 @@ class MyLionsPlayerList extends Component {
                                                 Object.assign(item, {
                                                     logo: union.image, 
                                                     country: union.displayname.toUpperCase(),
-                                                    isFav: false
+                                                    isFav: (this.playerList.indexOf(item.id)!==-1)
                                                 })
 
                                                 return (
@@ -258,7 +262,7 @@ class MyLionsPlayerList extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
+        getUnionDetail: (unionUrl,favUrl)=>dispatch(getUnionDetail(unionUrl,favUrl)),
         showDetail: (data, route)=>dispatch(showDetail(data, route)),
     }
 }
@@ -266,7 +270,8 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         unionFeed: state.player.union,
-        playerFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        playerList: state.player.playerList,
+        playerFeed: state.player.playerDetail,
+        isLoaded: state.player.isLoaded
     }
 }, bindAction)(MyLionsPlayerList)
