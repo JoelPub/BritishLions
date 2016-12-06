@@ -101,7 +101,7 @@ class AppNavigator extends Component {
                     'refresh_token': refreshToken,
                     'grant_type': 'refresh_token'
                 },
-                successCallback: (res) => {
+                onSuccess: (res) => {
                     let accessToken = res.data.access_token
                     let refreshToken = res.data.refresh_token
                     

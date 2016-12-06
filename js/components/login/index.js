@@ -34,7 +34,7 @@ class Login extends Component {
                 password: null,
                 submit: false
             },
-            isShowOverlayLoader: false
+            isFormSubmitting: false
         }
 
         this.constructor.childContextTypes = {
@@ -47,9 +47,13 @@ class Login extends Component {
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    componentDidMount () {
+    componentDidMount() {
         Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
         Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
     }
 
     keyboardWillShow (e) {
@@ -76,8 +80,7 @@ class Login extends Component {
         // reset the fields and hide loader
         this.setState({
             email: '',
-            password: '',
-            isShowOverlayLoader: false
+            password: ''
         })
 
         updateToken(accessToken, refreshToken)
@@ -94,8 +97,6 @@ class Login extends Component {
         })
 
         if(isFormValidate) {
-            this.setState({ isShowOverlayLoader: true })
-
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -103,10 +104,13 @@ class Login extends Component {
                     'password': this.state.password,
                     'grant_type': 'password'
                 },
-                successCallback: this._createToken.bind(this),
-                errorCallback: () => {
-                    this.setState({ isShowOverlayLoader: false })
-                }
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._createToken.bind(this)
             }
 
             service(options)
@@ -152,7 +156,20 @@ class Login extends Component {
                                         <Input placeholder='Password' defaultValue={this.state.password} secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SIGN IN' onPress={() => {this.setState({errorCheck:{email:this.state.email,password:this.state.password,submit:true}})}}/>
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'SIGNING IN..' : 'SIGN IN'} 
+                                        onPress = {() => {
+                                            this.setState({
+                                                errorCheck: {
+                                                    email: this.state.email,
+                                                    password: this.state.password, 
+                                                    submit: true
+                                                }
+                                            })
+                                        }}
+                                    />
                                 </View>
                             </View>
                         </ScrollView>
@@ -161,7 +178,7 @@ class Login extends Component {
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 
-                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+                        <OverlayLoader visible={this.state.isFormSubmitting} />
 
                         <View style={styles.footer}>
                             <Grid>

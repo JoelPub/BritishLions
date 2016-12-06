@@ -50,8 +50,8 @@ function errorHandler(error, opt) {
 
 	if(statusCode === 401) {
 		// if Authorization has been denied.
-		if (opt.authorizationCallback) {
-			opt.authorizationCallback(error)
+		if (opt.onAuthorization) {
+			opt.onAuthorization(error)
 		}
 	} else {
 		Alert.alert(
@@ -64,17 +64,33 @@ function errorHandler(error, opt) {
 
 
 function callApi(opt) {
+	// use for loading, initial state
+	if (opt.onAxiosStart) {
+		opt.onAxiosStart()
+	}
+
+
 	axios.post(
 	    opt.url,
 	    qs.stringify(opt.data)
 	).then(function(res) {
-		if (opt.successCallback) {
-			opt.successCallback(res)
+		// use for loading, after state
+		if (opt.onAxiosEnd) {
+			opt.onAxiosEnd()
+		}
+
+		if (opt.onSuccess) {
+			opt.onSuccess(res)
 		}
 	}).catch(function(error) {
 		// console.log('errorHandler: ', error.response)
-		if (opt.errorCallback) {
-			opt.errorCallback(error)
+		// use for loading, after state
+		if (opt.onAxiosEnd) {
+			opt.onAxiosEnd()
+		}
+
+		if (opt.onError) {
+			opt.onError(error)
 		}
 		
 		// no need to prompt a message if the request is from 
@@ -89,11 +105,12 @@ export function service(options) {
 	let defaults = {
 		url: '',
 		data: {},
-		successCallback: null,
-		errorCallback: null,
-		authorizationCallback: null, 
+		onSuccess: null,
+		onError: null,
+		onAuthorization: null, 
+		onAxiosStart: null,
+		onAxiosEnd: null,
 		isRequiredToken: false, 
-		enableErrorPrompt: false, 
 		isRefreshToken: false
 	}
 
@@ -107,8 +124,8 @@ export function service(options) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
 				callApi(opt)
 			} else {
-				if (opt.errorCallback) {
-					opt.errorCallback('Invalid Access Token')
+				if (opt.onError) {
+					opt.onError('Invalid Access Token')
 				}
 
 				Alert.alert(
@@ -118,8 +135,8 @@ export function service(options) {
 				)
 			}
 		}).catch((error) => {
-			if (opt.errorCallback) {
-				opt.errorCallback('No Access Token')
+			if (opt.onError) {
+				opt.onError('No Access Token')
 			}
 
             Alert.alert(

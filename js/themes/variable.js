@@ -1,16 +1,13 @@
 import { Platform } from 'react-native'
 import { Dimensions } from 'react-native'
 
-const theme1 = '#af001e'
-const header1 ='#af001e'
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
 const fontCondensed =  Platform.OS === 'android'? 'DIN_Condensed_Bold' : 'DIN Condensed'
 
 module.exports = {
-	brandPrimary : theme1,
-	brandSecondary: header1,
-
+	brandPrimary : '#af001e',
+	brandSecondary: '#af001e',
 	brandDarkColor: '#710b1a',
 	brandLightColor: '#ce1030',
 
