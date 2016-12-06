@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, Alert } from 'react-native'
+import { Keyboard, Image, Dimensions, Alert,ScrollView } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -120,7 +120,7 @@ class ForgotPassword extends Component {
             <Container>
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <Content style={styles.main}>
+                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} >
                             <View style={styles.content} contentOffset={this.state.offset}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>FORGOT PASSWORD</Text>
@@ -152,7 +152,7 @@ class ForgotPassword extends Component {
                                     />
                                 </View>
                             </View>
-                        </Content>
+                        </ScrollView>
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
