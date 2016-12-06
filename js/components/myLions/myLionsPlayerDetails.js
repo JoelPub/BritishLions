@@ -15,9 +15,11 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { editFavList, getFavList } from '../../actions/player'
+import { editFavList, getFavList, INVALID_TOKEN } from '../../actions/player'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { alertBox } from '../utility/alertBox'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -34,6 +36,10 @@ class MyLionsPlayerDetails extends Component {
     }
     componentWillMount() {
         // this.props.getFavList(this.favUrl)
+    }
+
+    replaceRoute(route) {
+        this.props.replaceRoute(route)
     }
 
    _reLogin() {
@@ -54,7 +60,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     errCallback(error) {
-    if(error&&error.response&&error.response.status=== 401) {
+    if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
         this._signInRequired()
     }
     else {
@@ -173,7 +179,8 @@ function bindAction(dispatch) {
         getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
         editFavList: (favEditUrl,favUrl,playerid,errorCallbck) =>dispatch(editFavList(favEditUrl,favUrl,playerid,errorCallbck)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
