@@ -156,10 +156,11 @@ class MyLionsPlayerList extends Component {
                         resultVisible={this.state.resultVisible}
                         transparent={this.state.transparent}
                         callbackParent={this.onCloseFilter}>
+
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
@@ -248,7 +249,7 @@ class MyLionsPlayerList extends Component {
                     </Content>:
                         <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    < EYSFooter />
+                    <EYSFooter />
                 </View>
             </Container>
         )
