@@ -49,13 +49,6 @@ class UnionDetailsSub extends Component {
                                 dot={<View style={Slider.swiperDot} />}
                                 activeDot={<View style={Slider.swiperActiveDot}
                                 showsButtons={true} />} >
-
-                            <Lightbox navigator={this.props.navigator}>
-                                <Image transparent
-                                    resizeMode='contain'
-                                    source={this.props.details.logo}
-                                    style={styles.banner} />
-                            </Lightbox>
                             {
                                 this.props.details.images.map((item,index)=>{
                                     return (
