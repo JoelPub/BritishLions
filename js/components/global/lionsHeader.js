@@ -12,7 +12,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 
 const styles = styleSheetCreate({
     btn: {
-        marginLeft: 12,
+        marginRight: 12,
         marginTop: -22,
         android: {
             marginTop: -7,
@@ -39,7 +39,7 @@ const styles = styleSheetCreate({
     logoHeader: {
         width: 54,
         height: 34,
-        marginRight: 10,
+        marginLeft: 10,
         marginTop: -12,
         backgroundColor: 'transparent',
         android: {
@@ -79,14 +79,14 @@ class LionsHeader extends Component {
 
         return (
             <Header>
-                {buttonHTML}
-
-                <Text style={styles.textHeader}>{title}</Text>
-
                 <Image
                   	transparent
                   	source={require('../../../images/header/logo.png')}
                   	style={styles.logoHeader} />
+
+                <Text style={styles.textHeader}>{title}</Text>
+
+                {buttonHTML}
             </Header>
         )
     }

@@ -191,6 +191,7 @@ class AppNavigator extends Component {
                     content={<LionsSideBar navigator={this._navigator} />}
                     tapToClose={false}
                     onClose={() => this.closeDrawer()}
+                    side='right'
                     openDrawerOffset={0.21}
                     panOpenMask={0}
                     panCloseMask={0.21}
