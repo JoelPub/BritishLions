@@ -81,7 +81,9 @@ const styles = styleSheetCreate({
         fontSize: 13,
         opacity: 0.75,
         paddingBottom: 33,
-
+        android: {
+            paddingBottom: 37
+        }
     },
     secondary: {
         height: 70,
