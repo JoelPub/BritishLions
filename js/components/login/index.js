@@ -47,9 +47,14 @@ class Login extends Component {
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    componentDidMount() {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    componentDidMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    componentWillUnmount(){
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
     }
 
     shouldComponentUpdate(nextProps, nextState) {
