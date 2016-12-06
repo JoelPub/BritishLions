@@ -29,7 +29,7 @@ class ForgotPassword extends Component {
                 email: null,
                 submit: false
             },
-            isShowOverlayLoader: false
+            isFormSubmitting: false
         }
 
         this.constructor.childContextTypes = {
@@ -76,17 +76,18 @@ class ForgotPassword extends Component {
         })
 
         if(isFormValidate) {
-            this.setState({ isShowOverlayLoader: true })
-
             let options = {
                 url: this.serviceUrl,
                 data: {
                     'email': this.state.email
                 },
-                successCallback: this._resetPassword.bind(this),
-                errorCallback: () => {
-                    this.setState({ isShowOverlayLoader: false })
-                }
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._resetPassword.bind(this)
             }
 
             service(options)
@@ -101,8 +102,7 @@ class ForgotPassword extends Component {
         // successful sent to the server
         // reset the email field
         this.setState({ 
-            email: '',
-            isShowOverlayLoader: false
+            email: ''
         })
 
         Alert.alert(
@@ -136,7 +136,20 @@ class ForgotPassword extends Component {
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SUBMIT' style={styles.button} onPress={() => {this.setState({errorCheck:{email:this.state.email,submit:true}})}} />
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT'} 
+                                        style={styles.button} 
+                                        onPress={() => {
+                                            this.setState({
+                                                errorCheck: {
+                                                    email: this.state.email, 
+                                                    submit:true
+                                                }
+                                            }
+                                        )}} 
+                                    />
                                 </View>
                             </View>
                         </ScrollView>
@@ -145,7 +158,7 @@ class ForgotPassword extends Component {
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 
-                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+                        <OverlayLoader visible={this.state.isFormSubmitting} />
 
                         <View style={styles.footer}>
                             <Grid>

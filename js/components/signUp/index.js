@@ -40,7 +40,7 @@ class SignUp extends Component {
                 tc: false,
                 submit: false
             },
-            isShowOverlayLoader: false
+            isFormSubmitting: false
         }
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
@@ -82,8 +82,7 @@ class SignUp extends Component {
             password: '',
             newEvent: false,
             newPartners: false,
-            tc: false,
-            isShowOverlayLoader: false
+            tc: false
         })
 
         Alert.alert(
@@ -101,8 +100,6 @@ class SignUp extends Component {
         })
 
         if(isFormValidate) {
-            this.setState({ isShowOverlayLoader: true })
-
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -114,10 +111,13 @@ class SignUp extends Component {
                     'newPartners': this.state.newPartners,
                     'tc': this.state.tc
                 },
-                successCallback: this._userSignUp.bind(this),
-                errorCallback: () => {
-                    this.setState({ isShowOverlayLoader: false })
-                }
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._userSignUp.bind(this)
             }
 
             service(options)
@@ -227,20 +227,22 @@ class SignUp extends Component {
 
                                     <ButtonFeedback
                                         rounded
-                                        label='REGISTER'
-                                        style={styles.button}
-                                        onPress={() => {
-                                          this.setState({
-                                            errorCheck: {
-                                              firstName: this.state.firstName,
-                                              lastName: this.state.lastName,
-                                              email: this.state.email,
-                                              password: this.state.password,
-                                              tc: this.state.tc,
-                                              submit: true
-                                            }
-                                          })
-                                        }} />
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'} 
+                                        style = {styles.button}
+                                        onPress = {() => {
+                                            this.setState({
+                                                errorCheck: {
+                                                    firstName: this.state.firstName,
+                                                    lastName: this.state.lastName,
+                                                    email: this.state.email,
+                                                    password: this.state.password,
+                                                    tc: this.state.tc,
+                                                    submit: true
+                                                }
+                                            })
+                                        }}
+                                    />
 
                                 </View>
                             </View>
@@ -250,7 +252,7 @@ class SignUp extends Component {
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 
-                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+                        <OverlayLoader visible={this.state.isFormSubmitting} />
 
                         <View style={styles.footer}>
                             <Grid>

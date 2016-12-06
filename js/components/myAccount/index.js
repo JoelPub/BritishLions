@@ -31,19 +31,17 @@ class MyAccount extends Component {
                 x: 0,
                 y: 0
             },
-
             errorCheckEmail: {
                 email: null,
                 submit: false
             },
-
             errorCheckPassword: {
                 password: null,
                 confirmPassword: null,
                 submit: false
             },
-
-            isShowOverlayLoader: false
+            isFormSubmitting: false,
+            isFormSubmittingEmail: false
         }
 
         this.constructor.childContextTypes = {
@@ -107,8 +105,6 @@ class MyAccount extends Component {
     }
 
     _signInRequired() {
-        this.setState({ isShowOverlayLoader: false })
-
         Alert.alert(
             'An error occured',
             'Please sign in your account first.',
@@ -128,18 +124,21 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
-                this.setState({ isShowOverlayLoader: true })
-
                 let options = {
                     url: this.changeEmailServiceUrl,
                     data: {
                         'newEmail': this.state.email
                     },
-                    successCallback: (res) => {
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmittingEmail: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmittingEmail: false })
+                    },
+                    onSuccess: (res) => {
                         // reset the fields
                         this.setState({
-                            email: '',
-                            isShowOverlayLoader: false
+                            email: ''
                         }, () => {
                             Alert.alert(
                                 'Messages',
@@ -148,11 +147,8 @@ class MyAccount extends Component {
                             )
                         })
                     },
-                    isRequiredToken: true,
-                    authorizationCallback: this._signInRequired.bind(this),
-                    errorCallback: () => {
-                        this.setState({ isShowOverlayLoader: false })
-                    }
+                    onAuthorization: this._signInRequired.bind(this),
+                    isRequiredToken: true
                 }
 
                 service(options)
@@ -175,19 +171,23 @@ class MyAccount extends Component {
 
         if(this.props.isAccessGranted) {
             if(isFormValidate) {
-                this.setState({ isShowOverlayLoader: true })
 
                 let options = {
                     url: this.changePasswordServiceUrl,
                     data: {
                         'newPassword': this.state.confirmPassword
                     },
-                    successCallback: (res) => {
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: (res) => {
                         // reset the fields and hide the loader
                         this.setState({
                             password: '',
-                            confirmPassword: '',
-                            isShowOverlayLoader: false
+                            confirmPassword: ''
                         }, () => {
                             Alert.alert(
                                 'Messages',
@@ -195,14 +195,9 @@ class MyAccount extends Component {
                                 [{text: 'OK'}]
                             )
                         })
-
-                        
                     },
-                    isRequiredToken: true,
-                    authorizationCallback: this._signInRequired.bind(this),
-                    errorCallback: () => {
-                        this.setState({ isShowOverlayLoader: false })
-                    }
+                    onAuthorization: this._signInRequired.bind(this),
+                    isRequiredToken: true
                 }
 
                 service(options)
@@ -247,7 +242,21 @@ class MyAccount extends Component {
                                         <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SUBMIT PASSWORD' style={styles.button} onPress={() => {this.setState({errorCheckPassword:{password:this.state.password,confirmPassword:this.state.confirmPassword,submit:true}})}} />
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'} 
+                                        style={styles.button} 
+                                        onPress={() => {
+                                            this.setState({
+                                                errorCheckPassword: {
+                                                    password: this.state.password,
+                                                    confirmPassword: this.state.confirmPassword,
+                                                    submit: true
+                                                }}
+                                            )}
+                                        } 
+                                    />
                                 </View>
 
                                 <View style={styles.split}></View>
@@ -262,11 +271,24 @@ class MyAccount extends Component {
                                         <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmittingEmail}
+                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'} 
+                                        style={styles.button} 
+                                        onPress={() => {
+                                            this.setState({
+                                                errorCheckEmail: {
+                                                    email: this.state.email,
+                                                    submit: true
+                                                }}
+                                            )}
+                                        } 
+                                    />
                                 </View>
                         </ScrollView>
                         
-                        <OverlayLoader visible={this.state.isShowOverlayLoader} />
+                        <OverlayLoader visible={(this.state.isFormSubmitting && this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
