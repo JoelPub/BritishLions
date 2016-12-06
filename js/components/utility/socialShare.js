@@ -3,7 +3,7 @@ import { alertBox } from './alertBox'
 
 export function shareTextWithTitle (text, posturl) {
     Share.share({
-        title: text,
+        title: '',
         message: Platform.OS==='ios'?text:text + ' ' + posturl,
         url:posturl
     }, {
