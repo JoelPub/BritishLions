@@ -132,8 +132,13 @@ class SignUp extends Component {
     }
 
     componentDidMount () {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    componentWillUnmount(){
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
     }
 
     render() {
