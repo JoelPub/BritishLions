@@ -64,16 +64,19 @@ function errorHandler(error, opt) {
 
 
 function callApi(opt) {
+	let isInternetConnected = false
+
 	// use for loading, initial state
 	if (opt.onAxiosStart) {
 		opt.onAxiosStart()
 	}
 
-
 	axios.post(
 	    opt.url,
 	    qs.stringify(opt.data)
 	).then(function(res) {
+		isInternetConnected = true
+
 		// use for loading, after state
 		if (opt.onAxiosEnd) {
 			opt.onAxiosEnd()
@@ -84,6 +87,8 @@ function callApi(opt) {
 		}
 	}).catch(function(error) {
 		// console.log('errorHandler: ', error.response)
+		isInternetConnected = true
+
 		// use for loading, after state
 		if (opt.onAxiosEnd) {
 			opt.onAxiosEnd()
@@ -99,6 +104,34 @@ function callApi(opt) {
 			errorHandler(error, opt)
 		}
 	})
+
+
+	// This will be an alternative solution for checking if device is
+	// connected to the internet or not, while react native have a bug 
+	// in netInfo.isConnected
+	setTimeout(() => {
+		if (isInternetConnected === false) {
+			// if this flag is still false 
+			// it means that we dont received any response from axios
+			// maybe it due of internet connectivity issues
+
+			// use for loading, after state
+			if (opt.onAxiosEnd) {
+				opt.onAxiosEnd()
+			}
+
+			if (opt.onError) {
+				opt.onError('No Internet Connection')
+			}
+
+			Alert.alert(
+			  'An Error Occured',
+			  'Please make sure the network is connected.',
+			  'Dismiss'
+			)
+		}
+	}, 60000)
+
 }
 
 export function service(options) {
