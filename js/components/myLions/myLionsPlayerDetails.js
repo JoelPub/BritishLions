@@ -25,7 +25,8 @@ class MyLionsPlayerDetails extends Component {
         this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
         this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954',
-        this.playerid = this.props.detail.id
+        this.playerid = this.props.detail.id,
+        this.playerName = this.props.detail.name,
         this.playerList = []
         this.edit =false
         this.state ={
@@ -45,7 +46,7 @@ class MyLionsPlayerDetails extends Component {
             :this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid)
         )
         :alertBox(
-                    'An Error Occured',
+                    'Warning',
                     'Please login',
                     'Dismiss'
                 )
@@ -57,7 +58,7 @@ class MyLionsPlayerDetails extends Component {
                 isFav:(this.playerList.indexOf(this.playerid)!==-1)
             })
             if (this.edit) {
-                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?'Added':'Removed')
+                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?this.playerName+' has been added to your list':this.playerName+' has been removed from your list')
                 this.edit=false
             }
         }
@@ -67,7 +68,7 @@ class MyLionsPlayerDetails extends Component {
         this.props.isAccessGranted?
         this.props.pushNewRoute(route)
         :alertBox(
-                    'An Error Occured',
+                    'Warning',
                     'Please login',
                     'Dismiss'
                 )

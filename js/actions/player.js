@@ -17,7 +17,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                     if(!!token&&token!=='') {
                         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
                         axios.post(
-                            favEditUrl, 
+                            favEditUrl,
                             qs.stringify({
                                 'playerId': playerid
                             })
@@ -38,7 +38,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                                   'Dismiss'
                                     )
                             })
-                            
+
                         })
                         .catch(function(error) {
                             alertBox(
@@ -49,9 +49,9 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                         })
 
                     }
-                    else {               
+                    else {
                         alertBox(
-                            'An Error Occured',
+                            'Warning',
                             'Please login',
                             'Dismiss'
                         )
@@ -61,7 +61,7 @@ export function editFavList(favEditUrl,favUrl,playerid):Action {
                     )
                 .catch(function(error) {
                             alertBox(
-                            'An Error Occured',
+                            'Warning',
                             'Please login',
                             'Dismiss'
                             )
@@ -88,7 +88,7 @@ export function getFavList(favUrl):Action {
                         .catch(function(error){
                         })
                     }
-                    
+
                 })
                 .catch((err) => {
                 })
@@ -146,4 +146,3 @@ export function setPlayer({payload}):Action {
         payload
     }
 }
-

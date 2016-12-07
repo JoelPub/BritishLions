@@ -35,7 +35,7 @@ class MyLions extends Component {
             isLoaded: false
         })
     }
-    
+
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true
@@ -63,7 +63,7 @@ class MyLions extends Component {
         this.props.isAccessGranted?
         this._drillDown(Data,'myLionsFavoriteList')
         :alertBox(
-                    'An Error Occured',
+                    'Warning',
                     'Please login',
                     'Dismiss'
                 )
