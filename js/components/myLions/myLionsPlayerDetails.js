@@ -31,7 +31,8 @@ class MyLionsPlayerDetails extends Component {
         this.playerList = []
         this.edit =false
         this.state ={
-            isFav : this.props.detail.isFav
+            isFav : this.props.detail.isFav,
+            isFormSubmitting: false
         }
     }
     componentWillMount() {
@@ -60,6 +61,9 @@ class MyLionsPlayerDetails extends Component {
     }
 
     errCallback(error) {
+    this.setState({
+        isFormSubmitting: false
+    })
     if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
         this._signInRequired()
     }
@@ -75,6 +79,7 @@ class MyLionsPlayerDetails extends Component {
 
     _editPlayer() {
         this.edit = true
+        this.setState({ isFormSubmitting: true })
         this.props.isAccessGranted?
             (
                 this.state.isFav? 
@@ -89,6 +94,7 @@ class MyLionsPlayerDetails extends Component {
     componentWillReceiveProps(nextProps) {
             this.playerList=nextProps.playerList.split('|')
             this.setState({
+                isFormSubmitting: false,
                 isFav:(this.playerList.indexOf(this.playerid)!==-1)
             })
             if (this.edit) {
@@ -117,8 +123,12 @@ class MyLionsPlayerDetails extends Component {
                         </View>
 
                         <View style={styles.buttons}>
-                            <ButtonFeedback onPress={()=> this._editPlayer()} style={[styles.btn, styles.btnLeft, this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
-                                <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'}</Text>
+                            <ButtonFeedback
+                                disabled = {this.state.isFormSubmitting} 
+                                onPress={()=> this._editPlayer()} 
+                                style={[styles.btn, styles.btnLeft, 
+                                this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
+                                <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'} </Text>
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
                                 <Text style={styles.btnText}>MY LIONS</Text>
