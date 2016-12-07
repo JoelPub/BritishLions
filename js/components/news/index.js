@@ -40,16 +40,12 @@ class News extends Component {
         this.props.fetchContent(this.url)
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         this.setState({
             isLoaded: true,
-            isRefreshing: this.props.isRefreshing,
-            newsFeed: this.props.newsFeed
+            isRefreshing: nextProps.isRefreshing,
+            newsFeed: nextProps.newsFeed
         })
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return true
     }
     
     render() {
