@@ -135,7 +135,9 @@ class MyLionsFavoriteList extends Component {
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <Image resizeMode='contain' source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageTitle}/>
+                        <View style={styles.viewCircle}>
+                            <Image resizeMode='contain' source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageTitle}/>
+                        </View>
 
                         <Text style={styles.headerTitle}>MY LIONS</Text>
                     </LinearGradient>
