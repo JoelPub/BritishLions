@@ -22,34 +22,38 @@ function errorSlice(errObj) {
 }
 
 function errorHandler(error, opt) {
-	let statusCode = error.response.status
-	let errorDescription = error.response.data.error_description || ''
-	let modelState = error.response.data.ModelState || null
-	
-	switch(statusCode) {
-		case 500: // Internal Server Error (server error)
-		case 403: // Forbidden (SSL required)
-			errorDescription = 'Something went wrong with your request. Please try again later.'
-			break 
-		case 409: 
-			errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
-			break
-		case 400: // Bad Request (invalid data submitted)
-			if (modelState) {
-				errorDescription = errorSlice(modelState)
-			}
-			break
-	}
+    if(error.response != undefined){
+        let statusCode = error.response.status
+        let errorDescription = error.response.data.error_description || ''
+        let modelState = error.response.data.ModelState || null
 
-	if(statusCode === 401) {
-		// if Authorization has been denied.
-		if (opt.onAuthorization) {
-			opt.onAuthorization(error)
-		}
-	} else {
-		if (opt.onError) {
-			opt.onError(errorDescription)
-		}
+        switch(statusCode) {
+            case 500: // Internal Server Error (server error)
+            case 403: // Forbidden (SSL required)
+                errorDescription = 'Something went wrong with processing your request. Please try again later.'
+                break
+            case 409:
+                errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
+                break
+            case 400: // Bad Request (invalid data submitted)
+                if (modelState) {
+                    errorDescription = errorSlice(modelState)
+                }
+                break
+        }
+
+        if(statusCode === 401) {
+            // if Authorization has been denied.
+            if (opt.onAuthorization) {
+                opt.onAuthorization(error)
+            }
+        } else {
+            if (opt.onError) {
+                opt.onError(errorDescription)
+            }
+        }
+	}else{
+	    opt.onError('Something went wrong with processing your request. Please check your internet and try again later.')
 	}
 }
 
@@ -77,7 +81,7 @@ function callApi(opt) {
 			opt.onSuccess(res)
 		}
 	}).catch(function(error) {
-		// console.log('errorHandler: ', error.response)
+	    console.log('errorHandler: ', error.response)
 		isInternetConnected = true
 
 		// use for loading, after state
