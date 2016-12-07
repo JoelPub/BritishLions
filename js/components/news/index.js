@@ -26,16 +26,20 @@ class News extends Component {
               newsFeed: {}
          }
     }
+
     _drillDown(item) {
         this.props.drillDown(item, 'newsDetails')
     }
+
     _onRefresh() {
         this.setState({isRefreshing: true})
         this.props.fetchContent(this.url)
     }
+
     componentDidMount() {
         this.props.fetchContent(this.url)
     }
+
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true,
@@ -43,6 +47,11 @@ class News extends Component {
             newsFeed: this.props.newsFeed
         })
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+    
     render() {
         return (
             <Container theme={theme}>
@@ -64,7 +73,7 @@ class News extends Component {
                                     />
                             }>
                                 {
-                                    this.props.newsFeed.map(function(data, index) {
+                                    this.state.newsFeed.map(function(data, index) {
                                         return (
                                             <ButtonFeedback
                                                 key={index}
