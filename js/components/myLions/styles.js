@@ -35,6 +35,15 @@ module.exports = styleSheetCreate({
     headerContainer: {
         backgroundColor:'#af001e'
     },
+    imageTitle: {
+        alignSelf: 'center',
+        marginTop: 10,
+        width:100,
+        height:100,
+        android: {
+            marginBottom: 10,
+        }
+    },
     imageCircle: {
         alignSelf: 'center',
         marginTop: 10,
