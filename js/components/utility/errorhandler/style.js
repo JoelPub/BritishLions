@@ -16,8 +16,8 @@ module.exports = styleSheetCreate({
     entryShow: {
         paddingTop: 5,
         paddingBottom: 5,
-        flexDirection: 'row',
-        marginRight:5
+        paddingRight:15,
+        flexDirection: 'row'
     },
     entryHide:{
         opacity: 0
