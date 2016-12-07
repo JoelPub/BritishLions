@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, ScrollView, Alert } from 'react-native'
+import { Keyboard, Dimensions, Image, ScrollView, Alert, findNodeHandle } from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -15,6 +15,8 @@ import ErrorHandler from '../utility/errorhandler/index'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
+
+import { UIManager } from 'NativeModules';
 
 
 class Login extends Component {
@@ -120,16 +122,10 @@ class Login extends Component {
 
             service(options)
         } else {
-            this.setState({
-                errorCheck:{
-                    submit: false
-                }
-            })
-
-            this._scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
+            let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
+            UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
+               // scroll/focus to validation error messages
+               this._scrollView.scrollTo({ x: 0, y: pageY - 50,false })
             })
         }
     }
@@ -148,6 +144,7 @@ class Login extends Component {
 
                                 <View style={styles.guther}>
                                     <ErrorHandler
+                                        ref = 'errorHandlerElem'
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignIn.bind(this)}/>
 
