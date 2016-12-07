@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, Alert,ScrollView } from 'react-native'
+import { Keyboard, Image, Dimensions, ScrollView } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
@@ -29,7 +30,9 @@ class ForgotPassword extends Component {
                 email: null,
                 submit: false
             },
-            isFormSubmitting: false
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error'
         }
 
         this.constructor.childContextTypes = {
@@ -92,13 +95,19 @@ class ForgotPassword extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._resetPassword.bind(this)
+                onSuccess: this._resetPassword.bind(this),
+                onError: (res) => {
+                    this.setState({ 
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+                }
             }
 
             service(options)
         } else {
             this.setState({
-                offset:{y:0}
+                offset:{ y: 0}
             })
         }
     }
@@ -107,17 +116,10 @@ class ForgotPassword extends Component {
         // successful sent to the server
         // reset the email field
         this.setState({ 
-            email: ''
+            email: '',
+            customMessages: 'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
+            customMessagesType: 'success'
         })
-
-        Alert.alert(
-            'Messages',
-            'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
-            [{
-                text: 'OK',
-                onPress: () => this.replaceRoute('login')
-            }]
-        )
     }
 
     render() {
@@ -132,6 +134,11 @@ class ForgotPassword extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
+
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._onValidateSuccess.bind(this)} />
@@ -151,7 +158,8 @@ class ForgotPassword extends Component {
                                                 errorCheck: {
                                                     email: this.state.email, 
                                                     submit:true
-                                                }
+                                                },
+                                                customMessages: ''
                                             }
                                         )}} 
                                     />

@@ -1,10 +1,11 @@
 'use strict'
 
 import React, { Component } from 'react'
+import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, ScrollView, Alert, findNodeHandle } from 'react-native'
+import { Keyboard, Dimensions, Image, ScrollView, findNodeHandle } from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -12,11 +13,10 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from './login-theme'
 import styles from './login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
-
-import { UIManager } from 'NativeModules';
 
 
 class Login extends Component {
@@ -36,7 +36,9 @@ class Login extends Component {
                 password: null,
                 submit: false
             },
-            isFormSubmitting: false
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error'
         }
 
         this.constructor.childContextTypes = {
@@ -87,11 +89,12 @@ class Login extends Component {
         // reset the fields and hide loader
         this.setState({
             email: '',
-            password: ''
+            password: '',
+            customMessages: '',
+            customMessagesType: 'success'
         })
 
         updateToken(accessToken, refreshToken)
-
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }
@@ -117,17 +120,29 @@ class Login extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._createToken.bind(this)
+                onSuccess: this._createToken.bind(this),
+                onError: (res) => {
+                    this.setState({ 
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+
+                    this._scrollToMessages()
+                }
             }
 
             service(options)
         } else {
-            let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
-            UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
-               // scroll/focus to validation error messages
-               this._scrollView.scrollTo({ x: 0, y: pageY - 50,false })
-            })
+            this._scrollToMessages()
         }
+    }
+
+    _scrollToMessages() {
+        let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
+        UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
+           // scroll/focus to validation error messages
+           this._scrollView.scrollTo({ x: 0, y: pageY - 50,false })
+        })
     }
     
     render() {
@@ -143,6 +158,10 @@ class Login extends Component {
                                     style={styles.pageLogo} />
 
                                 <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
                                         ref = 'errorHandlerElem'
                                         errorCheck={this.state.errorCheck}
@@ -168,7 +187,8 @@ class Login extends Component {
                                                     email: this.state.email,
                                                     password: this.state.password, 
                                                     submit: true
-                                                }
+                                                },
+                                                customMessages: ''
                                             })
                                         }}
                                     />

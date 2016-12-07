@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, ScrollView, Platform, Alert, KeyboardAvoidingView  } from 'react-native'
+import { Keyboard, Dimensions, ScrollView, Platform, KeyboardAvoidingView  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -13,6 +13,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
@@ -41,7 +42,11 @@ class MyAccount extends Component {
                 submit: false
             },
             isFormSubmitting: false,
-            isFormSubmittingEmail: false
+            customMessages: '',
+            customMessagesType: 'error',
+            isFormSubmittingEmail: false,
+            customMessagesEmail: '',
+            customMessagesTypeEmail: 'error',
         }
 
         this.constructor.childContextTypes = {
@@ -103,23 +108,6 @@ class MyAccount extends Component {
         this.props.popRoute()
     }
 
-    _reLogin() {
-        removeToken()
-        this.props.setAccessGranted(false)
-        this.replaceRoute('login')
-    }
-
-    _signInRequired() {
-        Alert.alert(
-            'An error occured',
-            'Please sign in your account first.',
-            [{
-                text: 'SIGN IN', 
-                onPress: this._reLogin.bind(this)
-            }]
-        )
-    }
-
     _onSuccessValidateEmail(isFormValidate) {
         this.setState({
             errorCheckEmail: {
@@ -143,27 +131,37 @@ class MyAccount extends Component {
                     onSuccess: (res) => {
                         // reset the fields
                         this.setState({
-                            email: ''
-                        }, () => {
-                            Alert.alert(
-                                'Messages',
-                                'Your email is successfully changed.',
-                                [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
-                            )
+                            email: '',
+                            customMessagesEmail: 'Your email was successfully changed.',
+                            customMessagesTypeEmail: 'success'
                         })
                     },
-                    onAuthorization: this._signInRequired.bind(this),
+                    onAuthorization: () => {
+                        this.setState({
+                            customMessagesEmail: 'Please sign in your account.',
+                            customMessagesTypeEmail: 'error'
+                        })
+                    },
+                    onError: (res) => {
+                        this.setState({ 
+                            customMessagesEmail: res,
+                            customMessagesTypeEmail: 'error'
+                        })
+                    },
                     isRequiredToken: true
                 }
 
                 service(options)
             } else {
                 this.setState({
-                    offset:{y:0}
+                    offset:{ y: 0}
                 })
             }
         } else {
-            this._signInRequired()
+            this.setState({ 
+                customMessagesEmail: res,
+                customMessagesTypeEmail: 'error'
+            })
         }
     }
 
@@ -192,27 +190,37 @@ class MyAccount extends Component {
                         // reset the fields and hide the loader
                         this.setState({
                             password: '',
-                            confirmPassword: ''
-                        }, () => {
-                            Alert.alert(
-                                'Messages',
-                                'Your password is successfully changed.',
-                                [{text: 'OK'}]
-                            )
+                            confirmPassword: '',
+                            customMessages: 'Your password is successfully changed.',
+                            customMessagesType: 'success'
                         })
                     },
-                    onAuthorization: this._signInRequired.bind(this),
+                    onAuthorization: () => {
+                        this.setState({
+                            customMessages: 'Please sign in your account.',
+                            customMessagesType: 'error'
+                        })
+                    },
+                    onError: (res) => {
+                        this.setState({ 
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+                    },
                     isRequiredToken: true
                 }
 
                 service(options)
             } else {
                 this.setState({
-                    offset:{y:0}
+                    offset:{ y:0 }
                 })
             }
         } else {
-            this._signInRequired()
+            this.setState({
+                customMessages: 'Please sign in your account.',
+                customMessagesType: 'error'
+            })
         }
     }
 
@@ -232,6 +240,10 @@ class MyAccount extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
+
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheckPassword}
@@ -258,8 +270,9 @@ class MyAccount extends Component {
                                                     password: this.state.password,
                                                     confirmPassword: this.state.confirmPassword,
                                                     submit: true
-                                                }}
-                                            )}
+                                                },
+                                                customMessages: ''
+                                            })}
                                         } 
                                     />
                                 </View>
@@ -267,6 +280,10 @@ class MyAccount extends Component {
                                 <View style={styles.split}></View>
 
                                 <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessagesEmail} 
+                                        errorType = {this.state.customMessagesTypeEmail} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheckEmail}
                                         callbackParent={this._onSuccessValidateEmail.bind(this)} />
@@ -286,8 +303,9 @@ class MyAccount extends Component {
                                                 errorCheckEmail: {
                                                     email: this.state.email,
                                                     submit: true
-                                                }}
-                                            )}
+                                                },
+                                                customMessagesEmail: ''
+                                            })}
                                         } 
                                     />
                                 </View>

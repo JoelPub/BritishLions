@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
@@ -29,8 +30,8 @@ class SignUp extends Component {
             tc: false,
             visibleHeight: Dimensions.get('window').height,
             offset: {
-                x:0,
-                y:0
+                x: 0,
+                y: 0
             },
             errorCheck: {
                 firstName: null,
@@ -40,7 +41,9 @@ class SignUp extends Component {
                 tc: false,
                 submit: false
             },
-            isFormSubmitting: false
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error'
         }
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
@@ -85,11 +88,16 @@ class SignUp extends Component {
             tc: false
         })
 
-        Alert.alert(
-            'Messages',
-            'Your account has been created successfully.',
-            [{text: 'SIGN IN', onPress: () => this._replaceRoute('login')}]
-        )
+        this._scrollView.scrollTo({
+            x: 0,
+            y: 0,
+            false
+        })
+
+        this.setState({ 
+            customMessages: 'Your account has been created successfully.',
+            customMessagesType: 'success'
+        })
     }
 
     _handleSignUp(isFormValidate){
@@ -117,7 +125,19 @@ class SignUp extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._userSignUp.bind(this)
+                onSuccess: this._userSignUp.bind(this),
+                onError: (res) => {
+                    this.setState({ 
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+
+                    this._scrollView.scrollTo({
+                        x: 0,
+                        y: 0,
+                        false
+                    })
+                }
             }
 
             service(options)
@@ -153,6 +173,10 @@ class SignUp extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
@@ -244,7 +268,8 @@ class SignUp extends Component {
                                                     password: this.state.password,
                                                     tc: this.state.tc,
                                                     submit: true
-                                                }
+                                                },
+                                                customMessages: ''
                                             })
                                         }}
                                     />

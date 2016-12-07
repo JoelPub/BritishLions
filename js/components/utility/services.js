@@ -1,6 +1,6 @@
 'use strict'
 
-import { Alert, NetInfo } from 'react-native'
+import { NetInfo } from 'react-native'
 import { getAccessToken } from './asyncStorageServices'
 import axios from 'axios'
 import qs from 'qs'
@@ -23,11 +23,8 @@ function errorSlice(errObj) {
 
 function errorHandler(error, opt) {
 	let statusCode = error.response.status
-	let errorType = error.response.data.error
 	let errorDescription = error.response.data.error_description || ''
 	let modelState = error.response.data.ModelState || null
-	let alertTitle = 'An error occured'
-	let alertButton = {text: 'DISMISS'}
 	
 	switch(statusCode) {
 		case 500: // Internal Server Error (server error)
@@ -35,13 +32,9 @@ function errorHandler(error, opt) {
 			errorDescription = 'Something went wrong with your request. Please try again later.'
 			break 
 		case 409: 
-			alertTitle = 'Messages'
 			errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
-			alertButton = {text: 'OK'}
 			break
 		case 400: // Bad Request (invalid data submitted)
-			alertTitle = 'Messages'
-			alertButton = {text: 'OK'}
 			if (modelState) {
 				errorDescription = errorSlice(modelState)
 			}
@@ -54,11 +47,9 @@ function errorHandler(error, opt) {
 			opt.onAuthorization(error)
 		}
 	} else {
-		Alert.alert(
-			alertTitle,
-			errorDescription,
-			[alertButton]
-		)
+		if (opt.onError) {
+			opt.onError(errorDescription)
+		}
 	}
 }
 
@@ -93,10 +84,6 @@ function callApi(opt) {
 		if (opt.onAxiosEnd) {
 			opt.onAxiosEnd()
 		}
-
-		if (opt.onError) {
-			opt.onError(error)
-		}
 		
 		// no need to prompt a message if the request is from 
 		// appNavigator.js and its about refreshing of token
@@ -121,14 +108,8 @@ function callApi(opt) {
 			}
 
 			if (opt.onError) {
-				opt.onError('No Internet Connection')
+				opt.onError('Please make sure that your are connected to the network.')
 			}
-
-			Alert.alert(
-			  'An Error Occured',
-			  'Please make sure the network is connected.',
-			  'Dismiss'
-			)
 		}
 	}, 60000)
 
@@ -158,25 +139,18 @@ export function service(options) {
 				callApi(opt)
 			} else {
 				if (opt.onError) {
-					opt.onError('Invalid Access Token')
+					opt.onError('Please sign in your account.')
 				}
 
-				Alert.alert(
-				    'Messages',
-				    'Please sign in your account.',
-				    [{text: 'DISMISS'}]
-				)
+				// Sign In is Required
+				if (opt.onAuthorization) {
+					opt.onAuthorization('Sign In is Required')
+				}
 			}
 		}).catch((error) => {
 			if (opt.onError) {
-				opt.onError('No Access Token')
+				opt.onError('Please sign in your account.')
 			}
-
-            Alert.alert(
-                'An error occured',
-                '' + error,
-                [{text: 'DISMISS'}]
-            )
     	})
 	} else {
 		callApi(opt)
