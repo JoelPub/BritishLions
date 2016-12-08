@@ -27,7 +27,8 @@ class MyLionsPlayerDetails extends Component {
         this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
         this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954',
-        this.playerid = this.props.detail.id
+        this.playerid = this.props.detail.id,
+        this.playerName = this.props.detail.name,
         this.playerList = []
         this.edit =false
         this.state ={
@@ -51,8 +52,8 @@ class MyLionsPlayerDetails extends Component {
 
     _signInRequired() {
         Alert.alert(
-            'An error occured',
-            'Please sign in your account first.',
+            'Warning',
+            'Please log in to your account first.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)
@@ -61,20 +62,19 @@ class MyLionsPlayerDetails extends Component {
     }
 
     errCallback(error) {
-    this.setState({
-        isFormSubmitting: false
-    })
-    if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
-        this._signInRequired()
-    }
-    else {
-        alertBox(
-                    'An Error Occured',
-                    'Something went wrong with your request. Please try again later.',
-                    'Dismiss'
-                )
-    }
-
+        this.setState({
+            isFormSubmitting: false
+        })
+        if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
+            this._signInRequired()
+        }
+        else {
+            alertBox(
+                        'An Error Occured',
+                        'Something went wrong with processing your request. Please try again later.',
+                        'Dismiss'
+                    )
+        }
     }
 
     _editPlayer() {
@@ -98,13 +98,13 @@ class MyLionsPlayerDetails extends Component {
                 isFav:(this.playerList.indexOf(this.playerid)!==-1)
             })
             if (this.edit) {
-                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?'Added':'Removed')
+                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?this.playerName+' has been added to your list':this.playerName+' has been removed from your list')
                 this.edit=false
             }
     }
 
     _myLions(route) {
-        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._signInRequired()         
+        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._signInRequired()
     }
 
     render() {

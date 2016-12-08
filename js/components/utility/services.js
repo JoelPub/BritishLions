@@ -24,18 +24,27 @@ function errorSlice(errObj) {
 function errorHandler(error, opt) {
     if(error.response != undefined){
         let statusCode = error.response.status
+        let errorType = error.response.data.error
         let errorDescription = error.response.data.error_description || ''
         let modelState = error.response.data.ModelState || null
+        let alertTitle = 'An error occured'
+        let alertButton = {text: 'DISMISS'}
 
         switch(statusCode) {
             case 500: // Internal Server Error (server error)
             case 403: // Forbidden (SSL required)
-                errorDescription = 'Something went wrong with processing your request. Please try again later.'
+                errorDescription = 'Something went wrong with your request. Please try again later.'
+                break
+            case 401:
+                errorDescription = 'Authorization has been denied. Please try again later.'
                 break
             case 409:
+                alertTitle = 'Email account already in use'
                 errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
+                alertButton = {text: 'OK'}
                 break
             case 400: // Bad Request (invalid data submitted)
+                alertButton = {text: 'OK'}
                 if (modelState) {
                     errorDescription = errorSlice(modelState)
                 }
@@ -160,6 +169,3 @@ export function service(options) {
 		callApi(opt)
 	}
 }
-
-
-

@@ -22,7 +22,7 @@ export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
                     if(!!token&&token!=='') {
                         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
                         axios.post(
-                            favEditUrl, 
+                            favEditUrl,
                             qs.stringify({
                                 'playerId': playerid
                             })
@@ -39,7 +39,7 @@ export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
                             .catch(function(error){
                                 errorCallback()
                             })
-                            
+
                         })
                         .catch(function(error) {
                             errorCallback(error)
@@ -48,13 +48,11 @@ export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
                     }
                     else {               
                         errorCallback()
-                    }
-                }
-
-                    )
+                        }
+                })
                 .catch(function(error) {
-                            errorCallback()
-                        })
+                    errorCallback()
+                })
             )
     }
 }

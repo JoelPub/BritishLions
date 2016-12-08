@@ -34,7 +34,7 @@ class MyLions extends Component {
             isLoaded: false
         })
     }
-    
+
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true
