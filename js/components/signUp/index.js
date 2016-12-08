@@ -166,7 +166,7 @@ class SignUp extends Component {
             <Container>
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <ScrollView style={styles.main}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <ScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>

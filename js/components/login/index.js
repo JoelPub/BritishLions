@@ -150,7 +150,7 @@ class Login extends Component {
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'

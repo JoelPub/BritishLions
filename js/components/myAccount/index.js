@@ -232,7 +232,7 @@ class MyAccount extends Component {
                             <ScrollView
                                 style={styles.content}
                                 keyboardShouldPersistTaps={true}
-                                contentOffset={this.state.offset}
+                                keyboardDismissMode='on-drag'
                                 ref={(scrollView) => { _scrollView = scrollView; }}
                             >
                                 <View style={styles.pageTitle}>
