@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, ScrollView, Platform, KeyboardAvoidingView  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -17,8 +17,8 @@ import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
-
-var _scrollView: ScrollView
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+var _scrollView: KeyboardAwareScrollView
 
 class MyAccount extends Component {
     constructor(props) {
@@ -68,21 +68,13 @@ class MyAccount extends Component {
 
     keyboardFocus(){
         if(Platform.OS ==='android') {
-            _scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
-            })
+            _scrollView.scrollToPosition(0,0,false)
         }
     }
 
     keyboardBlur(){
         if(Platform.OS ==='android') {
-            _scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
-            })
+            _scrollView.scrollToPosition(0,0,false)
         }
     }
 
@@ -229,7 +221,7 @@ class MyAccount extends Component {
             <Container>
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                            <ScrollView
+                            <KeyboardAwareScrollView
                                 style={styles.content}
                                 keyboardShouldPersistTaps={true}
                                 keyboardDismissMode='on-drag'
@@ -309,7 +301,7 @@ class MyAccount extends Component {
                                         } 
                                     />
                                 </View>
-                        </ScrollView>
+                        </KeyboardAwareScrollView>
                         
                         <OverlayLoader visible={(this.state.isFormSubmitting && this.state.isFormSubmittingEmail)} />
 

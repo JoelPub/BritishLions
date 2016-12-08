@@ -5,7 +5,7 @@ import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, ScrollView, findNodeHandle } from 'react-native'
+import { Keyboard, Dimensions, Image, findNodeHandle } from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -17,12 +17,12 @@ import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Login extends Component {
     constructor(props) {
         super(props)
-        this._scrollView = ScrollView
+        this._scrollView = KeyboardAwareScrollView
         this.state = {
             email: '',
             password: '',
@@ -141,16 +141,16 @@ class Login extends Component {
         let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
         UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
            // scroll/focus to validation error messages
-           this._scrollView.scrollTo({ x: 0, y: pageY - 50,false })
+           this._scrollView.scrollToPosition(0,pageY - 50,false)
         })
     }
-    
+
     render() {
         return (
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
@@ -194,7 +194,7 @@ class Login extends Component {
                                     />
                                 </View>
                             </View>
-                        </ScrollView>
+                        </KeyboardAwareScrollView>
                 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />

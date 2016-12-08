@@ -15,11 +15,12 @@ import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class SignUp extends Component {
     constructor(props) {
         super(props)
-        this._scrollView = ScrollView
+        this._scrollView = KeyboardAwareScrollView
         this.state = {
             firstName: '',
             lastName: '',
@@ -88,11 +89,7 @@ class SignUp extends Component {
             tc: false
         })
 
-        this._scrollView.scrollTo({
-            x: 0,
-            y: 0,
-            false
-        })
+        this._scrollView.scrollToPosition(0,0,false)
 
         this.setState({ 
             customMessages: 'Your account has been created successfully.',
@@ -132,22 +129,14 @@ class SignUp extends Component {
                         customMessagesType: 'error'
                     })
 
-                    this._scrollView.scrollTo({
-                        x: 0,
-                        y: 0,
-                        false
-                    })
+                    this._scrollView.scrollToPosition(0,0,false)
                 }
             }
 
             service(options)
 
         } else {
-            this._scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
-            })
+            this._scrollView.scrollToPosition(0,0,false)
         }
     }
 
@@ -166,7 +155,7 @@ class SignUp extends Component {
             <Container>
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <ScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
@@ -276,7 +265,7 @@ class SignUp extends Component {
 
                                 </View>
                             </View>
-                        </ScrollView>
+                        </KeyboardAwareScrollView>
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
