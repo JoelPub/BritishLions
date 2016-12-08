@@ -3,8 +3,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
-import { drillDown, saveContent } from '../../actions/content'
+import { Image, View, Alert } from 'react-native'
+import { showList } from '../../actions/player'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
@@ -15,7 +15,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { pushNewRoute } from '../../actions/route'
+import { replaceRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import Data from '../../../contents/unions/data'
 
@@ -28,12 +28,13 @@ class MyLions extends Component {
          }
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item, route)
+    _showList(item, route) {
+        this.props.showList(item, route)
+        this.setState({
+            isLoaded: false
+        })
     }
-    componentDidMount() {
-        this.props.saveContent(Data)
-    }
+
     componentWillReceiveProps() {
         this.setState({
             isLoaded: true
@@ -58,13 +59,27 @@ class MyLions extends Component {
         return newData
     }
 
+    _myLions(){
+        this.props.isAccessGranted?
+            this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
+        :
+            Alert.alert(
+                'Messages',
+                'Please sign in your account first.',
+                [{
+                    text: 'SIGN IN', 
+                    onPress: () => { this.props.replaceRoute('login') }
+                }]
+            )
+    }
+
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <View style={styles.headerContainer}>
                         <LionsHeader title='MY LIONS' />
-                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._drillDown(Data,'myLionsFavoriteList')} />
+                        <ButtonFeedback rounded label='MY LIONS' style={styles.button} onPress={() => this._myLions()} />
                     </View>
                     <Content>
                          {
@@ -73,16 +88,17 @@ class MyLions extends Component {
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
                                                         <ButtonFeedback
-                                                            style={stylesArr}
-                                                            onPress={() => this._drillDown(item,'myLionsPlayerList')}>
+                                                            style={styles.gridBoxTouchable}
+                                                            onPress={() => this._showList({'uniondata':Data,'unionId':item.id,'logo':item.logo,'name':item.displayname.toUpperCase()},'myLionsPlayerList')}>
 
                                                             <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder
                                                                         width = {styleVar.deviceWidth / 2 - 1}
                                                                         height = {styleVar.deviceWidth / 2}>
@@ -94,7 +110,7 @@ class MyLions extends Component {
                                                                 </View>
 
                                                                 <View style={[shapes.triangle]} />
-                                                                <View style={styles.gridBoxTitle}>
+                                                                <View style={styleGridBoxTitle}>
                                                                     <Text style={styles.gridBoxTitleText}>{item.displayname.toUpperCase()}</Text>
                                                                 </View>
                                                             </View>
@@ -118,9 +134,13 @@ class MyLions extends Component {
 
 function bindAction(dispatch) {
     return {
-        saveContent: (data)=>dispatch(saveContent(data)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        showList: (data, route)=>dispatch(showList(data, route))
     }
 }
 
-export default connect(null, bindAction)(MyLions)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+},  bindAction)(MyLions)

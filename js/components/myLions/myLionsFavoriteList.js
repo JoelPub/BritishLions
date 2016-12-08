@@ -3,9 +3,10 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { Image, View, Modal, ScrollView, RefreshControl, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -15,104 +16,99 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
-import { pushNewRoute } from '../../actions/route'
+import { replaceRoute,pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { getAccessToken } from '../utility/asyncStorageServices'
-import { fetchContent, drillDown } from '../../actions/content'
-import axios from 'axios'
+import { getFavDetail , showDetail, INVALID_TOKEN} from '../../actions/player'
 import loader from '../../themes/loader-position'
+import { alertBox } from '../utility/alertBox'
+import refresh from '../../themes/refresh-control'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 
 class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
-        this.favurl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
-        this.playerid =[]
-        this.url = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403`
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.unionFeed=this.props.unionFeed
+        this.playerids =[]
         this.playerFeed=[]
         this.state = {
+            isRefreshing: false,
             isLoaded: false
-        }    
+        }
     }
     componentDidMount() {
-        getAccessToken().then((token) => {
-            if(token!=='') {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                axios.get(
-                    this.favurl
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+    }
+    _onRefresh() {
+        this.setState({isRefreshing: true})
+        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+    }
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
+    }
+
+    replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account first.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+    errCallback(error) {
+    if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
+        this._signInRequired()
+    }
+    else {
+        alertBox(
+                    'An Error Occured',
+                    'Something went wrong with your request. Please try again later.',
+                    'Dismiss'
                 )
-                .then(function(response) {
-                    if (response.data) {
-                        this.playerid=response.data.split('|')
-                        this.playerid.map((p,i)=>{
-                        })
-                        this.props.fetchContent(this.url)
-                    } else {
-                        Alert.alert(
-                            'Access not granted',
-                            'Please try again later.',
-                            [{text: 'DISMISS'}]
-                        )
-                    }
-                }.bind(this))
-                .catch(function(error) {
-                        if(error.response.status===401) {
-                            Alert.alert(
-                                'Your login session expired, please login again',
-                                ''+error,
-                                [{text:'DISMISS'}]
-                                )
-                        }
-                        else {
-                            Alert.alert(
-                                'An error occured',
-                                '' + error,
-                                [{text: 'DISMISS'}]
-                            )
-                    }
-                })
-
-            }
-            else {                
-                    Alert.alert(
-                        'please login',
-                        [{text:'DISMISS'}]
-                        )
-            }
-        }).catch((err) => {
-                            Alert.alert(
-                                'An error occured',
-                                '' + error,
-                                [{text: 'DISMISS'}]
-                            )
-        })
-
     }
-    componentWillReceiveProps(nextProps) {
-        this.playerFeed=[]
-        for (var u in nextProps.playerFeed) {
-            if(nextProps.playerFeed[u].length>0) {
-                nextProps.playerFeed[u].map((player,index)=>{
-                    this.playerid.map((id,j)=>{
-                        if(player.id===id) {
-                        Object.assign(player,{'countryid':u})
-                        this.playerFeed.push(player)
-                        }
-                    })
-                })
-            }
-        }
- 
         this.setState({
-            isLoaded: true
-        })
+                isLoaded: true,
+                isRefreshing: false,
+            })
 
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item,route)
-   }
+    componentWillReceiveProps(nextProps) {
+            this.setState({
+                isLoaded: true,
+                isRefreshing: this.props.isRefreshing,
+            })
+            this.playerFeed=[]
+            this.playerids=nextProps.playerList.split('|')
+            for (var u in nextProps.playerFeed) {
+                if(nextProps.playerFeed[u].length>0) {
+                    nextProps.playerFeed[u].map((player,index)=>{
+                        this.playerids.map((id,j)=>{
+                            if(player.id===id) {
+                            Object.assign(player,{'countryid':u})
+                            this.playerFeed.push(player)
+                            }
+                        })
+                    })
+                }
+            }
+    }
+
+    _showDetail(item, route) {
+        this.props.showDetail(item,route)
+    }
 
     _mapJSON(data, colMax = 2) {
         let i = 0
@@ -138,36 +134,51 @@ class MyLionsFavoriteList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={20}
-                            src={require('../../../contents/my-lions/nations/lions.png')} />
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                        <View style={styles.viewCircle}>
+                            <Image resizeMode='contain' source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageTitle}/>
+                        </View>
 
                         <Text style={styles.headerTitle}>MY LIONS</Text>
-                    </Image>
+                    </LinearGradient>
 
                      {
                     this.state.isLoaded?
-                    <Content>
+                    <ScrollView
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={()=> { this._onRefresh() }}
+                                        tintColor = {refresh.tintColor}
+                                        title = {refresh.title}
+                                        titleColor = {refresh.titleColor}
+                                        colors = {refresh.colors}
+                                        progressBackgroundColor = {refresh.background}
+                                    />
+                            }>
+                            <Content>
                         {
                             this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-                                                let union=this.unionFeed.find((n)=> n.id==='125')
-                                                Object.assign(item,{logo:union.image,country:union.displayname.toUpperCase()})
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===item.countryid)
+                                                Object.assign(item, {
+                                                    logo: union.image, 
+                                                    country: union.displayname.toUpperCase(),
+                                                    isFav: true
+                                                })
+                                                
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder 
-                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        width = {styleVar.deviceWidth / 2}
                                                                         height = {styleVar.deviceWidth / 2}>
                                                                         <Image transparent
                                                                             resizeMode='contain'
@@ -177,8 +188,8 @@ class MyLionsFavoriteList extends Component {
                                                                 </View>
                                                                 <View style={styles.gridBoxDescWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
-                                                                        <Text style={styles.gridBoxTitleText}>{item.name}</Text>
+                                                                    <View style={styleGridBoxTitle}>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
                                                                         <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
                                                                     </View>
                                                                 </View>
@@ -193,7 +204,8 @@ class MyLionsFavoriteList extends Component {
                             }, this)
                         }
                         <LionsFooter isLoaded={true} />
-                    </Content>:
+                    </Content>
+                    </ScrollView>:
                         <ActivityIndicator style={loader.centered} size='large' />
                     }
                     < EYSFooter />
@@ -205,15 +217,19 @@ class MyLionsFavoriteList extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        getFavDetail: (favUrl,playerFullUrl,errorCallbck) =>dispatch(getFavDetail(favUrl,playerFullUrl,errorCallbck)),
+        showDetail: (data, route)=>dispatch(showDetail(data, route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
 export default connect((state) => {
     return {
-        unionFeed: state.content.drillDownItem,
-        playerFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        unionFeed: state.player.union,
+        playerList: state.player.playerList,
+        playerFeed: state.player.playerDetail,
+        isLoaded: state.player.isLoaded,
+        isRefreshing: state.player.isRefreshing
     }
 }, bindAction)(MyLionsFavoriteList)

@@ -3,7 +3,7 @@
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 
-const gridBorderColor = 'rgb(216, 217, 218)'
+const gridBorderColor = 'rgb(239, 239, 240)'
 
 module.exports = styleSheetCreate({
     container: {
@@ -35,11 +35,33 @@ module.exports = styleSheetCreate({
     headerContainer: {
         backgroundColor:'#af001e'
     },
+    viewCircle: {
+        alignSelf: 'center',
+        marginTop: 10,
+        width:100,
+        height:100,
+        borderRadius:50,
+        backgroundColor: '#fff',
+        android: {
+            marginBottom: 10,
+            borderRadius:100,
+        }
+    },
+    imageTitle: {
+        alignSelf: 'center',
+        width:46,
+        height:69,
+        marginTop: 17,
+    },
     imageCircle: {
         alignSelf: 'center',
         marginTop: 10,
+        width:100,
+        height:100,
+        borderRadius:50,
         android: {
-            marginBottom: 10
+            marginBottom: 10,
+            borderRadius:100,
         }
     },
     headerTitle: {
@@ -102,6 +124,9 @@ module.exports = styleSheetCreate({
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
     },
+    btnLeftRed: {
+        backgroundColor: 'rgb(175, 0, 30)',
+    },
     btnRed: {
         backgroundColor: 'rgb(208, 7, 42)',
     },
@@ -137,10 +162,6 @@ module.exports = styleSheetCreate({
         alignSelf: 'stretch',
         backgroundColor: '#fff'
     },
-    gridBoxTouchableLeft: {
-        borderRightWidth: 1,
-        borderRightColor: gridBorderColor
-    },
     gridBoxTouchableView: {
         alignSelf: 'stretch',
         backgroundColor: '#FFF'
@@ -151,18 +172,22 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         marginBottom: -12,
         width: styleVar.deviceWidth / 2,
-        height: styleVar.deviceWidth / 2
+        height: styleVar.deviceWidth / 2,
+    },
+    gridBoxImgWrapperRight: {
+        borderRightWidth: 2,
+        borderRightColor: gridBorderColor
     },
     gridBoxImg: {
-        width: styleVar.deviceWidth / 2 - 1,
-        height: styleVar.deviceWidth / 2,
+        width: styleVar.deviceWidth / 2,
+        height: styleVar.deviceWidth / 2
     },
     gridBoxImgWithPadding: {
         width: 80,
         height: 80,
     },
     gridBoxDescWrapper: {        
-        width: styleVar.deviceWidth / 2,
+        width: styleVar.deviceWidth / 2
     },
     gridBoxTitle: {
         position: 'relative',
@@ -175,6 +200,10 @@ module.exports = styleSheetCreate({
             paddingTop: 12,
             paddingBottom: 4
         }
+    },
+    gridBoxTitleRight: {     
+        borderRightWidth: 1,
+        borderRightColor: gridBorderColor
     },
     gridBoxTitleText: {
         textAlign: 'center',
@@ -261,7 +290,7 @@ module.exports = styleSheetCreate({
     },
     resultRow: {
         width: styleVar.deviceWidth,
-        height:135,
+        height:styleVar.deviceWidth*9/25,
         marginTop:1
     },
     searchImg: {
@@ -269,22 +298,23 @@ module.exports = styleSheetCreate({
     },
     playerImg: {
         width: styleVar.deviceWidth*9/25,
+        height: styleVar.deviceWidth*9/25,
     },
     resultDesc: {
         flex:16,
         backgroundColor:'rgb(208,7,41)',
-        height:135
+        height:styleVar.deviceWidth*9/25
     },
     resultRowBtn: {
         flex:1,
         flexDirection:'row',
         width: styleVar.deviceWidth,
-        height:135,
+        height:styleVar.deviceWidth*9/25,
         marginTop:1
     },
     resultRowTitleText: {
         fontSize:24,
-        lineHeight:24,
+        lineHeight:26,
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         paddingLeft:22,
@@ -292,7 +322,7 @@ module.exports = styleSheetCreate({
     },
     resultRowSubtitleText: {
         fontSize:18,
-        lineHeight:18,
+        lineHeight:21,
         textAlign:'left',
         fontFamily: styleVar.fontGeorgia,
         paddingLeft:22,
@@ -335,12 +365,13 @@ module.exports = styleSheetCreate({
         }
     },
     btnCancel: {
-        paddingLeft:5,
-        height:24,
-        width:24,
+        paddingLeft:10,
+        paddingTop:5,
+        height:34,
+        width:34,
         position:'absolute',
-        right:12,
-        top:12
+        right:7,
+        top:7,
     },
     rtnIcon: {
         fontSize:24

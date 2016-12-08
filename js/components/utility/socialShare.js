@@ -3,7 +3,7 @@ import { alertBox } from './alertBox'
 
 export function shareTextWithTitle (text, posturl) {
     Share.share({
-        title: text,
+        title: '',
         message: Platform.OS==='ios'?text:text + ' ' + posturl,
         url:posturl
     }, {
@@ -14,9 +14,9 @@ export function shareTextWithTitle (text, posturl) {
         // tintColor: 'red'
     })
     .then(
-        result => Platform.OS==='ios'&&result.action === 'sharedAction' ? alertBox('Success','Content Shared Successfully') : null
+        result => Platform.OS==='ios'&&result.action === 'sharedAction' ? alertBox('Success','The content has been shared successfully') : null
         )
     .catch(
-        err => alertBox('Failed to Share','An error occured. Please try again')
+        err => alertBox('Ooops','Failed to share. please try again later')
         )
 }

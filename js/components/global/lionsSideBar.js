@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Alert } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
@@ -60,13 +61,14 @@ const styles = styleSheetCreate({
     },
     footerLink: {
         flexDirection:'row',
-        paddingLeft: 2,
-        height:50
+        height:50,
+    },
+    linkAccount: {
+        borderRightWidth:1,
+        borderRightColor:'rgba(255,255,255,0.15)'
     },
     linkLogin: {
         justifyContent: 'flex-end',
-        borderLeftWidth:1,
-        borderLeftColor:'rgba(255,255,255,0.15)'
     },
     footerLinkText: {
         textAlign: 'right',
@@ -89,7 +91,7 @@ class LionsSidebar extends Component {
         super(props)
 
         // debounce
-        this.navigateTo = debounce(this.navigateTo, 500, {leading: true, maxWait: 0, trailing: false})
+        this.navigateTo = debounce(this.navigateTo, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     navigateTo(route) {
@@ -104,17 +106,35 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
+
+    _requireSignIn(route) {
+        if (this.props.isAccessGranted) {
+            this.navigateTo(route)
+        } else {
+            this.navigateTo('login')
+        }
+    }
+    
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
 
     _signOut() {
-        this.props.setAccessGranted(false)
-        removeToken()
-        this.navigateTo('news')
+        Alert.alert(
+            'Confirmation',
+            'Are you sure you want to logout?',
+            [
+                {text: 'Yes', onPress: () => {
+                    this.props.setAccessGranted(false)
+                    removeToken()
+                    this.navigateTo('news')
+                }},
+                {text: 'No'}
+            ]
+        )   
     }
+    
     render(){
-
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
@@ -134,7 +154,7 @@ class LionsSidebar extends Component {
                         <Text style={styles.linkText}>GALLERIES</Text>
                         <Icon name='md-image' style={styles.icon} />
                     </ButtonFeedback>
-                    <ButtonFeedback onPress={() => this.navigateTo('myLions')} style={styles.links}>
+                    <ButtonFeedback onPress={() => this._requireSignIn('myLions')} style={styles.links}>
                         <Text style={styles.linkText}>MY LIONS</Text>
                         <Icon name='md-heart' style={styles.icon} />
                     </ButtonFeedback>
@@ -176,14 +196,14 @@ class LionsSidebar extends Component {
                               </Grid>
                           :
                               <Grid>
-                                  <Col size={60}>
-                                      <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
+                                  <Col size={55}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this.navigateTo('myAccount')}>
                                           <Icon name='md-contact' style={styles.footerLinkIcon} />
                                           <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
                                       </ButtonFeedback>
                                   </Col>
-                                  <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this._signOut}>
+                                  <Col size={45}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>

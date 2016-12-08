@@ -2,21 +2,25 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Switch, Dimensions, Platform, ScrollView, Alert } from 'react-native'
-import axios from 'axios'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView } from 'react-native'
+import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class SignUp extends Component {
     constructor(props) {
         super(props)
-        this._scrollView = ScrollView
+        this._scrollView = KeyboardAwareScrollView
         this.state = {
             firstName: '',
             lastName: '',
@@ -25,11 +29,10 @@ class SignUp extends Component {
             newEvent: false,
             newPartners: false,
             tc: false,
-            serviceUrl: 'https://api-ukchanges.co.uk/lionsrugby/api/users',
             visibleHeight: Dimensions.get('window').height,
             offset: {
-                x:0,
-                y:0
+                x: 0,
+                y: 0
             },
             errorCheck: {
                 firstName: null,
@@ -38,113 +41,151 @@ class SignUp extends Component {
                 password: null,
                 tc: false,
                 submit: false
-            }
+            },
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error'
         }
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
         }
 
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/users'
+
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
     }
+
     keyboardWillShow (e) {
        let newSize = Dimensions.get('window').height - e.endCoordinates.height
        this.setState({offset :{y: 80}})
     }
+
     keyboardWillHide (e) {
         this.setState({offset :{y: 0}})
     }
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
+
     _pushNewRoute(route) {
         this.props.pushNewRoute(route)
     }
+
     _popRoute() {
         this.props.popRoute()
     }
-    _userSignUp = () => {
-        axios({
-            method: 'post',
-            url: this.state.serviceUrl,
-            data: {
-              firstName: this.state.firstName,
-              lastName: this.state.lastName,
-              email: this.state.email,
-              password: this.state.password,
-              newEvent: this.state.newEvent,
-              newPartners: this.state.newPartners,
-              tc: this.state.tc
-            }
+
+    _userSignUp() {
+        // reset the fields
+        this.setState({
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            newEvent: false,
+            newPartners: false,
+            tc: false
         })
-        .then(function(response) {
-          Alert.alert(
-            'Your account has been created successfully!',
-            '',
-            [{text: 'SIGN IN', onPress: () => this._popRoute()}]
-          )
-        }.bind(this))
-        .catch(function(error) {
-            Alert.alert(
-              'An error occured',
-              '' + error,
-              [{text: 'DISMISS'}]
-            )
+
+        this._scrollView.scrollToPosition(0,0,false)
+
+        this.setState({ 
+            customMessages: 'Your account has been created successfully.',
+            customMessagesType: 'success'
         })
     }
-    
-    _handleSignUp = (isFormValidate) => {
+
+    _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
                 submit: false
             }
         })
+
         if(isFormValidate) {
-            this._userSignUp()
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'firstName': this.state.firstName,
+                    'lastName': this.state.lastName,
+                    'email': this.state.email,
+                    'password': this.state.password,
+                    'newEvent': this.state.newEvent,
+                    'newPartners': this.state.newPartners,
+                    'tc': this.state.tc
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._userSignUp.bind(this),
+                onError: (res) => {
+                    this.setState({ 
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+
+                    this._scrollView.scrollToPosition(0,0,false)
+                }
+            }
+
+            service(options)
+
         } else {
-            this._scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
-            })
+            this._scrollView.scrollToPosition(0,0,false)
         }
     }
+
     componentDidMount () {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
     }
+
+    componentWillUnmount(){
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
+    }
+
     render() {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.main}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
+                        <KeyboardAwareScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
                                 </View>
 
                                 <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this._handleSignUp}/>
+                                        callbackParent={this._handleSignUp.bind(this)}/>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
+                                        <Input defaultValue={this.state.firstName} onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Input onChange={(event) => this.setState({lastName: event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
+                                        <Input defaultValue={this.state.lastName} onChange={(event) => this.setState({lastName: event.nativeEvent.text})}  placeholder='Last Name' style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
+                                        <Input defaultValue={this.state.email} onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
+                                        <Input defaultValue={this.state.password} onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
                                     </View>
 
                                     <View style={styles.switchInputWrapper}>
@@ -204,28 +245,33 @@ class SignUp extends Component {
 
                                     <ButtonFeedback
                                         rounded
-                                        label='REGISTER'
-                                        style={styles.button}
-                                        onPress={() => {
-                                          this.setState({
-                                            errorCheck: {
-                                              firstName: this.state.firstName,
-                                              lastName: this.state.lastName,
-                                              email: this.state.email,
-                                              password: this.state.password,
-                                              tc: this.state.tc,
-                                              submit: true
-                                            }
-                                          })
-                                        }} />
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'} 
+                                        style = {styles.button}
+                                        onPress = {() => {
+                                            this.setState({
+                                                errorCheck: {
+                                                    firstName: this.state.firstName,
+                                                    lastName: this.state.lastName,
+                                                    email: this.state.email,
+                                                    password: this.state.password,
+                                                    tc: this.state.tc,
+                                                    submit: true
+                                                },
+                                                customMessages: ''
+                                            })
+                                        }}
+                                    />
 
                                 </View>
                             </View>
-                        </ScrollView>
+                        </KeyboardAwareScrollView>
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
+
+                        <OverlayLoader visible={this.state.isFormSubmitting} />
 
                         <View style={styles.footer}>
                             <Grid>
@@ -246,7 +292,7 @@ class SignUp extends Component {
                                 </Col>
                             </Grid>
                         </View>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )

@@ -2,15 +2,24 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions, ScrollView, Platform } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
+import { service } from '../utility/services'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../login/login-theme'
 import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
-var _scrollView: ScrollView
+import OverlayLoader from '../utility/overlayLoader'
+import { debounce } from 'lodash'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+var _scrollView: KeyboardAwareScrollView
+
 class MyAccount extends Component {
     constructor(props) {
         super(props)
@@ -20,8 +29,8 @@ class MyAccount extends Component {
             confirmPassword: '',
             visibleHeight: Dimensions.get('window').height,
             offset: {
-                x:0,
-                y:0
+                x: 0,
+                y: 0
             },
             errorCheckEmail: {
                 email: null,
@@ -32,25 +41,40 @@ class MyAccount extends Component {
                 confirmPassword: null,
                 submit: false
             },
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error',
+            isFormSubmittingEmail: false,
+            customMessagesEmail: '',
+            customMessagesTypeEmail: 'error',
         }
+
         this.constructor.childContextTypes = {
-        theme: React.PropTypes.object,
+            theme: React.PropTypes.object,
         }
+
+        this.changePasswordServiceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/password/change'
+        this.changeEmailServiceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/email/change'
+
+        // debounce
+        this._onSuccessValidateEmail = debounce(this._onSuccessValidateEmail, 1000, {leading: true, maxWait: 0, trailing: false})
+        this._onSuccessValidatePassword = debounce(this._onSuccessValidatePassword, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
         this.setState({offset :{y: 120}})
     }
-    showK(){
+
+    keyboardFocus(){
         if(Platform.OS ==='android') {
-            _scrollView.scrollTo({y:300})
+            _scrollView.scrollToPosition(0,0,false)
         }
-        
     }
-    hideK(){
+
+    keyboardBlur(){
         if(Platform.OS ==='android') {
-            _scrollView.scrollTo({y:0})
+            _scrollView.scrollToPosition(0,0,false)
         }
     }
 
@@ -59,8 +83,13 @@ class MyAccount extends Component {
     }
 
     componentDidMount () {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    componentWillUnmount(){
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
     }
 
     replaceRoute(route) {
@@ -71,34 +100,118 @@ class MyAccount extends Component {
         this.props.popRoute()
     }
 
-    onSuccessValidateEmail = (parameter) => {
+    _onSuccessValidateEmail(isFormValidate) {
         this.setState({
-            errorCheckEmail:{
+            errorCheckEmail: {
                 submit: false
             }
         })
-        if(parameter) {
-            this.popRoute()
-        }
-        else {
-            this.setState({
-             offset:{y:0}
+
+        if(this.props.isAccessGranted) {
+            if(isFormValidate) {
+                let options = {
+                    url: this.changeEmailServiceUrl,
+                    data: {
+                        'newEmail': this.state.email
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmittingEmail: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmittingEmail: false })
+                    },
+                    onSuccess: (res) => {
+                        // reset the fields
+                        this.setState({
+                            email: '',
+                            customMessagesEmail: 'Your email was successfully changed.',
+                            customMessagesTypeEmail: 'success'
+                        })
+                    },
+                    onAuthorization: () => {
+                        this.setState({
+                            customMessagesEmail: 'Please sign in your account.',
+                            customMessagesTypeEmail: 'error'
+                        })
+                    },
+                    onError: (res) => {
+                        this.setState({ 
+                            customMessagesEmail: res,
+                            customMessagesTypeEmail: 'error'
+                        })
+                    },
+                    isRequiredToken: true
+                }
+
+                service(options)
+            } else {
+                this.setState({
+                    offset:{ y: 0}
+                })
+            }
+        } else {
+            this.setState({ 
+                customMessagesEmail: res,
+                customMessagesTypeEmail: 'error'
             })
         }
     }
 
-    onSuccessValidatePassword = (parameter) => {
+    _onSuccessValidatePassword(isFormValidate) {
         this.setState({
-            errorCheckPassword:{
+            errorCheckPassword: {
                 submit: false
             }
         })
-        if(parameter) {
-            this.popRoute()
-        }
-        else {
+
+        if(this.props.isAccessGranted) {
+            if(isFormValidate) {
+
+                let options = {
+                    url: this.changePasswordServiceUrl,
+                    data: {
+                        'newPassword': this.state.confirmPassword
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: (res) => {
+                        // reset the fields and hide the loader
+                        this.setState({
+                            password: '',
+                            confirmPassword: '',
+                            customMessages: 'Your password is successfully changed.',
+                            customMessagesType: 'success'
+                        })
+                    },
+                    onAuthorization: () => {
+                        this.setState({
+                            customMessages: 'Please sign in your account.',
+                            customMessagesType: 'error'
+                        })
+                    },
+                    onError: (res) => {
+                        this.setState({ 
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+                    },
+                    isRequiredToken: true
+                }
+
+                service(options)
+            } else {
+                this.setState({
+                    offset:{ y:0 }
+                })
+            }
+        } else {
             this.setState({
-                offset:{y:0}
+                customMessages: 'Please sign in your account.',
+                customMessagesType: 'error'
             })
         }
     }
@@ -107,9 +220,12 @@ class MyAccount extends Component {
         return (
             <Container>
                 <View theme={theme}>
-                    <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                            <ScrollView style={styles.content}  keyboardShouldPersistTaps={true} contentOffset={this.state.offset} 
-                            ref={(scrollView) => { _scrollView = scrollView; }} 
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
+                            <KeyboardAwareScrollView
+                                style={styles.content}
+                                keyboardShouldPersistTaps={true}
+                                keyboardDismissMode='on-drag'
+                                ref={(scrollView) => { _scrollView = scrollView; }}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
@@ -117,42 +233,82 @@ class MyAccount extends Component {
 
                                 <View style={styles.guther}>
 
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheckPassword}
-                                        callbackParent={this.onSuccessValidatePassword} />
+                                        callbackParent={this._onSuccessValidatePassword.bind(this)} />
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
+                                        <Input defaultValue={this.state.password} onFocus={()=>this.keyboardFocus()} onBlur={()=>this.keyboardBlur()}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
+                                        <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SUBMIT PASSWORD' style={styles.button} onPress={() => {this.setState({errorCheckPassword:{password:this.state.password,confirmPassword:this.state.confirmPassword,submit:true}})}} />
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'} 
+                                        style={styles.button} 
+                                        onPress={() => {
+                                            this.setState({
+                                                errorCheckPassword: {
+                                                    password: this.state.password,
+                                                    confirmPassword: this.state.confirmPassword,
+                                                    submit: true
+                                                },
+                                                customMessages: ''
+                                            })}
+                                        } 
+                                    />
                                 </View>
 
                                 <View style={styles.split}></View>
-                                <View style={[styles.guther,styles.extendBlock]}>
-                                    
+
+                                <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessagesEmail} 
+                                        errorType = {this.state.customMessagesTypeEmail} />
+
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheckEmail}
-                                        callbackParent={this.onSuccessValidateEmail} />
+                                        callbackParent={this._onSuccessValidateEmail.bind(this)} />
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input onFocus={()=>this.showK()} onBlur={()=>this.hideK()} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
-                                    
-                                    <ButtonFeedback rounded label='SUBMIT EMAIL' style={styles.button} onPress={() => {this.setState({errorCheckEmail:{email:this.state.email,submit:true}})}} />
+
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmittingEmail}
+                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'} 
+                                        style={styles.button} 
+                                        onPress={() => {
+                                            this.setState({
+                                                errorCheckEmail: {
+                                                    email: this.state.email,
+                                                    submit: true
+                                                },
+                                                customMessagesEmail: ''
+                                            })}
+                                        } 
+                                    />
                                 </View>
-                            </ScrollView>
+                        </KeyboardAwareScrollView>
+                        
+                        <OverlayLoader visible={(this.state.isFormSubmitting && this.state.isFormSubmittingEmail)} />
+
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                 </View>
             </Container>
         )
@@ -162,8 +318,13 @@ class MyAccount extends Component {
 function bindAction(dispatch) {
     return {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        popRoute: () => dispatch(popRoute())
+        popRoute: () => dispatch(popRoute()),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
-export default connect(null, bindAction)(MyAccount)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindAction)(MyAccount)

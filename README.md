@@ -8,7 +8,7 @@
 * **Babel** for ES6 → ES5 transpiling 
 * [**Jest**](https://facebook.github.io/jest/) for testing and linting
 * [**Axios**](https://github.com/mzabriskie/axios) for the async request handling
-* Authentication flow with **JSON Web Tokens**
+* Authentication flow with **JSON Web Tokens** via email address, Facebook or Google+ SDK
 * **Git** for the version control management
 
 ### System Requirements ###
@@ -22,7 +22,7 @@
 * [npm >= v3.10.3](https://www.npmjs.com/)
 * [rnpm](https://github.com/rnpm/rnpm)
 * [Watchman](https://www.npmjs.com/package/watchman)
-* react CLI >= 15.3.1
+* react CLI >= 1.0
 * [react-native 0.37](https://facebook.github.io/react-native/docs/getting-started.html)
 * [redux >= 3.5.2](http://redux.js.org)
 

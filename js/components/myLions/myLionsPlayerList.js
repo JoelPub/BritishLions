@@ -4,9 +4,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
-import { fetchContent, drillDown } from '../../actions/content'
+import { getUnionDetail,showDetail} from '../../actions/player'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -20,35 +21,41 @@ import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 
+
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
-        this.url = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.props.unionFeed.id}`
-        this.id = this.props.unionFeed.id
-        this.logo=this.props.unionFeed.logo
-        this.personallogo=this.props.unionFeed.image
-        this.name=this.props.unionFeed.displayname.toUpperCase()
+        this.unionFeed=this.props.unionFeed
+        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.playerFeed=[]
+        this.searchResult=[]
+        this.playerList = []
         this.state = {
             isLoaded: false,
             modalVisible: false,
             transparent: true,
             resultVisible: false
         }
-    
+
     }
 
-    _drillDown(item, route) {
-        this.props.drillDown(item,route)
-   }
+    _showDetail(item, route) {
+        this.props.showDetail(item,route)
+    }
     componentDidMount() {
-        this.props.fetchContent(this.url)
+        this.props.getUnionDetail(this.unionUrl,this.favUrl)
     }
 
     componentWillReceiveProps(nextProps) {
+        this.playerFeed=nextProps.playerFeed[this.unionFeed.unionId]
         this.setState({
             isLoaded: true
         })
+        
+        this.playerList=nextProps.playerList.split('|')
+
     }
     _setModalVisible=(visible) => {
         this.setState({
@@ -67,10 +74,50 @@ class MyLionsPlayerList extends Component {
     }
 
     searchPlayer = (keywords) => {
-        this.setState({
-            resultVisible:true,
-            transparent:false
-        })
+        this.searchResult=[]
+        let tempArr=this.playerFeed
+            if(keywords.trim()!=='') {
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())===0) )
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())!==-1) )
+            for (let i=0;i<keywords.length;i++ ) {
+                if(keywords.charAt(i).match(/[A-Z]/gi)) {
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(keywords.charAt(i).toLowerCase())!==-1) 
+                }               
+            }
+            if (tempArr.length>0) {
+                this.searchResult=this.searchResult.concat(tempArr)
+            }
+
+            this.searchResult.map((item,index)=>{
+                let arr=[]
+                for(let j=index+1; j<this.searchResult.length; j++) {                    
+                    if(item.id===this.searchResult[j].id){
+                        arr=arr.concat(j)
+                    }
+                }
+                if (arr.length>0) {
+                    arr.reverse().map((start,index)=>{
+                        this.searchResult.splice(start,1)
+                    })
+                }
+            })
+            this.searchResult.length>0?  
+                this.setState({
+                    resultVisible:true,
+                    transparent:false
+                }) 
+                :this.setState({
+                    resultVisible:false,
+                    transparent:true
+                })
+        }
+        else {
+            this.searchResult=[]
+            this.setState({
+                    resultVisible:false,
+                    transparent:true
+                })
+        }
     }
     _mapJSON(data, colMax = 2) {
         let i = 0
@@ -92,35 +139,32 @@ class MyLionsPlayerList extends Component {
     }
 
     render() {
+      // Later on in your styles..
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
                     {this.state.isLoaded&&
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={20}
-                            src={this.logo} />
 
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
                         <Text style={styles.headerTitle}>{this.name}</Text>
-
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
-                    </Image>
+                    </LinearGradient>
                     }
-                    <FilterListingModal 
-                        modalVisible={this.state.modalVisible} 
-                        resultVisible={this.state.resultVisible} 
-                        transparent={this.state.transparent}  
+                    <FilterListingModal
+                        modalVisible={this.state.modalVisible}
+                        resultVisible={this.state.resultVisible}
+                        transparent={this.state.transparent}
                         callbackParent={this.onCloseFilter}>
+
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
@@ -130,66 +174,26 @@ class MyLionsPlayerList extends Component {
                             </View>
                             {this.state.resultVisible&&
                             <ScrollView>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
+                                {this.searchResult.map((item,index)=>{
+                                    return(
+                                        <View style={styles.resultRow} key={index}>
+                                            <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(item,'myLionsPlayerDetails')}}>
+                                                <View style={styles.searchImg}>
+                                                    <Image transparent
+                                                        resizeMode='stretch'
+                                                        source={{uri:item.image}}
+                                                        style={styles.playerImg}
+                                                         />
+                                                </View>
+                                                <View style={styles.resultDesc}>
+                                                    <Text style={styles.resultRowTitleText}>{item.name.toUpperCase()}</Text>
+                                                    <Text style={styles.resultRowSubtitleText}>{item.position}</Text>
+                                                </View>
+                                            </ButtonFeedback>
                                         </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>JAMES HASKELL</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Flanker</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>ELLIS GENGE</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Scrum Half</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>ROY THOMPSON</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Main</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>JAY WOLLISH</Text>
-                                            <Text style={styles.resultRowSubtitleText}>BRIDA</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
+                                        )
+                                    }, this)
+                                }
                             </ScrollView>
                         }
                         </View>
@@ -197,21 +201,29 @@ class MyLionsPlayerList extends Component {
                 {
                     this.state.isLoaded?
                     <Content>
+
                     {
-                            this._mapJSON(this.props.playerFeed[this.id]).map((rowData, index) => {
+                            this._mapJSON(this.playerFeed).map((rowData, index) => {
                                 return (
                                     <Grid key={index}>
                                         {
                                             rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-                                                Object.assign(item,{logo:this.personallogo,country:this.name})
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===this.unionFeed.unionId)
+                                                Object.assign(item, {
+                                                    logo: union.image, 
+                                                    country: union.displayname.toUpperCase(),
+                                                    isFav: (this.playerList.indexOf(item.id)!==-1)
+                                                })
+
                                                 return (
                                                     <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(item,'myLionsPlayerDetails')}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                             <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                <View style={styleGridBoxImgWrapper}>
                                                                     <ImagePlaceholder 
-                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                        width = {styleVar.deviceWidth / 2}
                                                                         height = {styleVar.deviceWidth / 2}>
                                                                         <Image transparent
                                                                             resizeMode='contain'
@@ -221,8 +233,8 @@ class MyLionsPlayerList extends Component {
                                                                 </View>
                                                                 <View style={styles.gridBoxDescWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
-                                                                        <Text style={styles.gridBoxTitleText}>{item.name}</Text>
+                                                                    <View style={styleGridBoxTitle}>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
                                                                         <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
                                                                     </View>
                                                                 </View>
@@ -236,12 +248,12 @@ class MyLionsPlayerList extends Component {
                                 )
                             }, this)
                         }
-                        
+
                         <LionsFooter isLoaded={true} />
                     </Content>:
                         <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    < EYSFooter />
+                    <EYSFooter />
                 </View>
             </Container>
         )
@@ -250,15 +262,16 @@ class MyLionsPlayerList extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        getUnionDetail: (unionUrl,favUrl)=>dispatch(getUnionDetail(unionUrl,favUrl)),
+        showDetail: (data, route)=>dispatch(showDetail(data, route)),
     }
 }
 
 export default connect((state) => {
     return {
-        unionFeed: state.content.drillDownItem,
-        playerFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        unionFeed: state.player.union,
+        playerList: state.player.playerList,
+        playerFeed: state.player.playerDetail,
+        isLoaded: state.player.isLoaded
     }
 }, bindAction)(MyLionsPlayerList)

@@ -1,29 +1,31 @@
 'use strict'
 
 import React, { Component } from 'react'
+import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
-import { Keyboard, Dimensions, Image, ScrollView, Alert } from 'react-native'
-import axios from 'axios'
-import qs from 'qs'
+import { updateToken } from '../utility/asyncStorageServices'
+import { Keyboard, Dimensions, Image, findNodeHandle } from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from './login-theme'
 import styles from './login-layout-theme'
-import { updateToken } from '../utility/asyncStorageServices'
 import ErrorHandler from '../utility/errorhandler/index'
+import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
+import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Login extends Component {
     constructor(props) {
         super(props)
-        this._scrollView = ScrollView
+        this._scrollView = KeyboardAwareScrollView
         this.state = {
             email: '',
             password: '',
-            serviceUrl: 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -34,27 +36,46 @@ class Login extends Component {
                 password: null,
                 submit: false
             },
-        }
-        this.constructor.childContextTypes = {
-            theme: React.PropTypes.object,
+            isFormSubmitting: false,
+            customMessages: '',
+            customMessagesType: 'error'
         }
 
+        this.constructor.childContextTypes = {
+            theme: React.PropTypes.object
+        }
+
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+
         // debounce
-        this._handleSignIn = debounce(this._handleSignIn, 500, {leading: true, maxWait: 0, trailing: false})
+        this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     componentDidMount () {
-        Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    }
+
+    componentWillUnmount(){
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
     }
 
     keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 150}})
+        let newSize = Dimensions.get('window').height - e.endCoordinates.height +75
+        this.setState({
+            offset :{y: 150}
+        })
     }
 
     keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
+        this.setState({
+            offset :{y: 0}
+        })
     }
 
     _replaceRoute(route) {
@@ -65,39 +86,24 @@ class Login extends Component {
         this.props.pushNewRoute(route)
     }
 
-    _createToken() {
-        axios.post(
-            this.state.serviceUrl,
-            qs.stringify({
-                'username': this.state.email,
-                'password': this.state.password,
-                'grant_type': 'password'
-            })
-        )
-        .then(function(response) {
-            if (response.request._response) {
-                let data = JSON.parse(response.request._response)
-                updateToken(data.access_token, data.refresh_token)
-                this.props.setAccessGranted(true);
-                this._replaceRoute('news')
-            } else {
-                Alert.alert(
-                    'Access not granted',
-                    'Please try again later.',
-                    [{text: 'DISMISS'}]
-                )
-            }
-        }.bind(this))
-        .catch(function(error) {
-            Alert.alert(
-                'An error occured',
-                '' + error,
-                [{text: 'DISMISS'}]
-            )
+    _createToken(res) {
+        let accessToken = res.data.access_token
+        let refreshToken = res.data.refresh_token
+
+        // reset the fields and hide loader
+        this.setState({
+            email: '',
+            password: '',
+            customMessages: '',
+            customMessagesType: 'success'
         })
+
+        updateToken(accessToken, refreshToken)
+        this.props.setAccessGranted(true)
+        this._replaceRoute('news')
     }
 
-    _handleSignIn = (isFormValidate) => {
+    _handleSignIn(isFormValidate) {
         this.setState({
             errorCheck:{
                 submit: false
@@ -105,28 +111,50 @@ class Login extends Component {
         })
 
         if(isFormValidate) {
-            this._createToken()
-          
-        } else {
-            this.setState({
-                errorCheck:{
-                    submit: false
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'username': this.state.email,
+                    'password': this.state.password,
+                    'grant_type': 'password'
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._createToken.bind(this),
+                onError: (res) => {
+                    this.setState({ 
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+
+                    this._scrollToMessages()
                 }
-            })
-            this._scrollView.scrollTo({
-                x: 0,
-                y: 0,
-                false
-            })
+            }
+
+            service(options)
+        } else {
+            this._scrollToMessages()
         }
     }
-    
+
+    _scrollToMessages() {
+        let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
+        UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
+           // scroll/focus to validation error messages
+           this._scrollView.scrollToPosition(0,pageY - 50,false)
+        })
+    }
+
     render() {
         return (
             <Container>
                 <View theme={theme}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
@@ -134,28 +162,49 @@ class Login extends Component {
                                     style={styles.pageLogo} />
 
                                 <View style={styles.guther}>
+                                    <CustomMessages 
+                                        messages = {this.state.customMessages} 
+                                        errorType = {this.state.customMessagesType} />
+
                                     <ErrorHandler
+                                        ref = 'errorHandlerElem'
                                         errorCheck={this.state.errorCheck}
-                                        callbackParent={this._handleSignIn}/>
+                                        callbackParent={this._handleSignIn.bind(this)}/>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input placeholder='Email' keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input placeholder='Password' secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
+                                        <Input placeholder='Password' defaultValue={this.state.password} secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback rounded label='SIGN IN' onPress={() => {this.setState({errorCheck:{email:this.state.email,password:this.state.password,submit:true}})}}/>
+                                    <ButtonFeedback 
+                                        rounded 
+                                        disabled = {this.state.isFormSubmitting}
+                                        label = {this.state.isFormSubmitting? 'SIGNING IN..' : 'SIGN IN'} 
+                                        onPress = {() => {
+                                            this.setState({
+                                                errorCheck: {
+                                                    email: this.state.email,
+                                                    password: this.state.password, 
+                                                    submit: true
+                                                },
+                                                customMessages: ''
+                                            })
+                                        }}
+                                    />
                                 </View>
                             </View>
-                        </ScrollView>
-
+                        </KeyboardAwareScrollView>
+                
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
+
+                        <OverlayLoader visible={this.state.isFormSubmitting} />
 
                         <View style={styles.footer}>
                             <Grid>

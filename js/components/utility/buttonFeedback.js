@@ -32,21 +32,31 @@ export default class ButtonFeedback extends Component {
                 marginTop: 5,
                 justifyContent: 'center',
                 alignItems: 'center',
+                paddingTop: 2,
                 borderRadius: 45/2
+            },
+            buttonDisabled: {
+                backgroundColor: styleVar.brandSecondary
             }
         }
     }
 
     prepareRootProps() {
         let props = this.props
+        let styles = {}
         let defaultProps = {
             activeOpacity : props.opacity? props.opacity : 0.7
         }
 
         if(props.rounded) {
-            defaultProps = Object.assign(defaultProps, {style : this.getInitialStyle().button})
+            styles = Object.assign(styles, this.getInitialStyle().button)
         }
 
+        if(props.disabled === true) {
+            styles = Object.assign(styles, this.getInitialStyle().buttonDisabled)
+        }
+
+        defaultProps = Object.assign(defaultProps, {style : styles})
         return computeProps(props, defaultProps)
     }
 

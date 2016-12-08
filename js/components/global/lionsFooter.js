@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { Linking, Image, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -81,7 +82,7 @@ const styles = styleSheetCreate({
         opacity: 0.75,
         paddingBottom: 33,
         android: {
-            paddingBottom: 17
+            paddingBottom: 37
         }
     },
     secondary: {
@@ -109,7 +110,7 @@ export default class Footer extends Component {
         return (
             this.props.isLoaded === true ?
                 <View style={styles.container}>
-                    <Image source={require('../../../images/footer/bg.jpg')} style={styles.primary}>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
 
                         <View style={styles.logosRow}>
                             <View style={styles.logosLeft}>
@@ -154,7 +155,7 @@ export default class Footer extends Component {
                             <Text style={styles.textCorp}>© 2016 British Irish Lions Limited</Text>
                         </View>
 
-                    </Image>
+                    </LinearGradient>
                     <Image source={require('../../../images/footer/allforone.png')} style={styles.secondary}></Image>
                 </View>
             : null
