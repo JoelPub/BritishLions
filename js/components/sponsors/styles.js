@@ -42,6 +42,24 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
+    sponsorTierBanner: {
+      position: 'relative',
+      justifyContent: 'center'
+      },
+    sponsorTierTitle: {
+      color: styleVar.brandLightColor,
+      backgroundColor: styleVar.colorGrey2,
+      fontFamily: styleVar.fontCondensed,
+      fontSize: 24,
+      lineHeight: 24,
+      textAlign: 'center',
+      paddingTop: 4,
+      paddingBottom: 4,
+      marginTop: -6,
+      android: {
+          lineHeight: 30
+      }
+    },
     gridBoxTitle: {
         position: 'relative',
         backgroundColor: styleVar.brandLightColor,
