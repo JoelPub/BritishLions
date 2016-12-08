@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, RefreshControl, ScrollView } from 'react-native'
+import { Image, View, ActivityIndicator, RefreshControl, ScrollView, NetInfo } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -15,6 +15,7 @@ import loader from '../../themes/loader-position'
 import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
+import { alertBox } from './../utility/alertBox'
 
 class News extends Component {
     constructor(props) {
@@ -31,16 +32,42 @@ class News extends Component {
         this.props.drillDown(item, 'newsDetails')
     }
 
+    fetchContent(url) {
+         NetInfo.fetch().done(
+            (connectionInfo) => {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                        isRefreshing:false,
+                        newsFeed: this.props.newsFeed
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.fetchContent(url)
+                }
+               }
+        );
+    }
+
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.fetchContent(this.url)
+        this.fetchContent(this.url)
     }
 
     componentDidMount() {
-        this.props.fetchContent(this.url)
+        console.log('!!!componentDidMount!!!')
+        console.log('!!!this.state.newsFeed!!!',this.state.newsFeed.length)
+        console.log('!!!this.props.newsFeed!!!',this.props.newsFeed.length)
+        this.fetchContent(this.url)
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('!!!componentWillReceiveProps!!!')
         this.setState({
             isLoaded: true,
             isRefreshing: nextProps.isRefreshing,
@@ -55,7 +82,7 @@ class News extends Component {
 
                     <LionsHeader title='NEWS' />
                     {
-                        this.state.isLoaded?
+                        this.state.isLoaded&&this.state.newsFeed.length>0?
                             <ScrollView
                                 refreshControl={
                                     <RefreshControl
