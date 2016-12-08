@@ -127,7 +127,7 @@ class ForgotPassword extends Component {
             <Container>
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} >
+                        <ScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag'>
                             <View style={styles.content} contentOffset={this.state.offset}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>FORGOT PASSWORD</Text>
