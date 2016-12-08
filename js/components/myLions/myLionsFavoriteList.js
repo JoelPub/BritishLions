@@ -18,7 +18,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { replaceRoute,pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { getFavDetail , showDetail, INVALID_TOKEN} from '../../actions/player'
+import { getFavDetail , showDetail, INVALID_TOKEN, EMPTY_LIST} from '../../actions/player'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
@@ -70,6 +70,13 @@ class MyLionsFavoriteList extends Component {
     errCallback(error) {
     if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
         this._signInRequired()
+    }
+    else if(error===EMPTY_LIST){
+        alertBox(
+            'Warning',
+            'The favourite player list is currently empty, you can add a new favourite player from the player detail page.',
+            'Dismiss'
+        )
     }
     else {
         alertBox(
