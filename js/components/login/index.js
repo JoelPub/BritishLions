@@ -27,7 +27,6 @@ class Login extends Component {
             email: '',
             password: '',
             visibleHeight: Dimensions.get('window').height,
-            keyboardHeight: 0,
             offset: {
                 x:0,
                 y:0
@@ -69,15 +68,13 @@ class Login extends Component {
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height +75
         this.setState({
-            offset :{y: newSize},
-            keyboardHeight: e.endCoordinates.height
+            offset :{y: 150}
         })
     }
 
     keyboardWillHide (e) {
         this.setState({
-            offset :{y: 0},
-            keyboardHeight: 0
+            offset :{y: 0}
         })
     }
 
@@ -209,7 +206,7 @@ class Login extends Component {
 
                         <OverlayLoader visible={this.state.isFormSubmitting} />
 
-                        <View style={[styles.footer,{position:'absolute',bottom:this.state.keyboardHeight}]}>
+                        <View style={styles.footer}>
                             <Grid>
                                 <Col style={styles.borderRight}>
                                     <ButtonFeedback
