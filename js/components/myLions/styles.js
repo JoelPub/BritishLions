@@ -365,12 +365,13 @@ module.exports = styleSheetCreate({
         }
     },
     btnCancel: {
-        paddingLeft:5,
-        height:24,
-        width:24,
+        paddingLeft:10,
+        paddingTop:5,
+        height:34,
+        width:34,
         position:'absolute',
-        right:12,
-        top:12
+        right:7,
+        top:7,
     },
     rtnIcon: {
         fontSize:24
