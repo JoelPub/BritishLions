@@ -30,22 +30,21 @@ function errorHandler(error) {
 	let modelState = error.response.data.ModelState || null
 	let alertTitle = 'An error occured'
 	let alertButton = {text: 'DISMISS'}
-	
+
 	switch(statusCode) {
 		case 500: // Internal Server Error (server error)
 		case 403: // Forbidden (SSL required)
 			errorDescription = 'Something went wrong with your request. Please try again later.'
-			break 
+			break
 		case 401:
 			errorDescription = 'Authorization has been denied. Please try again later.'
 			break
-		case 409: 
-			alertTitle = 'Messages'
+		case 409:
+			alertTitle = 'Email account already in use'
 			errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
 			alertButton = {text: 'OK'}
 			break
 		case 400: // Bad Request (invalid data submitted)
-			alertTitle = 'Messages'
 			alertButton = {text: 'OK'}
 			if (modelState) {
 				errorDescription = errorSlice(modelState)
@@ -70,7 +69,7 @@ function callApi(url, data, callback) {
 		if (callback) {
 			callback(res)
 		}
-	    
+
 	}).catch(function(error) {
 	    errorHandler(error)
 	})
@@ -86,14 +85,14 @@ export function service(url, data, callback, token = false) {
 				callApi(url, data, callback)
 			} else {
 				Alert.alert(
-				    'Messages',
-				    'Please login your account.',
+				    'Login required',
+				    'Please login with your account.',
 				    [{text: 'DISMISS'}]
 				)
 			}
 		}).catch((error) => {
             Alert.alert(
-                'An error occured',
+                'Warning',
                 '' + error,
                 [{text: 'DISMISS'}]
             )
@@ -103,6 +102,3 @@ export function service(url, data, callback, token = false) {
 	}
 
 }
-
-
-
