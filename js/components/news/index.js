@@ -16,7 +16,7 @@ import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
 import { alertBox } from './../utility/alertBox'
-import {register} from '../utility/network'
+import {getNetinfo} from '../utility/network'
 
 class News extends Component {
     constructor(props) {
@@ -33,8 +33,8 @@ class News extends Component {
         this.props.drillDown(item, 'newsDetails')
     }
 
-    fetchContent(url) {
-                if(this.props.connectionInfo==='NONE'||this.props.connectionInfo==='none') {
+    fetchContent(connectionInfo) {
+                if(connectionInfo==='NONE') {
                     this.setState({
                         isLoaded:true,
                         isRefreshing:false,
@@ -47,18 +47,29 @@ class News extends Component {
                     )
                 }
                 else {
-                    this.props.fetchContent(url)
+                    this.props.fetchContent(this.url)
                 }
                
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.fetchContent(this.url)
+        getNetinfo(this.fetchContent.bind(this))
     }
 
-    componentDidMount() {        
-        this.fetchContent(this.url)
+    
+
+    componentDidMount() {
+        setTimeout(()=>{
+            if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+                getNetinfo(this.fetchContent.bind(this))
+            } 
+            else {       
+                this.fetchContent(this.props.connectionInfo)
+            }
+
+        },3000)
+        
     }
 
     componentWillReceiveProps(nextProps) {

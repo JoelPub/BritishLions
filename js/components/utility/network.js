@@ -4,12 +4,17 @@ import { setNetworkStatus } from '../../actions/network'
 export function register(store){
 	NetInfo.addEventListener('change',
 	        (connectionInfo) => {
-	        store.dispatch(setNetworkStatus(connectionInfo))
+	        	console.log('###changeConnectionInfo',connectionInfo)
+	        		console.log('###dispatch')
+	        		store.dispatch(setNetworkStatus(connectionInfo))
 	        }
         )
-    NetInfo.fetch().done(
+}
+
+export function getNetinfo(callback) {
+	NetInfo.fetch().done(
 	        (connectionInfo) => {
-	        store.dispatch(setNetworkStatus(connectionInfo))
+	        		callback(connectionInfo.toUpperCase())
 	        }
         )
 }
