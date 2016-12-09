@@ -27,6 +27,7 @@ class News extends Component {
               isRefreshing: false,
               newsFeed:[],              
          }
+         this.updateState=false
     }
 
     _drillDown(item) {
@@ -48,6 +49,7 @@ class News extends Component {
                 }
                 else {
                     this.props.fetchContent(this.url)
+                    this.updateState=true
                 }
                
     }
@@ -73,11 +75,14 @@ class News extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            isLoaded: true,
-            isRefreshing: nextProps.isRefreshing,
-            newsFeed: nextProps.newsFeed
-        })
+        if(this.updateState) { 
+            this.setState({
+                isLoaded: true,
+                isRefreshing: nextProps.isRefreshing,
+                newsFeed: nextProps.newsFeed
+            })
+        this.updateState=false
+        }
     }
     
     render() {

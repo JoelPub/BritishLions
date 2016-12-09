@@ -14,24 +14,58 @@ import theme from '../../themes/base-theme'
 import styles from './styles'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
+import {getNetinfo} from '../utility/network'
+import { alertBox } from './../utility/alertBox'
 
 class LionsTV extends Component {
     constructor(props) {
          super(props)
          this.state = {
-              isLoaded: false
+              isLoaded: false,
+              videosFeed: {items:[]}, 
          }
+         this.url='https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
+         this.updateState=false
     }
     _drillDown(data, route) {
         this.props.drillDown(data, route)
     }
-    componentDidMount() {
-        this.props.fetchContent('https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY')
+
+    fetchContent(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                        videosFeed:{items:[]}
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.fetchContent(this.url)
+                    this.updateState=true
+                }
+               
     }
-    componentWillReceiveProps() {
-      this.setState({
-        isLoaded: this.props.isLoaded || true
-      })
+
+    componentDidMount() {
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.fetchContent.bind(this))
+        } 
+        else {       
+            this.fetchContent(this.props.connectionInfo)
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if(this.updateState) { 
+                this.setState({
+                    isLoaded: nextProps.isLoaded,
+                    videosFeed: nextProps.videosFeed
+                  })
+            this.updateState=false
+        }
     }
     render(){
         return (
@@ -42,7 +76,7 @@ class LionsTV extends Component {
                         this.state.isLoaded?
                             <Content>
                                 {
-                                   this.props.videosFeed.items.map(function(data, index) {
+                                   this.state.videosFeed.items.map(function(data, index) {
                                     let year=data.snippet.publishedAt.substr(0,4)
                                     let publishDate=new Date(data.snippet.publishedAt).toLocaleDateString()
                                     let month=publishDate.split('/')[0]?publishDate.split('/')[0]:''
@@ -98,6 +132,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         videosFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        isLoaded: state.content.isLoaded,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(LionsTV)

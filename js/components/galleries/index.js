@@ -25,6 +25,7 @@ class Galleries extends Component {
               galleriesFeed: [],       
          }
          this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
+         this.updateState=false
     }
 
     _drillDown(data) {
@@ -45,6 +46,7 @@ class Galleries extends Component {
                 }
                 else {
                     this.props.fetchContent(this.url)
+                    this.updateState=true
                 }
                
     }
@@ -59,10 +61,13 @@ class Galleries extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-          this.setState({
+        if(this.updateState) { 
+        this.setState({
             isLoaded: nextProps.isLoaded,
             galleriesFeed: nextProps.galleriesFeed
-          })
+        })
+        this.updateState=false
+        }
     }
 
     render() {
