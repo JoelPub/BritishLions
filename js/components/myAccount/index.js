@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -59,6 +59,23 @@ class MyAccount extends Component {
         // debounce
         this._onSuccessValidateEmail = debounce(this._onSuccessValidateEmail, 1000, {leading: true, maxWait: 0, trailing: false})
         this._onSuccessValidatePassword = debounce(this._onSuccessValidatePassword, 1000, {leading: true, maxWait: 0, trailing: false})
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account first.',
+            [{
+                text: 'SIGN IN',
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+     _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
     }
 
     keyboardWillShow (e) {
@@ -123,23 +140,22 @@ class MyAccount extends Component {
                     onSuccess: (res) => {
                         // reset the fields
                         this.setState({
-                            email: '',
-                            customMessagesEmail: 'Your email was successfully changed.',
-                            customMessagesTypeEmail: 'success'
+                            email: ''
+                         }, () => {
+                            Alert.alert(
+                                'Messages',
+                                'Your email is successfully changed.',
+                                [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                            )
                         })
                     },
-                    onAuthorization: () => {
-                        this.setState({
-                            customMessagesEmail: 'Please sign in your account.',
-                            customMessagesTypeEmail: 'error'
-                        })
-                    },
+                    onAuthorization: this._signInRequired.bind(this),
                     onError: (res) => {
-                        this.setState({ 
+                        this.setState({
                             customMessagesEmail: res,
-                            customMessagesTypeEmail: 'error'
+                            customMessagesEmailType: 'error'
                         })
-                    },
+                     },
                     isRequiredToken: true
                 }
 
@@ -150,10 +166,7 @@ class MyAccount extends Component {
                 })
             }
         } else {
-            this.setState({ 
-                customMessagesEmail: res,
-                customMessagesTypeEmail: 'error'
-            })
+           this._signInRequired()
         }
     }
 
@@ -290,15 +303,16 @@ class MyAccount extends Component {
                                         disabled = {this.state.isFormSubmittingEmail}
                                         label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'} 
                                         style={styles.button} 
-                                        onPress={() => {
-                                            this.setState({
-                                                errorCheckEmail: {
-                                                    email: this.state.email,
-                                                    submit: true
-                                                },
-                                                customMessagesEmail: ''
-                                            })}
-                                        } 
+                                       onPress={() => {
+                                           this.setState({
+                                               errorCheckEmail: {
+                                                   email: this.state.email,
+                                                   submit: true
+                                               },
+                                               customMessagesEmail:''
+                                             })
+                                           }
+                                       }
                                     />
                                 </View>
                         </KeyboardAwareScrollView>
