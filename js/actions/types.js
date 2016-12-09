@@ -19,6 +19,7 @@ export type Action =
     | { type: 'GET_PLAYERS_DETAIL' }
     | { type: 'PUSH_UNION' }
     | { type: 'PUSH_DETAIL' }
+    | { type: 'SET_NETWORK_STATUS' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

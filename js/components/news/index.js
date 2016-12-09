@@ -16,6 +16,7 @@ import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
 import { alertBox } from './../utility/alertBox'
+import {register} from '../utility/network'
 
 class News extends Component {
     constructor(props) {
@@ -24,10 +25,8 @@ class News extends Component {
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed: {},
-              
+              newsFeed: {},              
          }
-         this.networkType = null
     }
 
     _drillDown(item) {
@@ -35,9 +34,7 @@ class News extends Component {
     }
 
     fetchContent(url) {
-        console.log('!!!fetchContent!!!')
-        console.log('!!!this.networkType!!!',this.networkType)
-                if(this.networkType==='NONE'||this.networkType==='none') {
+                if(this.props.connectionInfo==='NONE'||this.props.connectionInfo==='none') {
                     this.setState({
                         isLoaded:true,
                         isRefreshing:false,
@@ -60,27 +57,11 @@ class News extends Component {
         this.fetchContent(this.url)
     }
 
-    componentDidMount() {
-        console.log('!!!componentDidMount!!!')
-        console.log('!!!this.state.newsFeed!!!',this.state.newsFeed.length)
-        console.log('!!!this.props.newsFeed!!!',this.props.newsFeed.length)
-
-        NetInfo.addEventListener('change',
-            (connectionInfo) => {
-            console.log('!!!!changeconnectionInfo',connectionInfo)
-                this.networkType=connectionInfo
-            })
-        NetInfo.fetch().done(
-            (connectionInfo) => {
-            console.log('!!!!fetchconnectionInfo',connectionInfo)
-                this.networkType=connectionInfo
-                this.fetchContent(this.url)
-            })
-        
+    componentDidMount() {        
+        this.fetchContent(this.url)
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('!!!componentWillReceiveProps!!!')
         this.setState({
             isLoaded: true,
             isRefreshing: nextProps.isRefreshing,
@@ -157,6 +138,7 @@ export default connect((state) => {
     return {
         newsFeed: state.content.contentState,
         isLoaded: state.content.isLoaded,
-        isRefreshing: state.content.isRefreshing
+        isRefreshing: state.content.isRefreshing,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(News)
