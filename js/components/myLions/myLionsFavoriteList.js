@@ -24,6 +24,7 @@ import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
+import {getNetinfo} from '../utility/network'
 
 class MyLionsFavoriteList extends Component {
 
@@ -39,12 +40,36 @@ class MyLionsFavoriteList extends Component {
             isLoaded: false
         }
     }
+
+    getFavDetail(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                        isRefreshing:false
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+                }
+               
+    }
+
     componentDidMount() {
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.getFavDetail.bind(this))
+        } 
+        else {       
+            this.getFavDetail(this.props.connectionInfo)
+        }
     }
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+        getNetinfo(this.getFavDetail.bind(this))
     }
     _reLogin() {
         removeToken()
@@ -237,6 +262,7 @@ export default connect((state) => {
         playerList: state.player.playerList,
         playerFeed: state.player.playerDetail,
         isLoaded: state.player.isLoaded,
-        isRefreshing: state.player.isRefreshing
+        isRefreshing: state.player.isRefreshing,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(MyLionsFavoriteList)

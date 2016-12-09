@@ -20,6 +20,8 @@ import ImageCircle from '../utility/imageCircle'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
+import { alertBox } from './../utility/alertBox'
+import {getNetinfo} from '../utility/network'
 
 
 class MyLionsPlayerList extends Component {
@@ -44,8 +46,32 @@ class MyLionsPlayerList extends Component {
     _showDetail(item, route) {
         this.props.showDetail(item,route)
     }
+
+    getUnionDetail(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                        isRefreshing:false
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.getUnionDetail(this.unionUrl,this.favUrl)
+                }
+               
+    }
+
     componentDidMount() {
-        this.props.getUnionDetail(this.unionUrl,this.favUrl)
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.getUnionDetail.bind(this))
+        } 
+        else {       
+            this.getUnionDetail(this.props.connectionInfo)
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -272,6 +298,7 @@ export default connect((state) => {
         unionFeed: state.player.union,
         playerList: state.player.playerList,
         playerFeed: state.player.playerDetail,
-        isLoaded: state.player.isLoaded
+        isLoaded: state.player.isLoaded,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(MyLionsPlayerList)
