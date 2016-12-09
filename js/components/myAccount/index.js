@@ -276,6 +276,9 @@ class MyAccount extends Component {
                                                     confirmPassword: this.state.confirmPassword,
                                                     submit: true
                                                 },
+                                                errorCheckEmail: {
+                                                   submit: true
+                                               },
                                                 customMessages: ''
                                             })}
                                         } 
@@ -305,7 +308,10 @@ class MyAccount extends Component {
                                         style={styles.button} 
                                        onPress={() => {
                                            this.setState({
-                                               errorCheckEmail: {
+                                               errorCheckPassword: {
+                                                    submit: true
+                                                },
+                                                errorCheckEmail: {
                                                    email: this.state.email,
                                                    submit: true
                                                },
@@ -317,7 +323,7 @@ class MyAccount extends Component {
                                 </View>
                         </KeyboardAwareScrollView>
                         
-                        <OverlayLoader visible={(this.state.isFormSubmitting && this.state.isFormSubmittingEmail)} />
+                        <OverlayLoader visible={(this.state.isFormSubmitting || this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
