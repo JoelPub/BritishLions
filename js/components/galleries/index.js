@@ -21,28 +21,21 @@ class Galleries extends Component {
     constructor(props) {
          super(props)
          this.state = {
-              isLoaded: false
+              isLoaded: false,
+              galleriesFeed: [],       
          }
          this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
     }
 
     _drillDown(data) {
-        if(data.images&&data.images.length>0) {
             this.props.drillDown(data, 'galleriesDetails')
-        }
-        else {
-            alertBox(
-                      'An Error Occured',
-                      'Please make sure the network is connected and reload the app. ',
-                      'Dismiss'
-                    )
-        }
     }
 
     fetchContent(connectionInfo) {
                 if(connectionInfo==='NONE') {
                     this.setState({
                         isLoaded:true,
+                        galleriesFeed:[]
                     })
                     alertBox(
                       'An Error Occured',
@@ -65,9 +58,10 @@ class Galleries extends Component {
         }
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
           this.setState({
-            isLoaded: this.props.isLoaded || true
+            isLoaded: nextProps.isLoaded,
+            galleriesFeed: nextProps.galleriesFeed
           })
     }
 
@@ -77,10 +71,10 @@ class Galleries extends Component {
                 <View style={styles.background}>
                     <LionsHeader title='GALLERIES' />
                     {
-                        this.state.isLoaded&&this.props.galleriesFeed.length>0?
+                        this.state.isLoaded?
                             <Content>
                               {
-                                   this.props.galleriesFeed.map(function(data, index) {
+                                   this.state.galleriesFeed.map(function(data, index) {
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}

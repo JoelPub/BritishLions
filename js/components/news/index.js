@@ -25,7 +25,7 @@ class News extends Component {
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed: {},              
+              newsFeed:[],              
          }
     }
 
@@ -38,7 +38,7 @@ class News extends Component {
                     this.setState({
                         isLoaded:true,
                         isRefreshing:false,
-                        newsFeed: this.props.newsFeed
+                        newsFeed: []
                     })
                     alertBox(
                       'An Error Occured',
@@ -87,7 +87,7 @@ class News extends Component {
 
                     <LionsHeader title='NEWS' />
                     {
-                        this.state.isLoaded&&this.state.newsFeed.length>0?
+                        this.state.isLoaded?
                             <ScrollView
                                 refreshControl={
                                     <RefreshControl
