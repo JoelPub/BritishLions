@@ -118,7 +118,7 @@ class MyLionsPlayerDetails extends Component {
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
                         <View style={styles.headerPlayerDetails}>
-                            <Text style={styles.headerPlayerName}>{this.props.detail.name}</Text>
+                            <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                             <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                         </View>
 
