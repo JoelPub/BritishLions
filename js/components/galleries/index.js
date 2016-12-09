@@ -14,6 +14,8 @@ import styles from './styles'
 import theme from '../../themes/base-theme'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
+import {getNetinfo} from '../utility/network'
+import { alertBox } from './../utility/alertBox'
 
 class Galleries extends Component {
     constructor(props) {
@@ -21,20 +23,52 @@ class Galleries extends Component {
          this.state = {
               isLoaded: false
          }
+         this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
     }
 
     _drillDown(data) {
-        this.props.drillDown(data, 'galleriesDetails')
+        if(data.images&&data.images.length>0) {
+            this.props.drillDown(data, 'galleriesDetails')
+        }
+        else {
+            alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+        }
+    }
+
+    fetchContent(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.fetchContent(this.url)
+                }
+               
     }
 
     componentDidMount() {
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php')
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.fetchContent.bind(this))
+        } 
+        else {       
+            this.fetchContent(this.props.connectionInfo)
+        }
     }
 
     componentWillReceiveProps() {
-      this.setState({
-        isLoaded: this.props.isLoaded || true
-      })
+          this.setState({
+            isLoaded: this.props.isLoaded || true
+          })
     }
 
     render() {
@@ -43,7 +77,7 @@ class Galleries extends Component {
                 <View style={styles.background}>
                     <LionsHeader title='GALLERIES' />
                     {
-                        this.state.isLoaded?
+                        this.state.isLoaded&&this.props.galleriesFeed.length>0?
                             <Content>
                               {
                                    this.props.galleriesFeed.map(function(data, index) {
@@ -91,6 +125,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         galleriesFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        isLoaded: state.content.isLoaded,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(Galleries)

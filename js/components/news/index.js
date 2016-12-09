@@ -16,6 +16,7 @@ import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
 import { alertBox } from './../utility/alertBox'
+import {getNetinfo} from '../utility/network'
 
 class News extends Component {
     constructor(props) {
@@ -24,20 +25,16 @@ class News extends Component {
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed: {},
-              
+              newsFeed: {},              
          }
-         this.networkType = null
     }
 
     _drillDown(item) {
         this.props.drillDown(item, 'newsDetails')
     }
 
-    fetchContent(url) {
-        console.log('!!!fetchContent!!!')
-        console.log('!!!this.networkType!!!',this.networkType)
-                if(this.networkType==='NONE'||this.networkType==='none') {
+    fetchContent(connectionInfo) {
+                if(connectionInfo==='NONE') {
                     this.setState({
                         isLoaded:true,
                         isRefreshing:false,
@@ -50,37 +47,32 @@ class News extends Component {
                     )
                 }
                 else {
-                    this.props.fetchContent(url)
+                    this.props.fetchContent(this.url)
                 }
                
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.fetchContent(this.url)
+        getNetinfo(this.fetchContent.bind(this))
     }
 
-    componentDidMount() {
-        console.log('!!!componentDidMount!!!')
-        console.log('!!!this.state.newsFeed!!!',this.state.newsFeed.length)
-        console.log('!!!this.props.newsFeed!!!',this.props.newsFeed.length)
+    
 
-        NetInfo.addEventListener('change',
-            (connectionInfo) => {
-            console.log('!!!!changeconnectionInfo',connectionInfo)
-                this.networkType=connectionInfo
-            })
-        NetInfo.fetch().done(
-            (connectionInfo) => {
-            console.log('!!!!fetchconnectionInfo',connectionInfo)
-                this.networkType=connectionInfo
-                this.fetchContent(this.url)
-            })
+    componentDidMount() {
+        setTimeout(()=>{
+            if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+                getNetinfo(this.fetchContent.bind(this))
+            } 
+            else {       
+                this.fetchContent(this.props.connectionInfo)
+            }
+
+        },3000)
         
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('!!!componentWillReceiveProps!!!')
         this.setState({
             isLoaded: true,
             isRefreshing: nextProps.isRefreshing,
@@ -157,6 +149,7 @@ export default connect((state) => {
     return {
         newsFeed: state.content.contentState,
         isLoaded: state.content.isLoaded,
-        isRefreshing: state.content.isRefreshing
+        isRefreshing: state.content.isRefreshing,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(News)

@@ -11,6 +11,7 @@ import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
 import Navigator from 'Navigator'
+import {register} from './components/utility/network'
 
 // Templates/pages
 import SplashPage from './components/splashscreen/'
@@ -162,6 +163,8 @@ class AppNavigator extends Component {
                 return true
             }
         })
+        
+        register(this.props.store)
     }
 
     popRoute() {
