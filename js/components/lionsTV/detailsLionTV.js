@@ -13,6 +13,8 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import { shareTextWithTitle } from '../utility/socialShare'
 import YouTube from 'react-native-youtube'
+import { alertBox } from './../utility/alertBox'
+import {getNetinfo} from '../utility/network'
 
 class DetailsLionsTV extends Component {
 
@@ -59,10 +61,30 @@ class DetailsLionsTV extends Component {
     },3000)
     
   }
+
+  playVideo(connectionInfo) {
+        if(connectionInfo==='NONE') {
+            alertBox(
+              'An Error Occured',
+              'Please make sure the network is connected and reload the app. ',
+              'Dismiss'
+            )
+        }
+        else {
+            this.setState({
+              videoId:this.props.details.contentDetails.upload.videoId
+          })
+        }
+               
+    }
+
   componentDidMount(){
-    this.setState({
-        videoId:this.props.details.contentDetails.upload.videoId
-    })
+    if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+                getNetinfo(this.playVideo.bind(this))
+            } 
+            else { 
+               this.playVideo(this.props.connectionInfo) 
+            }
   }
 
   render(){
@@ -150,6 +172,7 @@ class DetailsLionsTV extends Component {
 
 export default connect((state) => {
     return {
-        details: state.content.drillDownItem
+        details: state.content.drillDownItem,
+        connectionInfo: state.network.connectionInfo
     }
 }, null)(DetailsLionsTV)
