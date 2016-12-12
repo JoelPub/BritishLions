@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder,TouchableOpacity } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -30,10 +30,6 @@ class SignUp extends Component {
             newPartners: false,
             tc: false,
             visibleHeight: Dimensions.get('window').height,
-            offset: {
-                x: 0,
-                y: 0
-            },
             errorCheck: {
                 firstName: null,
                 lastName: null,
@@ -54,15 +50,6 @@ class SignUp extends Component {
 
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
-    }
-
-    keyboardWillShow (e) {
-       let newSize = Dimensions.get('window').height - e.endCoordinates.height
-       this.setState({offset :{y: 80}})
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
     }
 
     _replaceRoute(route) {
@@ -140,16 +127,6 @@ class SignUp extends Component {
         }
     }
 
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
     componentWillMount() {
         this._panResponder = PanResponder.create({
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
@@ -172,7 +149,7 @@ class SignUp extends Component {
             <Container>
                 <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main}  ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
@@ -252,10 +229,11 @@ class SignUp extends Component {
                                                     onTintColor = '#6cb61b'
                                                     value={this.state.tc} />
                                             </Col>
-                                            <Col>
-                                                <Text style={styles.switchLabelText}>
-                                                    I agree to <Text style={styles.textUnderline} onPress={() => this._pushNewRoute('terms')}>Terms and Conditions</Text>
-                                                </Text>
+                                            <Col style={{flexDirection:'row'}}>
+                                                <Text style={styles.switchLabelText}>I agree to </Text>
+                                                <TouchableOpacity onPress={() => this._pushNewRoute('terms')} style={styles.tncLink}>
+                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>Terms and Conditions</Text>
+                                                </TouchableOpacity>
                                             </Col>
                                         </Grid>
                                     </View>

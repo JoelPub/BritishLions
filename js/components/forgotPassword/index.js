@@ -46,25 +46,6 @@ class ForgotPassword extends Component {
         this._onValidateSuccess = debounce(this._onValidateSuccess, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
-    }
-
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
     componentWillMount() {
         this._panResponder = PanResponder.create({
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
@@ -141,7 +122,7 @@ class ForgotPassword extends Component {
             <Container>
                 <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag'>
+                        <KeyboardAwareScrollView style={styles.main} >
                             <View style={styles.content} contentOffset={this.state.offset}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>FORGOT PASSWORD</Text>
