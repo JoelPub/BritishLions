@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, Alert, ScrollView, PanResponder } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -77,6 +77,10 @@ class SignUp extends Component {
         this.props.popRoute()
     }
 
+    _reLogin() {
+        this._replaceRoute('login')
+    }
+
     _userSignUp() {
         // reset the fields
         this.setState({
@@ -89,12 +93,20 @@ class SignUp extends Component {
             tc: false
         })
 
-        this._scrollView.scrollToPosition(0,0,false)
+        // this._scrollView.scrollToPosition(0,0,false)
+        // this.setState({ 
+        //     customMessages: 'Your account has been created successfully.',
+        //     customMessagesType: 'success'
+        // })
 
-        this.setState({ 
-            customMessages: 'Your account has been created successfully.',
-            customMessagesType: 'success'
-        })
+        Alert.alert(
+            'Account Registered',
+            'Your account has been created successfully.',
+            [{
+                text: 'SIGN IN',
+                onPress: this._reLogin.bind(this)
+            }]
+        )
     }
 
     _handleSignUp(isFormValidate){

@@ -71,7 +71,7 @@ class MyAccount extends Component {
         )
     }
 
-     _reLogin() {
+    _reLogin() {
         removeToken()
         this.props.setAccessGranted(false)
         this.replaceRoute('login')
