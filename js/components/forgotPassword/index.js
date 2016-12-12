@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions } from 'react-native'
+import { Keyboard, Image, Dimensions, PanResponder } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -65,8 +65,10 @@ class ForgotPassword extends Component {
         this.keyboardDidHideListener.remove()
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return true
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+        })
     }
 
     replaceRoute(route) {
@@ -123,10 +125,21 @@ class ForgotPassword extends Component {
         })
     }
 
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        } 
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
+
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                         <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag'>
                             <View style={styles.content} contentOffset={this.state.offset}>

@@ -63,7 +63,6 @@ class Login extends Component {
 
     componentWillMount() {
         this._panResponder = PanResponder.create({
-          // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
           
         })
@@ -158,10 +157,13 @@ class Login extends Component {
     }
 
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
-        if(e._targetInst._currentElement.props.placeholder!=='Email' || e._targetInst._currentElement.props.placeholder!=='Password') {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        } 
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email' || e._targetInst._currentElement.props.placeholder!=='Password') {
             Keyboard.dismiss(0)
         }
-        
+
         return false
       }
 
@@ -169,7 +171,7 @@ class Login extends Component {
         return (
             <Container>
                 <View theme={theme} 
-          {...this._panResponder.panHandlers}>
+                    {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
                         <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
