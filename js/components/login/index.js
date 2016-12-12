@@ -5,7 +5,7 @@ import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, findNodeHandle } from 'react-native'
+import { Keyboard, Dimensions, Image, findNodeHandle, PanResponder} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -59,6 +59,14 @@ class Login extends Component {
     componentWillUnmount(){
         this.keyboardDidShowListener.remove()
         this.keyboardDidHideListener.remove()
+    }
+
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+          
+        })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -149,12 +157,21 @@ class Login extends Component {
         })
     }
 
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props.placeholder!=='Email' || e._targetInst._currentElement.props.placeholder!=='Password') {
+            Keyboard.dismiss(0)
+        }
+        
+        return false
+      }
+
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme} 
+          {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
