@@ -77,25 +77,6 @@ class MyAccount extends Component {
         this.replaceRoute('login')
     }
 
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 120}})
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
-    }
-
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
     componentWillMount() {
         this._panResponder = PanResponder.create({
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
@@ -210,7 +191,7 @@ class MyAccount extends Component {
                 })
             }
         } else {
-            this._signInRequired();
+            this._signInRequired()
         }
     }
 
@@ -232,8 +213,6 @@ class MyAccount extends Component {
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                             <KeyboardAwareScrollView
                                 style={styles.content} 
-                                keyboardShouldPersistTaps={true}
-                                contentOffset={this.state.offset}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>

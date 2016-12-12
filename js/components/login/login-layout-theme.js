@@ -210,5 +210,9 @@ module.exports = styleSheetCreate({
         marginBottom:35,
         marginLeft:30,
         marginRight:30
+    },
+    tncLink: {
+        paddingBottom:15,
+        paddingRight:15
     }
 })

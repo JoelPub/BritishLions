@@ -51,10 +51,14 @@ class Login extends Component {
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+          
+        })
+    }
 
+    componentDidMount () {
         // just to make sure that token was removed and
         // isAccessGranted flag is set to false when 
         // user is in the login page
@@ -64,33 +68,8 @@ class Login extends Component {
         }, 400)
     }
 
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
-    componentWillMount() {
-        this._panResponder = PanResponder.create({
-          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
-          
-        })
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         return true
-    }
-
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height +75
-        this.setState({
-            offset :{y: 150}
-        })
-    }
-
-    keyboardWillHide (e) {
-        this.setState({
-            offset :{y: 0}
-        })
     }
 
     _replaceRoute(route) {
@@ -181,7 +160,7 @@ class Login extends Component {
                 <View theme={theme} 
                     {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
