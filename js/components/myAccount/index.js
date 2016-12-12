@@ -116,6 +116,9 @@ class MyAccount extends Component {
                         this.setState({
                             email: ''
                          }, () => {
+                            // logout the user when successfully changed the email
+                            removeToken()
+                            this.props.setAccessGranted(false)
                             Alert.alert(
                                 'Messages',
                                 'Your email is successfully changed.',
