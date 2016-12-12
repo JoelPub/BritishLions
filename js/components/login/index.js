@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
-import { updateToken } from '../utility/asyncStorageServices'
+import { updateToken, removeToken } from '../utility/asyncStorageServices'
 import { Keyboard, Dimensions, Image, findNodeHandle, PanResponder} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
@@ -54,6 +54,14 @@ class Login extends Component {
     componentDidMount () {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
         this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+
+        // just to make sure that token was removed and
+        // isAccessGranted flag is set to false when 
+        // user is in the login page
+        setTimeout(() => {
+            removeToken() 
+            this.props.setAccessGranted(false)
+        }, 400)
     }
 
     componentWillUnmount(){

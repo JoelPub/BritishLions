@@ -84,7 +84,7 @@ class MyLionsFavoriteList extends Component {
     _signInRequired() {
         Alert.alert(
             'An error occured',
-            'Please sign in your account first.',
+            'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)

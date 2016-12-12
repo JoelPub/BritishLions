@@ -63,7 +63,7 @@ class MyAccount extends Component {
     _signInRequired() {
         Alert.alert(
             'An error occured',
-            'Please sign in your account first.',
+            'Please sign in your account.',
             [{
                 text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
@@ -187,12 +187,7 @@ class MyAccount extends Component {
                             customMessagesType: 'success'
                         })
                     },
-                    onAuthorization: () => {
-                        this.setState({
-                            customMessages: 'Please sign in your account.',
-                            customMessagesType: 'error'
-                        })
-                    },
+                    onAuthorization: this._signInRequired.bind(this),
                     onError: (res) => {
                         this.setState({ 
                             customMessages: res,
@@ -209,10 +204,7 @@ class MyAccount extends Component {
                 })
             }
         } else {
-            this.setState({
-                customMessages: 'Please sign in your account.',
-                customMessagesType: 'error'
-            })
+            this._signInRequired();
         }
     }
 

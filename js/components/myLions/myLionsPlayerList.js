@@ -50,8 +50,8 @@ class MyLionsPlayerList extends Component {
     getUnionDetail(connectionInfo) {
                 if(connectionInfo==='NONE') {
                     this.setState({
-                        isLoaded:true,
-                        isRefreshing:false
+                        isLoaded: true,
+                        isRefreshing: false
                     })
                     alertBox(
                       'An Error Occured',
@@ -145,6 +145,7 @@ class MyLionsPlayerList extends Component {
                 })
         }
     }
+    
     _mapJSON(data, colMax = 2) {
         let i = 0
         let k = 0

@@ -64,8 +64,8 @@ class MyLions extends Component {
             this._showList({'uniondata':Data,'unionId':null,'logo':null,'name':null},'myLionsFavoriteList')
         :
             Alert.alert(
-                'Messages',
-                'Please sign in your account first.',
+                'An error occured',
+                'Please sign in your account.',
                 [{
                     text: 'SIGN IN', 
                     onPress: () => { this.props.replaceRoute('login') }

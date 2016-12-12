@@ -164,6 +164,11 @@ export function service(options) {
 			if (opt.onError) {
 				opt.onError('Please sign in your account.')
 			}
+
+			// Sign In is Required
+			if (opt.onAuthorization) {
+				opt.onAuthorization('Sign In is Required')
+			}
     	})
 	} else {
 		callApi(opt)
