@@ -210,10 +210,5 @@ module.exports = styleSheetCreate({
         marginBottom:35,
         marginLeft:30,
         marginRight:30
-    },
-    extendBlock: {
-        android: {
-            marginBottom:100
-        }
     }
 })

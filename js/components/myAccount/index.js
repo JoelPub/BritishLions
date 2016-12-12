@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -18,7 +18,6 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-var _scrollView: KeyboardAwareScrollView
 
 class MyAccount extends Component {
     constructor(props) {
@@ -81,18 +80,6 @@ class MyAccount extends Component {
     keyboardWillShow (e) {
         let newSize = Dimensions.get('window').height - e.endCoordinates.height
         this.setState({offset :{y: 120}})
-    }
-
-    keyboardFocus(){
-        if(Platform.OS ==='android') {
-            _scrollView.scrollToPosition(0,0,false)
-        }
-    }
-
-    keyboardBlur(){
-        if(Platform.OS ==='android') {
-            _scrollView.scrollToPosition(0,0,false)
-        }
     }
 
     keyboardWillHide (e) {
@@ -235,10 +222,9 @@ class MyAccount extends Component {
                 <View theme={theme}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                             <KeyboardAwareScrollView
-                                style={styles.content}
+                                style={styles.content} 
                                 keyboardShouldPersistTaps={true}
-                                keyboardDismissMode='on-drag'
-                                ref={(scrollView) => { _scrollView = scrollView; }}
+                                contentOffset={this.state.offset}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
@@ -256,7 +242,7 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.password} onFocus={()=>this.keyboardFocus()} onBlur={()=>this.keyboardBlur()}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
+                                        <Input defaultValue={this.state.password}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
@@ -299,7 +285,7 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
                                     </View>
 
                                     <ButtonFeedback 
