@@ -1,6 +1,6 @@
 'use strict'
 
-import { NetInfo } from 'react-native'
+import { NetInfo, Alert } from 'react-native'
 import { getAccessToken } from './asyncStorageServices'
 import axios from 'axios'
 import qs from 'qs'
@@ -75,57 +75,76 @@ function callApi(opt) {
 		opt.onAxiosStart()
 	}
 
-	axios.post(
-	    opt.url,
-	    qs.stringify(opt.data)
-	).then(function(res) {
-		isInternetConnected = true
 
-		// use for loading, after state
-		if (opt.onAxiosEnd) {
-			opt.onAxiosEnd()
-		}
-
-		if (opt.onSuccess) {
-			opt.onSuccess(res)
-		}
-	}).catch(function(error) {
-	    //console.log('errorHandler: ', error.response)
-		isInternetConnected = true
-
-		// use for loading, after state
-		if (opt.onAxiosEnd) {
-			opt.onAxiosEnd()
-		}
+	NetInfo.fetch().done((connectionInfo) => {
+		let netInfos = connectionInfo.toLowerCase()
 		
-		// no need to prompt a message if the request is from 
-		// appNavigator.js and its about refreshing of token
-		if (!opt.isRefreshToken) {
-			errorHandler(error, opt)
-		}
-	})
+		if(netInfos === 'unknown' || netInfos === 'none') {
+			// No internet connection
 
-
-	// This will be an alternative solution for checking if device is
-	// connected to the internet or not, while react native have a bug 
-	// in netInfo.isConnected
-	setTimeout(() => {
-		if (isInternetConnected === false) {
-			// if this flag is still false 
-			// it means that we dont received any response from axios
-			// maybe it due of internet connectivity issues
-
-			// use for loading, after state
 			if (opt.onAxiosEnd) {
 				opt.onAxiosEnd()
 			}
 
 			if (opt.onError) {
-				opt.onError('Please make sure that your are connected to the network.')
+				opt.onError('Please make sure that you are connected to the network.')
 			}
-		}
-	}, 60000)
+		} else {
+			// There's an internet connection
 
+			axios.post(
+			    opt.url,
+			    qs.stringify(opt.data)
+			).then(function(res) {
+				isInternetConnected = true
+
+				// use for loading, after state
+				if (opt.onAxiosEnd) {
+					opt.onAxiosEnd()
+				}
+
+				if (opt.onSuccess) {
+					opt.onSuccess(res)
+				}
+			}).catch(function(error) {
+			    //console.log('errorHandler: ', error.response)
+				isInternetConnected = true
+
+				// use for loading, after state
+				if (opt.onAxiosEnd) {
+					opt.onAxiosEnd()
+				}
+				
+				// no need to prompt a message if the request is from 
+				// appNavigator.js and its about refreshing of token
+				if (!opt.isRefreshToken) {
+					errorHandler(error, opt)
+				}
+			})
+
+
+			// Sometimes android is not working properly in checking if the device is
+			// connected to the network or not, let's add some trick to handle this problem:
+			// and lets add a flag logic and wait for some time to make sure if the device 
+			// is connected to the network or not
+			setTimeout(() => {
+				if (isInternetConnected === false) {
+					// if this flag is still false 
+					// it means that we dont received any response from axios
+					// maybe it due of internet connectivity issues
+
+					// use for loading, after state
+					if (opt.onAxiosEnd) {
+						opt.onAxiosEnd()
+					}
+
+					if (opt.onError) {
+						opt.onError('Please make sure that you are connected to the network.')
+					}
+				}
+			}, 60000)
+		}
+	})
 }
 
 export function service(options) {
@@ -143,8 +162,6 @@ export function service(options) {
 
 	let opt = Object.assign(defaults, options)
 
-	// TODO: Add a condition that will handle the network problem
-	// if (NetInfo.isConnected) {}
 	if (opt.isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
