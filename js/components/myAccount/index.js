@@ -278,8 +278,9 @@ class MyAccount extends Component {
                                                 },
                                                 errorCheckEmail: {
                                                    submit: true
-                                               },
-                                                customMessages: ''
+                                                },
+                                                customMessages: '',
+                                                customMessagesEmail: ''
                                             })}
                                         } 
                                     />
@@ -315,7 +316,8 @@ class MyAccount extends Component {
                                                    email: this.state.email,
                                                    submit: true
                                                },
-                                               customMessagesEmail:''
+                                               customMessages: '',
+                                               customMessagesEmail: ''
                                              })
                                            }
                                        }
