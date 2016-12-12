@@ -39,6 +39,8 @@ class Login extends Component {
             customMessages: '',
             customMessagesType: 'error'
         }
+        this.msgboxPosX=0
+        this.msgboxPosY=0
 
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object
@@ -123,11 +125,15 @@ class Login extends Component {
                         customMessages: res,
                         customMessagesType: 'error'
                     })
+                    this._scrollToMessages()
                 }
             }
 
             service(options)
         } 
+        else {
+            this._scrollToMessages()
+        }
     }
 
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
@@ -141,10 +147,13 @@ class Login extends Component {
         return false
       }
 
+    _scrollToMessages() {
+        this._scrollView.scrollToPosition(this.msgboxPosX,this.msgboxPosY,false)
+    }
+
     focusMessage(event) {
-        if(this.state.errorCheck.submit) {
-           this._scrollView.scrollToPosition(event.nativeEvent.layout.x,event.nativeEvent.layout.y,false) 
-        }        
+        this.msgboxPosX=event.nativeEvent.layout.x
+        this.msgboxPosY=event.nativeEvent.layout.y     
     }
 
     render() {

@@ -12,12 +12,13 @@ import ButtonFeedback from '../utility/buttonFeedback'
 
 const styles = styleSheetCreate({
     btn: {
-        marginLeft: 12,
         marginTop: -22,
         android: {
             marginTop: -7,
             height: 32
-        }
+        },
+        paddingLeft:12,
+        paddingRight:12,
     },
     headerIcon: {
         color: '#fff',
