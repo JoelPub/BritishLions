@@ -93,9 +93,6 @@ class AppNavigator extends Component {
 
     _refreshToken() {    
         getRefreshToken().then((refreshToken) => {
-            removeToken() // Make sure to remove user's device token first
-            this.props.setAccessGranted(false) // make the flag false
-
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -119,9 +116,7 @@ class AppNavigator extends Component {
         }).catch((error) => {
             // We can't get the existing refresh token of the user here
             // In this situation, user will not logged in
-            
-            removeToken() // Make sure to remove user's device token
-            this.props.setAccessGranted(false)
+            // By default: the redux isAccessGranted is set to 'false'
         })
     } 
 
@@ -129,15 +124,11 @@ class AppNavigator extends Component {
         getAccessToken().then((accessToken) => {
             if (accessToken) {
                 this._refreshToken() // update the token
-            } else {
-                removeToken() // Make sure to remove user's device token
-                this.props.setAccessGranted(false)
-            }
+            } 
         }).catch((error) => {
             // Nothing to do here since user don't have an existing ACCESS TOKEN
             // In this situation, user is not logged in
-            removeToken() // Make sure to remove user's device token
-            this.props.setAccessGranted(false)
+            // By default: the redux isAccessGranted is set to 'false'
         })
     }
 
