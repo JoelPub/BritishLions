@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -94,6 +94,12 @@ class MyAccount extends Component {
     componentWillUnmount(){
         this.keyboardDidShowListener.remove()
         this.keyboardDidHideListener.remove()
+    }
+
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+        })
     }
 
     replaceRoute(route) {
@@ -208,10 +214,21 @@ class MyAccount extends Component {
         }
     }
 
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        } 
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='New Password' || e._targetInst._currentElement.props.placeholder!=='Confirm Password'|| e._targetInst._currentElement.props.placeholder!=='New Email') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
+
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme} {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                             <KeyboardAwareScrollView
                                 style={styles.content} 

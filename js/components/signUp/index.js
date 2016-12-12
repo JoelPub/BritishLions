@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -150,10 +150,27 @@ class SignUp extends Component {
         this.keyboardDidHideListener.remove()
     }
 
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+        })
+    }
+
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        } 
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Password' || e._targetInst._currentElement.props.placeholder!=='Email'|| e._targetInst._currentElement.props.placeholder!=='Last Name'|| e._targetInst._currentElement.props.placeholder!=='First Name') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
+
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                         <KeyboardAwareScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
