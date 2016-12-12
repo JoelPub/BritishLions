@@ -1,11 +1,10 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken, removeToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, findNodeHandle, PanResponder} from 'react-native'
+import { Keyboard, Dimensions, Image, PanResponder} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -124,23 +123,11 @@ class Login extends Component {
                         customMessages: res,
                         customMessagesType: 'error'
                     })
-
-                    this._scrollToMessages()
                 }
             }
 
             service(options)
-        } else {
-            this._scrollToMessages()
-        }
-    }
-
-    _scrollToMessages() {
-        let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
-        UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
-           // scroll/focus to validation error messages
-           this._scrollView.scrollToPosition(0,pageY - 50,false)
-        })
+        } 
     }
 
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
@@ -153,6 +140,12 @@ class Login extends Component {
 
         return false
       }
+
+    focusMessage(event) {
+        if(this.state.errorCheck.submit) {
+           this._scrollView.scrollToPosition(event.nativeEvent.layout.x,event.nativeEvent.layout.y,false) 
+        }        
+    }
 
     render() {
         return (
@@ -167,7 +160,7 @@ class Login extends Component {
                                     source={require('../../../images/logos/british-and-irish-lions.png')}
                                     style={styles.pageLogo} />
 
-                                <View style={styles.guther}>
+                                <View style={styles.guther} onLayout={(event)=>this.focusMessage(event)}>
                                     <CustomMessages 
                                         messages = {this.state.customMessages} 
                                         errorType = {this.state.customMessagesType} />
