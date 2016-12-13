@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -18,7 +18,6 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-var _scrollView: KeyboardAwareScrollView
 
 class MyAccount extends Component {
     constructor(props) {
@@ -61,35 +60,27 @@ class MyAccount extends Component {
         this._onSuccessValidatePassword = debounce(this._onSuccessValidatePassword, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 120}})
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account.',
+            [{
+                text: 'SIGN IN',
+                onPress: this._reLogin.bind(this)
+            }]
+        )
     }
 
-    keyboardFocus(){
-        if(Platform.OS ==='android') {
-            _scrollView.scrollToPosition(0,0,false)
-        }
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
     }
 
-    keyboardBlur(){
-        if(Platform.OS ==='android') {
-            _scrollView.scrollToPosition(0,0,false)
-        }
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
-    }
-
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+        })
     }
 
     replaceRoute(route) {
@@ -123,23 +114,25 @@ class MyAccount extends Component {
                     onSuccess: (res) => {
                         // reset the fields
                         this.setState({
-                            email: '',
-                            customMessagesEmail: 'Your email was successfully changed.',
-                            customMessagesTypeEmail: 'success'
+                            email: ''
+                         }, () => {
+                            // logout the user when successfully changed the email
+                            removeToken()
+                            this.props.setAccessGranted(false)
+                            Alert.alert(
+                                'Messages',
+                                'Your email is successfully changed.',
+                                [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
+                            )
                         })
                     },
-                    onAuthorization: () => {
-                        this.setState({
-                            customMessagesEmail: 'Please sign in your account.',
-                            customMessagesTypeEmail: 'error'
-                        })
-                    },
+                    onAuthorization: this._signInRequired.bind(this),
                     onError: (res) => {
-                        this.setState({ 
+                        this.setState({
                             customMessagesEmail: res,
-                            customMessagesTypeEmail: 'error'
+                            customMessagesEmailType: 'error'
                         })
-                    },
+                     },
                     isRequiredToken: true
                 }
 
@@ -150,10 +143,7 @@ class MyAccount extends Component {
                 })
             }
         } else {
-            this.setState({ 
-                customMessagesEmail: res,
-                customMessagesTypeEmail: 'error'
-            })
+           this._signInRequired()
         }
     }
 
@@ -187,14 +177,9 @@ class MyAccount extends Component {
                             customMessagesType: 'success'
                         })
                     },
-                    onAuthorization: () => {
-                        this.setState({
-                            customMessages: 'Please sign in your account.',
-                            customMessagesType: 'error'
-                        })
-                    },
+                    onAuthorization: this._signInRequired.bind(this),
                     onError: (res) => {
-                        this.setState({ 
+                        this.setState({
                             customMessages: res,
                             customMessagesType: 'error'
                         })
@@ -209,23 +194,28 @@ class MyAccount extends Component {
                 })
             }
         } else {
-            this.setState({
-                customMessages: 'Please sign in your account.',
-                customMessagesType: 'error'
-            })
+            this._signInRequired()
         }
     }
+
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        }
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='New Password' || e._targetInst._currentElement.props.placeholder!=='Confirm Password'|| e._targetInst._currentElement.props.placeholder!=='New Email') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
 
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme} {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                             <KeyboardAwareScrollView
                                 style={styles.content}
-                                keyboardShouldPersistTaps={true}
-                                keyboardDismissMode='on-drag'
-                                ref={(scrollView) => { _scrollView = scrollView; }}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
@@ -233,8 +223,8 @@ class MyAccount extends Component {
 
                                 <View style={styles.guther}>
 
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -243,7 +233,7 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.password} onFocus={()=>this.keyboardFocus()} onBlur={()=>this.keyboardBlur()}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
+                                        <Input defaultValue={this.state.password}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
@@ -251,11 +241,11 @@ class MyAccount extends Component {
                                         <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'} 
-                                        style={styles.button} 
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'}
+                                        style={styles.button}
                                         onPress={() => {
                                             this.setState({
                                                 errorCheckPassword: {
@@ -263,17 +253,21 @@ class MyAccount extends Component {
                                                     confirmPassword: this.state.confirmPassword,
                                                     submit: true
                                                 },
-                                                customMessages: ''
+                                                errorCheckEmail: {
+                                                   submit: true
+                                                },
+                                                customMessages: '',
+                                                customMessagesEmail: ''
                                             })}
-                                        } 
+                                        }
                                     />
                                 </View>
 
                                 <View style={styles.split}></View>
 
                                 <View style={styles.guther}>
-                                    <CustomMessages 
-                                        messages = {this.state.customMessagesEmail} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessagesEmail}
                                         errorType = {this.state.customMessagesTypeEmail} />
 
                                     <ErrorHandler
@@ -282,28 +276,33 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.email} placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmittingEmail}
-                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'} 
-                                        style={styles.button} 
-                                        onPress={() => {
-                                            this.setState({
-                                                errorCheckEmail: {
-                                                    email: this.state.email,
+                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'}
+                                        style={styles.button}
+                                       onPress={() => {
+                                           this.setState({
+                                               errorCheckPassword: {
                                                     submit: true
                                                 },
-                                                customMessagesEmail: ''
-                                            })}
-                                        } 
+                                                errorCheckEmail: {
+                                                   email: this.state.email,
+                                                   submit: true
+                                               },
+                                               customMessages: '',
+                                               customMessagesEmail: ''
+                                             })
+                                           }
+                                       }
                                     />
                                 </View>
                         </KeyboardAwareScrollView>
-                        
-                        <OverlayLoader visible={(this.state.isFormSubmitting && this.state.isFormSubmittingEmail)} />
+
+                        <OverlayLoader visible={(this.state.isFormSubmitting || this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />

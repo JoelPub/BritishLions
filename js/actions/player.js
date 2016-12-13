@@ -13,6 +13,7 @@ export const PUSH_UNION = 'PUSH_UNION'
 export const PUSH_DETAIL = 'PUSH_DETAIL'
 
 export const INVALID_TOKEN = 'INVALID_TOKEN'
+export const EMPTY_LIST = 'EMPTY_LIST'
 
 export function editFavList(favEditUrl,favUrl,playerid,errorCallback):Action {
     return (dispatch, getState) => {
@@ -141,7 +142,11 @@ export function getFavDetail(favUrl,soticUrl,errorCallback):Action {
                                 })
 
                             } else {
-                               errorCallback()
+                               if(tokenresponse.data === ''){
+                                    errorCallback(EMPTY_LIST)
+                               }else{
+                                    errorCallback()
+                               }
                             }
                         }.bind(this))
                         .catch(function(error) {

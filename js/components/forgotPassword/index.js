@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Image, Dimensions } from 'react-native'
+import { Keyboard, Image, Dimensions, PanResponder } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -46,27 +46,10 @@ class ForgotPassword extends Component {
         this._onValidateSuccess = debounce(this._onValidateSuccess, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({offset :{y: 80}})
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
-    }
-
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
-    }
-
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return true
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+        })
     }
 
     replaceRoute(route) {
@@ -98,7 +81,7 @@ class ForgotPassword extends Component {
                 },
                 onSuccess: this._resetPassword.bind(this),
                 onError: (res) => {
-                    this.setState({ 
+                    this.setState({
                         customMessages: res,
                         customMessagesType: 'error'
                     })
@@ -116,19 +99,30 @@ class ForgotPassword extends Component {
     _resetPassword(res) {
         // successful sent to the server
         // reset the email field
-        this.setState({ 
+        this.setState({
             email: '',
             customMessages: 'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
             customMessagesType: 'success'
         })
     }
 
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        }
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
+
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag'>
+                        <KeyboardAwareScrollView style={styles.main} >
                             <View style={styles.content} contentOffset={this.state.offset}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>FORGOT PASSWORD</Text>
@@ -136,8 +130,8 @@ class ForgotPassword extends Component {
 
                                 <View style={styles.guther}>
 
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -149,20 +143,20 @@ class ForgotPassword extends Component {
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT'} 
-                                        style={styles.button} 
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT'}
+                                        style={styles.button}
                                         onPress={() => {
                                             this.setState({
                                                 errorCheck: {
-                                                    email: this.state.email, 
+                                                    email: this.state.email,
                                                     submit:true
                                                 },
                                                 customMessages: ''
                                             }
-                                        )}} 
+                                        )}}
                                     />
                                 </View>
                             </View>

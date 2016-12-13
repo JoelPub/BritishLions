@@ -17,24 +17,27 @@ import shapes from '../../themes/shapes'
 
 class Galleries extends Component {
     constructor(props) {
-         super(props)
-         this.state = {
-              isLoaded: false
-         }
+        super(props)
+        this.state = {
+            isLoaded: false,
+            galleriesFeed: [],       
+        }
+        this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
     }
 
     _drillDown(data) {
         this.props.drillDown(data, 'galleriesDetails')
     }
-
+    
     componentDidMount() {
-        this.props.fetchContent('https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php')
+        this.props.fetchContent(this.url)
     }
 
-    componentWillReceiveProps() {
-      this.setState({
-        isLoaded: this.props.isLoaded || true
-      })
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            isLoaded: nextProps.isLoaded,
+            galleriesFeed: nextProps.galleriesFeed
+        })
     }
 
     render() {
@@ -46,7 +49,7 @@ class Galleries extends Component {
                         this.state.isLoaded?
                             <Content>
                               {
-                                   this.props.galleriesFeed.map(function(data, index) {
+                                   this.state.galleriesFeed.map(function(data, index) {
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}
@@ -69,8 +72,8 @@ class Galleries extends Component {
                             </Content>
                           :
                             <ActivityIndicator
-                              style={loader.centered}
-                              size='large'
+                                style={loader.centered}
+                                size='large'
                             />
                     }
                     <EYSFooter />

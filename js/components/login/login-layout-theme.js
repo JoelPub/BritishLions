@@ -211,9 +211,8 @@ module.exports = styleSheetCreate({
         marginLeft:30,
         marginRight:30
     },
-    extendBlock: {
-        android: {
-            marginBottom:100
-        }
+    tncLink: {
+        paddingBottom:15,
+        paddingRight:15
     }
 })

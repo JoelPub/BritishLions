@@ -55,11 +55,43 @@ class Sponsors extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader title='SPONSORS' />
+
+
                     <Content>
+                    <View style={styles.sponsorTierBanner} >
+                      <Text style={styles.sponsorTierTitle}>PRINCIPAL PARTNERS</Text>
+                    </View>
+
                         {
                             this._mapJSON(Data).map((rowData, index) => {
                                 return (
                                     <Grid key={index}>
+                                      {(index === 3
+                                        ?
+                                        <Row>
+                                        <Col style={styles.gridBoxCol}>
+                                            <View style={styles.sponsorTierBanner}>
+                                                <Text style={styles.sponsorTierTitle}>OFFICIAL SPONSORS</Text>
+                                            </View>
+                                        </Col>
+                                        </Row>
+                                        :
+                                        []
+                                      )}
+                                      {(index === 4
+                                        ?
+                                        <Row>
+                                        <Col style={styles.gridBoxCol}>
+                                            <View style={styles.sponsorTierBanner}>
+                                                <Text style={styles.sponsorTierTitle}>OFFICIAL SUPPLIERS</Text>
+                                            </View>
+                                        </Col>
+                                        </Row>
+                                        :
+                                        []
+                                      )}
+
+                                        <Row>
                                         {
                                             rowData.map((item, key) => {
                                                 let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
@@ -92,6 +124,7 @@ class Sponsors extends Component {
                                                 )
                                             }, this)
                                         }
+                                        </Row>
                                     </Grid>
                                 )
                             }, this)

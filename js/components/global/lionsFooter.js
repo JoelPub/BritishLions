@@ -35,11 +35,11 @@ const styles = styleSheetCreate({
         marginTop: 20
     },
     logowhiteFooter: {
-        width: 28,
-        height: 42,
-        marginTop: 22,
+        width: 20,
+        height: 28,
+        marginTop: 25,
         android: {
-            marginTop: 21
+            marginTop: 30
         }
     },
     textFooter: {

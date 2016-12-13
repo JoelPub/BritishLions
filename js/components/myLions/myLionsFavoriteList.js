@@ -18,12 +18,13 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { replaceRoute,pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import { getFavDetail , showDetail, INVALID_TOKEN} from '../../actions/player'
+import { getFavDetail , showDetail, INVALID_TOKEN, EMPTY_LIST} from '../../actions/player'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
+import {getNetinfo} from '../utility/network'
 
 class MyLionsFavoriteList extends Component {
 
@@ -39,12 +40,36 @@ class MyLionsFavoriteList extends Component {
             isLoaded: false
         }
     }
+
+    getFavDetail(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded:true,
+                        isRefreshing:false
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+                }
+               
+    }
+
     componentDidMount() {
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.getFavDetail.bind(this))
+        } 
+        else {       
+            this.getFavDetail(this.props.connectionInfo)
+        }
     }
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.getFavDetail(this.favUrl,this.playerFullUrl,this.errCallback.bind(this))
+        getNetinfo(this.getFavDetail.bind(this))
     }
     _reLogin() {
         removeToken()
@@ -59,7 +84,7 @@ class MyLionsFavoriteList extends Component {
     _signInRequired() {
         Alert.alert(
             'An error occured',
-            'Please sign in your account first.',
+            'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)
@@ -70,6 +95,13 @@ class MyLionsFavoriteList extends Component {
     errCallback(error) {
     if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
         this._signInRequired()
+    }
+    else if(error===EMPTY_LIST){
+        alertBox(
+            'Warning',
+            'The favourite player list is currently empty, you can add a new favourite player from the player detail page.',
+            'Dismiss'
+        )
     }
     else {
         alertBox(
@@ -230,6 +262,7 @@ export default connect((state) => {
         playerList: state.player.playerList,
         playerFeed: state.player.playerDetail,
         isLoaded: state.player.isLoaded,
-        isRefreshing: state.player.isRefreshing
+        isRefreshing: state.player.isRefreshing,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(MyLionsFavoriteList)

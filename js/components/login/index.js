@@ -1,11 +1,10 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { UIManager } from 'NativeModules';
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
-import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, findNodeHandle } from 'react-native'
+import { updateToken, removeToken } from '../utility/asyncStorageServices'
+import { Keyboard, Dimensions, Image, PanResponder} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -40,6 +39,8 @@ class Login extends Component {
             customMessages: '',
             customMessagesType: 'error'
         }
+        this.msgboxPosX=0
+        this.msgboxPosY=0
 
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object
@@ -51,31 +52,25 @@ class Login extends Component {
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+          
+        })
     }
 
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
+    componentDidMount () {
+        // just to make sure that token was removed and
+        // isAccessGranted flag is set to false when 
+        // user is in the login page
+        setTimeout(() => {
+            removeToken() 
+            this.props.setAccessGranted(false)
+        }, 400)
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return true
-    }
-
-    keyboardWillShow (e) {
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height +75
-        this.setState({
-            offset :{y: 150}
-        })
-    }
-
-    keyboardWillHide (e) {
-        this.setState({
-            offset :{y: 0}
-        })
     }
 
     _replaceRoute(route) {
@@ -130,38 +125,51 @@ class Login extends Component {
                         customMessages: res,
                         customMessagesType: 'error'
                     })
-
                     this._scrollToMessages()
                 }
             }
 
             service(options)
-        } else {
+        } 
+        else {
             this._scrollToMessages()
         }
     }
 
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        } 
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email' || e._targetInst._currentElement.props.placeholder!=='Password') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
+
     _scrollToMessages() {
-        let errorHandlerElem = findNodeHandle(this.refs.errorHandlerElem); 
-        UIManager.measure(errorHandlerElem, (x, y, width, height, pageX, pageY) => {
-           // scroll/focus to validation error messages
-           this._scrollView.scrollToPosition(0,pageY - 50,false)
-        })
+        this._scrollView.scrollToPosition(this.msgboxPosX,this.msgboxPosY,false)
+    }
+
+    focusMessage(event) {
+        this.msgboxPosX=event.nativeEvent.layout.x
+        this.msgboxPosY=event.nativeEvent.layout.y     
     }
 
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme} 
+                    {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'
                                     source={require('../../../images/logos/british-and-irish-lions.png')}
                                     style={styles.pageLogo} />
 
-                                <View style={styles.guther}>
+                                <View style={styles.guther} onLayout={(event)=>this.focusMessage(event)}>
                                     <CustomMessages 
                                         messages = {this.state.customMessages} 
                                         errorType = {this.state.customMessagesType} />

@@ -20,6 +20,8 @@ import ImageCircle from '../utility/imageCircle'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
+import { alertBox } from './../utility/alertBox'
+import {getNetinfo} from '../utility/network'
 
 
 class MyLionsPlayerList extends Component {
@@ -38,14 +40,39 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false
         }
+        this.nameFilter = ''
 
     }
 
     _showDetail(item, route) {
         this.props.showDetail(item,route)
     }
+
+    getUnionDetail(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded: true,
+                        isRefreshing: false
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.getUnionDetail(this.unionUrl,this.favUrl)
+                }
+               
+    }
+
     componentDidMount() {
-        this.props.getUnionDetail(this.unionUrl,this.favUrl)
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.getUnionDetail.bind(this))
+        } 
+        else {       
+            this.getUnionDetail(this.props.connectionInfo)
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -75,19 +102,56 @@ class MyLionsPlayerList extends Component {
 
     searchPlayer = (keywords) => {
         this.searchResult=[]
+        //strip out non alpha characters
+        let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
+        let strArr = strSearch.split(' ')
         let tempArr=this.playerFeed
-            if(keywords.trim()!=='') {
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())===0) )
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())!==-1) )
-            for (let i=0;i<keywords.length;i++ ) {
-                if(keywords.charAt(i).match(/[A-Z]/gi)) {
-                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(keywords.charAt(i).toLowerCase())!==-1) 
+        function filterName(player) {
+            let nameArr = player.name.toLowerCase().split(' ')
+            let result = false
+            if(nameArr.length>0) {
+                nameArr.map((name,i)=>{
+                    if(name===this.nameFilter) {
+                        result=true
+                    }
+                })
+            }
+            else {
+                if( player.name.toLowerCase()===this.nameFilte ) {
+                    result=true
+                }
+            }
+            return result
+        }
+
+        if(strSearch.trim()!=='') {
+            //search exactly same name
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            //split words
+            if(strArr.length>0) {
+                strArr.map((item,index)=>{
+                    this.nameFilter=item
+                    console.log('!!!this.nameFilter',this.nameFilter)
+            
+                    this.searchResult=this.searchResult.concat(
+                        this.playerFeed.filter(filterName.bind(this))
+                    )
+                })
+            }
+            
+
+            //name contain keywords
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            //break keywords to single characters and match
+            for (let i=0;i<strSearch.length;i++ ) {
+                if(strSearch.charAt(i).match(/[A-Z]/gi)) {
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
                 }               
             }
             if (tempArr.length>0) {
                 this.searchResult=this.searchResult.concat(tempArr)
             }
-
+            //remove duplicate
             this.searchResult.map((item,index)=>{
                 let arr=[]
                 for(let j=index+1; j<this.searchResult.length; j++) {                    
@@ -119,6 +183,7 @@ class MyLionsPlayerList extends Component {
                 })
         }
     }
+    
     _mapJSON(data, colMax = 2) {
         let i = 0
         let k = 0
@@ -164,7 +229,7 @@ class MyLionsPlayerList extends Component {
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
@@ -272,6 +337,7 @@ export default connect((state) => {
         unionFeed: state.player.union,
         playerList: state.player.playerList,
         playerFeed: state.player.playerDetail,
-        isLoaded: state.player.isLoaded
+        isLoaded: state.player.isLoaded,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(MyLionsPlayerList)

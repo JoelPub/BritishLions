@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder,TouchableOpacity, Alert } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -30,10 +30,6 @@ class SignUp extends Component {
             newPartners: false,
             tc: false,
             visibleHeight: Dimensions.get('window').height,
-            offset: {
-                x: 0,
-                y: 0
-            },
             errorCheck: {
                 firstName: null,
                 lastName: null,
@@ -56,15 +52,6 @@ class SignUp extends Component {
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
     }
 
-    keyboardWillShow (e) {
-       let newSize = Dimensions.get('window').height - e.endCoordinates.height
-       this.setState({offset :{y: 80}})
-    }
-
-    keyboardWillHide (e) {
-        this.setState({offset :{y: 0}})
-    }
-
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
@@ -75,6 +62,10 @@ class SignUp extends Component {
 
     _popRoute() {
         this.props.popRoute()
+    }
+
+    _reLogin() {
+        this._replaceRoute('login')
     }
 
     _userSignUp() {
@@ -89,12 +80,20 @@ class SignUp extends Component {
             tc: false
         })
 
-        this._scrollView.scrollToPosition(0,0,false)
+        // this._scrollView.scrollToPosition(0,0,false)
+        // this.setState({ 
+        //     customMessages: 'Your account has been created successfully.',
+        //     customMessagesType: 'success'
+        // })
 
-        this.setState({ 
-            customMessages: 'Your account has been created successfully.',
-            customMessagesType: 'success'
-        })
+        Alert.alert(
+            'Account Registered',
+            'Your account has been created successfully.',
+            [{
+                text: 'SIGN IN',
+                onPress: this._reLogin.bind(this)
+            }]
+        )
     }
 
     _handleSignUp(isFormValidate){
@@ -140,30 +139,37 @@ class SignUp extends Component {
         }
     }
 
-    componentDidMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this))
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+        })
     }
 
-    componentWillUnmount(){
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+        if(e._targetInst._currentElement.props===undefined) {
+            Keyboard.dismiss(0)
+        }
+        else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Password' || e._targetInst._currentElement.props.placeholder!=='Email'|| e._targetInst._currentElement.props.placeholder!=='Last Name'|| e._targetInst._currentElement.props.placeholder!=='First Name') {
+            Keyboard.dismiss(0)
+        }
+
+        return false
+      }
 
     render() {
         return (
             <Container>
-                <View theme={theme}>
+                <View theme={theme}  {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main}  keyboardShouldPersistTaps={true} keyboardDismissMode='on-drag' contentOffset={this.state.offset} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main}  ref={(scrollView) => { this._scrollView = scrollView }}>
                             <View style={styles.content}>
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
                                 </View>
 
                                 <View style={styles.guther}>
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -235,10 +241,11 @@ class SignUp extends Component {
                                                     onTintColor = '#6cb61b'
                                                     value={this.state.tc} />
                                             </Col>
-                                            <Col>
-                                                <Text style={styles.switchLabelText}>
-                                                    I agree to <Text style={styles.textUnderline} onPress={() => this._pushNewRoute('terms')}>Terms and Conditions</Text>
-                                                </Text>
+                                            <Col style={{flexDirection:'row'}}>
+                                                <Text style={styles.switchLabelText}>I agree to </Text>
+                                                <ButtonFeedback onPress={() => this._pushNewRoute('terms')} style={styles.tncLink}>
+                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>Terms and Conditions</Text>
+                                                </ButtonFeedback>
                                             </Col>
                                         </Grid>
                                     </View>
@@ -246,7 +253,7 @@ class SignUp extends Component {
                                     <ButtonFeedback
                                         rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'} 
+                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'}
                                         style = {styles.button}
                                         onPress = {() => {
                                             this.setState({
