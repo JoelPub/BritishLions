@@ -40,6 +40,7 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false
         }
+        this.nameFilter = ''
 
     }
 
@@ -101,19 +102,53 @@ class MyLionsPlayerList extends Component {
 
     searchPlayer = (keywords) => {
         this.searchResult=[]
+        //strip out non alpha characters
+        let strSearch = keywords.replace(/[^A-Za-z\\s]/g,'').toLowerCase()
+        let strArr = strSearch.split(' ')
         let tempArr=this.playerFeed
-            if(keywords.trim()!=='') {
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())===0) )
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(keywords.trim().toLowerCase())!==-1) )
-            for (let i=0;i<keywords.length;i++ ) {
-                if(keywords.charAt(i).match(/[A-Z]/gi)) {
-                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(keywords.charAt(i).toLowerCase())!==-1) 
+        function filterName(player) {
+            let nameArr = player.name.toLowerCase().split(' ')
+            let result = false
+            if(nameArr.length>0) {
+                nameArr.map((name,i)=>{
+                    if(name===this.nameFilter) {
+                        result=true
+                    }
+                })
+            }
+            else {
+                if( player.name.toLowerCase()===this.nameFilte ) {
+                    result=true
+                }
+            }
+            return result
+        }
+
+        if(strSearch.trim()!=='') {
+            //search exactly same name
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            //split words
+            if(strArr.length>0) {
+                strArr.map((item,index)=>{
+                    this.nameFilter=item
+                    this.searchResult=this.searchResult.concat(
+                        this.playerFeed.filter(filterName.bind(this))
+                    )
+                })
+            }
+
+            //name contain keywords
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            //break keywords to single characters and match
+            for (let i=0;i<strSearch.length;i++ ) {
+                if(strSearch.charAt(i).match(/[A-Z]/gi)) {
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
                 }               
             }
             if (tempArr.length>0) {
                 this.searchResult=this.searchResult.concat(tempArr)
             }
-
+            //remove duplicate
             this.searchResult.map((item,index)=>{
                 let arr=[]
                 for(let j=index+1; j<this.searchResult.length; j++) {                    
@@ -191,7 +226,7 @@ class MyLionsPlayerList extends Component {
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
