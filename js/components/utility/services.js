@@ -78,7 +78,7 @@ function callApi(opt) {
 
 	NetInfo.fetch().done((connectionInfo) => {
 		let netInfos = connectionInfo.toLowerCase()
-		
+
 		if(netInfos === 'unknown' || netInfos === 'none') {
 			// No internet connection
 
@@ -114,8 +114,8 @@ function callApi(opt) {
 				if (opt.onAxiosEnd) {
 					opt.onAxiosEnd()
 				}
-				
-				// no need to prompt a message if the request is from 
+
+				// no need to prompt a message if the request is from
 				// appNavigator.js and its about refreshing of token
 				if (!opt.isRefreshToken) {
 					errorHandler(error, opt)
@@ -125,11 +125,11 @@ function callApi(opt) {
 
 			// Sometimes android is not working properly in checking if the device is
 			// connected to the network or not, let's add some trick to handle this problem:
-			// and lets add a flag logic and wait for some time to make sure if the device 
+			// and lets add a flag logic and wait for some time to make sure if the device
 			// is connected to the network or not
 			setTimeout(() => {
 				if (isInternetConnected === false) {
-					// if this flag is still false 
+					// if this flag is still false
 					// it means that we dont received any response from axios
 					// maybe it due of internet connectivity issues
 
@@ -153,10 +153,10 @@ export function service(options) {
 		data: {},
 		onSuccess: null,
 		onError: null,
-		onAuthorization: null, 
+		onAuthorization: null,
 		onAxiosStart: null,
 		onAxiosEnd: null,
-		isRequiredToken: false, 
+		isRequiredToken: false,
 		isRefreshToken: false
 	}
 

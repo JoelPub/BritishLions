@@ -48,7 +48,7 @@ class ForgotPassword extends Component {
 
     componentWillMount() {
         this._panResponder = PanResponder.create({
-          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
         })
     }
 
@@ -81,7 +81,7 @@ class ForgotPassword extends Component {
                 },
                 onSuccess: this._resetPassword.bind(this),
                 onError: (res) => {
-                    this.setState({ 
+                    this.setState({
                         customMessages: res,
                         customMessagesType: 'error'
                     })
@@ -99,7 +99,7 @@ class ForgotPassword extends Component {
     _resetPassword(res) {
         // successful sent to the server
         // reset the email field
-        this.setState({ 
+        this.setState({
             email: '',
             customMessages: 'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',
             customMessagesType: 'success'
@@ -109,7 +109,7 @@ class ForgotPassword extends Component {
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
-        } 
+        }
         else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email') {
             Keyboard.dismiss(0)
         }
@@ -130,8 +130,8 @@ class ForgotPassword extends Component {
 
                                 <View style={styles.guther}>
 
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -143,20 +143,20 @@ class ForgotPassword extends Component {
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT'} 
-                                        style={styles.button} 
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT'}
+                                        style={styles.button}
                                         onPress={() => {
                                             this.setState({
                                                 errorCheck: {
-                                                    email: this.state.email, 
+                                                    email: this.state.email,
                                                     submit:true
                                                 },
                                                 customMessages: ''
                                             }
-                                        )}} 
+                                        )}}
                                     />
                                 </View>
                             </View>
