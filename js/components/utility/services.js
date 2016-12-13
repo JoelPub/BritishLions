@@ -62,7 +62,7 @@ function errorHandler(error, opt) {
             }
         }
 	}else{
-	    opt.onError('Something went wrong with processing your request. Please check your internet and try again later.')
+	    opt.onError('Something went wrong with your request. Please check your internet and try again later.')
 	}
 }
 
@@ -87,7 +87,7 @@ function callApi(opt) {
 			}
 
 			if (opt.onError) {
-				opt.onError('Please make sure that you are connected to the network.')
+				opt.onError('Please make sure that you\'re connected to the network.')
 			}
 		} else {
 			// There's an internet connection
@@ -139,7 +139,7 @@ function callApi(opt) {
 					}
 
 					if (opt.onError) {
-						opt.onError('Please make sure that you are connected to the network.')
+						opt.onError('Please make sure that you\'re connected to the network.')
 					}
 				}
 			}, 60000)

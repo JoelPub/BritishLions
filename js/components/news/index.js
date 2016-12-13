@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, RefreshControl, ScrollView, NetInfo } from 'react-native'
+import { Image, View, ActivityIndicator, RefreshControl, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -15,74 +15,52 @@ import loader from '../../themes/loader-position'
 import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
-import { alertBox } from './../utility/alertBox'
-import {getNetinfo} from '../utility/network'
 
 class News extends Component {
     constructor(props) {
          super(props)
-         this.url = 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed:[],              
+              newsFeed: [], 
+              isFetchContent: false,
+              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'             
          }
-         this.updateState=false
     }
 
     _drillDown(item) {
         this.props.drillDown(item, 'newsDetails')
     }
 
-    fetchContent(connectionInfo) {
-                if(connectionInfo==='NONE') {
-                    this.setState({
-                        isLoaded:true,
-                        isRefreshing:false,
-                        newsFeed: []
-                    })
-                    alertBox(
-                      'An Error Occured',
-                      'Please make sure the network is connected and reload the app. ',
-                      'Dismiss'
-                    )
-                }
-                else {
-                    this.props.fetchContent(this.url)
-                    this.updateState=true
-                }
-               
+    _fetchContent(){
+        this.props.fetchContent(this.state.apiUrl)
+        this.setState({ isFetchContent: true })
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true})
-        getNetinfo(this.fetchContent.bind(this))
+        this._fetchContent()
     }
 
-    
-
     componentDidMount() {
-        setTimeout(()=>{
-            if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
-                getNetinfo(this.fetchContent.bind(this))
-            } 
-            else {       
-                this.fetchContent(this.props.connectionInfo)
-            }
-
-        },3000)
-        
+        setTimeout(() => {
+            this._fetchContent()
+        }, 1000)
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.updateState) { 
+        if (this.state.isFetchContent) {
             this.setState({
-                isLoaded: true,
+                isLoaded: nextProps.isLoaded,
                 isRefreshing: nextProps.isRefreshing,
-                newsFeed: nextProps.newsFeed
+                newsFeed: nextProps.newsFeed,
+                isFetchContent: false
             })
-        this.updateState=false
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
     }
     
     render() {
@@ -154,7 +132,6 @@ export default connect((state) => {
     return {
         newsFeed: state.content.contentState,
         isLoaded: state.content.isLoaded,
-        isRefreshing: state.content.isRefreshing,
-        connectionInfo: state.network.connectionInfo
+        isRefreshing: state.content.isRefreshing
     }
 }, bindAction)(News)

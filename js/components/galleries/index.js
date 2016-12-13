@@ -14,60 +14,30 @@ import styles from './styles'
 import theme from '../../themes/base-theme'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
-import {getNetinfo} from '../utility/network'
-import { alertBox } from './../utility/alertBox'
 
 class Galleries extends Component {
     constructor(props) {
-         super(props)
-         this.state = {
-              isLoaded: false,
-              galleriesFeed: [],       
-         }
-         this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
-         this.updateState=false
+        super(props)
+        this.state = {
+            isLoaded: false,
+            galleriesFeed: [],       
+        }
+        this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
     }
 
     _drillDown(data) {
-            this.props.drillDown(data, 'galleriesDetails')
+        this.props.drillDown(data, 'galleriesDetails')
     }
-
-    fetchContent(connectionInfo) {
-                if(connectionInfo==='NONE') {
-                    this.setState({
-                        isLoaded:true,
-                        galleriesFeed:[]
-                    })
-                    alertBox(
-                      'An Error Occured',
-                      'Please make sure the network is connected and reload the app. ',
-                      'Dismiss'
-                    )
-                }
-                else {
-                    this.props.fetchContent(this.url)
-                    this.updateState=true
-                }
-               
-    }
-
+    
     componentDidMount() {
-        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
-            getNetinfo(this.fetchContent.bind(this))
-        } 
-        else {       
-            this.fetchContent(this.props.connectionInfo)
-        }
+        this.props.fetchContent(this.url)
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.updateState) { 
         this.setState({
             isLoaded: nextProps.isLoaded,
             galleriesFeed: nextProps.galleriesFeed
         })
-        this.updateState=false
-        }
     }
 
     render() {
@@ -102,8 +72,8 @@ class Galleries extends Component {
                             </Content>
                           :
                             <ActivityIndicator
-                              style={loader.centered}
-                              size='large'
+                                style={loader.centered}
+                                size='large'
                             />
                     }
                     <EYSFooter />
@@ -124,7 +94,6 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         galleriesFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded,
-        connectionInfo: state.network.connectionInfo
+        isLoaded: state.content.isLoaded
     }
 }, bindAction)(Galleries)
