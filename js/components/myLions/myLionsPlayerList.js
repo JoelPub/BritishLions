@@ -103,7 +103,7 @@ class MyLionsPlayerList extends Component {
     searchPlayer = (keywords) => {
         this.searchResult=[]
         //strip out non alpha characters
-        let strSearch = keywords.replace(/[^A-Za-z\\s]/g,'').toLowerCase()
+        let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
         let strArr = strSearch.split(' ')
         let tempArr=this.playerFeed
         function filterName(player) {
@@ -131,11 +131,14 @@ class MyLionsPlayerList extends Component {
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
                     this.nameFilter=item
+                    console.log('!!!this.nameFilter',this.nameFilter)
+            
                     this.searchResult=this.searchResult.concat(
                         this.playerFeed.filter(filterName.bind(this))
                     )
                 })
             }
+            
 
             //name contain keywords
             this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
