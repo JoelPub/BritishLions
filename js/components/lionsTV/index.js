@@ -14,8 +14,6 @@ import theme from '../../themes/base-theme'
 import styles from './styles'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
-import {getNetinfo} from '../utility/network'
-import { alertBox } from './../utility/alertBox'
 
 class LionsTV extends Component {
     constructor(props) {
@@ -24,49 +22,28 @@ class LionsTV extends Component {
               isLoaded: false,
               videosFeed: {items:[]}, 
          }
-         this.url='https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
-         this.updateState=false
+         this.url = 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
     }
+
     _drillDown(data, route) {
         this.props.drillDown(data, route)
     }
 
-    fetchContent(connectionInfo) {
-                if(connectionInfo==='NONE') {
-                    this.setState({
-                        isLoaded:true,
-                        videosFeed:{items:[]}
-                    })
-                    alertBox(
-                      'An Error Occured',
-                      'Please make sure the network is connected and reload the app. ',
-                      'Dismiss'
-                    )
-                }
-                else {
-                    this.props.fetchContent(this.url)
-                    this.updateState=true
-                }
-               
+    componentDidMount() {
+        this.props.fetchContent(this.url)
     }
 
-    componentDidMount() {
-        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
-            getNetinfo(this.fetchContent.bind(this))
-        } 
-        else {       
-            this.fetchContent(this.props.connectionInfo)
-        }
-    }
     componentWillReceiveProps(nextProps) {
-        if(this.updateState) { 
-                this.setState({
-                    isLoaded: nextProps.isLoaded,
-                    videosFeed: nextProps.videosFeed
-                  })
-            this.updateState=false
-        }
+        this.setState({
+            isLoaded: nextProps.isLoaded,
+            videosFeed: nextProps.videosFeed.length !== 0? nextProps.videosFeed : {items:[]}
+        })
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+
     render(){
         return (
             <Container theme={theme}>
@@ -76,11 +53,11 @@ class LionsTV extends Component {
                         this.state.isLoaded?
                             <Content>
                                 {
-                                   this.state.videosFeed.items.map(function(data, index) {
-                                    let year=data.snippet.publishedAt.substr(0,4)
-                                    let publishDate=new Date(data.snippet.publishedAt).toLocaleDateString()
-                                    let month=publishDate.split('/')[0]?publishDate.split('/')[0]:''
-                                    let day=publishDate.split('/')[1]?publishDate.split('/')[1]:''
+                                    this.state.videosFeed.items.map(function(data, index) {
+                                        let year = data.snippet.publishedAt.substr(0,4)
+                                        let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
+                                        let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
+                                        let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}
