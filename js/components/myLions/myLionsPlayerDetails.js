@@ -15,45 +15,38 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { editFavList, getFavList, INVALID_TOKEN } from '../../actions/player'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
-import { alertBox } from '../utility/alertBox'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
+import { service } from '../utility/services'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
         super(props)
         this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
         this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954',
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
-        this.playerList = []
-        this.edit =false
-        this.state ={
+        this.state = {
             isFav : this.props.detail.isFav,
             isFormSubmitting: false
         }
     }
-    componentWillMount() {
-        // this.props.getFavList(this.favUrl)
-    }
 
-    replaceRoute(route) {
+    _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
 
-   _reLogin() {
+    _reLogin() {
         removeToken()
         this.props.setAccessGranted(false)
-        this.replaceRoute('login')
+        this._replaceRoute('login')
     }
 
     _signInRequired() {
         Alert.alert(
-            'Warning',
-            'Please log in to your account first.',
+            'An error occured',
+            'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)
@@ -77,43 +70,70 @@ class MyLionsPlayerDetails extends Component {
         }
     }
 
-    _editPlayer() {
-        this.edit = true
-        this.setState({ isFormSubmitting: true })
-        this.props.isAccessGranted?
-            (
-                this.state.isFav? 
-                    this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
-                :
-                    this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
-            )
-        :
-            this._requireLogin()     
+    _showError(error) {
+        Alert.alert(
+            'An error occured',
+            error,
+            [{text: 'Dismiss'}]
+        )
     }
 
-    componentWillReceiveProps(nextProps) {
-            this.playerList=nextProps.playerList.split('|')
-            this.setState({
-                isFormSubmitting: false,
-                isFav:(this.playerList.indexOf(this.playerid)!==-1)
-            })
-            if (this.edit) {
-                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?this.playerName+' has been added to your list':this.playerName+' has been removed from your list')
-                this.edit=false
-            }
+    _editPlayer() {  
+        let url = this.state.isFav? this.favRemoveUrl : this.favAddUrl
+        let options = {
+            url: url,
+            data: {
+                'playerId': this.playerid
+            },
+            onAxiosStart: () => {
+                this.setState({ isFormSubmitting: true })
+            },
+            onAxiosEnd: () => {
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                let successDesc = this.state.isFav? 'removed from your list' : 'added to your list'
+                this.setState({ isFav: !this.state.isFav }, () => {
+                    Alert.alert(
+                        'Player List Update',
+                        `${this.playerName} has been ${successDesc}`,
+                        [{ text: 'OK' }]
+                    )
+                })
+            },
+            onError: (res) => {
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(options)
     }
 
     _myLions(route) {
-        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._signInRequired()
+        this.props.pushNewRoute(route)
     }
 
     render() {
+        let buttonText = ''
+
+        if (this.state.isFormSubmitting) {
+            buttonText = this.state.isFav === true? 'REMOVING..':'ADDING..'
+        } else {
+            buttonText = this.state.isFav === true? 'REMOVE':'ADD'
+        }
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-
                     <LionsHeader back={true} title='MY LIONS' />
-
 
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
@@ -126,10 +146,14 @@ class MyLionsPlayerDetails extends Component {
                             <ButtonFeedback
                                 disabled = {this.state.isFormSubmitting} 
                                 onPress={()=> this._editPlayer()} 
-                                style={[styles.btn, styles.btnLeft, 
-                                this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
-                                <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'} </Text>
+                                style={[
+                                    styles.btn,
+                                    styles.btnLeft,
+                                    this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
+                                ]}>
+                                <Text style={styles.btnText}>{buttonText}</Text>
                             </ButtonFeedback>
+
                             <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
                                 <Text style={styles.btnText}>MY LIONS</Text>
                             </ButtonFeedback>
@@ -173,7 +197,7 @@ class MyLionsPlayerDetails extends Component {
                         </View>
                         <View style={styles.playerDesc}>
                             <Text style={styles.paragraph}>
-                                {this.props.detail.desc?this.props.detail.desc:''}
+                                {this.props.detail.desc? this.props.detail.desc : ''}
                             </Text>
                         </View>
                         <LionsFooter isLoaded={true} />
@@ -184,10 +208,9 @@ class MyLionsPlayerDetails extends Component {
         )
     }
 }
+
 function bindAction(dispatch) {
     return {
-        getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
-        editFavList: (favEditUrl,favUrl,playerid,errorCallbck) =>dispatch(editFavList(favEditUrl,favUrl,playerid,errorCallbck)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
@@ -196,9 +219,7 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        detail: state.player.detail,
-        playerList: state.player.playerList,
-        isLoaded: state.player.isLoaded,
+        detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted
     }
 }, bindAction)(MyLionsPlayerDetails)

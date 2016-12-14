@@ -92,35 +92,68 @@ function callApi(opt) {
 		} else {
 			// There's an internet connection
 
-			axios.post(
-			    opt.url,
-			    qs.stringify(opt.data)
-			).then(function(res) {
-				isInternetConnected = true
+			// TODO: make method to dynamic (improve)
+			if (opt.method === 'post') {
+				axios.post(
+				    opt.url,
+				    qs.stringify(opt.data)
+				).then(function(res) {
+					isInternetConnected = true
 
-				// use for loading, after state
-				if (opt.onAxiosEnd) {
-					opt.onAxiosEnd()
-				}
+					// use for loading, after state
+					if (opt.onAxiosEnd) {
+						opt.onAxiosEnd()
+					}
 
-				if (opt.onSuccess) {
-					opt.onSuccess(res)
-				}
-			}).catch(function(error) {
-			    //console.log('errorHandler: ', error.response)
-				isInternetConnected = true
+					if (opt.onSuccess) {
+						opt.onSuccess(res)
+					}
+				}).catch(function(error) {
+				    console.log('errorHandler: ', error.response)
+					isInternetConnected = true
 
-				// use for loading, after state
-				if (opt.onAxiosEnd) {
-					opt.onAxiosEnd()
-				}
-				
-				// no need to prompt a message if the request is from 
-				// appNavigator.js and its about refreshing of token
-				if (!opt.isRefreshToken) {
-					errorHandler(error, opt)
-				}
-			})
+					// use for loading, after state
+					if (opt.onAxiosEnd) {
+						opt.onAxiosEnd()
+					}
+					
+					// no need to prompt a message if the request is from 
+					// appNavigator.js and its about refreshing of token
+					if (!opt.isRefreshToken) {
+						errorHandler(error, opt)
+					}
+				})
+			} else {
+				axios.get(
+				    opt.url,
+				    qs.stringify(opt.data)
+				).then(function(res) {
+					isInternetConnected = true
+
+					// use for loading, after state
+					if (opt.onAxiosEnd) {
+						opt.onAxiosEnd()
+					}
+
+					if (opt.onSuccess) {
+						opt.onSuccess(res)
+					}
+				}).catch(function(error) {
+				    console.log('errorHandler: ', error.response)
+					isInternetConnected = true
+
+					// use for loading, after state
+					if (opt.onAxiosEnd) {
+						opt.onAxiosEnd()
+					}
+					
+					// no need to prompt a message if the request is from 
+					// appNavigator.js and its about refreshing of token
+					if (!opt.isRefreshToken) {
+						errorHandler(error, opt)
+					}
+				})
+			}
 
 
 			// Sometimes android is not working properly in checking if the device is
@@ -151,6 +184,7 @@ export function service(options) {
 	let defaults = {
 		url: '',
 		data: {},
+		method: 'post',
 		onSuccess: null,
 		onError: null,
 		onAuthorization: null, 
