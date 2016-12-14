@@ -66,10 +66,15 @@ const styles = styleSheetCreate({
     },
     linkAccount: {
         borderRightWidth:1,
-        borderRightColor:'rgba(255,255,255,0.15)'
+        borderRightColor:'rgba(255,255,255,0.15)',
+        paddingLeft:5
     },
     linkLogin: {
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
+        paddingLeft:15
+    },
+    linkLogout: {
+        justifyContent: 'center',
     },
     footerLinkText: {
         textAlign: 'right',
@@ -205,8 +210,7 @@ class LionsSidebar extends Component {
                                   </Col>
                                   <Col size={45}>
                                       <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
-                                          <Text style={styles.footerLinkText}>SIGN OUT</Text>
-                                          <Icon name='md-log-in' style={styles.footerLinkIcon} />
+                                          <Text style={styles.footerLinkText}>LOGOUT</Text>
                                       </ButtonFeedback>
                                   </Col>
                               </Grid>
