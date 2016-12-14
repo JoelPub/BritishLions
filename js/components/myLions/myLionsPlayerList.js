@@ -3,9 +3,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
-import { getUnionDetail,showDetail} from '../../actions/player'
+import { Image, View, Modal, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
+import { replaceRoute } from '../../actions/route'
+import { drillDown } from '../../actions/content'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -20,70 +23,101 @@ import ImageCircle from '../utility/imageCircle'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
-import { alertBox } from './../utility/alertBox'
-import {getNetinfo} from '../utility/network'
-
+import { service } from '../utility/services'
 
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
-        this.unionFeed=this.props.unionFeed
+
+        this.isUnMounted = false
+        this.unionFeed = this.props.unionFeed
         this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
-        this.playerFeed=[]
-        this.searchResult=[]
-        this.playerList = []
+        this.searchResult = []
         this.state = {
             isLoaded: false,
             modalVisible: false,
             transparent: true,
-            resultVisible: false
+            resultVisible: false,
+            playerListFeeds: [],
+            favoritePlayers: [],
         }
         this.nameFilter = ''
-
     }
 
     _showDetail(item, route) {
-        this.props.showDetail(item,route)
+        this.props.drillDown(item, route)
     }
 
-    getUnionDetail(connectionInfo) {
-                if(connectionInfo==='NONE') {
-                    this.setState({
-                        isLoaded: true,
-                        isRefreshing: false
-                    })
-                    alertBox(
-                      'An Error Occured',
-                      'Please make sure the network is connected and reload the app. ',
-                      'Dismiss'
-                    )
-                }
-                else {
-                    this.props.getUnionDetail(this.unionUrl,this.favUrl)
-                }
-               
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
     }
 
-    componentDidMount() {
-        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
-            getNetinfo(this.getUnionDetail.bind(this))
-        } 
-        else {       
-            this.getUnionDetail(this.props.connectionInfo)
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'An error occured',
+            'Please sign in your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+    _showError(error) {
+        Alert.alert(
+            'An error occured',
+            error,
+            [{text: 'Dismiss'}]
+        )
+    }
+
+    _getFavoritePlayers(playersByNation) {
+        let playersFeed = playersByNation[this.unionFeed.unionId]
+        let options = {
+            url: this.favUrl,
+            data: {},
+            method: 'get',
+            onAxiosStart: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isLoaded: false })
+            },
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isLoaded: true })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                let favoritePlayers = (res.data === '')? [] : res.data.split('|')
+                
+                this.setState({ 
+                    playerListFeeds: playersFeed,
+                    favoritePlayers
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(res) // prompt error
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this._signInRequired.bind(this)
+            },
+            isRequiredToken: true
         }
+
+        service(options)
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.playerFeed=nextProps.playerFeed[this.unionFeed.unionId]
-        this.setState({
-            isLoaded: true
-        })
-        
-        this.playerList=nextProps.playerList.split('|')
-
-    }
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
@@ -100,15 +134,18 @@ class MyLionsPlayerList extends Component {
         })
     }
 
-    searchPlayer = (keywords) => {
+    _searchPlayer = (keywords) => {
         this.searchResult=[]
         //strip out non alpha characters
         let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
         let strArr = strSearch.split(' ')
-        let tempArr=this.playerFeed
+        let playerFeeds = this.state.playerListFeeds
+        let tempArr = playerFeeds
+       
         function filterName(player) {
             let nameArr = player.name.toLowerCase().split(' ')
             let result = false
+
             if(nameArr.length>0) {
                 nameArr.map((name,i)=>{
                     if(name===this.nameFilter) {
@@ -124,9 +161,10 @@ class MyLionsPlayerList extends Component {
             return result
         }
 
-        if(strSearch.trim()!=='') {
+        if (strSearch.trim() !== '') {
             //search exactly same name
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            this.searchResult = this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            
             //split words
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
@@ -134,23 +172,26 @@ class MyLionsPlayerList extends Component {
                     console.log('!!!this.nameFilter',this.nameFilter)
             
                     this.searchResult=this.searchResult.concat(
-                        this.playerFeed.filter(filterName.bind(this))
+                        playerFeeds.filter(filterName.bind(this))
                     )
                 })
             }
             
 
             //name contain keywords
-            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            this.searchResult=this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
                 if(strSearch.charAt(i).match(/[A-Z]/gi)) {
                     tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
                 }               
             }
+
             if (tempArr.length>0) {
-                this.searchResult=this.searchResult.concat(tempArr)
+                this.searchResult = this.searchResult.concat(tempArr)
             }
+
             //remove duplicate
             this.searchResult.map((item,index)=>{
                 let arr=[]
@@ -165,22 +206,23 @@ class MyLionsPlayerList extends Component {
                     })
                 }
             })
-            this.searchResult.length>0?  
+
+            this.searchResult.length > 0?  
                 this.setState({
-                    resultVisible:true,
-                    transparent:false
+                    resultVisible: true,
+                    transparent: false
                 }) 
-                :this.setState({
-                    resultVisible:false,
-                    transparent:true
+            :
+                this.setState({
+                    resultVisible: false,
+                    transparent: true
                 })
-        }
-        else {
-            this.searchResult=[]
+        } else {
+            this.searchResult = []
             this.setState({
-                    resultVisible:false,
-                    transparent:true
-                })
+                resultVisible: false,
+                transparent: true
+            })
         }
     }
     
@@ -203,6 +245,34 @@ class MyLionsPlayerList extends Component {
         return newData
     }
 
+    componentDidMount() {
+        let options = {
+            url: this.unionUrl,
+            data: {},
+            method: 'get',
+            onAxiosStart: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isLoaded: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this._getFavoritePlayers(res.data)
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(res) // prompt error
+                })
+            }
+        }
+
+        service(options)
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
+    }
+
     render() {
       // Later on in your styles..
 
@@ -220,6 +290,7 @@ class MyLionsPlayerList extends Component {
                         </ButtonFeedback>
                     </LinearGradient>
                     }
+
                     <FilterListingModal
                         modalVisible={this.state.modalVisible}
                         resultVisible={this.state.resultVisible}
@@ -229,7 +300,7 @@ class MyLionsPlayerList extends Component {
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
@@ -262,61 +333,61 @@ class MyLionsPlayerList extends Component {
                             </ScrollView>
                         }
                         </View>
-                    </FilterListingModal >
-                {
-                    this.state.isLoaded?
-                    <Content>
-
+                    </FilterListingModal>
                     {
-                            this._mapJSON(this.playerFeed).map((rowData, index) => {
-                                return (
-                                    <Grid key={index}>
-                                        {
-                                            rowData.map((item, key) => {
-                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                let union=this.unionFeed.uniondata.find((n)=> n.id===this.unionFeed.unionId)
-                                                Object.assign(item, {
-                                                    logo: union.image, 
-                                                    country: union.displayname.toUpperCase(),
-                                                    isFav: (this.playerList.indexOf(item.id)!==-1)
-                                                })
+                        this.state.isLoaded?
+                            <Content>
+                                {
+                                    this._mapJSON(this.state.playerListFeeds).map((rowData, index) => {
+                                        return (
+                                            <Grid key={index}>
+                                                {
+                                                    rowData.map((item, key) => {
+                                                        let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                        let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                        let union = this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
+                                                        Object.assign(item, {
+                                                            logo: union.image, 
+                                                            country: union.displayname.toUpperCase(),
+                                                            countryid: union.id,
+                                                            isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
+                                                        })
 
-                                                return (
-                                                    <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
-                                                            <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styleGridBoxImgWrapper}>
-                                                                    <ImagePlaceholder 
-                                                                        width = {styleVar.deviceWidth / 2}
-                                                                        height = {styleVar.deviceWidth / 2}>
-                                                                        <Image transparent
-                                                                            resizeMode='contain'
-                                                                            source={{uri:item.image}}
-                                                                            style={styles.gridBoxImg} />
-                                                                    </ImagePlaceholder>
-                                                                </View>
-                                                                <View style={styles.gridBoxDescWrapper}>
-                                                                    <View style={[shapes.triangle]} />
-                                                                    <View style={styleGridBoxTitle}>
-                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
-                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                                        return (
+                                                            <Col style={styles.gridBoxCol} key={key}>
+                                                                <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
+                                                                    <View style={styles.gridBoxTouchableView}>
+                                                                        <View style={styleGridBoxImgWrapper}>
+                                                                            <ImagePlaceholder 
+                                                                                width = {styleVar.deviceWidth / 2}
+                                                                                height = {styleVar.deviceWidth / 2}>
+                                                                                <Image transparent
+                                                                                    resizeMode='contain'
+                                                                                    source={{uri:item.image}}
+                                                                                    style={styles.gridBoxImg} />
+                                                                            </ImagePlaceholder>
+                                                                        </View>
+                                                                        <View style={styles.gridBoxDescWrapper}>
+                                                                            <View style={[shapes.triangle]} />
+                                                                            <View style={styleGridBoxTitle}>
+                                                                                <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
+                                                                                <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                                                            </View>
+                                                                        </View>
                                                                     </View>
-                                                                </View>
-                                                            </View>
-                                                        </ButtonFeedback>
-                                                    </Col>
-                                                )
-                                            }, this)
-                                        }
-                                    </Grid>
-                                )
-                            }, this)
-                        }
-
-                        <LionsFooter isLoaded={true} />
-                    </Content>:
-                        <ActivityIndicator style={loader.centered} size='large' />
+                                                                </ButtonFeedback>
+                                                            </Col>
+                                                        )
+                                                    }, this)
+                                                }
+                                            </Grid>
+                                        )
+                                    }, this)
+                                }
+                                <LionsFooter isLoaded={true} />
+                            </Content>
+                        :
+                            <ActivityIndicator style={loader.centered} size='large' />
                     }
                     <EYSFooter />
                 </View>
@@ -327,17 +398,14 @@ class MyLionsPlayerList extends Component {
 
 function bindAction(dispatch) {
     return {
-        getUnionDetail: (unionUrl,favUrl)=>dispatch(getUnionDetail(unionUrl,favUrl)),
-        showDetail: (data, route)=>dispatch(showDetail(data, route)),
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
 export default connect((state) => {
     return {
-        unionFeed: state.player.union,
-        playerList: state.player.playerList,
-        playerFeed: state.player.playerDetail,
-        isLoaded: state.player.isLoaded,
-        connectionInfo: state.network.connectionInfo
+        unionFeed: state.content.drillDownItem
     }
 }, bindAction)(MyLionsPlayerList)

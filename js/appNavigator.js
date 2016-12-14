@@ -294,7 +294,6 @@ class AppNavigator extends Component {
             default :
                 return <News navigator={navigator}  />
         }
-
     }
 }
 

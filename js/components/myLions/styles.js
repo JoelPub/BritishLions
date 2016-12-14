@@ -179,6 +179,7 @@ module.exports = styleSheetCreate({
         borderRightColor: gridBorderColor
     },
     gridBoxImg: {
+        backgroundColor: '#FFF',
         width: styleVar.deviceWidth / 2,
         height: styleVar.deviceWidth / 2
     },
@@ -297,6 +298,7 @@ module.exports = styleSheetCreate({
         flex:9,
     },
     playerImg: {
+        backgroundColor: '#FFF',
         width: styleVar.deviceWidth*9/25,
         height: styleVar.deviceWidth*9/25,
     },
