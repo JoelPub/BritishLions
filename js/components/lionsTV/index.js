@@ -19,20 +19,31 @@ class LionsTV extends Component {
     constructor(props) {
          super(props)
          this.state = {
-              isLoaded: false
+              isLoaded: false,
+              videosFeed: {items:[]}, 
          }
+         this.url = 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
     }
+
     _drillDown(data, route) {
         this.props.drillDown(data, route)
     }
+
     componentDidMount() {
-        this.props.fetchContent('https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY')
+        this.props.fetchContent(this.url)
     }
-    componentWillReceiveProps() {
-      this.setState({
-        isLoaded: this.props.isLoaded || true
-      })
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            isLoaded: nextProps.isLoaded,
+            videosFeed: nextProps.videosFeed.length !== 0? nextProps.videosFeed : {items:[]}
+        })
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+
     render(){
         return (
             <Container theme={theme}>
@@ -42,7 +53,11 @@ class LionsTV extends Component {
                         this.state.isLoaded?
                             <Content>
                                 {
-                                   this.props.videosFeed.items.map(function(data, index) {
+                                    this.state.videosFeed.items.map(function(data, index) {
+                                        let year = data.snippet.publishedAt.substr(0,4)
+                                        let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
+                                        let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
+                                        let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
                                         return (
                                            <ButtonFeedback
                                                 style={styles.btn}
@@ -60,7 +75,7 @@ class LionsTV extends Component {
                                                     </Text>
                                                     <View style={styles.lionsTVDateWrapper}>
                                                         <Icon name='md-time' style={ styles.timeIcon} />
-                                                        <Text style={styles.lionsTVDateText}> {new Date(data.snippet.publishedAt).toLocaleDateString()} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
+                                                        <Text style={styles.lionsTVDateText}> {`${day}/${month}/${year}`} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
                                                     </View>
                                                 </View>
                                             </ButtonFeedback>
@@ -94,6 +109,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         videosFeed: state.content.contentState,
-        isLoaded: state.content.isLoaded
+        isLoaded: state.content.isLoaded,
+        connectionInfo: state.network.connectionInfo
     }
 }, bindAction)(LionsTV)

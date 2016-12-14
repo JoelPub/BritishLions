@@ -16,6 +16,7 @@ module.exports = styleSheetCreate({
     entryShow: {
         paddingTop: 5,
         paddingBottom: 5,
+        paddingRight:15,
         flexDirection: 'row'
     },
     entryHide:{
@@ -30,6 +31,5 @@ module.exports = styleSheetCreate({
     msgText:{
         fontSize: styleVar.fontSize,
         lineHeight: styleVar.lineHeight,
-        width: 250
     }
 })

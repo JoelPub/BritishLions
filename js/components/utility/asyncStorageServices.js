@@ -38,7 +38,7 @@ export async function getAccessToken() {
 }
 
 export async function getRefreshToken() {
-    await AsyncStorage.getItem('REFRESH_TOKEN', (err, result) => {
+    return await AsyncStorage.getItem('REFRESH_TOKEN', (err, result) => {
       return result
     })
 }

@@ -19,30 +19,50 @@ import styleVar from '../../themes/variable'
 class News extends Component {
     constructor(props) {
          super(props)
-         this.url = 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed: {}
+              newsFeed: [], 
+              isFetchContent: false,
+              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'             
          }
     }
+
     _drillDown(item) {
         this.props.drillDown(item, 'newsDetails')
     }
+
+    _fetchContent(){
+        this.props.fetchContent(this.state.apiUrl)
+        this.setState({ isFetchContent: true })
+    }
+
     _onRefresh() {
         this.setState({isRefreshing: true})
-        this.props.fetchContent(this.url)
+        this._fetchContent()
     }
+
     componentDidMount() {
-        this.props.fetchContent(this.url)
+        setTimeout(() => {
+            this._fetchContent()
+        }, 1000)
     }
-    componentWillReceiveProps() {
-        this.setState({
-            isLoaded: true,
-            isRefreshing: this.props.isRefreshing,
-            newsFeed: this.props.newsFeed
-        })
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.isFetchContent) {
+            this.setState({
+                isLoaded: nextProps.isLoaded,
+                isRefreshing: nextProps.isRefreshing,
+                newsFeed: nextProps.newsFeed,
+                isFetchContent: false
+            })
+        }
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }
+    
     render() {
         return (
             <Container theme={theme}>
@@ -64,7 +84,7 @@ class News extends Component {
                                     />
                             }>
                                 {
-                                    this.props.newsFeed.map(function(data, index) {
+                                    this.state.newsFeed.map(function(data, index) {
                                         return (
                                             <ButtonFeedback
                                                 key={index}

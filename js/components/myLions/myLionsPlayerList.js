@@ -3,9 +3,11 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView } from 'react-native'
+import { Image, View, Modal, ScrollView, ActivityIndicator } from 'react-native'
+import { getUnionDetail,showDetail} from '../../actions/player'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -15,26 +17,73 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
-import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
+import loader from '../../themes/loader-position'
+import { alertBox } from './../utility/alertBox'
+import {getNetinfo} from '../utility/network'
+
 
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
+        this.unionFeed=this.props.unionFeed
+        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.playerFeed=[]
+        this.searchResult=[]
+        this.playerList = []
         this.state = {
+            isLoaded: false,
             modalVisible: false,
             transparent: true,
             resultVisible: false
         }
-    
+        this.nameFilter = ''
+
     }
 
-    _drillDown(route, index) {
-        this.props.pushNewRoute('myLionsPlayerDetails')
+    _showDetail(item, route) {
+        this.props.showDetail(item,route)
     }
 
+    getUnionDetail(connectionInfo) {
+                if(connectionInfo==='NONE') {
+                    this.setState({
+                        isLoaded: true,
+                        isRefreshing: false
+                    })
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure the network is connected and reload the app. ',
+                      'Dismiss'
+                    )
+                }
+                else {
+                    this.props.getUnionDetail(this.unionUrl,this.favUrl)
+                }
+               
+    }
+
+    componentDidMount() {
+        if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
+            getNetinfo(this.getUnionDetail.bind(this))
+        } 
+        else {       
+            this.getUnionDetail(this.props.connectionInfo)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.playerFeed=nextProps.playerFeed[this.unionFeed.unionId]
+        this.setState({
+            isLoaded: true
+        })
+        
+        this.playerList=nextProps.playerList.split('|')
+
+    }
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
@@ -52,41 +101,135 @@ class MyLionsPlayerList extends Component {
     }
 
     searchPlayer = (keywords) => {
-        this.setState({
-            resultVisible:true,
-            transparent:false
-        })
+        this.searchResult=[]
+        //strip out non alpha characters
+        let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
+        let strArr = strSearch.split(' ')
+        let tempArr=this.playerFeed
+        function filterName(player) {
+            let nameArr = player.name.toLowerCase().split(' ')
+            let result = false
+            if(nameArr.length>0) {
+                nameArr.map((name,i)=>{
+                    if(name===this.nameFilter) {
+                        result=true
+                    }
+                })
+            }
+            else {
+                if( player.name.toLowerCase()===this.nameFilte ) {
+                    result=true
+                }
+            }
+            return result
+        }
+
+        if(strSearch.trim()!=='') {
+            //search exactly same name
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            //split words
+            if(strArr.length>0) {
+                strArr.map((item,index)=>{
+                    this.nameFilter=item
+                    console.log('!!!this.nameFilter',this.nameFilter)
+            
+                    this.searchResult=this.searchResult.concat(
+                        this.playerFeed.filter(filterName.bind(this))
+                    )
+                })
+            }
+            
+
+            //name contain keywords
+            this.searchResult=this.searchResult.concat(this.playerFeed.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            //break keywords to single characters and match
+            for (let i=0;i<strSearch.length;i++ ) {
+                if(strSearch.charAt(i).match(/[A-Z]/gi)) {
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
+                }               
+            }
+            if (tempArr.length>0) {
+                this.searchResult=this.searchResult.concat(tempArr)
+            }
+            //remove duplicate
+            this.searchResult.map((item,index)=>{
+                let arr=[]
+                for(let j=index+1; j<this.searchResult.length; j++) {                    
+                    if(item.id===this.searchResult[j].id){
+                        arr=arr.concat(j)
+                    }
+                }
+                if (arr.length>0) {
+                    arr.reverse().map((start,index)=>{
+                        this.searchResult.splice(start,1)
+                    })
+                }
+            })
+            this.searchResult.length>0?  
+                this.setState({
+                    resultVisible:true,
+                    transparent:false
+                }) 
+                :this.setState({
+                    resultVisible:false,
+                    transparent:true
+                })
+        }
+        else {
+            this.searchResult=[]
+            this.setState({
+                    resultVisible:false,
+                    transparent:true
+                })
+        }
+    }
+    
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k])
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
     }
 
     render() {
+      // Later on in your styles..
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={20}
-                            src={require('../../../contents/my-lions/nations/england.png')} />
+                    {this.state.isLoaded&&
 
-                        <Text style={styles.headerTitle}>ENGLAND</Text>
-
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                        <Text style={styles.headerTitle}>{this.name}</Text>
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
-                    </Image>
-                    
-                    <FilterListingModal 
-                        modalVisible={this.state.modalVisible} 
-                        resultVisible={this.state.resultVisible} 
-                        transparent={this.state.transparent}  
+                    </LinearGradient>
+                    }
+                    <FilterListingModal
+                        modalVisible={this.state.modalVisible}
+                        resultVisible={this.state.resultVisible}
+                        transparent={this.state.transparent}
                         callbackParent={this.onCloseFilter}>
+
                         <View style={styles.resultContainer}>
                             <View style={styles.searchContainer}>
                                 <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this.searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                 </View>
                                 <View style={{flex:1}}>
                                     <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
@@ -96,177 +239,86 @@ class MyLionsPlayerList extends Component {
                             </View>
                             {this.state.resultVisible&&
                             <ScrollView>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
+                                {this.searchResult.map((item,index)=>{
+                                    return(
+                                        <View style={styles.resultRow} key={index}>
+                                            <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(item,'myLionsPlayerDetails')}}>
+                                                <View style={styles.searchImg}>
+                                                    <Image transparent
+                                                        resizeMode='stretch'
+                                                        source={{uri:item.image}}
+                                                        style={styles.playerImg}
+                                                         />
+                                                </View>
+                                                <View style={styles.resultDesc}>
+                                                    <Text style={styles.resultRowTitleText}>{item.name.toUpperCase()}</Text>
+                                                    <Text style={styles.resultRowSubtitleText}>{item.position}</Text>
+                                                </View>
+                                            </ButtonFeedback>
                                         </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>JAMES HASKELL</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Flanker</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>ELLIS GENGE</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Scrum Half</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>ROY THOMPSON</Text>
-                                            <Text style={styles.resultRowSubtitleText}>Main</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                                <View style={styles.resultRow}>
-                                    <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._drillDown(1)}}>
-                                        <View style={styles.searchImg}>
-                                            <Image transparent
-                                                resizeMode='stretch'
-                                                source={require('../../../contents/my-lions/players/jameshaskell-135h.png')}
-                                                style={styles.playerImg}
-                                                 />
-                                        </View>
-                                        <View style={styles.resultDesc}>
-                                            <Text style={styles.resultRowTitleText}>JAY WOLLISH</Text>
-                                            <Text style={styles.resultRowSubtitleText}>BRIDA</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
+                                        )
+                                    }, this)
+                                }
                             </ScrollView>
                         }
                         </View>
                     </FilterListingModal >
-
+                {
+                    this.state.isLoaded?
                     <Content>
-                        <Grid>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._drillDown(1)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
 
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>JAMES</Text>
-                                            <Text style={styles.gridBoxTitleText}>HASKELL</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Flanker</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(2)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
+                    {
+                            this._mapJSON(this.playerFeed).map((rowData, index) => {
+                                return (
+                                    <Grid key={index}>
+                                        {
+                                            rowData.map((item, key) => {
+                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                let union=this.unionFeed.uniondata.find((n)=> n.id===this.unionFeed.unionId)
+                                                Object.assign(item, {
+                                                    logo: union.image, 
+                                                    country: union.displayname.toUpperCase(),
+                                                    isFav: (this.playerList.indexOf(item.id)!==-1)
+                                                })
 
-                                        <View style={[shapes.triangle]} />
+                                                return (
+                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
+                                                            <View style={styles.gridBoxTouchableView}>
+                                                                <View style={styleGridBoxImgWrapper}>
+                                                                    <ImagePlaceholder 
+                                                                        width = {styleVar.deviceWidth / 2}
+                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                        <Image transparent
+                                                                            resizeMode='contain'
+                                                                            source={{uri:item.image}}
+                                                                            style={styles.gridBoxImg} />
+                                                                    </ImagePlaceholder>
+                                                                </View>
+                                                                <View style={styles.gridBoxDescWrapper}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styleGridBoxTitle}>
+                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
+                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                                                    </View>
+                                                                </View>
+                                                            </View>
+                                                        </ButtonFeedback>
+                                                    </Col>
+                                                )
+                                            }, this)
+                                        }
+                                    </Grid>
+                                )
+                            }, this)
+                        }
 
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>ELLIS</Text>
-                                            <Text style={styles.gridBoxTitleText}>GENGE</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Scrum Half</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                        </Grid>
-                        <Grid>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback
-                                    style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]}
-                                    onPress={() => this._drillDown(3)}>
-
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>ROY</Text>
-                                            <Text style={styles.gridBoxTitleText}>THOMPSON</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>Main</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                            <Col style={styles.gridBoxCol}>
-                                <ButtonFeedback style={styles.gridBoxTouchable} onPress={() => this._drillDown(4)}>
-                                    <View style={styles.gridBoxTouchableView}>
-                                        <View style={styles.gridBoxImgWrapper}>
-                                            <ImagePlaceholder 
-                                                width = {styleVar.deviceWidth / 2 - 1}
-                                                height = {styleVar.deviceWidth / 2}>
-                                                <Image transparent
-                                                    resizeMode='contain'
-                                                    source={require('../../../contents/my-lions/players/jameshaskell.png')}
-                                                    style={styles.gridBoxImg} />
-                                            </ImagePlaceholder>
-                                        </View>
-
-                                        <View style={[shapes.triangle]} />
-
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={styles.gridBoxTitleText}>JAY</Text>
-                                            <Text style={styles.gridBoxTitleText}>WOLLISH</Text>
-                                            <Text style={styles.gridBoxTitleSupportText}>BRIDA</Text>
-                                        </View>
-                                    </View>
-                                </ButtonFeedback>
-                            </Col>
-                        </Grid>
                         <LionsFooter isLoaded={true} />
-                    </Content>
-                    < EYSFooter />
+                    </Content>:
+                        <ActivityIndicator style={loader.centered} size='large' />
+                    }
+                    <EYSFooter />
                 </View>
             </Container>
         )
@@ -275,9 +327,17 @@ class MyLionsPlayerList extends Component {
 
 function bindAction(dispatch) {
     return {
-        pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
-        pushNewsItem: (index)=>dispatch(pushNewsItem(index))
+        getUnionDetail: (unionUrl,favUrl)=>dispatch(getUnionDetail(unionUrl,favUrl)),
+        showDetail: (data, route)=>dispatch(showDetail(data, route)),
     }
 }
 
-export default connect(null, bindAction)(MyLionsPlayerList)
+export default connect((state) => {
+    return {
+        unionFeed: state.player.union,
+        playerList: state.player.playerList,
+        playerFeed: state.player.playerDetail,
+        isLoaded: state.player.isLoaded,
+        connectionInfo: state.network.connectionInfo
+    }
+}, bindAction)(MyLionsPlayerList)

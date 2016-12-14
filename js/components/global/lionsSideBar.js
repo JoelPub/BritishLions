@@ -2,14 +2,17 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Alert } from 'react-native'
+import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
-import { removeToken, getAccessToken } from '../utility/JWT'
+import { removeToken, getAccessToken } from '../utility/asyncStorageServices'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
+import { debounce } from 'lodash'
 
 const styles = styleSheetCreate({
     background: {
@@ -36,16 +39,17 @@ const styles = styleSheetCreate({
         fontSize: 28,
         lineHeight: 28,
         fontFamily: styleVar.fontCondensed,
-        textAlign: 'right',
+        textAlign: 'left',
         color: '#FFF',
         paddingTop: 12,
-        paddingRight: 18,
+        paddingLeft: 10,
         android: {
             paddingTop: 0
         }
     },
     icon:{
-        width: 44,
+        marginLeft: 20,
+        width: 34,
         color: 'rgb(175,0,30)'
     },
     footer: {
@@ -54,20 +58,18 @@ const styles = styleSheetCreate({
     },
     footerWrapper: {
         paddingLeft:10,
-        height: 50,
+        height: 50
     },
     footerLink: {
         flexDirection:'row',
-        paddingLeft: 2,
-        height: 50
+        height:50,
     },
-    footerLinkSignIn: {
-        justifyContent: 'flex-end'
+    linkAccount: {
+        borderRightWidth:1,
+        borderRightColor:'rgba(255,255,255,0.15)'
     },
-    linkLeftSeperator: {
+    linkLogin: {
         justifyContent: 'flex-end',
-        borderLeftWidth:1,
-        borderLeftColor:'rgba(255,255,255,0.15)'
     },
     footerLinkText: {
         textAlign: 'right',
@@ -88,17 +90,17 @@ const styles = styleSheetCreate({
 class LionsSidebar extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            isAccessGranted: false
-        }
+
+        // debounce
+        this.navigateTo = debounce(this.navigateTo, 1000, {leading: true, maxWait: 0, trailing: false})
     }
+
     navigateTo(route) {
         setTimeout(() => {
           this.props.replaceOrPushRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
-
     resetRoute(route) {
         setTimeout(() => {
           this.props.resetRoute(route)
@@ -106,84 +108,88 @@ class LionsSidebar extends Component {
         this.props.closeDrawer()
     }
 
-    componentWillMount() {
-        getAccessToken().then((token) => {
-            this.setState({
-                isAccessGranted: token
-            })
-        }).catch((err) => {
-            console.log('err', err)
-        })
+    _requireSignIn(route) {
+        if (this.props.isAccessGranted) {
+            this.navigateTo(route)
+        } else {
+            this.navigateTo('login')
+        }
     }
-
+    
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
 
     _signOut() {
-        removeToken()
-
-        this.setState({
-            isAccessGranted: false
-        })
-
-        this.navigateTo('news')
+        Alert.alert(
+            'Confirmation',
+            'Are you sure you want to logout?',
+            [
+                {text: 'Yes', onPress: () => {
+                    this.props.setAccessGranted(false)
+                    removeToken()
+                    this.navigateTo('news')
+                }},
+                {text: 'No'}
+            ]
+        )
     }
+
     render(){
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
                     <ButtonFeedback onPress={() => this.navigateTo('news')} style={styles.links}>
-                        <Text style={styles.linkText}>NEWS</Text>
                         <Icon name='md-planet' style={styles.icon} />
+                        <Text style={styles.linkText}>NEWS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('fixtures')} style={styles.links}>
-                        <Text style={styles.linkText}>FIXTURES</Text>
                         <Icon name='md-american-football' style={styles.icon} />
+                        <Text style={styles.linkText}>FIXTURES</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsTv')} style={styles.links}>
-                        <Text style={styles.linkText}>LIONS TV</Text>
                         <Icon name='md-play' style={styles.icon} />
+                        <Text style={styles.linkText}>LIONS TV</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('galleries')} style={styles.links}>
-                        <Text style={styles.linkText}>GALLERIES</Text>
                         <Icon name='md-image' style={styles.icon} />
+                        <Text style={styles.linkText}>GALLERIES</Text>
                     </ButtonFeedback>
-                    <ButtonFeedback onPress={() => this.navigateTo('myLions')} style={styles.links}>
-                        <Text style={styles.linkText}>MY LIONS</Text>
+                    <ButtonFeedback onPress={() => this._requireSignIn('myLions')} style={styles.links}>
                         <Icon name='md-heart' style={styles.icon} />
+                        <Text style={styles.linkText}>MY LIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsStore')} style={styles.links}>
-                        <Text style={styles.linkText}>OFFICIAL STORE</Text>
                         <Icon name='md-ribbon' style={styles.icon} />
+                        <Text style={styles.linkText}>OFFICIAL STORE</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('tours')} style={styles.links}>
-                        <Text style={styles.linkText}>SUPPORTER TOURS</Text>
                         <Icon name='md-people' style={styles.icon} />
+                        <Text style={styles.linkText}>SUPPORTER TOURS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('competition')} style={styles.links}>
-                        <Text style={styles.linkText}>COMPETITIONS</Text>
                         <Icon name='md-trophy' style={styles.icon} />
+                        <Text style={styles.linkText}>COMPETITIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('sponsors')} style={styles.links}>
-                        <Text style={styles.linkText}>SPONSORS</Text>
                         <Icon name='md-flag' style={styles.icon} />
+                        <Text style={styles.linkText}>SPONSORS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('unions')} style={styles.links}>
-                        <Text style={styles.linkText}>UNIONS</Text>
                         <Icon name='md-globe' style={styles.icon} />
+                        <Text style={styles.linkText}>UNIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('contact')} style={styles.links}>
-                        <Text style={styles.linkText}>CONTACT US</Text>
                         <Icon name='md-mail' style={styles.icon} />
+                        <Text style={styles.linkText}>CONTACT US</Text>
                     </ButtonFeedback>
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
-                          { !this.state.isAccessGranted?
+                          { !this.props.isAccessGranted?
                               <Grid>
-                                  <Col>
-                                      <ButtonFeedback style={[styles.footerLink, styles.footerLinkSignIn]} onPress={() => this.navigateTo('login')}>
+                                  <Col size={100}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={() => this.navigateTo('login')}>
                                           <Text style={styles.footerLinkText}>SIGN IN</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
@@ -191,14 +197,14 @@ class LionsSidebar extends Component {
                               </Grid>
                           :
                               <Grid>
-                                  <Col size={60}>
-                                      <ButtonFeedback style={styles.footerLink} onPress={() => this.navigateTo('myAccount')}>
+                                  <Col size={55}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this.navigateTo('myAccount')}>
                                           <Icon name='md-contact' style={styles.footerLinkIcon} />
                                           <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
                                       </ButtonFeedback>
                                   </Col>
-                                  <Col size={40}>
-                                      <ButtonFeedback style={[styles.footerLink, styles.linkLeftSeperator]} onPress={this._signOut.bind(this)}>
+                                  <Col size={45}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
                                           <Text style={styles.footerLinkText}>SIGN OUT</Text>
                                           <Icon name='md-log-in' style={styles.footerLinkIcon} />
                                       </ButtonFeedback>
@@ -212,12 +218,18 @@ class LionsSidebar extends Component {
     }
 }
 
-function bindAction(dispatch) {
+function bindActions(dispatch) {
     return {
         closeDrawer: ()=>dispatch(closeDrawer()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
-        resetRoute:(route)=>dispatch(resetRoute(route))
+        resetRoute:(route)=>dispatch(resetRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
-export default connect(null, bindAction)(LionsSidebar)
+
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindActions)(LionsSidebar)

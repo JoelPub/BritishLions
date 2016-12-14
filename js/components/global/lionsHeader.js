@@ -12,17 +12,20 @@ import ButtonFeedback from '../utility/buttonFeedback'
 
 const styles = styleSheetCreate({
     btn: {
-        marginLeft: 12,
+        marginRight: 12,
         marginTop: -22,
         android: {
             marginTop: -7,
             height: 32
-        }
+        },
+        paddingLeft:12,
+        paddingRight:12,
     },
     headerIcon: {
         color: '#fff',
         fontSize: 38,
         lineHeight: 38,
+        paddingLeft: 10,
         backgroundColor: 'transparent',
     },
     textHeader: {
@@ -37,9 +40,9 @@ const styles = styleSheetCreate({
         }
     },
     logoHeader: {
-        width: 54,
+        width: 27,
         height: 34,
-        marginRight: 10,
+        marginLeft: 10,
         marginTop: -12,
         backgroundColor: 'transparent',
         android: {
@@ -57,14 +60,6 @@ class LionsHeader extends Component {
 	    this.props.popRoute()
 	}
 
-	getDrawerHTML() {
-		return (
-			<ButtonFeedback style={styles.btn} onPress={this.props.openDrawer}>
-				<Icon name='md-menu' style={styles.headerIcon} />
-			</ButtonFeedback>
-		)
-	}
-
 	getBackArrowHTML() {
 		return (
 			<ButtonFeedback style={styles.btn} onPress={() => this.popRoute()}>
@@ -73,20 +68,29 @@ class LionsHeader extends Component {
 		)
 	}
 
+    getLogoHTML() {
+        return (
+            <Image
+              	transparent
+              	source={require('../../../images/header/logo.png')}
+              	style={styles.logoHeader} />
+
+        )
+    }
+
     render() {
     	let title = this.props.title || ''
-    	let buttonHTML = this.props.back? this.getBackArrowHTML() : this.getDrawerHTML()
+        let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
 
         return (
             <Header>
-                {buttonHTML}
+                {backArrowSwitch}
 
                 <Text style={styles.textHeader}>{title}</Text>
 
-                <Image
-                  	transparent
-                  	source={require('../../../images/header/logo.png')}
-                  	style={styles.logoHeader} />
+    			<ButtonFeedback style={styles.btn} onPress={this.props.openDrawer}>
+    				<Icon name='md-menu' style={styles.headerIcon} />
+    			</ButtonFeedback>
             </Header>
         )
     }

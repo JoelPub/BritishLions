@@ -1,5 +1,6 @@
 'use strict'
 
+import { NetInfo } from 'react-native'
 import type { Action } from './types'
 import { pushNewRoute, replaceRoute} from './route'
 import { alertBox } from './../components/utility/alertBox'
@@ -14,23 +15,39 @@ export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
 export function fetchContent(url):Action {
     return (dispatch, getState) => {
         return (
-            axios({
-                method: 'get',
-                url
-            })
-            // Passing resquest's response to dispacher
-            .then(function(response) {
-                dispatch(setContent({
-                    payload: response.data
-                }))
-            })
-            // Handling error (status > 300) -> default
-            .catch(function(error) {
-                alertBox(
-                  'An Error Occured',
-                  'Please make sure the network is connected and reload the app. ',
-                  'Dismiss'
-                )
+            NetInfo.fetch().done((connectionInfo) => {
+                let netInfos = connectionInfo.toLowerCase()
+                
+                if(netInfos === 'unknown' || netInfos === 'none') {
+                    dispatch(setContent({
+                        payload: []
+                    }))
+
+                    alertBox(
+                      'An Error Occured',
+                      'Please make sure that you\'re connected to the network.',
+                      'Dismiss'
+                    )
+                } else {
+                    axios({
+                        method: 'get',
+                        url
+                    })
+                    // Passing resquest's response to dispacher
+                    .then(function(response) {
+                        dispatch(setContent({
+                            payload: response.data
+                        }))
+                    })
+                    // Handling error (status > 300) -> default
+                    .catch(function(error) {
+                        alertBox(
+                          'An Error Occured',
+                          'Something went wrong with your request. Please check your internet and try again later.',
+                          'Dismiss'
+                        )
+                    })
+                }
             })
         )
     }

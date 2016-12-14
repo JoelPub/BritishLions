@@ -2,12 +2,16 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setAccessGranted } from './actions/token'
+import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
+import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
 import Navigator from 'Navigator'
+import {register} from './components/utility/network'
 
 // Templates/pages
 import SplashPage from './components/splashscreen/'
@@ -23,6 +27,7 @@ import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
 import MyLionsPlayerList from './components/myLions/myLionsPlayerList'
+import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
 import Competition from './components/competition'
 import Tours from './components/tours'
@@ -82,6 +87,49 @@ class AppNavigator extends Component {
 
     constructor(props){
         super(props)
+
+        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+    }
+
+    _refreshToken() {    
+        getRefreshToken().then((refreshToken) => {
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'refresh_token': refreshToken,
+                    'grant_type': 'refresh_token'
+                },
+                onSuccess: (res) => {
+                    let accessToken = res.data.access_token
+                    let refreshToken = res.data.refresh_token
+                    
+                    // Update token 
+                    updateToken(accessToken, refreshToken)
+                    // Flag user access granted
+                    this.props.setAccessGranted(true)
+                },
+                isRefreshToken: true
+            }
+
+            service(options)
+
+        }).catch((error) => {
+            // We can't get the existing refresh token of the user here
+            // In this situation, user will not logged in
+            // By default: the redux isAccessGranted is set to 'false'
+        })
+    } 
+
+    componentWillMount() {
+        getAccessToken().then((accessToken) => {
+            if (accessToken) {
+                this._refreshToken() // update the token
+            } 
+        }).catch((error) => {
+            // Nothing to do here since user don't have an existing ACCESS TOKEN
+            // In this situation, user is not logged in
+            // By default: the redux isAccessGranted is set to 'false'
+        })
     }
 
     componentDidMount() {
@@ -106,14 +154,18 @@ class AppNavigator extends Component {
                 return true
             }
         })
+        
+        register(this.props.store)
     }
 
     popRoute() {
         this.props.popRoute()
     }
+
     openDrawer() {
         this._drawer.open()
     }
+
     closeDrawer() {
         if(this.props.store.getState().drawer.drawerState == 'opened') {
             this._drawer.close()
@@ -133,6 +185,7 @@ class AppNavigator extends Component {
                     content={<LionsSideBar navigator={this._navigator} />}
                     tapToClose={false}
                     onClose={() => this.closeDrawer()}
+                    side='right'
                     openDrawerOffset={0.21}
                     panOpenMask={0}
                     panCloseMask={0.21}
@@ -204,6 +257,8 @@ class AppNavigator extends Component {
                 return <MyLions navigator={navigator} />
             case 'myLionsPlayerList':
                 return <MyLionsPlayerList navigator={navigator} />
+            case 'myLionsFavoriteList':
+                return <MyLionsFavoriteList navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
             case 'competition':
@@ -246,7 +301,8 @@ class AppNavigator extends Component {
 function bindAction(dispatch) {
     return {
         closeDrawer: () => dispatch(closeDrawer()),
-        popRoute: () => dispatch(popRoute())
+        popRoute: () => dispatch(popRoute()),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, Platform, Alert } from 'react-native'
 import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -14,24 +15,96 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
+import { editFavList, getFavList, INVALID_TOKEN } from '../../actions/player'
+import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { alertBox } from '../utility/alertBox'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
         super(props)
+        this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
+        this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
+        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954',
+        this.playerid = this.props.detail.id,
+        this.playerName = this.props.detail.name,
+        this.playerList = []
+        this.edit =false
+        this.state ={
+            isFav : this.props.detail.isFav,
+            isFormSubmitting: false
+        }
+    }
+    componentWillMount() {
+        // this.props.getFavList(this.favUrl)
     }
 
-    _addPlayer() {
+    replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+   _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this.replaceRoute('login')
+    }
+
+    _signInRequired() {
         Alert.alert(
-            'Add Player',
-            'adding player..',
+            'Warning',
+            'Please log in to your account first.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
         )
     }
 
-    _myLions() {
-        Alert.alert(
-            'My Lions',
-            'viewing my lions..',
-        )
+    errCallback(error) {
+        this.setState({
+            isFormSubmitting: false
+        })
+        if(error===INVALID_TOKEN||error&&error.response&&error.response.status=== 401) {
+            this._signInRequired()
+        }
+        else {
+            alertBox(
+                        'An Error Occured',
+                        'Something went wrong with processing your request. Please try again later.',
+                        'Dismiss'
+                    )
+        }
+    }
+
+    _editPlayer() {
+        this.edit = true
+        this.setState({ isFormSubmitting: true })
+        this.props.isAccessGranted?
+            (
+                this.state.isFav? 
+                    this.props.editFavList(this.favRemoveUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
+                :
+                    this.props.editFavList(this.favAddUrl,this.favUrl,this.playerid,this.errCallback.bind(this))
+            )
+        :
+            this._requireLogin()     
+    }
+
+    componentWillReceiveProps(nextProps) {
+            this.playerList=nextProps.playerList.split('|')
+            this.setState({
+                isFormSubmitting: false,
+                isFav:(this.playerList.indexOf(this.playerid)!==-1)
+            })
+            if (this.edit) {
+                alertBox('Player List Update',this.playerList.indexOf(this.playerid)!==-1?this.playerName+' has been added to your list':this.playerName+' has been removed from your list')
+                this.edit=false
+            }
+    }
+
+    _myLions(route) {
+        this.props.isAccessGranted? this.props.pushNewRoute(route) : this._signInRequired()
     }
 
     render() {
@@ -41,73 +114,66 @@ class MyLionsPlayerDetails extends Component {
 
                     <LionsHeader back={true} title='MY LIONS' />
 
-                    <Image resizeMode='cover' source={require('../../../images/gradient-bg.jpg')} style={styles.header}>
-                        <ImageCircle
-                            size={100}
-                            containerStyle={styles.imageCircle}
-                            containerBgColor='#fff'
-                            containerPadding={10}
-                            src={require('../../../contents/my-lions/players/jameshaskell.png')} />
 
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                        <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
                         <View style={styles.headerPlayerDetails}>
-                            <Text style={styles.headerPlayerName}>JAMES HASKELL</Text>
-                            <Text style={styles.headerPlayerPosition}>Flanker</Text>
+                            <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                            <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                         </View>
 
                         <View style={styles.buttons}>
-                            <ButtonFeedback onPress={()=> this._addPlayer()} style={[styles.btn, styles.btnLeft, styles.btnGreen]}>
-                                <Text style={styles.btnText}>ADD</Text>
+                            <ButtonFeedback
+                                disabled = {this.state.isFormSubmitting} 
+                                onPress={()=> this._editPlayer()} 
+                                style={[styles.btn, styles.btnLeft, 
+                                this.state.isFav===true?styles.btnLeftRed:styles.btnGreen]}>
+                                <Text style={styles.btnText}>{this.state.isFav===true?'REMOVE':'ADD'} </Text>
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={()=> this._myLions()} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                            <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
                                 <Text style={styles.btnText}>MY LIONS</Text>
                             </ButtonFeedback>
                         </View>
-                    </Image>
+                    </LinearGradient>
 
                     <Content>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={require('../../../contents/my-lions/nations/england.png')}
+                                    source={{uri:this.props.detail.logo}}
                                     style={styles.detailsNationLogo} />
                             </Col>
                             <Col style={styles.detailsGridCol} size={2}>
                                 <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>England</Text>
+                                <Text style={styles.detail}>{this.props.detail.country}</Text>
                             </Col>
                         </Grid>
                         <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
                             <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>Northhampton Saints</Text>
+                            <Text style={styles.detail}>{this.props.detail.honours}</Text>
                         </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>28/04/85</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>1.93 m</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>118 kg</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
                             </Col>
                         </Grid>
                         <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
                             <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                            <Text style={styles.detail}>Manchester</Text>
+                            <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
                         </View>
                         <View style={styles.playerDesc}>
                             <Text style={styles.paragraph}>
-                                Outstanding performances for England U21 foreshadowed James Haskell’s route into the England Elite Squad and the 70 senior caps he has won so far include 23 consecutively before he was an unused bench replacement against Australia at Sydney in June 2010. He completed a half century of Test appearances in the final game of the 2013 RBS 6 Nations Championship against Wales in Cardiff, but missed the subsequent tour of South America because of tendinitis.
-                            </Text>
-                            <Text style={styles.paragraph}>
-                                He had been man of the match when England beat Scotland 22-16 at Twickenham in March 2011, was his country’s top tackler with 57 in that Championship and scored his fourth Test try against Wales at Twickenham the following August. His latest achievements include being man of the match in England’s historic 39-28 victory over Australia in Brisbane this June.
-                            </Text>
-                            <Text style={styles.paragraph}>
-                                He made 18 tackles – twice as many as any other player in the game – and his work rate, energy and inspirational play all contributed to one of his finest displays in the red rose shirt. The following week, he again topped the tackle chart with 23 of England’s 213. Five of his teammates also made 16 or more tackles.
+                                {this.props.detail.desc?this.props.detail.desc:''}
                             </Text>
                         </View>
                         <LionsFooter isLoaded={true} />
@@ -118,5 +184,21 @@ class MyLionsPlayerDetails extends Component {
         )
     }
 }
+function bindAction(dispatch) {
+    return {
+        getFavList: (favUrl) =>dispatch(getFavList(favUrl)),
+        editFavList: (favEditUrl,favUrl,playerid,errorCallbck) =>dispatch(editFavList(favEditUrl,favUrl,playerid,errorCallbck)),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+    }
+}
 
-export default connect(null, null)(MyLionsPlayerDetails)
+export default connect((state) => {
+    return {
+        detail: state.player.detail,
+        playerList: state.player.playerList,
+        isLoaded: state.player.isLoaded,
+        isAccessGranted: state.token.isAccessGranted
+    }
+}, bindAction)(MyLionsPlayerDetails)

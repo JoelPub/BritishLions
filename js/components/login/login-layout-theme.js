@@ -15,10 +15,11 @@ module.exports = styleSheetCreate({
         flex: 1
     },
     content: {
-        paddingBottom: 80
+        paddingBottom: 100
     },
     pageClose: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        // backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'transparent',
         width: 49,
         height: 50,
         position: 'absolute',
@@ -210,9 +211,8 @@ module.exports = styleSheetCreate({
         marginLeft:30,
         marginRight:30
     },
-    extendBlock: {
-        android: {
-            marginBottom:300
-        }
+    tncLink: {
+        paddingBottom:15,
+        paddingRight:15
     }
 })

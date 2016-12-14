@@ -63,6 +63,13 @@ export default class ErrorHandler extends Component {
 	}
 
 	validationCheck(nextProps,nextState) {
+			let i=0
+			for (let item in nextProps.errorCheck) {
+				if (item!=='submit') i++
+			}
+			if (i===0) {
+				return
+			}
 			if (nextProps.errorCheck.tc === false ||
 					!blankCheck(nextProps.errorCheck.firstName) ||
 					!!(nextProps.errorCheck.firstName) && nextProps.errorCheck.firstName.length>50 ||

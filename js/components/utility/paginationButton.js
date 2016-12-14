@@ -15,8 +15,9 @@ const styles = styleSheetCreate({
         lineHeight: 22,
         paddingTop: 9,
         fontFamily: styleVar.fontCondensed,
+        overflow: 'visible',
         android: {
-            paddingTop: 0,
+            paddingTop: -5,
         }
     },
     buttonIcon: {

@@ -6,10 +6,16 @@ import drawer from './drawer'
 import route from './route'
 import content from './content'
 import timer from './timer'
+import token from './token'
+import player from './player'
+import network from './network'
 
 export default combineReducers({
 	drawer,
   	route,
 	content,
-	timer
+	timer,
+	token,
+	player,
+	network
 })
