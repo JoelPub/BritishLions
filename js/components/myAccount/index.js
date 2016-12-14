@@ -79,7 +79,7 @@ class MyAccount extends Component {
 
     componentWillMount() {
         this._panResponder = PanResponder.create({
-          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
         })
     }
 
@@ -179,7 +179,7 @@ class MyAccount extends Component {
                     },
                     onAuthorization: this._signInRequired.bind(this),
                     onError: (res) => {
-                        this.setState({ 
+                        this.setState({
                             customMessages: res,
                             customMessagesType: 'error'
                         })
@@ -201,7 +201,7 @@ class MyAccount extends Component {
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
-        } 
+        }
         else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='New Password' || e._targetInst._currentElement.props.placeholder!=='Confirm Password'|| e._targetInst._currentElement.props.placeholder!=='New Email') {
             Keyboard.dismiss(0)
         }
@@ -215,7 +215,7 @@ class MyAccount extends Component {
                 <View theme={theme} {...this._panResponder.panHandlers}>
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.background}>
                             <KeyboardAwareScrollView
-                                style={styles.content} 
+                                style={styles.content}
                             >
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
@@ -223,8 +223,8 @@ class MyAccount extends Component {
 
                                 <View style={styles.guther}>
 
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -241,11 +241,11 @@ class MyAccount extends Component {
                                         <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'} 
-                                        style={styles.button} 
+                                        label = {this.state.isFormSubmitting? 'SUBMITTING..' : 'SUBMIT PASSWORD'}
+                                        style={styles.button}
                                         onPress={() => {
                                             this.setState({
                                                 errorCheckPassword: {
@@ -259,15 +259,15 @@ class MyAccount extends Component {
                                                 customMessages: '',
                                                 customMessagesEmail: ''
                                             })}
-                                        } 
+                                        }
                                     />
                                 </View>
 
                                 <View style={styles.split}></View>
 
                                 <View style={styles.guther}>
-                                    <CustomMessages 
-                                        messages = {this.state.customMessagesEmail} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessagesEmail}
                                         errorType = {this.state.customMessagesTypeEmail} />
 
                                     <ErrorHandler
@@ -279,11 +279,11 @@ class MyAccount extends Component {
                                         <Input defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmittingEmail}
-                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'} 
-                                        style={styles.button} 
+                                        label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'}
+                                        style={styles.button}
                                        onPress={() => {
                                            this.setState({
                                                errorCheckPassword: {
@@ -301,7 +301,7 @@ class MyAccount extends Component {
                                     />
                                 </View>
                         </KeyboardAwareScrollView>
-                        
+
                         <OverlayLoader visible={(this.state.isFormSubmitting || this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>

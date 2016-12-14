@@ -141,14 +141,14 @@ class SignUp extends Component {
 
     componentWillMount() {
         this._panResponder = PanResponder.create({
-          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,          
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
         })
     }
 
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
-        } 
+        }
         else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Password' || e._targetInst._currentElement.props.placeholder!=='Email'|| e._targetInst._currentElement.props.placeholder!=='Last Name'|| e._targetInst._currentElement.props.placeholder!=='First Name') {
             Keyboard.dismiss(0)
         }
@@ -168,8 +168,8 @@ class SignUp extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -253,7 +253,7 @@ class SignUp extends Component {
                                     <ButtonFeedback
                                         rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'} 
+                                        label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'}
                                         style = {styles.button}
                                         onPress = {() => {
                                             this.setState({

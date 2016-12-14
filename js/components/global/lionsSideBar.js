@@ -39,16 +39,17 @@ const styles = styleSheetCreate({
         fontSize: 28,
         lineHeight: 28,
         fontFamily: styleVar.fontCondensed,
-        textAlign: 'right',
+        textAlign: 'left',
         color: '#FFF',
         paddingTop: 12,
-        paddingRight: 18,
+        paddingLeft: 10,
         android: {
             paddingTop: 0
         }
     },
     icon:{
-        width: 44,
+        marginLeft: 20,
+        width: 34,
         color: 'rgb(175,0,30)'
     },
     footer: {
@@ -65,10 +66,15 @@ const styles = styleSheetCreate({
     },
     linkAccount: {
         borderRightWidth:1,
-        borderRightColor:'rgba(255,255,255,0.15)'
+        borderRightColor:'rgba(255,255,255,0.15)',
+        paddingLeft:5
     },
     linkLogin: {
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
+        paddingLeft:15
+    },
+    linkLogout: {
+        justifyContent: 'center',
     },
     footerLinkText: {
         textAlign: 'right',
@@ -131,56 +137,56 @@ class LionsSidebar extends Component {
                 }},
                 {text: 'No'}
             ]
-        )   
+        )
     }
-    
+
     render(){
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
                     <ButtonFeedback onPress={() => this.navigateTo('news')} style={styles.links}>
-                        <Text style={styles.linkText}>NEWS</Text>
                         <Icon name='md-planet' style={styles.icon} />
+                        <Text style={styles.linkText}>NEWS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('fixtures')} style={styles.links}>
-                        <Text style={styles.linkText}>FIXTURES</Text>
                         <Icon name='md-american-football' style={styles.icon} />
+                        <Text style={styles.linkText}>FIXTURES</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsTv')} style={styles.links}>
-                        <Text style={styles.linkText}>LIONS TV</Text>
                         <Icon name='md-play' style={styles.icon} />
+                        <Text style={styles.linkText}>LIONS TV</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('galleries')} style={styles.links}>
-                        <Text style={styles.linkText}>GALLERIES</Text>
                         <Icon name='md-image' style={styles.icon} />
+                        <Text style={styles.linkText}>GALLERIES</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this._requireSignIn('myLions')} style={styles.links}>
-                        <Text style={styles.linkText}>MY LIONS</Text>
                         <Icon name='md-heart' style={styles.icon} />
+                        <Text style={styles.linkText}>MY LIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsStore')} style={styles.links}>
-                        <Text style={styles.linkText}>OFFICIAL STORE</Text>
                         <Icon name='md-ribbon' style={styles.icon} />
+                        <Text style={styles.linkText}>OFFICIAL STORE</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('tours')} style={styles.links}>
-                        <Text style={styles.linkText}>SUPPORTER TOURS</Text>
                         <Icon name='md-people' style={styles.icon} />
+                        <Text style={styles.linkText}>SUPPORTER TOURS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('competition')} style={styles.links}>
-                        <Text style={styles.linkText}>COMPETITIONS</Text>
                         <Icon name='md-trophy' style={styles.icon} />
+                        <Text style={styles.linkText}>COMPETITIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('sponsors')} style={styles.links}>
-                        <Text style={styles.linkText}>SPONSORS</Text>
                         <Icon name='md-flag' style={styles.icon} />
+                        <Text style={styles.linkText}>SPONSORS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('unions')} style={styles.links}>
-                        <Text style={styles.linkText}>UNIONS</Text>
                         <Icon name='md-globe' style={styles.icon} />
+                        <Text style={styles.linkText}>UNIONS</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('contact')} style={styles.links}>
-                        <Text style={styles.linkText}>CONTACT US</Text>
                         <Icon name='md-mail' style={styles.icon} />
+                        <Text style={styles.linkText}>CONTACT US</Text>
                     </ButtonFeedback>
                 </Content>
                 <Footer style={styles.footer}>
@@ -204,8 +210,7 @@ class LionsSidebar extends Component {
                                   </Col>
                                   <Col size={45}>
                                       <ButtonFeedback style={[styles.footerLink,styles.linkLogin]} onPress={this._signOut.bind(this)}>
-                                          <Text style={styles.footerLinkText}>SIGN OUT</Text>
-                                          <Icon name='md-log-in' style={styles.footerLinkIcon} />
+                                          <Text style={styles.footerLinkText}>LOGOUT</Text>
                                       </ButtonFeedback>
                                   </Col>
                               </Grid>
