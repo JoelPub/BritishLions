@@ -1,6 +1,7 @@
 export default [
     {
         "id": "1",
+        "category": "principal partners",
         "title": "STANDARD LIFE",
         "url": "http://www.standardlifeinvestments.com",
         "partner": "",
@@ -11,6 +12,7 @@ export default [
     },
     {
         "id": "2",
+        "category": "principal partners",
         "title": "CANTERBURY",
         "url": "https://www.canterbury.com",
         "partner": "Official Apparel Partner",
@@ -21,6 +23,7 @@ export default [
     },
     {
         "id": "3",
+        "category": "principal partners",
         "title": "QBE",
         "url": "http://www.qbeeurope.com",
         "partner": "",
@@ -31,6 +34,7 @@ export default [
     },
     {
         "id": "4",
+        "category": "principal partners",
         "title": "LAND ROVER",
         "url": "http://www.landrover.co.uk/index.html",
         "partner": "",
@@ -42,6 +46,7 @@ export default [
     {
         "id": "5",
         "title": "QANTAS",
+        "category": "principal partners",
         "url": "https://tours.lionsrugby.com",
         "partner": "",
         "label": "Find out more at lionstour.com",
@@ -52,6 +57,7 @@ export default [
     {
         "id": "6",
         "title": "EY",
+        "category": "principal partners",
         "url": "https://advisory.ey.com",
         "partner": "",
         "label": "Visit the EY website",
@@ -61,6 +67,7 @@ export default [
     },
     {
         "id": "7",
+        "category": "official sponsors",
         "title": "MUD HOUSE",
         "url": "http://www.mudhouse.co.nz",
         "partner": "",
@@ -71,6 +78,7 @@ export default [
     },
     {
         "id": "8",
+        "category": "official sponsors",
         "title": "Thomas PINK",
         "url": "https://www.thomaspink.com/british_and_irish_lions/content/fcp-content",
         "partner": "",
@@ -81,6 +89,7 @@ export default [
     },
     {
         "id": "9",
+        "category": "official suppliers",
         "title": "RHINO",
         "url": "http://www.rhino-teamwear.com",
         "partner": "Official Training Equipment Supplier",
