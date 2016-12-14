@@ -22,17 +22,24 @@ import Data from '../../../contents/sponsors/data'
 
 class Sponsors extends Component {
 
-    _mapJSON(data, colMax = 2) {
+    _mapJSONbyCategories(data, category, colMax = 2) {
+        let cat = category.toLowerCase()
         let i = 0
         let k = 0
         let newData = []
         let items = []
-        let length = data.length
 
-        for( i = 0; i <= 9; (i += colMax)) {
+        // filter by categories
+        let sponsors = data.filter((item) => {
+            return item.category == cat
+        })
+        
+        let length = sponsors.length
+        // extract by colMax
+        for( i = 0; i <= length; (i += colMax)) {
             for( k = 0; k < colMax; k++ ) {
-                if(data[i + k])
-                    items.push(data[i + k])
+                if(sponsors[i + k])
+                    items.push(sponsors[i + k])
             }
 
             newData.push(items)
@@ -51,81 +58,64 @@ class Sponsors extends Component {
     }
 
     render() {
+        let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers']
+
+                                        
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader title='SPONSORS' />
-
-
                     <Content>
-                    <View style={styles.sponsorTierBanner} >
-                      <Text style={styles.sponsorTierTitle}>PRINCIPAL PARTNERS</Text>
-                    </View>
-
                         {
-                            this._mapJSON(Data).map((rowData, index) => {
+                            catSponsors.map((category, index) => {
                                 return (
-                                    <Grid key={index}>
-                                      {(index === 3
-                                        ?
-                                        <Row>
-                                        <Col style={styles.gridBoxCol}>
-                                            <View style={styles.sponsorTierBanner}>
-                                                <Text style={styles.sponsorTierTitle}>OFFICIAL SPONSORS</Text>
-                                            </View>
-                                        </Col>
-                                        </Row>
-                                        :
-                                        []
-                                      )}
-                                      {(index === 4
-                                        ?
-                                        <Row>
-                                        <Col style={styles.gridBoxCol}>
-                                            <View style={styles.sponsorTierBanner}>
-                                                <Text style={styles.sponsorTierTitle}>OFFICIAL SUPPLIERS</Text>
-                                            </View>
-                                        </Col>
-                                        </Row>
-                                        :
-                                        []
-                                      )}
-
-                                        <Row>
+                                    <View key={index}>
+                                        <View style={styles.tier}>
+                                            <Text style={styles.tierTitle}>{category.toUpperCase()}</Text>
+                                        </View>
                                         {
-                                            rowData.map((item, key) => {
-                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
-
+                                            this._mapJSONbyCategories(Data, category).map((rowData, index) => {
                                                 return (
-                                                    <Col style={styles.gridBoxCol} key={key}>
-                                                        <ButtonFeedback
-                                                            style={stylesArr}
-                                                            onPress={() => this._drillDown(item)}>
+                                                    <Grid key={index}>
+                                                        <Row>
+                                                        {
+                                                            rowData.map((item, key) => {
+                                                                let stylesArr = (key === 0)? [styles.gridBoxTouchable, styles.gridBoxTouchableLeft] : [styles.gridBoxTouchable]
 
-                                                            <View style={styles.gridBoxTouchableView}>
-                                                                <View style={styles.gridBoxImgWrapper}>
-                                                                    <ImagePlaceholder
-                                                                        width = {styleVar.deviceWidth / 2 - 1}
-                                                                        height = {styleVar.deviceWidth / 2}>
-                                                                        <Image transparent
-                                                                            resizeMode='contain'
-                                                                            source={item.image}
-                                                                            style={styles.gridBoxImg} />
-                                                                    </ImagePlaceholder>
-                                                                </View>
+                                                                return (
+                                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                                        <ButtonFeedback
+                                                                            style={stylesArr}
+                                                                            onPress={() => this._drillDown(item)}>
 
-                                                                <View style={[shapes.triangle]} />
-                                                                <View style={styles.gridBoxTitle}>
-                                                                    <Text style={styles.gridBoxTitleText}>{item.title.toUpperCase()}</Text>
-                                                                </View>
-                                                            </View>
-                                                        </ButtonFeedback>
-                                                    </Col>
+                                                                            <View style={styles.gridBoxTouchableView}>
+                                                                                <View style={styles.gridBoxImgWrapper}>
+                                                                                    <ImagePlaceholder
+                                                                                        width = {styleVar.deviceWidth / 2 - 1}
+                                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                                        <Image transparent
+                                                                                            resizeMode='contain'
+                                                                                            source={item.image}
+                                                                                            style={styles.gridBoxImg} />
+                                                                                    </ImagePlaceholder>
+                                                                                </View>
+
+                                                                                <View style={[shapes.triangle]} />
+                                                                                <View style={styles.gridBoxTitle}>
+                                                                                    <Text style={styles.gridBoxTitleText}>{item.title.toUpperCase()}</Text>
+                                                                                </View>
+                                                                            </View>
+                                                                        </ButtonFeedback>
+                                                                    </Col>
+                                                                )
+                                                            }, this)
+                                                        }
+                                                        </Row>
+                                                    </Grid>
                                                 )
                                             }, this)
                                         }
-                                        </Row>
-                                    </Grid>
+                                    </View>
                                 )
                             }, this)
                         }

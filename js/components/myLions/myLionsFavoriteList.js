@@ -31,6 +31,8 @@ class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
+
+        this.isUnMounted = false
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.uniondata = Data
@@ -77,17 +79,27 @@ class MyLionsFavoriteList extends Component {
             method: 'get',
             onAxiosStart: () => {},
             onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    
                 this.setState({ isLoaded: true, isRefreshing: false })
             },
             onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    
                 this._listPlayer(playerList, res.data)
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    
                 this.setState({ isLoaded: true, isRefreshing: false }, () => {
                     this._showError(res)
                 })
             },
-            onAuthorization: this._signInRequired.bind(this),
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    
+                this._signInRequired()
+            },
             isRequiredToken: true
         }
 
@@ -100,6 +112,8 @@ class MyLionsFavoriteList extends Component {
             data: {},
             method: 'get',
             onAxiosStart: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                 if (isInitialLoad) {
                     this.setState({ isLoaded: false })
                 } else {
@@ -109,6 +123,8 @@ class MyLionsFavoriteList extends Component {
             },
             onAxiosEnd: () => {},
             onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                 if (res.data !== '') {
                     this._getFavDetail(res.data)
                 } else {
@@ -123,11 +139,15 @@ class MyLionsFavoriteList extends Component {
                 }
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                 this.setState({ isLoaded: true, isRefreshing: false }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                 this.setState({ isLoaded: true, isRefreshing: false }, () => {
                     this._signInRequired()
                 })
@@ -144,6 +164,10 @@ class MyLionsFavoriteList extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return true
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     _onRefresh() {

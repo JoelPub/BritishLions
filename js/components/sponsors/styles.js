@@ -42,23 +42,24 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
-    sponsorTierBanner: {
-      position: 'relative',
-      justifyContent: 'center'
-      },
-    sponsorTierTitle: {
-      color: styleVar.brandLightColor,
-      backgroundColor: styleVar.colorGrey2,
-      fontFamily: styleVar.fontCondensed,
-      fontSize: 24,
-      lineHeight: 24,
-      textAlign: 'center',
-      paddingTop: 4,
-      paddingBottom: 4,
-      marginTop: -6,
-      android: {
-          lineHeight: 30
-      }
+    tier: {
+        backgroundColor: styleVar.colorGrey,
+        paddingTop: 15,
+        paddingBottom: 5,
+        android: {
+            paddingTop: 10,
+            paddingBottom: 10
+        }
+    },
+    tierTitle: {
+        color: styleVar.colorScarlet,
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+        textAlign: 'center',
+        android: {
+            lineHeight: 30
+        }
     },
     gridBoxTitle: {
         position: 'relative',

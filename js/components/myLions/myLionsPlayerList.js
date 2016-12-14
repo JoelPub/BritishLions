@@ -29,6 +29,8 @@ class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
+
+        this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
@@ -84,12 +86,15 @@ class MyLionsPlayerList extends Component {
             data: {},
             method: 'get',
             onAxiosStart: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isLoaded: false })
             },
             onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 let favoritePlayers = (res.data === '')? [] : res.data.split('|')
                 
                 this.setState({ 
@@ -98,11 +103,15 @@ class MyLionsPlayerList extends Component {
                 })
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isLoaded: true }, () => {
                     this._showError(res) // prompt error
                 })
             },
-            onAuthorization: this._signInRequired.bind(this),
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this._signInRequired.bind(this)
+            },
             isRequiredToken: true
         }
 
@@ -242,12 +251,15 @@ class MyLionsPlayerList extends Component {
             data: {},
             method: 'get',
             onAxiosStart: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isLoaded: false })
             },
             onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._getFavoritePlayers(res.data)
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isLoaded: true }, () => {
                     this._showError(res) // prompt error
                 })
@@ -255,6 +267,10 @@ class MyLionsPlayerList extends Component {
         }
 
         service(options)
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     render() {
@@ -333,6 +349,7 @@ class MyLionsPlayerList extends Component {
                                                         Object.assign(item, {
                                                             logo: union.image, 
                                                             country: union.displayname.toUpperCase(),
+                                                            countryid: union.id,
                                                             isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
                                                         })
 
