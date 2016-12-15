@@ -267,41 +267,40 @@ class MyLionsPlayerDetails extends Component {
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
 
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
-                        <View style={styles.headerPlayerDetails}>
-                            <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
-                            <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
-                        </View>
+                    <Content bounces={false}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
+                            <View style={styles.headerPlayerDetails}>
+                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                            </View>
 
-                        <View style={styles.buttons}>
-                            {
-                                this.state.isDoneUpdatingState?
-                                    <ButtonFeedback
-                                        disabled = {this.state.isFormSubmitting} 
-                                        onPress={()=> this._updatePlayer()} 
-                                        style={[
-                                            styles.btn,
-                                            styles.btnLeft,
-                                            this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
-                                        ]}>
-                                        <Text style={styles.btnText}>{buttonText}</Text>
-                                    </ButtonFeedback>
-                                :
-                                    <ButtonFeedback
-                                        disabled = {true} 
-                                        style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
-                                        <Text style={styles.btnText}>CHECKING..</Text>
-                                    </ButtonFeedback>
-                            }
+                            <View style={styles.buttons}>
+                                {
+                                    this.state.isDoneUpdatingState?
+                                        <ButtonFeedback
+                                            disabled = {this.state.isFormSubmitting}
+                                            onPress={()=> this._updatePlayer()}
+                                            style={[
+                                                styles.btn,
+                                                styles.btnLeft,
+                                                this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
+                                            ]}>
+                                            <Text style={styles.btnText}>{buttonText}</Text>
+                                        </ButtonFeedback>
+                                    :
+                                        <ButtonFeedback
+                                            disabled = {true}
+                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
+                                            <Text style={styles.btnText}>CHECKING..</Text>
+                                        </ButtonFeedback>
+                                }
 
-                            <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                <Text style={styles.btnText}>MY LIONS</Text>
-                            </ButtonFeedback>
-                        </View>
-                    </LinearGradient>
-
-                    <Content>
+                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                </ButtonFeedback>
+                            </View>
+                        </LinearGradient>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
