@@ -110,7 +110,7 @@ class MyLionsPlayerList extends Component {
             },
             onAuthorization: () => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this._signInRequired.bind(this)
+                this._signInRequired()
             },
             isRequiredToken: true
         }

@@ -19,6 +19,8 @@ import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
+import HTMLView from 'react-native-htmlview'
+import htmlStyles from '../../themes/html-styles'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -335,11 +337,17 @@ class MyLionsPlayerDetails extends Component {
                             <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                             <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
                         </View>
-                        <View style={styles.playerDesc}>
-                            <Text style={styles.paragraph}>
-                                {this.props.detail.desc? this.props.detail.desc : ''}
-                            </Text>
-                        </View>
+                        {
+                            this.props.detail.biog?
+                                <View style={styles.playerDesc}>
+                                    <HTMLView
+                                       value={this.props.detail.biog}
+                                       stylesheet={htmlStyles}
+                                     />
+                                </View>
+                            :
+                                null
+                        }
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter />
