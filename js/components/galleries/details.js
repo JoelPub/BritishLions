@@ -69,7 +69,7 @@ class Gallery extends Component {
 
                         <View style={styles.shareWrapper}>
                             <ButtonFeedback
-                                onPress={shareTextWithTitle.bind(this, 'DummyTitle', '')}
+                                onPress={shareTextWithTitle.bind(this, this.props.content.title, this.props.content.link)}
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
