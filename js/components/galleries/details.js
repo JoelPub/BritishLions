@@ -15,19 +15,30 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
-import { shareTextWithTitle } from '../utility/socialShare'
-const renderPagination = (index, total, context) => {
-  return (
-    <View style={styles.swiperNumber}>
-      <Text style={styles.swiperNumberText}>
-        {index + 1} of {total}
-      </Text>
-    </View>
-  )
-}
+import Share from 'react-native-share'
+import RNViewShot from 'react-native-view-shot'
 
 class Gallery extends Component {
 
+    constructor(props) {
+         super(props)
+         this.state = {
+              currentImg: 0,
+              showPagination: true
+         }
+    }
+
+    renderPagination = (index, total, context) => {
+        if(this.state.showPagination) {
+            return (
+                <View style={styles.swiperNumber}>
+                  <Text style={styles.swiperNumberText}>
+                    {index + 1} of {total}
+                  </Text>
+                </View>
+            )
+        }
+    }
     renderContent() {
         return (
             <View>
@@ -35,6 +46,31 @@ class Gallery extends Component {
                 <Image style={Slider.galleryPoster} source={{uri:this.children.props.source.uri}} />
             </View>
             )
+    }
+
+    sas(context){
+        this.setState({
+            showPagination:false
+        })
+        setTimeout(()=>{
+            RNViewShot.takeSnapshot(this.refs['swiper'],{
+                format:'png',
+                quality: 1,
+                result: 'base64'
+            })
+            .then(
+                res => Share.open({
+                    title:context,
+                    message:context,
+                    subject:context,
+                    url: `data:image/png;base64,${res}`
+                })
+            )
+            this.setState({
+                showPagination:true
+            })          
+        })
+
     }
     
     render() {
@@ -53,7 +89,8 @@ class Gallery extends Component {
                             <Swiper
                                 ref='swiper'
                                 height={270}
-                                renderPagination={renderPagination}
+                                renderPagination={this.renderPagination}
+                                onMomentumScrollEnd={(e, state, context) => this.setState({currentImg:state.index})}
                                 loop={false}>
                                 {
                                     this.props.content.images.map((img,index)=>{
@@ -69,7 +106,7 @@ class Gallery extends Component {
 
                         <View style={styles.shareWrapper}>
                             <ButtonFeedback
-                                onPress={shareTextWithTitle.bind(this, this.props.content.title, this.props.content.link)}
+                                onPress={ ()=> this.sas(this.props.content.title) }
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
