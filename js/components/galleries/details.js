@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder } from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity } from 'react-native'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -16,7 +16,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
 import Share from 'react-native-share'
-import RNViewShot from 'react-native-view-shot'
+import RNFetchBlob from 'react-native-fetch-blob'
 
 class Gallery extends Component {
 
@@ -24,12 +24,11 @@ class Gallery extends Component {
          super(props)
          this.state = {
               currentImg: 0,
-              showPagination: true
+              isSubmitting: false
          }
     }
 
     renderPagination = (index, total, context) => {
-        if(this.state.showPagination) {
             return (
                 <View style={styles.swiperNumber}>
                   <Text style={styles.swiperNumberText}>
@@ -37,7 +36,6 @@ class Gallery extends Component {
                   </Text>
                 </View>
             )
-        }
     }
     renderContent() {
         return (
@@ -48,29 +46,32 @@ class Gallery extends Component {
             )
     }
 
-    sas(context){
-        this.setState({
-            showPagination:false
-        })
-        setTimeout(()=>{
-            RNViewShot.takeSnapshot(this.refs['swiper'],{
-                format:'png',
-                quality: 1,
-                result: 'base64'
-            })
-            .then(
-                res => Share.open({
-                    title:context,
-                    message:context,
-                    subject:context,
-                    url: `data:image/png;base64,${res}`
-                })
-            )
+    shareImg(context, imgUrl,callback){
             this.setState({
-                showPagination:true
-            })          
-        })
+                isSubmitting:true
+            })
+            RNFetchBlob.fetch('GET',imgUrl)
+            .then(
+                function(res) {
+                    Share.open({
+                        title:context,
+                        message:context,
+                        subject:context,
+                        url: `data:image/png;base64,${res.base64()}`
+                    })
+                    callback()
+                }
+            )
+            .catch((errorMessage,statusCode)=>{
+                callback()
+            })
 
+    }
+    callback(){
+
+                    this.setState({
+                        isSubmitting:false
+                    })
     }
     
     render() {
@@ -105,12 +106,13 @@ class Gallery extends Component {
                         </View>
 
                         <View style={styles.shareWrapper}>
-                            <ButtonFeedback
-                                onPress={ ()=> this.sas(this.props.content.title) }
+                            <TouchableOpacity
+                                disabled = {this.state.isSubmitting}
+                                onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
-                            </ButtonFeedback>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.description}>
