@@ -109,7 +109,6 @@ function callApi(opt) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-				    console.log('errorHandler: ', error.response)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -139,7 +138,6 @@ function callApi(opt) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-				    console.log('errorHandler: ', error.response)
 					isInternetConnected = true
 
 					// use for loading, after state

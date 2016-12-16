@@ -284,7 +284,7 @@ class MyLionsPlayerList extends Component {
 
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                        <Text style={styles.headerTitle}>{this.name}</Text>
+                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
