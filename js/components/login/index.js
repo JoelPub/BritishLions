@@ -181,7 +181,7 @@ class Login extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input autoCorrect={false} placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
+                                        <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
