@@ -16,18 +16,25 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
 import { shareTextWithTitle } from '../utility/socialShare'
-const renderPagination = (index, total, context) => {
-  return (
-    <View style={styles.swiperNumber}>
-      <Text style={styles.swiperNumberText}>
-        {index + 1} of {total}
-      </Text>
-    </View>
-  )
-}
 
 class Gallery extends Component {
 
+    constructor(props) {
+         super(props)
+         this.state = {
+              currentImg: 0
+         }
+    }
+
+    renderPagination = (index, total, context) => {
+        return (
+            <View style={styles.swiperNumber}>
+              <Text style={styles.swiperNumberText}>
+                {index + 1} of {total}
+              </Text>
+            </View>
+        )
+    }
     renderContent() {
         return (
             <View>
@@ -53,7 +60,8 @@ class Gallery extends Component {
                             <Swiper
                                 ref='swiper'
                                 height={270}
-                                renderPagination={renderPagination}
+                                renderPagination={this.renderPagination}
+                                onMomentumScrollEnd={(e, state, context) => this.setState({currentImg:state.index})}
                                 loop={false}>
                                 {
                                     this.props.content.images.map((img,index)=>{
@@ -69,7 +77,7 @@ class Gallery extends Component {
 
                         <View style={styles.shareWrapper}>
                             <ButtonFeedback
-                                onPress={shareTextWithTitle.bind(this, this.props.content.title, this.props.content.link)}
+                                onPress={shareTextWithTitle.bind(this, this.props.content.title, this.props.content.images[this.state.currentImg].image)}
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
