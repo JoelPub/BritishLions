@@ -276,7 +276,7 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
-                                        <Input autoCorrect={false} defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
+                                        <Input defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
                                     </View>
 
                                     <ButtonFeedback
