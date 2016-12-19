@@ -10,7 +10,7 @@ export default class SplashPage extends Component {
             navigator.replace({
                 id: 'news',
             })
-        }, 5000)
+        }, 2000)
     }
 
     render () {
