@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder } from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity } from 'react-native'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -15,19 +15,28 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
-import { shareTextWithTitle } from '../utility/socialShare'
-const renderPagination = (index, total, context) => {
-  return (
-    <View style={styles.swiperNumber}>
-      <Text style={styles.swiperNumberText}>
-        {index + 1} of {total}
-      </Text>
-    </View>
-  )
-}
+import Share from 'react-native-share'
+import RNFetchBlob from 'react-native-fetch-blob'
 
 class Gallery extends Component {
 
+    constructor(props) {
+         super(props)
+         this.state = {
+              currentImg: 0,
+              isSubmitting: false
+         }
+    }
+
+    renderPagination = (index, total, context) => {
+            return (
+                <View style={styles.swiperNumber}>
+                  <Text style={styles.swiperNumberText}>
+                    {index + 1} of {total}
+                  </Text>
+                </View>
+            )
+    }
     renderContent() {
         return (
             <View>
@@ -35,6 +44,34 @@ class Gallery extends Component {
                 <Image style={Slider.galleryPoster} source={{uri:this.children.props.source.uri}} />
             </View>
             )
+    }
+
+    shareImg(context, imgUrl,callback){
+            this.setState({
+                isSubmitting:true
+            })
+            RNFetchBlob.fetch('GET',imgUrl)
+            .then(
+                function(res) {
+                    Share.open({
+                        title:context,
+                        message:context,
+                        subject:context,
+                        url: `data:image/png;base64,${res.base64()}`
+                    })
+                    callback()
+                }
+            )
+            .catch((errorMessage,statusCode)=>{
+                callback()
+            })
+
+    }
+    callback(){
+
+                    this.setState({
+                        isSubmitting:false
+                    })
     }
     
     render() {
@@ -53,7 +90,8 @@ class Gallery extends Component {
                             <Swiper
                                 ref='swiper'
                                 height={270}
-                                renderPagination={renderPagination}
+                                renderPagination={this.renderPagination}
+                                onMomentumScrollEnd={(e, state, context) => this.setState({currentImg:state.index})}
                                 loop={false}>
                                 {
                                     this.props.content.images.map((img,index)=>{
@@ -68,12 +106,13 @@ class Gallery extends Component {
                         </View>
 
                         <View style={styles.shareWrapper}>
-                            <ButtonFeedback
-                                onPress={shareTextWithTitle.bind(this, 'DummyTitle', '')}
+                            <TouchableOpacity
+                                disabled = {this.state.isSubmitting}
+                                onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
-                            </ButtonFeedback>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.description}>

@@ -12,7 +12,6 @@ import ButtonFeedback from '../utility/buttonFeedback'
 
 const styles = styleSheetCreate({
     btn: {
-        marginRight: 12,
         marginTop: -22,
         android: {
             marginTop: -7,
@@ -21,6 +20,15 @@ const styles = styleSheetCreate({
         paddingLeft:12,
         paddingRight:12,
     },
+    btnArrow: {
+            marginTop: -22,
+            android: {
+                marginTop: -7,
+                height: 32
+            },
+            paddingLeft:0,
+            paddingRight:24,
+        },
     headerIcon: {
         color: '#fff',
         fontSize: 38,
@@ -62,7 +70,7 @@ class LionsHeader extends Component {
 
 	getBackArrowHTML() {
 		return (
-			<ButtonFeedback style={styles.btn} onPress={() => this.popRoute()}>
+			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute()}>
 				<Icon name='md-arrow-back' style={styles.headerIcon} />
 			</ButtonFeedback>
 		)

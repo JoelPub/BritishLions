@@ -26,6 +26,7 @@ import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
+import { globalNav } from '../../appNavigator'
 
 class MyLionsFavoriteList extends Component {
 
@@ -160,6 +161,21 @@ class MyLionsFavoriteList extends Component {
 
     componentDidMount() {
         this._fetchFavPlayers(true)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let routes = globalNav.navigator.getCurrentRoutes()
+        
+        // re render after 'back nav' pressed
+        if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsFavoriteList') {
+            this.setState({
+                isRefreshing: false,
+                isLoaded: false,
+                favoritePlayers: []
+            }, () => {
+                this._fetchFavPlayers()
+            })
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -313,4 +329,9 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null, bindAction)(MyLionsFavoriteList)
+export default connect((state) => {
+    return {
+        route: state.route,
+    }
+}, bindAction)(MyLionsFavoriteList)
+

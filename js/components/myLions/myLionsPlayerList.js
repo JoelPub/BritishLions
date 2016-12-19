@@ -110,7 +110,7 @@ class MyLionsPlayerList extends Component {
             },
             onAuthorization: () => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this._signInRequired.bind(this)
+                this._signInRequired()
             },
             isRequiredToken: true
         }
@@ -284,7 +284,7 @@ class MyLionsPlayerList extends Component {
 
                     <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                         <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                        <Text style={styles.headerTitle}>{this.name}</Text>
+                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
                         <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
                             <Icon name='md-search' style={styles.searchIcon}/>
                         </ButtonFeedback>
@@ -353,6 +353,20 @@ class MyLionsPlayerList extends Component {
                                                             isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
                                                         })
 
+                                                        // check if they provide a gif image logo, then convert it to png
+                                                        let image = item.image
+                                                        if (image.indexOf('125.gif') > 0) {
+                                                            image = require(`../../../contents/unions/nations/125.png`)
+                                                        } else if (image.indexOf('126.gif') > 0) {
+                                                            image = require(`../../../contents/unions/nations/126.png`)
+                                                        } else if (image.indexOf('127.gif') > 0) {
+                                                            image = require(`../../../contents/unions/nations/127.png`)
+                                                        } else if (image.indexOf('128.gif') > 0) {
+                                                            image = require(`../../../contents/unions/nations/128.png`)
+                                                        } else {
+                                                            image = {uri:image}
+                                                        } 
+
                                                         return (
                                                             <Col style={styles.gridBoxCol} key={key}>
                                                                 <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
@@ -363,7 +377,7 @@ class MyLionsPlayerList extends Component {
                                                                                 height = {styleVar.deviceWidth / 2}>
                                                                                 <Image transparent
                                                                                     resizeMode='contain'
-                                                                                    source={{uri:item.image}}
+                                                                                    source={image}
                                                                                     style={styles.gridBoxImg} />
                                                                             </ImagePlaceholder>
                                                                         </View>

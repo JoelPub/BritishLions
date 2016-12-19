@@ -19,6 +19,8 @@ import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
+import HTMLView from 'react-native-htmlview'
+import htmlStyles from '../../themes/html-styles'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -262,46 +264,59 @@ class MyLionsPlayerDetails extends Component {
             buttonText = this.state.isFav === true? 'REMOVE':'ADD'
         }
 
+        // check if they provide a gif image logo, then convert it to png
+        let image = this.props.detail.image
+        if (image.indexOf('125.gif') > 0) {
+            image = require(`../../../contents/unions/nations/125.png`)
+        } else if (image.indexOf('126.gif') > 0) {
+            image = require(`../../../contents/unions/nations/126.png`)
+        } else if (image.indexOf('127.gif') > 0) {
+            image = require(`../../../contents/unions/nations/127.png`)
+        } else if (image.indexOf('128.gif') > 0) {
+            image = require(`../../../contents/unions/nations/128.png`)
+        } else {
+            image = {uri:image}
+        } 
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
 
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <Image source={{uri:this.props.detail.image}} style={styles.imageCircle}/>
-                        <View style={styles.headerPlayerDetails}>
-                            <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
-                            <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
-                        </View>
+                    <Content bounces={false}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={image} style={styles.imageCircle}/>
+                            <View style={styles.headerPlayerDetails}>
+                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                            </View>
 
-                        <View style={styles.buttons}>
-                            {
-                                this.state.isDoneUpdatingState?
-                                    <ButtonFeedback
-                                        disabled = {this.state.isFormSubmitting} 
-                                        onPress={()=> this._updatePlayer()} 
-                                        style={[
-                                            styles.btn,
-                                            styles.btnLeft,
-                                            this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
-                                        ]}>
-                                        <Text style={styles.btnText}>{buttonText}</Text>
-                                    </ButtonFeedback>
-                                :
-                                    <ButtonFeedback
-                                        disabled = {true} 
-                                        style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
-                                        <Text style={styles.btnText}>CHECKING..</Text>
-                                    </ButtonFeedback>
-                            }
+                            <View style={styles.buttons}>
+                                {
+                                    this.state.isDoneUpdatingState?
+                                        <ButtonFeedback
+                                            disabled = {this.state.isFormSubmitting}
+                                            onPress={()=> this._updatePlayer()}
+                                            style={[
+                                                styles.btn,
+                                                styles.btnLeft,
+                                                this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
+                                            ]}>
+                                            <Text style={styles.btnText}>{buttonText}</Text>
+                                        </ButtonFeedback>
+                                    :
+                                        <ButtonFeedback
+                                            disabled = {true}
+                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
+                                            <Text style={styles.btnText}>CHECKING..</Text>
+                                        </ButtonFeedback>
+                                }
 
-                            <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                <Text style={styles.btnText}>MY LIONS</Text>
-                            </ButtonFeedback>
-                        </View>
-                    </LinearGradient>
-
-                    <Content>
+                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                </ButtonFeedback>
+                            </View>
+                        </LinearGradient>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
@@ -336,11 +351,17 @@ class MyLionsPlayerDetails extends Component {
                             <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                             <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
                         </View>
-                        <View style={styles.playerDesc}>
-                            <Text style={styles.paragraph}>
-                                {this.props.detail.desc? this.props.detail.desc : ''}
-                            </Text>
-                        </View>
+                        {
+                            this.props.detail.biog?
+                                <View style={styles.playerDesc}>
+                                    <HTMLView
+                                       value={this.props.detail.biog}
+                                       stylesheet={htmlStyles}
+                                     />
+                                </View>
+                            :
+                                null
+                        }
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter />

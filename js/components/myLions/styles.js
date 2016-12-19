@@ -267,6 +267,7 @@ module.exports = styleSheetCreate({
     playerDesc: {
         paddingLeft: 20,
         paddingRight: 20,
+        paddingBottom: 20,
         marginTop: 20
     },
     paragraph: {

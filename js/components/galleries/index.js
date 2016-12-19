@@ -22,7 +22,7 @@ class Galleries extends Component {
             isLoaded: false,
             galleriesFeed: [],       
         }
-        this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v6.php'
+        this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php'
     }
 
     _drillDown(data) {
