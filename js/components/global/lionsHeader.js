@@ -11,6 +11,9 @@ import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 
 const styles = styleSheetCreate({
+    headerWrapper: {
+        zIndex:9999
+    },
     btn: {
         marginTop: -22,
         android: {
@@ -91,7 +94,7 @@ class LionsHeader extends Component {
         let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
 
         return (
-            <Header>
+            <Header style={styles.headerWrapper}>
                 {backArrowSwitch}
 
                 <Text style={styles.textHeader}>{title}</Text>
