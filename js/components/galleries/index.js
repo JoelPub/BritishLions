@@ -7,13 +7,13 @@ import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styles from './styles'
 import theme from '../../themes/base-theme'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
+import StickyFooter from '../utility/stickyFooter'
 
 class Galleries extends Component {
     constructor(props) {
@@ -48,27 +48,28 @@ class Galleries extends Component {
                     {
                         this.state.isLoaded?
                             <Content>
-                              {
-                                   this.state.galleriesFeed.map(function(data, index) {
-                                        return (
-                                           <ButtonFeedback
-                                                style={styles.btn}
-                                                key={index}
-                                                onPress={() => this._drillDown(data)}>
-                                                <ImagePlaceholder height={180}>
-                                                    <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
-                                                </ImagePlaceholder>
-                                                <View style={[shapes.triangle, styles.triangle]} />
-                                                <View style={styles.galleriesContent}>
-                                                    <Text numberOfLines={1} style={styles.galleriesHeader}>
-                                                        {data.title? data.title.toUpperCase() : ' '}
-                                                    </Text>
-                                                </View>
-                                            </ButtonFeedback>
-                                        )
-                                    }, this)
-                                }
-                                <LionsFooter isLoaded={this.props.isLoaded} />
+                                <StickyFooter>
+                                    {
+                                       this.state.galleriesFeed.map(function(data, index) {
+                                            return (
+                                               <ButtonFeedback
+                                                    style={styles.btn}
+                                                    key={index}
+                                                    onPress={() => this._drillDown(data)}>
+                                                    <ImagePlaceholder height={180}>
+                                                        <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
+                                                    </ImagePlaceholder>
+                                                    <View style={[shapes.triangle, styles.triangle]} />
+                                                    <View style={styles.galleriesContent}>
+                                                        <Text numberOfLines={1} style={styles.galleriesHeader}>
+                                                            {data.title? data.title.toUpperCase() : ' '}
+                                                        </Text>
+                                                    </View>
+                                                </ButtonFeedback>
+                                            )
+                                        }, this)
+                                    }
+                                </StickyFooter>
                             </Content>
                           :
                             <ActivityIndicator

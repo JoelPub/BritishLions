@@ -7,7 +7,6 @@ import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import theme from '../../themes/base-theme'
@@ -15,6 +14,7 @@ import loader from '../../themes/loader-position'
 import refresh from '../../themes/refresh-control'
 import styles from './styles'
 import styleVar from '../../themes/variable'
+import StickyFooter from '../utility/stickyFooter'
 
 class News extends Component {
     constructor(props) {
@@ -83,33 +83,34 @@ class News extends Component {
                                         progressBackgroundColor = {refresh.background}
                                     />
                             }>
-                                {
-                                    this.state.newsFeed.map(function(data, index) {
-                                        return (
-                                            <ButtonFeedback
-                                                key={index}
-                                                style={styles.listLink}
-                                                onPress={() => this._drillDown(data)}>
-                                                <ImagePlaceholder
-                                                    width = {styleVar.deviceWidth / 3}
-                                                    height = {styleVar.deviceHeight / 3.7}>
-                                                    <Image source={{uri: data.thumb}} style={[styles.newsImage]} />
-                                                </ImagePlaceholder>
+                                <StickyFooter>
+                                    {
+                                        this.state.newsFeed.map(function(data, index) {
+                                            return (
+                                                <ButtonFeedback
+                                                    key={index}
+                                                    style={styles.listLink}
+                                                    onPress={() => this._drillDown(data)}>
+                                                    <ImagePlaceholder
+                                                        width = {styleVar.deviceWidth / 3}
+                                                        height = {styleVar.deviceHeight / 3.7}>
+                                                        <Image source={{uri: data.thumb}} style={[styles.newsImage]} />
+                                                    </ImagePlaceholder>
 
-                                                <View style={styles.newsContent}>
-                                                    <Text numberOfLines={2} style={styles.newsHeader}>
-                                                        {data.headline ? data.headline.toUpperCase() : null}
-                                                    </Text>
-                                                    <View style={styles.newsDateWrapper}>
-                                                        <Icon name='md-time' style={styles.timeIcon} />
-                                                        <Text style={styles.newsDateText}>{data.date} at {data.time}</Text>
+                                                    <View style={styles.newsContent}>
+                                                        <Text numberOfLines={2} style={styles.newsHeader}>
+                                                            {data.headline ? data.headline.toUpperCase() : null}
+                                                        </Text>
+                                                        <View style={styles.newsDateWrapper}>
+                                                            <Icon name='md-time' style={styles.timeIcon} />
+                                                            <Text style={styles.newsDateText}>{data.date} at {data.time}</Text>
+                                                        </View>
                                                     </View>
-                                                </View>
-                                            </ButtonFeedback>
-                                        )
-                                    }, this)
-                                }
-                                <LionsFooter isLoaded={true} />
+                                                </ButtonFeedback>
+                                            )
+                                        }, this)
+                                    }
+                                </StickyFooter>
                             </ScrollView>
                         :
                         <ActivityIndicator style={loader.centered} size='large' />

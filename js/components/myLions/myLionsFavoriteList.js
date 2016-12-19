@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert } from 'react-native'
+import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -12,7 +12,6 @@ import styles from './styles'
 import shapes from '../../themes/shapes'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
@@ -27,6 +26,7 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
+import StickyFooter from '../utility/stickyFooter'
 
 class MyLionsFavoriteList extends Component {
 
@@ -261,54 +261,55 @@ class MyLionsFavoriteList extends Component {
                                     />
                                 }>
                                 <Content>
-                                    {
-                                        this._mapJSON(this.state.favoritePlayers).map((rowData, index) => {
-                                            return (
-                                                <Grid key={index}>
-                                                    {
-                                                        rowData.map((item, key) => {
-                                                            let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                                            let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                            let union = this.uniondata.find((n)=> n.id===item.countryid)
-                                                            
-                                                            Object.assign(item, {
-                                                                logo: union.image, 
-                                                                country: union.displayname.toUpperCase(),
-                                                                isFav: true
-                                                            })
-                                                            
-                                                            return (
-                                                                <Col style={styles.gridBoxCol} key={key}>
-                                                                    <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item)}>
-                                                                        <View style={styles.gridBoxTouchableView}>
-                                                                            <View style={styleGridBoxImgWrapper}>
-                                                                                <ImagePlaceholder 
-                                                                                    width = {styleVar.deviceWidth / 2}
-                                                                                    height = {styleVar.deviceWidth / 2}>
-                                                                                    <Image transparent
-                                                                                        resizeMode='contain'
-                                                                                        source={{uri:item.image}}
-                                                                                        style={styles.gridBoxImg} />
-                                                                                </ImagePlaceholder>
-                                                                            </View>
-                                                                            <View style={styles.gridBoxDescWrapper}>
-                                                                                <View style={[shapes.triangle]} />
-                                                                                <View style={styleGridBoxTitle}>
-                                                                                    <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
-                                                                                    <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                    <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
+                                        {
+                                            this._mapJSON(this.state.favoritePlayers).map((rowData, index) => {
+                                                return (
+                                                    <Grid key={index}>
+                                                        {
+                                                            rowData.map((item, key) => {
+                                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+                                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+                                                                let union = this.uniondata.find((n)=> n.id===item.countryid)
+                                                                
+                                                                Object.assign(item, {
+                                                                    logo: union.image, 
+                                                                    country: union.displayname.toUpperCase(),
+                                                                    isFav: true
+                                                                })
+                                                                
+                                                                return (
+                                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item)}>
+                                                                            <View style={styles.gridBoxTouchableView}>
+                                                                                <View style={styleGridBoxImgWrapper}>
+                                                                                    <ImagePlaceholder 
+                                                                                        width = {styleVar.deviceWidth / 2}
+                                                                                        height = {styleVar.deviceWidth / 2}>
+                                                                                        <Image transparent
+                                                                                            resizeMode='contain'
+                                                                                            source={{uri:item.image}}
+                                                                                            style={styles.gridBoxImg} />
+                                                                                    </ImagePlaceholder>
+                                                                                </View>
+                                                                                <View style={styles.gridBoxDescWrapper}>
+                                                                                    <View style={[shapes.triangle]} />
+                                                                                    <View style={styleGridBoxTitle}>
+                                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
+                                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
+                                                                                    </View>
                                                                                 </View>
                                                                             </View>
-                                                                        </View>
-                                                                    </ButtonFeedback>
-                                                                </Col>
-                                                            )
-                                                        }, this)
-                                                    }
-                                                </Grid>
-                                            )
-                                        }, this)
-                                    }
-                                    <LionsFooter isLoaded={true} />
+                                                                        </ButtonFeedback>
+                                                                    </Col>
+                                                                )
+                                                            }, this)
+                                                        }
+                                                    </Grid>
+                                                )
+                                            }, this)
+                                        }
+                                    </StickyFooter>
                                 </Content>
                             </ScrollView>
                         :

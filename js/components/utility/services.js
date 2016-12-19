@@ -199,20 +199,12 @@ export function service(options) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
 				callApi(opt)
 			} else {
-				if (opt.onError) {
-					opt.onError('Please sign in your account.')
-				}
-
 				// Sign In is Required
 				if (opt.onAuthorization) {
 					opt.onAuthorization('Sign In is Required')
 				}
 			}
 		}).catch((error) => {
-			if (opt.onError) {
-				opt.onError('Please sign in your account.')
-			}
-
 			// Sign In is Required
 			if (opt.onAuthorization) {
 				opt.onAuthorization('Sign In is Required')
