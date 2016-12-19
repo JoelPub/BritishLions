@@ -17,6 +17,7 @@ import Lightbox from 'react-native-lightbox'
 import Slider from '../utility/imageSlider'
 import Share from 'react-native-share'
 import RNFetchBlob from 'react-native-fetch-blob'
+import { alertBox } from '../utility/alertBox'
 
 class Gallery extends Component {
 
@@ -58,8 +59,16 @@ class Gallery extends Component {
                         message:context,
                         subject:context,
                         url: `data:image/png;base64,${res.base64()}`
+                    }).then((info)=>{
+                        callback()
+                    }).catch((err)=>{
+                        alertBox(
+                            '',
+                            'Sharing image to this APP is not supported',
+                            'Dismiss'
+                        )
+                        callback()
                     })
-                    callback()
                 }
             )
             .catch((errorMessage,statusCode)=>{
