@@ -19,6 +19,7 @@ import { replaceRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
+import LinearGradient from 'react-native-linear-gradient'
 
 class MyLions extends Component {
 
@@ -26,9 +27,9 @@ class MyLions extends Component {
         super(props)
         this.state = {
             modalVisible: true,
-            transparent: true,
-            resultVisible: false
-        }  
+            currentPage: 0,
+        }
+        this.allPage = 4  
     }
 
     _showList(item, route) {
@@ -41,15 +42,19 @@ class MyLions extends Component {
 
     prev(){
         this.refs['swiper'].scrollBy(-1,true)
+        this.setState({
+            currentPage: this.state.currentPage-1
+        })
     }
     next(){
         this.refs['swiper'].scrollBy(1,true)
+        this.setState({
+            currentPage: this.state.currentPage+1
+        })
     }
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
-            resultVisible:!visible,
-            transparent:visible
         })
     }
     render() {
@@ -57,91 +62,88 @@ class MyLions extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                         <LionsHeader title='MY LIONS' />
-                        <Content style={{backgroundColor:'#af001e'}}>
-                            <ImagePlaceholder height={270}>
+                        <Content >
+                            <ImagePlaceholder height={376}>
                                 <Image resizeMode='cover'
-                                source={require('../../../images/content/competitionsBanner.png')} style={{height: 270, justifyContent: 'flex-end'}}>
-                                    <Image 
-                                        transparent
-                                        resizeMode='cover'
-                                        source={require('../../../images/shadows/rectangle.png')}
-                                        style={{width: styleVar.deviceWidth, flexDirection: 'column', justifyContent: 'flex-end', paddingLeft: 20, paddingBottom: 15, paddingRight: 20, backgroundColor: 'transparent' }}>
-
-                                    </Image>
+                                source={require('../../../images/content/mylionsBanner.png')} style={styles.mylionsBanner}>
                                 </Image>
                             </ImagePlaceholder>
-                            <ButtonFeedback rounded label='MY SQUAD' style={styles.button} />
-                            <ButtonFeedback rounded label='THE EXPERT PICKS' style={styles.button}  />
-                            <ButtonFeedback rounded label='MY FAVOURITES' style={styles.button} onPress={() => this._myLions()} />
-                             
+                            <ButtonFeedback rounded style={[styles.button,styles.btnMysquad]}>
+                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')} 
+                                    style={styles.btnMysquadIcon}>
+                                </Image>
+                                <Text 
+                                style={styles.btnMysquadLabel}>
+                                MY SQUAD
+                                </Text>
+                            </ButtonFeedback>                            
+                            <ButtonFeedback rounded style={[styles.button,styles.btnExpert]}>
+                                <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                <Text
+                                style={styles.btnExpertLabel}>
+                                THE EXPERTS PICK
+                                </Text>
+                            </ButtonFeedback>
+                            <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} 
+                            onPress={() => this._myLions()} >
+                                <Icon name='md-star' style={styles.btnFavouritesIcon} />
+                                <Text
+                                style={styles.btnFavouritesLabel}>
+                                FAVOURITES
+                                </Text>
+                            </ButtonFeedback>                             
                             <LionsFooter isLoaded={true} />
                         </Content>
                     < EYSFooter />
                     <Modal
                         visible={this.state.modalVisible}
-                        transparent={this.state.transparent}
                         onRequestClose={()=>this._setModalVisible(false)}>
-                        <View style={{flex:1, backgroundColor:'rgba(38,38,38,0.9)', paddingTop:20 }}>
-                            <View >
-                                <View style={{padding:10,backgroundColor:'white',borderRadius:5,height:50}}>
-                                    <Text style={{color:'red'}}> WELCOME TO MY LIONS</Text>
-                                    <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                                    style={{backgroundColor:'grey',width:16,height:16,borderRadius:8,paddingLeft:3,position:'absolute',right:10,top:15}}>
-                                        <Icon name='md-close' style={{fontSize:18}}/>
-                                    </ButtonFeedback>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                            <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
+                                <View >
+                                    <Swiper
+                                        ref='swiper'
+                                        height={400}
+                                        loop={false}
+                                        dotColor='rgba(255,255,255,0.3)'
+                                        activeDotColor='rgb(239,239,244)'
+                                        onMomentumScrollEnd={(e, state, context) => this.setState({currentPage:state.index})}>
+                                        <View style={styles.onboardingPage}>
+                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                        </View>
+                                        <View style={styles.onboardingPage}>
+                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                        </View>
+                                        <View style={styles.onboardingPage}>
+                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                        </View>
+                                        <View style={styles.onboardingPage}>
+                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo.</Text>
+                                            <ButtonFeedback rounded label='BUILD MY SQUAD' style={[styles.button]}  />
+                                        </View>
+                                    </Swiper>
+                                    {
+                                        this.state.currentPage===0?
+                                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
+                                        :
+                                        <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
+                                    }
+                                    {
+                                        this.state.currentPage===this.allPage-1?
+                                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
+                                        :
+                                        <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                    }
                                 </View>
-                                <View style={{backgroundColor:'grey'}}>
-
-                                        <Swiper
-                                            ref='swiper'
-                                            height={370}
-                                            loop={false}>
-                                            <View style={{paddingLeft:50,paddingTop:50}}>
-                                                <Text style={{color:'black',fontSize:12}}>Our Digital Analytics partner, EY,</Text>
-                                                <Text style={{color:'black',fontSize:12}}>has been busy reviewing all eligible Lions</Text>
-                                                <Text style={{color:'black',fontSize:12}}>performance data from over 10,000</Text>
-                                                <Text style={{color:'black',fontSize:12}}>games</Text>
-                                                <Text style={{color:'black',fontSize:12}}>   </Text>
-                                                <Text style={{color:'black',fontSize:12}}>EY has unlocked their analytics engine to</Text>
-                                                <Text style={{color:'black',fontSize:12}}>enable you to select your ideal squad that</Text>
-                                                <Text style={{color:'black',fontSize:12}}>will tour to NZ in 2017</Text>
-                                            </View>
-                                            <View style={{paddingLeft:50,paddingTop:50}}>
-                                                <Text style={{color:'black',fontSize:12}}>Our Digital Analytics partner, EY,</Text>
-                                                <Text style={{color:'black',fontSize:12}}>has been busy reviewing all eligible Lions</Text>
-                                                <Text style={{color:'black',fontSize:12}}>performance data from over 10,000</Text>
-                                                <Text style={{color:'black',fontSize:12}}>games</Text>
-                                                <Text style={{color:'black',fontSize:12}}>   </Text>
-                                                <Text style={{color:'black',fontSize:12}}>EY has unlocked their analytics engine to</Text>
-                                                <Text style={{color:'black',fontSize:12}}>enable you to select your ideal squad that</Text>
-                                                <Text style={{color:'black',fontSize:12}}>will tour to NZ in 2017</Text>
-                                            </View>
-                                            <View style={{paddingLeft:50,paddingTop:50}}>
-                                                <Text style={{color:'black',fontSize:12}}>Our Digital Analytics partner, EY,</Text>
-                                                <Text style={{color:'black',fontSize:12}}>has been busy reviewing all eligible Lions</Text>
-                                                <Text style={{color:'black',fontSize:12}}>performance data from over 10,000</Text>
-                                                <Text style={{color:'black',fontSize:12}}>games</Text>
-                                                <Text style={{color:'black',fontSize:12}}>   </Text>
-                                                <Text style={{color:'black',fontSize:12}}>EY has unlocked their analytics engine to</Text>
-                                                <Text style={{color:'black',fontSize:12}}>enable you to select your ideal squad that</Text>
-                                                <Text style={{color:'black',fontSize:12}}>will tour to NZ in 2017</Text>
-                                            </View>
-                                            <View style={{paddingLeft:50,paddingTop:50}}>
-                                                <Text style={{color:'black',fontSize:12}}>Our Digital Analytics partner, EY,</Text>
-                                                <Text style={{color:'black',fontSize:12}}>has been busy reviewing all eligible Lions</Text>
-                                                <Text style={{color:'black',fontSize:12}}>performance data from over 10,000</Text>
-                                                <Text style={{color:'black',fontSize:12}}>games</Text>
-                                                <Text style={{color:'black',fontSize:12}}>   </Text>
-                                                <Text style={{color:'black',fontSize:12}}>EY has unlocked their analytics engine to</Text>
-                                                <Text style={{color:'black',fontSize:12}}>enable you to select your ideal squad that</Text>
-                                                <Text style={{color:'black',fontSize:12}}>will tour to NZ in 2017</Text>
-                                            </View>
-                                        </Swiper>
-                                        <ButtonFeedback rounded onPress={()=>this.prev()} label='prev' style={{height: 30, width:60, backgroundColor: styleVar.brandLightColor,position:'absolute',left:20,bottom:20 }} />
-                                        <ButtonFeedback rounded onPress={()=>this.next()} label='next' style={{height: 30, width:60, backgroundColor: styleVar.brandLightColor,position:'absolute',right:20,bottom:20 }} />
-                                </View>
-                            </View>
-                        </View>
+                        </LinearGradient>
                     </Modal>
                 </View>
             </Container>
