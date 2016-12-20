@@ -63,8 +63,8 @@ class MyLions extends Component {
                 <View style={styles.container}>
                         <LionsHeader title='MY LIONS' />
                         <Content >
-                            <ImagePlaceholder height={376}>
-                                <Image resizeMode='cover'
+                            <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
+                                <Image resizeMode='stretch'
                                 source={require('../../../images/content/mylionsBanner.png')} style={styles.mylionsBanner}>
                                 </Image>
                             </ImagePlaceholder>

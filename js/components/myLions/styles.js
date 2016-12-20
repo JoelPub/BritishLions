@@ -380,7 +380,8 @@ module.exports = styleSheetCreate({
         fontSize:24
     },
     mylionsBanner: {
-        height: 376, 
+        height: styleVar.deviceWidth,
+        width:styleVar.deviceWidth, 
         justifyContent: 'flex-end',
         backgroundColor:'white'
     },
@@ -440,7 +441,11 @@ module.exports = styleSheetCreate({
         paddingTop:5
     },
     onboarding: {
-        flex:1
+        flex:1,
+        paddingTop:20,
+        android: {
+            paddingTop:0
+        }
     },
     btnClose: {
         backgroundColor:'rgb(130,4,23)',
@@ -448,8 +453,11 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right:0,
-        top:0,
-        paddingTop:10
+        top:20,
+        paddingTop:10,
+        android: {
+            top:0
+        }
     },
     btnCloseIcon: {
         fontSize:24,
@@ -460,6 +468,8 @@ module.exports = styleSheetCreate({
         textAlign:'center',
         fontSize:28,
         fontFamily: styleVar.fontCondensed,
+        backgroundColor:'transparent',
+        lineHeight:28,
     },
     onboardingPage: {
         paddingLeft:28,
