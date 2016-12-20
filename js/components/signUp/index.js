@@ -244,7 +244,7 @@ class SignUp extends Component {
                                             <Col style={{flexDirection:'row'}}>
                                                 <Text style={styles.switchLabelText}>I agree to </Text>
                                                 <ButtonFeedback onPress={() => this._pushNewRoute('terms')} style={styles.tncLink}>
-                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>Terms and Conditions</Text>
+                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>privacy policy</Text>
                                                 </ButtonFeedback>
                                             </Col>
                                         </Grid>

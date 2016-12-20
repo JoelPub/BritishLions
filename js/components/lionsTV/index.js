@@ -7,13 +7,13 @@ import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
+import StickyFooter from '../utility/stickyFooter'
 
 class LionsTV extends Component {
     constructor(props) {
@@ -52,37 +52,38 @@ class LionsTV extends Component {
                     {
                         this.state.isLoaded?
                             <Content>
-                                {
-                                    this.state.videosFeed.items.map(function(data, index) {
-                                        let year = data.snippet.publishedAt.substr(0,4)
-                                        let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
-                                        let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
-                                        let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
-                                        return (
-                                           <ButtonFeedback
-                                                style={styles.btn}
-                                                key={index}
-                                                onPress={() => this._drillDown(data, 'lionsTvDetails')}>
-                                                <Image
-                                                    source={require('../../../images/placeholder/banner.png')}
-                                                    style={styles.placeholderImage}>
-                                                    <Image source={{uri: data.snippet.thumbnails.standard.url}} style={styles.lionsTvGalleryImage}/>
-                                                </Image>
-                                                <View style={[shapes.triangle, {marginTop: -11}]} />
-                                                <View style={styles.lionsTvGalleryContent}>
-                                                    <Text numberOfLines={4} style={styles.headline}>
-                                                        {data.snippet.title ? data.snippet.title.toUpperCase() : ' '}
-                                                    </Text>
-                                                    <View style={styles.lionsTVDateWrapper}>
-                                                        <Icon name='md-time' style={ styles.timeIcon} />
-                                                        <Text style={styles.lionsTVDateText}> {`${day}/${month}/${year}`} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
+                                <StickyFooter>
+                                    {
+                                        this.state.videosFeed.items.map(function(data, index) {
+                                            let year = data.snippet.publishedAt.substr(0,4)
+                                            let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
+                                            let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
+                                            let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
+                                            return (
+                                               <ButtonFeedback
+                                                    style={styles.btn}
+                                                    key={index}
+                                                    onPress={() => this._drillDown(data, 'lionsTvDetails')}>
+                                                    <Image
+                                                        source={require('../../../images/placeholder/banner.png')}
+                                                        style={styles.placeholderImage}>
+                                                        <Image source={{uri: data.snippet.thumbnails.standard.url}} style={styles.lionsTvGalleryImage}/>
+                                                    </Image>
+                                                    <View style={[shapes.triangle, {marginTop: -11}]} />
+                                                    <View style={styles.lionsTvGalleryContent}>
+                                                        <Text numberOfLines={4} style={styles.headline}>
+                                                            {data.snippet.title ? data.snippet.title.toUpperCase() : ' '}
+                                                        </Text>
+                                                        <View style={styles.lionsTVDateWrapper}>
+                                                            <Icon name='md-time' style={ styles.timeIcon} />
+                                                            <Text style={styles.lionsTVDateText}> {`${day}/${month}/${year}`} at {new Date(data.snippet.publishedAt).toLocaleTimeString()}</Text>
+                                                        </View>
                                                     </View>
-                                                </View>
-                                            </ButtonFeedback>
-                                        )
-                                    }, this)
-                                }
-                                <LionsFooter isLoaded={this.props.isLoaded} />
+                                                </ButtonFeedback>
+                                            )
+                                        }, this)
+                                    }
+                                </StickyFooter>
                             </Content>
                         :
                             <ActivityIndicator
