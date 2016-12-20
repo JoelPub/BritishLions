@@ -351,7 +351,7 @@ class MyLionsPlayerDetails extends Component {
                             <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                             <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
                         </View>
-                        {
+                        {/*
                             this.props.detail.biog?
                                 <View style={styles.playerDesc}>
                                     <HTMLView
@@ -361,7 +361,8 @@ class MyLionsPlayerDetails extends Component {
                                 </View>
                             :
                                 null
-                        }
+
+                        */}
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter />
