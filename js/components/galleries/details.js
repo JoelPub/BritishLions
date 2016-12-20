@@ -64,7 +64,7 @@ class Gallery extends Component {
                     }).catch((err)=>{
                         alertBox(
                             '',
-                            'Sharing image to this APP is not supported',
+                            'Image is not shared',
                             'Dismiss'
                         )
                         callback()
