@@ -41,9 +41,21 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false,
             playerListFeeds: [],
+            playerListShow: [],
             favoritePlayers: [],
         }
-        this.nameFilter = ''
+        this.nameFilter = '',
+        this.playerPerPage = 40,
+        this.currentPage = 1
+    }
+
+    loadmore() {
+        let start=this.playerPerPage*this.currentPage
+        let end=this.state.playerListFeeds.length>this.playerPerPage*(this.currentPage+1)?this.playerPerPage*(this.currentPage+1):this.state.playerListFeeds.length
+        this.currentPage++
+        this.setState({
+            playerListShow:this.state.playerListShow.concat(this.state.playerListFeeds.slice(start,end))
+        })
     }
 
     _showDetail(item, route) {
@@ -99,7 +111,8 @@ class MyLionsPlayerList extends Component {
                 
                 this.setState({ 
                     playerListFeeds: playersFeed,
-                    favoritePlayers
+                    playerListShow: playersFeed.length>this.playerPerPage*this.currentPage?playersFeed.slice(0,this.playerPerPage*this.currentPage):playersFeed,
+                    favoritePlayers:favoritePlayers
                 })
             },
             onError: (res) => {
@@ -168,9 +181,7 @@ class MyLionsPlayerList extends Component {
             //split words
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
-                    this.nameFilter=item
-                    console.log('!!!this.nameFilter',this.nameFilter)
-            
+                    this.nameFilter=item            
                     this.searchResult=this.searchResult.concat(
                         playerFeeds.filter(filterName.bind(this))
                     )
@@ -339,7 +350,7 @@ class MyLionsPlayerList extends Component {
                             <Content>
                                 <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
                                     {
-                                        this._mapJSON(this.state.playerListFeeds).map((rowData, index) => {
+                                        this._mapJSON(this.state.playerListShow).map((rowData, index) => {
                                             return (
                                                 <Grid key={index}>
                                                     {
@@ -398,6 +409,12 @@ class MyLionsPlayerList extends Component {
                                                 </Grid>
                                             )
                                         }, this)
+
+                                    }
+                                    {
+
+                                        this.state.playerListFeeds.length>this.state.playerListShow.length && 
+                                        <ButtonFeedback rounded label='LOAD MORE PLAYERS' style={styles.button} onPress={() => this.loadmore()} />
                                     }
                                 </StickyFooter>
                             </Content>
