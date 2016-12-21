@@ -34,7 +34,6 @@ class MyLionsPlayerList extends Component {
         this.unionFeed = this.props.unionFeed
         this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
-        this.searchResult = []
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -43,6 +42,7 @@ class MyLionsPlayerList extends Component {
             playerListFeeds: [],
             playerListShow: [],
             favoritePlayers: [],
+            searchResult:[]
         }
         this.nameFilter = '',
         this.playerPerPage = 40,
@@ -148,7 +148,7 @@ class MyLionsPlayerList extends Component {
     }
 
     _searchPlayer = (keywords) => {
-        this.searchResult=[]
+        let searchResult=[]
         //strip out non alpha characters
         let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
         let strArr = strSearch.split(' ')
@@ -176,13 +176,13 @@ class MyLionsPlayerList extends Component {
 
         if (strSearch.trim() !== '') {
             //search exactly same name
-            this.searchResult = this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            searchResult = searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
             
             //split words
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
                     this.nameFilter=item            
-                    this.searchResult=this.searchResult.concat(
+                    searchResult=searchResult.concat(
                         playerFeeds.filter(filterName.bind(this))
                     )
                 })
@@ -190,7 +190,7 @@ class MyLionsPlayerList extends Component {
             
 
             //name contain keywords
-            this.searchResult=this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            searchResult=searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
@@ -200,39 +200,59 @@ class MyLionsPlayerList extends Component {
             }
 
             if (tempArr.length>0) {
-                this.searchResult = this.searchResult.concat(tempArr)
+                searchResult = searchResult.concat(tempArr)
             }
 
             //remove duplicate
-            this.searchResult.map((item,index)=>{
+            searchResult.map((item,index)=>{
                 let arr=[]
-                for(let j=index+1; j<this.searchResult.length; j++) {                    
-                    if(item.id===this.searchResult[j].id){
+                for(let j=index+1; j<searchResult.length; j++) {                    
+                    if(item.id===searchResult[j].id){
                         arr=arr.concat(j)
                     }
                 }
                 if (arr.length>0) {
                     arr.reverse().map((start,index)=>{
-                        this.searchResult.splice(start,1)
+                        searchResult.splice(start,1)
                     })
                 }
             })
 
-            this.searchResult.length > 0?  
+            searchResult.map((item,index)=>{
+                let image = item.image
+                if(typeof image==='string') {
+                   if (image.indexOf('125.gif') > 0) {
+                        searchResult[index].image = require(`../../../contents/unions/nations/125.png`)
+                    } else if (image.indexOf('126.gif') > 0) {
+                        searchResult[index].image = require(`../../../contents/unions/nations/126.png`)
+                    } else if (image.indexOf('127.gif') > 0) {
+                        searchResult[index].image = require(`../../../contents/unions/nations/127.png`)
+                    } else if (image.indexOf('128.gif') > 0) {
+                        searchResult[index].image = require(`../../../contents/unions/nations/128.png`)
+                    } else {
+                        searchResult[index].image = {uri:image}
+                    } 
+                }
+                
+            })
+
+            searchResult.length > 0?  
                 this.setState({
                     resultVisible: true,
-                    transparent: false
+                    transparent: false,
+                    searchResult: searchResult
                 }) 
             :
                 this.setState({
                     resultVisible: false,
-                    transparent: true
+                    transparent: true,
+                    searchResult: []
                 })
         } else {
-            this.searchResult = []
             this.setState({
                 resultVisible: false,
-                transparent: true
+                transparent: true,
+                searchResult: []
             })
         }
     }
@@ -321,14 +341,14 @@ class MyLionsPlayerList extends Component {
                             </View>
                             {this.state.resultVisible&&
                             <ScrollView>
-                                {this.searchResult.map((item,index)=>{
+                                {this.state.searchResult.map((item,index)=>{
                                     return(
                                         <View style={styles.resultRow} key={index}>
                                             <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(item,'myLionsPlayerDetails')}}>
                                                 <View style={styles.searchImg}>
                                                     <Image transparent
                                                         resizeMode='stretch'
-                                                        source={{uri:item.image}}
+                                                        source={item.image}
                                                         style={styles.playerImg}
                                                          />
                                                 </View>
@@ -367,17 +387,19 @@ class MyLionsPlayerList extends Component {
 
                                                             // check if they provide a gif image logo, then convert it to png
                                                             let image = item.image
-                                                            if (image.indexOf('125.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/125.png`)
-                                                            } else if (image.indexOf('126.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/126.png`)
-                                                            } else if (image.indexOf('127.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/127.png`)
-                                                            } else if (image.indexOf('128.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/128.png`)
-                                                            } else {
-                                                                image = {uri:image}
-                                                            } 
+                                                            if( typeof image ==='string') {
+                                                                if (image.indexOf('125.gif') > 0) {
+                                                                    image = require(`../../../contents/unions/nations/125.png`)
+                                                                } else if (image.indexOf('126.gif') > 0) {
+                                                                    image = require(`../../../contents/unions/nations/126.png`)
+                                                                } else if (image.indexOf('127.gif') > 0) {
+                                                                    image = require(`../../../contents/unions/nations/127.png`)
+                                                                } else if (image.indexOf('128.gif') > 0) {
+                                                                    image = require(`../../../contents/unions/nations/128.png`)
+                                                                } else {
+                                                                    image = {uri:image}
+                                                                } 
+                                                            }
 
                                                             return (
                                                                 <Col style={styles.gridBoxCol} key={key}>
