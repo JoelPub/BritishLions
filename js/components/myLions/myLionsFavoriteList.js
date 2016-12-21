@@ -41,8 +41,20 @@ class MyLionsFavoriteList extends Component {
         this.state = {
             isRefreshing: false,
             isLoaded: false,
-            favoritePlayers: []
-        }
+            favoritePlayers: [],
+            favoritePlayersShow: []
+        },
+        this.playerPerPage = 40,
+        this.currentPage = 1
+    }
+
+    loadmore() {
+        let start=this.playerPerPage*this.currentPage
+        let end=this.state.favoritePlayers.length>this.playerPerPage*(this.currentPage+1)?this.playerPerPage*(this.currentPage+1):this.state.favoritePlayers.length
+        this.currentPage++
+        this.setState({
+            favoritePlayersShow:this.state.favoritePlayersShow.concat(this.state.favoritePlayers.slice(start,end))
+        })
     }
 
     _listPlayer(playerList, playerFeed){
@@ -62,7 +74,9 @@ class MyLionsFavoriteList extends Component {
             }
         }
 
-        this.setState({ favoritePlayers })
+        this.setState({ 
+            favoritePlayers:favoritePlayers,
+            favoritePlayersShow:favoritePlayers.length>this.playerPerPage*this.currentPage?favoritePlayers.slice(0,this.playerPerPage*this.currentPage):favoritePlayers, })
     }
 
     _showError(error) {
@@ -171,7 +185,8 @@ class MyLionsFavoriteList extends Component {
             this.setState({
                 isRefreshing: false,
                 isLoaded: false,
-                favoritePlayers: []
+                favoritePlayers: [],
+                favoritePlayersShow: []
             }, () => {
                 this._fetchFavPlayers()
             })
@@ -263,7 +278,7 @@ class MyLionsFavoriteList extends Component {
                                 <Content>
                                     <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
                                         {
-                                            this._mapJSON(this.state.favoritePlayers).map((rowData, index) => {
+                                            this._mapJSON(this.state.favoritePlayersShow).map((rowData, index) => {
                                                 return (
                                                     <Grid key={index}>
                                                         {
@@ -308,6 +323,11 @@ class MyLionsFavoriteList extends Component {
                                                     </Grid>
                                                 )
                                             }, this)
+                                        }
+                                        {
+
+                                            this.state.favoritePlayers.length>this.state.favoritePlayersShow.length && 
+                                            <ButtonFeedback rounded label='LOAD MORE PLAYERS' style={styles.button} onPress={() => this.loadmore()} />
                                         }
                                     </StickyFooter>
                                 </Content>
