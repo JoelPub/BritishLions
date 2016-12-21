@@ -39,6 +39,9 @@ class MyLions extends Component {
     _myLions(){
         this._showList({}, 'myLionsFavoriteList')
     }
+    _mySquad(){
+        this.props.drillDown({}, 'mySquad')
+    }
 
     prev(){
         this.refs['swiper'].scrollBy(-1,true)
@@ -68,7 +71,7 @@ class MyLions extends Component {
                                 source={require('../../../images/content/mylionsBanner.png')} style={styles.mylionsBanner}>
                                 </Image>
                             </ImagePlaceholder>
-                            <ButtonFeedback rounded style={[styles.button,styles.btnMysquad]}>
+                            <ButtonFeedback rounded style={[styles.button,styles.btnMysquad]} onPress={() => this._mySquad()}>
                                 <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')} 
                                     style={styles.btnMysquadIcon}>
                                 </Image>
