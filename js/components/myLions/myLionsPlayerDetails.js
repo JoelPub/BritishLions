@@ -27,9 +27,9 @@ class MyLionsPlayerDetails extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
-        this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
+        this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.state = {

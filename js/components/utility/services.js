@@ -42,7 +42,7 @@ function errorHandler(error, opt) {
                 break
             case 400: // Bad Request (invalid data submitted)
             	if (errorType === 'invalid_grant') {
-            		errorDescription = 'invalid_grant' // refresh token failed
+            		errorDescription = 'The email and password do not match, Please verify and try again.' // refresh token failed
             	} else {
 	                if (modelState) {
 	                    errorDescription = errorSlice(modelState)

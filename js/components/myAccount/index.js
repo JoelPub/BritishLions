@@ -52,8 +52,8 @@ class MyAccount extends Component {
             theme: React.PropTypes.object,
         }
 
-        this.changePasswordServiceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/password/change'
-        this.changeEmailServiceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/email/change'
+        this.changePasswordServiceUrl = 'https://www.api-ukchanges2.co.uk/api/password/change'
+        this.changeEmailServiceUrl = 'https://www.api-ukchanges2.co.uk/api/email/change'
 
         // debounce
         this._onSuccessValidateEmail = debounce(this._onSuccessValidateEmail, 1000, {leading: true, maxWait: 0, trailing: false})

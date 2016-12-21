@@ -142,7 +142,7 @@ class LionsSidebar extends Component {
     }
 
     _refreshToken(route) {
-        let refreshTokenUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+        let refreshTokenUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
         
         if (!this.state.isAjaxRequesting) {  
             // if no requesting in service, then lets proceed

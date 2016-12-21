@@ -34,7 +34,7 @@ class MyLionsFavoriteList extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.uniondata = Data
 

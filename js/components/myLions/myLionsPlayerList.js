@@ -33,7 +33,7 @@ class MyLionsPlayerList extends Component {
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
             modalVisible: false,
