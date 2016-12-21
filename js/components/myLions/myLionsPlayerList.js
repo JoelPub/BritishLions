@@ -62,7 +62,7 @@ class MyLionsPlayerList extends Component {
 
     _signInRequired() {
         Alert.alert(
-            'An error occured',
+            'Your session has expired',
             'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
