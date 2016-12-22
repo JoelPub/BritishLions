@@ -23,7 +23,7 @@ import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
-import StickyFooter from '../utility/stickyFooter'
+import LionsFooter from '../global/lionsFooter'
 
 class MyLionsPlayerList extends Component {
 
@@ -69,6 +69,14 @@ class MyLionsPlayerList extends Component {
                     </View>
                 </ButtonFeedback>
             </View> 
+        )
+    }
+
+    _renderFooter() {
+        return(
+        <View style={{width:styleVar.deviceWidth}} >
+            <LionsFooter isLoaded={true} />
+        </View>
         )
     }
 
@@ -396,6 +404,7 @@ class MyLionsPlayerList extends Component {
                                 renderRow={this._renderRow.bind(this)}
                                 enableEmptySections = {true} 
                                 contentContainerStyle={styles.gridList}
+                                renderFooter ={this._renderFooter}
                               />
                         :
                             <ActivityIndicator style={loader.centered} size='large' />

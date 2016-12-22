@@ -26,7 +26,7 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
-import StickyFooter from '../utility/stickyFooter'
+import LionsFooter from '../global/lionsFooter'
 
 class MyLionsFavoriteList extends Component {
 
@@ -66,6 +66,14 @@ class MyLionsFavoriteList extends Component {
                     </View>
                 </ButtonFeedback>
             </View> 
+        )
+    }
+
+    _renderFooter() {
+        return(
+        <View style={{width:styleVar.deviceWidth}} >
+            <LionsFooter isLoaded={true} />
+        </View>
         )
     }
 
@@ -309,6 +317,7 @@ class MyLionsFavoriteList extends Component {
                                 renderRow={this._renderRow.bind(this)}
                                 enableEmptySections = {true} 
                                 contentContainerStyle={styles.gridList}
+                                renderFooter ={this._renderFooter}
                               />
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
