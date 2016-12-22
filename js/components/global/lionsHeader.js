@@ -79,6 +79,7 @@ class LionsHeader extends Component {
     getLogoHTML() {
         return (
             <Image
+                resizeMode='contain'
               	transparent
               	source={require('../../../images/header/logo.png')}
               	style={styles.logoHeader} />
