@@ -41,11 +41,7 @@ export function fetchContent(url):Action {
                     })
                     // Handling error (status > 300) -> default
                     .catch(function(error) {
-                        alertBox(
-                          'An Error Occured',
-                          'Something went wrong with your request. Please check your internet and try again later.',
-                          'Dismiss'
-                        )
+                       console.log("error:",error)
                     })
                 }
             })
