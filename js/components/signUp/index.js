@@ -46,7 +46,7 @@ class SignUp extends Component {
             theme: React.PropTypes.object,
         }
 
-        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/users'
+        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/users'
 
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})

@@ -34,15 +34,27 @@ class MyLionsFavoriteList extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.uniondata = Data
 
         this.state = {
             isRefreshing: false,
             isLoaded: false,
-            favoritePlayers: []
-        }
+            favoritePlayers: [],
+            favoritePlayersShow: []
+        },
+        this.playerPerPage = 40,
+        this.currentPage = 1
+    }
+
+    loadmore() {
+        let start=this.playerPerPage*this.currentPage
+        let end=this.state.favoritePlayers.length>this.playerPerPage*(this.currentPage+1)?this.playerPerPage*(this.currentPage+1):this.state.favoritePlayers.length
+        this.currentPage++
+        this.setState({
+            favoritePlayersShow:this.state.favoritePlayersShow.concat(this.state.favoritePlayers.slice(start,end))
+        })
     }
 
     _listPlayer(playerList, playerFeed){
@@ -62,7 +74,9 @@ class MyLionsFavoriteList extends Component {
             }
         }
 
-        this.setState({ favoritePlayers })
+        this.setState({ 
+            favoritePlayers:favoritePlayers,
+            favoritePlayersShow:favoritePlayers.length>this.playerPerPage*this.currentPage?favoritePlayers.slice(0,this.playerPerPage*this.currentPage):favoritePlayers, })
     }
 
     _showError(error) {
@@ -171,7 +185,8 @@ class MyLionsFavoriteList extends Component {
             this.setState({
                 isRefreshing: false,
                 isLoaded: false,
-                favoritePlayers: []
+                favoritePlayers: [],
+                favoritePlayersShow: []
             }, () => {
                 this._fetchFavPlayers()
             })
@@ -263,7 +278,7 @@ class MyLionsFavoriteList extends Component {
                                 <Content>
                                     <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
                                         {
-                                            this._mapJSON(this.state.favoritePlayers).map((rowData, index) => {
+                                            this._mapJSON(this.state.favoritePlayersShow).map((rowData, index) => {
                                                 return (
                                                     <Grid key={index}>
                                                         {
@@ -277,6 +292,21 @@ class MyLionsFavoriteList extends Component {
                                                                     country: union.displayname.toUpperCase(),
                                                                     isFav: true
                                                                 })
+                                                                // check if they provide a gif image logo, then convert it to png
+                                                                let image = item.image
+                                                                if( typeof image ==='string') {
+                                                                    if (image.indexOf('125.gif') > 0) {
+                                                                        image = require(`../../../contents/unions/nations/125.png`)
+                                                                    } else if (image.indexOf('126.gif') > 0) {
+                                                                        image = require(`../../../contents/unions/nations/126.png`)
+                                                                    } else if (image.indexOf('127.gif') > 0) {
+                                                                        image = require(`../../../contents/unions/nations/127.png`)
+                                                                    } else if (image.indexOf('128.gif') > 0) {
+                                                                        image = require(`../../../contents/unions/nations/128.png`)
+                                                                    } else {
+                                                                        image = {uri:image}
+                                                                    } 
+                                                                }
                                                                 
                                                                 return (
                                                                     <Col style={styles.gridBoxCol} key={key}>
@@ -288,7 +318,7 @@ class MyLionsFavoriteList extends Component {
                                                                                         height = {styleVar.deviceWidth / 2}>
                                                                                         <Image transparent
                                                                                             resizeMode='contain'
-                                                                                            source={{uri:item.image}}
+                                                                                            source={image}
                                                                                             style={styles.gridBoxImg} />
                                                                                     </ImagePlaceholder>
                                                                                 </View>
@@ -308,6 +338,11 @@ class MyLionsFavoriteList extends Component {
                                                     </Grid>
                                                 )
                                             }, this)
+                                        }
+                                        {
+
+                                            this.state.favoritePlayers.length>this.state.favoritePlayersShow.length && 
+                                            <ButtonFeedback rounded label='LOAD MORE PLAYERS' style={styles.button} onPress={() => this.loadmore()} />
                                         }
                                     </StickyFooter>
                                 </Content>
