@@ -2,7 +2,7 @@ export default [
     {
         "id": "1",
         "category": "principal partners",
-        "title": "STANDARD LIFE",
+        "title": "STANDARD LIFE INVESTMENTS",
         "url": "http://www.standardlifeinvestments.com",
         "partner": "",
         "label": "Visit the Standard Life Investments website",
@@ -59,7 +59,7 @@ export default [
         "title": "EY",
         "category": "principal partners",
         "url": "https://advisory.ey.com",
-        "partner": "",
+        "partner": "Digital and Analytics Partner",
         "label": "Visit the EY website",
         "image": require("./ey.jpg"),
         "banner": require("./banner/ey.jpg"),
