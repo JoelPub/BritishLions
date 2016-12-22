@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform } from 'react-native'
+import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform, ListView  } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -32,6 +32,7 @@ class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
         this.isUnMounted = false
         this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
@@ -41,9 +42,26 @@ class MyLionsFavoriteList extends Component {
         this.state = {
             isRefreshing: false,
             isLoaded: false,
-            favoritePlayers: []
+            favoritePlayers: [],
+            dataSource: this.ds.cloneWithRows([])
         }
     }
+
+    _renderRow(rowData, sectionID, rowID, highlightRow) {
+        return (
+            <View style={{
+              width:(styleVar.deviceWidth-30)/2,
+              height:250,
+        }}>                    
+                <Image 
+              source={{uri:rowData.image}} style={{        
+              width:(styleVar.deviceWidth-30)/2,       
+              height:230,
+      }}/>                    
+                <Text style={{fontSize:20,marginBottom:0}}>{rowData.name}</Text>
+            </View> 
+        )
+      }
 
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
@@ -62,7 +80,10 @@ class MyLionsFavoriteList extends Component {
             }
         }
 
-        this.setState({ favoritePlayers })
+        this.setState({
+        favoritePlayers: favoritePlayers,
+        dataSource: this.ds.cloneWithRows(favoritePlayers)
+        })
     }
 
     _showError(error) {
@@ -248,73 +269,15 @@ class MyLionsFavoriteList extends Component {
                     </LinearGradient>
                     {
                         this.state.isLoaded?
-                            <ScrollView
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={()=> { this._onRefresh() }}
-                                        tintColor = {refresh.tintColor}
-                                        title = {refresh.title}
-                                        titleColor = {refresh.titleColor}
-                                        colors = {refresh.colors}
-                                        progressBackgroundColor = {refresh.background}
-                                    />
-                                }>
-                                <Content>
-                                    <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
-                                        {
-                                            this._mapJSON(this.state.favoritePlayers).map((rowData, index) => {
-                                                return (
-                                                    <Grid key={index}>
-                                                        {
-                                                            rowData.map((item, key) => {
-                                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                                let union = this.uniondata.find((n)=> n.id===item.countryid)
-                                                                
-                                                                Object.assign(item, {
-                                                                    logo: union.image, 
-                                                                    country: union.displayname.toUpperCase(),
-                                                                    isFav: true
-                                                                })
-                                                                
-                                                                return (
-                                                                    <Col style={styles.gridBoxCol} key={key}>
-                                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item)}>
-                                                                            <View style={styles.gridBoxTouchableView}>
-                                                                                <View style={styleGridBoxImgWrapper}>
-                                                                                    <ImagePlaceholder 
-                                                                                        width = {styleVar.deviceWidth / 2}
-                                                                                        height = {styleVar.deviceWidth / 2}>
-                                                                                        <Image transparent
-                                                                                            resizeMode='contain'
-                                                                                            source={{uri:item.image}}
-                                                                                            style={styles.gridBoxImg} />
-                                                                                    </ImagePlaceholder>
-                                                                                </View>
-                                                                                <View style={styles.gridBoxDescWrapper}>
-                                                                                    <View style={[shapes.triangle]} />
-                                                                                    <View style={styleGridBoxTitle}>
-                                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
-                                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
-                                                                                    </View>
-                                                                                </View>
-                                                                            </View>
-                                                                        </ButtonFeedback>
-                                                                    </Col>
-                                                                )
-                                                            }, this)
-                                                        }
-                                                    </Grid>
-                                                )
-                                            }, this)
-                                        }
-                                    </StickyFooter>
-                                </Content>
-                            </ScrollView>
-                        :
+                            <ListView 
+                                dataSource={this.state.dataSource}
+                                renderRow={this._renderRow}
+                                enableEmptySections = {true} 
+                                contentContainerStyle={{flexDirection:'row', flexWrap:'wrap'}}
+                              />:
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
+                    
                     <EYSFooter />
                 </View>
             </Container>
