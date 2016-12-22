@@ -240,7 +240,9 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         height: 100,
         borderRightWidth: 1,
-        borderRightColor: gridBorderColor
+        borderRightColor: gridBorderColor,
+        borderTopWidth: 1,
+        borderTopColor: gridBorderColor
     },
     detailsGridColFull: {
         borderWidth: 1,
