@@ -73,13 +73,13 @@ module.exports = styleSheetCreate({
     },
     gridBoxTitleText: {
         fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        lineHeight: 24,
+        fontSize: 16,
+        lineHeight: 16,
         textAlign: 'center',
         paddingTop: 4,
         marginTop: -6,
         android: {
-            lineHeight: 30
+            lineHeight: 22
         }
     },
     gridBoxTitleSupportText: {
