@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform, ListView  } from 'react-native'
+import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -26,14 +26,13 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
-import StickyFooter from '../utility/stickyFooter'
+import LionsFooter from '../global/lionsFooter'
 
 class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-
         this.isUnMounted = false
         this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
@@ -42,31 +41,70 @@ class MyLionsFavoriteList extends Component {
         this.state = {
             isRefreshing: false,
             isLoaded: false,
-            favoritePlayers: [],
-            dataSource: this.ds.cloneWithRows([])
+            favoritePlayers: this.ds.cloneWithRows([])
         }
     }
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
         return (
-            <View style={{width:styleVar.deviceWidth/2, height:styleVar.deviceWidth/2+65, }}>
-                <ImagePlaceholder 
-                    width = {styleVar.deviceWidth / 2}
-                    height = {styleVar.deviceWidth / 2}>
-                    <Image transparent
-                        resizeMode='contain'
-                        source={{uri:rowData.image}} 
-                        style={styles.gridBoxImg} />
-                </ImagePlaceholder>
-                <View style={{marginTop:-12}}>
-                    <View style={[shapes.triangle]} />
-                    <View style={styles.gridBoxTitle}>
-                        <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                        <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+            <View style={styles.gridBoxCol}>
+                <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                    <ImagePlaceholder 
+                        width = {styleVar.deviceWidth / 2}
+                        height = {styleVar.deviceWidth / 2}>
+                        <Image transparent
+                            resizeMode='contain'
+                            source={rowData.image} 
+                            style={styles.gridBoxImg} />
+                    </ImagePlaceholder>
+                    <View style={styles.gridBoxDesc}>
+                        <View style={[shapes.triangle]} />
+                        <View style={styles.gridBoxTitle}>
+                            <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                        </View>
                     </View>
-                </View>
+                </ButtonFeedback>
             </View> 
         )
+    }
+
+    _renderFooter() {
+        return(
+        <View style={{width:styleVar.deviceWidth}} >
+            <LionsFooter isLoaded={true} />
+        </View>
+        )
+    }
+
+
+
+    handlePlayer(players) {
+        players.map((item,index)=>{
+            let image = item.image
+            let union = this.uniondata.find((n)=> n.id===item.countryid)
+            Object.assign(item, {
+                logo: union.image, 
+                country: union.displayname.toUpperCase(),
+                countryid: union.id,
+                isFav: true
+            })
+            if(typeof image==='string') {
+               if (image.indexOf('125.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/125.png`)
+                } else if (image.indexOf('126.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/126.png`)
+                } else if (image.indexOf('127.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/127.png`)
+                } else if (image.indexOf('128.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/128.png`)
+                } else {
+                    players[index].image = {uri:image}
+                } 
+            }
+            
+        })
+        return players
     }
 
     _listPlayer(playerList, playerFeed){
@@ -86,9 +124,8 @@ class MyLionsFavoriteList extends Component {
             }
         }
 
-        this.setState({
-        favoritePlayers: favoritePlayers,
-        dataSource: this.ds.cloneWithRows(favoritePlayers)
+        this.setState({ 
+            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(favoritePlayers))
         })
     }
 
@@ -198,7 +235,7 @@ class MyLionsFavoriteList extends Component {
             this.setState({
                 isRefreshing: false,
                 isLoaded: false,
-                favoritePlayers: []
+                favoritePlayers: this.ds.cloneWithRows([])
             }, () => {
                 this._fetchFavPlayers()
             })
@@ -230,7 +267,7 @@ class MyLionsFavoriteList extends Component {
 
     _signInRequired() {
         Alert.alert(
-            'An error occured',
+            'Your session has expired',
             'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
@@ -275,15 +312,16 @@ class MyLionsFavoriteList extends Component {
                     </LinearGradient>
                     {
                         this.state.isLoaded?
-                            <ListView 
-                                dataSource={this.state.dataSource}
-                                renderRow={this._renderRow}
+                             <ListView 
+                                dataSource={this.state.favoritePlayers}
+                                renderRow={this._renderRow.bind(this)}
                                 enableEmptySections = {true} 
-                                contentContainerStyle={{flexDirection:'row', flexWrap:'wrap'}}
-                              />:
+                                contentContainerStyle={styles.gridList}
+                                renderFooter ={this._renderFooter}
+                              />
+                        :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    
                     <EYSFooter />
                 </View>
             </Container>
