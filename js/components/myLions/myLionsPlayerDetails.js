@@ -315,10 +315,6 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.country}</Text>
                             </Col>
                         </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
-                            <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>{this.props.detail.honours}</Text>
-                        </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>
