@@ -35,7 +35,7 @@ class MyLionsFavoriteList extends Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
         this.isUnMounted = false
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
         this.uniondata = Data
 
@@ -49,19 +49,25 @@ class MyLionsFavoriteList extends Component {
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
         return (
-            <View style={{
-              width:(styleVar.deviceWidth-30)/2,
-              height:250,
-        }}>                    
-                <Image 
-              source={{uri:rowData.image}} style={{        
-              width:(styleVar.deviceWidth-30)/2,       
-              height:230,
-      }}/>                    
-                <Text style={{fontSize:20,marginBottom:0}}>{rowData.name}</Text>
+            <View style={{width:styleVar.deviceWidth/2, height:styleVar.deviceWidth/2+65, }}>
+                <ImagePlaceholder 
+                    width = {styleVar.deviceWidth / 2}
+                    height = {styleVar.deviceWidth / 2}>
+                    <Image transparent
+                        resizeMode='contain'
+                        source={{uri:rowData.image}} 
+                        style={styles.gridBoxImg} />
+                </ImagePlaceholder>
+                <View style={{marginTop:-12}}>
+                    <View style={[shapes.triangle]} />
+                    <View style={styles.gridBoxTitle}>
+                        <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
+                        <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                    </View>
+                </View>
             </View> 
         )
-      }
+    }
 
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
