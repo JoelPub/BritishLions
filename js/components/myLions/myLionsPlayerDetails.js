@@ -264,22 +264,6 @@ class MyLionsPlayerDetails extends Component {
             buttonText = this.state.isFav === true? 'REMOVE':'ADD'
         }
 
-        // check if they provide a gif image logo, then convert it to png
-        let image = this.props.detail.image
-        if(typeof image==='string') {
-            if (image.indexOf('125.gif') > 0) {
-                image = require(`../../../contents/unions/nations/125.png`)
-            } else if (image.indexOf('126.gif') > 0) {
-                image = require(`../../../contents/unions/nations/126.png`)
-            } else if (image.indexOf('127.gif') > 0) {
-                image = require(`../../../contents/unions/nations/127.png`)
-            } else if (image.indexOf('128.gif') > 0) {
-                image = require(`../../../contents/unions/nations/128.png`)
-            } else {
-                image = {uri:image}
-            } 
-        }
-
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -287,7 +271,7 @@ class MyLionsPlayerDetails extends Component {
 
                     <Content bounces={false}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={image} style={styles.imageCircle}/>
+                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
                             <View style={styles.headerPlayerDetails}>
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>

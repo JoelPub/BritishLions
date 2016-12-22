@@ -187,6 +187,10 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
+    gridBoxDesc: {        
+        width: styleVar.deviceWidth / 2,
+        marginTop:-12
+    },
     gridBoxDescWrapper: {        
         width: styleVar.deviceWidth / 2
     },
@@ -379,4 +383,12 @@ module.exports = styleSheetCreate({
     rtnIcon: {
         fontSize:24
     },
+    gridBoxCol:{
+        width:styleVar.deviceWidth/2, 
+        height:styleVar.deviceWidth/2+69, 
+    },
+    gridList:{
+        flexDirection:'row', 
+        flexWrap:'wrap'
+    }
 })
