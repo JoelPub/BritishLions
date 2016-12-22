@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform } from 'react-native'
+import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -26,13 +26,13 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
-import StickyFooter from '../utility/stickyFooter'
+import LionsFooter from '../global/lionsFooter'
 
 class MyLionsFavoriteList extends Component {
 
     constructor(props){
         super(props)
-
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
         this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
@@ -41,20 +41,70 @@ class MyLionsFavoriteList extends Component {
         this.state = {
             isRefreshing: false,
             isLoaded: false,
-            favoritePlayers: [],
-            favoritePlayersShow: []
-        },
-        this.playerPerPage = 40,
-        this.currentPage = 1
+            favoritePlayers: this.ds.cloneWithRows([])
+        }
     }
 
-    loadmore() {
-        let start=this.playerPerPage*this.currentPage
-        let end=this.state.favoritePlayers.length>this.playerPerPage*(this.currentPage+1)?this.playerPerPage*(this.currentPage+1):this.state.favoritePlayers.length
-        this.currentPage++
-        this.setState({
-            favoritePlayersShow:this.state.favoritePlayersShow.concat(this.state.favoritePlayers.slice(start,end))
+    _renderRow(rowData, sectionID, rowID, highlightRow) {
+        return (
+            <View style={styles.gridBoxCol}>
+                <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                    <ImagePlaceholder 
+                        width = {styleVar.deviceWidth / 2}
+                        height = {styleVar.deviceWidth / 2}>
+                        <Image transparent
+                            resizeMode='contain'
+                            source={rowData.image} 
+                            style={styles.gridBoxImg} />
+                    </ImagePlaceholder>
+                    <View style={styles.gridBoxDesc}>
+                        <View style={[shapes.triangle]} />
+                        <View style={styles.gridBoxTitle}>
+                            <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                        </View>
+                    </View>
+                </ButtonFeedback>
+            </View> 
+        )
+    }
+
+    _renderFooter() {
+        return(
+        <View style={{width:styleVar.deviceWidth}} >
+            <LionsFooter isLoaded={true} />
+        </View>
+        )
+    }
+
+
+
+    handlePlayer(players) {
+        players.map((item,index)=>{
+            let image = item.image
+            let union = this.uniondata.find((n)=> n.id===item.countryid)
+            Object.assign(item, {
+                logo: union.image, 
+                country: union.displayname.toUpperCase(),
+                countryid: union.id,
+                isFav: true
+            })
+            if(typeof image==='string') {
+               if (image.indexOf('125.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/125.png`)
+                } else if (image.indexOf('126.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/126.png`)
+                } else if (image.indexOf('127.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/127.png`)
+                } else if (image.indexOf('128.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/128.png`)
+                } else {
+                    players[index].image = {uri:image}
+                } 
+            }
+            
         })
+        return players
     }
 
     _listPlayer(playerList, playerFeed){
@@ -75,8 +125,8 @@ class MyLionsFavoriteList extends Component {
         }
 
         this.setState({ 
-            favoritePlayers:favoritePlayers,
-            favoritePlayersShow:favoritePlayers.length>this.playerPerPage*this.currentPage?favoritePlayers.slice(0,this.playerPerPage*this.currentPage):favoritePlayers, })
+            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(favoritePlayers))
+        })
     }
 
     _showError(error) {
@@ -185,8 +235,7 @@ class MyLionsFavoriteList extends Component {
             this.setState({
                 isRefreshing: false,
                 isLoaded: false,
-                favoritePlayers: [],
-                favoritePlayersShow: []
+                favoritePlayers: this.ds.cloneWithRows([])
             }, () => {
                 this._fetchFavPlayers()
             })
@@ -263,90 +312,13 @@ class MyLionsFavoriteList extends Component {
                     </LinearGradient>
                     {
                         this.state.isLoaded?
-                            <ScrollView
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={()=> { this._onRefresh() }}
-                                        tintColor = {refresh.tintColor}
-                                        title = {refresh.title}
-                                        titleColor = {refresh.titleColor}
-                                        colors = {refresh.colors}
-                                        progressBackgroundColor = {refresh.background}
-                                    />
-                                }>
-                                <Content>
-                                    <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
-                                        {
-                                            this._mapJSON(this.state.favoritePlayersShow).map((rowData, index) => {
-                                                return (
-                                                    <Grid key={index}>
-                                                        {
-                                                            rowData.map((item, key) => {
-                                                                let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                                                let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                                let union = this.uniondata.find((n)=> n.id===item.countryid)
-                                                                
-                                                                Object.assign(item, {
-                                                                    logo: union.image, 
-                                                                    country: union.displayname.toUpperCase(),
-                                                                    isFav: true
-                                                                })
-                                                                // check if they provide a gif image logo, then convert it to png
-                                                                let image = item.image
-                                                                if( typeof image ==='string') {
-                                                                    if (image.indexOf('125.gif') > 0) {
-                                                                        image = require(`../../../contents/unions/nations/125.png`)
-                                                                    } else if (image.indexOf('126.gif') > 0) {
-                                                                        image = require(`../../../contents/unions/nations/126.png`)
-                                                                    } else if (image.indexOf('127.gif') > 0) {
-                                                                        image = require(`../../../contents/unions/nations/127.png`)
-                                                                    } else if (image.indexOf('128.gif') > 0) {
-                                                                        image = require(`../../../contents/unions/nations/128.png`)
-                                                                    } else {
-                                                                        image = {uri:image}
-                                                                    } 
-                                                                }
-                                                                
-                                                                return (
-                                                                    <Col style={styles.gridBoxCol} key={key}>
-                                                                        <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchableLeft]} onPress={() => this._showDetail(item)}>
-                                                                            <View style={styles.gridBoxTouchableView}>
-                                                                                <View style={styleGridBoxImgWrapper}>
-                                                                                    <ImagePlaceholder 
-                                                                                        width = {styleVar.deviceWidth / 2}
-                                                                                        height = {styleVar.deviceWidth / 2}>
-                                                                                        <Image transparent
-                                                                                            resizeMode='contain'
-                                                                                            source={image}
-                                                                                            style={styles.gridBoxImg} />
-                                                                                    </ImagePlaceholder>
-                                                                                </View>
-                                                                                <View style={styles.gridBoxDescWrapper}>
-                                                                                    <View style={[shapes.triangle]} />
-                                                                                    <View style={styleGridBoxTitle}>
-                                                                                        <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
-                                                                                        <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
-                                                                                    </View>
-                                                                                </View>
-                                                                            </View>
-                                                                        </ButtonFeedback>
-                                                                    </Col>
-                                                                )
-                                                            }, this)
-                                                        }
-                                                    </Grid>
-                                                )
-                                            }, this)
-                                        }
-                                        {
-
-                                            this.state.favoritePlayers.length>this.state.favoritePlayersShow.length && 
-                                            <ButtonFeedback rounded label='LOAD MORE PLAYERS' style={styles.button} onPress={() => this.loadmore()} />
-                                        }
-                                    </StickyFooter>
-                                </Content>
-                            </ScrollView>
+                             <ListView 
+                                dataSource={this.state.favoritePlayers}
+                                renderRow={this._renderRow.bind(this)}
+                                enableEmptySections = {true} 
+                                contentContainerStyle={styles.gridList}
+                                renderFooter ={this._renderFooter}
+                              />
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }

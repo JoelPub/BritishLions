@@ -71,7 +71,7 @@ class MyLions extends Component {
                                                 let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
                                                 
                                                 return (
-                                                    <Col style={styles.gridBoxCol} key={key}>
+                                                    <Col  key={key}>
                                                         <ButtonFeedback
                                                             style={styles.gridBoxTouchable}
                                                             onPress={() => this._showList({

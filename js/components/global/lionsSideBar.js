@@ -179,7 +179,7 @@ class LionsSidebar extends Component {
                     onError: (error) => {
                         if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                        if (error === 'invalid_grant') {
+                        if (error === 'The email and password do not match, Please verify and try again.') {
                             // token failed to update, ask user to sign in again
                             this._askToSignIn()
                         } else {
