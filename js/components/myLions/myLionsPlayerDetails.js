@@ -27,9 +27,9 @@ class MyLionsPlayerDetails extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
-        this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
+        this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.state = {
@@ -51,7 +51,7 @@ class MyLionsPlayerDetails extends Component {
 
     _signInRequired() {
         Alert.alert(
-            'An error occured',
+            'Your session has expired',
             'Please sign in your account.',
             [{
                 text: 'SIGN IN', 
@@ -266,17 +266,19 @@ class MyLionsPlayerDetails extends Component {
 
         // check if they provide a gif image logo, then convert it to png
         let image = this.props.detail.image
-        if (image.indexOf('125.gif') > 0) {
-            image = require(`../../../contents/unions/nations/125.png`)
-        } else if (image.indexOf('126.gif') > 0) {
-            image = require(`../../../contents/unions/nations/126.png`)
-        } else if (image.indexOf('127.gif') > 0) {
-            image = require(`../../../contents/unions/nations/127.png`)
-        } else if (image.indexOf('128.gif') > 0) {
-            image = require(`../../../contents/unions/nations/128.png`)
-        } else {
-            image = {uri:image}
-        } 
+        if(typeof image==='string') {
+            if (image.indexOf('125.gif') > 0) {
+                image = require(`../../../contents/unions/nations/125.png`)
+            } else if (image.indexOf('126.gif') > 0) {
+                image = require(`../../../contents/unions/nations/126.png`)
+            } else if (image.indexOf('127.gif') > 0) {
+                image = require(`../../../contents/unions/nations/127.png`)
+            } else if (image.indexOf('128.gif') > 0) {
+                image = require(`../../../contents/unions/nations/128.png`)
+            } else {
+                image = {uri:image}
+            } 
+        }
 
         return (
             <Container theme={theme}>
@@ -351,7 +353,7 @@ class MyLionsPlayerDetails extends Component {
                             <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                             <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
                         </View>
-                        {
+                        {/*
                             this.props.detail.biog?
                                 <View style={styles.playerDesc}>
                                     <HTMLView
@@ -361,7 +363,8 @@ class MyLionsPlayerDetails extends Component {
                                 </View>
                             :
                                 null
-                        }
+
+                        */}
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter />

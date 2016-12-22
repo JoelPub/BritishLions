@@ -40,7 +40,7 @@ class ForgotPassword extends Component {
             theme: React.PropTypes.object
         }
 
-        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/password/reset'
+        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/password/reset'
 
         // debounce
         this._onValidateSuccess = debounce(this._onValidateSuccess, 1000, {leading: true, maxWait: 0, trailing: false})

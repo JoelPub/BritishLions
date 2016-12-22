@@ -89,7 +89,7 @@ class AppNavigator extends Component {
     constructor(props){
         super(props)
 
-        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
     }
 
     _refreshToken() {    

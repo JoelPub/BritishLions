@@ -4,15 +4,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Alert } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
+import { service } from '../utility/services'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
-import { removeToken, getAccessToken } from '../utility/asyncStorageServices'
+import { removeToken, checkIfLogin, generateLoginExpiration, getRefreshToken, updateToken } from '../utility/asyncStorageServices'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
 import { debounce } from 'lodash'
+import { alertBox } from '../utility/alertBox'
 
 const styles = styleSheetCreate({
     background: {
@@ -96,8 +98,15 @@ class LionsSidebar extends Component {
     constructor(props) {
         super(props)
 
-        // debounce
+        this.isUnMounted = false
+        this.state = {
+            isAjaxRequesting: false,
+            routeRequesting: ''
+        }
+
+        // debounce event
         this.navigateTo = debounce(this.navigateTo, 1000, {leading: true, maxWait: 0, trailing: false})
+        this._requireSignIn = debounce(this._requireSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     navigateTo(route) {
@@ -106,6 +115,7 @@ class LionsSidebar extends Component {
         }, 400)
         this.props.closeDrawer()
     }
+
     resetRoute(route) {
         setTimeout(() => {
           this.props.resetRoute(route)
@@ -113,16 +123,115 @@ class LionsSidebar extends Component {
         this.props.closeDrawer()
     }
 
+    _reLogin() {
+        this.navigateTo('login')
+    }
+
+    _askToSignIn() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        
+        Alert.alert(
+            'Your session has expired',
+            'Please sign in your account again.',
+            [{
+                text: 'SIGN IN',
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+    _refreshToken(route) {
+        let refreshTokenUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
+        
+        if (!this.state.isAjaxRequesting) {  
+            // if no requesting in service, then lets proceed
+
+            getRefreshToken().then((refreshToken) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                service({
+                    url: refreshTokenUrl,
+                    data: {
+                        'refresh_token': refreshToken,
+                        'grant_type': 'refresh_token'
+                    },
+                    onAxiosStart: () => {
+                        if (this.isUnMounted) return // return nothing if the component is already unmounted
+                        this.setState({ isAjaxRequesting: true, routeRequesting: route })
+                    },
+                    onAxiosEnd: () => {
+                        if (this.isUnMounted) return // return nothing if the component is already unmounted
+                        this.setState({ isAjaxRequesting: false, routeRequesting: '' })
+                    },
+                    onSuccess: (res) => {
+                        if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                        // successfully refresh the token
+                        let accessToken = res.data.access_token
+                        let refreshToken = res.data.refresh_token
+                        
+                        // then lets update user's token 
+                        updateToken(accessToken, refreshToken)
+                        // then navigate user to the page route
+                        this.navigateTo(route)
+                    },
+                    onError: (error) => {
+                        if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                        if (error === 'invalid_grant') {
+                            // token failed to update, ask user to sign in again
+                            this._askToSignIn()
+                        } else {
+                            alertBox(
+                                'An Error Occured',
+                                error,
+                                'Dismiss'
+                            )
+                        }
+                    }
+                })
+            }).catch((error) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                // We can't get the existing refresh token of the user here
+                // ask user to sign in again
+                this._askToSignIn()
+            })
+        }
+    }
+
     _requireSignIn(route) {
         if (this.props.isAccessGranted) {
-            this.navigateTo(route)
+            // user still logged in, then we need check if user's token still valid
+            checkIfLogin().then((isTokenValid) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                if (isTokenValid) {
+                    // still token is valid
+                    this.navigateTo(route)
+                } else {
+                    // token was expired, let refresh the token
+                    this._refreshToken(route)
+                }
+            }).catch((error) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                // token was expired, let refresh the token
+                this._refreshToken()
+            })
         } else {
+            // user is not logged it, then we redirect it to login page
             this.navigateTo('login')
         }
     }
     
     shouldComponentUpdate(nextProps, nextState) {
         return true
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     _signOut() {
@@ -141,6 +250,18 @@ class LionsSidebar extends Component {
     }
 
     render(){
+        let labelMyAccount = 'MY ACCOUNT'
+        let labelMyLions = 'MY LIONS'
+
+        if (this.state.isAjaxRequesting) {
+            if (this.state.routeRequesting === 'myAccount') {
+                labelMyAccount = 'VIEWING..'
+            } 
+            if (this.state.routeRequesting === 'myLions') {
+                labelMyLions = 'VIEWING..'
+            }
+        }
+
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
@@ -162,7 +283,7 @@ class LionsSidebar extends Component {
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this._requireSignIn('myLions')} style={styles.links}>
                         <Icon name='md-heart' style={styles.icon} />
-                        <Text style={styles.linkText}>MY LIONS</Text>
+                        <Text style={styles.linkText}>{labelMyLions}</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsStore')} style={styles.links}>
                         <Icon name='md-ribbon' style={styles.icon} />
@@ -203,9 +324,9 @@ class LionsSidebar extends Component {
                           :
                               <Grid>
                                   <Col size={55}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this.navigateTo('myAccount')}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this._requireSignIn('myAccount')}>
                                           <Icon name='md-contact' style={styles.footerLinkIcon} />
-                                          <Text style={styles.footerLinkText}>MY ACCOUNT</Text>
+                                          <Text style={styles.footerLinkText}>{labelMyAccount}</Text>
                                       </ButtonFeedback>
                                   </Col>
                                   <Col size={45}>

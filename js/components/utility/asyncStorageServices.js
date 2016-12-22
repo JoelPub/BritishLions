@@ -6,9 +6,15 @@ const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
 export async function updateToken(accessTokenID, refreshTokenID) {
+    let loginExpired = generateLoginExpiration().toString()
+    
     try {
         await AsyncStorage.setItem('ACCESS_TOKEN', accessTokenID)
         await AsyncStorage.setItem('REFRESH_TOKEN', refreshTokenID)
+
+        if (loginExpired) {
+            await AsyncStorage.setItem('LOGIN_EXPIRED', loginExpired)
+        }
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -42,3 +48,40 @@ export async function getRefreshToken() {
       return result
     })
 }
+
+
+function getDateNow() {
+    let dateNow = new Date // current time and date
+    //dateNow = 'Tue Dec 21 2016 19:17:59 GMT+0800 (PHT)'
+    //console.log('dateNow: ', dateNow)
+    return Date.parse(dateNow)
+}
+
+function generateLoginExpiration() {
+    let dateNow = getDateNow()
+    let dateExpired = new Date
+
+    // add 3hours and 50minutes
+    dateExpired = dateExpired.setHours(dateExpired.getHours() + 3, dateExpired.getMinutes() + 50)
+    //console.log('dateExpired: ', new Date(dateExpired))
+    return dateExpired
+}
+
+export async function checkIfLogin() {
+    let dateNow = getDateNow()
+    let distance = 0
+    let dateExpired  = await AsyncStorage.getItem('LOGIN_EXPIRED')
+    
+    dateExpired = parseFloat(dateExpired)
+    distance = dateExpired - dateNow
+
+    if (distance > 0) {
+        return true  // token still valid
+    }
+
+    // the token was expired
+    return false
+}
+
+
+

@@ -46,7 +46,7 @@ class SignUp extends Component {
             theme: React.PropTypes.object,
         }
 
-        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/users'
+        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/users'
 
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
@@ -244,7 +244,7 @@ class SignUp extends Component {
                                             <Col style={{flexDirection:'row'}}>
                                                 <Text style={styles.switchLabelText}>I agree to </Text>
                                                 <ButtonFeedback onPress={() => this._pushNewRoute('terms')} style={styles.tncLink}>
-                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>Terms and Conditions</Text>
+                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>privacy policy</Text>
                                                 </ButtonFeedback>
                                             </Col>
                                         </Grid>
