@@ -187,9 +187,12 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
-    gridBoxDescWrapper: {        
+    gridBoxDesc: {        
         width: styleVar.deviceWidth / 2,
         marginTop:-12
+    },
+    gridBoxDescWrapper: {        
+        width: styleVar.deviceWidth / 2
     },
     gridBoxTitle: {
         position: 'relative',

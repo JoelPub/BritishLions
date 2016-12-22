@@ -60,7 +60,7 @@ class MyLionsPlayerList extends Component {
                             source={rowData.image} 
                             style={styles.gridBoxImg} />
                     </ImagePlaceholder>
-                    <View style={styles.gridBoxDescWrapper}>
+                    <View style={styles.gridBoxDesc}>
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
