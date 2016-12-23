@@ -24,6 +24,7 @@ import { drillDown } from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
+import { getAssembledUrl } from '../utility/urlStorage'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
@@ -35,7 +36,7 @@ class MyLionsFavoriteList extends Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
         this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
-        this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
+        this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
         this.uniondata = Data
 
         this.state = {
