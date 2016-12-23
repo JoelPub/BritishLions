@@ -6,7 +6,7 @@ import { setAccessGranted } from './actions/token'
 import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View, Alert } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
@@ -46,6 +46,7 @@ import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBac
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
+import Storage from 'react-native-storage'
 
 Navigator.prototype.replaceWithAnimation = function (route) {
     const activeLength = this.state.presentedIndex + 1
@@ -134,6 +135,14 @@ class AppNavigator extends Component {
     }
 
     componentDidMount() {
+        var storage = new Storage({
+            size: 10000,
+            storageBackend: AsyncStorage,
+            defaultExpires: 1000 * 3600 * 24,
+            enableCache: true,
+        })
+        global.storage = storage
+
         globalNav.navigator = this._navigator
 
         this.props.store.subscribe(() => {

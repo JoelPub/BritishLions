@@ -28,6 +28,7 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 
 class MyLionsFavoriteList extends Component {
 
@@ -111,7 +112,7 @@ class MyLionsFavoriteList extends Component {
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
         let playerids = playerList.split('|')
-        
+
         for (var u in playerFeed) {
             if (playerFeed[u].length > 0) {
                 playerFeed[u].map((player, index) => {
@@ -125,7 +126,9 @@ class MyLionsFavoriteList extends Component {
             }
         }
 
-        this.setState({ 
+        this.setState({
+            isLoaded: true,
+            isRefreshing: false,
             favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(favoritePlayers))
         })
     }
@@ -136,40 +139,6 @@ class MyLionsFavoriteList extends Component {
             error,
             'Dismiss'
         )
-    }
-
-    _getFavDetail(playerList) {
-        let options = {
-            url: this.playerFullUrl,
-            data: {},
-            method: 'get',
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this.setState({ isLoaded: true, isRefreshing: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this._listPlayer(playerList, res.data)
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this.setState({ isLoaded: true, isRefreshing: false }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this._signInRequired()
-            },
-            isRequiredToken: true
-        }
-
-        service(options)
     }
 
     _fetchFavPlayers(isInitialLoad = false) {
@@ -190,9 +159,14 @@ class MyLionsFavoriteList extends Component {
             onAxiosEnd: () => {},
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-
                 if (res.data !== '') {
-                    this._getFavDetail(res.data)
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this._listPlayer(res.data, catchedFullPlayerList)
+                        }
+                    }).catch((error) => {
+                        console.warn('Error when try to get the sotic full player list', error)
+                    })
                 } else {
                     // empty favorite player list
                     this.setState({ isLoaded: true, isRefreshing: false }, () => {

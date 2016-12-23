@@ -92,7 +92,7 @@ class LionsHeader extends Component {
         let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
 
         return (
-            <Header>
+            <Header style={{zIndex:9999}}>
                 {backArrowSwitch}
 
                 <Text style={styles.textHeader}>{title}</Text>
