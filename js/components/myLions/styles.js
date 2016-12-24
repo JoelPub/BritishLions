@@ -526,5 +526,23 @@ module.exports = styleSheetCreate({
     gridList:{
         flexDirection:'row', 
         flexWrap:'wrap'
+    },
+    unionsHeader:{
+        height:60,
+        backgroundColor:'white',
+        borderBottomColor: 'rgb(216, 217, 218)',
+        borderBottomWidth: 1,
+    },
+    unionsHeaderText:{
+        width:styleVar.deviceWidth,
+        color: 'rgb(175, 0, 30)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        textAlign:'center',
+        paddingTop:25,
+        android: {
+            paddingTop:20
+        }
+
     }
 })
