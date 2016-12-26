@@ -24,6 +24,7 @@ import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import LionsFooter from '../global/lionsFooter'
+import { getPlayersByUnion} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 
 class MyLionsPlayerList extends Component {
 
@@ -33,7 +34,7 @@ class MyLionsPlayerList extends Component {
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
-        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        //this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
         this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
@@ -161,7 +162,7 @@ class MyLionsPlayerList extends Component {
     }
 
     _getFavoritePlayers(playersByNation) {
-        this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
+        this.playerListFeeds = this.handlePlayer(playersByNation)
         let options = {
             url: this.favUrl,
             data: {},
@@ -326,27 +327,16 @@ class MyLionsPlayerList extends Component {
     }
 
     componentDidMount() {
-        let options = {
-            url: this.unionUrl,
-            data: {},
-            method: 'get',
-            onAxiosStart: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isLoaded: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this._getFavoritePlayers(res.data)
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isLoaded: true }, () => {
-                    this._showError(res) // prompt error
-                })
-            }
-        }
-
-        service(options)
+        setTimeout(()=>{
+        getPlayersByUnion(this.unionFeed.unionId).then((cachedPlayerList)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            this._getFavoritePlayers(cachedPlayerList)
+        }).catch((error)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            this.setState({ isLoaded: true }, () => {
+                this._showError(error) // prompt error
+            })
+        })},600)
     }
 
     componentWillUnmount() {
@@ -354,21 +344,29 @@ class MyLionsPlayerList extends Component {
     }
 
     render() {
-      // Later on in your styles..
-
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    {this.state.isLoaded&&
+                                    <Content bounces={false}>
 
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-                        <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
-                            <Icon name='md-search' style={styles.searchIcon}/>
-                        </ButtonFeedback>
-                    </LinearGradient>
+                    {this.state.isLoaded&&
+                    <View>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                            <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
+
+                        </LinearGradient>
+                        <View style={styles.unionsPlayerListingBar}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
+                                <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
+                            </ButtonFeedback>
+
+                            <ButtonFeedback onPress={()=>{}} style={styles.unionsPlayerListingFilterButton}>
+                                <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
+                            </ButtonFeedback>
+                        </View>
+                    </View>
                     }
 
                     <FilterListingModal
@@ -410,6 +408,8 @@ class MyLionsPlayerList extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
                     <EYSFooter />
+                                    </Content>
+
                 </View>
             </Container>
         )

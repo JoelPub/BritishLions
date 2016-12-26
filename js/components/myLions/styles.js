@@ -543,6 +543,52 @@ module.exports = styleSheetCreate({
         android: {
             paddingTop:20
         }
+    },
 
+    unionsPlayerListingBar:{
+        height:80,
+        backgroundColor:'white',
+        borderBottomColor: 'rgb(216, 217, 218)',
+        borderBottomWidth: 1,
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    unionsPlayerListingSearchButton:{
+        left:43,
+        width:132,
+        height:50,
+        backgroundColor: 'rgb(208, 7, 41)',
+        marginTop:14,
+        borderRadius:25,
+    },
+    unionsPlayerListingSearchText:{
+        alignSelf: 'center',
+        color:'white',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 17,
+        android:{
+            paddingTop: 13,
+        }
+    },
+    unionsPlayerListingFilterButton:{
+        right:43,
+        width:132,
+        height:50,
+        backgroundColor: 'rgb(95, 96, 98)',
+        textAlign:'center',
+        marginTop:14,
+        borderRadius:25,
+
+    },
+    unionsPlayerListingFilterText:{
+        alignSelf: 'center',
+        color:'white',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 17,
+        android:{
+            paddingTop: 13,
+        }
     }
 })

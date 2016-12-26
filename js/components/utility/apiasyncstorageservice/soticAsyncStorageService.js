@@ -65,5 +65,14 @@ export async function getSoticFullPlayerList() {
         })
 }
 
+export async function getPlayersByUnion(uninonId)
+{
+   return await getSoticFullPlayerList().then((catchedFullPlayerList) => {
+        return catchedFullPlayerList[uninonId]
+    }).catch((error) => {
+        console.warn('Error when try to get the sotic full player list by union', error)
+    })
+}
+
 
 
