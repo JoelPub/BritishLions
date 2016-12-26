@@ -40,6 +40,16 @@ export default class EYFooter extends Component {
         return (
 
               <View style={styles.sponsoredEYContainer}>
+                {this.props.mySquadBtn&&
+                <View style={{flexDirection:'row'}}>
+                    <Image
+                        resizeMode='contain'
+                        transparent
+                        source={require('../../../images/header/logo.png')}
+                        style={{width: 27, height: 34, marginLeft: 10,  backgroundColor: 'transparent', }} />
+                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(255,255,255)',fontSize:24,marginTop:5,paddingLeft:5}}>MY SQUAD</Text>
+                </View>
+                }
                 <Text style={styles.sponsoredEYText}>Sponsored by</Text>
                 <Image source={require('../../../images/footer/eyLogo.png')} style={styles.sponsoredEYLogo}></Image>
               </View>

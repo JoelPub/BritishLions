@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert } from 'react-native'
+import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Modal } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -36,6 +36,8 @@ class MySquad extends Component {
     constructor(props){
         super(props)
         this.state={
+            modalVisible: false,
+            modalClear:false,
             showScoreCard:false
         }
     }
@@ -57,16 +59,17 @@ class MySquad extends Component {
         })
 
     }
-    renderPagination = (index, total, context) => {
-            return (
-                <View style={{position: 'absolute',flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,top: 0,right:0, borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                  <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>Forwards</Text>
-                  <Text style={{color:'rgb(175,0,30)',textAlign:'right',fontFamily: styleVar.fontCondensed,fontSize:24}}>
-                    {(index + 1)*3} / 16
-                  </Text>
-                </View>
-            )
+    _setModalVisible=(visible) => {
+        this.setState({
+            modalVisible:visible,
+        })
     }
+    _setModalClear=(visible) => {
+        this.setState({
+            modalClear:visible,
+        })
+    }
+
     render() {
         return (
             <Container theme={theme}>
@@ -88,60 +91,71 @@ class MySquad extends Component {
                                 </View>
                             </View>
                             :
-                            <View ref='scorecard' style={{paddingTop:30,backgroundColor:'rgb(95,96,98)',height:619}}>
-                                <ButtonFeedback 
-                                    style={{height:28,width:28,borderRadius:14,backgroundColor:'rgb(255,255,255)',
-                                            position:'absolute',right:4,top:4}}>
-                                    <Icon name='md-information-circle' style={{fontSize:28, textAlign:'center',color:'rgb(95,96,98)',}}/>
-                                </ButtonFeedback>
-                                <View style={{paddingHorizontal:10}}>
-                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,textAlign:'center'}}>Congratulations. Your squad has earned the following rating.</Text>
-                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,textAlign:'center'}}>Check back tomorrow for your individual ranking.</Text>
-                                </View>
-                                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',borderTopWidth:1,borderColor:'rgb(216,217,218)',
-                                            marginTop:45,paddingVertical:19}}>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28}}>OVERALL RATING</Text>
-                                    <View style={{marginLeft:10,height:70,width:70,borderRadius:35,backgroundColor:'rgb(255,230,0)',justifyContent:'center',alignItems:'center'}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,color:'rgb(95,96,98)'}}>350</Text>
-                                    </View>
-                                </View>
-                                <View style={{height:105,borderTopWidth:1,borderColor:'rgb(216,217,218)',padding:25}}>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,textAlign:'left'}}>COHESION</Text>
-                                    <View style={{flexDirection:'row',flex:1,alignItems:'center',height:50}}>
-                                        <View style={{flex:4}}>
-                                            <View style={{height:8,backgroundColor:'rgb(128,128,128)',width:220}}></View>
-                                            <View style={{height:8,backgroundColor:'rgb(255,230,0)',width:177,borderRadius:4,marginTop:-8}}></View>
-                                        </View>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:44,lineHeight:48,color:'rgb(255,230,0)',}}>86</Text>
-                                    </View>
-                                </View>
-                                <View style={{flexDirection:'row',flex:1,justifyContent:'space-between',borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:25}}>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>ATTACK</Text>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>DEFENCE</Text>
-                                </View>
-                                <View style={{height:8,backgroundColor:'rgb(128,128,128)',borderRadius:4,marginHorizontal:25}} />
-                                <View style={{marginHorizontal:25,marginTop:-20,marginLeft:72}}>
-                                    <Icon name='md-disc' style={{fontSize:32,color:'rgb(255,230,0)'}}/>    
-                                </View>
-                                <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)',marginTop:30,paddingHorizontal:20}}>
-                                    <ButtonFeedback
-                                        rounded label='Share'
-                                        onPress={ ()=> this.sas('scorecard') }
-                                        style={[styles.button,{backgroundColor:'rgb(255,230,0)', flexDirection:'row'}]}>
-                                        <Text
-                                        style={{textAlign:'left', fontFamily: styleVar.fontCondensed, fontSize: 24, lineHeight: 24,color: 'rgb(95,96,98)', paddingTop:5 }}>
-                                        SHARE
-                                        </Text>
-                                        <Icon name='md-share-alt' style={{marginLeft: 20, width: 34, color: 'rgb(95,96,98)', fontSize:24 }} />
+                            <View>
+                                <View ref='scorecard' style={{paddingTop:30,backgroundColor:'rgb(95,96,98)',height:619}}>
+                                    <ButtonFeedback 
+                                        onPress={()=>this._setModalVisible(true)}
+                                        style={{height:28,width:28,borderRadius:14,backgroundColor:'rgb(255,255,255)',
+                                                position:'absolute',right:4,top:4}}>
+                                        <Icon name='md-information-circle' style={{fontSize:28, textAlign:'center',color:'rgb(95,96,98)',}}/>
                                     </ButtonFeedback>
+                                    <View style={{paddingHorizontal:10}}>
+                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,textAlign:'center'}}>Congratulations. Your squad has earned the following rating.</Text>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:44,lineHeight:44,textAlign:'center',color:'rgb(255,230,0)',marginTop:15}}>TOP 5%</Text>
+                                    </View>
+                                    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',borderTopWidth:1,borderColor:'rgb(216,217,218)',
+                                                marginTop:20,paddingVertical:19}}>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28}}>OVERALL RATING</Text>
+                                        <View style={{marginLeft:10,height:70,width:70,borderRadius:35,backgroundColor:'rgb(255,230,0)',justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,color:'rgb(95,96,98)'}}>350</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{height:105,borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:15}}>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,textAlign:'left'}}>COHESION</Text>
+                                        <View style={{flexDirection:'row',flex:1,alignItems:'center'}}>
+                                            <View style={{flex:4}}>
+                                                <View style={{height:8,backgroundColor:'rgb(128,128,128)',width:220}}></View>
+                                                <View style={{height:8,backgroundColor:'rgb(255,230,0)',width:177,borderRadius:4,marginTop:-8}}></View>
+                                            </View>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:44,lineHeight:48,color:'rgb(255,230,0)',}}>86</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:'row',flex:1,justifyContent:'space-between',borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:25}}>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>ATTACK</Text>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>DEFENCE</Text>
+                                    </View>
+                                    <View style={{height:8,backgroundColor:'rgb(128,128,128)',borderRadius:4,marginHorizontal:25}} />
+                                    <View style={{marginHorizontal:25,marginTop:-20,marginLeft:72}}>
+                                        <Icon name='md-disc' style={{fontSize:32,color:'rgb(255,230,0)'}}/>    
+                                    </View>
+                                    <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)',marginTop:30,paddingHorizontal:20}}>
+                                        <ButtonFeedback
+                                            rounded label='Share'
+                                            onPress={ ()=> this.sas('scorecard') }
+                                            style={[styles.button,{backgroundColor:'rgb(255,230,0)', flexDirection:'row'}]}>
+                                            <Text
+                                            style={{textAlign:'left', fontFamily: styleVar.fontCondensed, fontSize: 24, lineHeight: 24,color: 'rgb(95,96,98)', paddingTop:5 }}>
+                                            SHARE
+                                            </Text>
+                                            <Icon name='md-share-alt' style={{marginLeft: 20, width: 34, color: 'rgb(95,96,98)', fontSize:24 }} />
+                                        </ButtonFeedback>
+                                    </View>
+                                    <View style={{backgroundColor:'rgb(128,128,128)',height:50,alignItems:'flex-end',padding:10}}>
+                                        <Image source={require('../../../images/footer/eyLogo.png')} style={{height:30,width:29}}></Image>
+                                    </View>
                                 </View>
-                                <View style={{backgroundColor:'rgb(128,128,128)',height:50,alignItems:'flex-end',padding:10}}>
-                                    <Image source={require('../../../images/footer/eyLogo.png')} style={{height:30,width:29}}></Image>
-                                </View>
+
+                                <ButtonFeedback rounded style={[styles.button,{backgroundColor:'rgb(38,38,38)', flexDirection:'row', marginTop:20,marginBottom:0 }]}>
+                                    <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                    <Text
+                                    style={styles.btnExpertLabel}>
+                                    THE EXPERTS' SQUADS
+                                    </Text>
+                                </ButtonFeedback>
                             </View>
                         }
                         </ButtonFeedback>
-                        <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button}>
+                        <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalClear(true)} >
                         </ButtonFeedback>
                         <ScrollView >
                             <ScrollView horizontal={true}>
@@ -483,7 +497,49 @@ class MySquad extends Component {
                             <LionsFooter isLoaded={true} />
                     </ScrollView>
                     </ScrollView>
-                    <EYSFooter />
+                    <EYSFooter mySquadBtn={true}/>
+
+                    <Modal
+                        visible={this.state.modalVisible}
+                        onRequestClose={()=>this._setModalVisible(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <ScrollView style={{paddingHorizontal:28,marginVertical:54}}>
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
+                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
+                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
+                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
+                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                </ScrollView>
+                        </LinearGradient>
+                    </Modal>
+                    <Modal
+                        visible={this.state.modalClear}
+                        onRequestClose={()=>this._setModalClear(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalClear(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <View style={{paddingHorizontal:28,marginVertical:54}}>
+                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28,textAlign:'center'}}>CLEAR ALL SELECTIONS</Text>
+                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,textAlign:'center'}}>This will remove all currently assigned players from your squad.</Text>
+                                    <View style={{marginTop:15,height:50,flexDirection:'row',justifyContent:'space-between'}}>
+                                        <ButtonFeedback rounded onPress={()=>this._setModalClear(false)} label='CANCEL' style={{height: 50, width:132, backgroundColor: 'rgb(38,38,38)', }} />
+                                        <ButtonFeedback rounded label='CONFIRM' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
+                                    </View>
+                                </View>
+                        </LinearGradient>
+                    </Modal>
                 </View>
             </Container>
         )
