@@ -38,7 +38,36 @@ class MySquad extends Component {
         this.state={
             modalVisible: false,
             modalClear:false,
-            showScoreCard:false
+            modalPopulate:false,
+            showScoreCard:'semi',
+            squadData:{
+                    captain:123,
+                    kicker:null,
+                    wildcard:123,
+                    forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
+                    backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
+            }
+        }
+        this.emptyFeed={
+                    captain:null,
+                    kicker:null,
+                    wildcard:null,
+                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+                }
+        this.semiFeed={
+                    captain:123,
+                    kicker:null,
+                    wildcard:123,
+                    forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
+                    backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
+        }
+        this.fullFeed={
+                    captain:123,
+                    kicker:123,
+                    wildcard:123,
+                    forwards:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123],
+                    backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
         }
     }
     sas(context){
@@ -69,6 +98,46 @@ class MySquad extends Component {
             modalClear:visible,
         })
     }
+    _setModalPopulate=(visible) => {
+        this.setState({
+            modalPopulate:visible,
+        })
+    }
+    changeMode(mode) {
+        if(mode===undefined) {
+            this.setState({
+                showScoreCard:this.state.showScoreCard==='empty'?'semi':this.state.showScoreCard==='semi'?'full':'empty',
+                squadData:this.state.showScoreCard==='empty'?this.semiFeed:this.state.showScoreCard==='semi'?this.fullFeed:this.emptyFeed
+            })
+        }
+        else {
+            this.setState({
+                showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full',
+                squadData:mode==='empty'?this.emptyFeed:mode==='semi'?this.semiFeed:this.fullFeed
+            })
+            this._setModalClear(false)
+            this._setModalPopulate(false)
+        }
+    }
+
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k]!==undefined)
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
+    }
 
     render() {
         return (
@@ -78,9 +147,9 @@ class MySquad extends Component {
                     <ScrollView>
                         <Text style={[styles.headerTitle,{color:'rgb(175,0,30)',marginTop:20,fontSize:28}]}>MY SQUAD</Text>
                         <ButtonFeedback 
-                        style={{marginVertical:10,borderTopWidth:1,borderBottomWidth:2,borderColor:'rgb(216,217,218)',padding:20}}
-                        onPress={()=>this.setState({showScoreCard:!this.state.showScoreCard})}>
-                        {this.state.showScoreCard?
+                        style={{marginVertical:10,borderTopWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',padding:20}}
+                        onPress={()=>this.changeMode()}>
+                        {this.state.showScoreCard!=='full'?
                             <View style={{paddingTop:29, marginBottom:10,backgroundColor:'rgb(95,96,98)'}}>
                                 <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,paddingHorizontal:20,marginBottom:24,textAlign:'center'}}>
                                 Complete your full squad of 35 players to receive a real-time squad rating from EY
@@ -137,7 +206,7 @@ class MySquad extends Component {
                                             style={{textAlign:'left', fontFamily: styleVar.fontCondensed, fontSize: 24, lineHeight: 24,color: 'rgb(95,96,98)', paddingTop:5 }}>
                                             SHARE
                                             </Text>
-                                            <Icon name='md-share-alt' style={{marginLeft: 20, width: 34, color: 'rgb(95,96,98)', fontSize:24 }} />
+                                            <Icon name='md-share-alt' style={{marginLeft: 5, width: 34, color: 'rgb(95,96,98)', fontSize:24 }} />
                                         </ButtonFeedback>
                                     </View>
                                     <View style={{backgroundColor:'rgb(128,128,128)',height:50,alignItems:'flex-end',padding:10}}>
@@ -145,25 +214,41 @@ class MySquad extends Component {
                                     </View>
                                 </View>
 
-                                <ButtonFeedback rounded style={[styles.button,{backgroundColor:'rgb(38,38,38)', flexDirection:'row', marginTop:20,marginBottom:0 }]}>
+                                <ButtonFeedback rounded style={[styles.button,{backgroundColor:'rgb(38,38,38)', flexDirection:'row', marginTop:20,marginBottom:0,marginLeft:10,marginRight:10 }]}>
                                     <Icon name='md-contact' style={styles.btnExpertIcon} />
-                                    <Text
-                                    style={styles.btnExpertLabel}>
-                                    THE EXPERTS' SQUADS
-                                    </Text>
+                                    <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
                                 </ButtonFeedback>
                             </View>
                         }
                         </ButtonFeedback>
-                        <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalClear(true)} >
-                        </ButtonFeedback>
+                        {
+                            this.state.showScoreCard==='empty'?
+                            <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalPopulate(true)} />
+                            :
+                            <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalClear(true)} />
+                        }
                         <ScrollView >
-                            <ScrollView horizontal={true}>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <View style={{borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
+                            <View style={{flexDirection:'row'}}>
+                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
+                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
                                         <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
                                     </View>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                                    {
+                                    this.state.squadData.captain===null?
+                                    <ButtonFeedback>
+                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
+                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                        </View>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>CAPTAIN</Text>
+                                                </View>
+                                        </View>
+                                    </ButtonFeedback>
+                                    :
+                                    <ButtonFeedback>
                                         <ImagePlaceholder 
                                             width = {styleVar.deviceWidth / 3}
                                             height = {styleVar.deviceWidth / 3}>
@@ -172,20 +257,36 @@ class MySquad extends Component {
                                                 source={require('../../../contents/my-lions/players/jameshaskell.png')} 
                                                 style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
                                         </ImagePlaceholder>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                </View>
+                                        </View>
                                     </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-10 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
+                                    }
                                 </View>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <View style={{borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
+                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
+                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
+                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
                                     </View>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                                    {
+                                    this.state.squadData.kicker===null?
+                                    <ButtonFeedback>
+                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
+                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                        </View>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>KICKER</Text>
+                                                </View>
+                                        </View>
+                                    </ButtonFeedback>
+                                    :
+                                    <ButtonFeedback>
                                         <ImagePlaceholder 
                                             width = {styleVar.deviceWidth / 3}
                                             height = {styleVar.deviceWidth / 3}>
@@ -194,42 +295,59 @@ class MySquad extends Component {
                                                 source={require('../../../contents/my-lions/players/jameshaskell.png')} 
                                                 style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
                                         </ImagePlaceholder>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                </View>
+                                        </View>
                                     </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-10 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <View style={{borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
-                                    </View>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-10 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
+                                    }
                                 </View>
-                            </ScrollView> 
-                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
+                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
+                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
+                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
+                                    </View>
+                                    {
+                                    this.state.squadData.wildcard===null?
+                                    <ButtonFeedback>
+                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
+                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                        </View>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>WILDCARD</Text>
+                                                </View>
+                                        </View>
+                                    </ButtonFeedback>
+                                    :
+                                    <ButtonFeedback>
+                                        <ImagePlaceholder 
+                                            width = {styleVar.deviceWidth / 3}
+                                            height = {styleVar.deviceWidth / 3}>
+                                            <Image transparent
+                                                resizeMode='contain'
+                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
+                                        </ImagePlaceholder>
+                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
+                                            <View style={[shapes.triangle]} />
+                                            <View style={styles.gridBoxTitle}>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
+                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                </View>
+                                        </View>
+                                    </ButtonFeedback>
+                                    }
+                                </View>
+                            </View> 
+                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,padding:12}}>
                               <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARDS</Text>
                               <Text style={{color:'rgb(175,0,30)',textAlign:'right',fontFamily: styleVar.fontCondensed,fontSize:24}}>
-                               4 / 16
+                               {this.state.squadData.forwards.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
                             <Swiper
@@ -238,132 +356,63 @@ class MySquad extends Component {
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'>
-                               
-                            <View style={{flexDirection:'row',backgroundColor:'black',height:220}}>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
+                            {
+                            this._mapJSON(this.state.squadData.forwards,3).map((rowData,i)=>{
+                                return(
+                                    <View style={{flexDirection:'row',backgroundColor:'black',height:220}} key={i}>
+                                        {
+                                            rowData.map((item,index)=>{
+                                                return(
+                                                        item===null?
+                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                            <ButtonFeedback>
+                                                                <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center',borderLeftWidth:1,borderColor:'rgb(255,255,255)'}}>
+                                                                    <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                                                </View>
+                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)' }}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styles.gridBoxTitle}>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>FORWARD</Text>
+                                                                        </View>
+                                                                </View>
+                                                            </ButtonFeedback>
+                                                        </View>
+                                                        :
+                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                            <ButtonFeedback>
+                                                                <ImagePlaceholder 
+                                                                    width = {styleVar.deviceWidth / 3}
+                                                                    height = {styleVar.deviceWidth / 3}>
+                                                                    <Image transparent
+                                                                        resizeMode='contain'
+                                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                                        style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
+                                                                </ImagePlaceholder>
+                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styles.gridBoxTitle}>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                                        </View>
+                                                                </View>
+                                                            </ButtonFeedback>
+                                                        </View>
+                                                    )
+                                            }, this)
+                                        }
                                     </View>
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                            </View>
-                               
-                            <View style={{flexDirection:'row',backgroundColor:'black',height:220}}>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                            </View>
+                                )
+
+                            },this)
+                            }
 
                         </Swiper>
-                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                              <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARDS</Text>
+                            
+                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,padding:12}}>
+                              <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>BACKS</Text>
                               <Text style={{color:'rgb(175,0,30)',textAlign:'right',fontFamily: styleVar.fontCondensed,fontSize:24}}>
-                               4 / 16
+                               {this.state.squadData.backs.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
                             <Swiper
@@ -372,126 +421,56 @@ class MySquad extends Component {
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'>
-                               
-                            <View style={{flexDirection:'row',backgroundColor:'black',height:220}}>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
+                            {
+                            this._mapJSON(this.state.squadData.backs,3).map((rowData,i)=>{
+                                return(
+                                    <View style={{flexDirection:'row',backgroundColor:'black',height:220}} key={i}>
+                                        {
+                                            rowData.map((item,index)=>{
+                                                return(
+                                                        item===null?
+                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                            <ButtonFeedback>
+                                                                <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center',borderLeftWidth:1,borderColor:'rgb(255,255,255)' }}>
+                                                                    <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                                                </View>
+                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styles.gridBoxTitle}>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>BACK</Text>
+                                                                        </View>
+                                                                </View>
+                                                            </ButtonFeedback>
+                                                        </View>
+                                                        :
+                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                            <ButtonFeedback>
+                                                                <ImagePlaceholder 
+                                                                    width = {styleVar.deviceWidth / 3}
+                                                                    height = {styleVar.deviceWidth / 3}>
+                                                                    <Image transparent
+                                                                        resizeMode='contain'
+                                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                                        style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
+                                                                </ImagePlaceholder>
+                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                    <View style={[shapes.triangle]} />
+                                                                    <View style={styles.gridBoxTitle}>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
+                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                                        </View>
+                                                                </View>
+                                                            </ButtonFeedback>
+                                                        </View>
+                                                    )
+                                            }, this)
+                                        }
                                     </View>
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                            </View>
-                               
-                            <View style={{flexDirection:'row',backgroundColor:'black',height:220}}>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                                <View style={{width:styleVar.deviceWidth/3}}>
-                                    <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                    </ButtonFeedback>
-                                    <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                        <View style={[shapes.triangle]} />
-                                        <View style={styles.gridBoxTitle}>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                            <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                            </View>
-                                    </View>
-                                </View> 
-                            </View>
+                                )
+
+                            },this)
+                            }
 
                         </Swiper>
                             <LionsFooter isLoaded={true} />
@@ -535,7 +514,25 @@ class MySquad extends Component {
                                     <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,textAlign:'center'}}>This will remove all currently assigned players from your squad.</Text>
                                     <View style={{marginTop:15,height:50,flexDirection:'row',justifyContent:'space-between'}}>
                                         <ButtonFeedback rounded onPress={()=>this._setModalClear(false)} label='CANCEL' style={{height: 50, width:132, backgroundColor: 'rgb(38,38,38)', }} />
-                                        <ButtonFeedback rounded label='CONFIRM' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
+                                        <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
+                                    </View>
+                                </View>
+                        </LinearGradient>
+                    </Modal>
+                    <Modal
+                        visible={this.state.modalPopulate}
+                        onRequestClose={()=>this._setModalPopulate(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalPopulate(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <View style={{paddingHorizontal:28,marginVertical:54}}>
+                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28,textAlign:'center'}}>AUTO POPULATE</Text>
+                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,textAlign:'center'}}>This will auto-populate your squad with a random selection of players.</Text>
+                                    <View style={{marginTop:15,height:50,flexDirection:'row',justifyContent:'space-between'}}>
+                                        <ButtonFeedback rounded onPress={()=>this._setModalPopulate(false)} label='CANCEL' style={{height: 50, width:132, backgroundColor: 'rgb(38,38,38)', }} />
+                                        <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
                                     </View>
                                 </View>
                         </LinearGradient>
