@@ -30,6 +30,8 @@ import { globalNav } from '../../appNavigator'
 import Share from 'react-native-share'
 import RNViewShot from 'react-native-view-shot'
 import Swiper from 'react-native-swiper'
+import BarGraph from '../utility/barGraph'
+import BarSlider from '../utility/barSlider'
 
 class MySquad extends Component {
 
@@ -145,59 +147,48 @@ class MySquad extends Component {
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
                     <ScrollView>
-                        <Text style={[styles.headerTitle,{color:'rgb(175,0,30)',marginTop:20,fontSize:28}]}>MY SQUAD</Text>
-                        <ButtonFeedback 
-                        style={{marginVertical:10,borderTopWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',padding:20}}
-                        onPress={()=>this.changeMode()}>
+                        <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
+                        <ButtonFeedback style={styles.scoreCard}  onPress={()=>this.changeMode()}>
                         {this.state.showScoreCard!=='full'?
-                            <View style={{paddingTop:29, marginBottom:10,backgroundColor:'rgb(95,96,98)'}}>
-                                <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,paddingHorizontal:20,marginBottom:24,textAlign:'center'}}>
+                            <View style={styles.semiCard}>
+                                <Text style={styles.semiCardText}>
                                 Complete your full squad of 35 players to receive a real-time squad rating from EY
                                 </Text>
-                                <View style={{flexDirection: 'row',alignItems:'flex-end',justifyContent:'flex-end',backgroundColor:'rgb(128,128,128)',height:50,paddingBottom:9,paddingRight:11}}>
-                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:13,marginRight:5}}> Performance Statistics supplied by </Text>
+                                <View style={styles.semiCardFooter}>
+                                    <Text style={styles.semiCardFooterText}> Performance Statistics supplied by </Text>
                                     <Image source={require('../../../images/footer/eyLogo.png')}></Image>
                                 </View>
                             </View>
                             :
                             <View>
-                                <View ref='scorecard' style={{paddingTop:30,backgroundColor:'rgb(95,96,98)',height:619}}>
+                                <View ref='scorecard' style={styles.fullCard}>
                                     <ButtonFeedback 
                                         onPress={()=>this._setModalVisible(true)}
-                                        style={{height:28,width:28,borderRadius:14,backgroundColor:'rgb(255,255,255)',
-                                                position:'absolute',right:4,top:4}}>
-                                        <Icon name='md-information-circle' style={{fontSize:28, textAlign:'center',color:'rgb(95,96,98)',}}/>
+                                        style={styles.btnCardInfo}>
+                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                     </ButtonFeedback>
-                                    <View style={{paddingHorizontal:10}}>
-                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:18,textAlign:'center'}}>Congratulations. Your squad has earned the following rating.</Text>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:44,lineHeight:44,textAlign:'center',color:'rgb(255,230,0)',marginTop:15}}>TOP 5%</Text>
+                                    <View style={styles.summaryWrapper}>
+                                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                                        <Text style={styles.summaryTextHighLight}>TOP 5%</Text>
                                     </View>
-                                    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',borderTopWidth:1,borderColor:'rgb(216,217,218)',
-                                                marginTop:20,paddingVertical:19}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28}}>OVERALL RATING</Text>
-                                        <View style={{marginLeft:10,height:70,width:70,borderRadius:35,backgroundColor:'rgb(255,230,0)',justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,color:'rgb(95,96,98)'}}>350</Text>
+                                    <View style={styles.ratingWrapper}>
+                                        <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                                        <View style={styles.ratingScore}>
+                                            <Text style={styles.ratingScorePoint}>350</Text>
                                         </View>
                                     </View>
                                     <View style={{height:105,borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:15}}>
                                         <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,textAlign:'left'}}>COHESION</Text>
-                                        <View style={{flexDirection:'row',flex:1,alignItems:'center'}}>
-                                            <View style={{flex:4}}>
-                                                <View style={{height:8,backgroundColor:'rgb(128,128,128)',width:220}}></View>
-                                                <View style={{height:8,backgroundColor:'rgb(255,230,0)',width:177,borderRadius:4,marginTop:-8}}></View>
-                                            </View>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:44,lineHeight:48,color:'rgb(255,230,0)',}}>86</Text>
+                                        <BarGraph score={86} fullWidth={220} />
+                                    </View>
+                                    <View style={{height:110}}>
+                                        <View style={{flexDirection:'row',flex:1,justifyContent:'space-between',borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:25}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>ATTACK</Text>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>DEFENCE</Text>
                                         </View>
+                                        <BarSlider score={30} fullWidth={270} />
                                     </View>
-                                    <View style={{flexDirection:'row',flex:1,justifyContent:'space-between',borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:25}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>ATTACK</Text>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>DEFENCE</Text>
-                                    </View>
-                                    <View style={{height:8,backgroundColor:'rgb(128,128,128)',borderRadius:4,marginHorizontal:25}} />
-                                    <View style={{marginHorizontal:25,marginTop:-20,marginLeft:72}}>
-                                        <Icon name='md-disc' style={{fontSize:32,color:'rgb(255,230,0)'}}/>    
-                                    </View>
-                                    <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)',marginTop:30,paddingHorizontal:20}}>
+                                    <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)',marginTop:10,paddingHorizontal:20}}>
                                         <ButtonFeedback
                                             rounded label='Share'
                                             onPress={ ()=> this.sas('scorecard') }
