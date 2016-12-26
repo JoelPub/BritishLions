@@ -44,6 +44,7 @@ class MyLionsPlayerList extends Component {
             playerListFeeds: this.ds.cloneWithRows([]),
             favoritePlayers: [],
             searchResult:this.ds.cloneWithRows([]),
+            isEmptyResult: false,
         }
         this.playerListFeeds=[]
         this.nameFilter = ''
@@ -290,18 +291,21 @@ class MyLionsPlayerList extends Component {
                 this.setState({
                     resultVisible: true,
                     transparent: false,
+                    isEmptyResult:false,
                     searchResult: this.ds.cloneWithRows(searchResult)
-                }) 
+                })
             :
                 this.setState({
                     resultVisible: false,
                     transparent: true,
+                    isEmptyResult:true,
                     searchResult: this.ds.cloneWithRows([])
                 })
         } else {
             this.setState({
                 resultVisible: false,
                 transparent: true,
+                isEmptyResult:false,
                 searchResult: this.ds.cloneWithRows([])
             })
         }
@@ -348,68 +352,74 @@ class MyLionsPlayerList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                                    <Content bounces={false}>
+                    <Content bounces={false}>
 
-                    {this.state.isLoaded&&
-                    <View>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                            <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
+                        {this.state.isLoaded&&
+                        <View>
+                            <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                                <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                                <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
 
-                        </LinearGradient>
-                        <View style={styles.unionsPlayerListingBar}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
-                                <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
-                            </ButtonFeedback>
+                            </LinearGradient>
+                            <View style={styles.unionsPlayerListingBar}>
+                                <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
+                                    <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
+                                </ButtonFeedback>
 
-                            <ButtonFeedback onPress={()=>{}} style={styles.unionsPlayerListingFilterButton}>
-                                <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
-                            </ButtonFeedback>
-                        </View>
-                    </View>
-                    }
-
-                    <FilterListingModal
-                        modalVisible={this.state.modalVisible}
-                        resultVisible={this.state.resultVisible}
-                        transparent={this.state.transparent}
-                        callbackParent={this.onCloseFilter}>
-
-                        <View style={styles.resultContainer}>
-                            <View style={styles.searchContainer}>
-                                <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
-                                </View>
-                                <View style={{flex:1}}>
-                                    <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
-                                        <Icon name='md-close' style={styles.rtnIcon}/>
-                                    </ButtonFeedback>
-                                </View>
+                                <ButtonFeedback onPress={()=>{}} style={styles.unionsPlayerListingFilterButton}>
+                                    <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
+                                </ButtonFeedback>
                             </View>
-                            {this.state.resultVisible&&
-                                <ListView 
-                                    dataSource={this.state.searchResult}
-                                    renderRow={this._renderSearch.bind(this)}
-                                    enableEmptySections = {true} 
-                                  />
-                            }
                         </View>
-                    </FilterListingModal>
-                    {
-                        this.state.isLoaded?
-                            <ListView 
-                                dataSource={this.state.playerListFeeds}
-                                renderRow={this._renderRow.bind(this)}
-                                enableEmptySections = {true} 
-                                contentContainerStyle={styles.gridList}
-                                renderFooter ={this._renderFooter}
-                              />
-                        :
-                            <ActivityIndicator style={loader.centered} size='large' />
-                    }
-                    <EYSFooter />
-                                    </Content>
+                        }
 
+                        <FilterListingModal
+                            modalVisible={this.state.modalVisible}
+                            resultVisible={this.state.resultVisible}
+                            transparent={this.state.transparent}
+                            callbackParent={this.onCloseFilter}>
+
+                            <View style={styles.resultContainer}>
+                                <View style={styles.searchContainer}>
+                                    <View style={styles.searchBox}>
+                                        <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    </View>
+                                    <View style={{flex:1}}>
+                                        <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
+                                            <Icon name='md-close' style={styles.rtnIcon}/>
+                                        </ButtonFeedback>
+                                    </View>
+                                </View>
+                                {
+                                    this.state.isEmptyResult?
+                                        <View syles={styles.unionsPlayerEmptySearchMsg}>
+                                            <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
+                                            <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
+                                        </View>
+                                    :
+                                        this.state.resultVisible&&
+                                        <ListView
+                                            dataSource={this.state.searchResult}
+                                            renderRow={this._renderSearch.bind(this)}
+                                            enableEmptySections = {true}
+                                          />
+                                }
+                            </View>
+                        </FilterListingModal>
+                        {
+                            this.state.isLoaded?
+                                <ListView
+                                    dataSource={this.state.playerListFeeds}
+                                    renderRow={this._renderRow.bind(this)}
+                                    enableEmptySections = {true}
+                                    contentContainerStyle={styles.gridList}
+                                    renderFooter ={this._renderFooter}
+                                  />
+                            :
+                                <ActivityIndicator style={loader.centered} size='large' />
+                        }
+                        <EYSFooter />
+                    </Content>
                 </View>
             </Container>
         )

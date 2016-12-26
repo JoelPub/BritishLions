@@ -590,5 +590,27 @@ module.exports = styleSheetCreate({
         android:{
             paddingTop: 13,
         }
+    },
+    unionsPlayerEmptySearchTitle:{
+        paddingTop:37,
+        fontSize: 28,
+        textAlign:'center',
+        fontFamily: styleVar.fontCondensed,
+        width:styleVar.deviceWidth,
+        backgroundColor: 'transparent',
+        color:'white'
+    },
+    unionsPlayerEmptySearchSubTitle:{
+        fontSize: 16,
+        paddingTop:14,
+        fontFamily: 'Helvetica Neue',
+        textAlign:'center',
+        width:styleVar.deviceWidth,
+        backgroundColor: 'transparent',
+        color:'white'
+    },
+    unionsPlayerEmptySearchMsg:{
+        height:100,
+        backgroundColor: 'transparent'
     }
 })
