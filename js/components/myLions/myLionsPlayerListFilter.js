@@ -3,16 +3,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { Container, Text, Content, Icon} from 'native-base'
-import { replaceRoute } from '../../actions/route'
-import { drillDown } from '../../actions/content'
-import styleVar from '../../themes/variable'
+import { Container, Text, Icon} from 'native-base'
 import styles from './styles'
-import theme from '../../themes/base-theme'
 import ButtonFeedback from '../utility/buttonFeedback'
 import LinearGradient from 'react-native-linear-gradient'
 
-class MyLionsPlayerListFilter extends Component {
+export default class MyLionsPlayerListFilter extends Component {
     constructor(props){
         super(props)
     }
@@ -72,14 +68,3 @@ class MyLionsPlayerListFilter extends Component {
         )
     }
 }
-function bindAction(dispatch) {
-    return {
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
-    }
-}
-
-export default connect((state) => {
-    return {
-        route: state.route,
-    }
-},  bindAction)(MyLionsPlayerListFilter)

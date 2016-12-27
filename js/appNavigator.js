@@ -30,7 +30,6 @@ import MyLionsPlayerList from './components/myLions/myLionsPlayerList'
 import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
 import MyLionsUnionsList from './components/myLions/myLionsUnionsList'
-import MyLionsPlayerListFilter from './components/myLions/myLionsPlayerListFilter'
 import MySquad from './components/myLions/mySquad'
 import Competition from './components/competition'
 import Tours from './components/tours'
@@ -277,8 +276,6 @@ class AppNavigator extends Component {
                 return <MySquad navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
-            case 'myLionsPlayerListFilter':
-                return <MyLionsPlayerListFilter navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
             case 'tours':
