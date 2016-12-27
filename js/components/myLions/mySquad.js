@@ -396,18 +396,18 @@ class MySquad extends Component {
                             style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>
-                                <ScrollView style={{paddingHorizontal:28,marginVertical:54}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
-                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                <ScrollView style={styles.modalViewWrapper}>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                                 
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
-                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                                 
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
-                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                                 
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28}}>OVERALL RATING</Text>
-                                        <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                                 </ScrollView>
                         </LinearGradient>
                     </Modal>
@@ -419,12 +419,12 @@ class MySquad extends Component {
                             style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>
-                                <View style={{paddingHorizontal:28,marginVertical:54}}>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28,textAlign:'center'}}>CLEAR ALL SELECTIONS</Text>
-                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,textAlign:'center'}}>This will remove all currently assigned players from your squad.</Text>
-                                    <View style={{marginTop:15,height:50,flexDirection:'row',justifyContent:'space-between'}}>
-                                        <ButtonFeedback rounded onPress={()=>this._setModalClear(false)} label='CANCEL' style={{height: 50, width:132, backgroundColor: 'rgb(38,38,38)', }} />
-                                        <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
+                                <View style={styles.modalViewWrapper}>
+                                    <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
+                                    <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
+                                    <View style={styles.modalBtnWrapper}>
+                                        <ButtonFeedback rounded onPress={()=>this._setModalClear(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                                        <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
                                     </View>
                                 </View>
                         </LinearGradient>
@@ -437,12 +437,12 @@ class MySquad extends Component {
                             style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>
-                                <View style={{paddingHorizontal:28,marginVertical:54}}>
-                                    <Text style={{fontFamily: styleVar.fontCondensed,fontSize:28,marginTop:28,textAlign:'center'}}>AUTO POPULATE</Text>
-                                    <Text style={{fontFamily: styleVar.fontGeorgia,fontSize:16,textAlign:'center'}}>This will auto-populate your squad with a random selection of players.</Text>
-                                    <View style={{marginTop:15,height:50,flexDirection:'row',justifyContent:'space-between'}}>
-                                        <ButtonFeedback rounded onPress={()=>this._setModalPopulate(false)} label='CANCEL' style={{height: 50, width:132, backgroundColor: 'rgb(38,38,38)', }} />
-                                        <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={{height: 50, width:132, backgroundColor: styleVar.brandLightColor,  }}  />
+                                <View style={styles.modalViewWrapper}>
+                                    <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
+                                    <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
+                                    <View style={styles.modalBtnWrapper}>
+                                        <ButtonFeedback rounded onPress={()=>this._setModalPopulate(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                                        <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                                     </View>
                                 </View>
                         </LinearGradient>

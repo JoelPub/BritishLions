@@ -934,6 +934,46 @@ module.exports = styleSheetCreate({
         marginTop:-12,
         borderLeftWidth:1,
         borderColor:'rgb(255,255,255)'
+    },
+    modalViewWrapper:{
+        paddingHorizontal:28,
+        marginVertical:54
+    },
+    modalTitleText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        marginTop:28
+    },
+    modalText:{
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:16,
+    },
+    modalTitleTextCenter:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        marginTop:28,
+        textAlign:'center'
+    },
+    modalTextCenter:{
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:16,
+        textAlign:'center'
+    },
+    modalBtnWrapper:{
+        marginTop:15,
+        height:50,
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    modlaBtnCancel:{
+        height: 50, 
+        width:132, 
+        backgroundColor: 'rgb(38,38,38)',
+    },
+    modlaBtnConfirm:{
+        height: 50, 
+        width:132, 
+        backgroundColor: styleVar.brandLightColor,  
     }
 
 })
