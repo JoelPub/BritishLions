@@ -42,7 +42,6 @@ class MyLionsPlayerList extends Component {
             filterModalVisible: false,
             transparent: true,
             resultVisible: false,
-            filterResultVisible:false,
             playerListFeeds: this.ds.cloneWithRows([]),
             favoritePlayers: [],
             searchResult:this.ds.cloneWithRows([]),
@@ -50,6 +49,7 @@ class MyLionsPlayerList extends Component {
         }
         this.playerListFeeds=[]
         this.nameFilter = ''
+        this.filterBy = ''
     }
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
@@ -137,6 +137,37 @@ class MyLionsPlayerList extends Component {
         )
     }
 
+    _getFilteredPosition=(value)=>{
+        if(value !== this.filterBy){
+            this.filterBy = value
+        }else{
+            this.filterBy = ''
+        }
+
+        if(this.filterBy !== ''){
+            let filteredResult = []
+            filteredResult = filteredResult.concat(this.playerListFeeds.filter((player)=>player.position.toLowerCase().indexOf(this.filterBy)===0) )
+            filteredResult.length > 0?
+                this.setState({
+                    filterModalVisible: false,
+                    transparent: true,
+                    playerListFeeds: this.ds.cloneWithRows(filteredResult)
+                })
+            :
+                this.setState({
+                    filterModalVisible: false,
+                    transparent: true,
+                    playerListFeeds: this.ds.cloneWithRows([])
+                })
+        }else{
+            this.setState({
+                filterModalVisible: false,
+                transparent: true,
+                playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds)
+            })
+        }
+    }
+
     handlePlayer(players) {
         players.map((item,index)=>{
             let image = item.image
@@ -214,7 +245,6 @@ class MyLionsPlayerList extends Component {
     _setFilterModalVisible=(visible) => {
           this.setState({
               filterModalVisible:visible,
-              filterResultVisible:!visible,
               transparent:visible
           })
       }
@@ -224,7 +254,6 @@ class MyLionsPlayerList extends Component {
             transparent: true,
             resultVisible: false,
             filterModalVisible:false,
-            filterResultVisible:false
         })
     }
 
@@ -275,7 +304,7 @@ class MyLionsPlayerList extends Component {
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
                 if(strSearch.charAt(i).match(/[A-Z]/gi)) {
-                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1)
                 }               
             }
 
@@ -409,7 +438,7 @@ class MyLionsPlayerList extends Component {
                                            </ButtonFeedback>
                                        </View>
                                 </View>
-                                <MyLionsPlayerListFilter />
+                                <MyLionsPlayerListFilter getFilteredPosition={this._getFilteredPosition} filterBy = {this.filterBy}/>
 
                                 </LinearGradient>
                            </View>

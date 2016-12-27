@@ -662,6 +662,15 @@ module.exports = styleSheetCreate({
         borderRadius:25,
         marginTop:20
     },
+     btnFilterActive:{
+        width:142,
+        height:50,
+        alignSelf: 'center',
+        backgroundColor: 'rgba(208, 7, 41, 0.5)',
+        paddingTop:14,
+        borderRadius:25,
+        marginTop:20
+    },
     btnFilterTxt:{
         alignSelf: 'center',
         color:'white',

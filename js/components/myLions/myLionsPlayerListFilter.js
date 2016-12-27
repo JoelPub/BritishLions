@@ -16,7 +16,12 @@ class MyLionsPlayerListFilter extends Component {
     constructor(props){
         super(props)
     }
-
+    _setStyle = (isActive) =>{
+        if(isActive)
+            return styles.btnFilterActive
+        else
+            return styles.btnFilter
+    }
     render(){
         return  (
             <View>
@@ -25,19 +30,19 @@ class MyLionsPlayerListFilter extends Component {
                    <View>
                        <Text style={styles.filterSubTitle}>FORWARDS</Text>
                        <View style={styles.filterBtnsGroup}>
-                           <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('prop')} style={this._setStyle(this.props.filterBy === 'prop')}>
                                <Text style={styles.btnFilterTxt}>PROP</Text>
                            </ButtonFeedback>
-                           <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('hooker')}  style={this._setStyle(this.props.filterBy === 'hooker')}>
                                <Text style={styles.btnFilterTxt}>HOOKER</Text>
                            </ButtonFeedback>
-                           <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('lock')}  style={this._setStyle(this.props.filterBy === 'lock')}>
                                <Text style={styles.btnFilterTxt}>LOCK</Text>
                            </ButtonFeedback>
-                           <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('flanker')}  style={this._setStyle(this.props.filterBy === 'flanker')}>
                                 <Text style={styles.btnFilterTxt}>FLANKER</Text>
                            </ButtonFeedback>
-                           <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('number 8')}  style={this._setStyle(this.props.filterBy === 'number 8')}>
                                 <Text style={styles.btnFilterTxt}>NUMBER 8</Text>
                            </ButtonFeedback>
                        </View>
@@ -45,19 +50,19 @@ class MyLionsPlayerListFilter extends Component {
                    <View>
                        <Text style={styles.filterSubTitle}>BACKS</Text>
                        <View style={styles.filterBtnsGroup}>
-                          <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('scrum half')}  style={this._setStyle(this.props.filterBy === 'scrum half')}>
                               <Text style={styles.btnFilterTxt}>SCRUM-HALF</Text>
                           </ButtonFeedback>
-                          <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('fly half')}  style={this._setStyle(this.props.filterBy === 'fly half')}>
                               <Text style={styles.btnFilterTxt}>FLY-HALF</Text>
                           </ButtonFeedback>
-                          <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('wing')}  style={this._setStyle(this.props.filterBy === 'wing')}>
                               <Text style={styles.btnFilterTxt}>WING</Text>
                           </ButtonFeedback>
-                          <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('centre')}  style={this._setStyle(this.props.filterBy === 'centre')}>
                                <Text style={styles.btnFilterTxt}>CENTRE</Text>
                           </ButtonFeedback>
-                          <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnFilter}>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('full back')}  style={this._setStyle(this.props.filterBy === 'full back')}>
                                <Text style={styles.btnFilterTxt}>FULL-BACK</Text>
                           </ButtonFeedback>
                        </View>
