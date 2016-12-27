@@ -561,6 +561,24 @@ module.exports = styleSheetCreate({
         marginTop:14,
         borderRadius:25,
     },
+    unionsPlayerListingFilterByBar:{
+        height:80,
+        alignSelf: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    unionsPlayerListingFilterByCancelButton:{
+        width:17,
+        height:17,
+        borderRadius:8.5,
+        alignSelf: 'center',
+        marginLeft:10,
+        backgroundColor:'rgb(208, 7, 41)'
+    },
+    btnFilerCancelIcon:{
+        fontSize:10,
+        textAlign:'center'
+    },
     unionsPlayerListingSearchText:{
         alignSelf: 'center',
         color:'white',
@@ -570,6 +588,12 @@ module.exports = styleSheetCreate({
         android:{
             paddingTop: 13,
         }
+    },
+    unionsPlayerListingFilterByText:{
+        textAlign: 'center',
+        color:'black',
+        fontFamily: 'Helvetica Neue',
+        fontSize: 18
     },
     unionsPlayerListingFilterButton:{
         right:43,

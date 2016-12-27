@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
+import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform, ListView,TouchableOpacity } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { replaceRoute } from '../../actions/route'
 import { drillDown } from '../../actions/content'
@@ -410,7 +410,6 @@ class MyLionsPlayerList extends Component {
                             <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
                                 <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
                                 <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-
                             </LinearGradient>
                             <View style={styles.unionsPlayerListingBar}>
                                 <ButtonFeedback onPress={()=>this._setSearchModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
@@ -421,6 +420,15 @@ class MyLionsPlayerList extends Component {
                                     <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
                                 </ButtonFeedback>
                             </View>
+                            {
+                                (this.filterBy !== '')&&
+                                <View style={styles.unionsPlayerListingFilterByBar}>
+                                    <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                    <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
+                                        <Icon name='md-close' style={styles.btnFilterCancelIcon}/>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                         </View>
                         }
 
