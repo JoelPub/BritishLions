@@ -351,7 +351,7 @@ module.exports = styleSheetCreate({
     },
     searchContainer: {
         flexDirection:'row',
-        height:50,
+        height:30,
         backgroundColor:'rgb(38,38,38)'
     },
     searchBox: {
@@ -612,5 +612,65 @@ module.exports = styleSheetCreate({
     unionsPlayerEmptySearchMsg:{
         height:100,
         backgroundColor: 'transparent'
+    },
+    filterContainer: {
+        backgroundColor: styleVar.brandPrimary,
+        width: null,
+        height: null
+    },
+    filterResultContainer:{
+        flex:1,
+        backgroundColor:'transparent',
+    },
+    filterTopContainer: {
+        flexDirection:'row',
+        height:50,
+        backgroundColor: 'transparent',
+        zIndex:200
+    },
+    filterTitle:{
+        paddingTop:40,
+        fontSize: 28,
+        textAlign:'center',
+        fontFamily: styleVar.fontCondensed,
+        backgroundColor: 'transparent',
+        color:'white'
+    },
+     filterSubTitle:{
+        fontSize: 21,
+        alignSelf:'center',
+        fontFamily: styleVar.fontCondensed,
+        backgroundColor: 'transparent',
+        color:'white'
+    },
+    filterBtns:{
+        paddingTop:31,
+        height:517,
+        width:styleVar.deviceWidth,
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    filterBtnsGroup:{
+        width:styleVar.deviceWidth/2,
+    },
+    btnFilter:{
+        width:142,
+        height:50,
+        alignSelf: 'center',
+        backgroundColor: 'rgb(208, 7, 41)',
+        paddingTop:14,
+        borderRadius:25,
+        marginTop:20
+    },
+    btnFilterTxt:{
+        alignSelf: 'center',
+        color:'white',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 21,
+        paddingTop: 3,
+        android:{
+            paddingTop: 1,
+        }
     }
+
 })

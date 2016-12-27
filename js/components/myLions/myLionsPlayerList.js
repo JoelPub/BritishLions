@@ -24,6 +24,7 @@ import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import LionsFooter from '../global/lionsFooter'
+import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
 
 class MyLionsPlayerList extends Component {
 
@@ -38,8 +39,10 @@ class MyLionsPlayerList extends Component {
         this.state = {
             isLoaded: false,
             modalVisible: false,
+            filterModalVisible: false,
             transparent: true,
             resultVisible: false,
+            filterResultVisible:false,
             playerListFeeds: this.ds.cloneWithRows([]),
             favoritePlayers: [],
             searchResult:this.ds.cloneWithRows([]),
@@ -84,7 +87,7 @@ class MyLionsPlayerList extends Component {
     _renderSearch(rowData, sectionID, rowID, highlightRow) {
         return (
             <View style={styles.resultRow}>
-                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
+                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setSearchModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
                     <View style={styles.searchImg}>
                         <Image transparent
                             resizeMode='stretch'
@@ -200,7 +203,7 @@ class MyLionsPlayerList extends Component {
         service(options)
     }
 
-    _setModalVisible=(visible) => {
+    _setSearchModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
             resultVisible:!visible,
@@ -208,11 +211,20 @@ class MyLionsPlayerList extends Component {
         })
     }
 
+    _setFilterModalVisible=(visible) => {
+          this.setState({
+              filterModalVisible:visible,
+              filterResultVisible:!visible,
+              transparent:visible
+          })
+      }
     onCloseFilter = () => {
         this.setState({
             modalVisible:false,
             transparent: true,
-            resultVisible: false
+            resultVisible: false,
+            filterModalVisible:false,
+            filterResultVisible:false
         })
     }
 
@@ -372,16 +384,36 @@ class MyLionsPlayerList extends Component {
 
                             </LinearGradient>
                             <View style={styles.unionsPlayerListingBar}>
-                                <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
+                                <ButtonFeedback onPress={()=>this._setSearchModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
                                     <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
                                 </ButtonFeedback>
 
-                                <ButtonFeedback onPress={()=>{}} style={styles.unionsPlayerListingFilterButton}>
+                                <ButtonFeedback onPress={()=>{this._setFilterModalVisible(true)}} style={styles.unionsPlayerListingFilterButton}>
                                     <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
                                 </ButtonFeedback>
                             </View>
                         </View>
                         }
+
+                        <FilterListingModal
+                            modalVisible={this.state.filterModalVisible}
+                            resultVisible={this.state.filteResultVisible}
+                            transparent={this.state.transparent}
+                            callbackParent={this.onCloseFilter}>
+                            <View style={styles.filterResultContainer}>
+                                <LinearGradient colors={['#AF001E', '#81071C']} style={styles.filterContainer}>
+                                <View style={styles.filterTopContainer}>
+                                        <View style={{flex:1}}>
+                                           <ButtonFeedback onPress={()=>this._setFilterModalVisible(false)} style={styles.btnClose}>
+                                               <Icon name='md-close' style={styles.btnCloseIcon}/>
+                                           </ButtonFeedback>
+                                       </View>
+                                </View>
+                                <MyLionsPlayerListFilter />
+
+                                </LinearGradient>
+                           </View>
+                        </FilterListingModal>
 
                         <FilterListingModal
                             modalVisible={this.state.modalVisible}
@@ -395,7 +427,7 @@ class MyLionsPlayerList extends Component {
                                         <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
                                     </View>
                                     <View style={{flex:1}}>
-                                        <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
+                                        <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
                                             <Icon name='md-close' style={styles.rtnIcon}/>
                                         </ButtonFeedback>
                                     </View>
