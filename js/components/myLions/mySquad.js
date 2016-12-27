@@ -43,31 +43,23 @@ class MySquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             squadData:{
-                    captain:123,
-                    kicker:null,
-                    wildcard:123,
+                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
                     forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
                     backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
             }
         }
         this.emptyFeed={
-                    captain:null,
-                    kicker:null,
-                    wildcard:null,
+                    indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'wildcard',id:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                     backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                 }
         this.semiFeed={
-                    captain:123,
-                    kicker:null,
-                    wildcard:123,
+                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
                     forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
                     backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
         }
         this.fullFeed={
-                    captain:123,
-                    kicker:123,
-                    wildcard:123,
+                    indivPos:[{position:'captain',id:123},{position:'kicker',id:123},{position:'wildcard',id:123}],
                     forwards:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123],
                     backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
         }
@@ -177,31 +169,28 @@ class MySquad extends Component {
                                             <Text style={styles.ratingScorePoint}>350</Text>
                                         </View>
                                     </View>
-                                    <View style={{height:105,borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:15}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,textAlign:'left'}}>COHESION</Text>
+                                    <View style={styles.barGraphWrapper}>
+                                        <Text style={styles.barGraphText}>COHESION</Text>
                                         <BarGraph score={86} fullWidth={220} />
                                     </View>
-                                    <View style={{height:110}}>
-                                        <View style={{flexDirection:'row',flex:1,justifyContent:'space-between',borderTopWidth:1,borderColor:'rgb(216,217,218)',paddingHorizontal:25,paddingTop:25}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>ATTACK</Text>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:18,lineHeight:18,}}>DEFENCE</Text>
+                                    <View style={styles.barSliderWrapper}>
+                                        <View style={styles.barSliderTextWrapper}>
+                                            <Text style={styles.barSliderText}>ATTACK</Text>
+                                            <Text style={styles.barSliderText}>DEFENCE</Text>
                                         </View>
                                         <BarSlider score={30} fullWidth={270} />
                                     </View>
-                                    <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)',marginTop:10,paddingHorizontal:20}}>
+                                    <View style={styles.scoreCardShareWrapper}>
                                         <ButtonFeedback
                                             rounded label='Share'
                                             onPress={ ()=> this.sas('scorecard') }
-                                            style={[styles.button,{backgroundColor:'rgb(255,230,0)', flexDirection:'row'}]}>
-                                            <Text
-                                            style={{textAlign:'left', fontFamily: styleVar.fontCondensed, fontSize: 24, lineHeight: 24,color: 'rgb(95,96,98)', paddingTop:5 }}>
-                                            SHARE
-                                            </Text>
-                                            <Icon name='md-share-alt' style={{marginLeft: 5, width: 34, color: 'rgb(95,96,98)', fontSize:24 }} />
+                                            style={[styles.button,styles.scoreCardShare]}>
+                                            <Text  style={styles.scoreCardShareText}>SHARE</Text>
+                                            <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
                                         </ButtonFeedback>
                                     </View>
-                                    <View style={{backgroundColor:'rgb(128,128,128)',height:50,alignItems:'flex-end',padding:10}}>
-                                        <Image source={require('../../../images/footer/eyLogo.png')} style={{height:30,width:29}}></Image>
+                                    <View style={styles.scoreCardFooter}>
+                                        <Image source={require('../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
                                     </View>
                                 </View>
 
@@ -219,125 +208,55 @@ class MySquad extends Component {
                             <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalClear(true)} />
                         }
                         <ScrollView >
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
-                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
-                                    </View>
-                                    {
-                                    this.state.squadData.captain===null?
-                                    <ButtonFeedback>
-                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
-                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
-                                        </View>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>CAPTAIN</Text>
+                            <View style={styles.individaulPositionRow}>
+                            {
+                                this.state.squadData.indivPos.map((item,index)=>{
+                                    return (
+                                        <View style={styles.indivPosition} key={index}>
+                                            <View style={styles.indivPosTitle}>
+                                                <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
+                                            </View>
+                                            {
+                                            item.id===null?
+                                            <ButtonFeedback>
+                                                <View style={styles.addIndivPlayerWrapper}>
+                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                 </View>
-                                        </View>
-                                    </ButtonFeedback>
-                                    :
-                                    <ButtonFeedback>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                <View style={styles.indivPlayerNameWrapper}>
+                                                    <View style={[shapes.triangle]} />
+                                                    <View style={styles.gridBoxTitle}>
+                                                        <Text style={styles.playerNameText}>ADD</Text>
+                                                        <Text style={styles.playerNameText}>{item.position.toUpperCase()}</Text>
+                                                        </View>
                                                 </View>
-                                        </View>
-                                    </ButtonFeedback>
-                                    }
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
-                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
-                                    </View>
-                                    {
-                                    this.state.squadData.kicker===null?
-                                    <ButtonFeedback>
-                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
-                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
-                                        </View>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>KICKER</Text>
+                                            </ButtonFeedback>
+                                            :
+                                            <ButtonFeedback>
+                                                <ImagePlaceholder 
+                                                    width = {styleVar.deviceWidth / 3}
+                                                    height = {styleVar.deviceWidth / 3}>
+                                                    <Image transparent
+                                                        resizeMode='contain'
+                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                        style={styles.playerImage} />
+                                                </ImagePlaceholder>
+                                                <View style={styles.indivPlayerNameWrapper}>
+                                                    <View style={[shapes.triangle]} />
+                                                    <View style={styles.gridBoxTitle}>
+                                                        <Text style={styles.playerNameText}>JAMES</Text>
+                                                        <Text style={styles.playerNameText}>HASKELL</Text>
+                                                        </View>
                                                 </View>
+                                            </ButtonFeedback>
+                                            }
                                         </View>
-                                    </ButtonFeedback>
-                                    :
-                                    <ButtonFeedback>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                                </View>
-                                        </View>
-                                    </ButtonFeedback>
-                                    }
-                                </View>
-                                <View style={{width:styleVar.deviceWidth/3,backgroundColor:'rgb(255,255,255)',paddingLeft:1}}>
-                                    <View style={{borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,borderColor:'rgb(216,217,218)',height:50,paddingTop:17}}>
-                                        <Text style={{color:'rgb(175,0,30)',textAlign:'center',fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
-                                    </View>
-                                    {
-                                    this.state.squadData.wildcard===null?
-                                    <ButtonFeedback>
-                                        <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center'}}>
-                                            <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
-                                        </View>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>WILDCARD</Text>
-                                                </View>
-                                        </View>
-                                    </ButtonFeedback>
-                                    :
-                                    <ButtonFeedback>
-                                        <ImagePlaceholder 
-                                            width = {styleVar.deviceWidth / 3}
-                                            height = {styleVar.deviceWidth / 3}>
-                                            <Image transparent
-                                                resizeMode='contain'
-                                                source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
-                                        </ImagePlaceholder>
-                                        <View style={{width: styleVar.deviceWidth / 3, marginTop:-12 }}>
-                                            <View style={[shapes.triangle]} />
-                                            <View style={styles.gridBoxTitle}>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                                <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
-                                                </View>
-                                        </View>
-                                    </ButtonFeedback>
-                                    }
-                                </View>
+                                    )
+                                },this) 
+                            }                                
                             </View> 
-                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,padding:12}}>
-                              <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARDS</Text>
-                              <Text style={{color:'rgb(175,0,30)',textAlign:'right',fontFamily: styleVar.fontCondensed,fontSize:24}}>
+                            <View style={styles.posTitle}>
+                              <Text style={styles.posTitleLeft}>FORWARDS</Text>
+                              <Text style={styles.posTitleRight}>
                                {this.state.squadData.forwards.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
@@ -350,27 +269,27 @@ class MySquad extends Component {
                             {
                             this._mapJSON(this.state.squadData.forwards,3).map((rowData,i)=>{
                                 return(
-                                    <View style={{flexDirection:'row',backgroundColor:'black',height:220}} key={i}>
+                                    <View style={styles.posSwiperRow} key={i}>
                                         {
                                             rowData.map((item,index)=>{
                                                 return(
                                                         item===null?
-                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                        <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback>
-                                                                <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center',borderLeftWidth:1,borderColor:'rgb(255,255,255)'}}>
-                                                                    <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                                                <View style={styles.posAddWrapper}>
+                                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
-                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)' }}>
+                                                                <View style={styles.posAddTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>FORWARD</Text>
+                                                                        <Text style={styles.playerNameText}>ADD</Text>
+                                                                        <Text style={styles.playerNameText}>FORWARD</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>
                                                         </View>
                                                         :
-                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                        <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
@@ -378,13 +297,13 @@ class MySquad extends Component {
                                                                     <Image transparent
                                                                         resizeMode='contain'
                                                                         source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                                        style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
+                                                                        style={styles.playerImage} />
                                                                 </ImagePlaceholder>
-                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                                        <Text style={styles.playerNameText}>JAMES</Text>
+                                                                        <Text style={styles.playerNameText}>HASKELL</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>
@@ -400,9 +319,9 @@ class MySquad extends Component {
 
                         </Swiper>
                             
-                            <View style={{flexDirection:'row',justifyContent:'space-between',width:styleVar.deviceWidth,borderWidth:1,borderColor:'rgb(216,217,218)',height:50,padding:12}}>
-                              <Text style={{color:'rgb(175,0,30)',textAlign:'left',fontFamily: styleVar.fontCondensed,fontSize:24}}>BACKS</Text>
-                              <Text style={{color:'rgb(175,0,30)',textAlign:'right',fontFamily: styleVar.fontCondensed,fontSize:24}}>
+                            <View style={styles.posTitle}>
+                              <Text style={styles.posTitleLeft}>BACKS</Text>
+                              <Text style={styles.posTitleRight}>
                                {this.state.squadData.backs.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
@@ -415,27 +334,27 @@ class MySquad extends Component {
                             {
                             this._mapJSON(this.state.squadData.backs,3).map((rowData,i)=>{
                                 return(
-                                    <View style={{flexDirection:'row',backgroundColor:'black',height:220}} key={i}>
+                                    <View style={styles.posSwiperRow} key={i}>
                                         {
                                             rowData.map((item,index)=>{
                                                 return(
                                                         item===null?
-                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                        <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback>
-                                                                <View style={{width:styleVar.deviceWidth / 3,height:styleVar.deviceWidth / 3,backgroundColor:'rgb(175,0,30)',justifyContent:'center',alignItems:'center',borderLeftWidth:1,borderColor:'rgb(255,255,255)' }}>
-                                                                    <Icon name='md-person-add' style={{fontSize:60,color:'rgb(255,255,255)'}} />
+                                                                <View style={styles.posAddWrapper}>
+                                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
-                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>ADD</Text>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>BACK</Text>
+                                                                        <Text style={styles.playerNameText}>ADD</Text>
+                                                                        <Text style={styles.playerNameText}>BACK</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>
                                                         </View>
                                                         :
-                                                        <View style={{width:styleVar.deviceWidth/3}} key={index}>
+                                                        <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
@@ -443,13 +362,13 @@ class MySquad extends Component {
                                                                     <Image transparent
                                                                         resizeMode='contain'
                                                                         source={require('../../../contents/my-lions/players/jameshaskell.png')} 
-                                                                        style={{backgroundColor: '#FFF', width: styleVar.deviceWidth / 3, height: styleVar.deviceWidth / 3 }} />
+                                                                        style={styles.playerImage} />
                                                                 </ImagePlaceholder>
-                                                                <View style={{width: styleVar.deviceWidth / 3, marginTop:-12,borderLeftWidth:1,borderColor:'rgb(255,255,255)'  }}>
+                                                                <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>JAMES</Text>
-                                                                        <Text style={{textAlign: 'center', fontFamily: styleVar.fontCondensed, fontSize: 18, lineHeight: 18, paddingTop: 4, marginTop: -6 }}>HASKELL</Text>
+                                                                        <Text style={styles.playerNameText}>JAMES</Text>
+                                                                        <Text style={styles.playerNameText}>HASKELL</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>

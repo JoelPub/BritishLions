@@ -653,8 +653,7 @@ module.exports = styleSheetCreate({
     },
     fullCard:{
         paddingTop:30,
-        backgroundColor:'rgb(95,96,98)',
-        height:619
+        backgroundColor:'rgb(95,96,98)'
     },
     btnCardInfo:{
         height:28,
@@ -712,5 +711,169 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         color:'rgb(95,96,98)'
+    },
+    barGraphWrapper:{
+        height:105,
+        borderTopWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingHorizontal:25,
+        paddingTop:15
+    },
+    barGraphText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        textAlign:'left'
+    },
+    barSliderWrapper:{
+        height:70
+    },
+    barSliderTextWrapper:{
+        flexDirection:'row',
+        flex:1,
+        justifyContent:'space-between',
+        borderTopWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingHorizontal:25,
+        alignItems:'flex-end',
+    },
+    barSliderText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        lineHeight:18,
+    },
+    scoreCardShareWrapper:{
+        borderTopWidth:1,
+        borderColor:'rgb(216,217,218)',
+        marginTop:30,
+        paddingVertical:5
+    },
+    scoreCardShare:{
+        backgroundColor:'rgb(255,230,0)', 
+        flexDirection:'row',
+        paddingLeft:20
+    },
+    scoreCardShareText:{
+        textAlign:'left', 
+        fontFamily: styleVar.fontCondensed, 
+        fontSize: 24, 
+        lineHeight: 24,
+        color: 'rgb(95,96,98)', 
+        paddingTop:5 
+    },
+    scoreCardShareIcon:{
+        marginLeft: 5, 
+        width: 34, 
+        color: 'rgb(95,96,98)', 
+        fontSize:24 
+    },
+    scoreCardFooter:{
+        backgroundColor:'rgb(128,128,128)',
+        height:50,
+        alignItems:'flex-end',
+        padding:10
+    },
+    scoreCardFooterImg:{
+        height:30,
+        width:29
+    },
+    individaulPositionRow:{
+        flexDirection:'row'
+    },
+    indivPosition:{
+        width:styleVar.deviceWidth/3,
+        backgroundColor:'rgb(255,255,255)',
+        paddingLeft:1
+    },
+    indivPosTitle:{
+        borderTopWidth:1,
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        height:50,
+        paddingTop:17
+    },
+    indivPosTitleText:{
+        color:'rgb(175,0,30)',
+        textAlign:'center',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24
+    },
+    addIndivPlayerWrapper:{
+        width:styleVar.deviceWidth / 3,
+        height:styleVar.deviceWidth / 3,
+        backgroundColor:'rgb(175,0,30)',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    addPlayerIcon:{
+        fontSize:60,
+        color:'rgb(255,255,255)'
+    },
+    indivPlayerNameWrapper:{
+        width: styleVar.deviceWidth / 3, 
+        marginTop:-12 
+    },
+    playerNameText:{
+        textAlign: 'center', 
+        fontFamily: styleVar.fontCondensed, 
+        fontSize: 18, 
+        lineHeight: 18, 
+        paddingTop: 4, 
+        marginTop: -6 
+    },
+    playerImage:{
+        backgroundColor: '#FFF', 
+        width: styleVar.deviceWidth / 3, 
+        height: styleVar.deviceWidth / 3 
+    },
+    playerNameTextWrapper:{
+        width: styleVar.deviceWidth / 3, 
+        marginTop:-12,
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)'  
+    },
+    posTitle:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        width:styleVar.deviceWidth,
+        borderWidth:1,
+        borderColor:'rgb(216,217,218)',
+        height:50,
+        padding:12
+    },
+    posTitleLeft:{
+        color:'rgb(175,0,30)',
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24
+    },
+    posTitleRight:{
+        color:'rgb(175,0,30)',
+        textAlign:'right',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24
+    },
+    posSwiperRow:{
+        flexDirection:'row',
+        backgroundColor:'black',
+        height:220
+    },
+    posWrapper:{
+        width:styleVar.deviceWidth/3
+    },
+    posAddWrapper:{
+        width:styleVar.deviceWidth / 3,
+        height:styleVar.deviceWidth / 3,
+        backgroundColor:'rgb(175,0,30)',
+        justifyContent:'center',
+        alignItems:'center',
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)'
+    },
+    posAddTextWrapper:{
+        width: styleVar.deviceWidth / 3, 
+        marginTop:-12,
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)' 
     }
 })
