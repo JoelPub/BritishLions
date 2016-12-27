@@ -21,6 +21,8 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
+import Swiper from 'react-native-swiper'
+import styleVar from '../../themes/variable'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -36,6 +38,10 @@ class MyLionsPlayerDetails extends Component {
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
+            currentProfile: 0,
+            attackStyle:{color:'rgb(95,96,98)'},
+            defenceStyle:{color:'rgb(216,217,218)'},
+            kickingStyle:{color:'rgb(216,217,218)'}
         }
     }
 
@@ -255,6 +261,36 @@ class MyLionsPlayerDetails extends Component {
         this.isUnMounted = true
     }
 
+    changeProfile(profile) {
+        switch(profile) {
+            case 1:
+                this.setState({
+                    attackStyle:{color:'rgb(216,217,218)'},
+                    defenceStyle:{color:'rgb(95,96,98)'},
+                    kickingStyle:{color:'rgb(216,217,218)'}
+                })
+                break
+            case 2:
+                this.setState({
+                    attackStyle:{color:'rgb(216,217,218)'},
+                    defenceStyle:{color:'rgb(216,217,218)'},
+                    kickingStyle:{color:'rgb(95,96,98)'}
+                })
+                break
+            default:
+                this.setState({
+                    attackStyle:{color:'rgb(95,96,98)'},
+                    defenceStyle:{color:'rgb(216,217,218)'},
+                    kickingStyle:{color:'rgb(216,217,218)'}
+                })
+                break
+
+        }
+
+
+        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    }
+
     render() {
         let buttonText = ''
         
@@ -276,6 +312,14 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
+                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayer()} style={styles.btnSearchPlayer}>
+                                {
+                                    this.state.isFav === true?
+                                    <Icon name='md-star' style={styles.searchIcon}/>
+                                    :
+                                    <Icon name='md-star-outline' style={styles.searchIcon}/>
+                                }
+                            </ButtonFeedback>
 
                             <View style={styles.buttons}>
                                 {
@@ -315,6 +359,10 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.country}</Text>
                             </Col>
                         </Grid>
+                        <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
+                            <Text style={styles.detailsLabel}>CLUB</Text>
+                            <Text style={styles.detail}>Northhampton Saints</Text>
+                        </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>
@@ -329,10 +377,16 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.weightm}</Text>
                             </Col>
                         </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
-                            <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                            <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
-                        </View>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
+                                <Text style={styles.detail}>80</Text>
+                            </Col>
+                        </Grid>
                         {/*
                             this.props.detail.biog?
                                 <View style={styles.playerDesc}>
@@ -345,6 +399,205 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
+                            <View style={[styles.detailsGridColFull,{padding:20}]}>
+                                <View ref='scorecard' style={{
+        paddingTop:20,
+        backgroundColor:'rgb(95,96,98)'
+    }}>
+                                    <ButtonFeedback 
+                                        onPress={()=>this._setModalVisible(true)}
+                                        style={{
+        height:28,
+        width:28,
+        borderRadius:14,
+        backgroundColor:'rgb(255,255,255)',
+        position:'absolute',
+        right:4,
+        top:4
+    }}>
+                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                    </ButtonFeedback>
+                                    
+                                    <View style={{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+    }}>
+                                        <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                                        <View style={styles.ratingScore}>
+                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{
+        marginVertical:15,
+        flexDirection:'row',
+    }}>
+                                        <View style={{
+                                            flex:1,
+                                            justifyContent:'flex-start',
+                                            borderTopWidth:1,
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingTop:20,
+        paddingBottom:8,
+        alignItems:'center'}} >
+                                            <Text style={styles.summaryText}>RECENT PERFORMANCE</Text>
+                                            <Text style={styles.summaryTextHighLight}>86</Text>
+                                        </View>
+                                        <View style={{
+                                            flex:1,
+                                            justifyContent:'flex-start',
+                                            borderTopWidth:1,
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingTop:20,
+        paddingBottom:8,
+        alignItems:'center'}}>
+                                            <Text style={styles.summaryText}>CONSISTENCY</Text>
+                                            <Icon name='md-trending-up' style={{
+        fontSize:44,
+        lineHeight:44,
+        textAlign:'center',
+        color:'rgb(255,230,0)',
+        marginTop:35
+    }}/>
+                                        </View>
+                                    </View>
+                                    <View style={{padding:15}}>
+                                        <View style={{backgroundColor:'rgb(255,255,255)',padding:10}}>
+                                            <View style={{flexDirection:'row'}}>
+                                                <ButtonFeedback style={{flex:1}} onPress={()=>this.changeProfile(0)}>
+                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.attackStyle]}>ATTACK</Text>
+                                                </ButtonFeedback>
+                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(1)}>
+                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.defenceStyle]}>DEFENSE</Text>
+                                                </ButtonFeedback>
+                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(2)}>
+                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.kickingStyle]}>KICKING</Text>
+                                                </ButtonFeedback>
+                                            </View>
+                                           <Swiper
+                                            ref='swiper'
+                                            height={400}
+                                            width={260}
+                                            loop={false}
+                                            dotColor='rgb(95,96,98)'
+                                            activeDotColor='rgb(255,230,0)'
+                                            onMomentumScrollEnd={(e, state, context) => this.setState({currentProfile:state.index})}>
+                                            <View style={{paddingVertical:20}}>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{paddingVertical:20}}>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{paddingVertical:20}}>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{flexDirection:'row',marginTop:10}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
+                                                        <View style={styles.ratingScore}>
+                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+
+                                        </Swiper>
+                                        </View>
+                                    </View>
+                                <View style={styles.semiCardFooter}>
+                                    <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
+                                    <Image source={require('../../../images/footer/eyLogo.png')}></Image>
+                                </View>
+                                </View>
+                            </View>
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter />

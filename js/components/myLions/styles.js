@@ -3,7 +3,7 @@
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 
-const gridBorderColor = 'rgb(239, 239, 240)'
+const gridBorderColor = 'rgb(216, 217, 218)'
 
 module.exports = styleSheetCreate({
     container: {
