@@ -39,9 +39,9 @@ class MyLionsPlayerDetails extends Component {
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             currentProfile: 0,
-            attackStyle:{color:'rgb(95,96,98)'},
-            defenceStyle:{color:'rgb(216,217,218)'},
-            kickingStyle:{color:'rgb(216,217,218)'}
+            attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+            defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+            kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
         }
     }
 
@@ -368,23 +368,23 @@ class MyLionsPlayerDetails extends Component {
         switch(profile) {
             case 1:
                 this.setState({
-                    attackStyle:{color:'rgb(216,217,218)'},
-                    defenceStyle:{color:'rgb(95,96,98)'},
-                    kickingStyle:{color:'rgb(216,217,218)'}
+                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    defenceStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
                 })
                 break
             case 2:
                 this.setState({
-                    attackStyle:{color:'rgb(216,217,218)'},
-                    defenceStyle:{color:'rgb(216,217,218)'},
-                    kickingStyle:{color:'rgb(95,96,98)'}
+                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    kickingStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'}
                 })
                 break
             default:
-                this.setState({
-                    attackStyle:{color:'rgb(95,96,98)'},
-                    defenceStyle:{color:'rgb(216,217,218)'},
-                    kickingStyle:{color:'rgb(216,217,218)'}
+                this.setState({                    
+                    attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
                 })
                 break
 
@@ -392,6 +392,34 @@ class MyLionsPlayerDetails extends Component {
 
 
         this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    }
+
+    swiperScroll(e, state, context) {
+        this.setState({currentProfile:state.index})
+        switch(state.index) {
+            case 1:
+                this.setState({
+                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    defenceStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                })
+                break
+            case 2:
+                this.setState({
+                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    kickingStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'}
+                })
+                break
+            default:
+                this.setState({                    
+                    attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
+                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                })
+                break
+        }
+
     }
 
     render() {
@@ -572,13 +600,19 @@ class MyLionsPlayerDetails extends Component {
                                         <View style={{backgroundColor:'rgb(255,255,255)',padding:10}}>
                                             <View style={{flexDirection:'row'}}>
                                                 <ButtonFeedback style={{flex:1}} onPress={()=>this.changeProfile(0)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.attackStyle]}>ATTACK</Text>
+                                                    <View style={{marginHorizontal:16,borderBottomWidth:3,borderColor:this.state.attackStyle.underlineColor}}>
+                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.attackStyle.textColor}]}>ATTACK</Text>
+                                                    </View>
                                                 </ButtonFeedback>
                                                 <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(1)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.defenceStyle]}>DEFENSE</Text>
+                                                    <View style={{marginHorizontal:11,borderBottomWidth:3,borderColor:this.state.defenceStyle.underlineColor}}>
+                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.defenceStyle.textColor}]}>DEFENSE</Text>
+                                                    </View>
                                                 </ButtonFeedback>
                                                 <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(2)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.kickingStyle]}>KICKING</Text>
+                                                    <View style={{marginHorizontal:13,borderBottomWidth:3,borderColor:this.state.kickingStyle.underlineColor}}>
+                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.kickingStyle.textColor}]}>KICKING</Text>
+                                                    </View>
                                                 </ButtonFeedback>
                                             </View>
                                            <Swiper
@@ -588,12 +622,12 @@ class MyLionsPlayerDetails extends Component {
                                             loop={false}
                                             dotColor='rgb(95,96,98)'
                                             activeDotColor='rgb(255,230,0)'
-                                            onMomentumScrollEnd={(e, state, context) => this.setState({currentProfile:state.index})}>
+                                            onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
                                             <View style={{paddingVertical:20}}>
                                                 <View style={{flexDirection:'row',marginTop:10}}>
                                                     <View style={{flex:1,alignItems:'center'}}>
                                                         <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(216,217,218)'}]}>
                                                             <Text style={styles.ratingScorePoint}>7.8</Text>
                                                         </View>
                                                         <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>

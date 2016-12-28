@@ -600,7 +600,6 @@ module.exports = styleSheetCreate({
         width:132,
         height:50,
         backgroundColor: 'rgb(95, 96, 98)',
-        textAlign:'center',
         marginTop:14,
         borderRadius:25,
 
