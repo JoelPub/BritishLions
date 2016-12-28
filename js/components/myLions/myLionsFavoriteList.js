@@ -29,6 +29,8 @@ import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import Storage from 'react-native-storage'
 
 class MyLionsFavoriteList extends Component {
 
@@ -36,7 +38,7 @@ class MyLionsFavoriteList extends Component {
         super(props)
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
+        this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
         this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
         this.uniondata = Data
 
@@ -141,7 +143,7 @@ class MyLionsFavoriteList extends Component {
         )
     }
 
-    _fetchFavPlayers(isInitialLoad = false) {
+    /*_fetchFavPlayers(isInitialLoad = false) {
         let options = {
             url: this.favUrl,
             data: {},
@@ -196,10 +198,56 @@ class MyLionsFavoriteList extends Component {
         }
 
         service(options)
+    }*/
+
+    _getFavoritePlayers(isInitialLoad = false){
+        if (isInitialLoad) {
+            this.setState({ isLoaded: false })
+        } else {
+            // means user refresh the page
+            this.setState({ isRefreshing: true })
+        }
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                    this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                        this._signInRequired()
+                    })
+                }
+            }else if(data.error){
+                console.warn('final data:', JSON.stringify(data.error))
+                this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                    this._showError(data.error)
+                })
+            }else{
+                if (data.data !== '') {
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this._listPlayer(data.data, catchedFullPlayerList)
+                        }
+                    }).catch((error) => {
+                        console.warn('Error when try to get the sotic full player list', error)
+                    })
+                } else {
+                    // empty favorite player list
+                    this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                        alertBox(
+                            'Message',
+                            'The favourite player list is currently empty, you can add a new favourite player from the player detail page.',
+                            'Dismiss'
+                        )
+                    })
+                }
+            }
+        })
     }
 
     componentDidMount() {
-        this._fetchFavPlayers(true)
+        //removeGoodFormFavoritePlayerList()
+        setTimeout(()=>{this._getFavoritePlayers(true)},600)
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -212,7 +260,7 @@ class MyLionsFavoriteList extends Component {
                 isLoaded: false,
                 favoritePlayers: this.ds.cloneWithRows([])
             }, () => {
-                this._fetchFavPlayers()
+                setTimeout(()=>{this._getFavoritePlayers(true)},600)
             })
         }
     }
@@ -227,7 +275,7 @@ class MyLionsFavoriteList extends Component {
 
     _onRefresh() {
         this.setState({ isRefreshing: true })
-        this._fetchFavPlayers()
+        this._getFavoritePlayers()
     }
 
     _replaceRoute(route) {

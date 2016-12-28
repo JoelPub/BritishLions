@@ -67,7 +67,7 @@ function errorHandler(error, opt) {
 }
 
 
-function callApi(opt) {
+export function callApi(opt) {
 	let isInternetConnected = false
 
 	// use for loading, initial state

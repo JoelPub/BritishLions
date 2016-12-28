@@ -4,15 +4,15 @@ import { Alert, AsyncStorage } from 'react-native'
 import Storage from 'react-native-storage'
 import { getAssembledUrl } from '../urlStorage'
 
-const SOTIC_FULL_PLAYERS = 'SoticFullPlayers' // Note: Do not use underscore("_") in key!// 注意:请不要在key中使用_下划线符号!
+const EYC3_FULL_PLAYERS = 'EYC3FullPlayers' // Note: Do not use underscore("_") in key!// 注意:请不要在key中使用_下划线符号!
 
-export function removeSotiveFullPlayerList(){
+export function removeEYC3FullPlayerList(){
     storage.remove({
-        key: SOTIC_FULL_PLAYERS
+        key: EYC3_FULL_PLAYERS
     })
 }
 
-export async function getSoticFullPlayerList() {
+export async function getEYC3FullPlayerList() {
     // The name of the sync method must be the same of the data's key
     // And the passed params will be an all-in-one object.
     // You can use promise here.
@@ -21,17 +21,17 @@ export async function getSoticFullPlayerList() {
     // 方法接受的参数为一整个object，所有参数从object中解构取出
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
-        SoticFullPlayers(params){
+        EYC3FullPlayers(params){
           let {resolve, reject } = params
-          fetch(getAssembledUrl(SOTIC_FULL_PLAYERS), {
-            method: 'GET'
+          fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
+            method: 'POST'
           }).then(response => {
             return response.json()
           }).then(json => {
             if(json){
-              console.warn('Fresh Uncached Sotic Data: ',JSON.stringify(json))
+              console.warn('Fresh uncached eyc3 Data: ',JSON.stringify(json))
               storage.save({
-                key: SOTIC_FULL_PLAYERS,
+                key: EYC3_FULL_PLAYERS,
                 expires: 1000 * 3600,
                 rawData: json
               });
@@ -48,11 +48,11 @@ export async function getSoticFullPlayerList() {
       }
 
     return  await storage.load({
-          key: SOTIC_FULL_PLAYERS,
+          key: EYC3_FULL_PLAYERS,
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          console.warn('Cached Sotic Data: ',JSON.stringify(ret))
+          console.warn('Cached eyc3 Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
           console.warn(err.message);

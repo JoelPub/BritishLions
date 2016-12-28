@@ -25,6 +25,8 @@ import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 
 class MyLionsPlayerList extends Component {
 
@@ -34,8 +36,8 @@ class MyLionsPlayerList extends Component {
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
-        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
+        //this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        //this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -195,7 +197,32 @@ class MyLionsPlayerList extends Component {
         return players
     }
 
-    _getFavoritePlayers(playersByNation) {
+    _getFavoritePlayers(playersByNation){
+        this.playerListFeeds = this.handlePlayer(playersByNation)
+        this.setState({ isLoaded: false })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                   this._signInRequired()
+                }
+            }else if(data.error){
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(data.error) // prompt error
+                })
+            }else{
+               let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+
+               this.setState({
+                   playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds),
+                   favoritePlayers:favoritePlayers
+               })
+            }
+            this.setState({ isLoaded: true })
+        })
+    }
+    /*_getFavoritePlayers(playersByNation) {
         this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
         let options = {
             url: this.favUrl,
@@ -232,7 +259,7 @@ class MyLionsPlayerList extends Component {
         }
 
         service(options)
-    }
+    }*/
 
     _setSearchModalVisible=(visible) => {
         this.setState({
@@ -370,8 +397,23 @@ class MyLionsPlayerList extends Component {
         return newData
     }
 
+    _getPlayersListByUnion(){
+        this.setState({ isLoaded: false })
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+            }
+        }).catch((error) => {
+            this.setState({ isLoaded: true }, () => {
+                this._showError(error) // prompt error
+            })
+        })
+    }
+
     componentDidMount() {
-        let options = {
+        setTimeout(() => this._getPlayersListByUnion(), 600)
+        /*let options = {
             url: this.unionUrl,
             data: {},
             method: 'get',
@@ -391,7 +433,7 @@ class MyLionsPlayerList extends Component {
             }
         }
 
-        service(options)
+        service(options)*/
     }
 
     componentWillUnmount() {
