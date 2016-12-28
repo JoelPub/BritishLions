@@ -107,7 +107,7 @@ class MyLionsUnionsList extends Component {
                         }
                         <LionsFooter isLoaded={true} />
                     </Content>
-                    < EYSFooter />
+                    < EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
         )

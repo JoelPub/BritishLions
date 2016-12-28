@@ -737,7 +737,7 @@ class MyLionsPlayerDetails extends Component {
                             </View>
                         <LionsFooter isLoaded={true} />
                     </Content>
-                    < EYSFooter />
+                    < EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
         )

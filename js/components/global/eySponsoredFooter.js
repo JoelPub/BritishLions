@@ -36,6 +36,7 @@ const styles = styleSheetCreate({
 })
 
 export default class EYFooter extends Component {
+
 	  render() {
         return (
 

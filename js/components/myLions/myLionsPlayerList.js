@@ -539,7 +539,7 @@ class MyLionsPlayerList extends Component {
                             :
                                 <ActivityIndicator style={loader.centered} size='large' />
                         }
-                        <EYSFooter />
+                        <EYSFooter mySquadBtn={true}/>
                     </Content>
                 </View>
             </Container>
