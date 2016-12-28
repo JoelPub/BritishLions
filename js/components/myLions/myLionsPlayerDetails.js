@@ -3,8 +3,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, Alert } from 'react-native'
-import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon,  ScrollView, Modal } from 'native-base'
+import { Image, View, Platform, Alert,  ScrollView, Modal } from 'react-native'
+import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -719,31 +719,31 @@ class MyLionsPlayerDetails extends Component {
                                 </View>
                             </View>
                         <LionsFooter isLoaded={true} />
-                        <Modal
-                            visible={this.state.modalVisible}
-                            onRequestClose={()=>this._setModalVisible(false)}>
-                            <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                                <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                                style={styles.btnClose}>
-                                    <Icon name='md-close' style={styles.btnCloseIcon}/>
-                                </ButtonFeedback>
-                                    <ScrollView style={styles.modalViewWrapper}>
-                                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                    
-                                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                    
-                                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                    
-                                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                    </ScrollView>
-                            </LinearGradient>
-                        </Modal>
                     </Content>
                     < EYSFooter mySquadBtn={true} />
+                    <Modal
+                        visible={this.state.modalVisible}
+                        onRequestClose={()=>this._setModalVisible(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <ScrollView style={styles.modalViewWrapper}>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                </ScrollView>
+                        </LinearGradient>
+                    </Modal>
                 </View>
             </Container>
         )
