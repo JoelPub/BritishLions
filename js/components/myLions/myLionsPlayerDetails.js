@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, Alert } from 'react-native'
+import { Image, View, Platform, Alert,  ScrollView, Modal } from 'react-native'
 import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -35,6 +35,7 @@ class MyLionsPlayerDetails extends Component {
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.state = {
+            modalVisible: false,
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
@@ -421,6 +422,11 @@ class MyLionsPlayerDetails extends Component {
         }
 
     }
+    _setModalVisible=(visible) => {
+        this.setState({
+            modalVisible:visible,
+        })
+    }
 
     render() {
         let buttonText = ''
@@ -446,7 +452,7 @@ class MyLionsPlayerDetails extends Component {
                             <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
                                 {
                                     this.state.isFav === true?
-                                    <Icon name='md-star' style={styles.searchIcon}/>
+                                    <Icon name='md-star' style={[styles.searchIcon,{color:'rgb(255,204,40)'}]}/>
                                     :
                                     <Icon name='md-star-outline' style={styles.searchIcon}/>
                                 }
@@ -623,105 +629,82 @@ class MyLionsPlayerDetails extends Component {
                                             dotColor='rgb(95,96,98)'
                                             activeDotColor='rgb(255,230,0)'
                                             onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
-                                            <View style={{paddingVertical:20}}>
+                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
                                                 <View style={{flexDirection:'row',marginTop:10}}>
                                                     <View style={{flex:1,alignItems:'center'}}>
                                                         <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(216,217,218)'}]}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>35</Text>
                                                         </View>
                                                         <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
                                                     </View>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>ASSISTS</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{flexDirection:'row',marginTop:10}}>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>METRES RUN</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>38</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 7 avg</Text>
                                                     </View>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>LINE BREAKS</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>7</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={{paddingVertical:20}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 15 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View style={{paddingVertical:20}}>
+                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
                                                 <View style={{flexDirection:'row',marginTop:10}}>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TACKLES</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>18</Text>
                                                         </View>
                                                         <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
                                                     </View>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>RUCKS</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{flexDirection:'row',marginTop:10}}>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>LINE-IN</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>22</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 24 avg</Text>
                                                     </View>
                                                     <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TITLE</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>14</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 15 avg</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
+                                                <View style={{flexDirection:'row',marginTop:10,}}>
+                                                    <View style={{flex:1,alignItems:'center'}}>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>KICKING</Text>
+                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
+                                                        </View>
+                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -737,7 +720,30 @@ class MyLionsPlayerDetails extends Component {
                             </View>
                         <LionsFooter isLoaded={true} />
                     </Content>
-                    < EYSFooter mySquadBtn={true}/>
+                    < EYSFooter mySquadBtn={true} />
+                    <Modal
+                        visible={this.state.modalVisible}
+                        onRequestClose={()=>this._setModalVisible(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <ScrollView style={styles.modalViewWrapper}>
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                
+                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                                </ScrollView>
+                        </LinearGradient>
+                    </Modal>
                 </View>
             </Container>
         )
