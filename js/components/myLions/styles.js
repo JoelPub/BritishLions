@@ -1030,6 +1030,142 @@ module.exports = styleSheetCreate({
         height: 50, 
         width:132, 
         backgroundColor: styleVar.brandLightColor,  
+    },
+    modalBtnPosition:{
+        height: 45, 
+        backgroundColor: 'transparent', 
+        marginTop:19, 
+        marginBottom:0,
+        flexDirection:'row',
+        flex:1 
+    },
+    modalBtnPositionLeft:{
+        height:45,
+        backgroundColor: 'rgb(175, 0, 30)',
+        borderTopLeftRadius:22.5,
+        borderBottomLeftRadius:22.5,
+        flex:3,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalBtnPosLeftText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24
+    },
+    modalBtnPosRight:{
+        height:45,
+        backgroundColor:styleVar.brandLightColor,
+        borderTopRightRadius:22.5,
+        borderBottomRightRadius:22.5,
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalBtnTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:44,
+        lineHeight:44,
+        marginTop:28,
+        textAlign:'center'
+    },
+    modalConfirmBtn:{
+        height: 45, 
+        backgroundColor: styleVar.brandLightColor, 
+        marginTop:19, 
+        marginBottom:20 
+    },
+    btnFavIcon:{
+        color:'rgb(255,204,40)'
+    },
+    playerCardWrapper:{
+        padding:20
+    },
+    playerOverallRating:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    playerPerfromanceWrapper:{
+        marginVertical:15,
+        flexDirection:'row',
+    },
+    playerPerfromance:{
+        flex:1,
+        justifyContent:'flex-start',
+        borderTopWidth:1,
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingTop:20,
+        paddingBottom:8,
+        alignItems:'center'
+    },
+    playerPerformanceTrend:{
+        fontSize:44,
+        lineHeight:44,
+        textAlign:'center',
+        color:'rgb(255,230,0)',
+        marginTop:35
+    },
+    playerFigureWrapper:{
+        padding:15
+    },
+    playerFigureView:{
+        backgroundColor:'rgb(255,255,255)',
+        padding:10
+    },
+    playerFigureTypeView:{
+        flexDirection:'row'
+    },
+    playerFigureType:{
+        flex:1
+    },
+    underLineAttack:{
+        marginHorizontal:16,
+        borderBottomWidth:3,
+    },
+    underLineDefence:{
+        marginHorizontal:11,
+        borderBottomWidth:3,
+    },
+    underLineKicking:{
+        marginHorizontal:13,
+        borderBottomWidth:3,
+    },
+    playerFigureTypeText:{
+        fontFamily: styleVar.fontCondensed, 
+        fontSize:24,
+        textAlign:'center'
+    },
+    playerFigurePageWrapper:{
+        paddingVertical:20,
+        justifyContent:'center',
+        height:350
+    },
+    playerFigureRow:{
+        flexDirection:'row',
+        marginTop:10,
+    },
+    playerFigureUnit:{
+        flex:1,
+        alignItems:'center'
+    },
+    playerFigureUpperText:{
+        color:'rgb(95,96,98)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        marginBottom:10
+    },
+    playerRatingScore:{
+        borderWidth:1,
+        borderColor:'rgb(230,231,232)',
+        backgroundColor:'rgb(216,217,218)'
+    },
+    playerFigureLowerText:{
+        color:'rgb(95,96,98)',
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:18,
+        marginTop:10
     }
 
 })

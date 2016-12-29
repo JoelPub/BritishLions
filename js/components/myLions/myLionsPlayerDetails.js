@@ -36,8 +36,8 @@ class MyLionsPlayerDetails extends Component {
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.pageStyle = {
-                            active:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-                            inactive:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                            active:{textColor:styleVar.colorTextDarkGrey,underlineColor:styleVar.colorYellow},
+                            inactive:{textColor:styleVar.colorGrey2,underlineColor:'transparent'}
                          }
         this.state = {
             modalVisible: false,
@@ -57,44 +57,44 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>CAPTAIN</Text>
                             </View>
-                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>1/1</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
-                            </View>
-                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>1/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>KICKER</Text>
                             </View>
-                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARD</Text>
-                            </View>
-                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>12/16</Text>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>BACK</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>WILDCARD</Text>
                             </View>
-                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>5/16</Text>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>FORWARD</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>12/16</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>BACK</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>5/16</Text>
                             </View>
                         </ButtonFeedback>
                     </View>
@@ -102,16 +102,11 @@ class MyLionsPlayerDetails extends Component {
                 break
             case 'message' :
                 return(
-                                <View style={styles.modalViewWrapper}>
-                                    <Text style={{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:44,
-        lineHeight:44,
-        marginTop:28,
-        textAlign:'center'}}>CAPTAIN</Text>
-                                    <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
-                                    <ButtonFeedback rounded label='OK' onPress={()=>this._setModalVisible(false)}  style={{height: 45, backgroundColor: styleVar.brandLightColor, marginTop:19, marginBottom:20 }} />
-                                </View>
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalBtnTitle}>CAPTAIN</Text>
+                        <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
+                        <ButtonFeedback rounded label='OK' onPress={()=>this._setModalVisible(false)}  style={styles.modalConfirmBtn} />
+                    </View>
                 )
                 break
             case 'info' :
@@ -525,7 +520,7 @@ class MyLionsPlayerDetails extends Component {
                             <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
                                 {
                                     this.state.isFav === true?
-                                    <Icon name='md-star' style={[styles.searchIcon,{color:'rgb(255,204,40)'}]}/>
+                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
                                     :
                                     <Icon name='md-star-outline' style={styles.searchIcon}/>
                                 }
@@ -609,88 +604,46 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                            <View style={[styles.detailsGridColFull,{padding:20}]}>
-                                <View style={{
-        paddingTop:20,
-        backgroundColor:'rgb(95,96,98)'
-    }}>
+                            <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
+                                <View style={styles.fullCard}>
                                     <ButtonFeedback 
                                         onPress={()=>this._setModalVisible(true,'info')}
-                                        style={{
-        height:28,
-        width:28,
-        borderRadius:14,
-        backgroundColor:'rgb(255,255,255)',
-        position:'absolute',
-        right:4,
-        top:4
-    }}>
+                                        style={styles.btnCardInfo}>
                                         <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                     </ButtonFeedback>
                                     
-                                    <View style={{
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-    }}>
+                                    <View style={styles.playerOverallRating}>
                                         <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                         <View style={styles.ratingScore}>
                                             <Text style={styles.ratingScorePoint}>7.8</Text>
                                         </View>
                                     </View>
-                                    <View style={{
-        marginVertical:15,
-        flexDirection:'row',
-    }}>
-                                        <View style={{
-                                            flex:1,
-                                            justifyContent:'flex-start',
-                                            borderTopWidth:1,
-        borderLeftWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        paddingTop:20,
-        paddingBottom:8,
-        alignItems:'center'}} >
+                                    <View style={styles.playerPerfromanceWrapper}>
+                                        <View style={styles.playerPerfromance} >
                                             <Text style={styles.summaryText}>RECENT PERFORMANCE</Text>
                                             <Text style={styles.summaryTextHighLight}>86</Text>
                                         </View>
-                                        <View style={{
-                                            flex:1,
-                                            justifyContent:'flex-start',
-                                            borderTopWidth:1,
-        borderLeftWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        paddingTop:20,
-        paddingBottom:8,
-        alignItems:'center'}}>
+                                        <View style={styles.playerPerfromance}>
                                             <Text style={styles.summaryText}>CONSISTENCY</Text>
-                                            <Icon name='md-trending-up' style={{
-        fontSize:44,
-        lineHeight:44,
-        textAlign:'center',
-        color:'rgb(255,230,0)',
-        marginTop:35
-    }}/>
+                                            <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                         </View>
                                     </View>
-                                    <View style={{padding:15}}>
-                                        <View style={{backgroundColor:'rgb(255,255,255)',padding:10}}>
-                                            <View style={{flexDirection:'row'}}>
-                                                <ButtonFeedback style={{flex:1}} onPress={()=>this.changeProfile(0)}>
-                                                    <View style={{marginHorizontal:16,borderBottomWidth:3,borderColor:this.state.attackStyle.underlineColor}}>
-                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.attackStyle.textColor}]}>ATTACK</Text>
+                                    <View style={styles.playerFigureWrapper}>
+                                        <View style={styles.playerFigureView}>
+                                            <View style={styles.playerFigureTypeView}>
+                                                <ButtonFeedback style={styles.playerFigureType} onPress={()=>this.changeProfile(0)}>
+                                                    <View style={[styles.underLineAttack,{borderColor:this.state.attackStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}>ATTACK</Text>
                                                     </View>
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(1)}>
-                                                    <View style={{marginHorizontal:11,borderBottomWidth:3,borderColor:this.state.defenceStyle.underlineColor}}>
-                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.defenceStyle.textColor}]}>DEFENSE</Text>
+                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(1)}>
+                                                    <View style={[styles.underLineDefence,{borderColor:this.state.defenceStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}>DEFENSE</Text>
                                                     </View>
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(2)}>
-                                                    <View style={{marginHorizontal:13,borderBottomWidth:3,borderColor:this.state.kickingStyle.underlineColor}}>
-                                                        <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,textAlign:'center'},{color:this.state.kickingStyle.textColor}]}>KICKING</Text>
+                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(2)}>
+                                                    <View style={[styles.underLineKicking,{borderColor:this.state.kickingStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}>KICKING</Text>
                                                     </View>
                                                 </ButtonFeedback>
                                             </View>
@@ -702,82 +655,82 @@ class MyLionsPlayerDetails extends Component {
                                             dotColor='rgb(95,96,98)'
                                             activeDotColor='rgb(255,230,0)'
                                             onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
-                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TRIES</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>35</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>ASSISTS</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>ASSISTS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>METRES RUN</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>METRES RUN</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>38</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 7 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 7 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>LINE BREAKS</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>LINE BREAKS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>7</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 15 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TACKLES</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TACKLES</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>18</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>RUCKS</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>RUCKS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>LINE-IN</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>LINE-IN</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>22</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 24 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 24 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TITLE</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TITLE</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>14</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 15 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View style={{paddingVertical:20,justifyContent:'center',height:350}}>
-                                                <View style={{flexDirection:'row',marginTop:10,}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>KICKING</Text>
-                                                        <View style={[styles.ratingScore,{borderWidth:1,borderColor:'rgb(230,231,232)',backgroundColor:'rgb(216,217,218)'}]}>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>KICKING</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                             <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 10 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
