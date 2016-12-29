@@ -414,6 +414,14 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         marginTop:10
     },
+    btnExpertSquad: {
+        backgroundColor:'rgb(38,38,38)', 
+        flexDirection:'row', 
+        marginTop:20,
+        marginBottom:0,
+        marginLeft:10,
+        marginRight:10 
+    },
     btnExpertIcon: {
         marginLeft: 20,
         width: 34, 
