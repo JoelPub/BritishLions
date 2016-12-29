@@ -42,7 +42,10 @@ class MyLions extends Component {
     _mySquad(){
         this.props.drillDown({}, 'mySquad')
     }
-
+    _myExpertsPick = () => {
+        console.log('go to MyLionsExpertsList')
+        this.props.drillDown({}, 'myLionsExpertsList ')
+    }
     prev(){
         this.refs['swiper'].scrollBy(-1,true)
         this.setState({
@@ -80,7 +83,9 @@ class MyLions extends Component {
                                 MY SQUAD
                                 </Text>
                             </ButtonFeedback>                            
-                            <ButtonFeedback rounded style={[styles.button,styles.btnExpert]}>
+                            <ButtonFeedback rounded style={[styles.button,styles.btnExpert]}
+                                            onPress={this._myExpertsPick}
+                            >
                                 <Icon name='md-contact' style={styles.btnExpertIcon} />
                                 <Text
                                 style={styles.btnExpertLabel}>

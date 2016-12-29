@@ -27,6 +27,7 @@ import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
 import MyLionsPlayerList from './components/myLions/myLionsPlayerList'
+import MyLionsExpertsList from './components/myLions/myLionsExpertsList'
 import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
 import MyLionsUnionsList from './components/myLions/myLionsUnionsList'
@@ -240,7 +241,7 @@ class AppNavigator extends Component {
                 <Component navigator={navigator} route={route} {...route.passProps} />
             )
         }
-
+        console.log(route.id)
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />
@@ -276,6 +277,8 @@ class AppNavigator extends Component {
                 return <MySquad navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
+            case 'myLionsExpertsList' :
+                return <MyLionsExpertsList navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
             case 'tours':
