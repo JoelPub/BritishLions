@@ -563,21 +563,23 @@ module.exports = styleSheetCreate({
     },
     unionsPlayerListingFilterByBar:{
         height:80,
+        width:styleVar.deviceWidth,
         alignSelf: 'center',
         alignItems: 'center',
+        borderBottomColor: 'rgb(216, 217, 218)',
+        borderBottomWidth: 1,
         flexDirection: 'row'
     },
     unionsPlayerListingFilterByCancelButton:{
-        width:17,
-        height:17,
-        borderRadius:8.5,
+        width:28,
+        height:18,
         alignSelf: 'center',
         marginLeft:10,
-        backgroundColor:'rgb(208, 7, 41)'
     },
-    btnFilerCancelIcon:{
-        fontSize:10,
-        textAlign:'center'
+    btnFilterCancelIcon:{
+        fontSize:20,
+        textAlign:'center',
+        color:'rgb(208, 7, 41)'
     },
     unionsPlayerListingSearchText:{
         alignSelf: 'center',
@@ -589,11 +591,13 @@ module.exports = styleSheetCreate({
             paddingTop: 13,
         }
     },
+
     unionsPlayerListingFilterByText:{
         textAlign: 'center',
-        color:'black',
+        width:styleVar.deviceWidth,
+        color:'rgb(38, 38, 38)',
         fontFamily: 'Helvetica Neue',
-        fontSize: 18
+        fontSize: 18,
     },
     unionsPlayerListingFilterButton:{
         right:43,
@@ -639,7 +643,7 @@ module.exports = styleSheetCreate({
     filterContainer: {
         backgroundColor: styleVar.brandPrimary,
         width: null,
-        height: null
+        height: styleVar.deviceHeight
     },
     filterResultContainer:{
         flex:1,

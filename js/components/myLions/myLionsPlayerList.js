@@ -465,10 +465,11 @@ class MyLionsPlayerList extends Component {
                             {
                                 (this.filterBy !== '')&&
                                 <View style={styles.unionsPlayerListingFilterByBar}>
-                                    <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                    <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}
                                     <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
-                                        <Icon name='md-close' style={styles.btnFilterCancelIcon}/>
+                                        <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
                                     </TouchableOpacity>
+                                    </Text>
                                 </View>
                             }
                         </View>
