@@ -4,10 +4,11 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Modal, ListView, StyleSheet} from 'react-native'
+import { Image, View, ScrollView} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
+
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -25,21 +26,33 @@ import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.pn
 import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 
+
+const ExpertsHeaderView = () => (
+  <LinearGradient colors={['#AF001E', '#820417']} style={styles.viewExpertHeader}>
+    <Image style={styles.viewExpertHeaderImage} source={imageJameshaskel} />
+    <View style={styles.headerPlayerDetails}>
+      <Text style={styles.viewExpertProfileName}>JAMES HASKELL</Text>
+    </View>
+    <View style={styles.headerPlayerDetails}>
+      <Text style={styles.viewExpertProfileDescription}>Lorem ipsum dolor sit amet, consectetur.</Text>
+    </View>
+  </LinearGradient>
+)
 class MyLionsExpertProfile extends Component {
 
   constructor(props) {
     super(props)
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2','row 3','row 4','row 5']),
     };
   }
+
   render() {
     return (
       <Container theme={theme}>
         <View style={styles.container}>
+          <LionsHeader back={true} title='MY LIONS' />
           <ScrollView>
-            <Text>this's a null page</Text>
+            <ExpertsHeaderView />
           </ScrollView>
         </View>
       </Container>

@@ -1044,5 +1044,37 @@ module.exports = styleSheetCreate({
         color: 'white',
         fontFamily: styleVar.fontCondensed,
         marginTop: 15,
+    },
+    viewExpertHeader: {
+        height: null,
+        width: null,
+        alignItems: 'center'
+    },
+    viewExpertHeaderImage: {
+        marginTop: 15,
+        width: 100,
+        height: 100,
+        borderRadius:50,
+        overflow: 'hidden',
+    },
+    viewExpertProfileName: {
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+        paddingTop: 15,
+        width: 121,
+        android: {
+            paddingTop: 0
+        }
+    },
+    viewExpertProfileDescription: {
+        fontFamily: styleVar.fontGeorgia,
+        fontSize: 18,
+        width: 226,
+        textAlign:'center',
+        android: {
+            marginTop: 5,
+            marginBottom: 10
+        }
     }
 })
