@@ -51,13 +51,13 @@ class MyLionsPlayerDetails extends Component {
             modalContent:this.getModalContent()
         }
     }
-    getModalContent(mode){
+    getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
             case 'update' :
                 return(
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','CAPTAIN','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>CAPTAIN</Text>
                             </View>
@@ -65,7 +65,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.modalBtnPosLeftText}>1/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','KICKER','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>KICKER</Text>
                             </View>
@@ -73,7 +73,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.modalBtnPosLeftText}>0/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','WILDCARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>WILDCARD</Text>
                             </View>
@@ -81,7 +81,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.modalBtnPosLeftText}>0/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','FORWARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>FORWARD</Text>
                             </View>
@@ -89,7 +89,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.modalBtnPosLeftText}>12/16</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','BACK','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>BACK</Text>
                             </View>
@@ -103,9 +103,9 @@ class MyLionsPlayerDetails extends Component {
             case 'message' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>CAPTAIN</Text>
-                        <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
-                        <ButtonFeedback rounded label='OK' onPress={()=>this._setModalVisible(false)}  style={styles.modalConfirmBtn} />
+                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <ButtonFeedback rounded label={btn} onPress={()=>this._setModalVisible(false)}  style={styles.modalConfirmBtn} />
                     </View>
                 )
                 break
@@ -415,13 +415,9 @@ class MyLionsPlayerDetails extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                let successDesc = this.state.isFav? 'removed from your list.' : 'added to your list.'
+                let successDesc = this.state.isFav? 'REMOVED FROM' : 'ADDED TO'
                 this.setState({ isFav: !this.state.isFav }, () => {
-                    Alert.alert(
-                        'Player List Update',
-                        `${this.playerName} has been ${successDesc}`,
-                        [{ text: 'OK' }]
-                    )
+                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  FAVOURITES`,'OK')
                 })
             },
             onError: (res) => {
@@ -489,10 +485,10 @@ class MyLionsPlayerDetails extends Component {
         this.changeStyle(state.index) 
 
     }
-    _setModalVisible=(visible,mode) => {
+    _setModalVisible=(visible,mode,title,subtitle,btn) => {
         this.setState({
             modalVisible:visible,
-            modalContent:visible?this.getModalContent(mode):this.getModalContent()
+            modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
     }
 
