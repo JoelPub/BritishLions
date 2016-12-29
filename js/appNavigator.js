@@ -276,7 +276,7 @@ class AppNavigator extends Component {
                 return <MySquad navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
-            case 'myLionsExpertsList' : 
+            case 'myLionsExpertsList' :
                 return <MyLionsExpertsList navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />

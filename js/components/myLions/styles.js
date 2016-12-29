@@ -1007,6 +1007,42 @@ module.exports = styleSheetCreate({
         height: 50, 
         width:132, 
         backgroundColor: styleVar.brandLightColor,  
+    },
+    imgExpertHeader: {
+        width: (styleVar.deviceWidth / 3),
+        height: (styleVar.deviceHeight / 3.7)
+    },
+    cellExpert: {
+        flexDirection: 'row'
+    },
+    cellExpertInfo: {
+        backgroundColor: '#D00729',
+        paddingTop: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
+        flex: 1,
+    },
+    textName: {
+        fontSize: 24,
+        color: 'white',
+        width: 187,
+        lineHeight: 24,
+        paddingTop: 4,
+        marginTop: 10,
+        fontFamily: styleVar.fontCondensed,
+    },
+    textDescriptio: {
+        fontSize: 18,
+        fontFamily: styleVar.fontGeorgia,
+        color: 'white',
+        width: 50,
+        lineHeight: 42,
+        marginTop: 15,
+    },
+    textRating: {
+        fontSize: 18,
+        color: 'white',
+        fontFamily: styleVar.fontCondensed,
+        marginTop: 15,
     }
-
 })
