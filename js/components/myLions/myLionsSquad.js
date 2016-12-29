@@ -33,7 +33,7 @@ import Swiper from 'react-native-swiper'
 import BarGraph from '../utility/barGraph'
 import BarSlider from '../utility/barSlider'
 
-class MySquad extends Component {
+class MyLionsSquad extends Component {
 
     constructor(props){
         super(props)
@@ -465,5 +465,5 @@ export default connect((state) => {
     return {
         route: state.route,
     }
-}, bindAction)(MySquad)
+}, bindAction)(MyLionsSquad)
 
