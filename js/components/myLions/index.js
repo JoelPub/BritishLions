@@ -37,7 +37,7 @@ class MyLions extends Component {
     }
 
     _myLions(){
-        this._showList({}, 'myLionsFavoriteList')
+        this._showList({}, 'myLionsUnionsList')
     }
     _mySquad(){
         this._setModalVisible(false)

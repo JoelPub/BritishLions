@@ -492,11 +492,12 @@ class MyLionsPlayerList extends Component {
                             {
                                 (this.filterBy !== '')&&
                                 <View style={styles.unionsPlayerListingFilterByBar}>
-                                    <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}
-                                    <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
-                                        <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
-                                    </TouchableOpacity>
-                                    </Text>
+                                    <View style={styles.unionsPlayerListingFilterTextView}>
+                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                        <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
+                                            <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             }
                         </View>
