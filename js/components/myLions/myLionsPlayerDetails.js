@@ -55,7 +55,7 @@ class MyLionsPlayerDetails extends Component {
         switch(mode)  {
             case 'update' :
                 return(
-                    <View style={styles.modalViewWrapper}>
+                    <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','CAPTAIN','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
                             <View style={styles.modalBtnPositionLeft}>
@@ -646,7 +646,7 @@ class MyLionsPlayerDetails extends Component {
                                            <Swiper
                                             ref='swiper'
                                             height={400}
-                                            width={260}
+                                            width={styleVar.deviceWidth-100}
                                             loop={false}
                                             dotColor='rgb(95,96,98)'
                                             activeDotColor='rgb(255,230,0)'

@@ -767,7 +767,7 @@ module.exports = styleSheetCreate({
         marginRight:5
     },
     fullCard:{
-        paddingTop:30,
+        paddingTop:40,
         backgroundColor:'rgb(95,96,98)'
     },
     btnCardInfo:{
@@ -783,13 +783,14 @@ module.exports = styleSheetCreate({
         fontSize:28, 
         textAlign:'center',
         color:'rgb(95,96,98)',
+        backgroundColor:'transparent'
     },
     summaryWrapper:{
         paddingHorizontal:10
     },
     summaryText:{
         fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
+        fontSize:16,
         textAlign:'center'
     },
     summaryTextHighLight:{
@@ -811,7 +812,8 @@ module.exports = styleSheetCreate({
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:28
+        fontSize:28,
+        lineHeight:28,
     },
     ratingScore:{
         marginLeft:10,
@@ -825,6 +827,7 @@ module.exports = styleSheetCreate({
     ratingScorePoint:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         color:'rgb(95,96,98)'
     },
     barGraphWrapper:{
@@ -993,20 +996,26 @@ module.exports = styleSheetCreate({
     },
     modalViewWrapper:{
         paddingHorizontal:28,
-        marginVertical:54
+        marginVertical:54,
+        backgroundColor:'transparent',
     },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         marginTop:28
     },
     modalText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:16,
     },
+    modalUpdateView:{
+        height:styleVar.deviceHeight-200,
+    },
     modalTitleTextCenter:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         marginTop:28,
         textAlign:'center'
     },
@@ -1017,18 +1026,17 @@ module.exports = styleSheetCreate({
     },
     modalBtnWrapper:{
         marginTop:15,
-        height:50,
         flexDirection:'row',
         justifyContent:'space-between'
     },
     modlaBtnCancel:{
         height: 50, 
-        width:132, 
+        width: styleVar.deviceWidth / 3, 
         backgroundColor: 'rgb(38,38,38)',
     },
     modlaBtnConfirm:{
         height: 50, 
-        width:132, 
+        width: styleVar.deviceWidth / 3,
         backgroundColor: styleVar.brandLightColor,  
     },
     modalBtnPosition:{
@@ -1050,7 +1058,8 @@ module.exports = styleSheetCreate({
     },
     modalBtnPosLeftText:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:24
+        fontSize:24,
+        lineHeight:24,
     },
     modalBtnPosRight:{
         height:45,
@@ -1121,20 +1130,30 @@ module.exports = styleSheetCreate({
         flex:1
     },
     underLineAttack:{
-        marginHorizontal:16,
+        marginHorizontal:10,
         borderBottomWidth:3,
+        android:{
+            marginHorizontal:16
+        }
     },
     underLineDefence:{
-        marginHorizontal:11,
+        marginHorizontal:4,
         borderBottomWidth:3,
+        android:{
+            marginHorizontal:11
+        }
     },
     underLineKicking:{
-        marginHorizontal:13,
+        marginHorizontal:7,
         borderBottomWidth:3,
+        android:{
+            marginHorizontal:13
+        }
     },
     playerFigureTypeText:{
         fontFamily: styleVar.fontCondensed, 
         fontSize:24,
+        lineHeight:24,
         textAlign:'center'
     },
     playerFigurePageWrapper:{

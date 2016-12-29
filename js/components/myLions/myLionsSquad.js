@@ -213,14 +213,14 @@ class MyLionsSquad extends Component {
                                     </View>
                                     <View style={styles.barGraphWrapper}>
                                         <Text style={styles.barGraphText}>COHESION</Text>
-                                        <BarGraph score={86} fullWidth={220} />
+                                        <BarGraph score={86} fullWidth={styleVar.deviceWidth-150} />
                                     </View>
                                     <View style={styles.barSliderWrapper}>
                                         <View style={styles.barSliderTextWrapper}>
                                             <Text style={styles.barSliderText}>ATTACK</Text>
                                             <Text style={styles.barSliderText}>DEFENCE</Text>
                                         </View>
-                                        <BarSlider score={30} fullWidth={270} />
+                                        <BarSlider score={30} fullWidth={styleVar.deviceWidth-100} />
                                     </View>
                                     <View style={styles.scoreCardShareWrapper}>
                                         <ButtonFeedback
