@@ -8,7 +8,8 @@ const EYC3_FULL_PLAYERS = 'EYC3FullPlayers' // Note: Do not use underscore("_") 
 
 export function removeEYC3FullPlayerList(){
     storage.remove({
-        key: EYC3_FULL_PLAYERS
+        key: EYC3_FULL_PLAYERS,
+        id: '1001'
     })
 }
 
@@ -22,7 +23,7 @@ export async function getEYC3FullPlayerList() {
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
         EYC3FullPlayers(params){
-          let {resolve, reject } = params
+          let {id, resolve, reject } = params
           fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
             method: 'POST'
           }).then(response => {
@@ -33,6 +34,7 @@ export async function getEYC3FullPlayerList() {
               storage.save({
                 key: EYC3_FULL_PLAYERS,
                 expires: 1000 * 3600,
+                id,
                 rawData: json
               });
               resolve && resolve(json)
@@ -50,6 +52,7 @@ export async function getEYC3FullPlayerList() {
     return  await storage.load({
           key: EYC3_FULL_PLAYERS,
           autoSync: true,
+          id:'1001',
           syncInBackground: true
         }).then(ret => {
           console.warn('Cached eyc3 Data: ',JSON.stringify(ret))

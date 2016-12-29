@@ -27,6 +27,7 @@ import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 class MyLionsPlayerList extends Component {
 
@@ -70,7 +71,7 @@ class MyLionsPlayerList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -171,6 +172,7 @@ class MyLionsPlayerList extends Component {
     }
 
     handlePlayer(players) {
+        console.warn('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -222,6 +224,24 @@ class MyLionsPlayerList extends Component {
             this.setState({ isLoaded: true })
         })
     }
+
+     _mergeEYC3Player(playerList, eyc3Players){
+         let mergedPlayers = []
+         console.warn('eyc3Players:', eyc3Players)
+         console.warn('playerList:', playerList)
+         if (eyc3Players.length > 0) {
+             eyc3Players.map((eyc3player, index) => {
+                 playerList.map((player,j) => {
+                     if (eyc3player.id === player.id) {
+                         player.eyc3PlayerScore = eyc3player.heightm
+                         mergedPlayers.push(player)
+                     }
+                 })
+             })
+         }
+        this._getFavoritePlayers(mergedPlayers)
+     }
+
     /*_getFavoritePlayers(playersByNation) {
         this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
         let options = {
@@ -402,7 +422,14 @@ class MyLionsPlayerList extends Component {
         getSoticFullPlayerList().then((catchedFullPlayerList) => {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+                //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+                getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                     if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                     }
+                 }).catch((error) => {
+                     console.warn('Error when try to get the EYC3 full player list: ', error)
+                 })
             }
         }).catch((error) => {
             this.setState({ isLoaded: true }, () => {

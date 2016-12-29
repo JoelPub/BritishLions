@@ -527,13 +527,13 @@ module.exports = styleSheetCreate({
         flexDirection:'row', 
         flexWrap:'wrap'
     },
-    unionsHeader:{
+    myLionsSharedHeader:{
         height:60,
         backgroundColor:'white',
         borderBottomColor: 'rgb(216, 217, 218)',
         borderBottomWidth: 1,
     },
-    unionsHeaderText:{
+    myLionsSharedHeaderText:{
         width:styleVar.deviceWidth,
         color: 'rgb(175, 0, 30)',
         fontFamily: styleVar.fontCondensed,

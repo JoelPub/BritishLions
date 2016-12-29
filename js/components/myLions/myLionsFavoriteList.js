@@ -30,6 +30,7 @@ import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import Storage from 'react-native-storage'
 
 class MyLionsFavoriteList extends Component {
@@ -65,7 +66,7 @@ class MyLionsFavoriteList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -127,11 +128,35 @@ class MyLionsFavoriteList extends Component {
                 })
             }
         }
+        getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+             if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                this._mergeEYC3Player(favoritePlayers, eyc3CatchedFullPlayerList)
+             }
+        }).catch((error) => {
+            console.warn('Error when try to get the EYC3 full player list: ', error)
+        })
+    }
+
+    _mergeEYC3Player(playerList, eyc3Players){
+        let mergedFavoritePlayers = []
+
+        for (var u in eyc3Players) {
+            if (eyc3Players[u].length > 0) {
+                eyc3Players[u].map((eyc3player, index) => {
+                    playerList.map((player,j) => {
+                        if (eyc3player.id === player.id) {
+                            player.eyc3PlayerScore = eyc3player.heightm
+                            mergedFavoritePlayers.push(player)
+                        }
+                    })
+                })
+            }
+        }
 
         this.setState({
             isLoaded: true,
             isRefreshing: false,
-            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(favoritePlayers))
+            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(mergedFavoritePlayers))
         })
     }
 
@@ -327,12 +352,11 @@ class MyLionsFavoriteList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <View style={styles.viewCircle}>
-                            <Image resizeMode='contain' source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageTitle}/>
-                        </View>
-                        <Text style={styles.headerTitle}>MY LIONS</Text>
-                    </LinearGradient>
+                     <View style={styles.myLionsSharedHeader}>
+                         <Text style={styles.myLionsSharedHeaderText}>
+                              MY FAVOURITES
+                         </Text>
+                     </View>
                     {
                         this.state.isLoaded?
                              <ListView 

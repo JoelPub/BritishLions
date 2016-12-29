@@ -8,7 +8,8 @@ const SOTIC_FULL_PLAYERS = 'SoticFullPlayers' // Note: Do not use underscore("_"
 
 export function removeSotiveFullPlayerList(){
     storage.remove({
-        key: SOTIC_FULL_PLAYERS
+        key: SOTIC_FULL_PLAYERS,
+        id:'3001'
     })
 }
 
@@ -22,7 +23,7 @@ export async function getSoticFullPlayerList() {
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
         SoticFullPlayers(params){
-          let {resolve, reject } = params
+          let { id, resolve, reject } = params
           fetch(getAssembledUrl(SOTIC_FULL_PLAYERS), {
             method: 'GET'
           }).then(response => {
@@ -32,6 +33,7 @@ export async function getSoticFullPlayerList() {
               console.warn('Fresh Uncached Sotic Data: ',JSON.stringify(json))
               storage.save({
                 key: SOTIC_FULL_PLAYERS,
+                id,
                 expires: 1000 * 3600,
                 rawData: json
               });
@@ -50,6 +52,7 @@ export async function getSoticFullPlayerList() {
     return  await storage.load({
           key: SOTIC_FULL_PLAYERS,
           autoSync: true,
+          id:'3001',
           syncInBackground: true
         }).then(ret => {
           console.warn('Cached Sotic Data: ',JSON.stringify(ret))
