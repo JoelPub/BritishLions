@@ -44,7 +44,7 @@ class MyLions extends Component {
     }
     _myExpertsPick = () => {
         console.log('go to MyLionsExpertsList')
-        this.props.drillDown({}, 'myLionsExpertsList ')
+        this.props.drillDown({}, 'myLionsExpertsList')
     }
     prev(){
         this.refs['swiper'].scrollBy(-1,true)

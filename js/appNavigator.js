@@ -241,7 +241,6 @@ class AppNavigator extends Component {
                 <Component navigator={navigator} route={route} {...route.passProps} />
             )
         }
-        console.log(route.id)
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />
@@ -277,7 +276,7 @@ class AppNavigator extends Component {
                 return <MySquad navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
-            case 'myLionsExpertsList' :
+            case 'myLionsExpertsList' : {
                 return <MyLionsExpertsList navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
