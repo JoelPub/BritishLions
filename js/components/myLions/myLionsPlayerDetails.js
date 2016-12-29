@@ -36,6 +36,8 @@ class MyLionsPlayerDetails extends Component {
         this.playerName = this.props.detail.name,
         this.state = {
             modalVisible: false,
+            modalPopulate:false,
+            modalSquadUpdate:false,
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
@@ -147,6 +149,12 @@ class MyLionsPlayerDetails extends Component {
 
         service(options)
     }*/
+    _updatePlayerSquadStatus(visible){
+        this.setState({
+            modalSquadUpdate:visible,
+        })
+
+    }
     _updatePlayerFavStatus(){
         this.setState({ isFormSubmitting: true })
         getGoodFormFavoritePlayerList().then((data)=>{
@@ -427,6 +435,11 @@ class MyLionsPlayerDetails extends Component {
             modalVisible:visible,
         })
     }
+    _setModalPopulate=(visible) => {
+        this.setState({
+            modalPopulate:visible,
+        })
+    }
 
     render() {
         let buttonText = ''
@@ -463,7 +476,7 @@ class MyLionsPlayerDetails extends Component {
                                     this.state.isDoneUpdatingState?
                                         <ButtonFeedback
                                             disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this._updatePlayerFavStatus()}
+                                            onPress={()=> this._updatePlayerSquadStatus()}
                                             style={[
                                                 styles.btn,
                                                 styles.btnLeft,
@@ -537,7 +550,7 @@ class MyLionsPlayerDetails extends Component {
 
                         */}
                             <View style={[styles.detailsGridColFull,{padding:20}]}>
-                                <View ref='scorecard' style={{
+                                <View style={{
         paddingTop:20,
         backgroundColor:'rgb(95,96,98)'
     }}>
@@ -742,6 +755,79 @@ class MyLionsPlayerDetails extends Component {
                                         <Text style={styles.modalTitleText}>OVERALL RATING</Text>
                                         <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                                 </ScrollView>
+                        </LinearGradient>
+                    </Modal>
+                    <Modal
+                        visible={this.state.modalSquadUpdate}
+                        onRequestClose={()=>this._updatePlayerSquadStatus(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._updatePlayerSquadStatus(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <View style={styles.modalViewWrapper}>
+                                    <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
+                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
+                                        </View>
+                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>1/1</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
+                                        </View>
+                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
+                                        </View>
+                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARD</Text>
+                                        </View>
+                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>12/16</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>BACK</Text>
+                                        </View>
+                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>5/16</Text>
+                                        </View>
+                                    </ButtonFeedback>
+                                </View>
+                        </LinearGradient>
+                    </Modal>
+                    <Modal
+                        visible={this.state.modalPopulate}
+                        onRequestClose={()=>this._setModalPopulate(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalPopulate(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                                <View style={styles.modalViewWrapper}>
+                                    <Text style={{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:44,
+        lineHeight:44,
+        marginTop:28,
+        textAlign:'center'}}>CAPTAIN</Text>
+                                    <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
+                                    <ButtonFeedback rounded label='OK' onPress={()=>this._setModalPopulate(false)}  style={{height: 45, backgroundColor: styleVar.brandLightColor, marginTop:19, marginBottom:20 }} />
+                                </View>
                         </LinearGradient>
                     </Modal>
                 </View>
