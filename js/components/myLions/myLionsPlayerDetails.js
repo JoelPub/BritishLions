@@ -24,6 +24,7 @@ import htmlStyles from '../../themes/html-styles'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../themes/variable'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import SquadModal from '../global/squadModal'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -34,17 +35,107 @@ class MyLionsPlayerDetails extends Component {
         this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.pageStyle = {
+                            active:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
+                            inactive:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                         }
         this.state = {
             modalVisible: false,
-            modalPopulate:false,
-            modalSquadUpdate:false,
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             currentProfile: 0,
-            attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-            defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-            kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+            attackStyle:this.pageStyle.active,
+            defenceStyle:this.pageStyle.inactive,
+            kickingStyle:this.pageStyle.inactive,
+            modalContent:this.getModalContent()
+        }
+    }
+    getModalContent(mode){
+        switch(mode)  {
+            case 'update' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
+                            </View>
+                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>1/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
+                            </View>
+                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
+                            </View>
+                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARD</Text>
+                            </View>
+                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>12/16</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message')}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
+                            <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>BACK</Text>
+                            </View>
+                            <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>5/16</Text>
+                            </View>
+                        </ButtonFeedback>
+                    </View>
+                )
+                break
+            case 'message' :
+                return(
+                                <View style={styles.modalViewWrapper}>
+                                    <Text style={{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:44,
+        lineHeight:44,
+        marginTop:28,
+        textAlign:'center'}}>CAPTAIN</Text>
+                                    <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
+                                    <ButtonFeedback rounded label='OK' onPress={()=>this._setModalVisible(false)}  style={{height: 45, backgroundColor: styleVar.brandLightColor, marginTop:19, marginBottom:20 }} />
+                                </View>
+                )
+                break
+            case 'info' :
+                return (
+                    <ScrollView style={styles.modalViewWrapper}>
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    </ScrollView>
+                )
+                break
+            default:
+                return (
+                    <View>
+                    </View>
+                )
         }
     }
 
@@ -149,12 +240,7 @@ class MyLionsPlayerDetails extends Component {
 
         service(options)
     }*/
-    _updatePlayerSquadStatus(visible){
-        this.setState({
-            modalSquadUpdate:visible,
-        })
 
-    }
     _updatePlayerFavStatus(){
         this.setState({ isFormSubmitting: true })
         getGoodFormFavoritePlayerList().then((data)=>{
@@ -374,70 +460,44 @@ class MyLionsPlayerDetails extends Component {
     }
 
     changeProfile(profile) {
-        switch(profile) {
+        this.changeStyle(profile) 
+        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    }
+    changeStyle(style) {
+        switch(style) {
             case 1:
                 this.setState({
-                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    defenceStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                    attackStyle:this.pageStyle.inactive,
+                    defenceStyle:this.pageStyle.active,
+                    kickingStyle:this.pageStyle.inactive
                 })
                 break
             case 2:
                 this.setState({
-                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    kickingStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'}
+                    attackStyle:this.pageStyle.inactive,
+                    defenceStyle:this.pageStyle.inactive,
+                    kickingStyle:this.pageStyle.active
                 })
                 break
             default:
                 this.setState({                    
-                    attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
+                    attackStyle:this.pageStyle.active,
+                    defenceStyle:this.pageStyle.inactive,
+                    kickingStyle:this.pageStyle.inactive
                 })
                 break
-
-        }
-
-
-        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+        }        
     }
 
     swiperScroll(e, state, context) {
-        this.setState({currentProfile:state.index})
-        switch(state.index) {
-            case 1:
-                this.setState({
-                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    defenceStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
-                })
-                break
-            case 2:
-                this.setState({
-                    attackStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    kickingStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'}
-                })
-                break
-            default:
-                this.setState({                    
-                    attackStyle:{textColor:'rgb(95,96,98)',underlineColor:'rgb(255,230,0)'},
-                    defenceStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'},
-                    kickingStyle:{textColor:'rgb(216,217,218)',underlineColor:'transparent'}
-                })
-                break
-        }
+        this.setState({currentProfile:state.index})        
+        this.changeStyle(state.index) 
 
     }
-    _setModalVisible=(visible) => {
+    _setModalVisible=(visible,mode) => {
         this.setState({
             modalVisible:visible,
-        })
-    }
-    _setModalPopulate=(visible) => {
-        this.setState({
-            modalPopulate:visible,
+            modalContent:visible?this.getModalContent(mode):this.getModalContent()
         })
     }
 
@@ -476,7 +536,7 @@ class MyLionsPlayerDetails extends Component {
                                     this.state.isDoneUpdatingState?
                                         <ButtonFeedback
                                             disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this._updatePlayerSquadStatus()}
+                                            onPress={()=> this._setModalVisible(true,'update')}
                                             style={[
                                                 styles.btn,
                                                 styles.btnLeft,
@@ -555,7 +615,7 @@ class MyLionsPlayerDetails extends Component {
         backgroundColor:'rgb(95,96,98)'
     }}>
                                     <ButtonFeedback 
-                                        onPress={()=>this._setModalVisible(true)}
+                                        onPress={()=>this._setModalVisible(true,'info')}
                                         style={{
         height:28,
         width:28,
@@ -734,102 +794,11 @@ class MyLionsPlayerDetails extends Component {
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
-                    <Modal
-                        visible={this.state.modalVisible}
-                        onRequestClose={()=>this._setModalVisible(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <ScrollView style={styles.modalViewWrapper}>
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                </ScrollView>
-                        </LinearGradient>
-                    </Modal>
-                    <Modal
-                        visible={this.state.modalSquadUpdate}
-                        onRequestClose={()=>this._updatePlayerSquadStatus(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._updatePlayerSquadStatus(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <View style={styles.modalViewWrapper}>
-                                    <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
-                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>CAPTAIN</Text>
-                                        </View>
-                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>1/1</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>KICKER</Text>
-                                        </View>
-                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>WILDCARD</Text>
-                                        </View>
-                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>0/1</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>FORWARD</Text>
-                                        </View>
-                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>12/16</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                    <ButtonFeedback rounded onPress={()=>this._setModalPopulate(true)}  style={{height: 45, backgroundColor: 'transparent', marginTop:19, marginBottom:0,flexDirection:'row',flex:1 }}>
-                                        <View style={{height:45,backgroundColor: 'rgb(175, 0, 30)',borderTopLeftRadius:22.5,borderBottomLeftRadius:22.5,flex:3,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>BACK</Text>
-                                        </View>
-                                        <View style={{height:45,backgroundColor:styleVar.brandLightColor,borderTopRightRadius:22.5,borderBottomRightRadius:22.5,flex:1,justifyContent:'center',alignItems:'center'}}>
-                                            <Text style={{fontFamily: styleVar.fontCondensed,fontSize:24}}>5/16</Text>
-                                        </View>
-                                    </ButtonFeedback>
-                                </View>
-                        </LinearGradient>
-                    </Modal>
-                    <Modal
-                        visible={this.state.modalPopulate}
-                        onRequestClose={()=>this._setModalPopulate(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalPopulate(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <View style={styles.modalViewWrapper}>
-                                    <Text style={{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:44,
-        lineHeight:44,
-        marginTop:28,
-        textAlign:'center'}}>CAPTAIN</Text>
-                                    <Text style={styles.modalTitleTextCenter}>SUCCESSFULLY ADDED</Text>
-                                    <ButtonFeedback rounded label='OK' onPress={()=>this._setModalPopulate(false)}  style={{height: 45, backgroundColor: styleVar.brandLightColor, marginTop:19, marginBottom:20 }} />
-                                </View>
-                        </LinearGradient>
-                    </Modal>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
                 </View>
             </Container>
         )
