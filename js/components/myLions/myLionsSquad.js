@@ -114,8 +114,6 @@ class MyLionsSquad extends Component {
                     <View>
                     </View>
                 )
-
-
         }
     }
     shareSnapshot(context){
