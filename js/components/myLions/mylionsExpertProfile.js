@@ -1,4 +1,5 @@
 
+
 'use strict'
 
 import React, { Component } from 'react'
@@ -22,33 +23,9 @@ import { replaceRoute, pushNewRoute } from '../../actions/route'
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
 import { drillDown } from '../../actions/content'
-
-
-
-
 import { globalNav } from '../../appNavigator'
 
-const ExpertsHeader = () => (
-      <Image source={imageJameshaskel} style={[styles.newsImage]} />
-)
-const ExpertDescription = () => (
-  <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}  >JOHN SMITH</Text>
-    <Text style={styles.textDecoration} numberOfLines={2} >Lorem ipsum dolor sitamet, consectetur.</Text>
-    <Text style={styles.textRating}>SQAD RATING: 350</Text>
-  </View>
-
-)
-const ExpertsCell = ({rowData,onPress}) => (
- <ButtonFeedback onPress= {onPress}>
-   <View  style={[styles.cellExpert]}>
-     <ExpertsHeader />
-     <ExpertDescription />
-   </View>
-</ButtonFeedback>
-)
-
-class MyLionsExpertsList extends Component {
+class MyLionsExpertProfile extends Component {
 
   constructor(props) {
     super(props)
@@ -57,21 +34,12 @@ class MyLionsExpertsList extends Component {
       dataSource: ds.cloneWithRows(['row 1', 'row 2','row 3','row 4','row 5']),
     };
   }
-  _navToDetail = () => {
-    this.props.drillDown({}, 'mylionsExpertProfile')
-  }
   render() {
     return (
       <Container theme={theme}>
         <View style={styles.container}>
-          <LionsHeader back={true} title='MY LIONS' />
           <ScrollView>
-            <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {this._navToDetail} />}
-            />
-            <LionsFooter isLoaded={true} />
+            <Text>this's a null page</Text>
           </ScrollView>
         </View>
       </Container>
@@ -90,4 +58,4 @@ export default connect((state) => {
   return {
     route: state.route,
   }
-}, bindAction)(MyLionsExpertsList)
+}, bindAction)(MyLionsExpertProfile)
