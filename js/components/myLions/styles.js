@@ -823,6 +823,14 @@ module.exports = styleSheetCreate({
         marginTop:20,
         paddingVertical:19
     },
+    expertRatingWrapper:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        borderColor:'rgb(216,217,218)',
+        marginTop:5,
+        paddingVertical:19
+    },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
