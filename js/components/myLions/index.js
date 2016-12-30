@@ -29,7 +29,7 @@ class MyLions extends Component {
             modalVisible: true,
             currentPage: 0,
         }
-        this.allPage = 4  
+        this.totalPages = 4  
     }
 
     _showList(item, route) {
@@ -40,7 +40,8 @@ class MyLions extends Component {
         this._showList({}, 'myLionsUnionsList')
     }
     _mySquad(){
-        this.props.drillDown({}, 'mySquad')
+        this._setModalVisible(false)
+        this.props.drillDown({}, 'myLionsSquad')
     }
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
@@ -134,7 +135,7 @@ class MyLions extends Component {
                                         <View style={styles.onboardingPage}>
                                             <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
                                             <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo.</Text>
-                                            <ButtonFeedback rounded label='BUILD MY SQUAD' style={[styles.button]}  />
+                                            <ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button]}  />
                                         </View>
                                     </Swiper>
                                     {
@@ -144,7 +145,7 @@ class MyLions extends Component {
                                         <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
                                     }
                                     {
-                                        this.state.currentPage===this.allPage-1?
+                                        this.state.currentPage===this.totalPages-1?
                                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
                                         :
                                         <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />

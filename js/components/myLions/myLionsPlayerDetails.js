@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, Alert } from 'react-native'
+import { Image, View, Platform, Alert,  ScrollView, Modal } from 'react-native'
 import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -23,6 +23,8 @@ import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../themes/variable'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import SquadModal from '../global/squadModal'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -31,17 +33,104 @@ class MyLionsPlayerDetails extends Component {
         this.isUnMounted = false
         this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
         this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.pageStyle = {
+                            active:{textColor:styleVar.colorTextDarkGrey,underlineColor:styleVar.colorYellow},
+                            inactive:{textColor:styleVar.colorGrey2,underlineColor:'transparent'}
+                         }
         this.state = {
+            modalVisible: false,
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             currentProfile: 0,
-            attackStyle:{color:'rgb(95,96,98)'},
-            defenceStyle:{color:'rgb(216,217,218)'},
-            kickingStyle:{color:'rgb(216,217,218)'}
+            attackStyle:this.pageStyle.active,
+            defenceStyle:this.pageStyle.inactive,
+            kickingStyle:this.pageStyle.inactive,
+            modalContent:this.getModalContent()
+        }
+    }
+    getModalContent(mode,title,subtitle,btn){
+        switch(mode)  {
+            case 'update' :
+                return(
+                    <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
+                        <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','CAPTAIN','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>CAPTAIN</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>1/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','KICKER','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>KICKER</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','WILDCARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>WILDCARD</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','FORWARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>FORWARD</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>12/16</Text>
+                            </View>
+                        </ButtonFeedback>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','BACK','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                            <View style={styles.modalBtnPositionLeft}>
+                                <Text style={styles.modalBtnPosLeftText}>BACK</Text>
+                            </View>
+                            <View style={styles.modalBtnPosRight}>
+                                <Text style={styles.modalBtnPosLeftText}>5/16</Text>
+                            </View>
+                        </ButtonFeedback>
+                    </View>
+                )
+                break
+            case 'message' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <ButtonFeedback rounded label={btn} onPress={()=>this._setModalVisible(false)}  style={styles.modalConfirmBtn} />
+                    </View>
+                )
+                break
+            case 'info' :
+                return (
+                    <ScrollView style={styles.modalViewWrapper}>
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    
+                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                            <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    </ScrollView>
+                )
+                break
+            default:
+                return (
+                    <View>
+                    </View>
+                )
         }
     }
 
@@ -73,8 +162,38 @@ class MyLionsPlayerDetails extends Component {
             [{text: 'Dismiss'}]
         )
     }
+    _updateInitialState(){
+        // lets update 'isFav state' to avoid glitch when user
+        // go to player details page then update the player (add or removed),
+        // then user back then go here again
+        // lets check first the player status if its favorite or not
+        // this is to prevent glitch
+        this.setState({ isDoneUpdatingState: false })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                    this.setState({ isDoneUpdatingState: false }, () => {
+                        this._signInRequired.bind(this)
+                    })
+                }
+            }else if(data.error){
+                console.warn('final data:', JSON.stringify(data.error))
+                this.setState({ isDoneUpdatingState: false }, () => {
+                    this._showError(data.error) // prompt error
+                })
+            }else{
+                let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
 
-    _updateState() {
+                // re-correect/update the isFav state
+                // and show the button
+                this.setState({isFav, isDoneUpdatingState: true})
+            }
+        })
+    }
+    /*_updateState() {
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
         // then user back then go here again
@@ -115,9 +234,83 @@ class MyLionsPlayerDetails extends Component {
         }
 
         service(options)
-    }
+    }*/
 
-    _updatePlayer() {
+    _updatePlayerFavStatus(){
+        this.setState({ isFormSubmitting: true })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                    this.setState({ isFormSubmitting: false }, () => {
+                        this._signInRequired.bind(this)
+                    })
+                }
+            }else if(data.error){
+                 this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(data.error) // prompt error
+                 })
+            }else{
+                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
+
+                 // detect conflict (glitch)
+                 if (this.state.isFav !== isFav) {
+                     // what this means?
+                     // it means we removing player that are already removed or
+                     // we adding a player that are already added
+
+                     // how this happens?
+                     // go to mylion page, check one of the country there then select any player (your in the player details now)
+                     // try to add or removed that player, example you add a player then the player is now added to your fav list
+                     // click the my lions button (it will redirect you to favorite list page), then click the last player you add
+                     // you will noticed the button of this player can be remove, then.. remove that player, it will now removed to your list
+                     // click/tap the back button in the header and you will go my favorite player list page
+                     // click/tap the back button again in the header and you will go the player details page (the player you add and removed)
+                     // remember the last action you did is removed this from my favorite list page
+                     // but as you can see the button still 'removed' instead of 'add'
+                     // that's the conflict/glitch happen because we just click/tap the back button in the header and it just
+                     // popRoute() or go to previous page, the problem here is when we back to the previous page, the component will not
+                     // re-render again, thats why what you see is 'removed' button instead of 'add'
+                     // the solution is when user tap the 'removed' or 'add' button, we will set the 'isFav state' again (re correct the state boolean value)
+                     // we will fetch the fav list from api and check if the player is included in favorites or not then
+                     // re update the state, this is to avoid error prompt that goodform response
+
+                     // what will happen now?
+                     // if user 'remove' a player that already 'removed', the process will continue
+                     // and we will not receiving any error from goodform that stating that 'we requesting to invalid api url',
+                     // because the adding and removing player url api is different, we need to make sure that if we add a player, the url will be for adding url
+                     // and if we remove player, the url will be for removing to avoid conflict in the goodform api
+                     // but lets prompt a message to the user that the player that user removing is 'already removed'
+                     // and the player that user adding is 'already addded'
+
+                     let errorDesc = ''
+                     if (this.state.isFav) {
+                         // user trying to remove a player that are already removed in the fav list
+                         errorDesc = 'is already removed from your list.'
+
+                     } else {
+                         // user trying to add a player that are already added in the fav list
+                         errorDesc = 'is already added from your list.'
+                     }
+
+                     // re correect the isFav state
+                     this.setState({isFav, isFormSubmitting: false}, () => {
+                         Alert.alert(
+                             'Player List Update',
+                             `${this.playerName} ${errorDesc}`,
+                             [{ text: 'OK' }]
+                         )
+                     })
+                 } else {
+                     // no conflict, just continue
+                     this._processUpdate()
+                     removeGoodFormFavoritePlayerList()
+                 }
+            }
+        })
+    }
+    /*_updatePlayer() {
         // lets check first the player status if its favorite or not
         // this is to prevent glitch
         let options = {
@@ -205,7 +398,7 @@ class MyLionsPlayerDetails extends Component {
         }
 
         service(options)
-    }
+    }*/
 
     _processUpdate() {  
         let url = this.state.isFav? this.favRemoveUrl : this.favAddUrl
@@ -222,13 +415,9 @@ class MyLionsPlayerDetails extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                let successDesc = this.state.isFav? 'removed from your list.' : 'added to your list.'
+                let successDesc = this.state.isFav? 'REMOVED FROM' : 'ADDED TO'
                 this.setState({ isFav: !this.state.isFav }, () => {
-                    Alert.alert(
-                        'Player List Update',
-                        `${this.playerName} has been ${successDesc}`,
-                        [{ text: 'OK' }]
-                    )
+                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  FAVOURITES`,'OK')
                 })
             },
             onError: (res) => {
@@ -254,7 +443,7 @@ class MyLionsPlayerDetails extends Component {
     }
     
     componentDidMount() {
-        this._updateState()
+        this._updateInitialState()
     }
 
     componentWillUnmount() {
@@ -262,33 +451,45 @@ class MyLionsPlayerDetails extends Component {
     }
 
     changeProfile(profile) {
-        switch(profile) {
+        this.changeStyle(profile) 
+        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    }
+    changeStyle(style) {
+        switch(style) {
             case 1:
                 this.setState({
-                    attackStyle:{color:'rgb(216,217,218)'},
-                    defenceStyle:{color:'rgb(95,96,98)'},
-                    kickingStyle:{color:'rgb(216,217,218)'}
+                    attackStyle:this.pageStyle.inactive,
+                    defenceStyle:this.pageStyle.active,
+                    kickingStyle:this.pageStyle.inactive
                 })
                 break
             case 2:
                 this.setState({
-                    attackStyle:{color:'rgb(216,217,218)'},
-                    defenceStyle:{color:'rgb(216,217,218)'},
-                    kickingStyle:{color:'rgb(95,96,98)'}
+                    attackStyle:this.pageStyle.inactive,
+                    defenceStyle:this.pageStyle.inactive,
+                    kickingStyle:this.pageStyle.active
                 })
                 break
             default:
-                this.setState({
-                    attackStyle:{color:'rgb(95,96,98)'},
-                    defenceStyle:{color:'rgb(216,217,218)'},
-                    kickingStyle:{color:'rgb(216,217,218)'}
+                this.setState({                    
+                    attackStyle:this.pageStyle.active,
+                    defenceStyle:this.pageStyle.inactive,
+                    kickingStyle:this.pageStyle.inactive
                 })
                 break
+        }        
+    }
 
-        }
+    swiperScroll(e, state, context) {
+        this.setState({currentProfile:state.index})        
+        this.changeStyle(state.index) 
 
-
-        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    }
+    _setModalVisible=(visible,mode,title,subtitle,btn) => {
+        this.setState({
+            modalVisible:visible,
+            modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
+        })
     }
 
     render() {
@@ -312,10 +513,10 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
-                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayer()} style={styles.btnSearchPlayer}>
+                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
                                 {
                                     this.state.isFav === true?
-                                    <Icon name='md-star' style={styles.searchIcon}/>
+                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
                                     :
                                     <Icon name='md-star-outline' style={styles.searchIcon}/>
                                 }
@@ -326,7 +527,7 @@ class MyLionsPlayerDetails extends Component {
                                     this.state.isDoneUpdatingState?
                                         <ButtonFeedback
                                             disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this._updatePlayer()}
+                                            onPress={()=> this._setModalVisible(true,'update')}
                                             style={[
                                                 styles.btn,
                                                 styles.btnLeft,
@@ -399,192 +600,133 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                            <View style={[styles.detailsGridColFull,{padding:20}]}>
-                                <View ref='scorecard' style={{
-        paddingTop:20,
-        backgroundColor:'rgb(95,96,98)'
-    }}>
+                            <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
+                                <View style={styles.fullCard}>
                                     <ButtonFeedback 
-                                        onPress={()=>this._setModalVisible(true)}
-                                        style={{
-        height:28,
-        width:28,
-        borderRadius:14,
-        backgroundColor:'rgb(255,255,255)',
-        position:'absolute',
-        right:4,
-        top:4
-    }}>
+                                        onPress={()=>this._setModalVisible(true,'info')}
+                                        style={styles.btnCardInfo}>
                                         <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                     </ButtonFeedback>
                                     
-                                    <View style={{
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-    }}>
+                                    <View style={styles.playerOverallRating}>
                                         <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                         <View style={styles.ratingScore}>
                                             <Text style={styles.ratingScorePoint}>7.8</Text>
                                         </View>
                                     </View>
-                                    <View style={{
-        marginVertical:15,
-        flexDirection:'row',
-    }}>
-                                        <View style={{
-                                            flex:1,
-                                            justifyContent:'flex-start',
-                                            borderTopWidth:1,
-        borderLeftWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        paddingTop:20,
-        paddingBottom:8,
-        alignItems:'center'}} >
+                                    <View style={styles.playerPerfromanceWrapper}>
+                                        <View style={styles.playerPerfromance} >
                                             <Text style={styles.summaryText}>RECENT PERFORMANCE</Text>
                                             <Text style={styles.summaryTextHighLight}>86</Text>
                                         </View>
-                                        <View style={{
-                                            flex:1,
-                                            justifyContent:'flex-start',
-                                            borderTopWidth:1,
-        borderLeftWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        paddingTop:20,
-        paddingBottom:8,
-        alignItems:'center'}}>
+                                        <View style={styles.playerPerfromance}>
                                             <Text style={styles.summaryText}>CONSISTENCY</Text>
-                                            <Icon name='md-trending-up' style={{
-        fontSize:44,
-        lineHeight:44,
-        textAlign:'center',
-        color:'rgb(255,230,0)',
-        marginTop:35
-    }}/>
+                                            <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                         </View>
                                     </View>
-                                    <View style={{padding:15}}>
-                                        <View style={{backgroundColor:'rgb(255,255,255)',padding:10}}>
-                                            <View style={{flexDirection:'row'}}>
-                                                <ButtonFeedback style={{flex:1}} onPress={()=>this.changeProfile(0)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.attackStyle]}>ATTACK</Text>
+                                    <View style={styles.playerFigureWrapper}>
+                                        <View style={styles.playerFigureView}>
+                                            <View style={styles.playerFigureTypeView}>
+                                                <ButtonFeedback style={styles.playerFigureType} onPress={()=>this.changeProfile(0)}>
+                                                    <View style={[styles.underLineAttack,{borderColor:this.state.attackStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}>ATTACK</Text>
+                                                    </View>
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(1)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.defenceStyle]}>DEFENSE</Text>
+                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(1)}>
+                                                    <View style={[styles.underLineDefence,{borderColor:this.state.defenceStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}>DEFENSE</Text>
+                                                    </View>
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={{flex:1}}  onPress={()=>this.changeProfile(2)}>
-                                                    <Text style={[{fontFamily: styleVar.fontCondensed, fontSize:24,},this.state.kickingStyle]}>KICKING</Text>
+                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(2)}>
+                                                    <View style={[styles.underLineKicking,{borderColor:this.state.kickingStyle.underlineColor}]}>
+                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}>KICKING</Text>
+                                                    </View>
                                                 </ButtonFeedback>
                                             </View>
                                            <Swiper
                                             ref='swiper'
                                             height={400}
-                                            width={260}
+                                            width={styleVar.deviceWidth-100}
                                             loop={false}
                                             dotColor='rgb(95,96,98)'
                                             activeDotColor='rgb(255,230,0)'
-                                            onMomentumScrollEnd={(e, state, context) => this.setState({currentProfile:state.index})}>
-                                            <View style={{paddingVertical:20}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                            onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TRIES</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>35</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>ASSISTS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
-                                            </View>
-                                            <View style={{paddingVertical:20}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>METRES RUN</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>38</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 7 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>LINE BREAKS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>7</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                                        </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View style={{paddingVertical:20}}>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TACKLES</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>18</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>RUCKS</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
-                                                <View style={{flexDirection:'row',marginTop:10}}>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>LINE-IN</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>22</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 24 avg</Text>
                                                     </View>
-                                                    <View style={{flex:1,alignItems:'center'}}>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontCondensed,fontSize:18,marginBottom:10}}>TRIES</Text>
-                                                        <View style={styles.ratingScore}>
-                                                            <Text style={styles.ratingScorePoint}>7.8</Text>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>TITLE</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>14</Text>
                                                         </View>
-                                                        <Text style={{color:'rgb(95,96,98)',fontFamily: styleVar.fontGeorgia,fontSize:18,marginTop:10}}> 20 avg</Text>
+                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={styles.playerFigurePageWrapper}>
+                                                <View style={styles.playerFigureRow}>
+                                                    <View style={styles.playerFigureUnit}>
+                                                        <Text style={styles.playerFigureUpperText}>KICKING</Text>
+                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                            <Text style={styles.ratingScorePoint}>12</Text>
+                                                        </View>
+                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -600,7 +742,12 @@ class MyLionsPlayerDetails extends Component {
                             </View>
                         <LionsFooter isLoaded={true} />
                     </Content>
-                    < EYSFooter />
+                    < EYSFooter mySquadBtn={true} />
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
                 </View>
             </Container>
         )

@@ -9,6 +9,7 @@ import { Icon} from 'native-base'
 const styles = styleSheetCreate({
     barWrapper:{
         paddingHorizontal:25,
+        backgroundColor:'transparent'
     },
     fullBar:{
         height:8,

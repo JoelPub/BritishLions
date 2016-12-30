@@ -32,8 +32,9 @@ import RNViewShot from 'react-native-view-shot'
 import Swiper from 'react-native-swiper'
 import BarGraph from '../utility/barGraph'
 import BarSlider from '../utility/barSlider'
+import SquadModal from '../global/squadModal'
 
-class MySquad extends Component {
+class MyLionsSquad extends Component {
 
     constructor(props){
         super(props)
@@ -46,7 +47,8 @@ class MySquad extends Component {
                     indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
                     forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
                     backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
-            }
+            },
+            modalContent:this.getModalContent()
         }
         this.emptyFeed={
                     indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'wildcard',id:null}],
@@ -64,7 +66,57 @@ class MySquad extends Component {
                     backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
         }
     }
-    sas(context){
+    getModalContent(mode){
+        switch(mode)  {
+            case 'clear' :
+                return(
+                    <ScrollView style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
+                        <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
+                        </View>
+                    </ScrollView>
+                )
+                break
+            case 'populate' :
+                return(
+                    <ScrollView style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
+                        <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
+                        </View>
+                    </ScrollView>
+                )
+                break
+            case 'info' :
+                return (
+                    <ScrollView style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                
+                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                
+                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                
+                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
+                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                    </ScrollView>
+                )
+                break
+            default:
+                return (
+                    <View>
+                    </View>
+                )
+        }
+    }
+    shareSnapshot(context){
         setTimeout(()=>{
             RNViewShot.takeSnapshot(this.refs['scorecard'],{
                 format:'png',
@@ -82,19 +134,10 @@ class MySquad extends Component {
         })
 
     }
-    _setModalVisible=(visible) => {
+    _setModalVisible=(visible,mode) => {
         this.setState({
             modalVisible:visible,
-        })
-    }
-    _setModalClear=(visible) => {
-        this.setState({
-            modalClear:visible,
-        })
-    }
-    _setModalPopulate=(visible) => {
-        this.setState({
-            modalPopulate:visible,
+            modalContent:visible?this.getModalContent(mode):this.getModalContent()
         })
     }
     changeMode(mode) {
@@ -109,8 +152,7 @@ class MySquad extends Component {
                 showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full',
                 squadData:mode==='empty'?this.emptyFeed:mode==='semi'?this.semiFeed:this.fullFeed
             })
-            this._setModalClear(false)
-            this._setModalPopulate(false)
+        this._setModalVisible(false)
         }
     }
 
@@ -155,7 +197,7 @@ class MySquad extends Component {
                             <View>
                                 <View ref='scorecard' style={styles.fullCard}>
                                     <ButtonFeedback 
-                                        onPress={()=>this._setModalVisible(true)}
+                                        onPress={()=>this._setModalVisible(true,'info')}
                                         style={styles.btnCardInfo}>
                                         <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                     </ButtonFeedback>
@@ -171,19 +213,19 @@ class MySquad extends Component {
                                     </View>
                                     <View style={styles.barGraphWrapper}>
                                         <Text style={styles.barGraphText}>COHESION</Text>
-                                        <BarGraph score={86} fullWidth={220} />
+                                        <BarGraph score={86} fullWidth={styleVar.deviceWidth-150} />
                                     </View>
                                     <View style={styles.barSliderWrapper}>
                                         <View style={styles.barSliderTextWrapper}>
                                             <Text style={styles.barSliderText}>ATTACK</Text>
                                             <Text style={styles.barSliderText}>DEFENCE</Text>
                                         </View>
-                                        <BarSlider score={30} fullWidth={270} />
+                                        <BarSlider score={30} fullWidth={styleVar.deviceWidth-100} />
                                     </View>
                                     <View style={styles.scoreCardShareWrapper}>
                                         <ButtonFeedback
                                             rounded label='Share'
-                                            onPress={ ()=> this.sas('scorecard') }
+                                            onPress={ ()=> this.shareSnapshot('scorecard') }
                                             style={[styles.button,styles.scoreCardShare]}>
                                             <Text  style={styles.scoreCardShareText}>SHARE</Text>
                                             <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
@@ -194,7 +236,7 @@ class MySquad extends Component {
                                     </View>
                                 </View>
 
-                                <ButtonFeedback rounded style={[styles.button,{backgroundColor:'rgb(38,38,38)', flexDirection:'row', marginTop:20,marginBottom:0,marginLeft:10,marginRight:10 }]}>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpertSquad]}>
                                     <Icon name='md-contact' style={styles.btnExpertIcon} />
                                     <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
                                 </ButtonFeedback>
@@ -203,9 +245,9 @@ class MySquad extends Component {
                         </ButtonFeedback>
                         {
                             this.state.showScoreCard==='empty'?
-                            <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalPopulate(true)} />
+                            <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
                             :
-                            <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalClear(true)} />
+                            <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
                         }
                         <ScrollView >
                             <View style={styles.individaulPositionRow}>
@@ -387,66 +429,11 @@ class MySquad extends Component {
                     </ScrollView>
                     </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
-
-                    <Modal
-                        visible={this.state.modalVisible}
-                        onRequestClose={()=>this._setModalVisible(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <ScrollView style={styles.modalViewWrapper}>
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                
-                                        <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                                        <Text style={styles.modalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                                </ScrollView>
-                        </LinearGradient>
-                    </Modal>
-                    <Modal
-                        visible={this.state.modalClear}
-                        onRequestClose={()=>this._setModalClear(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalClear(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <View style={styles.modalViewWrapper}>
-                                    <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
-                                    <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
-                                    <View style={styles.modalBtnWrapper}>
-                                        <ButtonFeedback rounded onPress={()=>this._setModalClear(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                                        <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
-                                    </View>
-                                </View>
-                        </LinearGradient>
-                    </Modal>
-                    <Modal
-                        visible={this.state.modalPopulate}
-                        onRequestClose={()=>this._setModalPopulate(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalPopulate(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                                <View style={styles.modalViewWrapper}>
-                                    <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
-                                    <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
-                                    <View style={styles.modalBtnWrapper}>
-                                        <ButtonFeedback rounded onPress={()=>this._setModalPopulate(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                                        <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
-                                    </View>
-                                </View>
-                        </LinearGradient>
-                    </Modal>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
                 </View>
             </Container>
         )
@@ -465,5 +452,5 @@ export default connect((state) => {
     return {
         route: state.route,
     }
-}, bindAction)(MySquad)
+}, bindAction)(MyLionsSquad)
 

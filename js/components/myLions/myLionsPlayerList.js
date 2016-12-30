@@ -25,6 +25,9 @@ import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 class MyLionsPlayerList extends Component {
 
@@ -34,8 +37,8 @@ class MyLionsPlayerList extends Component {
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
-        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
+        //this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        //this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -68,7 +71,7 @@ class MyLionsPlayerList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -169,6 +172,7 @@ class MyLionsPlayerList extends Component {
     }
 
     handlePlayer(players) {
+        console.warn('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -195,7 +199,50 @@ class MyLionsPlayerList extends Component {
         return players
     }
 
-    _getFavoritePlayers(playersByNation) {
+    _getFavoritePlayers(playersByNation){
+        this.playerListFeeds = this.handlePlayer(playersByNation)
+        this.setState({ isLoaded: false })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                   this._signInRequired()
+                }
+            }else if(data.error){
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(data.error) // prompt error
+                })
+            }else{
+               let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+
+               this.setState({
+                   playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds),
+                   favoritePlayers:favoritePlayers
+               })
+            }
+            this.setState({ isLoaded: true })
+        })
+    }
+
+     _mergeEYC3Player(playerList, eyc3Players){
+         let mergedPlayers = []
+         console.warn('eyc3Players:', eyc3Players)
+         console.warn('playerList:', playerList)
+         if (eyc3Players.length > 0) {
+             eyc3Players.map((eyc3player, index) => {
+                 playerList.map((player,j) => {
+                     if (eyc3player.id === player.id) {
+                         player.eyc3PlayerScore = eyc3player.heightm
+                         mergedPlayers.push(player)
+                     }
+                 })
+             })
+         }
+        this._getFavoritePlayers(mergedPlayers)
+     }
+
+    /*_getFavoritePlayers(playersByNation) {
         this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
         let options = {
             url: this.favUrl,
@@ -232,7 +279,7 @@ class MyLionsPlayerList extends Component {
         }
 
         service(options)
-    }
+    }*/
 
     _setSearchModalVisible=(visible) => {
         this.setState({
@@ -370,8 +417,30 @@ class MyLionsPlayerList extends Component {
         return newData
     }
 
+    _getPlayersListByUnion(){
+        this.setState({ isLoaded: false })
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+                getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                     if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                     }
+                 }).catch((error) => {
+                     console.warn('Error when try to get the EYC3 full player list: ', error)
+                 })
+            }
+        }).catch((error) => {
+            this.setState({ isLoaded: true }, () => {
+                this._showError(error) // prompt error
+            })
+        })
+    }
+
     componentDidMount() {
-        let options = {
+        setTimeout(() => this._getPlayersListByUnion(), 600)
+        /*let options = {
             url: this.unionUrl,
             data: {},
             method: 'get',
@@ -391,7 +460,7 @@ class MyLionsPlayerList extends Component {
             }
         }
 
-        service(options)
+        service(options)*/
     }
 
     componentWillUnmount() {
@@ -423,10 +492,12 @@ class MyLionsPlayerList extends Component {
                             {
                                 (this.filterBy !== '')&&
                                 <View style={styles.unionsPlayerListingFilterByBar}>
-                                    <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
-                                    <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
-                                        <Icon name='md-close' style={styles.btnFilterCancelIcon}/>
-                                    </TouchableOpacity>
+                                    <View style={styles.unionsPlayerListingFilterTextView}>
+                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                        <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
+                                            <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             }
                         </View>
@@ -497,7 +568,7 @@ class MyLionsPlayerList extends Component {
                             :
                                 <ActivityIndicator style={loader.centered} size='large' />
                         }
-                        <EYSFooter />
+                        <EYSFooter mySquadBtn={true}/>
                     </Content>
                 </View>
             </Container>

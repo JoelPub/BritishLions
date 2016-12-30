@@ -76,7 +76,6 @@ module.exports = styleSheetCreate({
             marginBottom: 10,
         }
     },
-
     headerPlayerDetails: {
         backgroundColor: 'transparent',
         alignSelf: 'center',
@@ -187,11 +186,11 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
-    gridBoxDesc: {        
+    gridBoxDesc: {
         width: styleVar.deviceWidth / 2,
         marginTop:-12
     },
-    gridBoxDescWrapper: {        
+    gridBoxDescWrapper: {
         width: styleVar.deviceWidth / 2
     },
     gridBoxTitle: {
@@ -206,7 +205,7 @@ module.exports = styleSheetCreate({
             paddingBottom: 4
         }
     },
-    gridBoxTitleRight: {     
+    gridBoxTitleRight: {
         borderRightWidth: 1,
         borderRightColor: gridBorderColor
     },
@@ -387,7 +386,7 @@ module.exports = styleSheetCreate({
     },
     mylionsBanner: {
         height: styleVar.deviceWidth,
-        width:styleVar.deviceWidth, 
+        width:styleVar.deviceWidth,
         justifyContent: 'flex-end',
         backgroundColor:'white'
     },
@@ -414,9 +413,17 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         marginTop:10
     },
+    btnExpertSquad: {
+        backgroundColor:'rgb(38,38,38)',
+        flexDirection:'row',
+        marginTop:20,
+        marginBottom:0,
+        marginLeft:10,
+        marginRight:10
+    },
     btnExpertIcon: {
         marginLeft: 20,
-        width: 34, 
+        width: 34,
         color: 'rgb(175,0,30)',
         fontSize:24
     },
@@ -435,7 +442,7 @@ module.exports = styleSheetCreate({
     },
     btnFavouritesIcon: {
         marginLeft: 20,
-        width: 34, 
+        width: 34,
         color: 'rgb(255,204,40)',
         fontSize:24
     },
@@ -488,52 +495,52 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     btnSkipLeft: {
-        height: 50, 
-        width:132, 
+        height: 50,
+        width:132,
         backgroundColor: 'rgb(38,38,38)',
         position:'absolute',
         left:20,
-        bottom:60 
+        bottom:60
     },
     btnBack: {
-        height: 50, 
-        width:132, 
+        height: 50,
+        width:132,
         backgroundColor: 'rgb(175,0,30)',
         position:'absolute',
         left:20,
-        bottom:60 
+        bottom:60
     },
     btnSkipRight: {
-        height: 50, 
-        width:132, 
+        height: 50,
+        width:132,
         backgroundColor: 'rgb(38,38,38)',
         position:'absolute',
         right:20,
-        bottom:60 
+        bottom:60
     },
     btnNext: {
-        height: 50, 
-        width:132, 
+        height: 50,
+        width:132,
         backgroundColor: styleVar.brandLightColor,
         position:'absolute',
         right:20,
-        bottom:60 
+        bottom:60
     },
     gridBoxCol:{
-        width:styleVar.deviceWidth/2, 
-        height:styleVar.deviceWidth/2+69, 
+        width:styleVar.deviceWidth/2,
+        height:styleVar.deviceWidth/2+69,
     },
     gridList:{
-        flexDirection:'row', 
+        flexDirection:'row',
         flexWrap:'wrap'
     },
-    unionsHeader:{
+    myLionsSharedHeader:{
         height:60,
         backgroundColor:'white',
         borderBottomColor: 'rgb(216, 217, 218)',
         borderBottomWidth: 1,
     },
-    unionsHeaderText:{
+    myLionsSharedHeaderText:{
         width:styleVar.deviceWidth,
         color: 'rgb(175, 0, 30)',
         fontFamily: styleVar.fontCondensed,
@@ -563,21 +570,28 @@ module.exports = styleSheetCreate({
     },
     unionsPlayerListingFilterByBar:{
         height:80,
+        width:styleVar.deviceWidth,
         alignSelf: 'center',
         alignItems: 'center',
+        borderBottomColor: 'rgb(216, 217, 218)',
+        borderBottomWidth: 1,
         flexDirection: 'row'
     },
     unionsPlayerListingFilterByCancelButton:{
-        width:17,
-        height:17,
-        borderRadius:8.5,
+        width:28,
+        height:28,
         alignSelf: 'center',
-        marginLeft:10,
-        backgroundColor:'rgb(208, 7, 41)'
+        android:{
+            paddingTop:2,
+        }
     },
-    btnFilerCancelIcon:{
-        fontSize:10,
-        textAlign:'center'
+    btnFilterCancelIcon:{
+        fontSize:20,
+        width:20,
+        height:20,
+        textAlign:'center',
+        alignSelf: 'center',
+        color:'rgb(208, 7, 41)',
     },
     unionsPlayerListingSearchText:{
         alignSelf: 'center',
@@ -589,18 +603,26 @@ module.exports = styleSheetCreate({
             paddingTop: 13,
         }
     },
+    unionsPlayerListingFilterTextView:{
+        alignSelf:'center',
+        alignItems: 'center',
+        flexDirection:'row',
+        justifyContent: 'center',
+        height:30,
+        width:styleVar.deviceWidth
+    },
     unionsPlayerListingFilterByText:{
         textAlign: 'center',
-        color:'black',
+        color:'rgb(38, 38, 38)',
         fontFamily: 'Helvetica Neue',
-        fontSize: 18
+        fontSize: 18,
+        height:30
     },
     unionsPlayerListingFilterButton:{
         right:43,
         width:132,
         height:50,
         backgroundColor: 'rgb(95, 96, 98)',
-        textAlign:'center',
         marginTop:14,
         borderRadius:25,
 
@@ -640,7 +662,7 @@ module.exports = styleSheetCreate({
     filterContainer: {
         backgroundColor: styleVar.brandPrimary,
         width: null,
-        height: null
+        height: styleVar.deviceHeight
     },
     filterResultContainer:{
         flex:1,
@@ -718,7 +740,7 @@ module.exports = styleSheetCreate({
         padding:20
     },
     semiCard:{
-        paddingTop:29, 
+        paddingTop:29,
         marginBottom:10,
         backgroundColor:'rgb(95,96,98)'
     },
@@ -744,7 +766,7 @@ module.exports = styleSheetCreate({
         marginRight:5
     },
     fullCard:{
-        paddingTop:30,
+        paddingTop:40,
         backgroundColor:'rgb(95,96,98)'
     },
     btnCardInfo:{
@@ -757,16 +779,17 @@ module.exports = styleSheetCreate({
         top:4
     },
     cardInfoIcon:{
-        fontSize:28, 
+        fontSize:28,
         textAlign:'center',
         color:'rgb(95,96,98)',
+        backgroundColor:'transparent'
     },
     summaryWrapper:{
         paddingHorizontal:10
     },
     summaryText:{
         fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
+        fontSize:16,
         textAlign:'center'
     },
     summaryTextHighLight:{
@@ -788,7 +811,8 @@ module.exports = styleSheetCreate({
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:28
+        fontSize:28,
+        lineHeight:28,
     },
     ratingScore:{
         marginLeft:10,
@@ -802,6 +826,7 @@ module.exports = styleSheetCreate({
     ratingScorePoint:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         color:'rgb(95,96,98)'
     },
     barGraphWrapper:{
@@ -840,23 +865,23 @@ module.exports = styleSheetCreate({
         paddingVertical:5
     },
     scoreCardShare:{
-        backgroundColor:'rgb(255,230,0)', 
+        backgroundColor:'rgb(255,230,0)',
         flexDirection:'row',
         paddingLeft:20
     },
     scoreCardShareText:{
-        textAlign:'left', 
-        fontFamily: styleVar.fontCondensed, 
-        fontSize: 24, 
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
         lineHeight: 24,
-        color: 'rgb(95,96,98)', 
-        paddingTop:5 
+        color: 'rgb(95,96,98)',
+        paddingTop:5
     },
     scoreCardShareIcon:{
-        marginLeft: 5, 
-        width: 34, 
-        color: 'rgb(95,96,98)', 
-        fontSize:24 
+        marginLeft: 5,
+        width: 34,
+        color: 'rgb(95,96,98)',
+        fontSize:24
     },
     scoreCardFooter:{
         backgroundColor:'rgb(128,128,128)',
@@ -902,27 +927,27 @@ module.exports = styleSheetCreate({
         color:'rgb(255,255,255)'
     },
     indivPlayerNameWrapper:{
-        width: styleVar.deviceWidth / 3, 
-        marginTop:-12 
+        width: styleVar.deviceWidth / 3,
+        marginTop:-12
     },
     playerNameText:{
-        textAlign: 'center', 
-        fontFamily: styleVar.fontCondensed, 
-        fontSize: 18, 
-        lineHeight: 18, 
-        paddingTop: 4, 
-        marginTop: -6 
+        textAlign: 'center',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 18,
+        lineHeight: 18,
+        paddingTop: 4,
+        marginTop: -6
     },
     playerImage:{
-        backgroundColor: '#FFF', 
-        width: styleVar.deviceWidth / 3, 
-        height: styleVar.deviceWidth / 3 
+        backgroundColor: '#FFF',
+        width: styleVar.deviceWidth / 3,
+        height: styleVar.deviceWidth / 3
     },
     playerNameTextWrapper:{
-        width: styleVar.deviceWidth / 3, 
+        width: styleVar.deviceWidth / 3,
         marginTop:-12,
         borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'  
+        borderColor:'rgb(255,255,255)'
     },
     posTitle:{
         flexDirection:'row',
@@ -963,27 +988,33 @@ module.exports = styleSheetCreate({
         borderColor:'rgb(255,255,255)'
     },
     posAddTextWrapper:{
-        width: styleVar.deviceWidth / 3, 
+        width: styleVar.deviceWidth / 3,
         marginTop:-12,
         borderLeftWidth:1,
         borderColor:'rgb(255,255,255)'
     },
     modalViewWrapper:{
         paddingHorizontal:28,
-        marginVertical:54
+        marginVertical:54,
+        backgroundColor:'transparent',
     },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         marginTop:28
     },
     modalText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:16,
     },
+    modalUpdateView:{
+        height:styleVar.deviceHeight-200,
+    },
     modalTitleTextCenter:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
+        lineHeight:28,
         marginTop:28,
         textAlign:'center'
     },
@@ -994,19 +1025,18 @@ module.exports = styleSheetCreate({
     },
     modalBtnWrapper:{
         marginTop:15,
-        height:50,
         flexDirection:'row',
         justifyContent:'space-between'
     },
     modlaBtnCancel:{
-        height: 50, 
-        width:132, 
+        height: 50,
+        width: styleVar.deviceWidth / 3,
         backgroundColor: 'rgb(38,38,38)',
     },
     modlaBtnConfirm:{
-        height: 50, 
-        width:132, 
-        backgroundColor: styleVar.brandLightColor,  
+        height: 50,
+        width: styleVar.deviceWidth / 3,
+        backgroundColor: styleVar.brandLightColor,
     },
     imgExpertHeader: {
         width: (styleVar.deviceWidth / 3),
@@ -1031,7 +1061,7 @@ module.exports = styleSheetCreate({
         marginTop: 10,
         fontFamily: styleVar.fontCondensed,
     },
-    textDescriptio: {
+    textDescription: {
         fontSize: 18,
         fontFamily: styleVar.fontGeorgia,
         color: 'white',
@@ -1076,5 +1106,152 @@ module.exports = styleSheetCreate({
             marginTop: 5,
             marginBottom: 10
         }
+    },
+    modalBtnPosition:{
+        height: 45,
+        backgroundColor: 'transparent',
+        marginTop:19,
+        marginBottom:0,
+        flexDirection:'row',
+        flex:1
+    },
+    modalBtnPositionLeft:{
+        height:45,
+        backgroundColor: 'rgb(175, 0, 30)',
+        borderTopLeftRadius:22.5,
+        borderBottomLeftRadius:22.5,
+        flex:3,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalBtnPosLeftText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24,
+        lineHeight:24,
+    },
+    modalBtnPosRight:{
+        height:45,
+        backgroundColor:styleVar.brandLightColor,
+        borderTopRightRadius:22.5,
+        borderBottomRightRadius:22.5,
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalBtnTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:44,
+        lineHeight:44,
+        marginTop:28,
+        textAlign:'center'
+    },
+    modalConfirmBtn:{
+        height: 45,
+        backgroundColor: styleVar.brandLightColor,
+        marginTop:19,
+        marginBottom:20
+    },
+    btnFavIcon:{
+        color:'rgb(255,204,40)'
+    },
+    playerCardWrapper:{
+        padding:20
+    },
+    playerOverallRating:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    playerPerfromanceWrapper:{
+        marginVertical:15,
+        flexDirection:'row',
+    },
+    playerPerfromance:{
+        flex:1,
+        justifyContent:'flex-start',
+        borderTopWidth:1,
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        paddingTop:20,
+        paddingBottom:8,
+        alignItems:'center'
+    },
+    playerPerformanceTrend:{
+        fontSize:44,
+        lineHeight:44,
+        textAlign:'center',
+        color:'rgb(255,230,0)',
+        marginTop:35
+    },
+    playerFigureWrapper:{
+        padding:15
+    },
+    playerFigureView:{
+        backgroundColor:'rgb(255,255,255)',
+        padding:10
+    },
+    playerFigureTypeView:{
+        flexDirection:'row'
+    },
+    playerFigureType:{
+        flex:1
+    },
+    underLineAttack:{
+        marginHorizontal:10,
+        borderBottomWidth:3,
+        android:{
+            marginHorizontal:16
+        }
+    },
+    underLineDefence:{
+        marginHorizontal:4,
+        borderBottomWidth:3,
+        android:{
+            marginHorizontal:11
+        }
+    },
+    underLineKicking:{
+        marginHorizontal:7,
+        borderBottomWidth:3,
+        android:{
+            marginHorizontal:13
+        }
+    },
+    playerFigureTypeText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24,
+        lineHeight:24,
+        textAlign:'center'
+    },
+    playerFigurePageWrapper:{
+        paddingVertical:20,
+        justifyContent:'center',
+        height:350
+    },
+    playerFigureRow:{
+        flexDirection:'row',
+        marginTop:10,
+    },
+    playerFigureUnit:{
+        flex:1,
+        alignItems:'center'
+    },
+    playerFigureUpperText:{
+        color:'rgb(95,96,98)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        marginBottom:10
+    },
+    playerRatingScore:{
+        borderWidth:1,
+        borderColor:'rgb(230,231,232)',
+        backgroundColor:'rgb(216,217,218)'
+    },
+    playerFigureLowerText:{
+        color:'rgb(95,96,98)',
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:18,
+        marginTop:10
     }
 })
