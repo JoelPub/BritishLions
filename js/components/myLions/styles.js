@@ -773,8 +773,8 @@ module.exports = styleSheetCreate({
     },
     fullCard:{
         marginTop:3,
-        paddingTop:25,
-        backgroundColor:'rgb(95,96,98)'
+        backgroundColor:'rgb(95,96,98)',
+        borderRadius:5,
     },
     btnCardInfo:{
         height:24,
@@ -795,9 +795,11 @@ module.exports = styleSheetCreate({
         paddingHorizontal:10
     },
     summaryText:{
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:16,
-        textAlign:'center'
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        textAlign:'center',
+        lineHeight:18,
+        flex:1,
     },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
@@ -805,7 +807,7 @@ module.exports = styleSheetCreate({
         lineHeight:44,
         textAlign:'center',
         color:'rgb(255,230,0)',
-        marginTop:15
+        flex:1,
     },
     ratingWrapper:{
         flexDirection:'row',
@@ -819,7 +821,8 @@ module.exports = styleSheetCreate({
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
-        lineHeight:28,
+        lineHeight:32,
+        paddingTop:10,
     },
     ratingScore:{
         marginLeft:10,
@@ -828,7 +831,8 @@ module.exports = styleSheetCreate({
         borderRadius:35,
         backgroundColor:'rgb(255,230,0)',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        paddingTop:10,
     },
     ratingScorePoint:{
         fontFamily: styleVar.fontCondensed,
@@ -1168,9 +1172,9 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
+        paddingVertical:20,
     },
     playerPerfromanceWrapper:{
-        marginVertical:15,
         flexDirection:'row',
     },
     playerPerfromance:{
@@ -1179,9 +1183,10 @@ module.exports = styleSheetCreate({
         borderTopWidth:1,
         borderLeftWidth:1,
         borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        paddingTop:20,
-        paddingBottom:8,
+        borderColor:'rgb(128,127,131)',
+        paddingTop:18,
+        paddingHorizontal:32,
+        paddingBottom:1,
         alignItems:'center'
     },
     playerPerformanceTrend:{
@@ -1189,7 +1194,7 @@ module.exports = styleSheetCreate({
         lineHeight:44,
         textAlign:'center',
         color:'rgb(255,230,0)',
-        marginTop:35
+        flex:1,
     },
     playerFigureWrapper:{
         padding:15
