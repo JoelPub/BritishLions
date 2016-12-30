@@ -735,24 +735,26 @@ module.exports = styleSheetCreate({
     },
     squadTitle:{
         color:'rgb(175,0,30)',
-        marginTop:20,
+        marginTop:10,
         fontSize:28
     },
     scoreCard:{
-        marginVertical:10,
+        marginVertical:2,
         borderTopWidth:1,
         borderBottomWidth:1,
         borderColor:'rgb(216,217,218)',
-        padding:20
+        padding:20,
     },
     semiCard:{
         paddingTop:29,
         marginBottom:10,
-        backgroundColor:'rgb(95,96,98)'
+        backgroundColor:'rgb(95,96,98)',
+        borderRadius:5,
     },
     semiCardText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:18,
+        lineHeight:24,
         paddingHorizontal:20,
         marginBottom:24,
         textAlign:'center'
@@ -794,17 +796,15 @@ module.exports = styleSheetCreate({
         backgroundColor:'transparent'
     },
     summaryWrapper:{
-        paddingHorizontal:10
+        padding:30,
     },
     summaryText:{
-        fontFamily: styleVar.fontCondensed,
+        fontFamily: styleVar.fontGeorgia,
         fontSize:18,
         textAlign:'center',
         lineHeight:18,
         flex:1,
-        android:{
-            marginBottom:10,
-        }
+        marginBottom:10,
     },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
@@ -819,7 +819,7 @@ module.exports = styleSheetCreate({
         justifyContent:'center',
         alignItems:'center',
         borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
+        borderColor:'rgb(128,127,131)',
         marginTop:20,
         paddingVertical:19
     },
@@ -848,7 +848,7 @@ module.exports = styleSheetCreate({
     barGraphWrapper:{
         height:105,
         borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
+        borderColor:'rgb(128,127,131)',
         paddingHorizontal:25,
         paddingTop:15
     },
@@ -858,14 +858,14 @@ module.exports = styleSheetCreate({
         textAlign:'left'
     },
     barSliderWrapper:{
-        height:70
+        height:90
     },
     barSliderTextWrapper:{
         flexDirection:'row',
         flex:1,
         justifyContent:'space-between',
         borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
+        borderColor:'rgb(128,127,131)',
         paddingHorizontal:25,
         alignItems:'flex-end',
     },
@@ -923,13 +923,15 @@ module.exports = styleSheetCreate({
         borderBottomWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
-        paddingTop:17
+        paddingTop:17,
+        backgroundColor:'rgb(239,239,240)'
     },
     indivPosTitleText:{
         color:'rgb(175,0,30)',
         textAlign:'center',
         fontFamily: styleVar.fontCondensed,
-        fontSize:24
+        fontSize:24,
+        lineHeight:24,
     },
     addIndivPlayerWrapper:{
         width:styleVar.deviceWidth / 3,
@@ -972,24 +974,27 @@ module.exports = styleSheetCreate({
         borderWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
-        padding:12
+        padding:12,
+        backgroundColor:'rgb(239,239,240)'
     },
     posTitleLeft:{
         color:'rgb(175,0,30)',
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
-        fontSize:24
+        fontSize:24,
+        lineHeight:24,
     },
     posTitleRight:{
         color:'rgb(175,0,30)',
         textAlign:'right',
         fontFamily: styleVar.fontCondensed,
-        fontSize:24
+        fontSize:24,
+        lineHeight:24,
     },
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:220
+        height:styleVar.deviceWidth*3/5
     },
     posWrapper:{
         width:styleVar.deviceWidth/3
@@ -1039,7 +1044,7 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     modalTextCenter:{
-        fontFamily: styleVar.fontGeorgia,
+        fontFamily: 'Helvetica Neue',
         fontSize:16,
         textAlign:'center'
     },

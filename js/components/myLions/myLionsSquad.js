@@ -189,7 +189,7 @@ class MyLionsSquad extends Component {
                                 Complete your full squad of 35 players to receive a real-time squad rating from EY
                                 </Text>
                                 <View style={styles.semiCardFooter}>
-                                    <Text style={styles.semiCardFooterText}> Performance Statistics supplied by </Text>
+                                    <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
                                     <Image source={require('../../../images/footer/eyLogo.png')}></Image>
                                 </View>
                             </View>
@@ -304,7 +304,7 @@ class MyLionsSquad extends Component {
                             </View>
                             <Swiper
                             ref='swiper'
-                            height={220}
+                            height={styleVar.deviceWidth*3/5}
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'>
@@ -369,7 +369,7 @@ class MyLionsSquad extends Component {
                             </View>
                             <Swiper
                             ref='swiper'
-                            height={220}
+                            height={styleVar.deviceWidth*3/5}
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'>
