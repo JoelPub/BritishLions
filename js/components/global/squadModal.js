@@ -10,9 +10,9 @@ import {Icon} from 'native-base'
 const styles = styleSheetCreate({
     onboarding: {
         flex:1,
-        paddingTop:20,
+        marginTop:20,
         android: {
-            paddingTop:0
+            marginTop:0
         }
     },
     btnClose: {
@@ -21,7 +21,7 @@ const styles = styleSheetCreate({
         height:49,
         position:'absolute',
         right:0,
-        top:20,
+        top:0,
         paddingTop:10,
         android: {
             top:0
@@ -62,6 +62,7 @@ export default class SquadModal extends Component {
 		return (
 			<Modal
                 visible={this.state.modalVisible}
+                transparent={true}
                 onRequestClose={()=>this._setModalVisible(false)}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
                             <ButtonFeedback onPress={()=>this._setModalVisible(false)} 

@@ -495,7 +495,7 @@ module.exports = styleSheetCreate({
         paddingRight:27,
     },
     onboardingPageText: {
-        fontFamily: styleVar.fontGeorgia,
+        fontFamily: 'Helvetica Neue',
         fontSize:16,
         paddingTop:14,
         textAlign:'center'

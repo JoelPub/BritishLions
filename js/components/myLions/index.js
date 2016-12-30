@@ -20,6 +20,7 @@ import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
+import SquadModal from '../global/squadModal'
 
 class MyLions extends Component {
 
@@ -89,7 +90,7 @@ class MyLions extends Component {
                                 <Icon name='md-contact' style={styles.btnExpertIcon} />
                                 <Text
                                 style={styles.btnExpertLabel}>
-                                THE EXPERTS PICK
+                                THE EXPERTS' SQUADS
                                 </Text>
                             </ButtonFeedback>
                             <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} 
@@ -103,16 +104,11 @@ class MyLions extends Component {
                             <LionsFooter isLoaded={true} />
                         </Content>
                     < EYSFooter />
-                    <Modal
-                        visible={this.state.modalVisible}
-                        onRequestClose={()=>this._setModalVisible(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-                            <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
                                 <View >
+                                    <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                     <Swiper
                                         ref='swiper'
                                         height={400}
@@ -151,8 +147,7 @@ class MyLions extends Component {
                                         <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
                                     }
                                 </View>
-                        </LinearGradient>
-                    </Modal>
+                    </SquadModal>
                 </View>
             </Container>
         )
