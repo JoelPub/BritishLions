@@ -55,12 +55,13 @@ module.exports = styleSheetCreate({
     },
     imageCircle: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: 15,
+        marginBottom: 5,
         width:100,
         height:100,
         borderRadius:50,
         android: {
-            marginBottom: 10,
+            marginBottom: 15,
             borderRadius:100,
         }
     },
@@ -81,7 +82,7 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 15,
         android: {
             marginBottom: 0,
         }
@@ -99,8 +100,8 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
         android: {
-            marginTop: 5,
-            marginBottom: 10
+            marginTop: 0,
+            marginBottom: 15
         }
     },
     buttons: {
@@ -247,6 +248,8 @@ module.exports = styleSheetCreate({
     detailsGridColFull: {
         borderWidth: 1,
         borderColor: gridBorderColor,
+    },
+    detailsGridGreyBackground: {
         backgroundColor: '#efeff0'
     },
     detailsNationLogo: {
@@ -289,7 +292,7 @@ module.exports = styleSheetCreate({
         width:50,
         borderRadius:50,
         position:'absolute',
-        top:19,
+        top:15,
         right:23,
         justifyContent:'center',
         alignItems:'center',
@@ -339,7 +342,10 @@ module.exports = styleSheetCreate({
     },
     searchIcon: {
         fontSize:36,
-        color:'rgb(255,255,255)'
+        color:'rgb(255,255,255)',
+        android:{
+            marginBottom:3,
+        }
     },
     resultContainer: {
         flex:1,
@@ -767,20 +773,21 @@ module.exports = styleSheetCreate({
         marginRight:5
     },
     fullCard:{
-        paddingTop:40,
+        marginTop:3,
+        paddingTop:25,
         backgroundColor:'rgb(95,96,98)'
     },
     btnCardInfo:{
-        height:28,
-        width:28,
-        borderRadius:14,
+        height:24,
+        width:24,
+        borderRadius:12,
         backgroundColor:'rgb(255,255,255)',
         position:'absolute',
-        right:4,
-        top:4
+        right:5,
+        top:5
     },
     cardInfoIcon:{
-        fontSize:28, 
+        fontSize:24, 
         textAlign:'center',
         color:'rgb(95,96,98)',
         backgroundColor:'transparent'

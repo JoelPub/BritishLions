@@ -560,7 +560,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.country}</Text>
                             </Col>
                         </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
+                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Text style={styles.detailsLabel}>CLUB</Text>
                             <Text style={styles.detail}>Northhampton Saints</Text>
                         </View>
@@ -578,7 +578,7 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.weightm}</Text>
                             </Col>
                         </Grid>
-                        <Grid style={styles.detailsGrid}>
+                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                                 <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
