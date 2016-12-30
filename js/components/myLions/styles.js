@@ -764,7 +764,9 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(128,128,128)',
         height:50,
         paddingBottom:9,
-        paddingRight:11
+        paddingRight:11,
+        borderBottomLeftRadius:5,
+        borderBottomRightRadius:5,
     },
     semiCardFooterText:{
         fontFamily: styleVar.fontGeorgia,
@@ -800,6 +802,9 @@ module.exports = styleSheetCreate({
         textAlign:'center',
         lineHeight:18,
         flex:1,
+        android:{
+            marginBottom:10,
+        }
     },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
@@ -1019,6 +1024,10 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         fontSize:16,
     },
+    modalTextHN:{
+        fontFamily: 'Helvetica Neue',
+        fontSize:16,
+    },
     modalUpdateView:{
         height:styleVar.deviceHeight-200,
     },
@@ -1128,7 +1137,7 @@ module.exports = styleSheetCreate({
     },
     modalBtnPositionLeft:{
         height:45,
-        backgroundColor: 'rgb(175, 0, 30)',
+        backgroundColor: 'rgba(38,38,38,0.2)',
         borderTopLeftRadius:22.5,
         borderBottomLeftRadius:22.5,
         flex:3,
@@ -1139,6 +1148,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:24,
         lineHeight:24,
+        marginTop:5,
     },
     modalBtnPosRight:{
         height:45,
@@ -1187,7 +1197,10 @@ module.exports = styleSheetCreate({
         paddingTop:18,
         paddingHorizontal:32,
         paddingBottom:1,
-        alignItems:'center'
+        alignItems:'center',
+        android:{
+            paddingBottom:5,
+        }
     },
     playerPerformanceTrend:{
         fontSize:44,
@@ -1197,11 +1210,14 @@ module.exports = styleSheetCreate({
         flex:1,
     },
     playerFigureWrapper:{
-        padding:15
+        paddingVertical:25,
+        paddingHorizontal:20,
     },
     playerFigureView:{
         backgroundColor:'rgb(255,255,255)',
-        padding:10
+        paddingVertical:30,
+        paddingHorizontal:10,
+        borderRadius:5,
     },
     playerFigureTypeView:{
         flexDirection:'row'
@@ -1220,14 +1236,14 @@ module.exports = styleSheetCreate({
         marginHorizontal:4,
         borderBottomWidth:3,
         android:{
-            marginHorizontal:11
+            marginHorizontal:10
         }
     },
     underLineKicking:{
         marginHorizontal:7,
         borderBottomWidth:3,
         android:{
-            marginHorizontal:13
+            marginHorizontal:12
         }
     },
     playerFigureTypeText:{
@@ -1237,13 +1253,12 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     playerFigurePageWrapper:{
-        paddingVertical:20,
         justifyContent:'center',
-        height:350
+        height:styleVar.deviceWidth-65,
     },
     playerFigureRow:{
         flexDirection:'row',
-        marginTop:10,
+        marginTop:35,
     },
     playerFigureUnit:{
         flex:1,
@@ -1253,17 +1268,17 @@ module.exports = styleSheetCreate({
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontCondensed,
         fontSize:18,
-        marginBottom:10
+        marginBottom:5
     },
     playerRatingScore:{
         borderWidth:1,
-        borderColor:'rgb(230,231,232)',
-        backgroundColor:'rgb(216,217,218)'
+        borderColor:'rgb(216,217,218)',
+        backgroundColor:'rgb(230,231,232)'
     },
     playerFigureLowerText:{
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontGeorgia,
         fontSize:18,
-        marginTop:10
+        marginTop:5
     }
 })
