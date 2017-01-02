@@ -461,10 +461,13 @@ module.exports = styleSheetCreate({
     },
     onboarding: {
         flex:1,
-        paddingTop:20,
+        marginTop:20,
         android: {
-            paddingTop:0
+            marginTop:0
         }
+    },
+    onboardingContent:{
+        marginTop:50
     },
     btnClose: {
         backgroundColor:'rgb(130,4,23)',
@@ -472,7 +475,7 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right:0,
-        top:20,
+        top:0,
         paddingTop:10,
         android: {
             top:0
@@ -483,7 +486,7 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     onboardingTitle: {
-        marginTop:71,
+        marginTop:21,
         textAlign:'center',
         fontSize:28,
         fontFamily: styleVar.fontCondensed,
@@ -796,7 +799,8 @@ module.exports = styleSheetCreate({
         backgroundColor:'transparent'
     },
     summaryWrapper:{
-        padding:30,
+        paddingHorizontal:30,
+        marginVertical:30,
     },
     summaryText:{
         fontFamily: styleVar.fontGeorgia,
@@ -1187,7 +1191,8 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        paddingVertical:20,
+        paddingBottom:20,
+        marginTop:20,
     },
     playerPerfromanceWrapper:{
         flexDirection:'row',
@@ -1200,7 +1205,7 @@ module.exports = styleSheetCreate({
         borderBottomWidth:1,
         borderColor:'rgb(128,127,131)',
         paddingTop:18,
-        paddingHorizontal:32,
+        paddingHorizontal:20,
         paddingBottom:1,
         alignItems:'center',
         android:{
@@ -1228,34 +1233,15 @@ module.exports = styleSheetCreate({
         flexDirection:'row'
     },
     playerFigureType:{
-        flex:1
-    },
-    underLineAttack:{
-        marginHorizontal:10,
-        borderBottomWidth:3,
-        android:{
-            marginHorizontal:16
-        }
-    },
-    underLineDefence:{
-        marginHorizontal:4,
-        borderBottomWidth:3,
-        android:{
-            marginHorizontal:10
-        }
-    },
-    underLineKicking:{
-        marginHorizontal:7,
-        borderBottomWidth:3,
-        android:{
-            marginHorizontal:12
-        }
+        flex:1,
+        height:40,
+        alignItems:'center',
     },
     playerFigureTypeText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:24,
         lineHeight:24,
-        textAlign:'center'
+        textAlign:'center',
     },
     playerFigurePageWrapper:{
         justifyContent:'center',

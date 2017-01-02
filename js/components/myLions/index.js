@@ -20,7 +20,6 @@ import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
-import SquadModal from '../global/squadModal'
 
 class MyLions extends Component {
 
@@ -104,10 +103,16 @@ class MyLions extends Component {
                             <LionsFooter isLoaded={true} />
                         </Content>
                     < EYSFooter />
-                    <SquadModal
-                        modalVisible={this.state.modalVisible}
-                        callbackParent={this._setModalVisible}>
-                                <View >
+                    <Modal
+                        visible={this.state.modalVisible}
+                        transparent={true}
+                        onRequestClose={()=>this._setModalVisible(false)}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                            style={styles.btnClose}>
+                                <Icon name='md-close' style={styles.btnCloseIcon}/>
+                            </ButtonFeedback>
+                            <View style={styles.onboardingContent}>
                                     <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                     <Swiper
                                         ref='swiper'
@@ -146,8 +151,9 @@ class MyLions extends Component {
                                         :
                                         <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
                                     }
-                                </View>
-                    </SquadModal>
+                                </View> 
+                       </LinearGradient>
+                    </Modal>
                 </View>
             </Container>
         )

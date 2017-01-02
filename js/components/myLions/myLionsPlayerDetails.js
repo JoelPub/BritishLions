@@ -48,6 +48,9 @@ class MyLionsPlayerDetails extends Component {
             attackStyle:this.pageStyle.active,
             defenceStyle:this.pageStyle.inactive,
             kickingStyle:this.pageStyle.inactive,
+            attackUnderline: 0,
+            defenceUnderline: 0,
+            kickingUnderline: 0,
             modalContent:this.getModalContent()
         }
     }
@@ -492,6 +495,25 @@ class MyLionsPlayerDetails extends Component {
         })
     }
 
+    measureATab(event) {
+        const { x, width, height, } = event.nativeEvent.layout;
+        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
+        // this.updateView({value: this.props.scrollValue._value, });
+        this.setState({attackUnderline:width})
+      }
+    measureDTab(event) {
+        const { x, width, height, } = event.nativeEvent.layout;
+        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
+        // this.updateView({value: this.props.scrollValue._value, });
+        this.setState({defenceUnderline:width})
+      }
+    measureKTab(event) {
+        const { x, width, height, } = event.nativeEvent.layout;
+        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
+        // this.updateView({value: this.props.scrollValue._value, });
+        this.setState({kickingUnderline:width})
+      }
+
     render() {
         let buttonText = ''
         
@@ -627,20 +649,29 @@ class MyLionsPlayerDetails extends Component {
                                     <View style={styles.playerFigureWrapper}>
                                         <View style={styles.playerFigureView}>
                                             <View style={styles.playerFigureTypeView}>
-                                                <ButtonFeedback style={styles.playerFigureType} onPress={()=>this.changeProfile(0)}>
-                                                    <View style={[styles.underLineAttack,{borderColor:this.state.attackStyle.underlineColor}]}>
-                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}>ATTACK</Text>
-                                                    </View>
+                                                <ButtonFeedback 
+                                                    style={styles.playerFigureType} 
+                                                    onPress={()=>this.changeProfile(0)}>
+                                                    <Text 
+                                                    style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}
+                                                    onLayout={this.measureATab.bind(this)}>ATTACK</Text>
+                                                    <View style={{height:3,width:this.state.attackUnderline,backgroundColor:this.state.attackStyle.underlineColor}} />
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(1)}>
-                                                    <View style={[styles.underLineDefence,{borderColor:this.state.defenceStyle.underlineColor}]}>
-                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}>DEFENSE</Text>
-                                                    </View>
+                                                <ButtonFeedback 
+                                                    style={styles.playerFigureType}  
+                                                    onPress={()=>this.changeProfile(1)}>
+                                                    <Text 
+                                                    style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}
+                                                    onLayout={this.measureDTab.bind(this)}>DEFENSE</Text>
+                                                    <View style={{height:3,width:this.state.defenceUnderline,backgroundColor:this.state.defenceStyle.underlineColor}} />
                                                 </ButtonFeedback>
-                                                <ButtonFeedback style={styles.playerFigureType}  onPress={()=>this.changeProfile(2)}>
-                                                    <View style={[styles.underLineKicking,{borderColor:this.state.kickingStyle.underlineColor}]}>
-                                                        <Text style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}>KICKING</Text>
-                                                    </View>
+                                                <ButtonFeedback 
+                                                    style={styles.playerFigureType}  
+                                                    onPress={()=>this.changeProfile(2)}>
+                                                    <Text 
+                                                    style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}
+                                                    onLayout={this.measureKTab.bind(this)}>KICKING</Text>
+                                                    <View style={{height:3,width:this.state.kickingUnderline,backgroundColor:this.state.kickingStyle.underlineColor}} />
                                                 </ButtonFeedback>
                                             </View>
                                            <Swiper
