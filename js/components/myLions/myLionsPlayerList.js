@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
+import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform, ListView,TouchableOpacity } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { replaceRoute } from '../../actions/route'
 import { drillDown } from '../../actions/content'
@@ -24,6 +24,10 @@ import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import LionsFooter from '../global/lionsFooter'
+import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 class MyLionsPlayerList extends Component {
 
@@ -33,19 +37,22 @@ class MyLionsPlayerList extends Component {
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
         this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
-        this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
+        //this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
+        //this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
             modalVisible: false,
+            filterModalVisible: false,
             transparent: true,
             resultVisible: false,
             playerListFeeds: this.ds.cloneWithRows([]),
             favoritePlayers: [],
             searchResult:this.ds.cloneWithRows([]),
+            isEmptyResult: false,
         }
         this.playerListFeeds=[]
         this.nameFilter = ''
+        this.filterBy = ''
     }
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
@@ -64,7 +71,7 @@ class MyLionsPlayerList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -83,7 +90,7 @@ class MyLionsPlayerList extends Component {
     _renderSearch(rowData, sectionID, rowID, highlightRow) {
         return (
             <View style={styles.resultRow}>
-                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
+                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setSearchModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
                     <View style={styles.searchImg}>
                         <Image transparent
                             resizeMode='stretch'
@@ -133,7 +140,39 @@ class MyLionsPlayerList extends Component {
         )
     }
 
+    _getFilteredPosition=(value)=>{
+        if(value !== this.filterBy){
+            this.filterBy = value
+        }else{
+            this.filterBy = ''
+        }
+
+        if(this.filterBy !== ''){
+            let filteredResult = []
+            filteredResult = filteredResult.concat(this.playerListFeeds.filter((player)=>player.position.toLowerCase().indexOf(this.filterBy)===0) )
+            filteredResult.length > 0?
+                this.setState({
+                    filterModalVisible: false,
+                    transparent: true,
+                    playerListFeeds: this.ds.cloneWithRows(filteredResult)
+                })
+            :
+                this.setState({
+                    filterModalVisible: false,
+                    transparent: true,
+                    playerListFeeds: this.ds.cloneWithRows([])
+                })
+        }else{
+            this.setState({
+                filterModalVisible: false,
+                transparent: true,
+                playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds)
+            })
+        }
+    }
+
     handlePlayer(players) {
+        console.warn('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -160,7 +199,50 @@ class MyLionsPlayerList extends Component {
         return players
     }
 
-    _getFavoritePlayers(playersByNation) {
+    _getFavoritePlayers(playersByNation){
+        this.playerListFeeds = this.handlePlayer(playersByNation)
+        this.setState({ isLoaded: false })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                   this._signInRequired()
+                }
+            }else if(data.error){
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(data.error) // prompt error
+                })
+            }else{
+               let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+
+               this.setState({
+                   playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds),
+                   favoritePlayers:favoritePlayers
+               })
+            }
+            this.setState({ isLoaded: true })
+        })
+    }
+
+     _mergeEYC3Player(playerList, eyc3Players){
+         let mergedPlayers = []
+         console.warn('eyc3Players:', eyc3Players)
+         console.warn('playerList:', playerList)
+         if (eyc3Players.length > 0) {
+             eyc3Players.map((eyc3player, index) => {
+                 playerList.map((player,j) => {
+                     if (eyc3player.id === player.id) {
+                         player.eyc3PlayerScore = eyc3player.heightm
+                         mergedPlayers.push(player)
+                     }
+                 })
+             })
+         }
+        this._getFavoritePlayers(mergedPlayers)
+     }
+
+    /*_getFavoritePlayers(playersByNation) {
         this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
         let options = {
             url: this.favUrl,
@@ -197,9 +279,9 @@ class MyLionsPlayerList extends Component {
         }
 
         service(options)
-    }
+    }*/
 
-    _setModalVisible=(visible) => {
+    _setSearchModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
             resultVisible:!visible,
@@ -207,11 +289,18 @@ class MyLionsPlayerList extends Component {
         })
     }
 
+    _setFilterModalVisible=(visible) => {
+          this.setState({
+              filterModalVisible:visible,
+              transparent:visible
+          })
+      }
     onCloseFilter = () => {
         this.setState({
             modalVisible:false,
             transparent: true,
-            resultVisible: false
+            resultVisible: false,
+            filterModalVisible:false,
         })
     }
 
@@ -262,7 +351,7 @@ class MyLionsPlayerList extends Component {
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
                 if(strSearch.charAt(i).match(/[A-Z]/gi)) {
-                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1) 
+                    tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1)
                 }               
             }
 
@@ -289,18 +378,21 @@ class MyLionsPlayerList extends Component {
                 this.setState({
                     resultVisible: true,
                     transparent: false,
+                    isEmptyResult:false,
                     searchResult: this.ds.cloneWithRows(searchResult)
-                }) 
+                })
             :
                 this.setState({
                     resultVisible: false,
                     transparent: true,
+                    isEmptyResult:true,
                     searchResult: this.ds.cloneWithRows([])
                 })
         } else {
             this.setState({
                 resultVisible: false,
                 transparent: true,
+                isEmptyResult:false,
                 searchResult: this.ds.cloneWithRows([])
             })
         }
@@ -325,8 +417,30 @@ class MyLionsPlayerList extends Component {
         return newData
     }
 
+    _getPlayersListByUnion(){
+        this.setState({ isLoaded: false })
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+                getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                     if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                     }
+                 }).catch((error) => {
+                     console.warn('Error when try to get the EYC3 full player list: ', error)
+                 })
+            }
+        }).catch((error) => {
+            this.setState({ isLoaded: true }, () => {
+                this._showError(error) // prompt error
+            })
+        })
+    }
+
     componentDidMount() {
-        let options = {
+        setTimeout(() => this._getPlayersListByUnion(), 600)
+        /*let options = {
             url: this.unionUrl,
             data: {},
             method: 'get',
@@ -346,7 +460,7 @@ class MyLionsPlayerList extends Component {
             }
         }
 
-        service(options)
+        service(options)*/
     }
 
     componentWillUnmount() {
@@ -355,61 +469,107 @@ class MyLionsPlayerList extends Component {
 
     render() {
       // Later on in your styles..
-
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    {this.state.isLoaded&&
+                    <Content bounces={false}>
+                        {this.state.isLoaded&&
+                        <View>
+                            <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                                <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                                <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
+                            </LinearGradient>
+                            <View style={styles.unionsPlayerListingBar}>
+                                <ButtonFeedback onPress={()=>this._setSearchModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
+                                    <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
+                                </ButtonFeedback>
 
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-                        <ButtonFeedback onPress={()=>this._setModalVisible(true)} style={styles.btnSearchPlayer}>
-                            <Icon name='md-search' style={styles.searchIcon}/>
-                        </ButtonFeedback>
-                    </LinearGradient>
-                    }
-
-                    <FilterListingModal
-                        modalVisible={this.state.modalVisible}
-                        resultVisible={this.state.resultVisible}
-                        transparent={this.state.transparent}
-                        callbackParent={this.onCloseFilter}>
-
-                        <View style={styles.resultContainer}>
-                            <View style={styles.searchContainer}>
-                                <View style={styles.searchBox}>
-                                    <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
-                                </View>
-                                <View style={{flex:1}}>
-                                    <ButtonFeedback onPress={()=>this._setModalVisible(false)} style={styles.btnCancel}>
-                                        <Icon name='md-close' style={styles.rtnIcon}/>
-                                    </ButtonFeedback>
-                                </View>
+                                <ButtonFeedback onPress={()=>{this._setFilterModalVisible(true)}} style={styles.unionsPlayerListingFilterButton}>
+                                    <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
+                                </ButtonFeedback>
                             </View>
-                            {this.state.resultVisible&&
-                                <ListView 
-                                    dataSource={this.state.searchResult}
-                                    renderRow={this._renderSearch.bind(this)}
-                                    enableEmptySections = {true} 
-                                  />
+                            {
+                                (this.filterBy !== '')&&
+                                <View style={styles.unionsPlayerListingFilterByBar}>
+                                    <View style={styles.unionsPlayerListingFilterTextView}>
+                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                        <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
+                                            <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             }
                         </View>
-                    </FilterListingModal>
-                    {
-                        this.state.isLoaded?
-                            <ListView 
-                                dataSource={this.state.playerListFeeds}
-                                renderRow={this._renderRow.bind(this)}
-                                enableEmptySections = {true} 
-                                contentContainerStyle={styles.gridList}
-                                renderFooter ={this._renderFooter}
-                              />
-                        :
-                            <ActivityIndicator style={loader.centered} size='large' />
-                    }
-                    <EYSFooter />
+                        }
+
+                        <FilterListingModal
+                            modalVisible={this.state.filterModalVisible}
+                            resultVisible={this.state.filteResultVisible}
+                            transparent={this.state.transparent}
+                            callbackParent={this.onCloseFilter}>
+                            <View style={styles.filterResultContainer}>
+                                <LinearGradient colors={['#AF001E', '#81071C']} style={styles.filterContainer}>
+                                <View style={styles.filterTopContainer}>
+                                        <View style={{flex:1}}>
+                                           <ButtonFeedback onPress={()=>this._setFilterModalVisible(false)} style={styles.btnClose}>
+                                               <Icon name='md-close' style={styles.btnCloseIcon}/>
+                                           </ButtonFeedback>
+                                       </View>
+                                </View>
+                                <MyLionsPlayerListFilter getFilteredPosition={this._getFilteredPosition} filterBy = {this.filterBy}/>
+
+                                </LinearGradient>
+                           </View>
+                        </FilterListingModal>
+
+                        <FilterListingModal
+                            modalVisible={this.state.modalVisible}
+                            resultVisible={this.state.resultVisible}
+                            transparent={this.state.transparent}
+                            callbackParent={this.onCloseFilter}>
+
+                            <View style={styles.resultContainer}>
+                                <View style={styles.searchContainer}>
+                                    <View style={styles.searchBox}>
+                                        <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                    </View>
+                                    <View style={{flex:1}}>
+                                        <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
+                                            <Icon name='md-close' style={styles.rtnIcon}/>
+                                        </ButtonFeedback>
+                                    </View>
+                                </View>
+                                {
+                                    this.state.isEmptyResult?
+                                        <View syles={styles.unionsPlayerEmptySearchMsg}>
+                                            <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
+                                            <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
+                                        </View>
+                                    :
+                                        this.state.resultVisible&&
+                                        <ListView
+                                            dataSource={this.state.searchResult}
+                                            renderRow={this._renderSearch.bind(this)}
+                                            enableEmptySections = {true}
+                                          />
+                                }
+                            </View>
+                        </FilterListingModal>
+                        {
+                            this.state.isLoaded?
+                                <ListView
+                                    dataSource={this.state.playerListFeeds}
+                                    renderRow={this._renderRow.bind(this)}
+                                    enableEmptySections = {true}
+                                    contentContainerStyle={styles.gridList}
+                                    renderFooter ={this._renderFooter}
+                                  />
+                            :
+                                <ActivityIndicator style={loader.centered} size='large' />
+                        }
+                        <EYSFooter mySquadBtn={true}/>
+                    </Content>
                 </View>
             </Container>
         )

@@ -13,10 +13,12 @@ module.exports = {
 
 	colorScarlet: 'rgb(175, 0, 30)',
 	colorText: 'rgb(38, 38, 38)',
+	colorTextDarkGrey: 'rgb(95,96,98)',
 	colorGrey: 'rgb(239, 239, 240)',
 	colorGrey2: 'rgb(216, 217, 218)',
 	colorGrey3: 'rgb(132, 136, 139)',
 	colorIcon: 'rgba(208, 7, 42, 0.9)',
+	colorYellow: 'rgb(255,230,0)',
 
 	textFontSize: 18,
 	textLineHeight: 24,

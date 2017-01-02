@@ -6,7 +6,7 @@ import { setAccessGranted } from './actions/token'
 import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View, Alert } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
@@ -27,8 +27,12 @@ import LionsSideBar from './components/global/lionsSideBar'
 import LionsStore from './components/lionsStore'
 import MyLions from './components/myLions'
 import MyLionsPlayerList from './components/myLions/myLionsPlayerList'
+import MyLionsExpertsList from './components/myLions/myLionsExpertsList'
+import MylionsExpertProfile from './components/myLions/mylionsExpertProfile'
 import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
+import MyLionsUnionsList from './components/myLions/myLionsUnionsList'
+import MyLionsSquad from './components/myLions/myLionsSquad'
 import Competition from './components/competition'
 import Tours from './components/tours'
 import Galleries from './components/galleries'
@@ -45,6 +49,7 @@ import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBac
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
+import Storage from 'react-native-storage'
 
 Navigator.prototype.replaceWithAnimation = function (route) {
     const activeLength = this.state.presentedIndex + 1
@@ -133,6 +138,14 @@ class AppNavigator extends Component {
     }
 
     componentDidMount() {
+        var storage = new Storage({
+            size: 10000,
+            storageBackend: AsyncStorage,
+            defaultExpires: 1000 * 3600 * 24,
+            enableCache: true,
+        })
+        global.storage = storage
+
         globalNav.navigator = this._navigator
 
         this.props.store.subscribe(() => {
@@ -229,7 +242,6 @@ class AppNavigator extends Component {
                 <Component navigator={navigator} route={route} {...route.passProps} />
             )
         }
-
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />
@@ -259,8 +271,16 @@ class AppNavigator extends Component {
                 return <MyLionsPlayerList navigator={navigator} />
             case 'myLionsFavoriteList':
                 return <MyLionsFavoriteList navigator={navigator} />
+            case 'myLionsUnionsList':
+                return <MyLionsUnionsList navigator={navigator} />
+            case 'myLionsSquad':
+                return <MyLionsSquad navigator={navigator} />
             case 'myLionsPlayerDetails':
                 return <MyLionsPlayerDetails navigator={navigator} />
+            case 'myLionsExpertsList' :
+                return <MyLionsExpertsList navigator={navigator} />
+            case 'mylionsExpertProfile' :
+                return <MylionsExpertProfile navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
             case 'tours':

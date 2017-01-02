@@ -10,16 +10,6 @@ export default [
         "description": "<p>The Rugby Football Union is the national governing body for grassroots and elite rugby in England, with 2,000 autonomous rugby clubs in its membership.</p><p>The clubs are grouped within 35 Constituent Bodies (CBs), comprised of counties – some individual, some combined – the three armed forces, Oxford and Cambridge Universities, England Schools Rugby Football Union and England Students.</p><p>All of this is supported by the RFU's 50 Rugby Development Officers, six Area Managers and 120 Community Rugby Coaches across the country, who provide some 30,000 coaching sessions a year for young people.</p><p>The RFU employs approximately 500 paid staff and helps to train and support more than 60,000 volunteers whose roles include:</p><ul><li>Organising rugby activity, including the playing, coaching and refereeing of matches and recreational rugby at all levels</li><li>Supporting the volunteer workforce</li><li>Working with clubs to secure grants and loans for facilities</li><li>Fundraising, handling money and insurance</li><li>Offering medical advice and support</li><li>Committee member/trustee</li><li>Secretarial, administration and clerical help</li></ul>"
     },
     {
-        "id": "126",
-        "displayname": "Ireland",
-        "shortname": "Ire",
-        "image": "https:\/\/cdn.soticservers.net\/tools\/images\/teams\/logos\/250x250\/126.png",
-        "logo": require("./nations/ireland.png"),
-        "url": "http://www.irishrugby.ie",
-        "images": [{"source":require("./nations/ireland.png")},{"source":require("./ireland.png")},{"source":require("./irfu.png")}],
-        "description": "<p>The Irish Rugby Football Union is the governing body for the sport of Rugby Union on the island of Ireland. It was founded in 1879</p><p>The IRFU has its head office in Dublin, and home ground at Aviva Stadium, where adult men's Irish rugby union international matches are played.</p>"
-    },
-    {
         "id": "127",
         "displayname": "Scotland",
         "shortname": "Sco",
@@ -28,6 +18,16 @@ export default [
         "url": "http://www.scottishrugby.org",
         "images": [{"source":require("./nations/scotland.png")},{"source":require("./scotland.png")}],
         "description": "<p>Scottish Rugby is the governing body for rugby union in Scotland.</p><p>It aims to inspire Scotland through rugby, and everyone involved in playing, delivering and organising rugby has a role to play in helping the sport to grow and flourish. </p><p>Based at BT Murrayfield Stadium, Edinburgh, it administers Scotland's international rugby teams, and Scotland's two professional clubs, Edinburgh Rugby and Glasgow Warriors. As well as international rugby, Scottish Rugby supports the domestic game in local rugby clubs and schools across the country. </p><p>Scotland has a proud heritage within the world game. </p><p>The first ever rugby international match was played at Raeburn Place, Edinburgh, in 1871 on the cricket field of The Edinburgh Academy between Scotland and England.</p><p>This preceded the creation of The Scottish Football Union - as it was then called -  which was founded in 1873.</p><p>In 1897, the SFU bought land at Inverleith, Edinburgh which was the home of rugby in Scotland before the first Murrayfield Stadium was built in 1925. The current home of international rugby in Scotland is BT Murrayfield Stadium. </p><p>Scotland is also the birthplace of rugby sevens, invented in 1883 by Ned Haig and David Sanderson as a fundraising event for their local club, Melrose RFC.</p><p>Scotland has a long history of contributing players and coaches to the British & Irish Lions.  Leading players have included Andy Irvine, Ian McLauchlan, Gordon Brown, Gavin Hastings among many others, while Sir Ian McGeechan was Lions head coach in 1989, 1993, 1997 and 2009.</p>"
+    },
+    {
+        "id": "126",
+        "displayname": "Ireland",
+        "shortname": "Ire",
+        "image": "https:\/\/cdn.soticservers.net\/tools\/images\/teams\/logos\/250x250\/126.png",
+        "logo": require("./nations/ireland.png"),
+        "url": "http://www.irishrugby.ie",
+        "images": [{"source":require("./nations/ireland.png")},{"source":require("./ireland.png")},{"source":require("./irfu.png")}],
+        "description": "<p>The Irish Rugby Football Union is the governing body for the sport of Rugby Union on the island of Ireland. It was founded in 1879</p><p>The IRFU has its head office in Dublin, and home ground at Aviva Stadium, where adult men's Irish rugby union international matches are played.</p>"
     },
     {
         "id": "128",

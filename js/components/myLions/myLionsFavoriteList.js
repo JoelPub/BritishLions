@@ -24,9 +24,14 @@ import { drillDown } from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
+import { getAssembledUrl } from '../utility/urlStorage'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import Storage from 'react-native-storage'
 
 class MyLionsFavoriteList extends Component {
 
@@ -34,8 +39,8 @@ class MyLionsFavoriteList extends Component {
         super(props)
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
-        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
-        this.playerFullUrl = 'https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=403'
+        this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
+        this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
         this.uniondata = Data
 
         this.state = {
@@ -61,7 +66,7 @@ class MyLionsFavoriteList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styles.gridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -110,7 +115,7 @@ class MyLionsFavoriteList extends Component {
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
         let playerids = playerList.split('|')
-        
+
         for (var u in playerFeed) {
             if (playerFeed[u].length > 0) {
                 playerFeed[u].map((player, index) => {
@@ -123,9 +128,35 @@ class MyLionsFavoriteList extends Component {
                 })
             }
         }
+        getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+             if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                this._mergeEYC3Player(favoritePlayers, eyc3CatchedFullPlayerList)
+             }
+        }).catch((error) => {
+            console.warn('Error when try to get the EYC3 full player list: ', error)
+        })
+    }
 
-        this.setState({ 
-            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(favoritePlayers))
+    _mergeEYC3Player(playerList, eyc3Players){
+        let mergedFavoritePlayers = []
+
+        for (var u in eyc3Players) {
+            if (eyc3Players[u].length > 0) {
+                eyc3Players[u].map((eyc3player, index) => {
+                    playerList.map((player,j) => {
+                        if (eyc3player.id === player.id) {
+                            player.eyc3PlayerScore = eyc3player.heightm
+                            mergedFavoritePlayers.push(player)
+                        }
+                    })
+                })
+            }
+        }
+
+        this.setState({
+            isLoaded: true,
+            isRefreshing: false,
+            favoritePlayers:this.ds.cloneWithRows(this.handlePlayer(mergedFavoritePlayers))
         })
     }
 
@@ -137,41 +168,7 @@ class MyLionsFavoriteList extends Component {
         )
     }
 
-    _getFavDetail(playerList) {
-        let options = {
-            url: this.playerFullUrl,
-            data: {},
-            method: 'get',
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this.setState({ isLoaded: true, isRefreshing: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this._listPlayer(playerList, res.data)
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this.setState({ isLoaded: true, isRefreshing: false }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    
-                this._signInRequired()
-            },
-            isRequiredToken: true
-        }
-
-        service(options)
-    }
-
-    _fetchFavPlayers(isInitialLoad = false) {
+    /*_fetchFavPlayers(isInitialLoad = false) {
         let options = {
             url: this.favUrl,
             data: {},
@@ -189,9 +186,14 @@ class MyLionsFavoriteList extends Component {
             onAxiosEnd: () => {},
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-
                 if (res.data !== '') {
-                    this._getFavDetail(res.data)
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this._listPlayer(res.data, catchedFullPlayerList)
+                        }
+                    }).catch((error) => {
+                        console.warn('Error when try to get the sotic full player list', error)
+                    })
                 } else {
                     // empty favorite player list
                     this.setState({ isLoaded: true, isRefreshing: false }, () => {
@@ -221,10 +223,56 @@ class MyLionsFavoriteList extends Component {
         }
 
         service(options)
+    }*/
+
+    _getFavoritePlayers(isInitialLoad = false){
+        if (isInitialLoad) {
+            this.setState({ isLoaded: false })
+        } else {
+            // means user refresh the page
+            this.setState({ isRefreshing: true })
+        }
+        getGoodFormFavoritePlayerList().then((data)=>{
+            console.warn('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                    this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                        this._signInRequired()
+                    })
+                }
+            }else if(data.error){
+                console.warn('final data:', JSON.stringify(data.error))
+                this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                    this._showError(data.error)
+                })
+            }else{
+                if (data.data !== '') {
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this._listPlayer(data.data, catchedFullPlayerList)
+                        }
+                    }).catch((error) => {
+                        console.warn('Error when try to get the sotic full player list', error)
+                    })
+                } else {
+                    // empty favorite player list
+                    this.setState({ isLoaded: true, isRefreshing: false }, () => {
+                        alertBox(
+                            'Message',
+                            'The favourite player list is currently empty, you can add a new favourite player from the player detail page.',
+                            'Dismiss'
+                        )
+                    })
+                }
+            }
+        })
     }
 
     componentDidMount() {
-        this._fetchFavPlayers(true)
+        //removeGoodFormFavoritePlayerList()
+        setTimeout(()=>{this._getFavoritePlayers(true)},600)
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -237,7 +285,7 @@ class MyLionsFavoriteList extends Component {
                 isLoaded: false,
                 favoritePlayers: this.ds.cloneWithRows([])
             }, () => {
-                this._fetchFavPlayers()
+                setTimeout(()=>{this._getFavoritePlayers(true)},600)
             })
         }
     }
@@ -252,7 +300,7 @@ class MyLionsFavoriteList extends Component {
 
     _onRefresh() {
         this.setState({ isRefreshing: true })
-        this._fetchFavPlayers()
+        this._getFavoritePlayers()
     }
 
     _replaceRoute(route) {
@@ -304,12 +352,11 @@ class MyLionsFavoriteList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                        <View style={styles.viewCircle}>
-                            <Image resizeMode='contain' source={require('../../../contents/my-lions/nations/lions.png')} style={styles.imageTitle}/>
-                        </View>
-                        <Text style={styles.headerTitle}>MY LIONS</Text>
-                    </LinearGradient>
+                     <View style={styles.myLionsSharedHeader}>
+                         <Text style={styles.myLionsSharedHeaderText}>
+                              MY FAVOURITES
+                         </Text>
+                     </View>
                     {
                         this.state.isLoaded?
                              <ListView 
@@ -322,7 +369,7 @@ class MyLionsFavoriteList extends Component {
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    <EYSFooter />
+                    <EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
         )
