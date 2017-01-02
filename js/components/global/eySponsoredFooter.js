@@ -47,7 +47,7 @@ const styles = styleSheetCreate({
 
 export class EYFooter extends Component {
       _mySquad(){
-             this.props.pushNewRoute('mySquad')
+             this.props.pushNewRoute('myLionsSquad')
       }
 
 	  render() {
