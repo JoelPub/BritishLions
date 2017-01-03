@@ -31,7 +31,7 @@ export default class RatingView extends Component {
   }
   render () {
     return (
-      <ButtonFeedback style={styles.scoreCard}  onPress={this.props.changeMode}>
+      <ButtonFeedback style={styles.scoreCardNoBottomW}  onPress={this.props.changeMode}>
         <View>
           <View ref='scorecard' style={styles.fullCard}>
             <View style={styles.expertRatingWrapper}>

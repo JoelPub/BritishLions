@@ -108,7 +108,7 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'FORWARDS'} />
             <Swiper
               ref='swiper'
-              height={220}
+              height={styleVar.deviceWidth*3/5}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
               activeDotColor='rgb(239,239,244)'>
@@ -129,7 +129,7 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'BACKS'} />
             <Swiper
               ref='swiper'
-              height={220}
+              height={styleVar.deviceWidth*3/5}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
               activeDotColor='rgb(239,239,244)'>
