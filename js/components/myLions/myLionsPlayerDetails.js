@@ -593,11 +593,11 @@ class MyLionsPlayerDetails extends Component {
                                     </View>
                                     <View style={styles.playerPerfromanceWrapper}>
                                         <View style={styles.playerPerfromance} >
-                                            <Text style={styles.summaryText} numberOfLines={2}>RECENT PERFORMANCE</Text>
+                                            <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
                                             <Text style={styles.summaryTextHighLight}>86</Text>
                                         </View>
                                         <View style={styles.playerPerfromance}>
-                                            <Text style={styles.summaryText}>CONSISTENCY</Text>
+                                            <Text style={styles.performanceText}>CONSISTENCY</Text>
                                             <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                         </View>
                                     </View>

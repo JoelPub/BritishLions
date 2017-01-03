@@ -810,6 +810,14 @@ module.exports = styleSheetCreate({
         flex:1,
         marginBottom:10,
     },
+    performanceText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        textAlign:'center',
+        lineHeight:18,
+        flex:1,
+        marginBottom:10,
+    },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
         fontSize:44,
