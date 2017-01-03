@@ -18,7 +18,7 @@ const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL = '/protected/mylionsfavourit?_=148
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad'
 
 export function getAssembledUrl(urlName) {
-    switch(urlName){
+    switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
             return SOTIC_BASE_URL + SOTIC_GET_PLAYER_URL
         case EYC3_GET_PLAYER_URL_NAME:
@@ -30,4 +30,11 @@ export function getAssembledUrl(urlName) {
         case GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME:
             return GODDFORM_BASE_URL + GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL
     }
+}
+export const actionsApi = {
+    soticGetPlayer: getAssembledUrl(SOTIC_GET_PLAYER_URL_NAME),
+    eyc3GetPlayer: getAssembledUrl(EYC3_GET_PLAYER_URL_NAME),
+    eyc3GetExperts: getAssembledUrl(EYC3_GET_EXPERTS_URL_NAME),
+    goodformGetFavoritePlayer: getAssembledUrl(GOODFORM_GET_FAVORITE_PLAYER_URL_NAME),
+    goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME)
 }
