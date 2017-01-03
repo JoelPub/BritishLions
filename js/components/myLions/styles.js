@@ -996,9 +996,27 @@ module.exports = styleSheetCreate({
         padding:12,
         backgroundColor:'rgb(239,239,240)'
     },
+    posExpertTitle:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        width:styleVar.deviceWidth,
+        borderWidth:1,
+        borderColor:'rgb(216,217,218)',
+        height:50,
+        paddingTop:12,
+        backgroundColor:'rgb(239,239,240)'
+    },
     posTitleLeft:{
         color:'rgb(175,0,30)',
         textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24,
+        lineHeight:24,
+    },
+    posTitleCenter:{
+        color:'rgb(175,0,30)',
+        textAlign:'center',
         fontFamily: styleVar.fontCondensed,
         fontSize:24,
         lineHeight:24,
