@@ -40,9 +40,9 @@ class MyLionsPlayerDetails extends Component {
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
-            currentProfile: 0,
             modalContent:this.getModalContent()
-        }
+        },
+        this.tabBar = ['ATTACK','DEFENSE','KICKING']
     }
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
@@ -582,7 +582,7 @@ class MyLionsPlayerDetails extends Component {
                                         </View>
                                     </View>
                                     <View style={styles.playerFigureWrapper}>
-                                        <PlayerFigure />
+                                        <PlayerFigure tabBar={this.tabBar} />
                                     </View>
                                 <View style={styles.semiCardFooter}>
                                     <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>

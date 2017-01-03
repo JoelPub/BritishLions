@@ -83,6 +83,7 @@ export default class PlayerFigure extends Component {
                             inactive:{textColor:styleVar.colorGrey2,underlineColor:'transparent'}
                          }
         this.state = {
+            currentProfile: 0,
             attackStyle:this.pageStyle.active,
             defenceStyle:this.pageStyle.inactive,
             kickingStyle:this.pageStyle.inactive,
