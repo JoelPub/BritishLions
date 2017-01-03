@@ -78,105 +78,83 @@ const styles = styleSheetCreate({
 export default class PlayerFigure extends Component {
 	constructor(props){
         super(props)
-        this.pageStyle = {
-                            active:{textColor:styleVar.colorTextDarkGrey,underlineColor:styleVar.colorYellow},
-                            inactive:{textColor:styleVar.colorGrey2,underlineColor:'transparent'}
-                         }
         this.state = {
-            currentProfile: 0,
-            attackStyle:this.pageStyle.active,
-            defenceStyle:this.pageStyle.inactive,
-            kickingStyle:this.pageStyle.inactive,
-            attackUnderline: 0,
-            defenceUnderline: 0,
-            kickingUnderline: 0,
-    	}  
+            underlineLength:[],
+            tabStatus:[],
+    	},
+        this.currentPage = 0
     }
 
-    changeProfile(profile) {
-        this.changeStyle(profile) 
-        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
+    changePage(page) {
+        this.updateStyle(page) 
+        this.refs['swiper'].scrollBy(page-this.currentPage,true)
+        this.currentPage=page
     }
 
-    changeStyle(style) {
-        switch(style) {
-            case 1:
-                this.setState({
-                    attackStyle:this.pageStyle.inactive,
-                    defenceStyle:this.pageStyle.active,
-                    kickingStyle:this.pageStyle.inactive
-                })
-                break
-            case 2:
-                this.setState({
-                    attackStyle:this.pageStyle.inactive,
-                    defenceStyle:this.pageStyle.inactive,
-                    kickingStyle:this.pageStyle.active
-                })
-                break
-            default:
-                this.setState({                    
-                    attackStyle:this.pageStyle.active,
-                    defenceStyle:this.pageStyle.inactive,
-                    kickingStyle:this.pageStyle.inactive
-                })
-                break
-        }        
+    updateStyle(page) {
+        let activeArray = this.state.tabStatus.slice()
+        if(activeArray[page]===undefined) activeArray[page]=false
+        activeArray.map((a,j)=>{
+            j===this.currentPage?activeArray[j]=true:activeArray[j]=false
+        })
+        this.setState({tabStatus:activeArray.slice()})
     }
 
-    swiperScroll(e, state, context) {
-        this.setState({currentProfile:state.index})        
-        this.changeStyle(state.index) 
+    swiperScroll(e, state, context) {  
+        this.currentPage=state.index
+        this.updateStyle(state.index) 
+    }
+
+    measureTab(page,event) {
+        const { x, width, height, } = event.nativeEvent.layout
+        let widthArray = this.state.underlineLength.slice()
+        if(widthArray[page]===undefined) widthArray[page]=0
+        widthArray.map((w,i)=>{
+            i===page?widthArray[i]=width:widthArray[i]=w
+        })
+        this.setState({underlineLength:widthArray.slice()})
+        this.updateStyle(page) 
 
     }
 
-    measureATab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({attackUnderline:width})
-      }
-    measureDTab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({defenceUnderline:width})
-      }
-    measureKTab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({kickingUnderline:width})
-      }
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k])
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
+    }
 
 	render() {
 		return (
             <View style={styles.playerFigureView}>
                 <View style={styles.playerFigureTypeView}>
-                    <ButtonFeedback 
+                {
+                    this.props.tabBar.map((node,page)=>{
+                        return (
+                        <ButtonFeedback 
                         style={styles.playerFigureType} 
-                        onPress={()=>this.changeProfile(0)}>
-                        <Text 
-                        style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}
-                        onLayout={this.measureATab.bind(this)}>ATTACK</Text>
-                        <View style={{height:3,width:this.state.attackUnderline,backgroundColor:this.state.attackStyle.underlineColor}} />
-                    </ButtonFeedback>
-                    <ButtonFeedback 
-                        style={styles.playerFigureType}  
-                        onPress={()=>this.changeProfile(1)}>
-                        <Text 
-                        style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}
-                        onLayout={this.measureDTab.bind(this)}>DEFENSE</Text>
-                        <View style={{height:3,width:this.state.defenceUnderline,backgroundColor:this.state.defenceStyle.underlineColor}} />
-                    </ButtonFeedback>
-                    <ButtonFeedback 
-                        style={styles.playerFigureType}  
-                        onPress={()=>this.changeProfile(2)}>
-                        <Text 
-                        style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}
-                        onLayout={this.measureKTab.bind(this)}>KICKING</Text>
-                        <View style={{height:3,width:this.state.kickingUnderline,backgroundColor:this.state.kickingStyle.underlineColor}} />
-                    </ButtonFeedback>
+                        onPress={()=>this.changePage(page)}
+                        key={page}>
+                            <Text 
+                            style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
+                            onLayout={this.measureTab.bind(this,page)}>{node.subject}</Text>
+                            <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
+                        </ButtonFeedback>
+                        )
+                    },this)
+                }
                 </View>
                <Swiper
                 ref='swiper'
@@ -186,85 +164,35 @@ export default class PlayerFigure extends Component {
                 dotColor='rgb(95,96,98)'
                 activeDotColor='rgb(255,230,0)'
                 onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
-                <View style={styles.playerFigurePageWrapper}>
-                    <View style={styles.playerFigureRow}>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>TRIES</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>35</Text>
+                {
+                    this.props.tabBar.map((node,i)=>{
+                        return(
+                            <View style={styles.playerFigurePageWrapper}>
+                                {
+                                    this._mapJSON(node.content).map((rowData,index)=>{
+                                        return(
+                                            <View style={styles.playerFigureRow}>
+                                            {
+                                                rowData.map((item, key) => {
+                                                    return(
+                                                        <View style={styles.playerFigureUnit}>
+                                                            <Text style={styles.playerFigureUpperText}>{item.title}</Text>
+                                                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                                <Text style={styles.ratingScorePoint}>{item.score}</Text>
+                                                            </View>
+                                                            <Text style={styles.playerFigureLowerText}>{item.average}</Text>
+                                                        </View>
+                                                        )
+                                                },this)
+                                            }
+                                            </View>
+                                            )
+                                    },this)
+                                }
                             </View>
-                            <Text style={styles.playerFigureLowerText}> 20 avg</Text>
-                        </View>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>ASSISTS</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>12</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                        </View>
-                    </View>
-                    <View style={styles.playerFigureRow}>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>METRES RUN</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>38</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 7 avg</Text>
-                        </View>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>LINE BREAKS</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>7</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 15 avg</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.playerFigurePageWrapper}>
-                    <View style={styles.playerFigureRow}>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>TACKLES</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>18</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 20 avg</Text>
-                        </View>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>RUCKS</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>12</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                        </View>
-                    </View>
-                    <View style={styles.playerFigureRow}>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>LINE-IN</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>22</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 24 avg</Text>
-                        </View>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>TITLE</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>14</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 15 avg</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.playerFigurePageWrapper}>
-                    <View style={styles.playerFigureRow}>
-                        <View style={styles.playerFigureUnit}>
-                            <Text style={styles.playerFigureUpperText}>KICKING</Text>
-                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                <Text style={styles.ratingScorePoint}>12</Text>
-                            </View>
-                            <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                        </View>
-                    </View>
-                </View>
+                            )
+                    },this)
+                }
             </Swiper>
             </View>
 			)
