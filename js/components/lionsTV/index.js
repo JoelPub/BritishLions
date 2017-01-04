@@ -36,7 +36,7 @@ class LionsTV extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             isLoaded: nextProps.isLoaded,
-            videosFeed: nextProps.videosFeed.length !== 0? nextProps.videosFeed : {items:[]}
+            videosFeed: (nextProps.videosFeed !== 'undefined' && nextProps.videosFeed.length !== 0) ? nextProps.videosFeed : {items:[]}
         })
     }
 
