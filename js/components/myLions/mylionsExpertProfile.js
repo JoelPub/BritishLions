@@ -130,6 +130,7 @@ class MyLionsExpertProfile extends Component {
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
               activeDotColor='rgb(239,239,244)'>
+
               {
                 this._mapJSON(squadData.backs,3).map((rowData,index)=>{
                   return (
