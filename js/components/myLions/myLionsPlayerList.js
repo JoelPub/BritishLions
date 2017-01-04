@@ -28,6 +28,7 @@ import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 
 class MyLionsPlayerList extends Component {
 
@@ -290,11 +291,12 @@ class MyLionsPlayerList extends Component {
     }
 
     _setFilterModalVisible=(visible) => {
-          this.setState({
-              filterModalVisible:visible,
-              transparent:visible
-          })
-      }
+        this.setState({
+            filterModalVisible:visible,
+            transparent:visible
+        })
+    }
+    
     onCloseFilter = () => {
         this.setState({
             modalVisible:false,
@@ -509,17 +511,13 @@ class MyLionsPlayerList extends Component {
                             transparent={this.state.transparent}
                             callbackParent={this.onCloseFilter}>
                             <View style={styles.filterResultContainer}>
-                                <LinearGradient colors={['#AF001E', '#81071C']} style={styles.filterContainer}>
-                                <View style={styles.filterTopContainer}>
-                                        <View style={{flex:1}}>
-                                           <ButtonFeedback onPress={()=>this._setFilterModalVisible(false)} style={styles.btnClose}>
-                                               <Icon name='md-close' style={styles.btnCloseIcon}/>
-                                           </ButtonFeedback>
-                                       </View>
-                                </View>
-                                <MyLionsPlayerListFilter getFilteredPosition={this._getFilteredPosition} filterBy = {this.filterBy}/>
-
+                                <LinearGradient colors={['#AF001E', '#820417']} style={styles.filterContainer}>
+                                    <IosUtilityHeaderBackground />
+                                    <MyLionsPlayerListFilter getFilteredPosition={this._getFilteredPosition} filterBy = {this.filterBy}/>
                                 </LinearGradient>
+                                <ButtonFeedback onPress={()=>this._setFilterModalVisible(false)} style={styles.btnClose}>
+                                    <Icon name='md-close' style={styles.btnCloseIcon}/>
+                                </ButtonFeedback>
                            </View>
                         </FilterListingModal>
 
