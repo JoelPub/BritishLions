@@ -62,7 +62,7 @@ class Gallery extends Component {
                 }).then((info)=>{
                     callback()
                 }).catch((errorMessage, statusCode)=>{
-                    if(errorMessage.error !== 'User did not share'){
+                    if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
                         alertBox(
                             '',
                             'Image is not shared' + JSON.stringify(errorMessage) + statusCode,

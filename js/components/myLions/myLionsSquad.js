@@ -137,7 +137,7 @@ class MyLionsSquad extends Component {
                     callback()
                 }).catch((errorMessage, statusCode)=>{
                     console.log("error message: " + error)
-                    if(errorMessage.error !== 'User did not share'){
+                     if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
                         alertBox(
                             '',
                             'Image is not shared',
