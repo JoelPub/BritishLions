@@ -29,10 +29,11 @@ class MyLions extends Component {
         this.state = {
             modalVisible: true,
             swiperWindow: styleVar.deviceWidth,
-            currentPage:0
+            currentPage:0,
+            onScroll:false,
         }
         this.totalPages = 4 
-        this.pageWindow=[] 
+        this.pageWindow=[]
     }
 
     _showList(item, route) {
@@ -52,16 +53,23 @@ class MyLions extends Component {
     prev(){
         this.setState({
             swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
-            currentPage:this.state.currentPage-1
+            currentPage:this.state.currentPage-1,
+            onScroll:true
+        },()=>{
+            this.refs['swiper'].scrollBy(-1,true)
+            setTimeout(()=>this.setState({onScroll:false}),200)
         })
-        this.refs['swiper'].scrollBy(-1,true)
     }
     next(){
         this.setState({
             swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
-            currentPage:this.state.currentPage+1
+            currentPage:this.state.currentPage+1,
+            onScroll:true
+        },()=>{
+            this.refs['swiper'].scrollBy(1,true)
+            setTimeout(()=>this.setState({onScroll:false}),200)
         })
-        this.refs['swiper'].scrollBy(1,true)
+        
     }
     _setModalVisible=(visible) => {
         this.setState({
@@ -79,10 +87,21 @@ class MyLions extends Component {
         
     }
 
+    touchStart(e, state, context){
+        this.setState({
+            onScroll:true
+        })
+    }
+
+    touchEnd(e, state, context){
+        setTimeout(()=>this.setState({onScroll:false}),1000)
+    }
+
     scrollEnd(e, state, context){
         this.setState({
             currentPage:state.index,
             swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
+            onScroll:false
         })
     }
     render() {
@@ -142,7 +161,9 @@ class MyLions extends Component {
                                         loop={false}
                                         dotColor='rgba(255,255,255,0.3)'
                                         activeDotColor='rgb(239,239,244)'
-                                        onMomentumScrollEnd={this.scrollEnd.bind(this)}>
+                                        onMomentumScrollEnd={this.scrollEnd.bind(this)}
+                                        onTouchStart={this.touchStart.bind(this)}
+                                        onTouchEnd={this.touchEnd.bind(this)}>
                                         {
                                             Data.map((item,index)=>{
                                                 return(
@@ -163,16 +184,20 @@ class MyLions extends Component {
                                         }
                                     </Swiper>
                                     {
-                                        this.state.currentPage===0?
-                                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
-                                        :
-                                        <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
-                                    }
-                                    {
-                                        this.state.currentPage===this.totalPages-1?
-                                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
-                                        :
-                                        <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                    !this.state.onScroll&&<View>
+                                        {
+                                            this.state.currentPage===0?
+                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
+                                            :
+                                            <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
+                                        }
+                                        {
+                                            this.state.currentPage===this.totalPages-1?
+                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
+                                            :
+                                            <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                        }
+                                        </View>
                                     }
                                 </View> 
                        </LinearGradient>
