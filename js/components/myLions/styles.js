@@ -116,6 +116,9 @@ module.exports = styleSheetCreate({
         marginLeft:30,
         marginRight:30,
     },
+    btnonBoardSquard:{
+        marginTop:29
+    },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
         height: 50,

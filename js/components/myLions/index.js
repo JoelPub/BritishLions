@@ -20,6 +20,7 @@ import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
+import Data from '../../../contents/my-lions/onboarding/data'
 
 class MyLions extends Component {
 
@@ -27,9 +28,11 @@ class MyLions extends Component {
         super(props)
         this.state = {
             modalVisible: true,
-            currentPage: 0,
+            swiperWindow: styleVar.deviceWidth,
+            currentPage:0
         }
-        this.totalPages = 4  
+        this.totalPages = 4 
+        this.pageWindow=[] 
     }
 
     _showList(item, route) {
@@ -47,20 +50,38 @@ class MyLions extends Component {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
     prev(){
-        this.refs['swiper'].scrollBy(-1,true)
         this.setState({
-            currentPage: this.state.currentPage-1
+            swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
+            currentPage:this.state.currentPage-1
         })
+        this.refs['swiper'].scrollBy(-1,true)
     }
     next(){
-        this.refs['swiper'].scrollBy(1,true)
         this.setState({
-            currentPage: this.state.currentPage+1
+            swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
+            currentPage:this.state.currentPage+1
         })
+        this.refs['swiper'].scrollBy(1,true)
     }
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
+        })
+    }
+    measurePage(page,event) {
+        const { x, width, height, } = event.nativeEvent.layout
+        this.pageWindow.push({index:page,size:height+150})
+        if(page===0) {
+           this.setState({
+                swiperWindow:height+150
+            })
+        }
+    }
+
+    scrollEnd(e, state, context){
+        this.setState({
+            currentPage:state.index,
+            swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
         })
     }
     render() {
@@ -116,28 +137,29 @@ class MyLions extends Component {
                                     <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                     <Swiper
                                         ref='swiper'
-                                        height={400}
+                                        height={this.state.swiperWindow}
                                         loop={false}
                                         dotColor='rgba(255,255,255,0.3)'
                                         activeDotColor='rgb(239,239,244)'
-                                        onMomentumScrollEnd={(e, state, context) => this.setState({currentPage:state.index})}>
-                                        <View style={styles.onboardingPage}>
-                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                        </View>
-                                        <View style={styles.onboardingPage}>
-                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                        </View>
-                                        <View style={styles.onboardingPage}>
-                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                        </View>
-                                        <View style={styles.onboardingPage}>
-                                            <Text style={styles.onboardingPageText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
-                                            <Text style={styles.onboardingPageText}>Nulla accumsan vehicula ex non commodo.</Text>
-                                            <ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button]}  />
-                                        </View>
+                                        onMomentumScrollEnd={this.scrollEnd.bind(this)}>
+                                        {
+                                            Data.map((item,index)=>{
+                                                return(
+                                                    <View key={index} style={styles.onboardingPage} onLayout={this.measurePage.bind(this,index)}>
+                                                        {
+                                                            item.description.map((desc,i)=>{
+                                                                return(
+                                                                    <Text key={i} style={styles.onboardingPageText}>{desc}</Text>
+                                                                )
+                                                            })
+                                                        }
+                                                        {
+                                                            (index===Data.length-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button,styles.btnonBoardSquard]}  />
+                                                        }
+                                                    </View>
+                                                )
+                                            },this)
+                                        }
                                     </Swiper>
                                     {
                                         this.state.currentPage===0?
