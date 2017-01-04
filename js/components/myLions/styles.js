@@ -448,9 +448,13 @@ module.exports = styleSheetCreate({
     },
     btnFavouritesIcon: {
         marginLeft: 20,
+        marginBottom: 5,
         width: 34,
         color: 'rgb(255,204,40)',
-        fontSize:24
+        fontSize:24,
+        android:{
+            marginBottom: 2,
+        }
     },
     btnFavouritesLabel: {
         textAlign:'left',
