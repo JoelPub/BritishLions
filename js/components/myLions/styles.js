@@ -115,6 +115,9 @@ module.exports = styleSheetCreate({
         marginBottom:20,
         marginLeft:30,
         marginRight:30,
+        android:{
+            paddingTop:5,
+        }
     },
     btnonBoardSquard:{
         marginTop:29
@@ -204,6 +207,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 16,
+        height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 4
@@ -481,8 +485,8 @@ module.exports = styleSheetCreate({
         width:50,
         height:49,
         position:'absolute',
-        right:0,
-        top:0,
+        right: 0,
+        top: 20,
         paddingTop:10,
         android: {
             top:0
@@ -684,13 +688,11 @@ module.exports = styleSheetCreate({
         flex:1,
         backgroundColor:'transparent',
     },
-    filterTopContainer: {
-        flexDirection:'row',
-        height:50,
-        backgroundColor: 'transparent',
-        zIndex:200
+    filterContent: {
+        flex:1,
     },
-    filterTitle:{
+    filterTitle: {
+        marginTop: 35,
         paddingTop:40,
         fontSize: 28,
         textAlign:'center',
@@ -705,11 +707,14 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         color:'white'
     },
+    filterSubTitleLeft: {
+        marginRight: -20
+    },
+    filterSubTitleRight: {
+        marginLeft: -30
+    },
     filterBtns:{
         paddingTop:31,
-        height:517,
-        width:styleVar.deviceWidth,
-        justifyContent: 'space-between',
         flexDirection: 'row'
     },
     filterBtnsGroup:{
@@ -718,20 +723,26 @@ module.exports = styleSheetCreate({
     btnFilter:{
         width:142,
         height:50,
-        alignSelf: 'center',
-        backgroundColor: 'rgb(208, 7, 41)',
+        backgroundColor: 'rgb(208, 7, 42)',
         paddingTop:14,
         borderRadius:25,
         marginTop:20
     },
-     btnFilterActive:{
-        width:142,
-        height:50,
-        alignSelf: 'center',
-        backgroundColor: 'rgba(208, 7, 41, 0.5)',
+    btnFilterActive:{
+        width: 142,
+        height: 50,
+        backgroundColor: 'rgba(208, 7, 42, 0.5)',
         paddingTop:14,
         borderRadius:25,
         marginTop:20
+    },
+    btnFilterLeft: {
+        alignSelf: 'flex-end',
+        marginRight: 10
+    },
+    btnFilterRight: {
+        alignSelf: 'flex-start',
+        marginLeft: 10
     },
     btnFilterTxt:{
         alignSelf: 'center',
@@ -740,7 +751,7 @@ module.exports = styleSheetCreate({
         fontSize: 21,
         paddingTop: 3,
         android:{
-            paddingTop: 1,
+            marginTop: -4
         }
     },
     squadTitle:{
@@ -1046,7 +1057,7 @@ module.exports = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*3/5
+        height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
         width:styleVar.deviceWidth/3
