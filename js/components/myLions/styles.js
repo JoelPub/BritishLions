@@ -115,6 +115,9 @@ module.exports = styleSheetCreate({
         marginBottom:20,
         marginLeft:30,
         marginRight:30,
+        android:{
+            paddingTop:5,
+        }
     },
     btnonBoardSquard:{
         marginTop:29
