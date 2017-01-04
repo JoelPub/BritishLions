@@ -324,10 +324,11 @@ class MyLionsSquad extends Component {
                             </View>
                             <Swiper
                             ref='swiper'
-                            height={styleVar.deviceWidth*3/5}
+                            height={styleVar.deviceWidth*0.63}
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
-                            activeDotColor='rgb(239,239,244)'>
+                            activeDotColor='rgb(239,239,244)'
+                            paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
                             this._mapJSON(this.state.squadData.forwards,3).map((rowData,i)=>{
                                 return(
@@ -389,10 +390,11 @@ class MyLionsSquad extends Component {
                             </View>
                             <Swiper
                             ref='swiper'
-                            height={styleVar.deviceWidth*3/5}
+                            height={styleVar.deviceWidth*0.63}
                             loop={false}
                             dotColor='rgba(255,255,255,0.3)'
-                            activeDotColor='rgb(239,239,244)'>
+                            activeDotColor='rgb(239,239,244)'
+                            paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
                             this._mapJSON(this.state.squadData.backs,3).map((rowData,i)=>{
                                 return(

@@ -204,6 +204,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 16,
+        height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 4
@@ -1028,7 +1029,7 @@ module.exports = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*3/5
+        height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
         width:styleVar.deviceWidth/3
