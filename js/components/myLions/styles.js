@@ -448,9 +448,13 @@ module.exports = styleSheetCreate({
     },
     btnFavouritesIcon: {
         marginLeft: 20,
+        marginBottom: 5,
         width: 34,
         color: 'rgb(255,204,40)',
-        fontSize:24
+        fontSize:24,
+        android:{
+            marginBottom: 2,
+        }
     },
     btnFavouritesLabel: {
         textAlign:'left',
@@ -505,34 +509,34 @@ module.exports = styleSheetCreate({
     },
     btnSkipLeft: {
         height: 50,
-        width:132,
+        width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
         position:'absolute',
-        left:20,
+        left:styleVar.deviceWidth*0.1,
         bottom:60
     },
     btnBack: {
         height: 50,
-        width:132,
+        width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(175,0,30)',
         position:'absolute',
-        left:20,
+        left:styleVar.deviceWidth*0.1,
         bottom:60
     },
     btnSkipRight: {
         height: 50,
-        width:132,
+        width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
         position:'absolute',
-        right:20,
+        right:styleVar.deviceWidth*0.1,
         bottom:60
     },
     btnNext: {
         height: 50,
-        width:132,
+        width:styleVar.deviceWidth*0.35,
         backgroundColor: styleVar.brandLightColor,
         position:'absolute',
-        right:20,
+        right:styleVar.deviceWidth*0.1,
         bottom:60
     },
     gridBoxCol:{
@@ -811,6 +815,14 @@ module.exports = styleSheetCreate({
     },
     summaryText:{
         fontFamily: styleVar.fontGeorgia,
+        fontSize:18,
+        textAlign:'center',
+        lineHeight:18,
+        flex:1,
+        marginBottom:10,
+    },
+    performanceText:{
+        fontFamily: styleVar.fontCondensed,
         fontSize:18,
         textAlign:'center',
         lineHeight:18,

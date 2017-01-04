@@ -42,7 +42,27 @@ class MyLionsPlayerDetails extends Component {
             isDoneUpdatingState: false,
             modalContent:this.getModalContent()
         },
-        this.tabBar = ['ATTACK','DEFENSE','KICKING']
+        this.tabBar = [{subject:'ATTACK',
+                        content:[  
+                            {title:'TRIES',score:'35',average:'20 avg'},
+                            {title:'ASSISTS',score:'12',average:'10 avg'},
+                            {title:'METRES RUN',score:'38',average:'7 avg'},
+                            {title:'LINE BREAKS',score:'7',average:'15 avg'}
+                            ]
+                        },
+                        {subject:'DEFENSE',
+                        content:[  
+                            {title:'TACKLES',score:'18',average:'20 avg'},
+                            {title:'RUCKS',score:'12',average:'10 avg'},
+                            {title:'LINE-IN',score:'22',average:'24 avg'},
+                            {title:'TITLE',score:'14',average:'15 avg'}
+                            ]
+                        },
+                        {subject:'KICKING',
+                        content:[  
+                            {title:'KICKING',score:'12',average:'10 avg'}
+                            ]
+                        }]
     }
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
@@ -573,11 +593,11 @@ class MyLionsPlayerDetails extends Component {
                                     </View>
                                     <View style={styles.playerPerfromanceWrapper}>
                                         <View style={styles.playerPerfromance} >
-                                            <Text style={styles.summaryText} numberOfLines={2}>RECENT PERFORMANCE</Text>
+                                            <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
                                             <Text style={styles.summaryTextHighLight}>86</Text>
                                         </View>
                                         <View style={styles.playerPerfromance}>
-                                            <Text style={styles.summaryText}>CONSISTENCY</Text>
+                                            <Text style={styles.performanceText}>CONSISTENCY</Text>
                                             <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                         </View>
                                     </View>
