@@ -48,39 +48,38 @@ class Gallery extends Component {
     }
 
     shareImg(context, imgUrl,callback){
-            this.setState({
-                isSubmitting:true
-            })
-            RNFetchBlob.fetch('GET',imgUrl)
-            .then(
-                function(res) {
-                    Share.open({
-                        title:context,
-                        message:context,
-                        subject:context,
-                        url: `data:image/png;base64,${res.base64()}`
-                    }).then((info)=>{
-                        callback()
-                    }).catch((err)=>{
-                        alertBox(
-                            '',
-                            'Image is not shared',
-                            'Dismiss'
-                        )
-                        callback()
-                    })
-                }
-            )
-            .catch((errorMessage,statusCode)=>{
-                callback()
-            })
+        this.setState({
+            isSubmitting:true
+        })
+        RNFetchBlob.fetch('GET',imgUrl)
+        .then(
+            function(res) {
+                Share.open({
+                    title:context,
+                    message:context,
+                    subject:context,
+                    url: `data:image/png;base64,${res.base64()}`
+                }).then((info)=>{
+                    callback()
+                }).catch((err)=>{
+                    alertBox(
+                        '',
+                        'Image is not shared',
+                        'Dismiss'
+                    )
+                    callback()
+                })
+            }
+        )
+        .catch((errorMessage,statusCode)=>{
+            callback()
+        })
 
     }
     callback(){
-
-                    this.setState({
-                        isSubmitting:false
-                    })
+        this.setState({
+            isSubmitting:false
+        })
     }
     
     render() {
