@@ -61,12 +61,14 @@ class Gallery extends Component {
                     url: `data:image/png;base64,${res.base64()}`
                 }).then((info)=>{
                     callback()
-                }).catch((err)=>{
-                    alertBox(
-                        '',
-                        'Image is not shared',
-                        'Dismiss'
-                    )
+                }).catch((errorMessage, statusCode)=>{
+                    if(errorMessage.error !== 'User did not share'){
+                        alertBox(
+                            '',
+                            'Image is not shared' + JSON.stringify(errorMessage) + statusCode,
+                            'Dismiss'
+                        )
+                    }
                     callback()
                 })
             }
