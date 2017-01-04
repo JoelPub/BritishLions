@@ -43,6 +43,7 @@ class MyLionsSquad extends Component {
             modalClear:false,
             modalPopulate:false,
             showScoreCard:'semi',
+            isSubmitting: false,
             squadData:{
                     indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
                     forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
@@ -116,7 +117,10 @@ class MyLionsSquad extends Component {
                 )
         }
     }
-    shareSnapshot(context){
+    shareSnapshot(context,callback){
+        this.setState({
+            isSubmitting:true
+        })
         setTimeout(()=>{
             RNViewShot.takeSnapshot(this.refs['scorecard'],{
                 format:'png',
@@ -129,11 +133,26 @@ class MyLionsSquad extends Component {
                     message:context,
                     subject:context,
                     url: `data:image/png;base64,${res}`
+                }).then((info)=>{
+                    callback()
+                }).catch((err)=>{
+                    alertBox(
+                        '',
+                        'Image is not shared',
+                        'Dismiss'
+                    )
+                    callback()
                 })
             )          
         })
-
     }
+
+    callback(){
+        this.setState({
+            isSubmitting:false
+        })
+    }
+
     _setModalVisible=(visible,mode) => {
         this.setState({
             modalVisible:visible,
@@ -225,7 +244,8 @@ class MyLionsSquad extends Component {
                                     <View style={styles.scoreCardShareWrapper}>
                                         <ButtonFeedback
                                             rounded label='Share'
-                                            onPress={ ()=> this.shareSnapshot('scorecard') }
+                                            disabled = {this.state.isSubmitting}
+                                            onPress={ ()=> this.shareSnapshot('scorecard',this.callback.bind(this)) }
                                             style={[styles.button,styles.scoreCardShare]}>
                                             <Text  style={styles.scoreCardShareText}>SHARE</Text>
                                             <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />

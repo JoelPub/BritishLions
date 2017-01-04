@@ -69,13 +69,14 @@ class MyLions extends Component {
         })
     }
     measurePage(page,event) {
-        const { x, width, height, } = event.nativeEvent.layout
+       const { x, width, height, } = event.nativeEvent.layout
         this.pageWindow.push({index:page,size:height+150})
-        if(page===0) {
+        if(page===this.state.currentPage) {
            this.setState({
                 swiperWindow:height+150
             })
         }
+        
     }
 
     scrollEnd(e, state, context){
