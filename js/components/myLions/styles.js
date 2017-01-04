@@ -810,6 +810,14 @@ module.exports = styleSheetCreate({
         flex:1,
         marginBottom:10,
     },
+    performanceText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        textAlign:'center',
+        lineHeight:18,
+        flex:1,
+        marginBottom:10,
+    },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
         fontSize:44,
@@ -1213,7 +1221,7 @@ module.exports = styleSheetCreate({
         borderBottomWidth:1,
         borderColor:'rgb(128,127,131)',
         paddingTop:18,
-        paddingHorizontal:20,
+        paddingHorizontal:16,
         paddingBottom:1,
         alignItems:'center',
         android:{
@@ -1231,53 +1239,4 @@ module.exports = styleSheetCreate({
         paddingVertical:25,
         paddingHorizontal:20,
     },
-    playerFigureView:{
-        backgroundColor:'rgb(255,255,255)',
-        paddingVertical:30,
-        paddingHorizontal:10,
-        borderRadius:5,
-    },
-    playerFigureTypeView:{
-        flexDirection:'row'
-    },
-    playerFigureType:{
-        flex:1,
-        height:40,
-        alignItems:'center',
-    },
-    playerFigureTypeText:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:24,
-        lineHeight:24,
-        textAlign:'center',
-    },
-    playerFigurePageWrapper:{
-        justifyContent:'center',
-        height:styleVar.deviceWidth-65,
-    },
-    playerFigureRow:{
-        flexDirection:'row',
-        marginTop:35,
-    },
-    playerFigureUnit:{
-        flex:1,
-        alignItems:'center'
-    },
-    playerFigureUpperText:{
-        color:'rgb(95,96,98)',
-        fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        marginBottom:5
-    },
-    playerRatingScore:{
-        borderWidth:1,
-        borderColor:'rgb(216,217,218)',
-        backgroundColor:'rgb(230,231,232)'
-    },
-    playerFigureLowerText:{
-        color:'rgb(95,96,98)',
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
-        marginTop:5
-    }
 })

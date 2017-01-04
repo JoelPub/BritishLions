@@ -21,10 +21,10 @@ import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
-import Swiper from 'react-native-swiper'
 import styleVar from '../../themes/variable'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import SquadModal from '../global/squadModal'
+import PlayerFigure from '../global/playerFigure'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -35,24 +35,34 @@ class MyLionsPlayerDetails extends Component {
         this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
-        this.pageStyle = {
-                            active:{textColor:styleVar.colorTextDarkGrey,underlineColor:styleVar.colorYellow},
-                            inactive:{textColor:styleVar.colorGrey2,underlineColor:'transparent'}
-                         }
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
-            currentProfile: 0,
-            attackStyle:this.pageStyle.active,
-            defenceStyle:this.pageStyle.inactive,
-            kickingStyle:this.pageStyle.inactive,
-            attackUnderline: 0,
-            defenceUnderline: 0,
-            kickingUnderline: 0,
             modalContent:this.getModalContent()
-        }
+        },
+        this.tabBar = [{subject:'ATTACK',
+                        content:[  
+                            {title:'TRIES',score:'35',average:'20 avg'},
+                            {title:'ASSISTS',score:'12',average:'10 avg'},
+                            {title:'METRES RUN',score:'38',average:'7 avg'},
+                            {title:'LINE BREAKS',score:'7',average:'15 avg'}
+                            ]
+                        },
+                        {subject:'DEFENSE',
+                        content:[  
+                            {title:'TACKLES',score:'18',average:'20 avg'},
+                            {title:'RUCKS',score:'12',average:'10 avg'},
+                            {title:'LINE-IN',score:'22',average:'24 avg'},
+                            {title:'TITLE',score:'14',average:'15 avg'}
+                            ]
+                        },
+                        {subject:'KICKING',
+                        content:[  
+                            {title:'KICKING',score:'12',average:'10 avg'}
+                            ]
+                        }]
     }
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
@@ -452,67 +462,12 @@ class MyLionsPlayerDetails extends Component {
     componentWillUnmount() {
         this.isUnMounted = true
     }
-
-    changeProfile(profile) {
-        this.changeStyle(profile) 
-        this.refs['swiper'].scrollBy(profile-this.state.currentProfile,true)
-    }
-    changeStyle(style) {
-        switch(style) {
-            case 1:
-                this.setState({
-                    attackStyle:this.pageStyle.inactive,
-                    defenceStyle:this.pageStyle.active,
-                    kickingStyle:this.pageStyle.inactive
-                })
-                break
-            case 2:
-                this.setState({
-                    attackStyle:this.pageStyle.inactive,
-                    defenceStyle:this.pageStyle.inactive,
-                    kickingStyle:this.pageStyle.active
-                })
-                break
-            default:
-                this.setState({                    
-                    attackStyle:this.pageStyle.active,
-                    defenceStyle:this.pageStyle.inactive,
-                    kickingStyle:this.pageStyle.inactive
-                })
-                break
-        }        
-    }
-
-    swiperScroll(e, state, context) {
-        this.setState({currentProfile:state.index})        
-        this.changeStyle(state.index) 
-
-    }
     _setModalVisible=(visible,mode,title,subtitle,btn) => {
         this.setState({
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
     }
-
-    measureATab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({attackUnderline:width})
-      }
-    measureDTab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({defenceUnderline:width})
-      }
-    measureKTab(event) {
-        const { x, width, height, } = event.nativeEvent.layout;
-        // this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-        // this.updateView({value: this.props.scrollValue._value, });
-        this.setState({kickingUnderline:width})
-      }
 
     render() {
         let buttonText = ''
@@ -638,132 +593,16 @@ class MyLionsPlayerDetails extends Component {
                                     </View>
                                     <View style={styles.playerPerfromanceWrapper}>
                                         <View style={styles.playerPerfromance} >
-                                            <Text style={styles.summaryText}>RECENT PERFORMANCE</Text>
+                                            <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
                                             <Text style={styles.summaryTextHighLight}>86</Text>
                                         </View>
                                         <View style={styles.playerPerfromance}>
-                                            <Text style={styles.summaryText}>CONSISTENCY</Text>
+                                            <Text style={styles.performanceText}>CONSISTENCY</Text>
                                             <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                         </View>
                                     </View>
                                     <View style={styles.playerFigureWrapper}>
-                                        <View style={styles.playerFigureView}>
-                                            <View style={styles.playerFigureTypeView}>
-                                                <ButtonFeedback 
-                                                    style={styles.playerFigureType} 
-                                                    onPress={()=>this.changeProfile(0)}>
-                                                    <Text 
-                                                    style={[styles.playerFigureTypeText,{color:this.state.attackStyle.textColor}]}
-                                                    onLayout={this.measureATab.bind(this)}>ATTACK</Text>
-                                                    <View style={{height:3,width:this.state.attackUnderline,backgroundColor:this.state.attackStyle.underlineColor}} />
-                                                </ButtonFeedback>
-                                                <ButtonFeedback 
-                                                    style={styles.playerFigureType}  
-                                                    onPress={()=>this.changeProfile(1)}>
-                                                    <Text 
-                                                    style={[styles.playerFigureTypeText,{color:this.state.defenceStyle.textColor}]}
-                                                    onLayout={this.measureDTab.bind(this)}>DEFENSE</Text>
-                                                    <View style={{height:3,width:this.state.defenceUnderline,backgroundColor:this.state.defenceStyle.underlineColor}} />
-                                                </ButtonFeedback>
-                                                <ButtonFeedback 
-                                                    style={styles.playerFigureType}  
-                                                    onPress={()=>this.changeProfile(2)}>
-                                                    <Text 
-                                                    style={[styles.playerFigureTypeText,{color:this.state.kickingStyle.textColor}]}
-                                                    onLayout={this.measureKTab.bind(this)}>KICKING</Text>
-                                                    <View style={{height:3,width:this.state.kickingUnderline,backgroundColor:this.state.kickingStyle.underlineColor}} />
-                                                </ButtonFeedback>
-                                            </View>
-                                           <Swiper
-                                            ref='swiper'
-                                            height={styleVar.deviceWidth}
-                                            width={styleVar.deviceWidth-100}
-                                            loop={false}
-                                            dotColor='rgb(95,96,98)'
-                                            activeDotColor='rgb(255,230,0)'
-                                            onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
-                                            <View style={styles.playerFigurePageWrapper}>
-                                                <View style={styles.playerFigureRow}>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>TRIES</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>35</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>ASSISTS</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>12</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={styles.playerFigureRow}>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>METRES RUN</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>38</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 7 avg</Text>
-                                                    </View>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>LINE BREAKS</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>7</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={styles.playerFigurePageWrapper}>
-                                                <View style={styles.playerFigureRow}>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>TACKLES</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>18</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 20 avg</Text>
-                                                    </View>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>RUCKS</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>12</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={styles.playerFigureRow}>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>LINE-IN</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>22</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 24 avg</Text>
-                                                    </View>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>TITLE</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>14</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 15 avg</Text>
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={styles.playerFigurePageWrapper}>
-                                                <View style={styles.playerFigureRow}>
-                                                    <View style={styles.playerFigureUnit}>
-                                                        <Text style={styles.playerFigureUpperText}>KICKING</Text>
-                                                        <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                            <Text style={styles.ratingScorePoint}>12</Text>
-                                                        </View>
-                                                        <Text style={styles.playerFigureLowerText}> 10 avg</Text>
-                                                    </View>
-                                                </View>
-                                            </View>
-
-                                        </Swiper>
-                                        </View>
+                                        <PlayerFigure tabBar={this.tabBar} />
                                     </View>
                                 <View style={styles.semiCardFooter}>
                                     <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
