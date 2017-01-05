@@ -105,10 +105,11 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'FORWARDS'} />
             <Swiper
               ref='swiper'
-              height={styleVar.deviceWidth*3/5}
+              height={styleVar.deviceWidth*0.63}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
-              activeDotColor='rgb(239,239,244)'>
+              activeDotColor='rgb(239,239,244)'
+              paginationStyle={{bottom:styleVar.deviceWidth/20}}>
               {
                 this._mapJSON(squadData.forwards,3).map((rowData,index)=>{
                   return (
@@ -126,10 +127,11 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'BACKS'} />
             <Swiper
               ref='swiper'
-              height={styleVar.deviceWidth*3/5}
+              height={styleVar.deviceWidth*0.63}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
-              activeDotColor='rgb(239,239,244)'>
+              activeDotColor='rgb(239,239,244)'
+              paginationStyle={{bottom:styleVar.deviceWidth/20}}>
 
               {
                 this._mapJSON(squadData.backs,3).map((rowData,index)=>{

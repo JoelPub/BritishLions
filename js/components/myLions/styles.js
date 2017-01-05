@@ -864,13 +864,13 @@ module.exports = styleSheetCreate({
         alignItems:'center',
         borderColor:'rgb(216,217,218)',
         marginTop:5,
-        paddingVertical:19
+        paddingVertical:16
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:32,
-        paddingTop:10,
+        paddingTop:8,
     },
     ratingScore:{
         marginLeft:10,

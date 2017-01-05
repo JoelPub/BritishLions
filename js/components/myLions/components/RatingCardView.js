@@ -51,7 +51,8 @@ export default class RatingView extends Component {
               </View>
               <BarSlider score={30} fullWidth={styleVar.deviceWidth-100} />
             </View>
-            <View style={styles.scoreCardFooter}>
+            <View style={styles.semiCardFooter}>
+              <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
               <Image source={require('../../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
             </View>
           </View>
