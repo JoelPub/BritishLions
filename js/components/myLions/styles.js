@@ -536,10 +536,12 @@ module.exports = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
     },
     gridBoxCol:{
+        backgroundColor: '#000',
         width: styleVar.deviceWidth/2,
-        height: styleVar.deviceWidth/2 + 65,
+        alignSelf: 'flex-start',
+        //height: styleVar.deviceWidth/2,
         android: {
-            height: styleVar.deviceWidth/2 + 64,
+            //height: styleVar.deviceWidth/2 + 64,
         }
     },
     gridList:{

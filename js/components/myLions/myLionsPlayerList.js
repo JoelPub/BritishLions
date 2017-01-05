@@ -79,7 +79,7 @@ class MyLionsPlayerList extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={styleGridBoxTitle}>
                             <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase()}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
+                            <Text style={styles.gridBoxTitleSupportText} numberOfLines={1}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
@@ -487,7 +487,6 @@ class MyLionsPlayerList extends Component {
     }
 
     render() {
-      // Later on in your styles..
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
