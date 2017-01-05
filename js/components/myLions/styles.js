@@ -581,7 +581,7 @@ module.exports = styleSheetCreate({
         borderRadius:25,
     },
     unionsPlayerListingFilterByBar:{
-        height:80,
+        height: 70,
         width:styleVar.deviceWidth,
         alignSelf: 'center',
         alignItems: 'center',
@@ -590,20 +590,17 @@ module.exports = styleSheetCreate({
         flexDirection: 'row'
     },
     unionsPlayerListingFilterByCancelButton:{
-        width:28,
-        height:28,
-        alignSelf: 'center',
-        android:{
-            paddingTop:2,
+        marginLeft: 7,
+        marginTop: -4,
+        android: {
+            marginTop: 0
         }
     },
     btnFilterCancelIcon:{
-        fontSize:20,
-        width:20,
-        height:20,
+        fontSize:24,
         textAlign:'center',
         alignSelf: 'center',
-        color:'rgb(208, 7, 41)',
+        color:'rgb(208, 7, 42)',
     },
     unionsPlayerListingSearchText:{
         alignSelf: 'center',
@@ -620,13 +617,13 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         flexDirection:'row',
         justifyContent: 'center',
-        height:30,
+        height:25,
         width:styleVar.deviceWidth
     },
     unionsPlayerListingFilterByText:{
+        fontFamily: styleVar.fontGeorgia,
         textAlign: 'center',
         color:'rgb(38, 38, 38)',
-        fontFamily: 'Helvetica Neue',
         fontSize: 18,
         height:30
     },
