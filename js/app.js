@@ -4,7 +4,7 @@ import React, { Component } from 'React'
 import AppNavigator from './appNavigator'
 import configureStore from './configureStore'
 import { Provider } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 
 function app():React.Component {
     class Root extends Component {
@@ -14,6 +14,7 @@ function app():React.Component {
                 isLoading: false,
                 store: configureStore(()=> this.setState({isLoading: false}))
             }
+            Text.defaultProps.allowFontScaling = false
         }
         render() {
             return (
