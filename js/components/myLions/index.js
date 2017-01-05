@@ -30,7 +30,6 @@ class MyLions extends Component {
             modalVisible: true,
             swiperWindow: styleVar.deviceWidth,
             currentPage:0,
-            onScroll:false,
         }
         this.totalPages = 4 
         this.pageWindow=[]
@@ -53,21 +52,17 @@ class MyLions extends Component {
     prev(){
         this.setState({
             swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
-            currentPage:this.state.currentPage-1,
-            onScroll:true
+            currentPage:this.state.currentPage-1
         },()=>{
             this.refs['swiper'].scrollBy(-1,true)
-            setTimeout(()=>this.setState({onScroll:false}),200)
         })
     }
     next(){
         this.setState({
             swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
-            currentPage:this.state.currentPage+1,
-            onScroll:true
+            currentPage:this.state.currentPage+1
         },()=>{
             this.refs['swiper'].scrollBy(1,true)
-            setTimeout(()=>this.setState({onScroll:false}),200)
         })
         
     }
@@ -78,33 +73,19 @@ class MyLions extends Component {
     }
     measurePage(page,event) {
        const { x, width, height, } = event.nativeEvent.layout
-        this.pageWindow.push({index:page,size:height+135})
+        this.pageWindow.push({index:page,size:height+80})
         if(page===this.state.currentPage) {
            this.setState({
-                swiperWindow:height+135
+                swiperWindow:height+80
             })
         }
         
-    }
-
-    touchStart(e, state, context){
-        this.setState({
-            onScroll:true
-        })
-    }
-
-    touchEnd(e, state, context){
-        setTimeout(()=>{
-            if(this.state.onScroll) this.setState({onScroll:false})
-        },500)
     }
 
     scrollEnd(e, state, context){
         this.setState({
             currentPage:state.index,
             swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
-        },()=>{
-            this.setState({onScroll:false})
         })
     }
     render() {
@@ -165,8 +146,7 @@ class MyLions extends Component {
                                         dotColor='rgba(255,255,255,0.3)'
                                         activeDotColor='rgb(239,239,244)'
                                         onMomentumScrollEnd={this.scrollEnd.bind(this)}
-                                        onTouchStart={this.touchStart.bind(this)}
-                                        onTouchEnd={this.touchEnd.bind(this)}>
+                                        >
                                         {
                                             Data.map((item,index)=>{
                                                 return(
@@ -179,28 +159,29 @@ class MyLions extends Component {
                                                             })
                                                         }
                                                         {
-                                                            (index===Data.length-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button,styles.btnonBoardSquard]}  />
+                                                            (index===this.totalPages-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button,styles.btnonBoardSquard]}  />
                                                         }
+                                                        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:30}}>
+                                                            {
+                                                                index===0?
+                                                                <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
+                                                                :
+                                                                <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
+                                                            }
+                                                            {
+                                                                index===this.totalPages-1?
+                                                                <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
+                                                                :
+                                                                <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                                            }
+                                                        </View>
                                                     </View>
                                                 )
                                             },this)
                                         }
                                     </Swiper>
                                     {
-                                    !this.state.onScroll&&<View>
-                                        {
-                                            this.state.currentPage===0?
-                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
-                                            :
-                                            <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
-                                        }
-                                        {
-                                            this.state.currentPage===this.totalPages-1?
-                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
-                                            :
-                                            <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
-                                        }
-                                        </View>
+                                    
                                     }
                                 </View> 
                        </LinearGradient>

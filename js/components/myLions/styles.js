@@ -515,33 +515,21 @@ module.exports = styleSheetCreate({
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnBack: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(175,0,30)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnSkipRight: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnNext: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: styleVar.brandLightColor,
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     gridBoxCol:{
         width:styleVar.deviceWidth/2,
