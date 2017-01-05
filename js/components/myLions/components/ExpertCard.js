@@ -29,6 +29,7 @@ export default class ExpertCard extends Component {
   render () {
     let {hasTitle} = this.props
     return (
+      <ButtonFeedback >
       <View style={styles.indivPosition}>
         {
           hasTitle ? <View style={styles.indivPosTitle}>
@@ -37,7 +38,7 @@ export default class ExpertCard extends Component {
         }
 
         {
-            <ButtonFeedback>
+            <View >
               <ImagePlaceholder
                 width = {styleVar.deviceWidth / 3}
                 height = {styleVar.deviceWidth / 3}>
@@ -53,9 +54,10 @@ export default class ExpertCard extends Component {
                   <Text style={styles.playerNameText}>HASKELL</Text>
                 </View>
               </View>
-            </ButtonFeedback>
+            </View>
         }
       </View>
+      </ButtonFeedback>
     )
   }
 }

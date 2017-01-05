@@ -57,21 +57,28 @@ class MyLionsPlayerList extends Component {
     }
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
+        let styleGridBoxImgWrapper = (rowID%2 === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
+        let styleGridBoxTitle = (rowID %2 ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
+        
         return (
-            <View style={styles.gridBoxCol}>
-                <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
-                    <ImagePlaceholder 
-                        width = {styleVar.deviceWidth / 2}
-                        height = {styleVar.deviceWidth / 2}>
-                        <Image transparent
-                            resizeMode='contain'
-                            source={rowData.image} 
-                            style={styles.gridBoxImg} />
-                    </ImagePlaceholder>
-                    <View style={styles.gridBoxDesc}>
+            <View style={styles.gridBoxCol} key={rowID}>
+                <ButtonFeedback 
+                    style={styles.gridBoxTouchable}
+                    onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                    <View style={styles.gridBoxTouchableView}>
+                        <View style={styleGridBoxImgWrapper}>
+                            <ImagePlaceholder 
+                                width = {styleVar.deviceWidth / 2}
+                                height = {styleVar.deviceWidth / 2}>
+                                <Image transparent
+                                    resizeMode='contain'
+                                    source={rowData.image} 
+                                    style={styles.gridBoxImg} />
+                            </ImagePlaceholder>
+                        </View>
                         <View style={[shapes.triangle]} />
-                        <View style={styles.gridBoxTitle}>
-                            <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
+                        <View style={styleGridBoxTitle}>
+                            <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase()}</Text>
                             <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
@@ -142,6 +149,8 @@ class MyLionsPlayerList extends Component {
     }
 
     _getFilteredPosition=(value)=>{
+        value = value.toLowerCase()
+
         if(value !== this.filterBy){
             this.filterBy = value
         }else{
@@ -440,6 +449,14 @@ class MyLionsPlayerList extends Component {
         })
     }
 
+    _ucWords(str) {
+        str = str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+        })
+
+        return str
+    }
+
     componentDidMount() {
         setTimeout(() => this._getPlayersListByUnion(), 600)
         /*let options = {
@@ -495,7 +512,7 @@ class MyLionsPlayerList extends Component {
                                 (this.filterBy !== '')&&
                                 <View style={styles.unionsPlayerListingFilterByBar}>
                                     <View style={styles.unionsPlayerListingFilterTextView}>
-                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this.filterBy}</Text>
+                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this._ucWords(this.filterBy)}</Text>
                                         <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
                                             <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
                                         </TouchableOpacity>
