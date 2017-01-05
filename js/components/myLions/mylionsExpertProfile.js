@@ -31,11 +31,8 @@ import { globalNav } from '../../appNavigator'
 
 
 const PosTitle = ({squadData,title}) => (
-  <View style={styles.posTitle}>
-    <Text style={styles.posTitleLeft}>{title}</Text>
-    <Text style={styles.posTitleRight}>
-      {squadData.backs.filter((value)=>value!==null).length} / 16
-    </Text>
+  <View style={styles.posExpertTitle}>
+    <Text style={styles.posTitleCenter}>{title}</Text>
   </View>
 )
 const ExpertsHeaderView = () => (
@@ -108,10 +105,11 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'FORWARDS'} />
             <Swiper
               ref='swiper'
-              height={220}
+              height={styleVar.deviceWidth*0.63}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
-              activeDotColor='rgb(239,239,244)'>
+              activeDotColor='rgb(239,239,244)'
+              paginationStyle={{bottom:styleVar.deviceWidth/20}}>
               {
                 this._mapJSON(squadData.forwards,3).map((rowData,index)=>{
                   return (
@@ -129,10 +127,12 @@ class MyLionsExpertProfile extends Component {
             <PosTitle squadData={squadData} title={'BACKS'} />
             <Swiper
               ref='swiper'
-              height={220}
+              height={styleVar.deviceWidth*0.63}
               loop={false}
               dotColor='rgba(255,255,255,0.3)'
-              activeDotColor='rgb(239,239,244)'>
+              activeDotColor='rgb(239,239,244)'
+              paginationStyle={{bottom:styleVar.deviceWidth/20}}>
+
               {
                 this._mapJSON(squadData.backs,3).map((rowData,index)=>{
                   return (

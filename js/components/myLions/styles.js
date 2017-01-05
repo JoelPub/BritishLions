@@ -81,7 +81,7 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 5,
         android: {
             marginBottom: 0,
         }
@@ -758,6 +758,14 @@ module.exports = styleSheetCreate({
         borderColor:'rgb(216,217,218)',
         padding:20,
     },
+    scoreCardNoBottomW:{
+        marginVertical:2,
+        borderTopWidth:1,
+        borderBottomWidth:0,
+        borderColor:'rgb(216,217,218)',
+        padding:20,
+        paddingBottom:25,
+    },
     semiCard:{
         paddingTop:29,
         marginBottom:10,
@@ -851,13 +859,13 @@ module.exports = styleSheetCreate({
         alignItems:'center',
         borderColor:'rgb(216,217,218)',
         marginTop:5,
-        paddingVertical:19
+        paddingVertical:16
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:32,
-        paddingTop:10,
+        paddingTop:8,
     },
     ratingScore:{
         marginLeft:10,
@@ -885,29 +893,28 @@ module.exports = styleSheetCreate({
     barGraphText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:18,
-        textAlign:'left'
+        textAlign:'left',
+        marginTop: 15,
     },
     barSliderWrapper:{
-        height:90
+        height:108,
+        borderTopWidth:1,
+        borderColor:'rgb(128,127,131)',
     },
     barSliderTextWrapper:{
         flexDirection:'row',
-        flex:1,
         justifyContent:'space-between',
-        borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
         paddingHorizontal:25,
-        alignItems:'flex-end',
     },
     barSliderText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:18,
-        lineHeight:18,
+        marginTop: 25,
     },
     scoreCardShareWrapper:{
         borderTopWidth:1,
         borderColor:'rgb(216,217,218)',
-        marginTop:30,
+        marginTop: 0,
         paddingVertical:5
     },
     scoreCardShare:{
@@ -1007,9 +1014,27 @@ module.exports = styleSheetCreate({
         padding:12,
         backgroundColor:'rgb(239,239,240)'
     },
+    posExpertTitle:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        width:styleVar.deviceWidth,
+        borderWidth:1,
+        borderColor:'rgb(216,217,218)',
+        height:50,
+        paddingTop:12,
+        backgroundColor:'rgb(239,239,240)'
+    },
     posTitleLeft:{
         color:'rgb(175,0,30)',
         textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:24,
+        lineHeight:24,
+    },
+    posTitleCenter:{
+        color:'rgb(175,0,30)',
+        textAlign:'center',
         fontFamily: styleVar.fontCondensed,
         fontSize:24,
         lineHeight:24,
@@ -1031,7 +1056,6 @@ module.exports = styleSheetCreate({
     },
     posAddWrapper:{
         width:styleVar.deviceWidth / 3,
-        height:styleVar.deviceWidth / 3,
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
@@ -1098,45 +1122,50 @@ module.exports = styleSheetCreate({
         height: (styleVar.deviceHeight / 3.7)
     },
     cellExpert: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(216,217,218,1)',
+        height: 136,
+    },
+    cellExpertHeader: {
+        height: 135,
+        width: 135
     },
     cellExpertInfo: {
         backgroundColor: '#D00729',
-        paddingTop: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: 20,
         flex: 1,
+        height: 135,
     },
     textName: {
         fontSize: 24,
         color: 'white',
         width: 187,
         lineHeight: 24,
-        paddingTop: 4,
-        marginTop: 10,
+        marginTop: 20,
         fontFamily: styleVar.fontCondensed,
     },
     textDescription: {
         fontSize: 18,
         fontFamily: styleVar.fontGeorgia,
         color: 'white',
-        width: 50,
-        lineHeight: 42,
-        marginTop: 15,
+        width: 181,
+        lineHeight: 20,
+        marginTop: 0,
     },
     textRating: {
         fontSize: 18,
         color: 'white',
         fontFamily: styleVar.fontCondensed,
-        marginTop: 15,
+        marginTop: 8,
     },
     viewExpertHeader: {
-        height: null,
+        height: 229,
         width: null,
         alignItems: 'center'
     },
     viewExpertHeaderImage: {
-        marginTop: 15,
+        marginTop: 20,
         width: 100,
         height: 100,
         borderRadius:50,

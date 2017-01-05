@@ -29,12 +29,12 @@ import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 
 const ExpertsHeader = () => (
-      <Image source={imageJameshaskel} style={[styles.newsImage]} />
+      <Image source={imageJameshaskel} style={styles.cellExpertHeader}  />
 )
 const ExpertDescription = () => (
   <View style={styles.cellExpertInfo}>
     <Text style={styles.textName}  >JOHN SMITH</Text>
-    <Text style={styles.textDecoration} numberOfLines={2} >Lorem ipsum dolor sitamet, consectetur.</Text>
+    <Text style={styles.textDescription} numberOfLines={2} >Lorem ipsum dolor sitamet, consectetur.</Text>
     <Text style={styles.textRating}>SQAD RATING: 350</Text>
   </View>
 
@@ -52,9 +52,9 @@ class MyLionsExpertsList extends Component {
 
   constructor(props) {
     super(props)
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2','row 3','row 4','row 5']),
+      dataSource: this.ds.cloneWithRows(['row 1', 'row 2','row 3','row 4','row 5']),
     };
   }
   _navToDetail = () => {
