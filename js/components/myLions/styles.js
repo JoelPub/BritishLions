@@ -203,10 +203,10 @@ module.exports = styleSheetCreate({
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 16,
+        paddingTop: 14,
         android: {
             paddingTop: 12,
-            paddingBottom: 4
+            paddingBottom: 6
         }
     },
     gridBoxTitleRight: {
@@ -226,14 +226,10 @@ module.exports = styleSheetCreate({
         }
     },
     gridBoxTitleSupportText: {
-        fontSize: 16,
+        fontSize: 14,
+        lineHeight: 14,
         fontFamily: styleVar.fontGeorgia,
-        marginTop: -6,
-        paddingBottom: 10,
-        android: {
-            marginTop: 0,
-            paddingBottom: 4,
-        }
+        paddingBottom: 10
     },
     playerDetails: {
         backgroundColor: '#FFFFFF'
@@ -542,8 +538,11 @@ module.exports = styleSheetCreate({
         bottom:60
     },
     gridBoxCol:{
-        width:styleVar.deviceWidth/2,
-        height:styleVar.deviceWidth/2+69,
+        width: styleVar.deviceWidth/2,
+        height: styleVar.deviceWidth/2 + 65,
+        android: {
+            height: styleVar.deviceWidth/2 + 64,
+        }
     },
     gridList:{
         flexDirection:'row',
