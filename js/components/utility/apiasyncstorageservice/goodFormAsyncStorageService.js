@@ -41,7 +41,7 @@ export async function getGoodFormFavoritePlayerList() {
           		method: 'get',
           		onSuccess: (res) => {
           		     if(res){
-                         console.warn('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_FAVORITE_PLAYERS,
                            id,
@@ -54,7 +54,7 @@ export async function getGoodFormFavoritePlayerList() {
                      }
           		},
           		onError: (error) =>{
-          		    console.warn('Warning error: ',error)
+          		    console.log('Warning error: ',error)
           		    let errData = {
                         error:error,
                         auth:null
@@ -62,7 +62,7 @@ export async function getGoodFormFavoritePlayerList() {
                     reject && reject(errData)
           		},
           		onAuthorization: (msg) => {
-          		    console.warn('msg', msg)
+          		    console.log('msg', msg)
           		    let errData = {
                         error:null,
                         auth:msg
@@ -103,10 +103,10 @@ export async function getGoodFormFavoritePlayerList() {
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          console.warn('Cached Goodform Data: ',JSON.stringify(ret))
+          console.log('Cached Goodform Data: ',JSON.stringify(ret))
           return ret
         }).catch(errData => {
-          console.warn('error:', errData)
+          console.log('error:', errData)
           return errData
         })
 }
@@ -122,7 +122,7 @@ export async function getUserCustomizedSquad() {
             return response.json()
           }).then(json => {
             if(json){
-              console.warn('Fresh uncached Goodform user squad Data: ',JSON.stringify(json))
+              console.log('Fresh uncached Goodform user squad Data: ',JSON.stringify(json))
               storage.save({
                 key: GOODFORM_USER_SQUAD,
                 expires: 1000 * 3600,
@@ -135,7 +135,7 @@ export async function getUserCustomizedSquad() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            console.warn('Warning error: ',err)
+            console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -147,10 +147,10 @@ export async function getUserCustomizedSquad() {
           id:'2101',
           syncInBackground: true
         }).then(ret => {
-          console.warn('Cached Goodform user squad Data: ',JSON.stringify(ret))
+          console.log('Cached Goodform user squad Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          console.warn(err.message);
+          console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0

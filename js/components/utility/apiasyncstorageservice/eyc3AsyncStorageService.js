@@ -36,7 +36,7 @@ export async function getEYC3FullPlayerList() {
             return response.json()
           }).then(json => {
             if(json){
-              console.warn('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+              console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
               storage.save({
                 key: EYC3_FULL_PLAYERS,
                 expires: 1000 * 3600,
@@ -49,7 +49,7 @@ export async function getEYC3FullPlayerList() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            console.warn('Warning error: ',err)
+            console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -61,10 +61,10 @@ export async function getEYC3FullPlayerList() {
           id:'1001',
           syncInBackground: true
         }).then(ret => {
-          console.warn('Cached eyc3 Data: ',JSON.stringify(ret))
+          console.log('Cached eyc3 Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          console.warn(err.message);
+          console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
@@ -85,7 +85,7 @@ export async function getEYC3ExpertsSquads() {
             return response.json()
           }).then(json => {
             if(json){
-              console.warn('Fresh uncached eyc3 experts squads Data: ',JSON.stringify(json))
+              console.log('Fresh uncached eyc3 experts squads Data: ',JSON.stringify(json))
               storage.save({
                 key: EYC3_EXPERTS_SQUADS,
                 expires: 1000 * 3600,
@@ -98,7 +98,7 @@ export async function getEYC3ExpertsSquads() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            console.warn('Warning error: ',err)
+            console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -110,10 +110,10 @@ export async function getEYC3ExpertsSquads() {
           id:'1101',
           syncInBackground: true
         }).then(ret => {
-          console.warn('Cached eyc3 experts squads Data: ',JSON.stringify(ret))
+          console.log('Cached eyc3 experts squads Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          console.warn(err.message);
+          console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
