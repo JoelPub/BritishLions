@@ -403,7 +403,8 @@ module.exports = styleSheetCreate({
     btnMysquad: {
         height:100,
         flexDirection:'row',
-        marginTop:40
+        marginTop:40,
+        paddingTop:5,
     },
     btnMysquadIcon: {
         justifyContent:'flex-start',
@@ -421,7 +422,9 @@ module.exports = styleSheetCreate({
     btnExpert: {
         backgroundColor:'rgb(38,38,38)',
         flexDirection:'row',
-        marginTop:10
+        marginTop:10,
+        paddingTop:5,
+        paddingHorizontal:20,
     },
     btnExpertSquad: {
         backgroundColor:'rgb(38,38,38)',
@@ -429,31 +432,36 @@ module.exports = styleSheetCreate({
         marginTop:20,
         marginBottom:0,
         marginLeft:10,
-        marginRight:10
+        marginRight:10,
     },
     btnExpertIcon: {
-        marginLeft: 20,
-        width: 34,
+        marginBottom: 3,
+        width: 24,
         color: 'rgb(175,0,30)',
-        fontSize:24
+        fontSize:24,
+        backgroundColor:'transparent',
+        android:{
+            marginBottom: 1,
+        }
     },
     btnExpertLabel: {
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5
+        paddingTop:5,
+        backgroundColor:'transparent',
     },
     btnFavourites: {
         backgroundColor:'rgb(128,127,131)',
         flexDirection:'row',
         marginTop:10,
-        marginBottom:40
+        marginBottom:40,
+        paddingTop:5,
     },
     btnFavouritesIcon: {
-        marginLeft: 20,
         marginBottom: 5,
-        width: 34,
+        width: 24,
         color: 'rgb(255,204,40)',
         fontSize:24,
         android:{
@@ -465,7 +473,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5
+        paddingTop:5,
     },
     onboarding: {
         flex:1,
@@ -515,33 +523,21 @@ module.exports = styleSheetCreate({
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnBack: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(175,0,30)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnSkipRight: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnNext: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: styleVar.brandLightColor,
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     gridBoxCol:{
         width:styleVar.deviceWidth/2,
