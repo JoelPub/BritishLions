@@ -1,0 +1,7 @@
+{
+  "name": "modes",
+  "dependencies": {
+    "immutable": "latest",
+    "lodash": "latest"
+  }
+}
