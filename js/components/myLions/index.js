@@ -113,6 +113,8 @@ class MyLions extends Component {
                             >
                                 <Icon name='md-contact' style={styles.btnExpertIcon} />
                                 <Text
+                                ellipsizeMode='tail'
+                                numberOfLines={1}
                                 style={styles.btnExpertLabel}>
                                 THE EXPERTS' SQUADS
                                 </Text>
