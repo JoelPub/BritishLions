@@ -133,7 +133,7 @@ class MyLionsFavoriteList extends Component {
                 this._mergeEYC3Player(favoritePlayers, eyc3CatchedFullPlayerList)
              }
         }).catch((error) => {
-            console.warn('Error when try to get the EYC3 full player list: ', error)
+            console.log('Error when try to get the EYC3 full player list: ', error)
         })
     }
 
@@ -192,7 +192,7 @@ class MyLionsFavoriteList extends Component {
                             this._listPlayer(res.data, catchedFullPlayerList)
                         }
                     }).catch((error) => {
-                        console.warn('Error when try to get the sotic full player list', error)
+                        console.log('Error when try to get the sotic full player list', error)
                     })
                 } else {
                     // empty favorite player list
@@ -233,7 +233,7 @@ class MyLionsFavoriteList extends Component {
             this.setState({ isRefreshing: true })
         }
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.warn('final data:', JSON.stringify(data))
+            console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -242,7 +242,7 @@ class MyLionsFavoriteList extends Component {
                     })
                 }
             }else if(data.error){
-                console.warn('final data:', JSON.stringify(data.error))
+                console.log('final data:', JSON.stringify(data.error))
                 this.setState({ isLoaded: true, isRefreshing: false }, () => {
                     this._showError(data.error)
                 })
@@ -253,7 +253,7 @@ class MyLionsFavoriteList extends Component {
                             this._listPlayer(data.data, catchedFullPlayerList)
                         }
                     }).catch((error) => {
-                        console.warn('Error when try to get the sotic full player list', error)
+                        console.log('Error when try to get the sotic full player list', error)
                     })
                 } else {
                     // empty favorite player list

@@ -173,7 +173,7 @@ class MyLionsPlayerList extends Component {
     }
 
     handlePlayer(players) {
-        console.warn('merged players：', players)
+        console.log('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -204,7 +204,7 @@ class MyLionsPlayerList extends Component {
         this.playerListFeeds = this.handlePlayer(playersByNation)
         this.setState({ isLoaded: false })
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.warn('final data:', JSON.stringify(data))
+            console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -228,8 +228,8 @@ class MyLionsPlayerList extends Component {
 
      _mergeEYC3Player(playerList, eyc3Players){
          let mergedPlayers = []
-         console.warn('eyc3Players:', eyc3Players)
-         console.warn('playerList:', playerList)
+         console.log('eyc3Players:', eyc3Players)
+         console.log('playerList:', playerList)
          if (eyc3Players.length > 0) {
              eyc3Players.map((eyc3player, index) => {
                  playerList.map((player,j) => {
@@ -430,7 +430,7 @@ class MyLionsPlayerList extends Component {
                         this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                      }
                  }).catch((error) => {
-                     console.warn('Error when try to get the EYC3 full player list: ', error)
+                     console.log('Error when try to get the EYC3 full player list: ', error)
                  })
             }
         }).catch((error) => {

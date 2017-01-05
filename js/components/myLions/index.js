@@ -143,7 +143,7 @@ class MyLions extends Component {
                             </ButtonFeedback>                             
                             <LionsFooter isLoaded={true} />
                         </Content>
-                    < EYSFooter />
+                    < EYSFooter mySquadBtn={true}/>
                     <Modal
                         visible={this.state.modalVisible}
                         transparent={true}
