@@ -33,24 +33,33 @@ import Swiper from 'react-native-swiper'
 import BarGraph from '../utility/barGraph'
 import BarSlider from '../utility/barSlider'
 import SquadModal from '../global/squadModal'
+import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 class MyLionsSquad extends Component {
 
     constructor(props){
         super(props)
         this.state={
+            isLoaded: false,
             modalVisible: false,
             modalClear:false,
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
             squadData:{
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
-                    forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
-                    backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
+                    indivPos:[{position:'captain',id:'8759'},{position:'kicker',id:null},{position:'wildcard',id:'88878'}],
+                    forwards:[null,'19930',null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+                    backs:['114146',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
             },
+            squadDatafeed:{
+                    indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'wildcard',info:{}}],
+                    forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
+                    backs:[{},{},null,{},null,{},null,null,null,null,null,null,null,null,null,null],
+            },            
             modalContent:this.getModalContent()
         }
+        this.isUnMounted = false
         this.emptyFeed={
                     indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'wildcard',id:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
@@ -197,11 +206,105 @@ class MyLionsSquad extends Component {
         return newData
     }
 
+    componentDidMount() {
+        setTimeout(() => this._getPlayersListByUnion(), 600)
+    }
+
+    setSquadData(player,squad){
+        let tempFeed={
+                    indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'wildcard',info:null}],
+                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+                }
+        for(let pos in squad) {
+            squad[pos].map((item,index)=>{
+                console.log('!!!item',item)
+                if(item!==null) {
+                    if(item.id===undefined) {
+                        console.log('!!!search',this.searchPlayer(player,item))
+                        tempFeed[pos][index]=this.searchPlayer(player,item)
+                    }
+                    else if(item.id!==null) {
+                        console.log('!!!search',this.searchPlayer(player,item.id))
+                        tempFeed[pos][index].info=this.searchPlayer(player,item.id)
+
+                    }
+                }  
+            })
+        }
+        console.log('!!!tempFeed',tempFeed)
+        this.setState({
+            squadDatafeed:tempFeed
+        })
+    }
+
+    searchPlayer(player,id) {
+        let result=null
+        for(let union in player) {
+            result=player[union].find((item)=>item.id===id)
+            if(result !== undefined) {
+
+                if(typeof result.image==='string') {
+                   if (result.image.indexOf('125.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/125.png`)
+                    } else if (result.image.indexOf('126.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/126.png`)
+                    } else if (result.image.indexOf('127.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/127.png`)
+                    } else if (result.image.indexOf('128.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/128.png`)
+                    } else {
+                        result.image = {uri:result.image}
+                    } 
+                }
+                return result
+            }
+        }
+        return result===undefined?null:result
+    }
+
+    _getPlayersListByUnion(){
+        this.setState({ isLoaded: false })
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                     if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                        console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
+                        console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
+                        this.setSquadData(catchedFullPlayerList,this.state.squadData)
+                        this.setState({ isLoaded: true })
+                     }
+                 }).catch((error) => {
+                     console.log('Error when try to get the EYC3 full player list: ', error)
+                 })
+            }
+        }).catch((error) => {
+            this.setState({ isLoaded: true }, () => {
+                this._showError(error) // prompt error
+            })
+        })
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
+    }
+
+    _showError(error) {
+        Alert.alert(
+            'An error occured',
+            error,
+            [{text: 'Dismiss'}]
+        )
+    }
+
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
+                    {this.state.isLoaded?
                     <ScrollView>
                         <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
                         <ButtonFeedback style={styles.scoreCard}  onPress={()=>this.changeMode()}>
@@ -275,14 +378,14 @@ class MyLionsSquad extends Component {
                         <ScrollView >
                             <View style={styles.individaulPositionRow}>
                             {
-                                this.state.squadData.indivPos.map((item,index)=>{
+                                this.state.squadDatafeed.indivPos.map((item,index)=>{
                                     return (
                                         <View style={styles.indivPosition} key={index}>
                                             <View style={styles.indivPosTitle}>
                                                 <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
                                             </View>
                                             {
-                                            item.id===null?
+                                            item.info===null?
                                             <ButtonFeedback>
                                                 <View style={styles.addIndivPlayerWrapper}>
                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
@@ -302,15 +405,14 @@ class MyLionsSquad extends Component {
                                                     height = {styleVar.deviceWidth / 3}>
                                                     <Image transparent
                                                         resizeMode='contain'
-                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                        source={item.info.image} 
                                                         style={styles.playerImage} />
                                                 </ImagePlaceholder>
                                                 <View style={styles.indivPlayerNameWrapper}>
                                                     <View style={[shapes.triangle]} />
                                                     <View style={styles.gridBoxTitle}>
-                                                        <Text style={styles.playerNameText}>JAMES</Text>
-                                                        <Text style={styles.playerNameText}>HASKELL</Text>
-                                                        </View>
+                                                        <Text numberOfLines={2} style={styles.playerNameText}>{item.info.name.toUpperCase()}</Text>
+                                                    </View>
                                                 </View>
                                             </ButtonFeedback>
                                             }
@@ -322,7 +424,7 @@ class MyLionsSquad extends Component {
                             <View style={styles.posTitle}>
                               <Text style={styles.posTitleLeft}>FORWARDS</Text>
                               <Text style={styles.posTitleRight}>
-                               {this.state.squadData.forwards.filter((value)=>value!==null).length} / 16
+                               {this.state.squadDatafeed.forwards.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
                             <Swiper
@@ -333,7 +435,7 @@ class MyLionsSquad extends Component {
                             activeDotColor='rgb(239,239,244)'
                             paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
-                            this._mapJSON(this.state.squadData.forwards,3).map((rowData,i)=>{
+                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
                                 return(
                                     <View style={styles.posSwiperRow} key={i}>
                                         {
@@ -388,7 +490,7 @@ class MyLionsSquad extends Component {
                             <View style={styles.posTitle}>
                               <Text style={styles.posTitleLeft}>BACKS</Text>
                               <Text style={styles.posTitleRight}>
-                               {this.state.squadData.backs.filter((value)=>value!==null).length} / 16
+                               {this.state.squadDatafeed.backs.filter((value)=>value!==null).length} / 16
                               </Text>
                             </View>
                             <Swiper
@@ -399,7 +501,7 @@ class MyLionsSquad extends Component {
                             activeDotColor='rgb(239,239,244)'
                             paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
-                            this._mapJSON(this.state.squadData.backs,3).map((rowData,i)=>{
+                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
                                 return(
                                     <View style={styles.posSwiperRow} key={i}>
                                         {
@@ -453,6 +555,9 @@ class MyLionsSquad extends Component {
                             <LionsFooter isLoaded={true} />
                     </ScrollView>
                     </ScrollView>
+                    :
+                        <ActivityIndicator style={loader.centered} size='large' />
+                }
                     <EYSFooter mySquadBtn={true}/>
                     <SquadModal
                         modalVisible={this.state.modalVisible}
