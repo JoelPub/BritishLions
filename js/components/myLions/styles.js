@@ -117,7 +117,8 @@ module.exports = styleSheetCreate({
         marginRight:30,
     },
     btnonBoardSquard:{
-        marginTop:29
+        marginTop:29,
+        marginBottom:0,
     },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
@@ -204,6 +205,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 14,
+        height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 6
@@ -397,7 +399,8 @@ module.exports = styleSheetCreate({
     btnMysquad: {
         height:100,
         flexDirection:'row',
-        marginTop:40
+        marginTop:40,
+        paddingTop:5,
     },
     btnMysquadIcon: {
         justifyContent:'flex-start',
@@ -415,7 +418,8 @@ module.exports = styleSheetCreate({
     btnExpert: {
         backgroundColor:'rgb(38,38,38)',
         flexDirection:'row',
-        marginTop:10
+        marginTop:10,
+        paddingTop:5,
     },
     btnExpertSquad: {
         backgroundColor:'rgb(38,38,38)',
@@ -426,10 +430,13 @@ module.exports = styleSheetCreate({
         marginRight:10
     },
     btnExpertIcon: {
-        marginLeft: 20,
-        width: 34,
+        marginBottom: 5,
+        width: 24,
         color: 'rgb(175,0,30)',
-        fontSize:24
+        fontSize:24,
+        android:{
+            marginBottom: 2,
+        }
     },
     btnExpertLabel: {
         textAlign:'left',
@@ -442,12 +449,12 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(128,127,131)',
         flexDirection:'row',
         marginTop:10,
-        marginBottom:40
+        marginBottom:40,
+        paddingTop:5,
     },
     btnFavouritesIcon: {
-        marginLeft: 20,
         marginBottom: 5,
-        width: 34,
+        width: 24,
         color: 'rgb(255,204,40)',
         fontSize:24,
         android:{
@@ -459,7 +466,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5
+        paddingTop:5,
     },
     onboarding: {
         flex:1,
@@ -477,7 +484,7 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right: 0,
-        top: 20,
+        top: 0,
         paddingTop:10,
         android: {
             top:0
@@ -509,33 +516,21 @@ module.exports = styleSheetCreate({
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnBack: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(175,0,30)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnSkipRight: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnNext: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: styleVar.brandLightColor,
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     gridBoxCol:{
         width: styleVar.deviceWidth/2,
@@ -1026,7 +1021,7 @@ module.exports = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*3/5
+        height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
         width:styleVar.deviceWidth/3
