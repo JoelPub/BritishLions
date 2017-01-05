@@ -117,7 +117,8 @@ module.exports = styleSheetCreate({
         marginRight:30,
     },
     btnonBoardSquard:{
-        marginTop:29
+        marginTop:29,
+        marginBottom:0,
     },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
@@ -204,6 +205,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 16,
+        height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 4
@@ -481,7 +483,7 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right: 0,
-        top: 20,
+        top: 0,
         paddingTop:10,
         android: {
             top:0
@@ -1052,7 +1054,7 @@ module.exports = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*3/5
+        height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
         width:styleVar.deviceWidth/3
