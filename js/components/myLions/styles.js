@@ -205,7 +205,8 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 14,
-        //height:styleVar.deviceWidth*0.16,
+        height:styleVar.deviceWidth*0.16,
+        paddingHorizontal:20,
         android: {
             paddingTop: 12,
             paddingBottom: 6
@@ -536,10 +537,12 @@ module.exports = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
     },
     gridBoxCol:{
+        backgroundColor: '#000',
         width: styleVar.deviceWidth/2,
-        height: styleVar.deviceWidth/2 + 65,
+        alignSelf: 'flex-start',
+        //height: styleVar.deviceWidth/2,
         android: {
-            height: styleVar.deviceWidth/2 + 64,
+            //height: styleVar.deviceWidth/2 + 64,
         }
     },
     gridList:{
@@ -1053,6 +1056,7 @@ module.exports = styleSheetCreate({
     },
     posAddWrapper:{
         width:styleVar.deviceWidth / 3,
+        height:styleVar.deviceWidth / 3,
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
