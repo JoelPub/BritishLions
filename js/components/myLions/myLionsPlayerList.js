@@ -173,7 +173,7 @@ class MyLionsPlayerList extends Component {
     }
 
     handlePlayer(players) {
-        console.warn('merged players：', players)
+        console.log('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -204,7 +204,7 @@ class MyLionsPlayerList extends Component {
         this.playerListFeeds = this.handlePlayer(playersByNation)
         this.setState({ isLoaded: false })
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.warn('final data:', JSON.stringify(data))
+            console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -228,8 +228,8 @@ class MyLionsPlayerList extends Component {
 
      _mergeEYC3Player(playerList, eyc3Players){
          let mergedPlayers = []
-         console.warn('eyc3Players:', eyc3Players)
-         console.warn('playerList:', playerList)
+         console.log('eyc3Players:', eyc3Players)
+         console.log('playerList:', playerList)
          if (eyc3Players.length > 0) {
              eyc3Players.map((eyc3player, index) => {
                  playerList.map((player,j) => {
@@ -430,7 +430,7 @@ class MyLionsPlayerList extends Component {
                         this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                      }
                  }).catch((error) => {
-                     console.warn('Error when try to get the EYC3 full player list: ', error)
+                     console.log('Error when try to get the EYC3 full player list: ', error)
                  })
             }
         }).catch((error) => {
@@ -528,30 +528,35 @@ class MyLionsPlayerList extends Component {
                             callbackParent={this.onCloseFilter}>
 
                             <View style={styles.resultContainer}>
-                                <View style={styles.searchContainer}>
-                                    <View style={styles.searchBox}>
-                                        <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
-                                    </View>
-                                    <View style={{flex:1}}>
-                                        <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
-                                            <Icon name='md-close' style={styles.rtnIcon}/>
-                                        </ButtonFeedback>
+                                <View style={styles.resultHeader}>
+                                    <IosUtilityHeaderBackground />
+                                    <View style={styles.searchContainer}>
+                                        <View style={styles.searchBox}>
+                                            <Input placeholder='Search for Player' autoCorrect={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                        </View>
+                                        <View style={styles.searchBtnBox}>
+                                            <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
+                                                <Icon name='md-close' style={styles.rtnIcon}/>
+                                            </ButtonFeedback>
+                                        </View>
                                     </View>
                                 </View>
-                                {
-                                    this.state.isEmptyResult?
-                                        <View syles={styles.unionsPlayerEmptySearchMsg}>
-                                            <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
-                                            <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
-                                        </View>
-                                    :
-                                        this.state.resultVisible&&
-                                        <ListView
-                                            dataSource={this.state.searchResult}
-                                            renderRow={this._renderSearch.bind(this)}
-                                            enableEmptySections = {true}
-                                          />
-                                }
+                                <View style={styles.resultContent}>
+                                    {
+                                        this.state.isEmptyResult?
+                                            <View syles={styles.unionsPlayerEmptySearchMsg}>
+                                                <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
+                                                <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
+                                            </View>
+                                        :
+                                            this.state.resultVisible&&
+                                            <ListView
+                                                dataSource={this.state.searchResult}
+                                                renderRow={this._renderSearch.bind(this)}
+                                                enableEmptySections = {true}
+                                              />
+                                    }
+                                </View>
                             </View>
                         </FilterListingModal>
                         {

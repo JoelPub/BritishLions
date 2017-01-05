@@ -115,9 +115,6 @@ module.exports = styleSheetCreate({
         marginBottom:20,
         marginLeft:30,
         marginRight:30,
-        android:{
-            paddingTop:5,
-        }
     },
     btnonBoardSquard:{
         marginTop:29
@@ -207,7 +204,6 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 16,
-        height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 4
@@ -354,48 +350,47 @@ module.exports = styleSheetCreate({
         }
     },
     resultContainer: {
-        flex:1,
-        backgroundColor:'rgba(38,38,38,0.9)',
-        paddingTop:20,
-        android: {
-            paddingTop:0
+        flex: 1,
+        backgroundColor:'rgba(38,38,38,0.9)'
+    },
+    resultHeader: {
+        height: 68,
+        android:{
+            height: 48,
         }
     },
+    resultContent: {
+        flex: 1
+    },
     searchContainer: {
-        flexDirection:'row',
-        height:30,
-        backgroundColor:'rgb(38,38,38)'
+        flexDirection: 'row',
+        height: 48,
+        backgroundColor: 'rgb(38,38,38)'
+        //backgroundColor: '#CCC'
     },
     searchBox: {
-        flex:6,
-        backgroundColor:'rgb(255,255,255)',
-        marginBottom:5,
-        marginTop:5,
-        paddingBottom:0,
-        marginLeft:5,
-        height:40
+        flex: 1
+    },
+    searchBtnBox: {
+        width: 45
     },
     searchInput: {
         fontSize:16,
-        marginRight:5,
+        height: 40,
+        margin: 5,
+        marginBottom: 3,
+        marginRight: 0,
         color:'rgb(128,127,131)',
-        paddingBottom:8,
-        paddingLeft:13,
-        android: {
-            paddingBottom:17
-        }
+        backgroundColor:'rgb(255,255,255)',   
     },
     btnCancel: {
-        paddingLeft:10,
-        paddingTop:5,
-        height:34,
-        width:34,
-        position:'absolute',
-        right:7,
-        top:7,
+        height: 48,
+        width: 45,
+        justifyContent: 'center'
     },
     rtnIcon: {
-        fontSize:24
+        fontSize: 24,
+        alignSelf: 'center'
     },
     mylionsBanner: {
         height: styleVar.deviceWidth,
@@ -1057,7 +1052,7 @@ module.exports = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.63
+        height:styleVar.deviceWidth*3/5
     },
     posWrapper:{
         width:styleVar.deviceWidth/3

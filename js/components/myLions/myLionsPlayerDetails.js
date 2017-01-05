@@ -183,7 +183,7 @@ class MyLionsPlayerDetails extends Component {
         // this is to prevent glitch
         this.setState({ isDoneUpdatingState: false })
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.warn('final data:', JSON.stringify(data))
+            console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -192,7 +192,7 @@ class MyLionsPlayerDetails extends Component {
                     })
                 }
             }else if(data.error){
-                console.warn('final data:', JSON.stringify(data.error))
+                console.log('final data:', JSON.stringify(data.error))
                 this.setState({ isDoneUpdatingState: false }, () => {
                     this._showError(data.error) // prompt error
                 })

@@ -135,12 +135,15 @@ class MyLionsSquad extends Component {
                     url: `data:image/png;base64,${res}`
                 }).then((info)=>{
                     callback()
-                }).catch((err)=>{
-                    alertBox(
-                        '',
-                        'Image is not shared',
-                        'Dismiss'
-                    )
+                }).catch((errorMessage, statusCode)=>{
+                    console.log("error message: " + error)
+                     if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
+                        alertBox(
+                            '',
+                            'Image is not shared',
+                            'Dismiss'
+                        )
+                    }
                     callback()
                 })
             )          
