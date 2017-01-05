@@ -78,10 +78,10 @@ class MyLions extends Component {
     }
     measurePage(page,event) {
        const { x, width, height, } = event.nativeEvent.layout
-        this.pageWindow.push({index:page,size:height+150})
+        this.pageWindow.push({index:page,size:height+135})
         if(page===this.state.currentPage) {
            this.setState({
-                swiperWindow:height+150
+                swiperWindow:height+135
             })
         }
         
@@ -94,14 +94,17 @@ class MyLions extends Component {
     }
 
     touchEnd(e, state, context){
-        setTimeout(()=>this.setState({onScroll:false}),1000)
+        setTimeout(()=>{
+            if(this.state.onScroll) this.setState({onScroll:false})
+        },500)
     }
 
     scrollEnd(e, state, context){
         this.setState({
             currentPage:state.index,
             swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
-            onScroll:false
+        },()=>{
+            this.setState({onScroll:false})
         })
     }
     render() {
