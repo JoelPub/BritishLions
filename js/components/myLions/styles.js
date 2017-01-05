@@ -487,7 +487,7 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right: 0,
-        top: 0,
+        top: 20,
         paddingTop:10,
         android: {
             top:0
