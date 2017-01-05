@@ -205,7 +205,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 14,
-        height:styleVar.deviceWidth*0.16,
+        //height:styleVar.deviceWidth*0.16,
         android: {
             paddingTop: 12,
             paddingBottom: 6
