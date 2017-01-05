@@ -139,7 +139,7 @@ class AppNavigator extends Component {
 
     componentDidMount() {
         var storage = new Storage({
-            size: 10000,
+            size: 1000,
             storageBackend: AsyncStorage,
             defaultExpires: 1000 * 3600 * 24,
             enableCache: true,
