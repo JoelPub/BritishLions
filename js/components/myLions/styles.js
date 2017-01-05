@@ -420,6 +420,7 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         marginTop:10,
         paddingTop:5,
+        paddingHorizontal:20,
     },
     btnExpertSquad: {
         backgroundColor:'rgb(38,38,38)',
@@ -427,15 +428,16 @@ module.exports = styleSheetCreate({
         marginTop:20,
         marginBottom:0,
         marginLeft:10,
-        marginRight:10
+        marginRight:10,
     },
     btnExpertIcon: {
-        marginBottom: 5,
+        marginBottom: 3,
         width: 24,
         color: 'rgb(175,0,30)',
         fontSize:24,
+        backgroundColor:'transparent',
         android:{
-            marginBottom: 2,
+            marginBottom: 1,
         }
     },
     btnExpertLabel: {
@@ -443,7 +445,8 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5
+        paddingTop:5,
+        backgroundColor:'transparent',
     },
     btnFavourites: {
         backgroundColor:'rgb(128,127,131)',
