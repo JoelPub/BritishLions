@@ -23,6 +23,7 @@ import ImageCircle from '../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 import RatingCardView from './components/RatingCardView'
 import ExpertCard from './components/ExpertCard'
+import EYSFooter from '../global/eySponsoredFooter'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
@@ -149,6 +150,7 @@ class MyLionsExpertProfile extends Component {
             </Swiper>
             <LionsFooter isLoaded={true} />
           </ScrollView>
+          <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>
     )

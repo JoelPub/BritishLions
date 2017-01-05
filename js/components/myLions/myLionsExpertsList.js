@@ -17,6 +17,7 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
+import EYSFooter from '../global/eySponsoredFooter'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
@@ -73,6 +74,7 @@ class MyLionsExpertsList extends Component {
             />
             <LionsFooter isLoaded={true} />
           </ScrollView>
+          <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>
     )
