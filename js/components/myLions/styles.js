@@ -403,7 +403,8 @@ module.exports = styleSheetCreate({
     btnMysquad: {
         height:100,
         flexDirection:'row',
-        marginTop:40
+        marginTop:40,
+        paddingTop:5,
     },
     btnMysquadIcon: {
         justifyContent:'flex-start',
@@ -421,7 +422,8 @@ module.exports = styleSheetCreate({
     btnExpert: {
         backgroundColor:'rgb(38,38,38)',
         flexDirection:'row',
-        marginTop:10
+        marginTop:10,
+        paddingTop:5,
     },
     btnExpertSquad: {
         backgroundColor:'rgb(38,38,38)',
@@ -432,10 +434,13 @@ module.exports = styleSheetCreate({
         marginRight:10
     },
     btnExpertIcon: {
-        marginLeft: 20,
-        width: 34,
+        marginBottom: 5,
+        width: 24,
         color: 'rgb(175,0,30)',
-        fontSize:24
+        fontSize:24,
+        android:{
+            marginBottom: 2,
+        }
     },
     btnExpertLabel: {
         textAlign:'left',
@@ -448,12 +453,12 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(128,127,131)',
         flexDirection:'row',
         marginTop:10,
-        marginBottom:40
+        marginBottom:40,
+        paddingTop:5,
     },
     btnFavouritesIcon: {
-        marginLeft: 20,
         marginBottom: 5,
-        width: 34,
+        width: 24,
         color: 'rgb(255,204,40)',
         fontSize:24,
         android:{
@@ -465,7 +470,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5
+        paddingTop:5,
     },
     onboarding: {
         flex:1,
