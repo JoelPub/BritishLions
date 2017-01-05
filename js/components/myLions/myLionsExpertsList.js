@@ -22,12 +22,13 @@ import { replaceRoute, pushNewRoute } from '../../actions/route'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
+
 import { drillDown } from '../../actions/content'
 
-
-
-
 import { globalNav } from '../../appNavigator'
+
+import ExpertmModel from  'modes/Experts'
+import ExpertsData from  '../../mockDataJson/expertsJson.json'
 
 const ExpertsHeader = () => (
       <Image source={imageJameshaskel} style={styles.cellExpertHeader}  />
@@ -55,13 +56,15 @@ class MyLionsExpertsList extends Component {
     super(props)
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: this.ds.cloneWithRows(['row 1', 'row 2','row 3','row 4','row 5']),
+      dataSource: this.ds.cloneWithRows([]),
+      experts: []
     };
   }
   _navToDetail = () => {
     this.props.drillDown({}, 'mylionsExpertProfile')
   }
   render() {
+    console.log(this.state.experts)
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -79,7 +82,27 @@ class MyLionsExpertsList extends Component {
       </Container>
     )
   }
+  handdleData = () => {
+   let  experts = ExpertmModel.fromJS(ExpertsData.experts)
+    this.setState({
+      experts: experts,
+      dataSource: this.ds.cloneWithRows(experts.toArray()),
+    })
+  }
+
+  handleComponentUpdate = (props, firstRun) => {
+    setTimeout(this.handdleData,500)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.handleComponentUpdate(nextProps, false)
+  }
+
+  componentDidMount () {
+    this.handleComponentUpdate(this.props, true)
+  }
 }
+
 
 function bindAction(dispatch) {
   return {
