@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { drillDown } from '../../actions/content'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -139,7 +139,7 @@ class MyLions extends Component {
                             style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>
-                            <View style={styles.onboardingContent}>
+                            <ScrollView style={styles.onboardingContent}>
                                     <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                     <Swiper
                                         ref='swiper'
@@ -185,7 +185,7 @@ class MyLions extends Component {
                                     {
                                     
                                     }
-                                </View> 
+                                </ScrollView> 
                        </LinearGradient>
                     </Modal>
                 </View>
