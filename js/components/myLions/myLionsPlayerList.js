@@ -528,30 +528,35 @@ class MyLionsPlayerList extends Component {
                             callbackParent={this.onCloseFilter}>
 
                             <View style={styles.resultContainer}>
-                                <View style={styles.searchContainer}>
-                                    <View style={styles.searchBox}>
-                                        <Input placeholder='Search for Player' autoCorrect ={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
-                                    </View>
-                                    <View style={{flex:1}}>
-                                        <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
-                                            <Icon name='md-close' style={styles.rtnIcon}/>
-                                        </ButtonFeedback>
+                                <View style={styles.resultHeader}>
+                                    <IosUtilityHeaderBackground />
+                                    <View style={styles.searchContainer}>
+                                        <View style={styles.searchBox}>
+                                            <Input placeholder='Search for Player' autoCorrect={false} autoFocus={true} onChangeText={(text) =>this._searchPlayer(text)} placeholderTextColor='rgb(128,127,131)' style={styles.searchInput}/>
+                                        </View>
+                                        <View style={styles.searchBtnBox}>
+                                            <ButtonFeedback onPress={()=>this._setSearchModalVisible(false)} style={styles.btnCancel}>
+                                                <Icon name='md-close' style={styles.rtnIcon}/>
+                                            </ButtonFeedback>
+                                        </View>
                                     </View>
                                 </View>
-                                {
-                                    this.state.isEmptyResult?
-                                        <View syles={styles.unionsPlayerEmptySearchMsg}>
-                                            <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
-                                            <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
-                                        </View>
-                                    :
-                                        this.state.resultVisible&&
-                                        <ListView
-                                            dataSource={this.state.searchResult}
-                                            renderRow={this._renderSearch.bind(this)}
-                                            enableEmptySections = {true}
-                                          />
-                                }
+                                <View style={styles.resultContent}>
+                                    {
+                                        this.state.isEmptyResult?
+                                            <View syles={styles.unionsPlayerEmptySearchMsg}>
+                                                <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
+                                                <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
+                                            </View>
+                                        :
+                                            this.state.resultVisible&&
+                                            <ListView
+                                                dataSource={this.state.searchResult}
+                                                renderRow={this._renderSearch.bind(this)}
+                                                enableEmptySections = {true}
+                                              />
+                                    }
+                                </View>
                             </View>
                         </FilterListingModal>
                         {

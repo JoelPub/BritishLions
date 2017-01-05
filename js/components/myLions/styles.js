@@ -115,12 +115,10 @@ module.exports = styleSheetCreate({
         marginBottom:20,
         marginLeft:30,
         marginRight:30,
-        android:{
-            paddingTop:5,
-        }
     },
     btnonBoardSquard:{
-        marginTop:29
+        marginTop:29,
+        marginBottom:0,
     },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
@@ -354,48 +352,47 @@ module.exports = styleSheetCreate({
         }
     },
     resultContainer: {
-        flex:1,
-        backgroundColor:'rgba(38,38,38,0.9)',
-        paddingTop:20,
-        android: {
-            paddingTop:0
+        flex: 1,
+        backgroundColor:'rgba(38,38,38,0.9)'
+    },
+    resultHeader: {
+        height: 68,
+        android:{
+            height: 48,
         }
     },
+    resultContent: {
+        flex: 1
+    },
     searchContainer: {
-        flexDirection:'row',
-        height:30,
-        backgroundColor:'rgb(38,38,38)'
+        flexDirection: 'row',
+        height: 48,
+        backgroundColor: 'rgb(38,38,38)'
+        //backgroundColor: '#CCC'
     },
     searchBox: {
-        flex:6,
-        backgroundColor:'rgb(255,255,255)',
-        marginBottom:5,
-        marginTop:5,
-        paddingBottom:0,
-        marginLeft:5,
-        height:40
+        flex: 1
+    },
+    searchBtnBox: {
+        width: 45
     },
     searchInput: {
         fontSize:16,
-        marginRight:5,
+        height: 40,
+        margin: 5,
+        marginBottom: 3,
+        marginRight: 0,
         color:'rgb(128,127,131)',
-        paddingBottom:8,
-        paddingLeft:13,
-        android: {
-            paddingBottom:17
-        }
+        backgroundColor:'rgb(255,255,255)',   
     },
     btnCancel: {
-        paddingLeft:10,
-        paddingTop:5,
-        height:34,
-        width:34,
-        position:'absolute',
-        right:7,
-        top:7,
+        height: 48,
+        width: 45,
+        justifyContent: 'center'
     },
     rtnIcon: {
-        fontSize:24
+        fontSize: 24,
+        alignSelf: 'center'
     },
     mylionsBanner: {
         height: styleVar.deviceWidth,
@@ -486,7 +483,7 @@ module.exports = styleSheetCreate({
         height:49,
         position:'absolute',
         right: 0,
-        top: 20,
+        top: 0,
         paddingTop:10,
         android: {
             top:0
@@ -518,33 +515,21 @@ module.exports = styleSheetCreate({
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnBack: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(175,0,30)',
-        position:'absolute',
-        left:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnSkipRight: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     btnNext: {
         height: 50,
         width:styleVar.deviceWidth*0.35,
         backgroundColor: styleVar.brandLightColor,
-        position:'absolute',
-        right:styleVar.deviceWidth*0.1,
-        bottom:60
     },
     gridBoxCol:{
         width:styleVar.deviceWidth/2,
