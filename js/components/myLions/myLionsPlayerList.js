@@ -499,13 +499,8 @@ class MyLionsPlayerList extends Component {
                                 <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
                             </LinearGradient>
                             <View style={styles.unionsPlayerListingBar}>
-                                <ButtonFeedback onPress={()=>this._setSearchModalVisible(true)} style={styles.unionsPlayerListingSearchButton}>
-                                    <Text style={styles.unionsPlayerListingSearchText}>SEARCH</Text>
-                                </ButtonFeedback>
-
-                                <ButtonFeedback onPress={()=>{this._setFilterModalVisible(true)}} style={styles.unionsPlayerListingFilterButton}>
-                                    <Text style={styles.unionsPlayerListingFilterText}>FILTER</Text>
-                                </ButtonFeedback>
+                                <ButtonFeedback rounded onPress={()=>this._setSearchModalVisible(true)} label='SEARCH' style={styles.unionsPlayerListingSearchButton} />
+                                <ButtonFeedback rounded onPress={()=>{this._setFilterModalVisible(true)}} label='FILTER' style={styles.unionsPlayerListingFilterButton} />
                             </View>
                             {
                                 (this.filterBy !== '')&&

@@ -109,16 +109,18 @@ module.exports = styleSheetCreate({
         paddingBottom: 25
     },
     button: {
-        height: 45,
+        height: 50,
         backgroundColor: styleVar.brandLightColor,
-        marginTop:19,
-        marginBottom:20,
-        marginLeft:30,
-        marginRight:30,
+        marginTop: 19,
+        marginBottom: 20,
+        marginLeft: 30,
+        marginRight: 30,
     },
-    btnonBoardSquard:{
-        marginTop:29,
-        marginBottom:0,
+    btnonBoardSquard: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 0,
+        marginRight: 0,
     },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
@@ -473,17 +475,13 @@ module.exports = styleSheetCreate({
         paddingTop:5,
     },
     onboarding: {
-        flex:1,
-        marginTop:20,
-        android: {
-            marginTop:0
-        }
+        flex:1
     },
     onboardingContent:{
-        marginTop:50
+        marginTop: 0
     },
     btnClose: {
-        backgroundColor:'rgb(130,4,23)',
+        backgroundColor:'rgba(38, 38, 38, 0.20)',
         width:50,
         height:49,
         position:'absolute',
@@ -499,42 +497,48 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     onboardingTitle: {
-        marginTop:21,
-        textAlign:'center',
-        fontSize:28,
+        marginTop: 71,
+        textAlign: 'center',
+        fontSize: 28,
+        lineHeight: 28,
+        marginBottom: 4,
         fontFamily: styleVar.fontCondensed,
-        backgroundColor:'transparent',
-        lineHeight:28,
+        backgroundColor: 'transparent',
     },
     onboardingPage: {
-        paddingLeft:28,
-        paddingRight:27,
+        paddingLeft: 28,
+        paddingRight: 27,
+    },
+    onboardingPageBtns: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        marginTop: 15
     },
     onboardingPageText: {
         fontFamily: 'Helvetica Neue',
-        fontSize:16,
-        paddingTop:14,
-        textAlign:'center'
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 18
     },
     btnSkipLeft: {
         height: 50,
-        width:styleVar.deviceWidth*0.35,
+        width:styleVar.deviceWidth*0.38,
         backgroundColor: 'rgb(38,38,38)',
     },
     btnBack: {
         height: 50,
-        width:styleVar.deviceWidth*0.35,
+        width:styleVar.deviceWidth*0.38,
         backgroundColor: 'rgb(175,0,30)',
     },
     btnSkipRight: {
         height: 50,
-        width:styleVar.deviceWidth*0.35,
+        width:styleVar.deviceWidth*0.38,
         backgroundColor: 'rgb(38,38,38)',
     },
     btnNext: {
         height: 50,
-        width:styleVar.deviceWidth*0.35,
-        backgroundColor: styleVar.brandLightColor,
+        width:styleVar.deviceWidth*0.38,
+        backgroundColor: styleVar.brandLightColor
     },
     gridBoxCol:{
         backgroundColor: '#000',
@@ -572,16 +576,16 @@ module.exports = styleSheetCreate({
         backgroundColor:'white',
         borderBottomColor: 'rgb(216, 217, 218)',
         borderBottomWidth: 1,
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         flexDirection: 'row'
     },
-    unionsPlayerListingSearchButton:{
-        left:43,
-        width:132,
-        height:50,
+    unionsPlayerListingSearchButton: {
+        width: styleVar.deviceWidth*0.38,
+        height: 50,
         backgroundColor: 'rgb(208, 7, 41)',
         marginTop:14,
         borderRadius:25,
+        marginRight: 15
     },
     unionsPlayerListingFilterByBar:{
         height: 70,
@@ -631,12 +635,12 @@ module.exports = styleSheetCreate({
         height:30
     },
     unionsPlayerListingFilterButton:{
-        right:43,
-        width:132,
+        width: styleVar.deviceWidth*0.38,
         height:50,
         backgroundColor: 'rgb(95, 96, 98)',
         marginTop:14,
         borderRadius:25,
+        marginLeft: 15
 
     },
     unionsPlayerListingFilterText:{

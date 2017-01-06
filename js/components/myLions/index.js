@@ -20,6 +20,7 @@ import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
+import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 import Data from '../../../contents/my-lions/onboarding/data'
 
 class MyLions extends Component {
@@ -28,8 +29,8 @@ class MyLions extends Component {
         super(props)
         this.state = {
             modalVisible: true,
-            swiperWindow: styleVar.deviceWidth,
-            currentPage:0,
+            swiperWindow: styleVar.deviceHeight,
+            currentPage: 0,
         }
         this.totalPages = 4 
         this.pageWindow=[]
@@ -42,21 +43,25 @@ class MyLions extends Component {
     _myLions(){
         this._showList({}, 'myLionsUnionsList')
     }
+
     _mySquad(){
         this._setModalVisible(false)
         this.props.drillDown({}, 'myLionsSquad')
     }
+
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
+
     prev(){
         this.setState({
-            swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
+            swiperWindow: this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
             currentPage:this.state.currentPage-1
         },()=>{
             this.refs['swiper'].scrollBy(-1,true)
         })
     }
+
     next(){
         this.setState({
             swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
@@ -66,17 +71,19 @@ class MyLions extends Component {
         })
         
     }
+
     _setModalVisible=(visible) => {
         this.setState({
             modalVisible:visible,
         })
     }
+
     measurePage(page,event) {
        const { x, width, height, } = event.nativeEvent.layout
-        this.pageWindow.push({index:page,size:height+80})
+        this.pageWindow.push({index:page,size:height + 70})
         if(page===this.state.currentPage) {
            this.setState({
-                swiperWindow:height+80
+                swiperWindow: height + 70
             })
         }
         
@@ -88,6 +95,7 @@ class MyLions extends Component {
             swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
         })
     }
+
     render() {
         return (
             <Container theme={theme}>
@@ -129,63 +137,65 @@ class MyLions extends Component {
                             </ButtonFeedback>                             
                             <LionsFooter isLoaded={true} />
                         </Content>
-                    < EYSFooter mySquadBtn={true}/>
+                    <EYSFooter mySquadBtn={true}/>
                     <Modal
                         visible={this.state.modalVisible}
                         transparent={true}
                         onRequestClose={()=>this._setModalVisible(false)}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                            style={styles.btnClose}>
+                            <IosUtilityHeaderBackground />
+                            
+                            <ScrollView style={styles.onboardingContent}>
+                                <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
+                                <Swiper
+                                    height={this.state.swiperWindow}
+                                    ref='swiper'
+                                    loop={false}
+                                    dotColor='rgba(255,255,255,0.3)'
+                                    activeDotColor='rgb(239,239,244)'
+                                    showsButton={true}
+                                    onMomentumScrollEnd={this.scrollEnd.bind(this)}
+                                    >
+                                    {
+                                        Data.map((item,index)=>{
+                                            return(
+                                                <View key={index} style={styles.onboardingPage} onLayout={this.measurePage.bind(this,index)}>
+                                                    {
+                                                        item.description.map((desc,i)=>{
+                                                            return(
+                                                                <Text key={i} style={styles.onboardingPageText}>{desc}</Text>
+                                                            )
+                                                        })
+                                                    }
+                                                    {
+                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button, styles.btnonBoardSquard]}  />
+                                                    }
+                                                    <View style={styles.onboardingPageBtns}>
+                                                        {
+                                                            index===0?
+                                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
+                                                            :
+                                                            <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
+                                                        }
+                                                        {
+                                                            index===this.totalPages-1?
+                                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
+                                                            :
+                                                            <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                                        }
+                                                    </View>
+                                                </View>
+                                            )
+                                        },this)
+                                    }
+                                </Swiper>
+                            </ScrollView> 
+
+                            <ButtonFeedback 
+                                onPress={()=>this._setModalVisible(false)} 
+                                style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>
-                            <ScrollView style={styles.onboardingContent}>
-                                    <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
-                                    <Swiper
-                                        ref='swiper'
-                                        height={this.state.swiperWindow}
-                                        loop={false}
-                                        dotColor='rgba(255,255,255,0.3)'
-                                        activeDotColor='rgb(239,239,244)'
-                                        onMomentumScrollEnd={this.scrollEnd.bind(this)}
-                                        >
-                                        {
-                                            Data.map((item,index)=>{
-                                                return(
-                                                    <View key={index} style={styles.onboardingPage} onLayout={this.measurePage.bind(this,index)}>
-                                                        {
-                                                            item.description.map((desc,i)=>{
-                                                                return(
-                                                                    <Text key={i} style={styles.onboardingPageText}>{desc}</Text>
-                                                                )
-                                                            })
-                                                        }
-                                                        {
-                                                            (index===this.totalPages-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button,styles.btnonBoardSquard]}  />
-                                                        }
-                                                        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:30}}>
-                                                            {
-                                                                index===0?
-                                                                <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
-                                                                :
-                                                                <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
-                                                            }
-                                                            {
-                                                                index===this.totalPages-1?
-                                                                <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
-                                                                :
-                                                                <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
-                                                            }
-                                                        </View>
-                                                    </View>
-                                                )
-                                            },this)
-                                        }
-                                    </Swiper>
-                                    {
-                                    
-                                    }
-                                </ScrollView> 
                        </LinearGradient>
                     </Modal>
                 </View>
