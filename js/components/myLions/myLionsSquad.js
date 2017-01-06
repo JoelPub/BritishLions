@@ -403,7 +403,7 @@ class MyLionsSquad extends Component {
                                             </View>
                                             {
                                             item.info===null?
-                                            <ButtonFeedback onPress={() => this._addPlayer('captain')}>
+                                            <ButtonFeedback onPress={() => this._addPlayer('captain')}  style={styles.posBtn}>
                                                 <View style={styles.addIndivPlayerWrapper}>
                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                 </View>
@@ -416,7 +416,7 @@ class MyLionsSquad extends Component {
                                                 </View>
                                             </ButtonFeedback>
                                             :
-                                            <ButtonFeedback onPress={() => this._showDetail(item.info,'myLionsPlayerDetails')}>
+                                            <ButtonFeedback onPress={() => this._showDetail(item.info,'myLionsPlayerDetails')}  style={styles.posBtn}>
                                                 <ImagePlaceholder 
                                                     width = {styleVar.deviceWidth / 3}
                                                     height = {styleVar.deviceWidth / 3}>
@@ -460,7 +460,7 @@ class MyLionsSquad extends Component {
                                                 return(
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._addPlayer('forwards')}>
+                                                            <ButtonFeedback onPress={() => this._addPlayer('forwards')}  style={styles.posBtn}>
                                                                 <View style={styles.posAddWrapper}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
@@ -475,7 +475,7 @@ class MyLionsSquad extends Component {
                                                         </View>
                                                         :
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
+                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')} style={styles.posBtn}>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
                                                                     height = {styleVar.deviceWidth / 3}>
@@ -525,7 +525,7 @@ class MyLionsSquad extends Component {
                                                 return(
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._addPlayer('backs')}>
+                                                            <ButtonFeedback onPress={() => this._addPlayer('backs')} style={styles.posBtn}>
                                                                 <View style={styles.posAddWrapper}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
@@ -540,7 +540,7 @@ class MyLionsSquad extends Component {
                                                         </View>
                                                         :
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
+                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')} style={styles.posBtn}>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
                                                                     height = {styleVar.deviceWidth / 3}>

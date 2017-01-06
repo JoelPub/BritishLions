@@ -954,9 +954,9 @@ module.exports = styleSheetCreate({
         flexDirection:'row'
     },
     indivPosition:{
-        width:styleVar.deviceWidth/3,
+        width:styleVar.deviceWidth/3+1,
         backgroundColor:'rgb(255,255,255)',
-        paddingLeft:1
+        marginLeft:-1,
     },
     indivPosTitle:{
         borderTopWidth:1,
@@ -1005,8 +1005,6 @@ module.exports = styleSheetCreate({
     playerNameTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     posTitle:{
         flexDirection:'row',
@@ -1056,7 +1054,12 @@ module.exports = styleSheetCreate({
         height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
-        width:styleVar.deviceWidth/3
+        width:styleVar.deviceWidth/3+1,
+        marginLeft:-1
+    },
+    posBtn:{
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)'
     },
     posAddWrapper:{
         width:styleVar.deviceWidth / 3,
@@ -1064,14 +1067,10 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     posAddTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     modalViewWrapper:{
         paddingHorizontal:28,
