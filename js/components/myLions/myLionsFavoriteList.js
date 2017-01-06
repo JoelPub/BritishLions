@@ -67,7 +67,8 @@ class MyLionsFavoriteList extends Component {
                                 <Image transparent
                                     resizeMode='contain'
                                     source={rowData.image} 
-                                    style={styles.gridBoxImg} />
+                                    style={styles.gridBoxImg}
+                                    key={rowID}/>
                             </ImagePlaceholder>
                         </View>
                         <View style={[shapes.triangle]} />

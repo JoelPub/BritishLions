@@ -73,7 +73,8 @@ class MyLionsPlayerList extends Component {
                                 <Image transparent
                                     resizeMode='contain'
                                     source={rowData.image} 
-                                    style={styles.gridBoxImg} />
+                                    style={styles.gridBoxImg}
+                                    key={rowID}/>
                             </ImagePlaceholder>
                         </View>
                         <View style={[shapes.triangle]} />
@@ -104,6 +105,7 @@ class MyLionsPlayerList extends Component {
                             resizeMode='stretch'
                             source={rowData.image}
                             style={styles.playerImg}
+                            key={rowID}
                              />
                     </View>
                     <View style={styles.resultDesc}>
