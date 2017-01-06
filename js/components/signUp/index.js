@@ -242,9 +242,9 @@ class SignUp extends Component {
                                                     value={this.state.tc} />
                                             </Col>
                                             <Col style={{flexDirection:'row'}}>
-                                                <Text style={styles.switchLabelText}>I agree to </Text>
+                                                <Text style={styles.switchLabelText}>I agree to the </Text>
                                                 <ButtonFeedback onPress={() => this._pushNewRoute('terms')} style={styles.tncLink}>
-                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>privacy policy</Text>
+                                                    <Text style={[styles.switchLabelText,styles.textUnderline]}>Privacy Policy</Text>
                                                 </ButtonFeedback>
                                             </Col>
                                         </Grid>
@@ -274,7 +274,7 @@ class SignUp extends Component {
                             </View>
                         </KeyboardAwareScrollView>
 
-                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('login')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 

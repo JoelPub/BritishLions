@@ -162,7 +162,7 @@ class ForgotPassword extends Component {
                             </View>
                         </KeyboardAwareScrollView>
 
-                        <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('login')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 
