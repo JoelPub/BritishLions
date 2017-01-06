@@ -1013,8 +1013,9 @@ module.exports = styleSheetCreate({
         borderWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
-        padding:12,
-        backgroundColor:'rgb(239,239,240)'
+        paddingHorizontal:12,
+        paddingTop:15,
+        backgroundColor:'rgb(239,239,240)',
     },
     posExpertTitle:{
         flexDirection:'row',
