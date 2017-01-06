@@ -74,7 +74,7 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         android: {
             paddingTop: 0,
-            marginBottom: 10,
+            marginBottom: 5,
         }
     },
     headerPlayerDetails: {
@@ -1128,15 +1128,16 @@ module.exports = styleSheetCreate({
     },
     cellExpert: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(216,217,218,1)',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(216,217,218,1)',
         height: 136,
     },
     cellExpertHeader: {
         height: 135,
-        width: 135
+        width: 135,
     },
     cellExpertInfo: {
+        marginTop: 0,
         backgroundColor: '#D00729',
         paddingLeft: 20,
         flex: 1,
