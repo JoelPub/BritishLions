@@ -51,7 +51,7 @@ class MyLionsUnionsList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <View style={styles.headerContainer}>
-                        <LionsHeader title='MY LIONS' />
+                        <LionsHeader back={true} title='MY LIONS' />
                         <View style={styles.myLionsSharedHeader}>
                          <Text style={styles.myLionsSharedHeaderText}>
                               HOME UINIONS

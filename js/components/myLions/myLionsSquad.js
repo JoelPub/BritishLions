@@ -397,7 +397,7 @@ class MyLionsSquad extends Component {
                             {
                                 this.state.squadDatafeed.indivPos.map((item,index)=>{
                                     return (
-                                        <View style={styles.indivPosition} key={index}>
+                                        <View style={[styles.indivPosition,index===1&&styles.middleNode]} key={index}>
                                             <View style={styles.indivPosTitle}>
                                                 <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
                                             </View>
@@ -409,7 +409,7 @@ class MyLionsSquad extends Component {
                                                 </View>
                                                 <View style={styles.indivPlayerNameWrapper}>
                                                     <View style={[shapes.triangle]} />
-                                                    <View style={styles.gridBoxTitle}>
+                                                    <View style={styles.titleBox}>
                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                         <Text style={styles.playerNameText}>{item.position.toUpperCase()}</Text>
                                                         </View>
@@ -427,7 +427,7 @@ class MyLionsSquad extends Component {
                                                 </ImagePlaceholder>
                                                 <View style={styles.indivPlayerNameWrapper}>
                                                     <View style={[shapes.triangle]} />
-                                                    <View style={styles.gridBoxTitle}>
+                                                    <View style={styles.titleBox}>
                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.info.name.toUpperCase()}</Text>
                                                     </View>
                                                 </View>
@@ -461,12 +461,12 @@ class MyLionsSquad extends Component {
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback onPress={() => this._addPlayer('forwards')}>
-                                                                <View style={styles.posAddWrapper}>
+                                                                <View style={[styles.posAddWrapper,index===1&&styles.middleNode]}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
-                                                                <View style={styles.posAddTextWrapper}>
+                                                                <View style={[styles.posAddTextWrapper,index===1&&styles.middleNode]}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                                         <Text style={styles.playerNameText}>FORWARD</Text>
                                                                         </View>
@@ -482,11 +482,11 @@ class MyLionsSquad extends Component {
                                                                     <Image transparent
                                                                         resizeMode='contain'
                                                                         source={item.image}
-                                                                        style={styles.playerImage} />
+                                                                        style={[styles.playerImage,index===1&&styles.middleNode]} />
                                                                 </ImagePlaceholder>
-                                                                <View style={styles.playerNameTextWrapper}>
+                                                                <View style={[styles.playerNameTextWrapper,index===1&&styles.middleNode]}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                          <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>
@@ -526,12 +526,12 @@ class MyLionsSquad extends Component {
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
                                                             <ButtonFeedback onPress={() => this._addPlayer('backs')}>
-                                                                <View style={styles.posAddWrapper}>
+                                                                <View style={[styles.posAddWrapper,index===1&&styles.middleNode]}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
-                                                                <View style={styles.playerNameTextWrapper}>
+                                                                <View style={[styles.posAddTextWrapper,index===1&&styles.middleNode]}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                                         <Text style={styles.playerNameText}>BACK</Text>
                                                                         </View>
@@ -547,11 +547,11 @@ class MyLionsSquad extends Component {
                                                                     <Image transparent
                                                                         resizeMode='contain'
                                                                         source={item.image}
-                                                                        style={styles.playerImage} />
+                                                                        style={[styles.playerImage,index===1&&styles.middleNode]} />
                                                                 </ImagePlaceholder>
-                                                                <View style={styles.playerNameTextWrapper}>
+                                                                <View style={[styles.playerNameTextWrapper,index===1&&styles.middleNode]}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                          <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>
