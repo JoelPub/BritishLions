@@ -78,12 +78,11 @@ module.exports = styleSheetCreate({
         }
     },
     headerPlayerDetails: {
-        backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
         marginBottom: 5,
         android: {
-            marginBottom: 0,
+            marginTop: 5,
         }
     },
     headerPlayerName: {
@@ -1183,16 +1182,17 @@ module.exports = styleSheetCreate({
         paddingTop: 15,
         width: 121,
         android: {
-            paddingTop: 0
+            paddingTop: 14
         }
     },
     viewExpertProfileDescription: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
         width: 226,
+        lineHeight:20,
         textAlign:'center',
         android: {
-            marginTop: 5,
+            marginTop: 0,
             marginBottom: 10
         }
     },
