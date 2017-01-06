@@ -409,7 +409,7 @@ class MyLionsSquad extends Component {
                                                 </View>
                                                 <View style={styles.indivPlayerNameWrapper}>
                                                     <View style={[shapes.triangle]} />
-                                                    <View style={styles.gridBoxTitle}>
+                                                    <View style={styles.titleBox}>
                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                         <Text style={styles.playerNameText}>{item.position.toUpperCase()}</Text>
                                                         </View>
@@ -427,7 +427,7 @@ class MyLionsSquad extends Component {
                                                 </ImagePlaceholder>
                                                 <View style={styles.indivPlayerNameWrapper}>
                                                     <View style={[shapes.triangle]} />
-                                                    <View style={styles.gridBoxTitle}>
+                                                    <View style={styles.titleBox}>
                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.info.name.toUpperCase()}</Text>
                                                     </View>
                                                 </View>
@@ -466,7 +466,7 @@ class MyLionsSquad extends Component {
                                                                 </View>
                                                                 <View style={styles.posAddTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                                         <Text style={styles.playerNameText}>FORWARD</Text>
                                                                         </View>
@@ -486,7 +486,7 @@ class MyLionsSquad extends Component {
                                                                 </ImagePlaceholder>
                                                                 <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                          <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>
@@ -531,7 +531,7 @@ class MyLionsSquad extends Component {
                                                                 </View>
                                                                 <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                         <Text style={styles.playerNameText}>ADD</Text>
                                                                         <Text style={styles.playerNameText}>BACK</Text>
                                                                         </View>
@@ -551,7 +551,7 @@ class MyLionsSquad extends Component {
                                                                 </ImagePlaceholder>
                                                                 <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
-                                                                    <View style={styles.gridBoxTitle}>
+                                                                    <View style={styles.titleBox}>
                                                                          <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>

@@ -8,6 +8,7 @@ import content from './content'
 import timer from './timer'
 import token from './token'
 import network from './network'
+import position from './position'
 
 export default combineReducers({
 	drawer,
@@ -15,5 +16,6 @@ export default combineReducers({
 	content,
 	timer,
 	token,
-	network
+	network,
+	position
 })

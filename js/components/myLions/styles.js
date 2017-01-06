@@ -1283,4 +1283,18 @@ module.exports = styleSheetCreate({
         paddingVertical:25,
         paddingHorizontal:20,
     },
+    titleBox: {
+        position: 'relative',
+        backgroundColor: styleVar.brandLightColor,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 14,
+        height:styleVar.deviceWidth*0.16,
+        paddingHorizontal:20,
+        android: {
+            paddingTop: 12,
+            paddingBottom: 6
+        }
+    },
 })
