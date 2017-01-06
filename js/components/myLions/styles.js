@@ -954,16 +954,13 @@ module.exports = styleSheetCreate({
         flexDirection:'row'
     },
     indivPosition:{
-        width:styleVar.deviceWidth/3,
+        width:styleVar.deviceWidth/3+1,
         backgroundColor:'rgb(255,255,255)',
-        borderColor:'rgb(255,255,255)'
-    },
-    middleNode:{
-        borderLeftWidth:1,
-        borderRightWidth:1,
+        marginLeft:-1,
     },
     indivPosTitle:{
         borderTopWidth:1,
+        borderLeftWidth:1,
         borderBottomWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
@@ -1008,7 +1005,6 @@ module.exports = styleSheetCreate({
     playerNameTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderColor:'rgb(255,255,255)'
     },
     posTitle:{
         flexDirection:'row',
@@ -1058,8 +1054,12 @@ module.exports = styleSheetCreate({
         height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
-        width:styleVar.deviceWidth/3,
-        borderColor:'rgb(255,255,255)',
+        width:styleVar.deviceWidth/3+1,
+        marginLeft:-1
+    },
+    posBtn:{
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)'
     },
     posAddWrapper:{
         width:styleVar.deviceWidth / 3,
@@ -1067,12 +1067,10 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
-        borderColor:'rgb(255,255,255)'
     },
     posAddTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderColor:'rgb(255,255,255)'
     },
     modalViewWrapper:{
         paddingHorizontal:28,
