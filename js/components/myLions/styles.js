@@ -207,7 +207,7 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 14,
-        height:styleVar.deviceWidth*0.16,
+        //height:styleVar.deviceWidth*0.16,
         paddingHorizontal:20,
         android: {
             paddingTop: 12,
@@ -717,7 +717,7 @@ module.exports = styleSheetCreate({
         width:styleVar.deviceWidth/2,
     },
     btnFilter:{
-        width:142,
+        width: styleVar.deviceWidth*0.38,
         height:50,
         backgroundColor: 'rgb(208, 7, 42)',
         paddingTop:14,
