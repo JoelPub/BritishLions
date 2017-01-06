@@ -16,6 +16,7 @@ export type Action =
     | { type: 'SET_COUNTDOWN_TIMER_END'}
     | { type: 'SET_ACCESS_GRANTED'}
     | { type: 'SET_NETWORK_STATUS' }
+    | { type: 'SET_POSITION_TOADD' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

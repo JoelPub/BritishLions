@@ -35,6 +35,7 @@ import BarSlider from '../utility/barSlider'
 import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import { setPositionToAdd } from '../../actions/position'
 
 class MyLionsSquad extends Component {
 
@@ -60,6 +61,7 @@ class MyLionsSquad extends Component {
             modalContent:this.getModalContent()
         }
         this.isUnMounted = false
+        this.uniondata = Data
         this.emptyFeed={
                     indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'wildcard',id:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
@@ -243,6 +245,12 @@ class MyLionsSquad extends Component {
         for(let union in player) {
             result=player[union].find((item)=>item.id===id)
             if(result !== undefined) {
+                let unionInfo = this.uniondata.find((n)=> n.id===union)
+                Object.assign(result, {
+                    logo: unionInfo.image, 
+                    country: unionInfo.displayname.toUpperCase(),
+                    countryid: unionInfo.id
+                })
 
                 if(typeof result.image==='string') {
                    if (result.image.indexOf('125.gif') > 0) {
@@ -297,6 +305,15 @@ class MyLionsSquad extends Component {
             error,
             [{text: 'Dismiss'}]
         )
+    }
+
+    _showDetail(item, route) {
+        this.props.drillDown(item, route)
+    }
+
+    _addPlayer(playerPos) {
+        this.props.setPositionToAdd(playerPos)
+        this.props.pushNewRoute('myLionsUnionsList')
     }
 
     render() {
@@ -386,7 +403,7 @@ class MyLionsSquad extends Component {
                                             </View>
                                             {
                                             item.info===null?
-                                            <ButtonFeedback>
+                                            <ButtonFeedback onPress={() => this._addPlayer('captain')}>
                                                 <View style={styles.addIndivPlayerWrapper}>
                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                 </View>
@@ -399,7 +416,7 @@ class MyLionsSquad extends Component {
                                                 </View>
                                             </ButtonFeedback>
                                             :
-                                            <ButtonFeedback>
+                                            <ButtonFeedback onPress={() => this._showDetail(item.info,'myLionsPlayerDetails')}>
                                                 <ImagePlaceholder 
                                                     width = {styleVar.deviceWidth / 3}
                                                     height = {styleVar.deviceWidth / 3}>
@@ -443,7 +460,7 @@ class MyLionsSquad extends Component {
                                                 return(
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback>
+                                                            <ButtonFeedback onPress={() => this._addPlayer('forwards')}>
                                                                 <View style={styles.posAddWrapper}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
@@ -458,20 +475,19 @@ class MyLionsSquad extends Component {
                                                         </View>
                                                         :
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback>
+                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
                                                                     height = {styleVar.deviceWidth / 3}>
                                                                     <Image transparent
                                                                         resizeMode='contain'
-                                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                                        source={item.image}
                                                                         style={styles.playerImage} />
                                                                 </ImagePlaceholder>
                                                                 <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={styles.playerNameText}>JAMES</Text>
-                                                                        <Text style={styles.playerNameText}>HASKELL</Text>
+                                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>
@@ -509,7 +525,7 @@ class MyLionsSquad extends Component {
                                                 return(
                                                         item===null?
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback>
+                                                            <ButtonFeedback onPress={() => this._addPlayer('backs')}>
                                                                 <View style={styles.posAddWrapper}>
                                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                                 </View>
@@ -524,20 +540,19 @@ class MyLionsSquad extends Component {
                                                         </View>
                                                         :
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback>
+                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
                                                                 <ImagePlaceholder 
                                                                     width = {styleVar.deviceWidth / 3}
                                                                     height = {styleVar.deviceWidth / 3}>
                                                                     <Image transparent
                                                                         resizeMode='contain'
-                                                                        source={require('../../../contents/my-lions/players/jameshaskell.png')} 
+                                                                        source={item.image}
                                                                         style={styles.playerImage} />
                                                                 </ImagePlaceholder>
                                                                 <View style={styles.playerNameTextWrapper}>
                                                                     <View style={[shapes.triangle]} />
                                                                     <View style={styles.gridBoxTitle}>
-                                                                        <Text style={styles.playerNameText}>JAMES</Text>
-                                                                        <Text style={styles.playerNameText}>HASKELL</Text>
+                                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
                                                                         </View>
                                                                 </View>
                                                             </ButtonFeedback>
@@ -574,7 +589,9 @@ function bindAction(dispatch) {
     return {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position))
     }
 }
 
