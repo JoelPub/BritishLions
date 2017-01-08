@@ -74,16 +74,15 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         android: {
             paddingTop: 0,
-            marginBottom: 10,
+            marginBottom: 5,
         }
     },
     headerPlayerDetails: {
-        backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
         marginBottom: 5,
         android: {
-            marginBottom: 0,
+            marginTop: 5,
         }
     },
     headerPlayerName: {
@@ -954,9 +953,9 @@ module.exports = styleSheetCreate({
         flexDirection:'row'
     },
     indivPosition:{
-        width:styleVar.deviceWidth/3,
+        width:styleVar.deviceWidth/3+1,
         backgroundColor:'rgb(255,255,255)',
-        paddingLeft:1
+        marginLeft:-1,
     },
     indivPosTitle:{
         borderTopWidth:1,
@@ -1005,8 +1004,6 @@ module.exports = styleSheetCreate({
     playerNameTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     posTitle:{
         flexDirection:'row',
@@ -1015,8 +1012,9 @@ module.exports = styleSheetCreate({
         borderWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
-        padding:12,
-        backgroundColor:'rgb(239,239,240)'
+        paddingHorizontal:12,
+        paddingTop:15,
+        backgroundColor:'rgb(239,239,240)',
     },
     posExpertTitle:{
         flexDirection:'row',
@@ -1056,7 +1054,12 @@ module.exports = styleSheetCreate({
         height:styleVar.deviceWidth*0.63
     },
     posWrapper:{
-        width:styleVar.deviceWidth/3
+        width:styleVar.deviceWidth/3+1,
+        marginLeft:-1
+    },
+    posBtn:{
+        borderLeftWidth:1,
+        borderColor:'rgb(255,255,255)'
     },
     posAddWrapper:{
         width:styleVar.deviceWidth / 3,
@@ -1064,14 +1067,10 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     posAddTextWrapper:{
         width: styleVar.deviceWidth / 3,
         marginTop:-12,
-        borderLeftWidth:1,
-        borderColor:'rgb(255,255,255)'
     },
     modalViewWrapper:{
         paddingHorizontal:28,
@@ -1128,15 +1127,16 @@ module.exports = styleSheetCreate({
     },
     cellExpert: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(216,217,218,1)',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(216,217,218,1)',
         height: 136,
     },
     cellExpertHeader: {
         height: 135,
-        width: 135
+        width: 135,
     },
     cellExpertInfo: {
+        marginTop: 0,
         backgroundColor: '#D00729',
         paddingLeft: 20,
         flex: 1,
@@ -1183,16 +1183,17 @@ module.exports = styleSheetCreate({
         paddingTop: 15,
         width: 121,
         android: {
-            paddingTop: 0
+            paddingTop: 14
         }
     },
     viewExpertProfileDescription: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
         width: 226,
+        lineHeight:20,
         textAlign:'center',
         android: {
-            marginTop: 5,
+            marginTop: 0,
             marginBottom: 10
         }
     },
@@ -1282,5 +1283,19 @@ module.exports = styleSheetCreate({
     playerFigureWrapper:{
         paddingVertical:25,
         paddingHorizontal:20,
+    },
+    titleBox: {
+        position: 'relative',
+        backgroundColor: styleVar.brandLightColor,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 14,
+        height:styleVar.deviceWidth*0.16,
+        paddingHorizontal:20,
+        android: {
+            paddingTop: 12,
+            paddingBottom: 6
+        }
     },
 })

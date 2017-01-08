@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { popRoute } from '../../actions/route'
+import { popRoute, pushNewRoute } from '../../actions/route'
 import { openDrawer } from '../../actions/drawer'
 import { Image } from 'react-native'
 import { Header, Text, Icon } from 'native-base'
@@ -21,14 +21,14 @@ const styles = styleSheetCreate({
         paddingRight:12,
     },
     btnArrow: {
-            marginTop: -22,
-            android: {
-                marginTop: -7,
-                height: 32
-            },
-            paddingLeft:0,
-            paddingRight:24,
+        marginTop: -22,
+        android: {
+            marginTop: -7,
+            height: 32
         },
+        paddingLeft:0,
+        paddingRight:24,
+    },
     headerIcon: {
         color: '#fff',
         fontSize: 38,
@@ -47,15 +47,19 @@ const styles = styleSheetCreate({
         	marginTop: -4
         }
     },
-    logoHeader: {
+    logoHeaderLink: {
         width: 27,
         height: 34,
         marginLeft: 10,
         marginTop: -12,
-        backgroundColor: 'transparent',
         android: {
-        	marginTop: -2
+            marginTop: -2
         }
+    },
+    logoHeader: {
+        width: 27,
+        height: 34,
+        backgroundColor: 'transparent'
     }
 })
 
@@ -68,6 +72,10 @@ class LionsHeader extends Component {
 	    this.props.popRoute()
 	}
 
+    pushNewRoute(route) {
+        this.props.pushNewRoute(route)
+    }
+
 	getBackArrowHTML() {
 		return (
 			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute()}>
@@ -78,12 +86,13 @@ class LionsHeader extends Component {
 
     getLogoHTML() {
         return (
-            <Image
-                resizeMode='contain'
-              	transparent
-              	source={require('../../../images/header/logo.png')}
-              	style={styles.logoHeader} />
-
+            <ButtonFeedback onPress={() => this.pushNewRoute('news')} style={styles.logoHeaderLink}>
+                <Image
+                    resizeMode='contain'
+                  	transparent
+                  	source={require('../../../images/header/logo.png')}
+                  	style={styles.logoHeader} />
+            </ButtonFeedback>
         )
     }
 
@@ -108,6 +117,7 @@ class LionsHeader extends Component {
 function bindAction(dispatch) {
     return {
         openDrawer: ()=>dispatch(openDrawer()),
+        pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
         popRoute: ()=>dispatch(popRoute())
     }
 }

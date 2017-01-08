@@ -635,6 +635,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
-        isAccessGranted: state.token.isAccessGranted
+        isAccessGranted: state.token.isAccessGranted,
+        positionToAdd: state.position.positionToAdd
     }
 }, bindAction)(MyLionsPlayerDetails)

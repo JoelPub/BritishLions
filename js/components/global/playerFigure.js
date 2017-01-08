@@ -167,15 +167,15 @@ export default class PlayerFigure extends Component {
                 {
                     this.props.tabBar.map((node,i)=>{
                         return(
-                            <View style={styles.playerFigurePageWrapper}>
+                            <View style={styles.playerFigurePageWrapper} key={i}>
                                 {
                                     this._mapJSON(node.content).map((rowData,index)=>{
                                         return(
-                                            <View style={styles.playerFigureRow}>
+                                            <View style={styles.playerFigureRow} key={index}>
                                             {
-                                                rowData.map((item, key) => {
+                                                rowData.map((item, j) => {
                                                     return(
-                                                        <View style={styles.playerFigureUnit}>
+                                                        <View style={styles.playerFigureUnit} key={j}>
                                                             <Text style={styles.playerFigureUpperText}>{item.title}</Text>
                                                             <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                                 <Text style={styles.ratingScorePoint}>{item.score}</Text>
