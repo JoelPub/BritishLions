@@ -53,7 +53,7 @@ class LionsTV extends Component {
                         this.state.isLoaded?
                             <Content>
                                 <StickyFooter>
-                                    {
+                                    { this.state.videosFeed.items &&
                                         this.state.videosFeed.items.map(function(data, index) {
                                             let year = data.snippet.publishedAt.substr(0,4)
                                             let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
