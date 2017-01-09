@@ -27,13 +27,13 @@ export default class ExpertCard extends Component {
     this.state = {}
   }
   render () {
-    let {hasTitle} = this.props
+    let {hasTitle, data} = this.props
     return (
       <ButtonFeedback >
       <View style={styles.indivPosition}>
         {
           hasTitle ? <View style={styles.indivPosTitle}>
-            <Text style={styles.indivPosTitleText}>CAPTAIN</Text>
+            <Text style={styles.indivPosTitleText}>{data}</Text>
           </View> : null
         }
 

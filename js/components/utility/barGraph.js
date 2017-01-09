@@ -8,8 +8,15 @@ import styleVar from '../../themes/variable'
 const styles = styleSheetCreate({
     barWrapper: {
         flexDirection:'row',
-        flex:1,
-        alignItems:'center'
+        flex:1
+    },
+    progressView: {
+        flex: 4,
+        marginTop: 5,
+        android: {
+          marginTop: 10,
+        }
+
     },
     fullBar: {
         height:8,
@@ -24,8 +31,12 @@ const styles = styleSheetCreate({
     scoreText: {
         fontFamily: styleVar.fontCondensed,
         fontSize:44,
-        lineHeight:48,
         color:'rgb(255,230,0)',
+        marginTop: -8,
+        android: {
+            marginTop: -15
+        }
+
     }
 })
 
@@ -37,7 +48,7 @@ export default class BarGraph extends Component {
     render() {
         return (
                 <View style={styles.barWrapper}>
-                    <View style={{flex:4}}>
+                    <View style={styles.progressView}>
                         <View style={[styles.fullBar,{width:this.props.fullWidth}]}></View>
                         <View style={[styles.scoreBar,{width:this.props.fullWidth*this.props.score/100}]}></View>
                     </View>
