@@ -74,10 +74,11 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         android: {
             paddingTop: 0,
-            marginBottom: 5,
+            marginBottom: 15,
         }
     },
     headerPlayerDetails: {
+        backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
         marginBottom: 5,
@@ -97,9 +98,11 @@ module.exports = styleSheetCreate({
     headerPlayerPosition: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
+        lineHeight: 18,
+        marginBottom: 8,
         android: {
             marginTop: 0,
-            marginBottom: 15
+            marginBottom: 13
         }
     },
     buttons: {
@@ -207,7 +210,7 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         paddingTop: 14,
         //height:styleVar.deviceWidth*0.16,
-        paddingHorizontal:20,
+        paddingHorizontal: 1,
         android: {
             paddingTop: 12,
             paddingBottom: 6
@@ -215,7 +218,7 @@ module.exports = styleSheetCreate({
     },
     gridBoxTitleRight: {
         borderRightWidth: 1,
-        borderRightColor: gridBorderColor
+        borderRightColor: gridBorderColor,
     },
     gridBoxTitleText: {
         textAlign: 'center',

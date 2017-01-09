@@ -75,7 +75,7 @@ class MyLionsFavoriteList extends Component {
                         <View style={styleGridBoxTitle}>
                             <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase().substring(0, rowData.name.lastIndexOf(" "))}</Text>
                             <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase().substring(rowData.name.lastIndexOf(" ")+1, rowData.name.length)}</Text>
-                            <Text style={styles.gridBoxTitleSupportText} numberOfLines={1}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>Overall Rating: {rowData.eyc3PlayerScore}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
