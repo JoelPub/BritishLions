@@ -73,7 +73,7 @@ module.exports = styleSheetCreate({
         marginBottom: 5,
         backgroundColor: 'transparent',
         android: {
-            paddingTop: 0,
+            paddingTop: 12,
             marginBottom: 15,
         }
     },
@@ -912,7 +912,10 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:18,
         textAlign:'left',
-        marginTop: 15,
+        marginTop: 12,
+        android: {
+            marginTop: 8,
+        }
     },
     barSliderWrapper:{
         height:108,
@@ -970,7 +973,7 @@ module.exports = styleSheetCreate({
     indivPosition:{
         width:styleVar.deviceWidth/3+1,
         backgroundColor:'rgb(255,255,255)',
-        marginLeft:-1,
+        marginLeft:-1
     },
     indivPosTitle:{
         borderTopWidth:1,
@@ -979,7 +982,8 @@ module.exports = styleSheetCreate({
         borderColor:'rgb(216,217,218)',
         height:50,
         paddingTop:17,
-        backgroundColor:'rgb(239,239,240)'
+        backgroundColor:'rgb(239,239,240)',
+        borderRightWidth:1
     },
     indivPosTitleText:{
         color:'rgb(175,0,30)',

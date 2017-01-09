@@ -55,8 +55,8 @@ class MyLionsExpertProfile extends Component {
       jobTitle: ['CAPTAIN','KICKER','WILDCARD'],
       squadData:{
         indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
-        forwards:[123,123,123,123,123,123,123,313,3123,31,13,12,312,31,321,312],
-        backs:[123,123,123,123,123,123,21,21,312,312,31,3123,31,321,31,312],
+        forwards:[123,123,123,123,123,123,123,313,3123,31,13,12,312,31,321,312,132,123,123,123],
+        backs:[123,123,123,123,123,123,21,21,312,312,31,3123,31,321,31,312,123,123,123,123,123],
       }
     };
   }
