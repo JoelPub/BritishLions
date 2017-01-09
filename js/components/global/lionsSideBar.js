@@ -15,6 +15,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
 import { debounce } from 'lodash'
 import { alertBox } from '../utility/alertBox'
+import { removeGoodFormFavoritePlayerList, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 
 const styles = styleSheetCreate({
     background: {
@@ -242,6 +243,8 @@ class LionsSidebar extends Component {
                 {text: 'Yes', onPress: () => {
                     this.props.setAccessGranted(false)
                     removeToken()
+                    removeGoodFormFavoritePlayerList()
+                    removeUserCustomizedSquad()
                     this.navigateTo('news')
                 }},
                 {text: 'No'}
