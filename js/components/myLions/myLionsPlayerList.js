@@ -298,6 +298,7 @@ class MyLionsPlayerList extends Component {
         this.setState({
             modalVisible:visible,
             resultVisible:!visible,
+            isEmptyResult: false,
             transparent:visible
         })
     }
@@ -560,7 +561,7 @@ class MyLionsPlayerList extends Component {
                                         this.state.isEmptyResult?
                                             <View syles={styles.unionsPlayerEmptySearchMsg}>
                                                 <Text style={styles.unionsPlayerEmptySearchTitle}>NO RESULTS FOUND</Text>
-                                                <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteia.</Text>
+                                                <Text style={styles.unionsPlayerEmptySearchSubTitle}>Try entering a different search criteria.</Text>
                                             </View>
                                         :
                                             this.state.resultVisible&&
