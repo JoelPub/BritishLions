@@ -2,6 +2,11 @@ package com.lionsofficial;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.WindowManager;
+import android.content.res.Configuration;
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.os.Bundle;
 
 import com.facebook.react.ReactApplication;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -43,5 +48,26 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public ReactNativeHost getReactNativeHost() {
       return mReactNativeHost;
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+
+    // In some cases modifying newConfig leads to unexpected behavior,
+    // so it's better to edit new instance.
+    Configuration configuration = new Configuration(newConfig);
+    adjustFontScaleOnChange(getApplicationContext(), configuration);
+  }
+
+  private void adjustFontScaleOnChange(Context context, Configuration configuration) {
+    if (configuration.fontScale != 1) {
+      configuration.fontScale = 1;
+      DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+      WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+      wm.getDefaultDisplay().getMetrics(metrics);
+      metrics.scaledDensity = configuration.fontScale * metrics.density;
+      context.getResources().updateConfiguration(configuration, metrics);
+    }
   }
 }
