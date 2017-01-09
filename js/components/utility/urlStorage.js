@@ -14,7 +14,7 @@ const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'
 const GOODFORM_GET_FAVORITE_PLAYER_URL_NAME = 'GoodFormFavoritePlayers'
-const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL = '/protected/mylionsfavourit?_=1480039224954'
+const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/get?_=1483928168053'
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad'
 
 export function getAssembledUrl(urlName) {
