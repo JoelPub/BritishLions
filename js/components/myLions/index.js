@@ -107,34 +107,29 @@ class MyLions extends Component {
                                 source={require('../../../images/content/mylionsBanner.png')} style={styles.mylionsBanner}>
                                 </Image>
                             </ImagePlaceholder>
-                            <ButtonFeedback rounded style={[styles.button,styles.btnMysquad]} onPress={() => this._mySquad()}>
-                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')} 
-                                    style={styles.btnMysquadIcon}>
-                                </Image>
-                                <Text 
-                                style={styles.btnMysquadLabel}>
-                                MY SQUAD
-                                </Text>
-                            </ButtonFeedback>                            
-                            <ButtonFeedback rounded style={[styles.button,styles.btnExpert]}
-                                            onPress={this._myExpertsPick}
-                            >
-                                <Icon name='md-contact' style={styles.btnExpertIcon} />
-                                <Text
-                                ellipsizeMode='tail'
-                                numberOfLines={1}
-                                style={styles.btnExpertLabel}>
-                                THE EXPERTS' SQUADS
-                                </Text>
-                            </ButtonFeedback>
-                            <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} 
-                            onPress={() => this._myLions()} >
-                                <Icon name='md-star' style={styles.btnFavouritesIcon} />
-                                <Text
-                                style={styles.btnFavouritesLabel}>
-                                FAVOURITES
-                                </Text>
-                            </ButtonFeedback>                             
+
+                            <View style={styles.btnsLanding}>
+                                <ButtonFeedback rounded style={[styles.button, styles.btnMysquad]} onPress={() => this._mySquad()}>
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')} 
+                                        style={styles.btnMysquadIcon}>
+                                    </Image>
+                                    <Text style={styles.btnMysquadLabel}>
+                                        MY SQUAD
+                                    </Text>
+                                </ButtonFeedback>                            
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={this._myExpertsPick}>
+                                    <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel}>
+                                        THE EXPERTS' SQUADS
+                                    </Text>
+                                </ButtonFeedback>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} onPress={() => this._myLions()}>
+                                    <Icon name='md-star' style={styles.btnFavouritesIcon} />
+                                    <Text style={styles.btnFavouritesLabel}>
+                                        FAVOURITES
+                                    </Text>
+                                </ButtonFeedback>   
+                            </View>                          
                             <LionsFooter isLoaded={true} />
                         </Content>
                     <EYSFooter mySquadBtn={true}/>
