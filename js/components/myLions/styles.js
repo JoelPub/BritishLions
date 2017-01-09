@@ -73,7 +73,7 @@ module.exports = styleSheetCreate({
         marginBottom: 5,
         backgroundColor: 'transparent',
         android: {
-            paddingTop: 0,
+            paddingTop: 12,
             marginBottom: 15,
         }
     },
