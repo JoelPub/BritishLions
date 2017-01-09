@@ -30,13 +30,13 @@ class Gallery extends Component {
     }
 
     renderPagination = (index, total, context) => {
-            return (
-                <View style={styles.swiperNumber}>
-                  <Text style={styles.swiperNumberText}>
+        return (
+            <View style={styles.swiperNumber}>
+                <Text style={styles.swiperNumberText}>
                     {index + 1} of {total}
-                  </Text>
-                </View>
-            )
+                </Text>
+            </View>
+        )
     }
     renderContent() {
         return (
@@ -44,7 +44,7 @@ class Gallery extends Component {
                 <Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>
                 <Image style={Slider.galleryPoster} source={{uri:this.children.props.source.uri}} />
             </View>
-            )
+        )
     }
 
     shareImg(context, imgUrl,callback){
@@ -76,8 +76,8 @@ class Gallery extends Component {
         .catch((errorMessage,statusCode)=>{
             callback()
         })
-
     }
+
     callback(){
         this.setState({
             isSubmitting:false
@@ -106,16 +106,16 @@ class Gallery extends Component {
                                 {
                                     this.props.content.images.map((img,index)=>{
                                         return(
-                                             <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent}>
+                                            <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent}>
                                                 <Image style={Slider.galleryPoster} source={{uri:img.image}} caption={img.caption}/>
                                             </Lightbox>
-                                            )
+                                        )
                                     })
                                 }
                             </Swiper>
                         </View>
 
-                        <View style={styles.shareWrapper}>
+                        {/*<View style={styles.shareWrapper}>
                             <TouchableOpacity
                                 disabled = {this.state.isSubmitting}
                                 onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
@@ -123,7 +123,7 @@ class Gallery extends Component {
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
                             </TouchableOpacity>
-                        </View>
+                        </View>*/}
 
                         <View style={styles.description}>
                             <Text style={styles.paragraph}>
@@ -134,7 +134,7 @@ class Gallery extends Component {
                         <LionsFooter isLoaded={true} />
                     </Content>
 
-                    < EYSFooter />
+                    <EYSFooter />
                 </View>
             </Container>
         )
