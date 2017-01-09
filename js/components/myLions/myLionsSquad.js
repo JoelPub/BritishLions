@@ -36,6 +36,7 @@ import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { setPositionToAdd } from '../../actions/position'
+import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 
 class MyLionsSquad extends Component {
 
@@ -48,13 +49,9 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadData:{
-                    indivPos:[{position:'captain',id:'8759'},{position:'kicker',id:null},{position:'wildcard',id:'88878'}],
-                    forwards:[null,'19930',null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                    backs:['114146',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-            },
+            squadData: { backs: "114146|8759", captain: "8759", widecard: "88878", forwards: "19930|8759", kicker: "8759"},
             squadDatafeed:{
-                    indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'wildcard',info:{}}],
+                    indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'widecard',info:{}}],
                     forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
                     backs:[{},{},null,{},null,{},null,null,null,null,null,null,null,null,null,null],
             },            
@@ -63,17 +60,17 @@ class MyLionsSquad extends Component {
         this.isUnMounted = false
         this.uniondata = Data
         this.emptyFeed={
-                    indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'wildcard',id:null}],
+                    indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'widecard',id:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                     backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                 }
         this.semiFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
+                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'widecard',id:123}],
                     forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
                     backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
         }
         this.fullFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:123},{position:'wildcard',id:123}],
+                    indivPos:[{position:'captain',id:123},{position:'kicker',id:123},{position:'widecard',id:123}],
                     forwards:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123],
                     backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
         }
@@ -209,30 +206,34 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getPlayersListByUnion(), 600)
+        setTimeout(() => this._getSquad(), 600)
     }
 
     setSquadData(player,squad){
+        console.log('!!!squad',squad)
+        squad=squad.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')
+        console.log('!!!squad',squad)
+        let squadFeed=JSON.parse(squad)
+        console.log('!!!squadFeed',squadFeed)
         let tempFeed={
-                    indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'wildcard',info:null}],
+                    indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                     backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                 }
-        for(let pos in squad) {
-            squad[pos].map((item,index)=>{
-                console.log('!!!item',item)
-                if(item!==null) {
-                    if(item.id===undefined) {
-                        console.log('!!!search',this.searchPlayer(player,item))
-                        tempFeed[pos][index]=this.searchPlayer(player,item)
-                    }
-                    else if(item.id!==null) {
-                        console.log('!!!search',this.searchPlayer(player,item.id))
-                        tempFeed[pos][index].info=this.searchPlayer(player,item.id)
-
-                    }
-                }  
-            })
+        for(let pos in squadFeed) {
+            console.log('!!!pos',pos)
+            if(pos==='forwards'||pos==='backs') {
+            console.log('!!!forwardsbacks',squadFeed[pos])
+                let tempArr=squadFeed[pos].split('|')
+                tempArr.map((item,index)=>{
+                    tempFeed[pos][index]=this.searchPlayer(player,item)
+                })
+            }
+            else {
+                console.log('!!!squadFeed[pos]',squadFeed[pos])
+                console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
+            }
         }
         console.log('!!!tempFeed',tempFeed)
         this.setState({
@@ -271,28 +272,45 @@ class MyLionsSquad extends Component {
         return result===undefined?null:result
     }
 
-    _getPlayersListByUnion(){
+    _getSquad(){
         this.setState({ isLoaded: false })
-        getSoticFullPlayerList().then((catchedFullPlayerList) => {
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
-                     if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                        //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
-                        console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
-                        console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
-                        this.setSquadData(catchedFullPlayerList,this.state.squadData)
-                        this.setState({ isLoaded: true })
-                     }
-                 }).catch((error) => {
-                     console.log('Error when try to get the EYC3 full player list: ', error)
-                 })
+        getUserCustomizedSquad().then((catchedSquad)=>{
+            if(this.isUnMounted) return
+            if(catchedSquad.auth) {
+                if(catchedSquad.auth === 'Sign In is Required'){
+                    this.setState({ isLoaded: true }, () => {
+                        this._signInRequired()
+                    })
+                }
+            }else if(catchedSquad.error){
+                console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(catchedSquad.error)
+                })
+            }else{
+                console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                                 if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                                    //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                                    console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
+                                    console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
+                                    this.setSquadData(catchedFullPlayerList,catchedSquad.data)
+                                    this.setState({ isLoaded: true })
+                                 }
+                             }).catch((error) => {
+                                 console.log('Error when try to get the EYC3 full player list: ', error)
+                             })
+                        }
+                    }).catch((error) => {
+                        this.setState({ isLoaded: true }, () => {
+                            this._showError(error) // prompt error
+                        })
+                    })
             }
-        }).catch((error) => {
-            this.setState({ isLoaded: true }, () => {
-                this._showError(error) // prompt error
-            })
         })
+        
     }
 
     componentWillUnmount() {
