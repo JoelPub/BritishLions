@@ -74,10 +74,11 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         android: {
             paddingTop: 0,
-            marginBottom: 5,
+            marginBottom: 15,
         }
     },
     headerPlayerDetails: {
+        backgroundColor: 'transparent',
         alignSelf: 'center',
         alignItems: 'center',
         marginBottom: 5,
@@ -97,9 +98,11 @@ module.exports = styleSheetCreate({
     headerPlayerPosition: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
+        lineHeight: 18,
+        marginBottom: 8,
         android: {
             marginTop: 0,
-            marginBottom: 15
+            marginBottom: 13
         }
     },
     buttons: {
@@ -207,7 +210,7 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         paddingTop: 14,
         //height:styleVar.deviceWidth*0.16,
-        paddingHorizontal:20,
+        paddingHorizontal: 1,
         android: {
             paddingTop: 12,
             paddingBottom: 6
@@ -215,7 +218,7 @@ module.exports = styleSheetCreate({
     },
     gridBoxTitleRight: {
         borderRightWidth: 1,
-        borderRightColor: gridBorderColor
+        borderRightColor: gridBorderColor,
     },
     gridBoxTitleText: {
         textAlign: 'center',
@@ -398,33 +401,40 @@ module.exports = styleSheetCreate({
         justifyContent: 'flex-end',
         backgroundColor:'white'
     },
+    btnsLanding: {
+        paddingBottom: 45,
+        paddingTop: 45
+    },
     btnMysquad: {
         height:100,
         flexDirection:'row',
-        marginTop:40,
-        paddingTop:5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 0,
     },
     btnMysquadIcon: {
-        justifyContent:'flex-start',
         width:34,
         height:52
     },
     btnMysquadLabel: {
-        textAlign:'left',
-        marginLeft:14,
         fontFamily: styleVar.fontCondensed,
         fontSize: 44,
         lineHeight: 44,
-        paddingTop:10
+        marginTop: 21,
+        marginLeft: 14,
+        android: {
+            marginTop: 11,
+        }
     },
     btnExpert: {
+        height:50,
         backgroundColor:'rgb(38,38,38)',
         flexDirection:'row',
-        marginTop:10,
         paddingTop:5,
-        paddingHorizontal:20,
+        marginTop: 0
     },
     btnExpertSquad: {
+        height:50,
         backgroundColor:'rgb(38,38,38)',
         flexDirection:'row',
         marginTop:20,
@@ -434,36 +444,40 @@ module.exports = styleSheetCreate({
     },
     btnExpertIcon: {
         marginBottom: 3,
-        width: 24,
-        color: 'rgb(175,0,30)',
-        fontSize:24,
+        color: 'rgb(208,7,42)',
+        fontSize: 24,
         backgroundColor:'transparent',
         android:{
-            marginBottom: 1,
+            marginBottom: 4,
         }
     },
     btnExpertLabel: {
-        textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5,
+        paddingTop: 5,
         backgroundColor:'transparent',
+        marginLeft: 6,
+        android:{
+            marginTop: -7,
+        }
     },
     btnFavourites: {
         backgroundColor:'rgb(128,127,131)',
         flexDirection:'row',
-        marginTop:10,
-        marginBottom:40,
+        marginTop: 0,
+        marginBottom: 0,
         paddingTop:5,
+        android:{
+            paddingTop: 0,
+        }
     },
     btnFavouritesIcon: {
         marginBottom: 5,
-        width: 24,
         color: 'rgb(255,204,40)',
         fontSize:24,
         android:{
-            marginBottom: 2,
+            marginBottom: 1,
         }
     },
     btnFavouritesLabel: {
@@ -472,6 +486,7 @@ module.exports = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop:5,
+        marginLeft: 5
     },
     onboarding: {
         flex:1
