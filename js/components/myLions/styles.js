@@ -383,6 +383,7 @@ module.exports = styleSheetCreate({
         margin: 5,
         marginBottom: 3,
         marginRight: 0,
+        padding: 0,
         color:'rgb(128,127,131)',
         backgroundColor:'rgb(255,255,255)',   
     },
