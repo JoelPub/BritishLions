@@ -46,7 +46,7 @@ class Login extends Component {
             theme: React.PropTypes.object
         }
 
-        this.serviceUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
 
         // debounce
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})

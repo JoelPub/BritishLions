@@ -27,9 +27,9 @@ class MyLionsPlayerDetails extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favAddUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/add',
-        this.favRemoveUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/player/remove',
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
+        this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
+        this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.state = {
@@ -264,20 +264,6 @@ class MyLionsPlayerDetails extends Component {
             buttonText = this.state.isFav === true? 'REMOVE':'ADD'
         }
 
-        // check if they provide a gif image logo, then convert it to png
-        let image = this.props.detail.image
-        if (image.indexOf('125.gif') > 0) {
-            image = require(`../../../contents/unions/nations/125.png`)
-        } else if (image.indexOf('126.gif') > 0) {
-            image = require(`../../../contents/unions/nations/126.png`)
-        } else if (image.indexOf('127.gif') > 0) {
-            image = require(`../../../contents/unions/nations/127.png`)
-        } else if (image.indexOf('128.gif') > 0) {
-            image = require(`../../../contents/unions/nations/128.png`)
-        } else {
-            image = {uri:image}
-        } 
-
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -285,7 +271,7 @@ class MyLionsPlayerDetails extends Component {
 
                     <Content bounces={false}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={image} style={styles.imageCircle}/>
+                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
                             <View style={styles.headerPlayerDetails}>
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
@@ -329,10 +315,6 @@ class MyLionsPlayerDetails extends Component {
                                 <Text style={styles.detail}>{this.props.detail.country}</Text>
                             </Col>
                         </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull]}>
-                            <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>{this.props.detail.honours}</Text>
-                        </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>

@@ -142,7 +142,7 @@ class LionsSidebar extends Component {
     }
 
     _refreshToken(route) {
-        let refreshTokenUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/sessions/create'
+        let refreshTokenUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
         
         if (!this.state.isAjaxRequesting) {  
             // if no requesting in service, then lets proceed
@@ -179,7 +179,7 @@ class LionsSidebar extends Component {
                     onError: (error) => {
                         if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                        if (error === 'invalid_grant') {
+                        if (error === 'The email and password do not match, Please verify and try again.') {
                             // token failed to update, ask user to sign in again
                             this._askToSignIn()
                         } else {

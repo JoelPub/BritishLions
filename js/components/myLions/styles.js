@@ -187,6 +187,10 @@ module.exports = styleSheetCreate({
         width: 80,
         height: 80,
     },
+    gridBoxDesc: {        
+        width: styleVar.deviceWidth / 2,
+        marginTop:-12
+    },
     gridBoxDescWrapper: {        
         width: styleVar.deviceWidth / 2
     },
@@ -236,7 +240,9 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         height: 100,
         borderRightWidth: 1,
-        borderRightColor: gridBorderColor
+        borderRightColor: gridBorderColor,
+        borderTopWidth: 1,
+        borderTopColor: gridBorderColor
     },
     detailsGridColFull: {
         borderWidth: 1,
@@ -379,138 +385,12 @@ module.exports = styleSheetCreate({
     rtnIcon: {
         fontSize:24
     },
-    mylionsBanner: {
-        height: styleVar.deviceWidth,
-        width:styleVar.deviceWidth, 
-        justifyContent: 'flex-end',
-        backgroundColor:'white'
+    gridBoxCol:{
+        width:styleVar.deviceWidth/2, 
+        height:styleVar.deviceWidth/2+69, 
     },
-    btnMysquad: {
-        height:100,
-        flexDirection:'row',
-        marginTop:40
-    },
-    btnMysquadIcon: {
-        justifyContent:'flex-start',
-        width:34,
-        height:52
-    },
-    btnMysquadLabel: {
-        textAlign:'left',
-        marginLeft:14,
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 44,
-        lineHeight: 44,
-        paddingTop:10
-    },
-    btnExpert: {
-        backgroundColor:'rgb(38,38,38)',
-        flexDirection:'row',
-        marginTop:10
-    },
-    btnExpertIcon: {
-        marginLeft: 20,
-        width: 34, 
-        color: 'rgb(175,0,30)',
-        fontSize:24
-    },
-    btnExpertLabel: {
-        textAlign:'left',
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        lineHeight: 24,
-        paddingTop:5
-    },
-    btnFavourites: {
-        backgroundColor:'rgb(128,127,131)',
-        flexDirection:'row',
-        marginTop:10,
-        marginBottom:40
-    },
-    btnFavouritesIcon: {
-        marginLeft: 20,
-        width: 34, 
-        color: 'rgb(255,204,40)',
-        fontSize:24
-    },
-    btnFavouritesLabel: {
-        textAlign:'left',
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        lineHeight: 24,
-        paddingTop:5
-    },
-    onboarding: {
-        flex:1,
-        paddingTop:20,
-        android: {
-            paddingTop:0
-        }
-    },
-    btnClose: {
-        backgroundColor:'rgb(130,4,23)',
-        width:50,
-        height:49,
-        position:'absolute',
-        right:0,
-        top:20,
-        paddingTop:10,
-        android: {
-            top:0
-        }
-    },
-    btnCloseIcon: {
-        fontSize:24,
-        textAlign:'center'
-    },
-    onboardingTitle: {
-        marginTop:71,
-        textAlign:'center',
-        fontSize:28,
-        fontFamily: styleVar.fontCondensed,
-        backgroundColor:'transparent',
-        lineHeight:28,
-    },
-    onboardingPage: {
-        paddingLeft:28,
-        paddingRight:27,
-    },
-    onboardingPageText: {
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:16,
-        paddingTop:14,
-        textAlign:'center'
-    },
-    btnSkipLeft: {
-        height: 50, 
-        width:132, 
-        backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        left:20,
-        bottom:60 
-    },
-    btnBack: {
-        height: 50, 
-        width:132, 
-        backgroundColor: 'rgb(175,0,30)',
-        position:'absolute',
-        left:20,
-        bottom:60 
-    },
-    btnSkipRight: {
-        height: 50, 
-        width:132, 
-        backgroundColor: 'rgb(38,38,38)',
-        position:'absolute',
-        right:20,
-        bottom:60 
-    },
-    btnNext: {
-        height: 50, 
-        width:132, 
-        backgroundColor: styleVar.brandLightColor,
-        position:'absolute',
-        right:20,
-        bottom:60 
+    gridList:{
+        flexDirection:'row', 
+        flexWrap:'wrap'
     }
 })

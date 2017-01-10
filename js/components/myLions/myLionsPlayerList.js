@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform } from 'react-native'
+import { Image, View, Modal, ScrollView, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { replaceRoute } from '../../actions/route'
 import { drillDown } from '../../actions/content'
@@ -23,27 +23,81 @@ import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
-import StickyFooter from '../utility/stickyFooter'
+import LionsFooter from '../global/lionsFooter'
 
 class MyLionsPlayerList extends Component {
 
     constructor(props){
         super(props)
-
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
         this.unionFeed = this.props.unionFeed
+        this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
         this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
-        this.favUrl = 'https://api-ukchanges.co.uk/lionsrugby/api/protected/mylionsfavourit?_=1480039224954'
-        this.searchResult = []
+        this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
         this.state = {
             isLoaded: false,
             modalVisible: false,
             transparent: true,
             resultVisible: false,
-            playerListFeeds: [],
+            playerListFeeds: this.ds.cloneWithRows([]),
             favoritePlayers: [],
+            searchResult:this.ds.cloneWithRows([]),
         }
+        this.playerListFeeds=[]
         this.nameFilter = ''
+    }
+
+    _renderRow(rowData, sectionID, rowID, highlightRow) {
+        return (
+            <View style={styles.gridBoxCol}>
+                <ButtonFeedback onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                    <ImagePlaceholder 
+                        width = {styleVar.deviceWidth / 2}
+                        height = {styleVar.deviceWidth / 2}>
+                        <Image transparent
+                            resizeMode='contain'
+                            source={rowData.image} 
+                            style={styles.gridBoxImg} />
+                    </ImagePlaceholder>
+                    <View style={styles.gridBoxDesc}>
+                        <View style={[shapes.triangle]} />
+                        <View style={styles.gridBoxTitle}>
+                            <Text style={styles.gridBoxTitleText}>{rowData.name.toUpperCase()}</Text>
+                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
+                        </View>
+                    </View>
+                </ButtonFeedback>
+            </View> 
+        )
+    }
+
+    _renderFooter() {
+        return(
+        <View style={{width:styleVar.deviceWidth}} >
+            <LionsFooter isLoaded={true} />
+        </View>
+        )
+    }
+
+    _renderSearch(rowData, sectionID, rowID, highlightRow) {
+        return (
+            <View style={styles.resultRow}>
+                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
+                    <View style={styles.searchImg}>
+                        <Image transparent
+                            resizeMode='stretch'
+                            source={rowData.image}
+                            style={styles.playerImg}
+                             />
+                    </View>
+                    <View style={styles.resultDesc}>
+                        <Text style={styles.resultRowTitleText}>{rowData.name.toUpperCase()}</Text>
+                        <Text style={styles.resultRowSubtitleText}>{rowData.position}</Text>
+                    </View>
+                </ButtonFeedback>
+            </View>
+        )
     }
 
     _showDetail(item, route) {
@@ -79,8 +133,35 @@ class MyLionsPlayerList extends Component {
         )
     }
 
+    handlePlayer(players) {
+        players.map((item,index)=>{
+            let image = item.image
+            Object.assign(item, {
+                logo: this.union.image, 
+                country: this.union.displayname.toUpperCase(),
+                countryid: this.union.id,
+                isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
+            })
+            if(typeof image==='string') {
+               if (image.indexOf('125.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/125.png`)
+                } else if (image.indexOf('126.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/126.png`)
+                } else if (image.indexOf('127.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/127.png`)
+                } else if (image.indexOf('128.gif') > 0) {
+                    players[index].image = require(`../../../contents/unions/nations/128.png`)
+                } else {
+                    players[index].image = {uri:image}
+                } 
+            }
+            
+        })
+        return players
+    }
+
     _getFavoritePlayers(playersByNation) {
-        let playersFeed = playersByNation[this.unionFeed.unionId]
+        this.playerListFeeds = this.handlePlayer(playersByNation[this.unionFeed.unionId])
         let options = {
             url: this.favUrl,
             data: {},
@@ -98,8 +179,8 @@ class MyLionsPlayerList extends Component {
                 let favoritePlayers = (res.data === '')? [] : res.data.split('|')
                 
                 this.setState({ 
-                    playerListFeeds: playersFeed,
-                    favoritePlayers
+                    playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds),
+                    favoritePlayers:favoritePlayers
                 })
             },
             onError: (res) => {
@@ -135,12 +216,11 @@ class MyLionsPlayerList extends Component {
     }
 
     _searchPlayer = (keywords) => {
-        this.searchResult=[]
+        let searchResult=[]
         //strip out non alpha characters
         let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
         let strArr = strSearch.split(' ')
-        let playerFeeds = this.state.playerListFeeds
-        let tempArr = playerFeeds
+        let tempArr = this.playerListFeeds.slice()
        
         function filterName(player) {
             let nameArr = player.name.toLowerCase().split(' ')
@@ -163,23 +243,21 @@ class MyLionsPlayerList extends Component {
 
         if (strSearch.trim() !== '') {
             //search exactly same name
-            this.searchResult = this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
+            searchResult = searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
             
             //split words
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
-                    this.nameFilter=item
-                    console.log('!!!this.nameFilter',this.nameFilter)
-            
-                    this.searchResult=this.searchResult.concat(
-                        playerFeeds.filter(filterName.bind(this))
+                    this.nameFilter=item            
+                    searchResult=searchResult.concat(
+                        this.playerListFeeds.filter(filterName.bind(this))
                     )
                 })
             }
             
 
             //name contain keywords
-            this.searchResult=this.searchResult.concat(playerFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
@@ -189,39 +267,41 @@ class MyLionsPlayerList extends Component {
             }
 
             if (tempArr.length>0) {
-                this.searchResult = this.searchResult.concat(tempArr)
+                searchResult = searchResult.concat(tempArr)
             }
 
             //remove duplicate
-            this.searchResult.map((item,index)=>{
+            searchResult.map((item,index)=>{
                 let arr=[]
-                for(let j=index+1; j<this.searchResult.length; j++) {                    
-                    if(item.id===this.searchResult[j].id){
+                for(let j=index+1; j<searchResult.length; j++) {                    
+                    if(item.id===searchResult[j].id){
                         arr=arr.concat(j)
                     }
                 }
                 if (arr.length>0) {
                     arr.reverse().map((start,index)=>{
-                        this.searchResult.splice(start,1)
+                        searchResult.splice(start,1)
                     })
                 }
             })
 
-            this.searchResult.length > 0?  
+            searchResult.length > 0?  
                 this.setState({
                     resultVisible: true,
-                    transparent: false
+                    transparent: false,
+                    searchResult: this.ds.cloneWithRows(searchResult)
                 }) 
             :
                 this.setState({
                     resultVisible: false,
-                    transparent: true
+                    transparent: true,
+                    searchResult: this.ds.cloneWithRows([])
                 })
         } else {
-            this.searchResult = []
             this.setState({
                 resultVisible: false,
-                transparent: true
+                transparent: true,
+                searchResult: this.ds.cloneWithRows([])
             })
         }
     }
@@ -309,98 +389,23 @@ class MyLionsPlayerList extends Component {
                                 </View>
                             </View>
                             {this.state.resultVisible&&
-                            <ScrollView>
-                                {this.searchResult.map((item,index)=>{
-                                    return(
-                                        <View style={styles.resultRow} key={index}>
-                                            <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setModalVisible(false),this._showDetail(item,'myLionsPlayerDetails')}}>
-                                                <View style={styles.searchImg}>
-                                                    <Image transparent
-                                                        resizeMode='stretch'
-                                                        source={{uri:item.image}}
-                                                        style={styles.playerImg}
-                                                         />
-                                                </View>
-                                                <View style={styles.resultDesc}>
-                                                    <Text style={styles.resultRowTitleText}>{item.name.toUpperCase()}</Text>
-                                                    <Text style={styles.resultRowSubtitleText}>{item.position}</Text>
-                                                </View>
-                                            </ButtonFeedback>
-                                        </View>
-                                        )
-                                    }, this)
-                                }
-                            </ScrollView>
-                        }
+                                <ListView 
+                                    dataSource={this.state.searchResult}
+                                    renderRow={this._renderSearch.bind(this)}
+                                    enableEmptySections = {true} 
+                                  />
+                            }
                         </View>
                     </FilterListingModal>
                     {
                         this.state.isLoaded?
-                            <Content>
-                                <StickyFooter reduceHeight={Platform.OS === 'android'? 370 : 400}>
-                                    {
-                                        this._mapJSON(this.state.playerListFeeds).map((rowData, index) => {
-                                            return (
-                                                <Grid key={index}>
-                                                    {
-                                                        rowData.map((item, key) => {
-                                                            let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                                            let styleGridBoxTitle = (key ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-                                                            let union = this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
-                                                            Object.assign(item, {
-                                                                logo: union.image, 
-                                                                country: union.displayname.toUpperCase(),
-                                                                countryid: union.id,
-                                                                isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
-                                                            })
-
-                                                            // check if they provide a gif image logo, then convert it to png
-                                                            let image = item.image
-                                                            if (image.indexOf('125.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/125.png`)
-                                                            } else if (image.indexOf('126.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/126.png`)
-                                                            } else if (image.indexOf('127.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/127.png`)
-                                                            } else if (image.indexOf('128.gif') > 0) {
-                                                                image = require(`../../../contents/unions/nations/128.png`)
-                                                            } else {
-                                                                image = {uri:image}
-                                                            } 
-
-                                                            return (
-                                                                <Col style={styles.gridBoxCol} key={key}>
-                                                                    <ButtonFeedback style={[styles.gridBoxTouchable, styles.gridBoxTouchable]} onPress={() => this._showDetail(item,'myLionsPlayerDetails')}>
-                                                                        <View style={styles.gridBoxTouchableView}>
-                                                                            <View style={styleGridBoxImgWrapper}>
-                                                                                <ImagePlaceholder 
-                                                                                    width = {styleVar.deviceWidth / 2}
-                                                                                    height = {styleVar.deviceWidth / 2}>
-                                                                                    <Image transparent
-                                                                                        resizeMode='contain'
-                                                                                        source={image}
-                                                                                        style={styles.gridBoxImg} />
-                                                                                </ImagePlaceholder>
-                                                                            </View>
-                                                                            <View style={styles.gridBoxDescWrapper}>
-                                                                                <View style={[shapes.triangle]} />
-                                                                                <View style={styleGridBoxTitle}>
-                                                                                    <Text style={styles.gridBoxTitleText}>{item.name.toUpperCase()}</Text>
-                                                                                    <Text style={styles.gridBoxTitleSupportText}>{item.position}</Text>
-                                                                                </View>
-                                                                            </View>
-                                                                        </View>
-                                                                    </ButtonFeedback>
-                                                                </Col>
-                                                            )
-                                                        }, this)
-                                                    }
-                                                </Grid>
-                                            )
-                                        }, this)
-                                    }
-                                </StickyFooter>
-                            </Content>
+                            <ListView 
+                                dataSource={this.state.playerListFeeds}
+                                renderRow={this._renderRow.bind(this)}
+                                enableEmptySections = {true} 
+                                contentContainerStyle={styles.gridList}
+                                renderFooter ={this._renderFooter}
+                              />
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
