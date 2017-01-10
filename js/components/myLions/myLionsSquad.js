@@ -49,7 +49,6 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadData: { backs: "114146|8759", captain: "8759", widecard: "88878", forwards: "19930|8759", kicker: "8759"},
             squadDatafeed:{
                     indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'widecard',info:{}}],
                     forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
@@ -171,19 +170,11 @@ class MyLionsSquad extends Component {
         })
     }
     changeMode(mode) {
-        if(mode===undefined) {
-            this.setState({
-                showScoreCard:this.state.showScoreCard==='empty'?'semi':this.state.showScoreCard==='semi'?'full':'empty',
-                squadData:this.state.showScoreCard==='empty'?this.semiFeed:this.state.showScoreCard==='semi'?this.fullFeed:this.emptyFeed
-            })
-        }
-        else {
-            this.setState({
-                showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full',
-                squadData:mode==='empty'?this.emptyFeed:mode==='semi'?this.semiFeed:this.fullFeed
-            })
-        this._setModalVisible(false)
-        }
+        this.setState({
+            showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full'
+        },()=>{            
+        this._setModalVisible(false)        
+        })
     }
 
     _mapJSON(data, colMax = 2) {
@@ -313,6 +304,20 @@ class MyLionsSquad extends Component {
         
     }
 
+
+    componentWillReceiveProps(nextProps) {
+        let routes = globalNav.navigator.getCurrentRoutes()
+        
+        // re render after 'back nav' pressed
+        if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsSquad') {
+            this.setState({
+                isLoaded: false,
+            }, () => {
+                setTimeout(()=>{this._getSquad()},600)
+            })
+        }
+    }
+
     componentWillUnmount() {
         this.isUnMounted = true
     }
@@ -342,7 +347,7 @@ class MyLionsSquad extends Component {
                     {this.state.isLoaded?
                     <ScrollView>
                         <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                        <ButtonFeedback style={styles.scoreCard}  onPress={()=>this.changeMode()}>
+                        <ButtonFeedback style={styles.scoreCard} >
                         {this.state.showScoreCard!=='full'?
                             <View style={styles.semiCard}>
                                 <Text style={styles.semiCardText}>
@@ -421,7 +426,7 @@ class MyLionsSquad extends Component {
                                             </View>
                                             {
                                             item.info===null?
-                                            <ButtonFeedback onPress={() => this._addPlayer('captain')}  style={styles.posBtn}>
+                                            <ButtonFeedback onPress={() => this._addPlayer(item.position)}  style={styles.posBtn}>
                                                 <View style={styles.addIndivPlayerWrapper}>
                                                     <Icon name='md-person-add' style={styles.addPlayerIcon} />
                                                 </View>
