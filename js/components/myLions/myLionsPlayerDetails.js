@@ -25,6 +25,7 @@ import styleVar from '../../themes/variable'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import SquadModal from '../global/squadModal'
 import PlayerFigure from '../global/playerFigure'
+import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -38,9 +39,17 @@ class MyLionsPlayerDetails extends Component {
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
+            inSquad: false,
             isFormSubmitting: false,
             isDoneUpdatingState: false,
-            modalContent:this.getModalContent()
+            btnSubmit:'',
+            modalContent:this.getModalContent(),
+            squadDataFeed: {backs:[],
+                            captain: [], 
+                            widecard: [], 
+                            forwards: [], 
+                            kicker: []
+                            }
         },
         this.tabBar = [{subject:'ATTACK',
                         content:[  
@@ -70,44 +79,44 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','CAPTAIN','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','captain')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='CAPTAIN'&&{borderWidth:1,borderColor:'white'}]}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>CAPTAIN</Text>
                             </View>
                             <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>1/1</Text>
+                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.captain.length}/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','KICKER','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','kicker')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='KICKER'&&{borderWidth:1,borderColor:'white'}]}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>KICKER</Text>
                             </View>
                             <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
+                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.kicker.length}/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','WILDCARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','widecard')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='WIDECARD'&&{borderWidth:1,borderColor:'white'}]}>
                             <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>WILDCARD</Text>
+                                <Text style={styles.modalBtnPosLeftText}>WIDECARD</Text>
                             </View>
                             <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>0/1</Text>
+                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.widecard.length}/1</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','FORWARD','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','forwards')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='FORWARDS'&&{borderWidth:1,borderColor:'white'}]}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>FORWARD</Text>
                             </View>
                             <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>12/16</Text>
+                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.forwards.length}/16</Text>
                             </View>
                         </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'message','BACK','SUCCESSFULLY ADDED','OK')}  style={styles.modalBtnPosition}>
+                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','backs')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='BACKS'&&{borderWidth:1,borderColor:'white'}]}>
                             <View style={styles.modalBtnPositionLeft}>
                                 <Text style={styles.modalBtnPosLeftText}>BACK</Text>
                             </View>
                             <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>5/16</Text>
+                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.backs.length}/16</Text>
                             </View>
                         </ButtonFeedback>
                     </View>
@@ -187,22 +196,40 @@ class MyLionsPlayerDetails extends Component {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
-                    this.setState({ isDoneUpdatingState: false }, () => {
                         this._signInRequired.bind(this)
-                    })
                 }
             }else if(data.error){
                 console.log('final data:', JSON.stringify(data.error))
-                this.setState({ isDoneUpdatingState: false }, () => {
                     this._showError(data.error) // prompt error
-                })
             }else{
                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
 
                 // re-correect/update the isFav state
-                // and show the button
-                this.setState({isFav, isDoneUpdatingState: true})
+                this.setState({isFav},()=>{                    
+                    getUserCustomizedSquad().then((catchedSquad)=>{
+                        console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+                        if(catchedSquad.error){
+                            console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                            this.setState({ isDoneUpdatingState: false }, () => {
+                                this._showError(catchedSquad.error) // prompt error
+                            })
+                        }else{
+                            let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                            let inSquad = false
+                            let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
+                            for (let pos in squadFeed) {
+                                squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
+                                if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
+                            }
+                            console.log('@@@squadFeedTemp',squadFeedTemp)
+
+                            // re-correect/update the Squad state
+                            // and show the button
+                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true})
+                        }
+                    })
+                })
             }
         })
     }
@@ -250,7 +277,7 @@ class MyLionsPlayerDetails extends Component {
     }*/
 
     _updatePlayerFavStatus(){
-        this.setState({ isFormSubmitting: true })
+        this.setState({ isFormSubmitting: true,btnSubmit:'FAV' })
         getGoodFormFavoritePlayerList().then((data)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
@@ -322,6 +349,128 @@ class MyLionsPlayerDetails extends Component {
                  }
             }
         })
+    }
+
+    updateSquad(){
+        this.state.inSquad?this._updateSquad('remove'):this._addToSquad()
+    }
+
+    _addToSquad(){
+        if(this.props.positionToAdd!==''){
+            let tempSquadData=this.state.squadDataFeed
+            console.log('@@@tempSquadData',tempSquadData)
+            console.log('@@@this.props.positionToAdd',this.props.positionToAdd)
+            tempSquadData[this.props.positionToAdd.toLowerCase()].push(this.playerid)
+            this.setState({squadDataFeed:tempSquadData})
+        }
+        this._setModalVisible(true,'update')
+    }
+
+    _updateSquad(type,position){
+        this.setState({ isFormSubmitting: true,btnSubmit:'SQUAD' },()=>{
+            this._setModalVisible(false)
+        })
+        getUserCustomizedSquad().then((catchedSquad)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+            if(catchedSquad.auth){
+                if(catchedSquad.auth === 'Sign In is Required'){
+                    this.setState({ isFormSubmitting: false }, () => {
+                        this._signInRequired.bind(this)
+                    })
+                }
+            }else if(catchedSquad.error){
+                console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(catchedSquad.error) // prompt error
+                })
+            }else{
+                let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                let inSquad = false
+                let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
+                for (let pos in squadFeed) {
+                    squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
+                    if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) {
+                        inSquad=true
+                        if (type==='remove')  squadFeedTemp[pos].splice(squadFeedTemp[pos].indexOf(this.playerid),1)
+                    }
+                }
+
+                if (this.state.inSquad !== inSquad) {
+                     let errorDesc = ''
+                     if (this.state.inSquad) {
+                         errorDesc = 'is already removed from my squad list.'
+
+                     } else {
+                         errorDesc = 'is already added to my squad list.'
+                     }
+
+                     this.setState({inSquad, squadDataFeed:squadFeedTemp, isFormSubmitting: false}, () => {
+                         Alert.alert(
+                             'MySquad List Update',
+                             `${errorDesc}`,
+                             [{ text: 'OK' }]
+                         )
+                     })
+                 } else {
+                    console.log('$$$$inSquad',inSquad)
+                    console.log('$$$$type',type)
+                        
+                    if(!inSquad&&type==='add') {
+                        console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        squadFeedTemp[position].push(this.playerid)
+                        console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        
+                    }
+                    this._updateSquadPlayer(squadFeedTemp)
+                    removeUserCustomizedSquad()
+                 }
+
+            }
+        })
+    }
+    _updateSquadPlayer(squadData) {  
+        let url = 'https://www.api-ukchanges2.co.uk/api/protected/squad/save'
+        console.log('@@@@squadData',squadData)
+        let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
+        for (let pos in squadData) {
+            squadData[pos].map((node,index)=>{
+                tmpSquadData[pos]=index===0?node:`${tmpSquadData[pos]}|${node}`
+            })
+        }
+        console.log('@@@@tmpSquadData',tmpSquadData)
+        let options = {
+            url: url,
+            data: tmpSquadData,
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
+                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
+                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(options)
     }
     /*_updatePlayer() {
         // lets check first the player status if its favorite or not
@@ -472,10 +621,10 @@ class MyLionsPlayerDetails extends Component {
     render() {
         let buttonText = ''
         
-        if (this.state.isFormSubmitting) {
-            buttonText = this.state.isFav === true? 'REMOVING..':'ADDING..'
+        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
+            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
         } else {
-            buttonText = this.state.isFav === true? 'REMOVE':'ADD'
+            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
         }
 
         return (
@@ -504,11 +653,11 @@ class MyLionsPlayerDetails extends Component {
                                     this.state.isDoneUpdatingState?
                                         <ButtonFeedback
                                             disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this._setModalVisible(true,'update')}
+                                            onPress={()=> this.updateSquad()}
                                             style={[
                                                 styles.btn,
                                                 styles.btnLeft,
-                                                this.state.isFav === true? styles.btnLeftRed : styles.btnGreen
+                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
                                             ]}>
                                             <Text style={styles.btnText}>{buttonText}</Text>
                                         </ButtonFeedback>
