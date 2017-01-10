@@ -23,6 +23,7 @@ import styleVar from '../../themes/variable'
 import FilterListingModal from '../global/filterListingModal'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
+import { ucWords } from '../utility/helper'
 import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
@@ -455,14 +456,6 @@ class MyLionsPlayerList extends Component {
         })
     }
 
-    _ucWords(str) {
-        str = str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-            return letter.toUpperCase();
-        })
-
-        return str
-    }
-
     componentDidMount() {
         setTimeout(() => this._getPlayersListByUnion(), 600)
         /*let options = {
@@ -512,7 +505,7 @@ class MyLionsPlayerList extends Component {
                                 (this.filterBy !== '')&&
                                 <View style={styles.unionsPlayerListingFilterByBar}>
                                     <View style={styles.unionsPlayerListingFilterTextView}>
-                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {this._ucWords(this.filterBy)}</Text>
+                                        <Text style={styles.unionsPlayerListingFilterByText}>Filter by: {ucWords(this.filterBy)}</Text>
                                         <TouchableOpacity onPress={()=>this._getFilteredPosition('')} style={styles.unionsPlayerListingFilterByCancelButton}>
                                             <Icon name='md-close-circle' style={styles.btnFilterCancelIcon}/>
                                         </TouchableOpacity>

@@ -6,7 +6,7 @@ import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
-import { removeToken } from '../utility/asyncStorageServices'
+import { removeToken, getUserFullName } from '../utility/asyncStorageServices'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -46,6 +46,7 @@ class MyAccount extends Component {
             isFormSubmittingEmail: false,
             customMessagesEmail: '',
             customMessagesTypeEmail: 'error',
+            userFullName: ''
         }
 
         this.constructor.childContextTypes = {
@@ -78,8 +79,13 @@ class MyAccount extends Component {
     }
 
     componentWillMount() {
+        // get user fullname
+        getUserFullName().then((userFullName) => {
+            this.setState({userFullName})
+        }).catch((error) => {})
+
         this._panResponder = PanResponder.create({
-          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+            onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
         })
     }
 
@@ -218,7 +224,7 @@ class MyAccount extends Component {
                                 style={styles.content}
                             >
                                 <View style={styles.pageTitle}>
-                                    <Text style={styles.pageTitleText}>MY ACCOUNT</Text>
+                                    <Text style={styles.pageTitleText}>{this.state.userFullName.toUpperCase()}</Text>
                                 </View>
 
                                 <View style={styles.guther}>

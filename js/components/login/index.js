@@ -15,6 +15,7 @@ import ErrorHandler from '../utility/errorhandler/index'
 import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
+import { actionsApi } from '../utility/urlStorage'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -46,7 +47,7 @@ class Login extends Component {
             theme: React.PropTypes.object
         }
 
-        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
+        this.serviceUrl = actionsApi.goodFormRefreshToken
 
         // debounce
         this._handleSignIn = debounce(this._handleSignIn, 1000, {leading: true, maxWait: 0, trailing: false})
@@ -82,8 +83,7 @@ class Login extends Component {
     }
 
     _createToken(res) {
-        let accessToken = res.data.access_token
-        let refreshToken = res.data.refresh_token
+        let { access_token, refresh_token, first_name, last_name } = res.data
 
         // reset the fields and hide loader
         this.setState({
@@ -93,7 +93,7 @@ class Login extends Component {
             customMessagesType: 'success'
         })
 
-        updateToken(accessToken, refreshToken)
+        updateToken(access_token, refresh_token, first_name, last_name)
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }

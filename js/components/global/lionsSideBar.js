@@ -15,6 +15,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import  { Grid, Col, Row } from 'react-native-easy-grid'
 import { debounce } from 'lodash'
 import { alertBox } from '../utility/alertBox'
+import { actionsApi } from '../utility/urlStorage'
 import { removeGoodFormFavoritePlayerList, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 
 const styles = styleSheetCreate({
@@ -143,7 +144,7 @@ class LionsSidebar extends Component {
     }
 
     _refreshToken(route) {
-        let refreshTokenUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
+        let refreshTokenUrl = actionsApi.goodFormRefreshToken
         
         if (!this.state.isAjaxRequesting) {  
             // if no requesting in service, then lets proceed
@@ -167,13 +168,10 @@ class LionsSidebar extends Component {
                     },
                     onSuccess: (res) => {
                         if (this.isUnMounted) return // return nothing if the component is already unmounted
-
                         // successfully refresh the token
-                        let accessToken = res.data.access_token
-                        let refreshToken = res.data.refresh_token
-                        
                         // then lets update user's token 
-                        updateToken(accessToken, refreshToken)
+                        let { access_token, refresh_token, first_name, last_name } = res.data
+                        updateToken(access_token, refresh_token, first_name, last_name)
                         // then navigate user to the page route
                         this.navigateTo(route)
                     },

@@ -46,6 +46,7 @@ import Unions from './components/unions'
 import UnionDetails from './components/unions/details'
 import UnionDetailsSub from './components/unions/detailsSub'
 import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBackground'
+import { actionsApi } from './components/utility/urlStorage'
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
@@ -93,7 +94,7 @@ class AppNavigator extends Component {
     constructor(props){
         super(props)
 
-        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/sessions/create'
+        this.serviceUrl = actionsApi.goodFormRefreshToken
     }
 
     _refreshToken() {    
@@ -105,13 +106,17 @@ class AppNavigator extends Component {
                     'grant_type': 'refresh_token'
                 },
                 onSuccess: (res) => {
-                    let accessToken = res.data.access_token
-                    let refreshToken = res.data.refresh_token
-                    
                     // Update token 
-                    updateToken(accessToken, refreshToken)
+                    let { access_token, refresh_token, first_name, last_name } = res.data
+                    updateToken(access_token, refresh_token, first_name, last_name)
                     // Flag user access granted
                     this.props.setAccessGranted(true)
+                },
+                onError: (error) => {
+                    //console.log('error: ', error)
+                    // logout user
+                    removeToken()
+                    this.props.setAccessGranted(false)
                 },
                 isRefreshToken: true
             }

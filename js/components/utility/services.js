@@ -116,9 +116,12 @@ export function callApi(opt) {
 						opt.onAxiosEnd()
 					}
 					
-					// no need to prompt a message if the request is from 
-					// appNavigator.js and its about refreshing of token
-					if (!opt.isRefreshToken) {
+					if (opt.isRefreshToken) {
+						// if the request is from appNavigator.js 
+						if (opt.onError) {
+							opt.onError(error)
+						}
+					} else {
 						errorHandler(error, opt)
 					}
 				})
@@ -145,9 +148,12 @@ export function callApi(opt) {
 						opt.onAxiosEnd()
 					}
 					
-					// no need to prompt a message if the request is from 
-					// appNavigator.js and its about refreshing of token
-					if (!opt.isRefreshToken) {
+					if (opt.isRefreshToken) {
+						// if the request is from appNavigator.js 
+						if (opt.onError) {
+							opt.onError(error)
+						}
+					} else {
 						errorHandler(error, opt)
 					}
 				})

@@ -16,6 +16,7 @@ const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=148003922
 const GOODFORM_GET_FAVORITE_PLAYER_URL_NAME = 'GoodFormFavoritePlayers'
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/get?_=1483928168053'
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad'
+const GOODFORM_REFRESH_TOKEN_URL = '/sessions/create'
 
 export function getAssembledUrl(urlName) {
     switch (urlName) {
@@ -29,6 +30,8 @@ export function getAssembledUrl(urlName) {
             return GODDFORM_BASE_URL + GOODFORM_GET_FAVORITE_PLAYER_URL
         case GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME:
             return GODDFORM_BASE_URL + GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL
+        case GOODFORM_REFRESH_TOKEN_URL:
+            return GODDFORM_BASE_URL + GOODFORM_REFRESH_TOKEN_URL
     }
 }
 export const actionsApi = {
@@ -36,5 +39,6 @@ export const actionsApi = {
     eyc3GetPlayer: getAssembledUrl(EYC3_GET_PLAYER_URL_NAME),
     eyc3GetExperts: getAssembledUrl(EYC3_GET_EXPERTS_URL_NAME),
     goodformGetFavoritePlayer: getAssembledUrl(GOODFORM_GET_FAVORITE_PLAYER_URL_NAME),
-    goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME)
+    goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME),
+    goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL)
 }
