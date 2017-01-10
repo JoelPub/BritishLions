@@ -16,6 +16,7 @@ import ErrorHandler from '../utility/errorhandler/index'
 import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
+import LoginRequire from '../global/loginRequire'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -308,6 +309,7 @@ class MyAccount extends Component {
                                 </View>
                         </KeyboardAwareScrollView>
 
+                        {/*<LoginRequire/>*/}
                         <OverlayLoader visible={(this.state.isFormSubmitting || this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>

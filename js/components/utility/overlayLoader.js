@@ -25,6 +25,8 @@ export default class OverlayLoader extends Component {
     render() {
         let isShow = Platform.OS === 'ios'? false : true
 
+        isShow = this.props.showBothPlatform || isShow
+
         return (
             isShow?
                 <Modal visible={this.props.visible} transparent={true} onRequestClose={()=>{}}>
