@@ -603,13 +603,17 @@ module.exports = styleSheetCreate({
         marginRight: 15
     },
     unionsPlayerListingFilterByBar:{
-        height: 70,
+        height: 50,
+        paddingTop: 10,
         width:styleVar.deviceWidth,
         alignSelf: 'center',
         alignItems: 'center',
         borderBottomColor: 'rgb(216, 217, 218)',
         borderBottomWidth: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        android: {
+            paddingTop: 0
+        }
     },
     unionsPlayerListingFilterByCancelButton:{
         marginLeft: 7,

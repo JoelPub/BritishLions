@@ -490,13 +490,9 @@ class MyLionsPlayerList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    <Content bounces={false}>
-                        {this.state.isLoaded&&
+                    {
+                        this.state.isLoaded&&
                         <View>
-                            <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                                <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
-                                <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-                            </LinearGradient>
                             <View style={styles.unionsPlayerListingBar}>
                                 <ButtonFeedback rounded onPress={()=>this._setSearchModalVisible(true)} label='SEARCH' style={styles.unionsPlayerListingSearchButton} />
                                 <ButtonFeedback rounded onPress={()=>{this._setFilterModalVisible(true)}} label='FILTER' style={styles.unionsPlayerListingFilterButton} />
@@ -513,8 +509,8 @@ class MyLionsPlayerList extends Component {
                                 </View>
                             }
                         </View>
-                        }
-
+                    }
+                    <Content bounces={false}>
                         <FilterListingModal
                             modalVisible={this.state.filterModalVisible}
                             resultVisible={this.state.filteResultVisible}
@@ -571,18 +567,24 @@ class MyLionsPlayerList extends Component {
                         </FilterListingModal>
                         {
                             this.state.isLoaded?
-                                <ListView
-                                    dataSource={this.state.playerListFeeds}
-                                    renderRow={this._renderRow.bind(this)}
-                                    enableEmptySections = {true}
-                                    contentContainerStyle={styles.gridList}
-                                    renderFooter ={this._renderFooter}
-                                  />
+                                <View>
+                                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                                        <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
+                                    </LinearGradient>
+                                    <ListView
+                                        dataSource={this.state.playerListFeeds}
+                                        renderRow={this._renderRow.bind(this)}
+                                        enableEmptySections = {true}
+                                        contentContainerStyle={styles.gridList}
+                                        renderFooter ={this._renderFooter}
+                                      />
+                                </View>
                             :
                                 <ActivityIndicator style={loader.centered} size='large' />
                         }
-                        <EYSFooter mySquadBtn={true}/>
                     </Content>
+                    <EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
         )
