@@ -38,7 +38,9 @@ import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3Asy
 import { setPositionToAdd } from '../../actions/position'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
-
+const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
+const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
 class MyLionsSquad extends Component {
 
     constructor(props){
@@ -51,17 +53,11 @@ class MyLionsSquad extends Component {
             showScoreCard:'semi',
             isSubmitting: false,
             isFormSubmitting: false,
-            squadDatafeed:{
-                    indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'widecard',info:{}}],
-                    forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
-                    backs:[{},{},null,{},null,{},null,null,null,null,null,null,null,null,null,null],
-            },            
+            squadDatafeed:squadDataMode,            
             modalContent:this.getModalContent()
         }
         this.isUnMounted = false
         this.uniondata = Data
-        this.emptyFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
-        this.fullFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
         this.fullPlayerList={}
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
     }
@@ -161,10 +157,10 @@ class MyLionsSquad extends Component {
         })
     }
     changeMode(mode) {
-        let squadData=mode==='empty'?this.emptyFeed:this.fullFeed
+        let squadData=mode==='empty'?emptyDataFeed:fullDataFeed
         let options = {
             url: this.saveSquadUrl,
-            data:JSON.parse(squadData.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')),
+            data:eval(`(${squadData})`),
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -227,14 +223,11 @@ class MyLionsSquad extends Component {
 
     setSquadData(player,squad){
         console.log('!!!squad',squad)
-        squad=squad.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')
-        console.log('!!!squad',squad)
-        let squadFeed=JSON.parse(squad)
-        let tempFeed={
-                    indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}],
-                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                }
+        // squad=squad.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')
+        // squad=eval(`(${squad})`)
+        // console.log('!!!squad',squad)
+        let squadFeed=eval(`(${squad})`)
+        let tempFeed=squadDataMode
         let emptyFeed=true
         let fullFeed=true
         for(let pos in squadFeed) {

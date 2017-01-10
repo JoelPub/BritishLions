@@ -14,6 +14,10 @@ const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'
 const GOODFORM_GET_FAVORITE_PLAYER_URL_NAME = 'GoodFormFavoritePlayers'
+const GOODFORM_ADD_FAVORITE_PLAYER_URL = '/protected/player/add'
+const GOODFORM_ADD_FAVORITE_PLAYER_URL_NAME = 'AddGoodFormFavoritePlayers'
+const GOODFORM_REMOVE_FAVORITE_PLAYER_URL = '/protected/player/remove'
+const GOODFORM_REMOVE_FAVORITE_PLAYER_URL_NAME = 'RemoveGoodFormFavoritePlayers'
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/get?_=1483928168053'
 const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad'
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/save'
@@ -30,6 +34,10 @@ export function getAssembledUrl(urlName) {
             return EYC3_BASE_URL + EYC3_GET_EXPERTS_URL
         case GOODFORM_GET_FAVORITE_PLAYER_URL_NAME:
             return GODDFORM_BASE_URL + GOODFORM_GET_FAVORITE_PLAYER_URL
+        case GOODFORM_ADD_FAVORITE_PLAYER_URL_NAME:
+            return GODDFORM_BASE_URL + GOODFORM_ADD_FAVORITE_PLAYER_URL
+        case GOODFORM_REMOVE_FAVORITE_PLAYER_URL_NAME:
+            return GODDFORM_BASE_URL + GOODFORM_REMOVE_FAVORITE_PLAYER_URL
         case GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME:
             return GODDFORM_BASE_URL + GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL
         case GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME:
@@ -43,6 +51,8 @@ export const actionsApi = {
     eyc3GetPlayer: getAssembledUrl(EYC3_GET_PLAYER_URL_NAME),
     eyc3GetExperts: getAssembledUrl(EYC3_GET_EXPERTS_URL_NAME),
     goodformGetFavoritePlayer: getAssembledUrl(GOODFORM_GET_FAVORITE_PLAYER_URL_NAME),
+    goodformAddFavoritePlayer: getAssembledUrl(GOODFORM_ADD_FAVORITE_PLAYER_URL_NAME),
+    goodformRemoveFavoritePlayer: getAssembledUrl(GOODFORM_REMOVE_FAVORITE_PLAYER_URL_NAME),
     goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormSaveUserCusromizedSquad: getAssembledUrl(GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL)

@@ -33,8 +33,8 @@ class MyLionsPlayerDetails extends Component {
         super(props)
 
         this.isUnMounted = false
-        this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
-        this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
+        this.favAddUrl = getAssembledUrl('AddGoodFormFavoritePlayers')
+        this.favRemoveUrl = getAssembledUrl('RemoveGoodFormFavoritePlayers')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
@@ -217,7 +217,7 @@ class MyLionsPlayerDetails extends Component {
                                 this._showError(catchedSquad.error) // prompt error
                             })
                         }else{
-                            let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                            let squadFeed=eval(`(${catchedSquad.data})`)
                             let inSquad = false
                             let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
                             for (let pos in squadFeed) {
@@ -387,7 +387,7 @@ class MyLionsPlayerDetails extends Component {
                     this._showError(catchedSquad.error) // prompt error
                 })
             }else{
-                let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                let squadFeed=eval(`(${catchedSquad.data})`)
                 let inSquad = false
                 let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
                 for (let pos in squadFeed) {
