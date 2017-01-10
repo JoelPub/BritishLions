@@ -89,6 +89,28 @@ export default [
     },
     {
         "id": "9",
+        "category": "official sponsors",
+        "title": "Gillette",
+        "url": "http://gillette.co.uk/en-gb",
+        "partner": "",
+        "label": "Visit the Gillette website",
+        "image": require("./gillette.png"),
+        "banner": require("./banner/gillette.png"),
+        "description": "<p>Gillette is the Official Sponsor and Official Grooming Partner of The British & Irish Lions 2017 Tour to New Zealand, the biggest sporting event of the year. This is the first time the brand has partnered with the British & Irish Lions and reaffirms Gillette's position as a pioneer in sports marketing.</p><p>As the biggest male grooming brand, Gillette has a proud heritage of helping men be the best they can be, constantly innovating for over 100 years. The British & Irish Lions is therefore the perfect partner, with a long history of bringing the best of the four home nations together.</p><p>The 2017 tour will be one of the toughest tours to date with the British & Irish Lions taking on the double reigning World Champions, the All Blacks. Gillette will play an important role in helping the touring party be prepared for anything, looking and feeling their best with the ultimate precision shave.</p><p>Gillette will be bringing the partnership to life in all major retailers across the UK with consumer competitions, offering the chance to join the 2017 tour in New Zealand, as well as experience the action at home.</p><p>The partnership is a major step for the brand in its association with rugby, partnering with an iconic rugby institution in The British & Irish Lions.</p><p>See our launch video here:  <a href=\"https://www.youtube.com/user/GilletteVideosUK\">https://www.youtube.com/user/GilletteVideosUK</a></p>"
+    },
+    {
+        "id": "10",
+        "category": "official sponsors",
+        "title": "Robert Walters",
+        "url": "https://www.robertwalters.com/",
+        "partner": "",
+        "label": "Visit the Robert Walters website",
+        "image": require("./robertwalters.png"),
+        "banner": require("./banner/robertwalters.png"),
+        "description": ""
+    },
+    {
+        "id": "11",
         "category": "official suppliers",
         "title": "RHINO",
         "url": "http://www.rhino-teamwear.com",

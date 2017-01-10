@@ -78,6 +78,7 @@ module.exports = styleSheetCreate({
         textAlign: 'center',
         paddingTop: 4,
         marginTop: -6,
+        paddingBottom: 4,
         android: {
             lineHeight: 22
         }
