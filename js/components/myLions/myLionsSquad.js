@@ -37,6 +37,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { setPositionToAdd } from '../../actions/position'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getAssembledUrl } from '../utility/urlStorage'
 
 class MyLionsSquad extends Component {
 
@@ -49,6 +50,7 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
+            isFormSubmitting: false,
             squadDatafeed:{
                     indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'widecard',info:{}}],
                     forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
@@ -58,21 +60,10 @@ class MyLionsSquad extends Component {
         }
         this.isUnMounted = false
         this.uniondata = Data
-        this.emptyFeed={
-                    indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'widecard',id:null}],
-                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                }
-        this.semiFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'widecard',id:123}],
-                    forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
-                    backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
-        }
-        this.fullFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:123},{position:'widecard',id:123}],
-                    forwards:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123],
-                    backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
-        }
+        this.emptyFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
+        this.fullFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
+        this.fullPlayerList={}
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
     }
     getModalContent(mode){
         switch(mode)  {
@@ -82,8 +73,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
                         <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -94,8 +85,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
                         <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -170,10 +161,44 @@ class MyLionsSquad extends Component {
         })
     }
     changeMode(mode) {
+        let squadData=mode==='empty'?this.emptyFeed:this.fullFeed
+        let options = {
+            url: this.saveSquadUrl,
+            data:JSON.parse(squadData.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')),
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted        
+                 this.setState({
+                    isFormSubmitting: false
+                },()=>{
+                    this._setModalVisible(false)
+                    this.setSquadData(this.fullPlayerList,squadData)                    
+                    removeUserCustomizedSquad()
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
         this.setState({
-            showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full'
-        },()=>{            
-        this._setModalVisible(false)        
+            isFormSubmitting: true
+        },()=>{
+            service(options)
         })
     }
 
@@ -205,30 +230,33 @@ class MyLionsSquad extends Component {
         squad=squad.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')
         console.log('!!!squad',squad)
         let squadFeed=JSON.parse(squad)
-        console.log('!!!squadFeed',squadFeed)
         let tempFeed={
                     indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}],
                     forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                     backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
                 }
+        let emptyFeed=true
+        let fullFeed=true
         for(let pos in squadFeed) {
             console.log('!!!pos',pos)
             if(pos==='forwards'||pos==='backs') {
-            console.log('!!!forwardsbacks',squadFeed[pos])
+                console.log('!!!forwardsbacks',squadFeed[pos])
                 let tempArr=squadFeed[pos].split('|')
                 tempArr.map((item,index)=>{
                     tempFeed[pos][index]=this.searchPlayer(player,item)
+                    tempFeed[pos][index]===null?fullFeed=false:emptyFeed=false
                 })
             }
             else {
                 console.log('!!!squadFeed[pos]',squadFeed[pos])
                 console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
                 tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null?fullFeed=false:emptyFeed=false
             }
         }
-        console.log('!!!tempFeed',tempFeed)
         this.setState({
-            squadDatafeed:tempFeed
+            squadDatafeed:tempFeed,
+            showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi'
         })
     }
 
@@ -282,12 +310,13 @@ class MyLionsSquad extends Component {
                 console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
                     getSoticFullPlayerList().then((catchedFullPlayerList) => {
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this.fullPlayerList=catchedFullPlayerList
                             getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                                  if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                                     //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                                     console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
                                     console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
-                                    this.setSquadData(catchedFullPlayerList,catchedSquad.data)
+                                    this.setSquadData(this.fullPlayerList,catchedSquad.data)
                                     this.setState({ isLoaded: true })
                                  }
                              }).catch((error) => {

@@ -26,6 +26,7 @@ import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from 
 import SquadModal from '../global/squadModal'
 import PlayerFigure from '../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getAssembledUrl } from '../utility/urlStorage'
 
 class MyLionsPlayerDetails extends Component {
     constructor(props){
@@ -36,6 +37,7 @@ class MyLionsPlayerDetails extends Component {
         this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
@@ -423,14 +425,12 @@ class MyLionsPlayerDetails extends Component {
                         
                     }
                     this._updateSquadPlayer(squadFeedTemp)
-                    removeUserCustomizedSquad()
                  }
 
             }
         })
     }
-    _updateSquadPlayer(squadData) {  
-        let url = 'https://www.api-ukchanges2.co.uk/api/protected/squad/save'
+    _updateSquadPlayer(squadData) {
         console.log('@@@@squadData',squadData)
         let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
         for (let pos in squadData) {
@@ -440,7 +440,7 @@ class MyLionsPlayerDetails extends Component {
         }
         console.log('@@@@tmpSquadData',tmpSquadData)
         let options = {
-            url: url,
+            url: this.saveSquadUrl,
             data: tmpSquadData,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
@@ -453,6 +453,7 @@ class MyLionsPlayerDetails extends Component {
                 let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
                     this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
+                    removeUserCustomizedSquad()
                 })
             },
             onError: (res) => {
