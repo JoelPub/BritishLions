@@ -76,9 +76,11 @@ module.exports = styleSheetCreate({
         fontSize: 16,
         lineHeight: 16,
         textAlign: 'center',
-        paddingTop: 4,
+        paddingTop: 2,
         marginTop: -6,
+        paddingBottom: 4,
         android: {
+            paddingTop: 4,
             lineHeight: 22
         }
     },

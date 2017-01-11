@@ -28,7 +28,7 @@ export default [
         "url": "http://www.qbeeurope.com",
         "partner": "",
         "label": "Visit the QBE website",
-        "image": require("./qbe.jpg"),
+        "image": require("./qbe.png"),
         "banner": require("./banner/qbe.jpg"),
         "description": "<p><strong>QBE Business Insurance supports the team behind the British & Irish Lions 2017</strong></p><p>As one of the world's leading international insurers, QBE's ability to look at managing and mitigating risk from every possible angle means that they understand how important it is for the Lions to build a strong backroom team to support the players on the field. The coaches, analysts, strength & conditioning, medical, logistics, all the administrative teams and other partners come together with a common goal of uniting as one to ensure the players are best placed to meet the challenges in New Zealand. QBE look forward to supporting the British & Irish Lions and the team, behind the team.</p><p>QBE's alignment with the British & Irish Lions continues their partnership with rugby internationally which currently includes sponsorship of England Rugby, North Harbour Rugby and a collaboration with La Unión Argentina de Rugby.</p><p>QBE Insurance Group has an insurer financial strength rating of 'A+' from Standard & Poor's and is one of the world's leading international insurers and reinsurers, headquartered in Sydney, Australia. They operate in 37 countries with a presence in all key insurance markets, and are lead underwriters within our chosen markets, setting rates and conditions.</p><p>With hundreds of product lines, QBE are confident they have the expertise to insure most business risks. As a specialist in business insurance - and market leaders in almost all the products they write - QBE are able to offer a genuinely comprehensive service.</p><p>To find out how QBE can help manage risk for your business, visit <a href=\"http://www.qbeeurope.com\">www.qbeeurope.com</a> or call 020 7105 4000. For more information on QBE's rugby activities, please follow on Twitter at <a href=\"https://twitter.com/QBErugby\">@QBErugby</a>.</p>"
     },
@@ -50,7 +50,7 @@ export default [
         "url": "https://tours.lionsrugby.com",
         "partner": "",
         "label": "Find out more at lionstour.com",
-        "image": require("./qantas.jpg"),
+        "image": require("./qantas.png"),
         "banner": require("./banner/qantas.jpg"),
         "description": "<p>In continuing the winning partnership from The British & Irish Lions successful tour to Australia in 2013, Qantas will ensure that the Lions arrive in peak physical condition and their supporters are provided a premium experience from London through to New Zealand in 2017. Join the pride and travel with Qantas on the award winning A380 and experience the quality of service and product that Qantas is globally recognised for.</p><p>Founded in the Australian outback in 1920, Qantas has grown to be Australia's largest domestic and international airline. Registered originally as the Queensland and Northern Territory Aerial Services Limited (QANTAS), Qantas is widely regarded as the world's leading long distance airline.</p><p>Qantas have built a reputation for excellence in safety, operational reliability, engineering and maintenance, and customer service.</p><p><strong>Travelling to New Zealand?</strong></p><p>Start your tour in style by flying with Qantas to New Zealand. Travelling with Qantas, you're sure to arrive feeling refreshed, relaxed and ready to cheer on the Lions. From London Heathrow you'll fly to Sydney or Melbourne, via Dubai, on the award-winning Qantas A380. With more than 15 flights a day between Australia and New Zealand, you can choose to seamlessly connect from Sydney or Melbourne, or stop over and explore Australia.</p><p>Eligible guests will be able to enjoy our new flagship <a href=\"http://www.qantas.com/travel/airlines/london-heathrow-lounge/global/en\">global lounge at London Heathrow</a>, which is due to open in early 2017. Features of the new lounge will include a Rockpool menu and dining experience, a full-service bar with Rockpool cocktails and full bathroom facilities including showers.</p><p>Not only will you love every moment of the journey, thanks to the <a href=\"https://www.qantas.com/fflyer/dyn/discover-join\">Qantas Frequent Flyer program</a>, you can also be rewarded. As a member, you can earn and use your Qantas Points when flying with Qantas and our airline partners including Emirates and British Airways, to travel to more than 1,000 destinations worldwide.</p><p>Get on board and fly with Qantas to New Zealand."
     },
@@ -89,6 +89,28 @@ export default [
     },
     {
         "id": "9",
+        "category": "official sponsors",
+        "title": "Gillette",
+        "url": "http://gillette.co.uk/en-gb",
+        "partner": "",
+        "label": "Visit the Gillette website",
+        "image": require("./gillette.png"),
+        "banner": require("./banner/gillette.png"),
+        "description": "<p>Gillette is the Official Sponsor and Official Grooming Partner of The British & Irish Lions 2017 Tour to New Zealand, the biggest sporting event of the year. This is the first time the brand has partnered with the British & Irish Lions and reaffirms Gillette's position as a pioneer in sports marketing.</p><p>As the biggest male grooming brand, Gillette has a proud heritage of helping men be the best they can be, constantly innovating for over 100 years. The British & Irish Lions is therefore the perfect partner, with a long history of bringing the best of the four home nations together.</p><p>The 2017 tour will be one of the toughest tours to date with the British & Irish Lions taking on the double reigning World Champions, the All Blacks. Gillette will play an important role in helping the touring party be prepared for anything, looking and feeling their best with the ultimate precision shave.</p><p>Gillette will be bringing the partnership to life in all major retailers across the UK with consumer competitions, offering the chance to join the 2017 tour in New Zealand, as well as experience the action at home.</p><p>The partnership is a major step for the brand in its association with rugby, partnering with an iconic rugby institution in The British & Irish Lions.</p><p>See our launch video here:  <a href=\"https://www.youtube.com/user/GilletteVideosUK\">https://www.youtube.com/user/GilletteVideosUK</a></p>"
+    },
+    {
+        "id": "10",
+        "category": "official sponsors",
+        "title": "Robert Walters",
+        "url": "https://www.robertwalters.com/",
+        "partner": "",
+        "label": "Visit the Robert Walters website",
+        "image": require("./robertwalters.png"),
+        "banner": require("./banner/robertwalters.png"),
+        "description": ""
+    },
+    {
+        "id": "11",
         "category": "official suppliers",
         "title": "RHINO",
         "url": "http://www.rhino-teamwear.com",
