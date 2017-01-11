@@ -121,7 +121,7 @@ module.exports = styleSheetCreate({
     imgSponsor: {
       flex: 1,
       width: null,
-      height: 172,
+      height: 253,
       resizeMode: 'stretch'
     }
 })
