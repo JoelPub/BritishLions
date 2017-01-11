@@ -309,7 +309,7 @@ class MyAccount extends Component {
                                 </View>
                         </KeyboardAwareScrollView>
 
-                        {/*<LoginRequire/>*/}
+                        <LoginRequire/>
                         <OverlayLoader visible={(this.state.isFormSubmitting || this.state.isFormSubmittingEmail)} />
 
                         <ButtonFeedback style={styles.pageClose} onPress={() => this.replaceRoute('news')}>

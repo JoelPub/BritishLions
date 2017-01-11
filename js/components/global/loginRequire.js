@@ -3,27 +3,34 @@
 import React, { Component } from 'react'
 import { Alert } from 'react-native'
 import { connect } from 'react-redux'
-import { replaceRoute } from '../../actions/route'
+import { pushNewRoute } from '../../actions/route'
 import { setAccessGranted } from '../../actions/token'
 import OverlayLoader from '../utility/overlayLoader'
 import { removeToken, checkIfLogin, getRefreshToken, updateToken } from '../utility/asyncStorageServices'
 import { actionsApi } from '../utility/urlStorage'
-
+import { service } from '../utility/services'
 
 class LoginRequire extends Component {
 	constructor(props){
 		super(props)
 
         this.state = {
-            isOverlayLoaderVisible: true,
+            isOverlayLoaderVisible: false,
             isUnMounted: false
         }
 	}
 
-    _reLogin() {
-        this.replaceRoute('login')
+    _onFinishCallBack(isLogin) {
+        if(this.props.onFinish) this.props.onFinish(isLogin) // callback function
     }
 
+    _closeIndicator() {
+        this.setState({ isOverlayLoaderVisible: false })
+    }
+
+    _reLogin() {
+        this.props.pushNewRoute('login')
+    }
 
     _askToSignIn() {
         removeToken()
@@ -57,7 +64,7 @@ class LoginRequire extends Component {
                 },
                 onAxiosEnd: () => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    this.setState({ isOverlayLoaderVisible: false })
+                    this._closeIndicator()
                 },
                 onSuccess: (res) => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -65,42 +72,38 @@ class LoginRequire extends Component {
                     // then lets update user's token 
                     let { access_token, refresh_token, first_name, last_name } = res.data
                     updateToken(access_token, refresh_token, first_name, last_name)
+
+                    this._onFinishCallBack(true) // callback function
                 },
                 onError: (error) => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                    if (error === 'The email and password do not match, Please verify and try again.') {
-                        // token failed to update, ask user to sign in again
+                    // token failed to update, ask user to sign in again
+                    setTimeout(() => {
                         this._askToSignIn()
-                    } else {
-                        Alert.alert(
-                            'An Error Occured',
-                            error,
-                            [{
-                                text: 'Dismiss'
-                            }]
-                        )
-                    }
+                        this._onFinishCallBack(false) // callback function
+                    }, 300)
                 }
             })
         }).catch((error) => {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-
+                
             // We can't get the existing refresh token of the user here
             // ask user to sign in again
             this._askToSignIn()
+            this._onFinishCallBack(false) // callback function
         })
     }
 
     _isSignIn(route) {
-        if (this.props.isAccessGranted) {
+        // if (this.state.isAccessGranted) {
             // user still logged in, then we need check if user's token still valid
             checkIfLogin().then((isTokenValid) => {
                 if (this.state.isUnMounted) return // return nothing if the component is already unmounted
 
                 if (isTokenValid) {
-                    // token still valid
-                    this.setState({ isOverlayLoaderVisible: false })
+                    // token still valid, do nothing
+                    this._onFinishCallBack(true) // callback function
                 } else {
                     // token was expired, let refresh the token
                     this._refreshToken(route)
@@ -111,10 +114,10 @@ class LoginRequire extends Component {
                 // token was expired, let refresh the token
                 this._refreshToken()
             })
-        } else {
-            // user is not logged in, then ask user to login again
-            this._askToSignIn()
-        }
+        // } else {
+        //     // user is not logged in, then ask user to login again
+        //     this._askToSignIn()
+        // }
     }
 
     componentWillMount() {
@@ -135,7 +138,7 @@ class LoginRequire extends Component {
 
 function bindActions(dispatch) {
     return {
-        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
