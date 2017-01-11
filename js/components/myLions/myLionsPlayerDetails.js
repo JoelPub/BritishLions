@@ -26,16 +26,29 @@ import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from 
 import SquadModal from '../global/squadModal'
 import PlayerFigure from '../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getAssembledUrl } from '../utility/urlStorage'
+import { setPositionToAdd } from '../../actions/position'
 
+const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
+    <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
+        <View style={[styles.modalBtnPositionLeft,posToAdd!==''&&posToAdd.toUpperCase()!==position.toUpperCase()&&{opacity:0.7}]}>
+            <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
+        </View>
+        <View style={styles.modalBtnPosRight}>
+            <Text style={styles.modalBtnPosLeftText}>{data.length}/{total}</Text>
+        </View>
+    </ButtonFeedback>
+    )
 class MyLionsPlayerDetails extends Component {
     constructor(props){
         super(props)
 
         this.isUnMounted = false
-        this.favAddUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/add',
-        this.favRemoveUrl = 'https://www.api-ukchanges2.co.uk/api/protected/player/remove',
+        this.favAddUrl = getAssembledUrl('AddGoodFormFavoritePlayers')
+        this.favRemoveUrl = getAssembledUrl('RemoveGoodFormFavoritePlayers')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
@@ -79,46 +92,11 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
-                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','captain')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='CAPTAIN'&&{borderWidth:1,borderColor:'white'}]}>
-                            <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>CAPTAIN</Text>
-                            </View>
-                            <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.captain.length}/1</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','kicker')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='KICKER'&&{borderWidth:1,borderColor:'white'}]}>
-                            <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>KICKER</Text>
-                            </View>
-                            <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.kicker.length}/1</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','widecard')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='WIDECARD'&&{borderWidth:1,borderColor:'white'}]}>
-                            <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>WIDECARD</Text>
-                            </View>
-                            <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.widecard.length}/1</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','forwards')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='FORWARDS'&&{borderWidth:1,borderColor:'white'}]}>
-                            <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>FORWARD</Text>
-                            </View>
-                            <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.forwards.length}/16</Text>
-                            </View>
-                        </ButtonFeedback>
-                        <ButtonFeedback rounded onPress={()=>this._updateSquad('add','backs')}  style={[styles.modalBtnPosition,this.props.positionToAdd.toUpperCase()==='BACKS'&&{borderWidth:1,borderColor:'white'}]}>
-                            <View style={styles.modalBtnPositionLeft}>
-                                <Text style={styles.modalBtnPosLeftText}>BACK</Text>
-                            </View>
-                            <View style={styles.modalBtnPosRight}>
-                                <Text style={styles.modalBtnPosLeftText}>{this.state.squadDataFeed.backs.length}/16</Text>
-                            </View>
-                        </ButtonFeedback>
+                        <PositionButton position='captain' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','captain',1)} subject='CAPTAIN' data={this.state.squadDataFeed.captain} total='1'/>
+                        <PositionButton position='kicker' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','kicker',1)} subject='KICKER' data={this.state.squadDataFeed.kicker} total='1'/>
+                        <PositionButton position='widecard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','widecard',1)} subject='WIDECARD' data={this.state.squadDataFeed.widecard} total='1'/>
+                        <PositionButton position='forwards' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','forwards',16)} subject='FORWARD' data={this.state.squadDataFeed.forwards} total='16'/>
+                        <PositionButton position='backs' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','backs',16)} subject='BACK' data={this.state.squadDataFeed.backs} total='16'/>
                     </View>
                 )
                 break
@@ -192,14 +170,14 @@ class MyLionsPlayerDetails extends Component {
         // this is to prevent glitch
         this.setState({ isDoneUpdatingState: false })
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.log('final data:', JSON.stringify(data))
+            // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
                         this._signInRequired.bind(this)
                 }
             }else if(data.error){
-                console.log('final data:', JSON.stringify(data.error))
+                // console.log('final data:', JSON.stringify(data.error))
                     this._showError(data.error) // prompt error
             }else{
                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
@@ -208,21 +186,21 @@ class MyLionsPlayerDetails extends Component {
                 // re-correect/update the isFav state
                 this.setState({isFav},()=>{                    
                     getUserCustomizedSquad().then((catchedSquad)=>{
-                        console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+                        // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
                         if(catchedSquad.error){
-                            console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                            // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                             this.setState({ isDoneUpdatingState: false }, () => {
                                 this._showError(catchedSquad.error) // prompt error
                             })
                         }else{
-                            let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                            let squadFeed=eval(`(${catchedSquad.data})`)
                             let inSquad = false
                             let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
                             for (let pos in squadFeed) {
                                 squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
                                 if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
                             }
-                            console.log('@@@squadFeedTemp',squadFeedTemp)
+                            // console.log('@@@squadFeedTemp',squadFeedTemp)
 
                             // re-correect/update the Squad state
                             // and show the button
@@ -356,23 +334,24 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _addToSquad(){
-        if(this.props.positionToAdd!==''){
-            let tempSquadData=this.state.squadDataFeed
-            console.log('@@@tempSquadData',tempSquadData)
-            console.log('@@@this.props.positionToAdd',this.props.positionToAdd)
-            tempSquadData[this.props.positionToAdd.toLowerCase()].push(this.playerid)
-            this.setState({squadDataFeed:tempSquadData})
-        }
+        // if(this.props.positionToAdd!==''){
+        //     let tempSquadData=this.state.squadDataFeed
+        //     console.log('@@@tempSquadData',tempSquadData)
+        //     console.log('@@@this.props.positionToAdd',this.props.positionToAdd)
+        //     tempSquadData[this.props.positionToAdd.toLowerCase()].push(this.playerid)
+        //     this.setState({squadDataFeed:tempSquadData})
+        // }
         this._setModalVisible(true,'update')
     }
 
-    _updateSquad(type,position){
+    _updateSquad(type,position,max){
         this.setState({ isFormSubmitting: true,btnSubmit:'SQUAD' },()=>{
             this._setModalVisible(false)
         })
+        let update=true
         getUserCustomizedSquad().then((catchedSquad)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-            console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+            // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
             if(catchedSquad.auth){
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isFormSubmitting: false }, () => {
@@ -380,12 +359,12 @@ class MyLionsPlayerDetails extends Component {
                     })
                 }
             }else if(catchedSquad.error){
-                console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                 this.setState({ isFormSubmitting: false }, () => {
                     this._showError(catchedSquad.error) // prompt error
                 })
             }else{
-                let squadFeed=JSON.parse(catchedSquad.data.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"'))
+                let squadFeed=eval(`(${catchedSquad.data})`)
                 let inSquad = false
                 let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
                 for (let pos in squadFeed) {
@@ -413,34 +392,43 @@ class MyLionsPlayerDetails extends Component {
                          )
                      })
                  } else {
-                    console.log('$$$$inSquad',inSquad)
-                    console.log('$$$$type',type)
+                    // console.log('$$$$inSquad',inSquad)
+                    // console.log('$$$$type',type)
                         
                     if(!inSquad&&type==='add') {
                         console.log('$$$$squadFeedTemp',squadFeedTemp)
-                        squadFeedTemp[position].push(this.playerid)
-                        console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        if(squadFeedTemp[position].length<max) {
+                            squadFeedTemp[position].push(this.playerid)
+                        }
+                        else {
+                            update=false
+                            this.setState({ squadDataFeed:squadFeedTemp, isFormSubmitting: false })
+                            Alert.alert(
+                             'MySquad List Update',
+                             'Position Is Full',
+                             [{ text: 'OK' }]
+                            )
+                        }
+                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
                         
                     }
-                    this._updateSquadPlayer(squadFeedTemp)
-                    removeUserCustomizedSquad()
+                    if(update) this._updateSquadPlayer(squadFeedTemp)
                  }
 
             }
         })
     }
-    _updateSquadPlayer(squadData) {  
-        let url = 'https://www.api-ukchanges2.co.uk/api/protected/squad/save'
-        console.log('@@@@squadData',squadData)
+    _updateSquadPlayer(squadData) {
+        // console.log('@@@@squadData',squadData)
         let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
         for (let pos in squadData) {
             squadData[pos].map((node,index)=>{
                 tmpSquadData[pos]=index===0?node:`${tmpSquadData[pos]}|${node}`
             })
         }
-        console.log('@@@@tmpSquadData',tmpSquadData)
+        // console.log('@@@@tmpSquadData',tmpSquadData)
         let options = {
-            url: url,
+            url: this.saveSquadUrl,
             data: tmpSquadData,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
@@ -453,6 +441,8 @@ class MyLionsPlayerDetails extends Component {
                 let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
                     this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
+                    removeUserCustomizedSquad()                    
+                    this.props.setPositionToAdd('')
                 })
             },
             onError: (res) => {
@@ -777,7 +767,8 @@ function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position))
     }
 }
 

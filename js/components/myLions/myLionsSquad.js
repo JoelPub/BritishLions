@@ -37,7 +37,50 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { setPositionToAdd } from '../../actions/position'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-
+import { getAssembledUrl } from '../utility/urlStorage'
+const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
+const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
+const AddPlayerCell = ({pos,onPress})=>(
+    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
+        <View style={styles.posAddWrapper}>
+            <Icon name='md-person-add' style={styles.addPlayerIcon} />
+        </View>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText}>ADD</Text>
+                <Text style={styles.playerNameText}>{pos.toUpperCase()}</Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
+const PlayerImgCell =({data,onPress}) =>(
+    <ButtonFeedback onPress={onPress} style={styles.posBtn}>
+        <ImagePlaceholder 
+            width = {styleVar.deviceWidth / 3}
+            height = {styleVar.deviceWidth / 3}>
+            <Image transparent
+                resizeMode='contain'
+                source={data.image}
+                style={styles.playerImage} />
+        </ImagePlaceholder>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                 <Text numberOfLines={2} style={styles.playerNameText}>{data.name.toUpperCase()}</Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
+const PositionTitle =({pos,data}) =>(
+    <View style={styles.posTitle}>
+      <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
+      <Text style={styles.posTitleRight}>
+       {data.filter((value)=>value!==null).length} / 16
+      </Text>
+    </View>
+)
 class MyLionsSquad extends Component {
 
     constructor(props){
@@ -49,30 +92,14 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadDatafeed:{
-                    indivPos:[{position:'captain',info:{}},{position:'kicker',info:null},{position:'widecard',info:{}}],
-                    forwards:[null,{},null,null,null,null,{},null,null,null,null,null,null,null,null,null],
-                    backs:[{},{},null,{},null,{},null,null,null,null,null,null,null,null,null,null],
-            },            
+            isFormSubmitting: false,
+            squadDatafeed:Object.assign({},squadDataMode),            
             modalContent:this.getModalContent()
         }
         this.isUnMounted = false
         this.uniondata = Data
-        this.emptyFeed={
-                    indivPos:[{position:'captain',id:null},{position:'kicker',id:null},{position:'widecard',id:null}],
-                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                }
-        this.semiFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'widecard',id:123}],
-                    forwards:[null,123,null,null,null,null,123,null,null,null,null,null,null,null,null,null],
-                    backs:[123,123,null,123,null,123,null,null,null,null,null,null,null,null,null,null],
-        }
-        this.fullFeed={
-                    indivPos:[{position:'captain',id:123},{position:'kicker',id:123},{position:'widecard',id:123}],
-                    forwards:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123],
-                    backs:[123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,123]
-        }
+        this.fullPlayerList={}
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
     }
     getModalContent(mode){
         switch(mode)  {
@@ -82,8 +109,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
                         <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -94,8 +121,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
                         <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -143,7 +170,7 @@ class MyLionsSquad extends Component {
                 }).then((info)=>{
                     callback()
                 }).catch((errorMessage)=>{
-                    console.log("error message: " + error)
+                    // console.log("error message: " + error)
                      if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
                         alertBox(
                             '',
@@ -170,10 +197,44 @@ class MyLionsSquad extends Component {
         })
     }
     changeMode(mode) {
+        let squadData=mode==='empty'?emptyDataFeed:fullDataFeed
+        let options = {
+            url: this.saveSquadUrl,
+            data:eval(`(${squadData})`),
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted        
+                 this.setState({
+                    isFormSubmitting: false
+                },()=>{
+                    this._setModalVisible(false)
+                    this.setSquadData(this.fullPlayerList,squadData)                    
+                    removeUserCustomizedSquad()
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
         this.setState({
-            showScoreCard:mode==='empty'?'empty':mode==='semi'?'semi':'full'
-        },()=>{            
-        this._setModalVisible(false)        
+            isFormSubmitting: true
+        },()=>{
+            service(options)
         })
     }
 
@@ -201,34 +262,32 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(player,squad){
-        console.log('!!!squad',squad)
-        squad=squad.replace(/ /g,'').replace(/{/g,'{"').replace(/:/g,'":').replace(/,/g,',"')
-        console.log('!!!squad',squad)
-        let squadFeed=JSON.parse(squad)
-        console.log('!!!squadFeed',squadFeed)
-        let tempFeed={
-                    indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}],
-                    forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                    backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
-                }
+        // console.log('!!!squad',squad)
+        let squadFeed=eval(`(${squad})`)
+        let tempFeed={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+        let emptyFeed=true
+        let fullFeed=true
         for(let pos in squadFeed) {
-            console.log('!!!pos',pos)
+            // console.log('!!!pos',pos)
             if(pos==='forwards'||pos==='backs') {
-            console.log('!!!forwardsbacks',squadFeed[pos])
+                // console.log('!!!forwardsbacks',squadFeed[pos])
                 let tempArr=squadFeed[pos].split('|')
+                if(tempArr.length<tempFeed[pos].length) fullFeed=false
                 tempArr.map((item,index)=>{
                     tempFeed[pos][index]=this.searchPlayer(player,item)
+                    tempFeed[pos][index]===null?fullFeed=false:emptyFeed=false
                 })
             }
             else {
-                console.log('!!!squadFeed[pos]',squadFeed[pos])
-                console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
+                // console.log('!!!squadFeed[pos]',squadFeed[pos])
+                // console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
                 tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null?fullFeed=false:emptyFeed=false
             }
         }
-        console.log('!!!tempFeed',tempFeed)
         this.setState({
-            squadDatafeed:tempFeed
+            squadDatafeed:tempFeed,
+            showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi'
         })
     }
 
@@ -274,20 +333,21 @@ class MyLionsSquad extends Component {
                     })
                 }
             }else if(catchedSquad.error){
-                console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                 this.setState({ isLoaded: true }, () => {
                     this._showError(catchedSquad.error)
                 })
             }else{
-                console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
                     getSoticFullPlayerList().then((catchedFullPlayerList) => {
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this.fullPlayerList=catchedFullPlayerList
                             getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                                  if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                                     //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
-                                    console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
-                                    console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
-                                    this.setSquadData(catchedFullPlayerList,catchedSquad.data)
+                                    // console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
+                                    // console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
+                                    this.setSquadData(this.fullPlayerList,catchedSquad.data)
                                     this.setState({ isLoaded: true })
                                  }
                              }).catch((error) => {
@@ -426,47 +486,16 @@ class MyLionsSquad extends Component {
                                             </View>
                                             {
                                             item.info===null?
-                                            <ButtonFeedback onPress={() => this._addPlayer(item.position)}  style={styles.posBtn}>
-                                                <View style={styles.addIndivPlayerWrapper}>
-                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
-                                                </View>
-                                                <View style={styles.indivPlayerNameWrapper}>
-                                                    <View style={[shapes.triangle]} />
-                                                    <View style={styles.titleBox}>
-                                                        <Text style={styles.playerNameText}>ADD</Text>
-                                                        <Text style={styles.playerNameText}>{item.position.toUpperCase()}</Text>
-                                                        </View>
-                                                </View>
-                                            </ButtonFeedback>
+                                            <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
                                             :
-                                            <ButtonFeedback onPress={() => this._showDetail(item.info,'myLionsPlayerDetails')}  style={styles.posBtn}>
-                                                <ImagePlaceholder 
-                                                    width = {styleVar.deviceWidth / 3}
-                                                    height = {styleVar.deviceWidth / 3}>
-                                                    <Image transparent
-                                                        resizeMode='contain'
-                                                        source={item.info.image} 
-                                                        style={styles.playerImage} />
-                                                </ImagePlaceholder>
-                                                <View style={styles.indivPlayerNameWrapper}>
-                                                    <View style={[shapes.triangle]} />
-                                                    <View style={styles.titleBox}>
-                                                        <Text numberOfLines={2} style={styles.playerNameText}>{item.info.name.toUpperCase()}</Text>
-                                                    </View>
-                                                </View>
-                                            </ButtonFeedback>
+                                            <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails')}/>
                                             }
                                         </View>
                                     )
                                 },this) 
                             }                                
                             </View> 
-                            <View style={styles.posTitle}>
-                              <Text style={styles.posTitleLeft}>FORWARDS</Text>
-                              <Text style={styles.posTitleRight}>
-                               {this.state.squadDatafeed.forwards.filter((value)=>value!==null).length} / 16
-                              </Text>
-                            </View>
+                            <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
                             <Swiper
                             ref='swiper'
                             height={styleVar.deviceWidth*0.63}
@@ -481,39 +510,13 @@ class MyLionsSquad extends Component {
                                         {
                                             rowData.map((item,index)=>{
                                                 return(
-                                                        item===null?
                                                         <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._addPlayer('forwards')}  style={styles.posBtn}>
-                                                                <View style={styles.posAddWrapper}>
-                                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
-                                                                </View>
-                                                                <View style={styles.posAddTextWrapper}>
-                                                                    <View style={[shapes.triangle]} />
-                                                                    <View style={styles.titleBox}>
-                                                                        <Text style={styles.playerNameText}>ADD</Text>
-                                                                        <Text style={styles.playerNameText}>FORWARD</Text>
-                                                                        </View>
-                                                                </View>
-                                                            </ButtonFeedback>
-                                                        </View>
-                                                        :
-                                                        <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')} style={styles.posBtn}>
-                                                                <ImagePlaceholder 
-                                                                    width = {styleVar.deviceWidth / 3}
-                                                                    height = {styleVar.deviceWidth / 3}>
-                                                                    <Image transparent
-                                                                        resizeMode='contain'
-                                                                        source={item.image}
-                                                                        style={styles.playerImage} />
-                                                                </ImagePlaceholder>
-                                                                <View style={styles.playerNameTextWrapper}>
-                                                                    <View style={[shapes.triangle]} />
-                                                                    <View style={styles.titleBox}>
-                                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
-                                                                        </View>
-                                                                </View>
-                                                            </ButtonFeedback>
+                                                            {   
+                                                                item===null?
+                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
+                                                                :
+                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                            }
                                                         </View>
                                                     )
                                             }, this)
@@ -526,12 +529,7 @@ class MyLionsSquad extends Component {
 
                         </Swiper>
                             
-                            <View style={styles.posTitle}>
-                              <Text style={styles.posTitleLeft}>BACKS</Text>
-                              <Text style={styles.posTitleRight}>
-                               {this.state.squadDatafeed.backs.filter((value)=>value!==null).length} / 16
-                              </Text>
-                            </View>
+                            <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
                             <Swiper
                             ref='swiper'
                             height={styleVar.deviceWidth*0.63}
@@ -546,40 +544,14 @@ class MyLionsSquad extends Component {
                                         {
                                             rowData.map((item,index)=>{
                                                 return(
-                                                        item===null?
-                                                        <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._addPlayer('backs')} style={styles.posBtn}>
-                                                                <View style={styles.posAddWrapper}>
-                                                                    <Icon name='md-person-add' style={styles.addPlayerIcon} />
-                                                                </View>
-                                                                <View style={styles.playerNameTextWrapper}>
-                                                                    <View style={[shapes.triangle]} />
-                                                                    <View style={styles.titleBox}>
-                                                                        <Text style={styles.playerNameText}>ADD</Text>
-                                                                        <Text style={styles.playerNameText}>BACK</Text>
-                                                                        </View>
-                                                                </View>
-                                                            </ButtonFeedback>
-                                                        </View>
+                                                    <View style={styles.posWrapper} key={index}>
+                                                    {
+                                                        item===null?                                                        
+                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
                                                         :
-                                                        <View style={styles.posWrapper} key={index}>
-                                                            <ButtonFeedback onPress={() => this._showDetail(item,'myLionsPlayerDetails')} style={styles.posBtn}>
-                                                                <ImagePlaceholder 
-                                                                    width = {styleVar.deviceWidth / 3}
-                                                                    height = {styleVar.deviceWidth / 3}>
-                                                                    <Image transparent
-                                                                        resizeMode='contain'
-                                                                        source={item.image}
-                                                                        style={styles.playerImage} />
-                                                                </ImagePlaceholder>
-                                                                <View style={styles.playerNameTextWrapper}>
-                                                                    <View style={[shapes.triangle]} />
-                                                                    <View style={styles.titleBox}>
-                                                                         <Text numberOfLines={2} style={styles.playerNameText}>{item.name.toUpperCase()}</Text>
-                                                                        </View>
-                                                                </View>
-                                                            </ButtonFeedback>
-                                                        </View>
+                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                    }
+                                                    </View>
                                                     )
                                             }, this)
                                         }

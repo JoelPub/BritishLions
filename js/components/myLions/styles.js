@@ -997,20 +997,9 @@ module.exports = styleSheetCreate({
         fontSize:24,
         lineHeight:24,
     },
-    addIndivPlayerWrapper:{
-        width:styleVar.deviceWidth / 3,
-        height:styleVar.deviceWidth / 3,
-        backgroundColor:'rgb(175,0,30)',
-        justifyContent:'center',
-        alignItems:'center'
-    },
     addPlayerIcon:{
         fontSize:60,
         color:'rgb(255,255,255)'
-    },
-    indivPlayerNameWrapper:{
-        width: styleVar.deviceWidth / 3,
-        marginTop:-12
     },
     playerNameText:{
         textAlign: 'center',
@@ -1091,10 +1080,6 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(175,0,30)',
         justifyContent:'center',
         alignItems:'center',
-    },
-    posAddTextWrapper:{
-        width: styleVar.deviceWidth / 3,
-        marginTop:-12,
     },
     modalViewWrapper:{
         paddingHorizontal:28,
