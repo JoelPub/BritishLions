@@ -51,6 +51,7 @@ import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
 import Storage from 'react-native-storage'
+import PushNotification from 'react-native-push-notification'
 
 Navigator.prototype.replaceWithAnimation = function (route) {
     const activeLength = this.state.presentedIndex + 1
@@ -174,6 +175,12 @@ class AppNavigator extends Component {
         })
         
         register(this.props.store)
+
+        PushNotification.configure({
+            onNotification: function(notification) {
+                console.log( 'NOTIFICATION:', notification );
+            }
+        })
     }
 
     popRoute() {

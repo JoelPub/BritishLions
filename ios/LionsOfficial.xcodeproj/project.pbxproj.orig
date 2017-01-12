@@ -323,13 +323,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				C243C17E1E24D9A80052394C /* libz.tbd in Frameworks */,
 				C243C17C1E24D99F0052394C /* SystemConfiguration.framework in Frameworks */,
 				C243C17A1E24D9980052394C /* SafariServices.framework in Frameworks */,
 				C243C1B51E24E18C0052394C /* GoogleSymbolUtilities.framework in Frameworks */,
 				C243C1781E24D98D0052394C /* AddressBook.framework in Frameworks */,
+=======
 				762AF6111E2607480072255F /* libRCTPushNotification.a in Frameworks */,
+>>>>>>> dev2
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -343,7 +346,6 @@
 				C243C1B21E24E18C0052394C /* GoogleNetworkingUtilities.framework in Frameworks */,
 				C243C1751E24D9840052394C /* libRNGoogleSignin.a in Frameworks */,
 				C243C1B61E24E18C0052394C /* GoogleUtilities.framework in Frameworks */,
-				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				86E533159A2B479E9EE7F234 /* libRNVectorIcons.a in Frameworks */,
 				6EE1723FF7B24517AF1B9266 /* libRCTYouTube.a in Frameworks */,
 				C243C1B41E24E18C0052394C /* GoogleSignIn.framework in Frameworks */,
@@ -519,8 +521,11 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				C243C1581E24D9500052394C /* RNGoogleSignin.xcodeproj */,
+=======
 				762AF5F11E2606F60072255F /* RCTPushNotification.xcodeproj */,
+>>>>>>> dev2
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -1118,8 +1123,11 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
+=======
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+>>>>>>> dev2
 				);
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
@@ -1160,8 +1168,11 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
+=======
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+>>>>>>> dev2
 				);
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;

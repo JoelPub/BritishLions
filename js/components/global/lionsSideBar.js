@@ -282,7 +282,7 @@ class LionsSidebar extends Component {
                         <Icon name='md-image' style={styles.icon} />
                         <Text style={styles.linkText}>GALLERIES</Text>
                     </ButtonFeedback>
-                    <ButtonFeedback onPress={() => this._requireSignIn('myLions')} style={styles.links}>
+                    <ButtonFeedback onPress={() => this.navigateTo('myLions')} style={styles.links}>
                         <Icon name='md-heart' style={styles.icon} />
                         <Text style={styles.linkText}>{labelMyLions}</Text>
                     </ButtonFeedback>
@@ -325,7 +325,7 @@ class LionsSidebar extends Component {
                           :
                               <Grid>
                                   <Col size={55}>
-                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this._requireSignIn('myAccount')}>
+                                      <ButtonFeedback style={[styles.footerLink,styles.linkAccount]} onPress={() => this.navigateTo('myAccount')}>
                                           <Icon name='md-contact' style={styles.footerLinkIcon} />
                                           <Text style={styles.footerLinkText}>{labelMyAccount}</Text>
                                       </ButtonFeedback>

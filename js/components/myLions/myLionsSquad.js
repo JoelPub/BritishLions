@@ -38,6 +38,7 @@ import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3Asy
 import { setPositionToAdd } from '../../actions/position'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
+import PushNotification from 'react-native-push-notification'
 const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
 const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
 const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
@@ -259,6 +260,8 @@ class MyLionsSquad extends Component {
 
     componentDidMount() {
         setTimeout(() => this._getSquad(), 600)
+
+        
     }
 
     setSquadData(player,squad){
@@ -399,6 +402,15 @@ class MyLionsSquad extends Component {
         this.props.pushNewRoute('myLionsUnionsList')
     }
 
+    _toExpert(){
+        PushNotification.localNotificationSchedule({
+          message: "My Notification Message", 
+          date: new Date(Date.now() + (10 * 1000)) 
+        });
+
+
+    }
+
     render() {
         return (
             <Container theme={theme}>
@@ -462,7 +474,7 @@ class MyLionsSquad extends Component {
                                     </View>
                                 </View>
 
-                                <ButtonFeedback rounded style={[styles.button,styles.btnExpertSquad]}>
+                                <ButtonFeedback rounded onPress={()=>this._toExpert()} style={[styles.button,styles.btnExpertSquad]}>
                                     <Icon name='md-contact' style={styles.btnExpertIcon} />
                                     <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
                                 </ButtonFeedback>

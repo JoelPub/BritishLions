@@ -21,6 +21,7 @@ import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
+import LoginRequire from '../global/loginRequire'
 import Data from '../../../contents/my-lions/onboarding/data'
 
 class MyLions extends Component {
@@ -28,7 +29,7 @@ class MyLions extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalVisible: true,
+            modalVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
         }
@@ -96,6 +97,13 @@ class MyLions extends Component {
         })
     }
 
+    _renderLogic(isLogin) {
+        if (isLogin) {
+            // if user is logged in then show the onboarding
+            this.setState({ modalVisible: true }) 
+        }
+    }
+
     render() {
         return (
             <Container theme={theme}>
@@ -133,6 +141,7 @@ class MyLions extends Component {
                             <LionsFooter isLoaded={true} />
                         </Content>
                     <EYSFooter mySquadBtn={true}/>
+                    <LoginRequire onFinish={this._renderLogic.bind(this)} />
                     <Modal
                         visible={this.state.modalVisible}
                         transparent={true}

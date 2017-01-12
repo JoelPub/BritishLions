@@ -29,6 +29,7 @@ export async function removeToken() {
     try {
         await AsyncStorage.removeItem('ACCESS_TOKEN')
         await AsyncStorage.removeItem('REFRESH_TOKEN')
+        await AsyncStorage.removeItem('LOGIN_EXPIRED')
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -79,11 +80,12 @@ export async function checkIfLogin() {
     let distance = 0
     let dateExpired  = await AsyncStorage.getItem('LOGIN_EXPIRED')
     
-    dateExpired = parseFloat(dateExpired)
-    distance = dateExpired - dateNow
-
-    if (distance > 0) {
-        return true  // token still valid
+    if (dateExpired) { // if have value and not null
+        dateExpired = parseInt(dateExpired)
+        distance = dateExpired - dateNow
+        if (distance > 0) {
+            return true  // token still valid
+        }
     }
 
     // the token was expired
