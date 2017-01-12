@@ -34,14 +34,15 @@ import BarGraph from '../utility/barGraph'
 import BarSlider from '../utility/barSlider'
 import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import { setPositionToAdd } from '../../actions/position'
+import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { setPositionToAdd } from '../../actions/position'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PushNotification from 'react-native-push-notification'
 const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
 const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
 const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
+
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
         <View style={styles.posAddWrapper}>
@@ -95,12 +96,15 @@ class MyLionsSquad extends Component {
             isSubmitting: false,
             isFormSubmitting: false,
             squadDatafeed:Object.assign({},squadDataMode),            
-            modalContent:this.getModalContent()
+            modalContent:this.getModalContent(),
+            rating:{}
         }
         this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
+        this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
+        this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
     }
     getModalContent(mode){
         switch(mode)  {
@@ -197,47 +201,9 @@ class MyLionsSquad extends Component {
             modalContent:visible?this.getModalContent(mode):this.getModalContent()
         })
     }
-    changeMode(mode) {
-        let squadData=mode==='empty'?emptyDataFeed:fullDataFeed
-        let options = {
-            url: this.saveSquadUrl,
-            data:eval(`(${squadData})`),
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted        
-                 this.setState({
-                    isFormSubmitting: false
-                },()=>{
-                    this._setModalVisible(false)
-                    this.setSquadData(this.fullPlayerList,squadData)                    
-                    removeUserCustomizedSquad()
-                })
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
 
-        this.setState({
-            isFormSubmitting: true
-        },()=>{
-            service(options)
-        })
-    }
+
+
 
     _mapJSON(data, colMax = 2) {
         let i = 0
@@ -263,110 +229,6 @@ class MyLionsSquad extends Component {
 
         
     }
-
-    setSquadData(player,squad){
-        // console.log('!!!squad',squad)
-        let squadFeed=eval(`(${squad})`)
-        let tempFeed={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
-        let emptyFeed=true
-        let fullFeed=true
-        for(let pos in squadFeed) {
-            // console.log('!!!pos',pos)
-            if(pos==='forwards'||pos==='backs') {
-                // console.log('!!!forwardsbacks',squadFeed[pos])
-                let tempArr=squadFeed[pos].split('|')
-                if(tempArr.length<tempFeed[pos].length) fullFeed=false
-                tempArr.map((item,index)=>{
-                    tempFeed[pos][index]=this.searchPlayer(player,item)
-                    tempFeed[pos][index]===null?fullFeed=false:emptyFeed=false
-                })
-            }
-            else {
-                // console.log('!!!squadFeed[pos]',squadFeed[pos])
-                // console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
-                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
-                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null?fullFeed=false:emptyFeed=false
-            }
-        }
-        this.setState({
-            squadDatafeed:tempFeed,
-            showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi'
-        })
-    }
-
-    searchPlayer(player,id) {
-        let result=null
-        for(let union in player) {
-            result=player[union].find((item)=>item.id===id)
-            if(result !== undefined) {
-                let unionInfo = this.uniondata.find((n)=> n.id===union)
-                Object.assign(result, {
-                    logo: unionInfo.image, 
-                    country: unionInfo.displayname.toUpperCase(),
-                    countryid: unionInfo.id
-                })
-
-                if(typeof result.image==='string') {
-                   if (result.image.indexOf('125.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/125.png`)
-                    } else if (result.image.indexOf('126.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/126.png`)
-                    } else if (result.image.indexOf('127.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/127.png`)
-                    } else if (result.image.indexOf('128.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/128.png`)
-                    } else {
-                        result.image = {uri:result.image}
-                    } 
-                }
-                return result
-            }
-        }
-        return result===undefined?null:result
-    }
-
-    _getSquad(){
-        this.setState({ isLoaded: false })
-        getUserCustomizedSquad().then((catchedSquad)=>{
-            if(this.isUnMounted) return
-            if(catchedSquad.auth) {
-                if(catchedSquad.auth === 'Sign In is Required'){
-                    this.setState({ isLoaded: true }, () => {
-                        this._signInRequired()
-                    })
-                }
-            }else if(catchedSquad.error){
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
-                this.setState({ isLoaded: true }, () => {
-                    this._showError(catchedSquad.error)
-                })
-            }else{
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
-                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
-                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                            this.fullPlayerList=catchedFullPlayerList
-                            getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
-                                 if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                                    //this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
-                                    // console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
-                                    // console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList['125'].length)
-                                    this.setSquadData(this.fullPlayerList,catchedSquad.data)
-                                    this.setState({ isLoaded: true })
-                                 }
-                             }).catch((error) => {
-                                 console.log('Error when try to get the EYC3 full player list: ', error)
-                             })
-                        }
-                    }).catch((error) => {
-                        this.setState({ isLoaded: true }, () => {
-                            this._showError(error) // prompt error
-                        })
-                    })
-            }
-        })
-        
-    }
-
 
     componentWillReceiveProps(nextProps) {
         let routes = globalNav.navigator.getCurrentRoutes()
@@ -419,7 +281,7 @@ class MyLionsSquad extends Component {
                     {this.state.isLoaded?
                     <ScrollView>
                         <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                        <ButtonFeedback style={styles.scoreCard} >
+                        <View style={styles.scoreCard} >
                         {this.state.showScoreCard!=='full'?
                             <View style={styles.semiCard}>
                                 <Text style={styles.semiCardText}>
@@ -440,24 +302,24 @@ class MyLionsSquad extends Component {
                                     </ButtonFeedback>
                                     <View style={styles.summaryWrapper}>
                                         <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                                        <Text style={styles.summaryTextHighLight}>TOP 5%</Text>
+                                        <Text style={styles.summaryTextHighLight}>TOP {this.state.rating.fan_ranking}%</Text>
                                     </View>
                                     <View style={styles.ratingWrapper}>
                                         <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                         <View style={styles.ratingScore}>
-                                            <Text style={styles.ratingScorePoint}>350</Text>
+                                            <Text style={styles.ratingScorePoint}>{this.state.rating.overall_rating}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.barGraphWrapper}>
                                         <Text style={styles.barGraphText}>COHESION</Text>
-                                        <BarGraph score={86} fullWidth={styleVar.deviceWidth-150} />
+                                        <BarGraph score={this.state.rating.cohesion_rating} fullWidth={styleVar.deviceWidth-150} />
                                     </View>
                                     <View style={styles.barSliderWrapper}>
                                         <View style={styles.barSliderTextWrapper}>
                                             <Text style={styles.barSliderText}>ATTACK</Text>
                                             <Text style={styles.barSliderText}>DEFENCE</Text>
                                         </View>
-                                        <BarSlider score={30} fullWidth={styleVar.deviceWidth-100} />
+                                        <BarSlider score={this.state.rating.attack_defence_rating*100} fullWidth={styleVar.deviceWidth-100} />
                                     </View>
                                     <View style={styles.scoreCardShareWrapper}>
                                         <ButtonFeedback
@@ -480,7 +342,7 @@ class MyLionsSquad extends Component {
                                 </ButtonFeedback>
                             </View>
                         }
-                        </ButtonFeedback>
+                        </View>
                         {
                             this.state.showScoreCard==='empty'?
                             <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
@@ -590,6 +452,264 @@ class MyLionsSquad extends Component {
             </Container>
         )
     }
+
+    _getSquad(){
+        this.setState({ isLoaded: false })
+        getUserCustomizedSquad().then((catchedSquad)=>{
+            if(this.isUnMounted) return
+            if(catchedSquad.auth) {
+                if(catchedSquad.auth === 'Sign In is Required'){
+                    this.setState({ isLoaded: true }, () => {
+                        this._signInRequired()
+                    })
+                }
+            }else if(catchedSquad.error){
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                this.setState({ isLoaded: true }, () => {
+                    this._showError(catchedSquad.error)
+                })
+            }else{
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            this.fullPlayerList=catchedFullPlayerList
+                            // getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                            //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                            //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
+                            //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
+                                    this.setSquadData(this.fullPlayerList,catchedSquad.data,'pull')
+                            //     }
+                            // }).catch((error) => {
+                            //     console.log('Error when try to get the EYC3 full player list: ', error)
+                            // })
+                        }
+                    }).catch((error) => {
+                        this.setState({ isLoaded: true }, () => {
+                            this._showError(error) // prompt error
+                        })
+                    })
+            }
+        })
+        
+    }
+
+    setSquadData(player,squad,mode){
+        console.log('!!!squad',squad)
+        let squadFeed=mode==='pop'?squad:eval(`(${squad})`)
+        let updateFeed={backs: "", captain: "", widecard: "", forwards: "", kicker: ""}
+        console.log('!!!squadFeed',squadFeed)
+        let tempFeed={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+        let emptyFeed=true
+        let fullFeed=true
+        let optionsSaveList = {
+            url: this.saveSquadUrl,
+            data:squadFeed,
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                this.setState({ isFormSubmitting: false,isLoaded: true })
+            },
+            onSuccess: (res) => {
+                this.setState({
+                    isFormSubmitting: mode==='pop'||!fullFeed?false:true,
+                    isLoaded: mode==='pop'||!fullFeed?true:false,
+                    squadDatafeed:tempFeed,
+                    showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
+                    rating:mode==='pop'||!fullFeed?squadFeed.rating:this.state.rating
+                },()=>{
+                    if(fullFeed&&mode!=='pop') {
+                        this.getRating(squadFeed)
+                    }
+                    else {
+                        this._setModalVisible(false)
+                        removeUserCustomizedSquad()
+                    }  
+                })
+            },
+            onError: (res) => {
+                this.setState({ isFormSubmitting: false,isLoaded: true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({ isFormSubmitting: false,isLoaded: true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+        //To Remove once API provide real data
+        if(mode==='pop'){
+            console.log('!!!pop squadFeed',squadFeed)
+            let temp=eval(`(${fullDataFeed})`)
+            console.log('!!!pop temp',temp)
+            for (let p in temp) {
+                if (squadFeed[p]===undefined) {
+                    console.log('!!!pop p',p)
+                   squadFeed[p]=temp[p].split('|')
+                }
+                else {
+                    console.log('!!!pop temp[p]',temp[p])
+                    if(temp[p].split('|').length>squadFeed[p].length) {
+                        squadFeed[p]=squadFeed[p].concat(temp[p].split('|').slice(squadFeed[p].length-1,-1))
+                    }
+                }
+            }
+            console.log('!!!pop squadFeed',squadFeed)
+        }
+
+
+        for(let pos in squadFeed) {
+            console.log('!!!pos',pos)
+            if(pos==='forwards'||pos==='backs') {
+                console.log('!!!forwardsbacks',squadFeed[pos])
+                let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].split('|')
+                if(tempArr.length<tempFeed[pos].length) fullFeed=false
+                tempArr.map((item,index)=>{
+                    tempFeed[pos][index]=this.searchPlayer(player,item)
+                    //To Remove once API provide real data
+                    if(mode!=='empty'){
+                        if (item!==''&&tempFeed[pos][index]===null) tempFeed[pos][index]=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos].split('|')[index])
+                    }
+                    tempFeed[pos][index]===null?fullFeed=false:emptyFeed=false
+                })
+            }
+            else if(pos==='captain'||pos==='kicker'||pos==='widecard') {
+                console.log('!!!squadFeed[pos]',squadFeed[pos])
+                console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
+                //To Remove once API provide real data
+                    if(mode!=='empty'){
+                        if (squadFeed[pos]!==''&&tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
+                            tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos])
+                        }
+                    }
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null?fullFeed=false:emptyFeed=false
+            }
+        }
+        if(mode==='pop') {
+            for( let v in squadFeed) {
+                if(squadFeed[v] instanceof Array) {
+                    squadFeed[v]=squadFeed[v].join('|')
+                }
+            }
+        }
+
+        console.log('!!!final squadFeed',squadFeed)
+        service(optionsSaveList)
+
+    }
+
+    changeMode(mode) {
+        let optionsAutoPop = {
+            url: this.autoPopulatedSquadUrl,
+            // data:{id:''},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted        
+                 this.setState({
+                    isFormSubmitting: false
+                },()=>{
+                    console.log('!!!!res',res.data[0])
+                    // this._setModalVisible(false)
+                    this.setSquadData(this.fullPlayerList,res.data[0],'pop')
+                    // removeUserCustomizedSquad()
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        this.setState({
+            isFormSubmitting: true
+        },()=>{
+            if(mode==='empty') {
+                this.setSquadData(this.fullPlayerList,emptyDataFeed,mode)
+            }
+            else {
+                service(optionsAutoPop)
+            }
+        })
+    }
+
+    getRating(squadList){
+        let optionsSquadRating = {
+            url: this.getMySquadRatingUrl,
+            data: squadList,
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    console.log('!!!!res',res.data[0])
+                    this.setState({
+                        isFormSubmitting: false,
+                        isLoaded: true,
+                        rating:res.data[0]
+                    },()=>{
+                            this._setModalVisible(false)
+                            removeUserCustomizedSquad()
+                    })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    this._showError(res)
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsSquadRating)        
+    }
+
+    searchPlayer(player,id) {
+        let result=null
+        for(let union in player) {
+            result=player[union].find((item)=>item.id===id.toString())
+            if(result !== undefined) {
+                let unionInfo = this.uniondata.find((n)=> n.id===union)
+                Object.assign(result, {
+                    logo: unionInfo.image, 
+                    country: unionInfo.displayname.toUpperCase(),
+                    countryid: unionInfo.id
+                })
+
+                if(typeof result.image==='string') {
+                   if (result.image.indexOf('125.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/125.png`)
+                    } else if (result.image.indexOf('126.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/126.png`)
+                    } else if (result.image.indexOf('127.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/127.png`)
+                    } else if (result.image.indexOf('128.gif') > 0) {
+                        result.image = require(`../../../contents/unions/nations/128.png`)
+                    } else {
+                        result.image = {uri:result.image}
+                    } 
+                }
+                return result
+            }
+        }
+        return result===undefined?null:result
+    }
+
 }
 
 function bindAction(dispatch) {

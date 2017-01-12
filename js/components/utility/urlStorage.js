@@ -1,13 +1,17 @@
 'use strict'
 
-const EYC3_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
+const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
 const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=403'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
 
-const EYC3_GET_PLAYER_URL = '/tools/feeds?id=403'
+const EYC3_AUTO_POPULATED_SQUAD_URL = '/getAutoPopulatedSquad'
+const EYC3_AUTO_POPULATED_SQUAD_URL_NAME = 'EYC3AutoPopulatedSquad'
+const EYC3_GET_MY_SQUAD_RATING_URL = '/getMySquadRating'
+const EYC3_GET_MY_SQUAD_RATING_URL_NAME = 'EYC3GetMySquadRating'
+const EYC3_GET_PLAYER_URL = '/getPlayersList'
 const EYC3_GET_PLAYER_URL_NAME = 'EYC3FullPlayers'
 const EYC3_GET_EXPERTS_URL = '/tools/feeds?id=403'
 const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
@@ -28,6 +32,10 @@ export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
             return SOTIC_BASE_URL + SOTIC_GET_PLAYER_URL
+        case EYC3_AUTO_POPULATED_SQUAD_URL_NAME:
+            return EYC3_BASE_URL + EYC3_AUTO_POPULATED_SQUAD_URL
+        case EYC3_GET_MY_SQUAD_RATING_URL_NAME:
+            return EYC3_BASE_URL + EYC3_GET_MY_SQUAD_RATING_URL
         case EYC3_GET_PLAYER_URL_NAME:
             return EYC3_BASE_URL + EYC3_GET_PLAYER_URL
         case EYC3_GET_EXPERTS_URL_NAME:
@@ -48,6 +56,8 @@ export function getAssembledUrl(urlName) {
 }
 export const actionsApi = {
     soticGetPlayer: getAssembledUrl(SOTIC_GET_PLAYER_URL_NAME),
+    eyc3AutoPopulatedSquad: getAssembledUrl(EYC3_AUTO_POPULATED_SQUAD_URL_NAME),
+    eyc3GetMySquadRating: getAssembledUrl(EYC3_GET_MY_SQUAD_RATING_URL_NAME),
     eyc3GetPlayer: getAssembledUrl(EYC3_GET_PLAYER_URL_NAME),
     eyc3GetExperts: getAssembledUrl(EYC3_GET_EXPERTS_URL_NAME),
     goodformGetFavoritePlayer: getAssembledUrl(GOODFORM_GET_FAVORITE_PLAYER_URL_NAME),
