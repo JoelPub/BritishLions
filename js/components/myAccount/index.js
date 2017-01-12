@@ -291,7 +291,7 @@ class MyAccount extends Component {
                                         disabled = {this.state.isFormSubmittingEmail}
                                         label = {this.state.isFormSubmittingEmail? 'SUBMITTING..' : 'SUBMIT EMAIL'}
                                         style={styles.button}
-                                       onPress={() => {
+                                        onPress={() => {
                                            this.setState({
                                                errorCheckPassword: {
                                                     submit: true
