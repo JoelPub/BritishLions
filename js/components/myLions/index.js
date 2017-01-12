@@ -33,7 +33,7 @@ class MyLions extends Component {
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
         }
-        this.totalPages = 4 
+        this.totalPages = 4
         this.pageWindow=[]
     }
 
@@ -70,7 +70,7 @@ class MyLions extends Component {
         },()=>{
             this.refs['swiper'].scrollBy(1,true)
         })
-        
+
     }
 
     _setModalVisible=(visible) => {
@@ -87,7 +87,7 @@ class MyLions extends Component {
                 swiperWindow: height + 70
             })
         }
-        
+
     }
 
     scrollEnd(e, state, context){
@@ -100,7 +100,7 @@ class MyLions extends Component {
     _renderLogic(isLogin) {
         if (isLogin) {
             // if user is logged in then show the onboarding
-            this.setState({ modalVisible: true }) 
+            this.setState({ modalVisible: true })
         }
     }
 
@@ -118,13 +118,13 @@ class MyLions extends Component {
 
                             <View style={styles.btnsLanding}>
                                 <ButtonFeedback rounded style={[styles.button, styles.btnMysquad]} onPress={() => this._mySquad()}>
-                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')} 
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={styles.btnMysquadIcon}>
                                     </Image>
                                     <Text style={styles.btnMysquadLabel}>
                                         MY SQUAD
                                     </Text>
-                                </ButtonFeedback>                            
+                                </ButtonFeedback>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={this._myExpertsPick}>
                                     <Icon name='md-contact' style={styles.btnExpertIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel}>
@@ -136,8 +136,8 @@ class MyLions extends Component {
                                     <Text style={styles.btnFavouritesLabel}>
                                         FAVOURITES
                                     </Text>
-                                </ButtonFeedback>   
-                            </View>                          
+                                </ButtonFeedback>
+                            </View>
                             <LionsFooter isLoaded={true} />
                         </Content>
                     <EYSFooter mySquadBtn={true}/>
@@ -148,7 +148,7 @@ class MyLions extends Component {
                         onRequestClose={()=>this._setModalVisible(false)}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
                             <IosUtilityHeaderBackground />
-                            
+
                             <ScrollView style={styles.onboardingContent}>
                                 <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                 <Swiper
@@ -193,10 +193,10 @@ class MyLions extends Component {
                                         },this)
                                     }
                                 </Swiper>
-                            </ScrollView> 
+                            </ScrollView>
 
-                            <ButtonFeedback 
-                                onPress={()=>this._setModalVisible(false)} 
+                            <ButtonFeedback
+                                onPress={()=>this._setModalVisible(false)}
                                 style={styles.btnClose}>
                                 <Icon name='md-close' style={styles.btnCloseIcon}/>
                             </ButtonFeedback>

@@ -55,6 +55,7 @@ class Fixtures extends Component {
                           <Image
                              source={require('../../../images/footer/fixturesfooter.png')}
                              style={styles.imgSponsor}
+                             resizeMode='cover'
                              />
                           <LionsFooter isLoaded={true} />
                     </Content>
