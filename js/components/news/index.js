@@ -98,7 +98,7 @@ class News extends Component {
                                                     </ImagePlaceholder>
 
                                                     <View style={styles.newsContent}>
-                                                        <Text numberOfLines={2} style={styles.newsHeader}>
+                                                        <Text numberOfLines={3} style={styles.newsHeader}>
                                                             {data.headline ? data.headline.toUpperCase() : null}
                                                         </Text>
                                                         <View style={styles.newsDateWrapper}>

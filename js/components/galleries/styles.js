@@ -33,7 +33,7 @@ module.exports = styleSheetCreate({
     },
     galleriesImage: {
         width: null,
-        height: 180
+        height: 420 * (styleVar.deviceWidth/750)
     },
     galleriesContent: {
         paddingLeft: 20,

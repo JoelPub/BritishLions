@@ -14,6 +14,7 @@ import theme from '../../themes/base-theme'
 import loader from '../../themes/loader-position'
 import shapes from '../../themes/shapes'
 import StickyFooter from '../utility/stickyFooter'
+import styleVar from '../../themes/variable'
 
 class Galleries extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class Galleries extends Component {
                                                     style={styles.btn}
                                                     key={index}
                                                     onPress={() => this._drillDown(data)}>
-                                                    <ImagePlaceholder height={180}>
+                                                    <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
                                                         <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
                                                     </ImagePlaceholder>
                                                     <View style={[shapes.triangle, styles.triangle]} />
