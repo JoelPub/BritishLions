@@ -15,6 +15,7 @@ import styles from './styles'
 import shapes from '../../themes/shapes'
 import styleVar from '../../themes/variable'
 
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -150,6 +151,7 @@ class MyLionsExpertProfile extends Component {
             </Swiper>
             <LionsFooter isLoaded={true} />
           </ScrollView>
+          <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>

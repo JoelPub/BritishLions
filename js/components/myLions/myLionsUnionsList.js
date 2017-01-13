@@ -9,6 +9,7 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -106,8 +107,9 @@ class MyLionsUnionsList extends Component {
                             }, this)
                         }
                         <LionsFooter isLoaded={true} />
+                        <LoginRequire/>
                     </Content>
-                    < EYSFooter mySquadBtn={true}/>
+                    <EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
         )

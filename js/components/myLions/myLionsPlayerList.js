@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -510,6 +511,7 @@ class MyLionsPlayerList extends Component {
                             }
                         </View>
                     }
+                    <LoginRequire/>
                     <Content bounces={false}>
                         <FilterListingModal
                             modalVisible={this.state.filterModalVisible}

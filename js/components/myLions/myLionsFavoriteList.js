@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -379,6 +380,7 @@ class MyLionsFavoriteList extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
                     <EYSFooter mySquadBtn={true}/>
+                    <LoginRequire/>
                 </View>
             </Container>
         )

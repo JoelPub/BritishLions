@@ -10,6 +10,7 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -21,7 +22,6 @@ import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
-import LoginRequire from '../global/loginRequire'
 import Data from '../../../contents/my-lions/onboarding/data'
 
 class MyLions extends Component {
@@ -141,7 +141,7 @@ class MyLions extends Component {
                             <LionsFooter isLoaded={true} />
                         </Content>
                     <EYSFooter mySquadBtn={true}/>
-                    <LoginRequire onFinish={this._renderLogic.bind(this)} />
+                    <LoginRequire onFinish={this._renderLogic.bind(this)}/>
                     <Modal
                         visible={this.state.modalVisible}
                         transparent={true}

@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -658,7 +659,6 @@ class MyLionsPlayerDetails extends Component {
                                             <Text style={styles.btnText}>CHECKING..</Text>
                                         </ButtonFeedback>
                                 }
-
                                 <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
                                     <Text style={styles.btnText}>MY LIONS</Text>
                                 </ButtonFeedback>
@@ -752,6 +752,7 @@ class MyLionsPlayerDetails extends Component {
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
+                    <LoginRequire/>
                     <SquadModal
                         modalVisible={this.state.modalVisible}
                         callbackParent={this._setModalVisible}>
