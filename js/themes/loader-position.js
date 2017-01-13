@@ -10,5 +10,8 @@ module.exports = styleSheetCreate({
 		justifyContent: 'center',
 		height: styleVar.deviceHeight,
 		marginTop: -50
+    },
+    scoreCard: {
+    	height:50,
     }
 })
