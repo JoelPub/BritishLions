@@ -434,15 +434,6 @@ module.exports = styleSheetCreate({
         paddingTop:5,
         marginTop: 0
     },
-    btnExpertSquad: {
-        height:50,
-        backgroundColor:'rgb(38,38,38)',
-        flexDirection:'row',
-        marginTop:20,
-        marginBottom:0,
-        marginLeft:10,
-        marginRight:10,
-    },
     btnExpertIcon: {
         marginBottom: 3,
         color: 'rgb(208,7,42)',
@@ -774,13 +765,6 @@ module.exports = styleSheetCreate({
         marginTop:10,
         fontSize:28
     },
-    scoreCard:{
-        marginVertical:2,
-        borderTopWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(216,217,218)',
-        padding:20,
-    },
     scoreCardNoBottomW:{
         marginVertical:2,
         borderTopWidth:1,
@@ -788,68 +772,6 @@ module.exports = styleSheetCreate({
         borderColor:'rgb(216,217,218)',
         padding:20,
         paddingBottom:25,
-    },
-    semiCard:{
-        paddingTop:29,
-        marginBottom:10,
-        backgroundColor:'rgb(95,96,98)',
-        borderRadius:5,
-    },
-    semiCardText:{
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
-        lineHeight:24,
-        paddingHorizontal:20,
-        marginBottom:24,
-        textAlign:'center'
-    },
-    semiCardFooter:{
-        flexDirection: 'row',
-        alignItems:'flex-end',
-        justifyContent:'flex-end',
-        backgroundColor:'rgb(128,128,128)',
-        height:50,
-        paddingBottom:9,
-        paddingRight:11,
-        borderBottomLeftRadius:5,
-        borderBottomRightRadius:5,
-    },
-    semiCardFooterText:{
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:13,
-        marginRight:5
-    },
-    fullCard:{
-        marginTop:3,
-        backgroundColor:'rgb(95,96,98)',
-        borderRadius:5,
-    },
-    btnCardInfo:{
-        height:24,
-        width:24,
-        borderRadius:12,
-        backgroundColor:'rgb(255,255,255)',
-        position:'absolute',
-        right:5,
-        top:5
-    },
-    cardInfoIcon:{
-        fontSize:24,
-        textAlign:'center',
-        color:'rgb(95,96,98)',
-        backgroundColor:'transparent'
-    },
-    summaryWrapper:{
-        paddingHorizontal:30,
-        marginVertical:30,
-    },
-    summaryText:{
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
-        textAlign:'center',
-        lineHeight:18,
-        flex:1,
-        marginBottom:10,
     },
     performanceText:{
         fontFamily: styleVar.fontCondensed,
@@ -859,23 +781,6 @@ module.exports = styleSheetCreate({
         flex:1,
         marginBottom:10,
     },
-    summaryTextHighLight:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:44,
-        lineHeight:44,
-        textAlign:'center',
-        color:'rgb(255,230,0)',
-        flex:1,
-    },
-    ratingWrapper:{
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-        borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
-        marginTop:20,
-        paddingVertical:19
-    },
     expertRatingWrapper:{
         flexDirection:'row',
         justifyContent:'center',
@@ -883,94 +788,6 @@ module.exports = styleSheetCreate({
         borderColor:'rgb(216,217,218)',
         marginTop:5,
         paddingVertical:16
-    },
-    ratingTitle:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:28,
-        lineHeight:32,
-        paddingTop:8,
-    },
-    ratingScore:{
-        marginLeft:10,
-        height:70,
-        width:70,
-        borderRadius:35,
-        backgroundColor:'rgb(255,230,0)',
-        justifyContent:'center',
-        alignItems:'center',
-        paddingTop:10,
-    },
-    ratingScorePoint:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:28,
-        lineHeight:28,
-        color:'rgb(95,96,98)'
-    },
-    barGraphWrapper:{
-        height:105,
-        borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
-        paddingHorizontal:25,
-        paddingTop:15
-    },
-    barGraphText:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        textAlign:'left',
-        marginTop: 12,
-        android: {
-            marginTop: 8,
-        }
-    },
-    barSliderWrapper:{
-        height:108,
-        borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
-    },
-    barSliderTextWrapper:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingHorizontal:25,
-    },
-    barSliderText:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        marginTop: 25,
-    },
-    scoreCardShareWrapper:{
-        borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
-        marginTop: 0,
-        paddingVertical:5
-    },
-    scoreCardShare:{
-        backgroundColor:'rgb(255,230,0)',
-        flexDirection:'row',
-        paddingLeft:20
-    },
-    scoreCardShareText:{
-        textAlign:'left',
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        lineHeight: 24,
-        color: 'rgb(95,96,98)',
-        paddingTop:5
-    },
-    scoreCardShareIcon:{
-        marginLeft: 5,
-        width: 34,
-        color: 'rgb(95,96,98)',
-        fontSize:24
-    },
-    scoreCardFooter:{
-        backgroundColor:'rgb(128,128,128)',
-        height:50,
-        alignItems:'flex-end',
-        padding:10
-    },
-    scoreCardFooterImg:{
-        height:30,
-        width:29
     },
     individaulPositionRow:{
         flexDirection:'row'
