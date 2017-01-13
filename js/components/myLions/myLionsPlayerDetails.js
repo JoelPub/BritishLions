@@ -47,9 +47,10 @@ class MyLionsPlayerDetails extends Component {
         this.isUnMounted = false
         this.favAddUrl = getAssembledUrl('AddGoodFormFavoritePlayers')
         this.favRemoveUrl = getAssembledUrl('RemoveGoodFormFavoritePlayers')
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
+        this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
@@ -218,7 +219,7 @@ class MyLionsPlayerDetails extends Component {
     }
     getPlayerProfile(){
         let optionsPlayerProfile = {
-            url: 'http://bilwebapp.azurewebsites.net/getPlayersProfile',
+            url: this.PlayersProfileUrl,
             // data:{id:''},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
