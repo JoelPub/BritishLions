@@ -231,6 +231,7 @@ class MyLionsSquad extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
+                    <LionsHeader back={true} title='MY LIONS' />
                     {
                         this.state.isLoaded?
                             <ScrollView>
