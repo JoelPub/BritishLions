@@ -47,13 +47,16 @@ class MyLionsPlayerDetails extends Component {
         this.isUnMounted = false
         this.favAddUrl = getAssembledUrl('AddGoodFormFavoritePlayers')
         this.favRemoveUrl = getAssembledUrl('RemoveGoodFormFavoritePlayers')
+        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
+        this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
             inSquad: false,
+            isLoaded: false,
+            profile: {},
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             btnSubmit:'',
@@ -205,12 +208,48 @@ class MyLionsPlayerDetails extends Component {
 
                             // re-correect/update the Squad state
                             // and show the button
-                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true})
+                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true},()=>{
+                                this.getPlayerProfile()
+                            })
                         }
                     })
                 })
             }
         })
+    }
+    getPlayerProfile(){
+        let optionsPlayerProfile = {
+            url: this.PlayersProfileUrl,
+            // data:{id:''},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                this.setState({ isLoaded:true })
+            },
+            onSuccess: (res) => {
+                 this.setState({
+                    isLoaded:true
+                },()=>{
+                    console.log('!!!!res',res.data)
+                    this.setState({ isLoaded:true, profile:res.data })
+                    // this._setModalVisible(false)
+                    // this.setSquadData(this.fullPlayerList,res.data[0],'pop')
+                    // removeUserCustomizedSquad()
+                })
+            },
+            onError: (res) => {
+                this.setState({isLoaded:true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({isLoaded:true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(optionsPlayerProfile)
     }
     /*_updateState() {
         // lets update 'isFav state' to avoid glitch when user
@@ -716,39 +755,7 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                            <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
-                                <View style={styles.fullCard}>
-                                    <ButtonFeedback 
-                                        onPress={()=>this._setModalVisible(true,'info')}
-                                        style={styles.btnCardInfo}>
-                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                    </ButtonFeedback>
-                                    
-                                    <View style={styles.playerOverallRating}>
-                                        <Text style={styles.ratingTitle}>OVERALL RATING</Text>
-                                        <View style={styles.ratingScore}>
-                                            <Text style={styles.ratingScorePoint}>7.8</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.playerPerfromanceWrapper}>
-                                        <View style={styles.playerPerfromance} >
-                                            <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
-                                            <Text style={styles.summaryTextHighLight}>86</Text>
-                                        </View>
-                                        <View style={styles.playerPerfromance}>
-                                            <Text style={styles.performanceText}>CONSISTENCY</Text>
-                                            <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
-                                        </View>
-                                    </View>
-                                    <View style={styles.playerFigureWrapper}>
-                                        <PlayerFigure tabBar={this.tabBar} />
-                                    </View>
-                                <View style={styles.semiCardFooter}>
-                                    <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
-                                    <Image source={require('../../../images/footer/eyLogo.png')}></Image>
-                                </View>
-                                </View>
-                            </View>
+                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded}/>
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
