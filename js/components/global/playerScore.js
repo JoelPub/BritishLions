@@ -211,6 +211,7 @@ const styles = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop: 5,
+        color:'rgb(255,255,255)',
         backgroundColor:'transparent',
         marginLeft: 6,
         android:{

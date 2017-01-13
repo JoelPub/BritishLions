@@ -1071,41 +1071,6 @@ module.exports = styleSheetCreate({
     btnFavIcon:{
         color:'rgb(255,204,40)'
     },
-    playerCardWrapper:{
-        padding:20
-    },
-    playerOverallRating:{
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-        paddingBottom:20,
-        marginTop:20,
-    },
-    playerPerfromanceWrapper:{
-        flexDirection:'row',
-    },
-    playerPerfromance:{
-        flex:1,
-        justifyContent:'flex-start',
-        borderTopWidth:1,
-        borderLeftWidth:1,
-        borderBottomWidth:1,
-        borderColor:'rgb(128,127,131)',
-        paddingTop:18,
-        paddingHorizontal:16,
-        paddingBottom:1,
-        alignItems:'center',
-        android:{
-            paddingBottom:5,
-        }
-    },
-    playerPerformanceTrend:{
-        fontSize:44,
-        lineHeight:44,
-        textAlign:'center',
-        color:'rgb(255,230,0)',
-        flex:1,
-    },
     playerFigureWrapper:{
         paddingVertical:25,
         paddingHorizontal:20,

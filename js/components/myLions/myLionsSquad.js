@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -182,9 +183,7 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getSquad(), 600)
-
-        
+        setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -221,116 +220,124 @@ class MyLionsSquad extends Component {
         this.props.pushNewRoute('myLionsUnionsList')
     }
 
+    _toExpert(){
+        PushNotification.localNotificationSchedule({
+          message: "My Notification Message", 
+          date: new Date(Date.now() + (10 * 1000)) 
+        });
+    }
 
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
-                    {this.state.isLoaded?
-                    <ScrollView>
-                        <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                        <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)}/>
-                        {
-                            this.state.showScoreCard==='empty'?
-                            <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
-                            :
-                            <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
-                        }
-                        <ScrollView >
-                            <View style={styles.individaulPositionRow}>
-                            {
-                                this.state.squadDatafeed.indivPos.map((item,index)=>{
-                                    return (
-                                        <View style={styles.indivPosition} key={index}>
-                                            <View style={styles.indivPosTitle}>
-                                                <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
-                                            </View>
-                                            {
-                                            item.info===null?
-                                            <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
-                                            :
-                                            <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails')}/>
-                                            }
-                                        </View>
-                                    )
-                                },this) 
-                            }                                
-                            </View> 
-                            <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
-                            <Swiper
-                            ref='swiper'
-                            height={styleVar.deviceWidth*0.63}
-                            loop={false}
-                            dotColor='rgba(255,255,255,0.3)'
-                            activeDotColor='rgb(239,239,244)'
-                            paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
-                                return(
-                                    <View style={styles.posSwiperRow} key={i}>
-                                        {
-                                            rowData.map((item,index)=>{
-                                                return(
-                                                        <View style={styles.posWrapper} key={index}>
-                                                            {   
-                                                                item===null?
-                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
-                                                                :
-                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
-                                                            }
-                                                        </View>
-                                                    )
-                                            }, this)
-                                        }
-                                    </View>
-                                )
-
-                            },this)
-                            }
-
-                        </Swiper>
-                            
-                            <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
-                            <Swiper
-                            ref='swiper'
-                            height={styleVar.deviceWidth*0.63}
-                            loop={false}
-                            dotColor='rgba(255,255,255,0.3)'
-                            activeDotColor='rgb(239,239,244)'
-                            paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
-                                return(
-                                    <View style={styles.posSwiperRow} key={i}>
-                                        {
-                                            rowData.map((item,index)=>{
-                                                return(
-                                                    <View style={styles.posWrapper} key={index}>
-                                                    {
-                                                        item===null?                                                        
-                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
-                                                        :
-                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
-                                                    }
+                    {
+                        this.state.isLoaded?
+                            <ScrollView>
+                                <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
+                                <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)}/>
+                                {
+                                    this.state.showScoreCard==='empty'?
+                                    <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
+                                    :
+                                    <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
+                                }
+                                <ScrollView >
+                                    <View style={styles.individaulPositionRow}>
+                                    {
+                                        this.state.squadDatafeed.indivPos.map((item,index)=>{
+                                            return (
+                                                <View style={styles.indivPosition} key={index}>
+                                                    <View style={styles.indivPosTitle}>
+                                                        <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
                                                     </View>
-                                                    )
-                                            }, this)
-                                        }
+                                                    {
+                                                    item.info===null?
+                                                    <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
+                                                    :
+                                                    <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails')}/>
+                                                    }
+                                                </View>
+                                            )
+                                        },this) 
+                                    }                                
                                     </View>
-                                )
 
-                            },this)
-                            }
+                                    <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
+                                    <Swiper
+                                    ref='swiper'
+                                    height={styleVar.deviceWidth*0.63}
+                                    loop={false}
+                                    dotColor='rgba(255,255,255,0.3)'
+                                    activeDotColor='rgb(239,239,244)'
+                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
+                                        {
+                                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
+                                                return(
+                                                    <View style={styles.posSwiperRow} key={i}>
+                                                        {
+                                                            rowData.map((item,index)=>{
+                                                                return(
+                                                                        <View style={styles.posWrapper} key={index}>
+                                                                            {   
+                                                                                item===null?
+                                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
+                                                                                :
+                                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                                            }
+                                                                        </View>
+                                                                    )
+                                                            }, this)
+                                                        }
+                                                    </View>
+                                                )
 
-                        </Swiper>
-                            <LionsFooter isLoaded={true} />
-                    </ScrollView>
-                    </ScrollView>
-                    :
-                        <ActivityIndicator style={loader.centered} size='large' />
-                }
+                                            },this)
+                                        }
+
+                                    </Swiper>
+                                    
+                                    <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
+                                    <Swiper
+                                    ref='swiper'
+                                    height={styleVar.deviceWidth*0.63}
+                                    loop={false}
+                                    dotColor='rgba(255,255,255,0.3)'
+                                    activeDotColor='rgb(239,239,244)'
+                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
+                                        {
+                                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
+                                                return(
+                                                    <View style={styles.posSwiperRow} key={i}>
+                                                        {
+                                                            rowData.map((item,index)=>{
+                                                                return(
+                                                                    <View style={styles.posWrapper} key={index}>
+                                                                    {
+                                                                        item===null?                                                        
+                                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
+                                                                        :
+                                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                                    }
+                                                                    </View>
+                                                                    )
+                                                            }, this)
+                                                        }
+                                                    </View>
+                                                )
+
+                                            },this)
+                                        }
+                                    </Swiper>
+                                    <LionsFooter isLoaded={true} />
+                            </ScrollView>
+                            </ScrollView>
+                        :
+                            <ActivityIndicator style={loader.centered} size='large' />
+                    }
                     <EYSFooter mySquadBtn={true}/>
+                    <LoginRequire/>
                     <SquadModal
                         modalVisible={this.state.modalVisible}
                         callbackParent={this._setModalVisible}>
@@ -342,6 +349,8 @@ class MyLionsSquad extends Component {
     }
 
     _getSquad(){
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
+            
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
             if(this.isUnMounted) return
@@ -377,8 +386,7 @@ class MyLionsSquad extends Component {
                         })
                     })
             }
-        })
-        
+        })      
     }
 
     setSquadData(player,squad,mode){
@@ -495,13 +503,11 @@ class MyLionsSquad extends Component {
             // data:{id:''},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false })
+                this.setState({ isFormSubmitting: false, isLoaded:true })
             },
             onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted        
                  this.setState({
-                    isFormSubmitting: false
+                    isFormSubmitting: false, isLoaded:true
                 },()=>{
                     console.log('!!!!res',res.data[0])
                     // this._setModalVisible(false)
@@ -510,22 +516,21 @@ class MyLionsSquad extends Component {
                 })
             },
             onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
+                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
+                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
                     this._signInRequired()
                 })
             },
             isRequiredToken: true
         }
-
+        this._setModalVisible(false)
         this.setState({
-            isFormSubmitting: true
+            isFormSubmitting: true,
+            isLoaded:false
         },()=>{
             if(mode==='empty') {
                 this.setSquadData(this.fullPlayerList,emptyDataFeed,mode)

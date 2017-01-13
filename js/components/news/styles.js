@@ -36,7 +36,8 @@ module.exports = styleSheetCreate({
         lineHeight: 20,
         flex: 1,
         android: {
-            lineHeight: 32
+            paddingTop: 0,
+            lineHeight: 30
         }
     },
     newsDateWrapper: {

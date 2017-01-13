@@ -11,7 +11,7 @@ import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
 import styleVar from '../../themes/variable'
-
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -54,6 +54,7 @@ class MyLionsExpertsList extends Component {
 
   constructor(props) {
     super(props)
+    this.isUnMounted = false
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
@@ -73,17 +74,20 @@ class MyLionsExpertsList extends Component {
             <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
             <ListView
               dataSource={this.state.dataSource}
+              enableEmptySections={true}
               renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {this._navToDetail} />}
             />
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <EYSFooter mySquadBtn={true}/>
+          <LoginRequire/>
         </View>
       </Container>
     )
   }
   handdleData = () => {
-   let  experts = ExpertmModel.fromJS(ExpertsData.experts)
+    if (this.isUnMounted) return // return nothing if the component is already unmounted
+    let  experts = ExpertmModel.fromJS(ExpertsData.experts)
     this.setState({
       experts: experts,
       dataSource: this.ds.cloneWithRows(experts.toArray()),
@@ -96,6 +100,10 @@ class MyLionsExpertsList extends Component {
 
   componentWillReceiveProps (nextProps) {
     this.handleComponentUpdate(nextProps, false)
+  }
+
+  componentWillUnmount() {
+      this.isUnMounted = true
   }
 
   componentDidMount () {

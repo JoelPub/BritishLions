@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
+import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -241,18 +242,23 @@ class MyLionsPlayerList extends Component {
 
      _mergeEYC3Player(playerList, eyc3Players){
          let mergedPlayers = []
-         console.log('eyc3Players:', eyc3Players)
-         console.log('playerList:', playerList)
-         if (eyc3Players.length > 0) {
-             eyc3Players.map((eyc3player, index) => {
-                 playerList.map((player,j) => {
-                     if (eyc3player.id === player.id) {
-                         player.eyc3PlayerScore = eyc3player.heightm
-                         mergedPlayers.push(player)
-                     }
-                 })
-             })
-         }
+         // console.log('eyc3Players:', eyc3Players)
+         // console.log('playerList:', playerList)
+         // if (eyc3Players.length > 0) {
+         //     eyc3Players.map((eyc3player, index) => {
+         //         playerList.map((player,j) => {
+         //             if (eyc3player.id === player.id) {
+         //                 player.eyc3PlayerScore = eyc3player.heightm
+         //                 mergedPlayers.push(player)
+         //             }
+         //         })
+         //     })
+         // }
+         playerList.map((item,index)=>{
+            let r=eyc3Players.find((node)=>node.id.toString()===item.id)
+            mergedPlayers.push(Object.assign(item,{eycsPlayerScore:r===undefined?'N/A':r.overall_score}))
+         })
+         // console.log('mergedPlayers:', mergedPlayers)
         this._getFavoritePlayers(mergedPlayers)
      }
 
@@ -443,7 +449,7 @@ class MyLionsPlayerList extends Component {
                 //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
                 getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
+                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[0]['PlayerList'][this.unionFeed.unionId])
                      }
                  }).catch((error) => {
                      console.log('Error when try to get the EYC3 full player list: ', error)
@@ -510,6 +516,7 @@ class MyLionsPlayerList extends Component {
                             }
                         </View>
                     }
+                    <LoginRequire/>
                     <Content bounces={false}>
                         <FilterListingModal
                             modalVisible={this.state.filterModalVisible}
