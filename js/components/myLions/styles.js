@@ -1081,6 +1081,28 @@ module.exports = styleSheetCreate({
         paddingBottom:20,
         marginTop:20,
     },
+    ratingTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:32,
+        paddingTop:8,
+    },
+    ratingScore:{
+        marginLeft:10,
+        height:70,
+        width:70,
+        borderRadius:35,
+        backgroundColor:'rgb(255,230,0)',
+        justifyContent:'center',
+        alignItems:'center',
+        paddingTop:10,
+    },
+    ratingScorePoint:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:28,
+        color:'rgb(95,96,98)'
+    },
     playerPerfromanceWrapper:{
         flexDirection:'row',
     },
@@ -1123,5 +1145,49 @@ module.exports = styleSheetCreate({
             paddingTop: 12,
             paddingBottom: 6
         }
+    },
+    fullCard:{
+        marginTop:3,
+        backgroundColor:'rgb(95,96,98)',
+        borderRadius:5,
+    },
+    btnCardInfo:{
+        height:24,
+        width:24,
+        borderRadius:12,
+        backgroundColor:'rgb(255,255,255)',
+        position:'absolute',
+        right:5,
+        top:5
+    },
+    cardInfoIcon:{
+        fontSize:24,
+        textAlign:'center',
+        color:'rgb(95,96,98)',
+        backgroundColor:'transparent'
+    },
+    summaryTextHighLight:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:44,
+        lineHeight:44,
+        textAlign:'center',
+        color:'rgb(255,230,0)',
+        flex:1,
+    },
+    semiCardFooter:{
+        flexDirection: 'row',
+        alignItems:'flex-end',
+        justifyContent:'flex-end',
+        backgroundColor:'rgb(128,128,128)',
+        height:50,
+        paddingBottom:9,
+        paddingRight:11,
+        borderBottomLeftRadius:5,
+        borderBottomRightRadius:5,
+    },
+    semiCardFooterText:{
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:13,
+        marginRight:5
     },
 })
