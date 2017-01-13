@@ -175,7 +175,7 @@ class Login extends Component {
     /* google sign in func */
     async _setupGoogleSignin() {
         try {
-            await GoogleSignin.hasPlayServices({ autoResolve: true });
+            await GoogleSignin.hasPlayServices({ autoResolve: false });
             await GoogleSignin.configure({
                 // scopes: ["https://www.googleapis.com/auth/drive.readonly"],
                 iosClientId: '919182744809-hlhpkfff5bp1rb5ft71ojeg0h2hu2mb1.apps.googleusercontent.com',
