@@ -182,9 +182,7 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getSquad(), 600)
-
-        
+        setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -256,7 +254,8 @@ class MyLionsSquad extends Component {
                                     )
                                 },this) 
                             }                                
-                            </View> 
+                            </View>
+
                             <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
                             <Swiper
                             ref='swiper'
@@ -265,31 +264,31 @@ class MyLionsSquad extends Component {
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'
                             paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
-                                return(
-                                    <View style={styles.posSwiperRow} key={i}>
-                                        {
-                                            rowData.map((item,index)=>{
-                                                return(
-                                                        <View style={styles.posWrapper} key={index}>
-                                                            {   
-                                                                item===null?
-                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
-                                                                :
-                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
-                                                            }
-                                                        </View>
-                                                    )
-                                            }, this)
-                                        }
-                                    </View>
-                                )
+                                {
+                                    this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
+                                        return(
+                                            <View style={styles.posSwiperRow} key={i}>
+                                                {
+                                                    rowData.map((item,index)=>{
+                                                        return(
+                                                                <View style={styles.posWrapper} key={index}>
+                                                                    {   
+                                                                        item===null?
+                                                                        <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
+                                                                        :
+                                                                        <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                                    }
+                                                                </View>
+                                                            )
+                                                    }, this)
+                                                }
+                                            </View>
+                                        )
 
-                            },this)
-                            }
+                                    },this)
+                                }
 
-                        </Swiper>
+                            </Swiper>
                             
                             <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
                             <Swiper
@@ -299,31 +298,30 @@ class MyLionsSquad extends Component {
                             dotColor='rgba(255,255,255,0.3)'
                             activeDotColor='rgb(239,239,244)'
                             paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
-                                return(
-                                    <View style={styles.posSwiperRow} key={i}>
-                                        {
-                                            rowData.map((item,index)=>{
-                                                return(
-                                                    <View style={styles.posWrapper} key={index}>
-                                                    {
-                                                        item===null?                                                        
-                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
-                                                        :
-                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
-                                                    }
-                                                    </View>
-                                                    )
-                                            }, this)
-                                        }
-                                    </View>
-                                )
+                                {
+                                    this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
+                                        return(
+                                            <View style={styles.posSwiperRow} key={i}>
+                                                {
+                                                    rowData.map((item,index)=>{
+                                                        return(
+                                                            <View style={styles.posWrapper} key={index}>
+                                                            {
+                                                                item===null?                                                        
+                                                                   <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
+                                                                :
+                                                                    <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                            }
+                                                            </View>
+                                                            )
+                                                    }, this)
+                                                }
+                                            </View>
+                                        )
 
-                            },this)
-                            }
-
-                        </Swiper>
+                                    },this)
+                                }
+                            </Swiper>
                             <LionsFooter isLoaded={true} />
                     </ScrollView>
                     </ScrollView>
@@ -495,13 +493,11 @@ class MyLionsSquad extends Component {
             // data:{id:''},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false })
+                this.setState({ isFormSubmitting: false, isLoaded:true })
             },
             onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted        
                  this.setState({
-                    isFormSubmitting: false
+                    isFormSubmitting: false, isLoaded:true
                 },()=>{
                     console.log('!!!!res',res.data[0])
                     // this._setModalVisible(false)
@@ -510,22 +506,21 @@ class MyLionsSquad extends Component {
                 })
             },
             onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
+                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
+                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
                     this._signInRequired()
                 })
             },
             isRequiredToken: true
         }
-
+        this._setModalVisible(false)
         this.setState({
-            isFormSubmitting: true
+            isFormSubmitting: true,
+            isLoaded:false
         },()=>{
             if(mode==='empty') {
                 this.setSquadData(this.fullPlayerList,emptyDataFeed,mode)
