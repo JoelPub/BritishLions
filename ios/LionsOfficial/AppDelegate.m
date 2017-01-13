@@ -11,7 +11,11 @@
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
+
+#import "RNGoogleSignin.h"
+
 #import "RCTPushNotificationManager.h"
+
 
 @implementation AppDelegate
 
@@ -34,6 +38,14 @@
   [self.window makeKeyAndVisible];
   return YES;
 }
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  
+  return [RNGoogleSignin application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+}
+
 
 // Required to register for notifications
 - (void)application:(UIApplication *)application

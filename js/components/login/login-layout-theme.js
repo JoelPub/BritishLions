@@ -68,6 +68,34 @@ module.exports = styleSheetCreate({
         borderWidth: 0,
         paddingLeft: 22
     },
+    googleAuthButtonView:{
+        alignItems: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 40,
+        paddingTop:8
+    },
+    fbAuthButtonView:{
+        alignItems: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 40,
+        paddingTop:8
+    },
+    googleAuthText:{
+        alignItems: 'center',
+        marginLeft:0,
+        marginRight:0
+    },
+    fbAuthText:{
+        alignItems: 'center',
+        marginLeft:0,
+        marginRight:0
+    },
     inputIcon: {
         fontSize: 20,
         marginRight: 5
