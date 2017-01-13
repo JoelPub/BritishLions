@@ -38,9 +38,12 @@ export default class MyLionsPlayerListFilter extends Component {
                            <ButtonFeedback onPress={()=>this.props.getFilteredPosition('flanker')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'flanker')]}>
                                 <Text style={styles.btnFilterTxt}>FLANKER</Text>
                            </ButtonFeedback>
-                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('number 8')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'number 8')]}>
+                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('no. 8')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'no. 8')]}>
                                 <Text style={styles.btnFilterTxt}>NUMBER 8</Text>
                            </ButtonFeedback>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('back row')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'back row')]}>
+                               <Text style={styles.btnFilterTxt}>BACK ROW</Text>
+                          </ButtonFeedback>
                        </View>
                    </View>
                    <View>
@@ -52,14 +55,17 @@ export default class MyLionsPlayerListFilter extends Component {
                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('fly half')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'fly half')]}>
                               <Text style={styles.btnFilterTxt}>FLY-HALF</Text>
                           </ButtonFeedback>
-                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('wing')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'wing')]}>
-                              <Text style={styles.btnFilterTxt}>WING</Text>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('winger')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'winger')]}>
+                              <Text style={styles.btnFilterTxt}>WINGER</Text>
                           </ButtonFeedback>
                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('centre')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'centre')]}>
                                <Text style={styles.btnFilterTxt}>CENTRE</Text>
                           </ButtonFeedback>
                           <ButtonFeedback onPress={()=>this.props.getFilteredPosition('full back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'full back')]}>
                                <Text style={styles.btnFilterTxt}>FULL-BACK</Text>
+                          </ButtonFeedback>
+                          <ButtonFeedback onPress={()=>this.props.getFilteredPosition('utility back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'utility back')]}>
+                               <Text style={styles.btnFilterTxt}>UTILITY BACK</Text>
                           </ButtonFeedback>
                        </View>
                    </View>
