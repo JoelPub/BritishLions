@@ -19,6 +19,19 @@ import { actionsApi } from '../utility/urlStorage'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+
+const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
+  <View >
+     <ButtonFeedback style={styles.fbAuthButtonView} >
+         <Text style={styles.fbAuthText} >Signin in With Facebook</Text>
+     </ButtonFeedback>
+      <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
+          <Text style={styles.googleAuthText} >Signin in With Google</Text>
+      </ButtonFeedback>
+  </View>
+)
+
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -64,10 +77,13 @@ class Login extends Component {
         // just to make sure that token was removed and
         // isAccessGranted flag is set to false when 
         // user is in the login page
+
         setTimeout(() => {
             removeToken() 
             this.props.setAccessGranted(false)
         }, 400)
+        this._setupGoogleSignin();
+
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -87,6 +103,7 @@ class Login extends Component {
 
         // reset the fields and hide loader
         this.setState({
+            user: null,
             email: '',
             password: '',
             customMessages: '',
@@ -155,6 +172,35 @@ class Login extends Component {
         this.msgboxPosX=event.nativeEvent.layout.x
         this.msgboxPosY=event.nativeEvent.layout.y     
     }
+    /* google sign in func */
+    async _setupGoogleSignin() {
+        try {
+            await GoogleSignin.hasPlayServices({ autoResolve: false });
+            await GoogleSignin.configure({
+                // scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+                iosClientId: '919182744809-hlhpkfff5bp1rb5ft71ojeg0h2hu2mb1.apps.googleusercontent.com',
+                offlineAccess: false
+            });
+
+            const user = await GoogleSignin.currentUserAsync();
+            console.log(user);
+            this.setState({user});
+        }
+        catch(err) {
+            console.log("Google signin error", err.code, err.message);
+        }
+    }
+    _signIn = () => {
+        GoogleSignin.signIn()
+          .then((user) => {
+              console.log(user);
+              this.setState({user: user});
+          })
+          .catch((err) => {
+              console.log('WRONG SIGNIN', err);
+          })
+          .done();
+    }
 
     render() {
         return (
@@ -178,6 +224,7 @@ class Login extends Component {
                                         ref = 'errorHandlerElem'
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignIn.bind(this)}/>
+                                   <GoogleAndFBContainer googleOnPress={this._signIn}/>
 
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
