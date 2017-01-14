@@ -8,6 +8,8 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import styleVar from '../../themes/variable'
 import Swiper from 'react-native-swiper'
 import loader from '../../themes/loader-position'
+import {Map} from 'immutable'
+
 const gridBorderColor = 'rgb(216, 217, 218)'
 
 const styles = styleSheetCreate({ 
@@ -50,6 +52,7 @@ const styles = styleSheetCreate({
         fontSize:28,
         lineHeight:32,
         paddingTop:8,
+        color:'rgb(255,255,255)'
     },
     playerPerfromanceWrapper:{
         flexDirection:'row',
@@ -103,6 +106,7 @@ const styles = styleSheetCreate({
         fontSize:24,
         lineHeight:24,
         textAlign:'center',
+        color:'rgb(255,255,255)'
     },
     playerFigurePageWrapper:{
         justifyContent:'center',
@@ -163,7 +167,21 @@ const styles = styleSheetCreate({
     semiCardFooterText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:13,
-        marginRight:5
+        marginRight:5,
+        color:'rgb(255,255,255)'
+    },
+    performanceText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:18,
+        textAlign:'center',
+        lineHeight:18,
+        flex:1,
+        marginBottom:10,
+        color:'rgb(255,255,255)'
+    },
+    playerFigureWrapper:{
+        paddingVertical:25,
+        paddingHorizontal:20,
     },
 })
 
@@ -173,7 +191,10 @@ export default class PlayerFigure extends Component {
         this.state = {
             underlineLength:[],
             tabStatus:[],
-    	},
+            tabSubjects:[],
+            profile:{},
+            isLoaded:false
+    	}
         this.currentPage = 0
     }
 
@@ -228,15 +249,33 @@ export default class PlayerFigure extends Component {
         return newData
     }
 
+    componentWillReceiveProps(nextProps,nextState) {
+        console.log('@@@nextProps',nextProps.profile)
+        console.log('@@@thisProps',this.props.profile)
+        console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
+        console.log('@@@isnull?',nextProps.profile.equals(Map({}))?'true':'false')
+        if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(Map({}))) {
+            console.log('@@seasons',nextProps.profile.get('seasons')[0])
+            let profile=nextProps.profile.get('seasons')[0]
+            let tabSubjects=[]
+            for (let v in profile) {
+                if(v!=='season name') tabSubjects.push(v)
+            }
+
+            this.setState({isLoaded:true,profile,tabSubjects})
+        }
+
+    }
+
 	render() {
 		return (
             <View>
             {
-                this.props.isLoaded?
+                this.state.isLoaded?
                 <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
                     <View style={styles.fullCard}>
                         <ButtonFeedback 
-                            
+                            onPress={()=>this.props.pressInfo(true,'info')}
                             style={styles.btnCardInfo}>
                             <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                         </ButtonFeedback>
@@ -244,24 +283,29 @@ export default class PlayerFigure extends Component {
                         <View style={styles.playerOverallRating}>
                             <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                             <View style={styles.ratingScore}>
-                                <Text style={styles.ratingScorePoint}>{this.props.profile.overall_rating}</Text>
+                                <Text style={styles.ratingScorePoint}>{this.props.profile.overall_rating||'NA'}</Text>
                             </View>
                         </View>
                         <View style={styles.playerPerfromanceWrapper}>
                             <View style={styles.playerPerfromance} >
                                 <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
-                                <Text style={styles.summaryTextHighLight}>{this.props.profile.cohesion_rating}</Text>
+                                <Text style={styles.summaryTextHighLight}>{this.props.profile.performance_score}</Text>
                             </View>
                             <View style={styles.playerPerfromance}>
                                 <Text style={styles.performanceText}>CONSISTENCY</Text>
-                                <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
+                                {
+                                    this.props.profile.player_consistency>0?
+                                    <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
+                                    :
+                                    <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
+                                }
                             </View>
                         </View>
                         <View style={styles.playerFigureWrapper}>
                             <View style={styles.playerFigureView}>
                                 <View style={styles.playerFigureTypeView}>
                                 {
-                                    this.props.tabBar.map((node,page)=>{
+                                    this.state.tabSubjects.map((node,page)=>{
                                         return (
                                         <ButtonFeedback 
                                         style={styles.playerFigureType} 
@@ -269,7 +313,7 @@ export default class PlayerFigure extends Component {
                                         key={page}>
                                             <Text 
                                             style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
-                                            onLayout={this.measureTab.bind(this,page)}>{node.subject}</Text>
+                                            onLayout={this.measureTab.bind(this,page)}>{node.toUpperCase()}</Text>
                                             <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
                                         </ButtonFeedback>
                                         )
@@ -285,20 +329,20 @@ export default class PlayerFigure extends Component {
                                 activeDotColor='rgb(255,230,0)'
                                 onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
                                 {
-                                    this.props.tabBar.map((node,i)=>{
+                                    this.state.tabSubjects.map((node,i)=>{
                                         return(
                                             <View style={styles.playerFigurePageWrapper} key={i}>
                                                 {
-                                                    this._mapJSON(node.content).map((rowData,index)=>{
+                                                    this._mapJSON(this.state.profile[node]).map((rowData,index)=>{
                                                         return(
                                                             <View style={styles.playerFigureRow} key={index}>
                                                             {
                                                                 rowData.map((item, j) => {
                                                                     return(
                                                                         <View style={styles.playerFigureUnit} key={j}>
-                                                                            <Text style={styles.playerFigureUpperText}>{item.title}</Text>
+                                                                            <Text style={styles.playerFigureUpperText}>{item.name}</Text>
                                                                             <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                                                <Text style={styles.ratingScorePoint}>{item.score}</Text>
+                                                                                <Text style={styles.ratingScorePoint}>{item.value}</Text>
                                                                             </View>
                                                                             <Text style={styles.playerFigureLowerText}>{item.average}</Text>
                                                                         </View>
@@ -325,10 +369,7 @@ export default class PlayerFigure extends Component {
                 :
                 <ActivityIndicator style={loader.scoreCard} size='small' /> 
             }
-            </View>
-
-
-            
+            </View>            
 			)
 	}
 

@@ -29,6 +29,7 @@ import PlayerFigure from '../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
+import {Map} from 'immutable'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -56,7 +57,7 @@ class MyLionsPlayerDetails extends Component {
             isFav : this.props.detail.isFav,
             inSquad: false,
             isLoaded: false,
-            profile: {},
+            profile: Map({}),
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             btnSubmit:'',
@@ -92,7 +93,7 @@ class MyLionsPlayerDetails extends Component {
     }
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
-            case 'update' :
+            case 'add' :
                 return(
                     <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
@@ -101,6 +102,15 @@ class MyLionsPlayerDetails extends Component {
                         <PositionButton position='widecard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','widecard',1)} subject='WIDECARD' data={this.state.squadDataFeed.widecard} total='1'/>
                         <PositionButton position='forwards' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','forwards',16)} subject='FORWARD' data={this.state.squadDataFeed.forwards} total='16'/>
                         <PositionButton position='backs' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','backs',16)} subject='BACK' data={this.state.squadDataFeed.backs} total='16'/>
+                    </View>
+                )
+                break
+            case 'remove' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalBtnTitle}>CONFIRM</Text>
+                        <Text style={styles.modalTitleTextCenter}>REMOVE</Text>
+                        <ButtonFeedback rounded label='YES' onPress={()=>this._updateSquad('remove')}  style={styles.modalConfirmBtn} />
                     </View>
                 )
                 break
@@ -166,92 +176,7 @@ class MyLionsPlayerDetails extends Component {
             [{text: 'Dismiss'}]
         )
     }
-    _updateInitialState(){
-        // lets update 'isFav state' to avoid glitch when user
-        // go to player details page then update the player (add or removed),
-        // then user back then go here again
-        // lets check first the player status if its favorite or not
-        // this is to prevent glitch
-        this.setState({ isDoneUpdatingState: false })
-        getGoodFormFavoritePlayerList().then((data)=>{
-            // console.log('final data:', JSON.stringify(data))
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-            if(data.auth){
-                if(data.auth === 'Sign In is Required'){
-                        this._signInRequired.bind(this)
-                }
-            }else if(data.error){
-                // console.log('final data:', JSON.stringify(data.error))
-                    this._showError(data.error) // prompt error
-            }else{
-                let favoritePlayers = (data.data === '')? [] : data.data.split('|')
-                let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
-
-                // re-correect/update the isFav state
-                this.setState({isFav},()=>{                    
-                    getUserCustomizedSquad().then((catchedSquad)=>{
-                        // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
-                        if(catchedSquad.error){
-                            // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
-                            this.setState({ isDoneUpdatingState: false }, () => {
-                                this._showError(catchedSquad.error) // prompt error
-                            })
-                        }else{
-                            let squadFeed=eval(`(${catchedSquad.data})`)
-                            let inSquad = false
-                            let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
-                            for (let pos in squadFeed) {
-                                squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
-                                if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
-                            }
-                            // console.log('@@@squadFeedTemp',squadFeedTemp)
-
-                            // re-correect/update the Squad state
-                            // and show the button
-                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true},()=>{
-                                this.getPlayerProfile()
-                            })
-                        }
-                    })
-                })
-            }
-        })
-    }
-    getPlayerProfile(){
-        let optionsPlayerProfile = {
-            url: this.PlayersProfileUrl,
-            // data:{id:''},
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                this.setState({ isLoaded:true })
-            },
-            onSuccess: (res) => {
-                 this.setState({
-                    isLoaded:true
-                },()=>{
-                    console.log('!!!!res',res.data)
-                    this.setState({ isLoaded:true, profile:res.data })
-                    // this._setModalVisible(false)
-                    // this.setSquadData(this.fullPlayerList,res.data[0],'pop')
-                    // removeUserCustomizedSquad()
-                })
-            },
-            onError: (res) => {
-                this.setState({isLoaded:true }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                this.setState({isLoaded:true }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
-
-        service(optionsPlayerProfile)
-    }
-    /*_updateState() {
+   /*_updateState() {
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
         // then user back then go here again
@@ -294,214 +219,6 @@ class MyLionsPlayerDetails extends Component {
         service(options)
     }*/
 
-    _updatePlayerFavStatus(){
-        this.setState({ isFormSubmitting: true,btnSubmit:'FAV' })
-        getGoodFormFavoritePlayerList().then((data)=>{
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-            if(data.auth){
-                if(data.auth === 'Sign In is Required'){
-                    this.setState({ isFormSubmitting: false }, () => {
-                        this._signInRequired.bind(this)
-                    })
-                }
-            }else if(data.error){
-                 this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(data.error) // prompt error
-                 })
-            }else{
-                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
-                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
-
-                 // detect conflict (glitch)
-                 if (this.state.isFav !== isFav) {
-                     // what this means?
-                     // it means we removing player that are already removed or
-                     // we adding a player that are already added
-
-                     // how this happens?
-                     // go to mylion page, check one of the country there then select any player (your in the player details now)
-                     // try to add or removed that player, example you add a player then the player is now added to your fav list
-                     // click the my lions button (it will redirect you to favorite list page), then click the last player you add
-                     // you will noticed the button of this player can be remove, then.. remove that player, it will now removed to your list
-                     // click/tap the back button in the header and you will go my favorite player list page
-                     // click/tap the back button again in the header and you will go the player details page (the player you add and removed)
-                     // remember the last action you did is removed this from my favorite list page
-                     // but as you can see the button still 'removed' instead of 'add'
-                     // that's the conflict/glitch happen because we just click/tap the back button in the header and it just
-                     // popRoute() or go to previous page, the problem here is when we back to the previous page, the component will not
-                     // re-render again, thats why what you see is 'removed' button instead of 'add'
-                     // the solution is when user tap the 'removed' or 'add' button, we will set the 'isFav state' again (re correct the state boolean value)
-                     // we will fetch the fav list from api and check if the player is included in favorites or not then
-                     // re update the state, this is to avoid error prompt that goodform response
-
-                     // what will happen now?
-                     // if user 'remove' a player that already 'removed', the process will continue
-                     // and we will not receiving any error from goodform that stating that 'we requesting to invalid api url',
-                     // because the adding and removing player url api is different, we need to make sure that if we add a player, the url will be for adding url
-                     // and if we remove player, the url will be for removing to avoid conflict in the goodform api
-                     // but lets prompt a message to the user that the player that user removing is 'already removed'
-                     // and the player that user adding is 'already addded'
-
-                     let errorDesc = ''
-                     if (this.state.isFav) {
-                         // user trying to remove a player that are already removed in the fav list
-                         errorDesc = 'is already removed from your list.'
-
-                     } else {
-                         // user trying to add a player that are already added in the fav list
-                         errorDesc = 'is already added from your list.'
-                     }
-
-                     // re correect the isFav state
-                     this.setState({isFav, isFormSubmitting: false}, () => {
-                         Alert.alert(
-                             'Player List Update',
-                             `${this.playerName} ${errorDesc}`,
-                             [{ text: 'OK' }]
-                         )
-                     })
-                 } else {
-                     // no conflict, just continue
-                     this._processUpdate()
-                     removeGoodFormFavoritePlayerList()
-                 }
-            }
-        })
-    }
-
-    updateSquad(){
-        this.state.inSquad?this._updateSquad('remove'):this._addToSquad()
-    }
-
-    _addToSquad(){
-        // if(this.props.positionToAdd!==''){
-        //     let tempSquadData=this.state.squadDataFeed
-        //     console.log('@@@tempSquadData',tempSquadData)
-        //     console.log('@@@this.props.positionToAdd',this.props.positionToAdd)
-        //     tempSquadData[this.props.positionToAdd.toLowerCase()].push(this.playerid)
-        //     this.setState({squadDataFeed:tempSquadData})
-        // }
-        this._setModalVisible(true,'update')
-    }
-
-    _updateSquad(type,position,max){
-        this.setState({ isFormSubmitting: true,btnSubmit:'SQUAD' },()=>{
-            this._setModalVisible(false)
-        })
-        let update=true
-        getUserCustomizedSquad().then((catchedSquad)=>{
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-            // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
-            if(catchedSquad.auth){
-                if(catchedSquad.auth === 'Sign In is Required'){
-                    this.setState({ isFormSubmitting: false }, () => {
-                        this._signInRequired.bind(this)
-                    })
-                }
-            }else if(catchedSquad.error){
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(catchedSquad.error) // prompt error
-                })
-            }else{
-                let squadFeed=eval(`(${catchedSquad.data})`)
-                let inSquad = false
-                let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
-                for (let pos in squadFeed) {
-                    squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
-                    if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) {
-                        inSquad=true
-                        if (type==='remove')  squadFeedTemp[pos].splice(squadFeedTemp[pos].indexOf(this.playerid),1)
-                    }
-                }
-
-                if (this.state.inSquad !== inSquad) {
-                     let errorDesc = ''
-                     if (this.state.inSquad) {
-                         errorDesc = 'is already removed from my squad list.'
-
-                     } else {
-                         errorDesc = 'is already added to my squad list.'
-                     }
-
-                     this.setState({inSquad, squadDataFeed:squadFeedTemp, isFormSubmitting: false}, () => {
-                         Alert.alert(
-                             'MySquad List Update',
-                             `${errorDesc}`,
-                             [{ text: 'OK' }]
-                         )
-                     })
-                 } else {
-                    // console.log('$$$$inSquad',inSquad)
-                    // console.log('$$$$type',type)
-                        
-                    if(!inSquad&&type==='add') {
-                        console.log('$$$$squadFeedTemp',squadFeedTemp)
-                        if(squadFeedTemp[position].length<max) {
-                            squadFeedTemp[position].push(this.playerid)
-                        }
-                        else {
-                            update=false
-                            this.setState({ squadDataFeed:squadFeedTemp, isFormSubmitting: false })
-                            Alert.alert(
-                             'MySquad List Update',
-                             'Position Is Full',
-                             [{ text: 'OK' }]
-                            )
-                        }
-                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
-                        
-                    }
-                    if(update) this._updateSquadPlayer(squadFeedTemp)
-                 }
-
-            }
-        })
-    }
-    _updateSquadPlayer(squadData) {
-        // console.log('@@@@squadData',squadData)
-        let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
-        for (let pos in squadData) {
-            squadData[pos].map((node,index)=>{
-                tmpSquadData[pos]=index===0?node:`${tmpSquadData[pos]}|${node}`
-            })
-        }
-        // console.log('@@@@tmpSquadData',tmpSquadData)
-        let options = {
-            url: this.saveSquadUrl,
-            data: tmpSquadData,
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-
-                let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
-                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
-                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
-                    removeUserCustomizedSquad()                    
-                    this.props.setPositionToAdd('')
-                })
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
-
-        service(options)
-    }
     /*_updatePlayer() {
         // lets check first the player status if its favorite or not
         // this is to prevent glitch
@@ -592,43 +309,6 @@ class MyLionsPlayerDetails extends Component {
         service(options)
     }*/
 
-    _processUpdate() {  
-        let url = this.state.isFav? this.favRemoveUrl : this.favAddUrl
-        let options = {
-            url: url,
-            data: {
-                'playerId': this.playerid
-            },
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false })
-            },
-            onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-
-                let successDesc = this.state.isFav? 'REMOVED FROM' : 'ADDED TO'
-                this.setState({ isFav: !this.state.isFav }, () => {
-                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  FAVOURITES`,'OK')
-                })
-            },
-            onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                this.setState({ isFormSubmitting: false }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
-
-        service(options)
-    }
 
     _myLions(route) {
         this.props.pushNewRoute(route)
@@ -755,7 +435,7 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded}/>
+                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
@@ -769,6 +449,332 @@ class MyLionsPlayerDetails extends Component {
             </Container>
         )
     }
+    _updateInitialState(){
+        // lets update 'isFav state' to avoid glitch when user
+        // go to player details page then update the player (add or removed),
+        // then user back then go here again
+        // lets check first the player status if its favorite or not
+        // this is to prevent glitch
+        this.setState({ isDoneUpdatingState: false })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            // console.log('final data:', JSON.stringify(data))
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                        this._signInRequired.bind(this)
+                }
+            }else if(data.error){
+                // console.log('final data:', JSON.stringify(data.error))
+                    this._showError(data.error) // prompt error
+            }else{
+                let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
+
+                // re-correect/update the isFav state
+                this.setState({isFav},()=>{                    
+                    getUserCustomizedSquad().then((catchedSquad)=>{
+                        // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+                        if(catchedSquad.error){
+                            // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                            this.setState({ isDoneUpdatingState: false }, () => {
+                                this._showError(catchedSquad.error) // prompt error
+                            })
+                        }else{
+                            let squadFeed=eval(`(${catchedSquad.data})`)
+                            let inSquad = false
+                            let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
+                            for (let pos in squadFeed) {
+                                squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
+                                if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
+                            }
+                            // console.log('@@@squadFeedTemp',squadFeedTemp)
+
+                            // re-correect/update the Squad state
+                            // and show the button
+                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true},()=>{
+                                this.getPlayerProfile()
+                            })
+                        }
+                    })
+                })
+            }
+        })
+    }
+
+    getPlayerProfile(){
+        let optionsPlayerProfile = {
+            url: this.PlayersProfileUrl,
+            // data:{id:''},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                this.setState({ isLoaded:true })
+            },
+            onSuccess: (res) => {
+                 this.setState({
+                    isLoaded:true
+                },()=>{
+                    console.log('@@@res',res.data[0])
+                    this.setState({ isLoaded:true, profile:Map(res.data[0]) })
+                    // this._setModalVisible(false)
+                    // this.setSquadData(this.fullPlayerList,res.data[0],'pop')
+                    // removeUserCustomizedSquad()
+                })
+            },
+            onError: (res) => {
+                this.setState({isLoaded:true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({isLoaded:true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(optionsPlayerProfile)
+    }
+
+    _updatePlayerFavStatus(){
+        this.setState({ isFormSubmitting: true,btnSubmit:'FAV' })
+        getGoodFormFavoritePlayerList().then((data)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if(data.auth){
+                if(data.auth === 'Sign In is Required'){
+                    this.setState({ isFormSubmitting: false }, () => {
+                        this._signInRequired.bind(this)
+                    })
+                }
+            }else if(data.error){
+                 this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(data.error) // prompt error
+                 })
+            }else{
+                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
+
+                 // detect conflict (glitch)
+                 if (this.state.isFav !== isFav) {
+                     // what this means?
+                     // it means we removing player that are already removed or
+                     // we adding a player that are already added
+
+                     // how this happens?
+                     // go to mylion page, check one of the country there then select any player (your in the player details now)
+                     // try to add or removed that player, example you add a player then the player is now added to your fav list
+                     // click the my lions button (it will redirect you to favorite list page), then click the last player you add
+                     // you will noticed the button of this player can be remove, then.. remove that player, it will now removed to your list
+                     // click/tap the back button in the header and you will go my favorite player list page
+                     // click/tap the back button again in the header and you will go the player details page (the player you add and removed)
+                     // remember the last action you did is removed this from my favorite list page
+                     // but as you can see the button still 'removed' instead of 'add'
+                     // that's the conflict/glitch happen because we just click/tap the back button in the header and it just
+                     // popRoute() or go to previous page, the problem here is when we back to the previous page, the component will not
+                     // re-render again, thats why what you see is 'removed' button instead of 'add'
+                     // the solution is when user tap the 'removed' or 'add' button, we will set the 'isFav state' again (re correct the state boolean value)
+                     // we will fetch the fav list from api and check if the player is included in favorites or not then
+                     // re update the state, this is to avoid error prompt that goodform response
+
+                     // what will happen now?
+                     // if user 'remove' a player that already 'removed', the process will continue
+                     // and we will not receiving any error from goodform that stating that 'we requesting to invalid api url',
+                     // because the adding and removing player url api is different, we need to make sure that if we add a player, the url will be for adding url
+                     // and if we remove player, the url will be for removing to avoid conflict in the goodform api
+                     // but lets prompt a message to the user that the player that user removing is 'already removed'
+                     // and the player that user adding is 'already addded'
+
+                     let errorDesc = ''
+                     if (this.state.isFav) {
+                         // user trying to remove a player that are already removed in the fav list
+                         errorDesc = 'is already removed from your list.'
+
+                     } else {
+                         // user trying to add a player that are already added in the fav list
+                         errorDesc = 'is already added from your list.'
+                     }
+
+                     // re correect the isFav state
+                     this.setState({isFav, isFormSubmitting: false}, () => {
+                         Alert.alert(
+                             'Player List Update',
+                             `${this.playerName} ${errorDesc}`,
+                             [{ text: 'OK' }]
+                         )
+                     })
+                 } else {
+                     // no conflict, just continue
+                     this._processUpdate()
+                     removeGoodFormFavoritePlayerList()
+                 }
+            }
+        })
+    }
+
+    _processUpdate() {  
+        let url = this.state.isFav? this.favRemoveUrl : this.favAddUrl
+        let options = {
+            url: url,
+            data: {
+                'playerId': this.playerid
+            },
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                let successDesc = this.state.isFav? 'REMOVED FROM' : 'ADDED TO'
+                this.setState({ isFav: !this.state.isFav }, () => {
+                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  FAVOURITES`,'OK')
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(options)
+    }
+
+    updateSquad(){
+        this.state.inSquad?this._setModalVisible(true,'remove'):this._setModalVisible(true,'add')
+    }
+
+    _updateSquad(type,position,max){
+        this.setState({ isFormSubmitting: true,btnSubmit:'SQUAD' },()=>{
+            this._setModalVisible(false)
+        })
+        let update=true
+        getUserCustomizedSquad().then((catchedSquad)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
+            if(catchedSquad.auth){
+                if(catchedSquad.auth === 'Sign In is Required'){
+                    this.setState({ isFormSubmitting: false }, () => {
+                        this._signInRequired.bind(this)
+                    })
+                }
+            }else if(catchedSquad.error){
+                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(catchedSquad.error) // prompt error
+                })
+            }else{
+                let squadFeed=eval(`(${catchedSquad.data})`)
+                let inSquad = false
+                let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
+                for (let pos in squadFeed) {
+                    squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
+                    if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) {
+                        inSquad=true
+                        if (type==='remove')  squadFeedTemp[pos].splice(squadFeedTemp[pos].indexOf(this.playerid),1)
+                    }
+                }
+
+                if (this.state.inSquad !== inSquad) {
+                     let errorDesc = ''
+                     if (this.state.inSquad) {
+                         errorDesc = 'is already removed from my squad list.'
+
+                     } else {
+                         errorDesc = 'is already added to my squad list.'
+                     }
+
+                     this.setState({inSquad, squadDataFeed:squadFeedTemp, isFormSubmitting: false}, () => {
+                         Alert.alert(
+                             'MySquad List Update',
+                             `${errorDesc}`,
+                             [{ text: 'OK' }]
+                         )
+                     })
+                 } else {
+                    // console.log('$$$$inSquad',inSquad)
+                    // console.log('$$$$type',type)
+                        
+                    if(!inSquad&&type==='add') {
+                        console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        if(squadFeedTemp[position].length<max) {
+                            squadFeedTemp[position].push(this.playerid)
+                        }
+                        else {
+                            update=false
+                            this.setState({ squadDataFeed:squadFeedTemp, isFormSubmitting: false })
+                            Alert.alert(
+                             'MySquad List Update',
+                             'Position Is Full',
+                             [{ text: 'OK' }]
+                            )
+                        }
+                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        
+                    }
+                    if(update) this._updateSquadPlayer(squadFeedTemp)
+                 }
+
+            }
+        })
+    }
+
+    _updateSquadPlayer(squadData) {
+        console.log('@@@@squadData',squadData)
+        let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
+        for (let pos in squadData) {
+            // squadData[pos].map((node,index)=>{
+            //     tmpSquadData[pos]=index===0?node:`${tmpSquadData[pos]}|${node}`
+            // })
+            tmpSquadData[pos]=squadData[pos].join('|')
+        }
+        console.log('@@@@tmpSquadData',tmpSquadData)
+        let options = {
+            url: this.saveSquadUrl,
+            data: tmpSquadData,
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
+                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
+                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
+                    removeUserCustomizedSquad()                    
+                    this.props.setPositionToAdd('')
+                })
+            },
+            onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this.setState({ isFormSubmitting: false }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
+        service(options)
+    }
+
+ 
 }
 
 function bindAction(dispatch) {

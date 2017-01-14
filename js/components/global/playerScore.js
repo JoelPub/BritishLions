@@ -33,7 +33,8 @@ const styles = styleSheetCreate({
         lineHeight:24,
         paddingHorizontal:20,
         marginBottom:24,
-        textAlign:'center'
+        textAlign:'center',
+        color:'rgb(255,255,255)',
     },
     semiCardFooter:{
         flexDirection: 'row',
@@ -49,7 +50,8 @@ const styles = styleSheetCreate({
     semiCardFooterText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:13,
-        marginRight:5
+        marginRight:5,
+        color:'rgb(255,255,255)',
     },
     fullCard:{
         marginTop:3,
@@ -82,6 +84,7 @@ const styles = styleSheetCreate({
         lineHeight:18,
         flex:1,
         marginBottom:10,
+        color:'rgb(255,255,255)',
     },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
@@ -105,6 +108,7 @@ const styles = styleSheetCreate({
         fontSize:28,
         lineHeight:32,
         paddingTop:8,
+        color:'rgb(255,255,255)',
     },
     ratingScore:{
         marginLeft:10,
@@ -134,6 +138,7 @@ const styles = styleSheetCreate({
         fontSize:18,
         textAlign:'left',
         marginTop: 12,
+        color:'rgb(255,255,255)',
         android: {
             marginTop: 8,
         }
@@ -152,6 +157,7 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:18,
         marginTop: 25,
+        color:'rgb(255,255,255)',
     },
     scoreCardShareWrapper:{
         borderTopWidth:1,
@@ -353,10 +359,7 @@ export default class PlayerScore extends Component {
                     </View>
                    
                 }
-            </View>
-
-
-            
+            </View>            
 			)
 	}
 

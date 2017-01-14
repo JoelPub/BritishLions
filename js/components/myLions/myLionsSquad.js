@@ -436,39 +436,48 @@ class MyLionsSquad extends Component {
             isRequiredToken: true
         }
         //To Remove once API provide real data
-        if(mode==='pop'){
-            console.log('!!!pop squadFeed',squadFeed)
-            let temp=eval(`(${fullDataFeed})`)
-            console.log('!!!pop temp',temp)
-            for (let p in temp) {
-                if (squadFeed[p]===undefined) {
-                    console.log('!!!pop p',p)
-                   squadFeed[p]=temp[p].split('|')
-                }
-                else {
-                    console.log('!!!pop temp[p]',temp[p])
-                    if(temp[p].split('|').length>squadFeed[p].length) {
-                        squadFeed[p]=squadFeed[p].concat(temp[p].split('|').slice(squadFeed[p].length-1,-1))
-                    }
-                }
-            }
-            console.log('!!!pop squadFeed',squadFeed)
-        }
+        // if(mode==='pop'){
+        //     console.log('!!!pop squadFeed',squadFeed)
+        //     let temp=eval(`(${fullDataFeed})`)
+        //     console.log('!!!pop temp',temp)
+        //     for (let p in temp) {
+        //         if (squadFeed[p]===undefined) {
+        //             console.log('!!!pop p',p)
+        //            squadFeed[p]=temp[p].split('|')
+        //         }
+        //         else {
+        //             console.log('!!!pop temp[p]',temp[p])
+        //             if(temp[p].split('|').length>squadFeed[p].length) {
+        //                 squadFeed[p]=squadFeed[p].concat(temp[p].split('|').slice(squadFeed[p].length-1,-1))
+        //             }
+        //         }
+        //     }
+        //     console.log('!!!pop squadFeed',squadFeed)
+        // }
 
 
         for(let pos in squadFeed) {
             console.log('!!!pos',pos)
             if(pos==='forwards'||pos==='backs') {
                 console.log('!!!forwardsbacks',squadFeed[pos])
-                let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].split('|')
-                if(tempArr.length<tempFeed[pos].length) fullFeed=false
+                let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].toString().split('|')
                 tempArr.map((item,index)=>{
                     tempFeed[pos][index]=this.searchPlayer(player,item)
                     //To Remove once API provide real data
-                    if(mode!=='empty'){
-                        if (item!==''&&tempFeed[pos][index]===null) tempFeed[pos][index]=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos].split('|')[index])
+                    // if(mode!=='empty'){
+                    //     if (item!==''&&tempFeed[pos][index]===null) tempFeed[pos][index]=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos].split('|')[index])
+                    // }
+                    if(tempFeed[pos][index]===null){
+                        if (mode==='pop') {
+                            squadFeed[pos][index]=null
+                        }
+                        else {
+                            fullFeed=false
+                        }
                     }
-                    tempFeed[pos][index]===null?fullFeed=false:emptyFeed=false
+                    else {
+                        emptyFeed=false
+                    }
                 })
             }
             else if(pos==='captain'||pos==='kicker'||pos==='widecard') {
@@ -476,18 +485,28 @@ class MyLionsSquad extends Component {
                 console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
                 tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
                 //To Remove once API provide real data
-                    if(mode!=='empty'){
-                        if (squadFeed[pos]!==''&&tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
-                            tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos])
-                        }
+                    // if(mode!=='empty'){
+                    //     if (squadFeed[pos]!==''&&tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
+                    //         tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos])
+                    //     }
+                    // }
+                if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
+                    if(mode==='pop') {
+                        squadFeed[pos]=null
                     }
-                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null?fullFeed=false:emptyFeed=false
+                    else{
+                        fullFeed=false
+                    }
+                }
+                else {
+                    emptyFeed=false
+                }
             }
         }
         if(mode==='pop') {
             for( let v in squadFeed) {
                 if(squadFeed[v] instanceof Array) {
-                    squadFeed[v]=squadFeed[v].join('|')
+                    squadFeed[v]=squadFeed[v].filter((value)=>{value !==null}).join('|')
                 }
             }
         }

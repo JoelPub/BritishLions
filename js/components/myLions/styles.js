@@ -773,14 +773,6 @@ module.exports = styleSheetCreate({
         padding:20,
         paddingBottom:25,
     },
-    performanceText:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        textAlign:'center',
-        lineHeight:18,
-        flex:1,
-        marginBottom:10,
-    },
     expertRatingWrapper:{
         flexDirection:'row',
         justifyContent:'center',
@@ -1070,10 +1062,6 @@ module.exports = styleSheetCreate({
     },
     btnFavIcon:{
         color:'rgb(255,204,40)'
-    },
-    playerFigureWrapper:{
-        paddingVertical:25,
-        paddingHorizontal:20,
     },
     titleBox: {
         position: 'relative',
