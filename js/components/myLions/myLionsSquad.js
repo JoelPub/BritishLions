@@ -332,15 +332,15 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        console.log('!!!componentDidMount')
+        // console.log('!!!componentDidMount')
         setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('!!!componentWillReceiveProps')
-        console.log('!!!nextProps.route',nextProps.route)
+        // console.log('!!!componentWillReceiveProps')
+        // console.log('!!!nextProps.route',nextProps.route)
         let routes = globalNav.navigator.getCurrentRoutes()
-        console.log('!!!routes',routes)
+        // console.log('!!!routes',routes)
         
         // re render after 'back nav' pressed
         // if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsSquad') {
@@ -354,7 +354,7 @@ class MyLionsSquad extends Component {
     }
 
     _getSquad(){
-        console.log('!!!_getSquad')
+        // console.log('!!!_getSquad')
         if (this.isUnMounted) return // return nothing if the component is already unmounted
             
         this.setState({ isLoaded: false })
@@ -504,7 +504,7 @@ class MyLionsSquad extends Component {
                  this.setState({
                     isFormSubmitting: false, isLoaded:true
                 },()=>{
-                    console.log('!!!!res',res.data[0])
+                    // console.log('!!!!res',res.data[0])
                     // this._setModalVisible(false)
                     this.setSquadData(this.fullPlayerList,res.data[0],'pop')
                     // removeUserCustomizedSquad()
@@ -546,7 +546,7 @@ class MyLionsSquad extends Component {
             },
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    console.log('!!!!res',res.data[0])
+                    // console.log('!!!!res',res.data[0])
                     this.setState({
                         isFormSubmitting: false,
                         isLoaded: true,

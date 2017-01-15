@@ -10,7 +10,7 @@ const ProfileModel = Record({
   'seasons': new SeasonListModel()
 })
 ProfileModel.prototype.constructor.fromJS = function (values) {
-  console.log('@@@ProfileModel.fromJS',values)
+  // console.log('@@@ProfileModel.fromJS',values)
   let that = this
   let nested = Immutable.fromJS(values, function (key, value) {
     // console.log('key',key)

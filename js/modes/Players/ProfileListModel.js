@@ -3,7 +3,7 @@ import ProfileModel from './Profile'
 
 class ProfileListModel extends List {
   static fromJS (values) {
-  	console.log('@@@ProfileListModel.fromJS',values)
+  	// console.log('@@@ProfileListModel.fromJS',values)
     return List.of(...values.map(it => ProfileModel.fromJS(it)))
   }
 }

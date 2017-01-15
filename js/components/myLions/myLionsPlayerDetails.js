@@ -29,8 +29,8 @@ import PlayerFigure from '../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
-import {Map} from 'immutable'
 import ProfileListModel from  'modes/Players'
+import ProfileModel from 'modes/Players/Profile'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -58,7 +58,7 @@ class MyLionsPlayerDetails extends Component {
             isFav : this.props.detail.isFav,
             inSquad: false,
             isLoaded: false,
-            profile: Map({}),
+            profile: ProfileListModel.fromJS([new ProfileModel()]),
             isFormSubmitting: false,
             isDoneUpdatingState: false,
             btnSubmit:'',
@@ -732,7 +732,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquadPlayer(squadData) {
-        console.log('@@@@squadData',squadData)
+        // console.log('@@@@squadData',squadData)
         let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
         for (let pos in squadData) {
             // squadData[pos].map((node,index)=>{
@@ -740,7 +740,7 @@ class MyLionsPlayerDetails extends Component {
             // })
             tmpSquadData[pos]=squadData[pos].join('|')
         }
-        console.log('@@@@tmpSquadData',tmpSquadData)
+        // console.log('@@@@tmpSquadData',tmpSquadData)
         let options = {
             url: this.saveSquadUrl,
             data: tmpSquadData,

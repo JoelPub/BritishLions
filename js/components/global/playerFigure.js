@@ -8,7 +8,8 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import styleVar from '../../themes/variable'
 import Swiper from 'react-native-swiper'
 import loader from '../../themes/loader-position'
-import {Map} from 'immutable'
+import ProfileListModel from  'modes/Players'
+import ProfileModel from 'modes/Players/Profile'
 
 const gridBorderColor = 'rgb(216, 217, 218)'
 
@@ -250,17 +251,17 @@ export default class PlayerFigure extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState) {
-        console.log('@@@nextProps',nextProps.profile)
-        console.log('@@@thisProps',this.props.profile)
-        console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
-        console.log('@@@isnull?',nextProps.profile.equals(Map({}))?'true':'false')
-        if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(Map({}))) {
-            console.log('@@seasons',nextProps.profile.first().get('seasons').first().toJS())
+        // console.log('@@@nextProps',nextProps.profile.toJS())
+        // console.log('@@@thisProps',this.props.profile.toJS())
+        // console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
+        // console.log('@@@isnull?',nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))?'true':'false')
+        if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
+            // console.log('@@seasons',nextProps.profile.first().get('seasons').first().toJS())
             let profile=nextProps.profile.first().get('seasons').first().toJS()
             let tabSubjects=[]
             for (let v in profile) {
-                console.log('@@@v',v)
-                console.log('@@@profile[v]',profile[v])
+                // console.log('@@@v',v)
+                // console.log('@@@profile[v]',profile[v])
                 if(v!=='season name') tabSubjects.push(v)
             }
 

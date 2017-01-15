@@ -4,7 +4,7 @@ import SeasonModel from './Season'
 // const SeasonListModel = List(SeasonModel)
 class SeasonListModel extends List {
   static fromJS (values) {
-  	console.log('@@@SeasonListModel.fromJS',values)
+  	// console.log('@@@SeasonListModel.fromJS',values)
     return List.of(...values.map(it => SeasonModel.fromJS(it)))
   }
 }
