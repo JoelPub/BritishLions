@@ -30,6 +30,7 @@ import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/ap
 import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
 import {Map} from 'immutable'
+import ProfileListModel from  'modes/Players'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -513,8 +514,10 @@ class MyLionsPlayerDetails extends Component {
                  this.setState({
                     isLoaded:true
                 },()=>{
-                    console.log('@@@res',res.data[0])
-                    this.setState({ isLoaded:true, profile:Map(res.data[0]) })
+                    console.log('@@@res.data',res.data)
+                    // let t=ProfileListModel.fromJS(res.data)
+                    // console.log('@@@t',t)
+                    this.setState({ isLoaded:true, profile:ProfileListModel.fromJS(res.data) })
                     // this._setModalVisible(false)
                     // this.setSquadData(this.fullPlayerList,res.data[0],'pop')
                     // removeUserCustomizedSquad()

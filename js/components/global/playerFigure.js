@@ -255,10 +255,12 @@ export default class PlayerFigure extends Component {
         console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
         console.log('@@@isnull?',nextProps.profile.equals(Map({}))?'true':'false')
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(Map({}))) {
-            console.log('@@seasons',nextProps.profile.get('seasons')[0])
-            let profile=nextProps.profile.get('seasons')[0]
+            console.log('@@seasons',nextProps.profile.first().get('seasons').first().toJS())
+            let profile=nextProps.profile.first().get('seasons').first().toJS()
             let tabSubjects=[]
             for (let v in profile) {
+                console.log('@@@v',v)
+                console.log('@@@profile[v]',profile[v])
                 if(v!=='season name') tabSubjects.push(v)
             }
 

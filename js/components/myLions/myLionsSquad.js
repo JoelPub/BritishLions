@@ -182,23 +182,6 @@ class MyLionsSquad extends Component {
         return newData
     }
 
-    componentDidMount() {
-        setTimeout(() => this._getSquad(), 600)        
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let routes = globalNav.navigator.getCurrentRoutes()
-        
-        // re render after 'back nav' pressed
-        if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsSquad') {
-            this.setState({
-                isLoaded: false,
-            }, () => {
-                setTimeout(()=>{this._getSquad()},600)
-            })
-        }
-    }
-
     componentWillUnmount() {
         this.isUnMounted = true
     }
@@ -331,7 +314,7 @@ class MyLionsSquad extends Component {
                                         }
                                     </Swiper>
                                     <LionsFooter isLoaded={true} />
-                            </ScrollView>
+                                </ScrollView>
                             </ScrollView>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
@@ -348,7 +331,30 @@ class MyLionsSquad extends Component {
         )
     }
 
+    componentDidMount() {
+        console.log('!!!componentDidMount')
+        setTimeout(() => this._getSquad(), 600)        
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('!!!componentWillReceiveProps')
+        console.log('!!!nextProps.route',nextProps.route)
+        let routes = globalNav.navigator.getCurrentRoutes()
+        console.log('!!!routes',routes)
+        
+        // re render after 'back nav' pressed
+        // if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsSquad') {
+            if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
+            this.setState({
+                isLoaded: false,
+            }, () => {
+                setTimeout(()=>{this._getSquad()},600)
+            })
+        }
+    }
+
     _getSquad(){
+        console.log('!!!_getSquad')
         if (this.isUnMounted) return // return nothing if the component is already unmounted
             
         this.setState({ isLoaded: false })
@@ -390,10 +396,10 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(player,squad,mode){
-        console.log('!!!squad',squad)
+        // console.log('!!!squad',squad)
         let squadFeed=mode==='pop'?squad:eval(`(${squad})`)
         let updateFeed={backs: "", captain: "", widecard: "", forwards: "", kicker: ""}
-        console.log('!!!squadFeed',squadFeed)
+        // console.log('!!!squadFeed',squadFeed)
         let tempFeed={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
         let emptyFeed=true
         let fullFeed=true
@@ -435,38 +441,14 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-        //To Remove once API provide real data
-        // if(mode==='pop'){
-        //     console.log('!!!pop squadFeed',squadFeed)
-        //     let temp=eval(`(${fullDataFeed})`)
-        //     console.log('!!!pop temp',temp)
-        //     for (let p in temp) {
-        //         if (squadFeed[p]===undefined) {
-        //             console.log('!!!pop p',p)
-        //            squadFeed[p]=temp[p].split('|')
-        //         }
-        //         else {
-        //             console.log('!!!pop temp[p]',temp[p])
-        //             if(temp[p].split('|').length>squadFeed[p].length) {
-        //                 squadFeed[p]=squadFeed[p].concat(temp[p].split('|').slice(squadFeed[p].length-1,-1))
-        //             }
-        //         }
-        //     }
-        //     console.log('!!!pop squadFeed',squadFeed)
-        // }
-
 
         for(let pos in squadFeed) {
-            console.log('!!!pos',pos)
+            // console.log('!!!pos',pos)
             if(pos==='forwards'||pos==='backs') {
                 console.log('!!!forwardsbacks',squadFeed[pos])
                 let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].toString().split('|')
                 tempArr.map((item,index)=>{
                     tempFeed[pos][index]=this.searchPlayer(player,item)
-                    //To Remove once API provide real data
-                    // if(mode!=='empty'){
-                    //     if (item!==''&&tempFeed[pos][index]===null) tempFeed[pos][index]=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos].split('|')[index])
-                    // }
                     if(tempFeed[pos][index]===null){
                         if (mode==='pop') {
                             squadFeed[pos][index]=null
@@ -481,15 +463,9 @@ class MyLionsSquad extends Component {
                 })
             }
             else if(pos==='captain'||pos==='kicker'||pos==='widecard') {
-                console.log('!!!squadFeed[pos]',squadFeed[pos])
-                console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
+                // console.log('!!!squadFeed[pos]',squadFeed[pos])
+                // console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
                 tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
-                //To Remove once API provide real data
-                    // if(mode!=='empty'){
-                    //     if (squadFeed[pos]!==''&&tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
-                    //         tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,eval(`(${fullDataFeed})`)[pos])
-                    //     }
-                    // }
                 if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
                     if(mode==='pop') {
                         squadFeed[pos]=null
@@ -511,7 +487,7 @@ class MyLionsSquad extends Component {
             }
         }
 
-        console.log('!!!final squadFeed',squadFeed)
+        // console.log('!!!final squadFeed',squadFeed)
         service(optionsSaveList)
 
     }
