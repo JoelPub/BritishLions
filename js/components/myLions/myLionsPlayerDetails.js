@@ -109,7 +109,7 @@ class MyLionsPlayerDetails extends Component {
             case 'remove' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>REMOVE PLAYER FROM YOUR SQUAD?</Text>
+                        <Text style={styles.modalTitleTextCenter}>REMOVE PLAYER FROM YOUR SQUAD?</Text>
                         <View style={styles.modalBtnWrapper}>
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
                             <ButtonFeedback rounded onPress={()=>this._updateSquad('remove')}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
