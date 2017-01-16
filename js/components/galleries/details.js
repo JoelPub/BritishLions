@@ -115,7 +115,7 @@ class Gallery extends Component {
                             </Swiper>
                         </View>
 
-                        {/*<View style={styles.shareWrapper}>
+                        <View style={styles.shareWrapper}>
                             <TouchableOpacity
                                 disabled = {this.state.isSubmitting}
                                 onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
@@ -123,7 +123,7 @@ class Gallery extends Component {
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
                             </TouchableOpacity>
-                        </View>*/}
+                        </View>
 
                         <View style={styles.description}>
                             <Text style={styles.paragraph}>
