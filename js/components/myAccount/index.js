@@ -47,7 +47,8 @@ class MyAccount extends Component {
             isFormSubmittingEmail: false,
             customMessagesEmail: '',
             customMessagesTypeEmail: 'error',
-            userFullName: ''
+            userFullName: '',
+            isShowPasswordTips: false
         }
 
         this.constructor.childContextTypes = {
@@ -238,13 +239,32 @@ class MyAccount extends Component {
                                         errorCheck={this.state.errorCheckPassword}
                                         callbackParent={this._onSuccessValidatePassword.bind(this)} />
 
+                                    {
+                                        this.state.isShowPasswordTips?
+                                            <View style={styles.tips}>
+                                                <Icon name='ios-information-circle-outline' style={styles.tipsIcon}/>
+                                                <View style={styles.tipsTextCol}>
+                                                    <Text style={styles.tipsText}>Password must consist of 8 or more characters and contain an upper and lower case letter, and at least one number.</Text>
+                                                </View>
+                                            </View>
+                                        :
+                                            null
+                                    }
+
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.password}  onChange={(event) => this.setState({password:event.nativeEvent.text})} placeholder='New Password' secureTextEntry={true}  style={styles.input} />
+                                        {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
+                                        <Input 
+                                            defaultValue={this.state.password} 
+                                            onChange={(event) => this.setState({password:event.nativeEvent.text})} 
+                                            onFocus={()=> this.setState({isShowPasswordTips: true})}
+                                            onBlur={()=> this.setState({isShowPasswordTips: false})}
+                                            placeholder='New Password' 
+                                            secureTextEntry={true}  
+                                            style={styles.input} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
+                                        {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
                                         <Input defaultValue={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword:event.nativeEvent.text})} placeholder='Confirm Password' secureTextEntry={true}  style={styles.input} />
                                     </View>
 
@@ -282,7 +302,7 @@ class MyAccount extends Component {
                                         callbackParent={this._onSuccessValidateEmail.bind(this)} />
 
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        {/*<Icon name='ios-at-outline' style={styles.inputIcon} />*/}
                                         <Input defaultValue={this.state.email}  placeholder='New Email' style={styles.input} onChange={(event) => this.setState({email:event.nativeEvent.text})} autoCorrect ={false} keyboardType='email-address'/>
                                     </View>
 

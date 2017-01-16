@@ -29,6 +29,7 @@ const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/save'
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME = 'SaveGoodFormUserCustomizedSquad'
 const GOODFORM_REFRESH_TOKEN_URL = '/sessions/create'
+const GOODFORM_USERS_URL = '/users'
 
 export function getAssembledUrl(urlName) {
     switch (urlName) {
@@ -56,6 +57,8 @@ export function getAssembledUrl(urlName) {
             return GODDFORM_BASE_URL + GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL
         case GOODFORM_REFRESH_TOKEN_URL:
             return GODDFORM_BASE_URL + GOODFORM_REFRESH_TOKEN_URL
+        case GOODFORM_USERS_URL:
+            return GODDFORM_BASE_URL + GOODFORM_USERS_URL
     }
 }
 export const actionsApi = {
@@ -70,5 +73,6 @@ export const actionsApi = {
     goodformRemoveFavoritePlayer: getAssembledUrl(GOODFORM_REMOVE_FAVORITE_PLAYER_URL_NAME),
     goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormSaveUserCusromizedSquad: getAssembledUrl(GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME),
-    goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL)
+    goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL),
+    goodFormUsers: getAssembledUrl(GOODFORM_USERS_URL)
 }
