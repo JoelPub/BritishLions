@@ -194,6 +194,7 @@ export default class PlayerFigure extends Component {
             tabStatus:[],
             tabSubjects:[],
             profile:{},
+            season:{},
             isLoaded:false
     	}
         this.currentPage = 0
@@ -257,15 +258,16 @@ export default class PlayerFigure extends Component {
         // console.log('@@@isnull?',nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))?'true':'false')
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
             // console.log('@@seasons',nextProps.profile.first().get('seasons').first().toJS())
-            let profile=nextProps.profile.first().get('seasons').first().toJS()
+            let profile=nextProps.profile.first().toJS()
+            let season=nextProps.profile.first().get('seasons').first().toJS()
             let tabSubjects=[]
-            for (let v in profile) {
+            for (let v in season) {
                 // console.log('@@@v',v)
-                // console.log('@@@profile[v]',profile[v])
+                // console.log('@@@season[v]',season[v])
                 if(v!=='season name') tabSubjects.push(v)
             }
 
-            this.setState({isLoaded:true,profile,tabSubjects})
+            this.setState({isLoaded:true,profile,season,tabSubjects})
         }
 
     }
@@ -286,18 +288,18 @@ export default class PlayerFigure extends Component {
                         <View style={styles.playerOverallRating}>
                             <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                             <View style={styles.ratingScore}>
-                                <Text style={styles.ratingScorePoint}>{this.props.profile.overall_rating||'NA'}</Text>
+                                <Text style={styles.ratingScorePoint}>{this.state.profile.overall_rating||'NA'}</Text>
                             </View>
                         </View>
                         <View style={styles.playerPerfromanceWrapper}>
                             <View style={styles.playerPerfromance} >
                                 <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
-                                <Text style={styles.summaryTextHighLight}>{this.props.profile.performance_score}</Text>
+                                <Text style={styles.summaryTextHighLight}>{this.state.profile.performance_score}</Text>
                             </View>
                             <View style={styles.playerPerfromance}>
                                 <Text style={styles.performanceText}>CONSISTENCY</Text>
                                 {
-                                    this.props.profile.player_consistency>0?
+                                    this.state.profile.player_consistency>0?
                                     <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                     :
                                     <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
@@ -336,7 +338,7 @@ export default class PlayerFigure extends Component {
                                         return(
                                             <View style={styles.playerFigurePageWrapper} key={i}>
                                                 {
-                                                    this._mapJSON(this.state.profile[node]).map((rowData,index)=>{
+                                                    this._mapJSON(this.state.season[node]).map((rowData,index)=>{
                                                         return(
                                                             <View style={styles.playerFigureRow} key={index}>
                                                             {
@@ -347,7 +349,7 @@ export default class PlayerFigure extends Component {
                                                                             <View style={[styles.ratingScore,styles.playerRatingScore]}>
                                                                                 <Text style={styles.ratingScorePoint}>{item.value}</Text>
                                                                             </View>
-                                                                            <Text style={styles.playerFigureLowerText}>{item.average}</Text>
+                                                                            <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
                                                                         </View>
                                                                         )
                                                                 },this)

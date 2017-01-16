@@ -449,7 +449,7 @@ class MyLionsPlayerList extends Component {
                 //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
                 getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[0]['PlayerList'][this.unionFeed.unionId])
+                        this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                      }
                  }).catch((error) => {
                      console.log('Error when try to get the EYC3 full player list: ', error)

@@ -98,7 +98,7 @@ module.exports = styleSheetCreate({
     headerPlayerPosition: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
-        lineHeight: 18,
+        lineHeight: 22,
         marginBottom: 8,
         android: {
             marginTop: 0,
@@ -938,6 +938,9 @@ module.exports = styleSheetCreate({
         height: 50,
         width: styleVar.deviceWidth / 3,
         backgroundColor: styleVar.brandLightColor,
+    },
+    btnConfirmGreen:{
+        backgroundColor: 'rgb(9,127,64)',
     },
     imgExpertHeader: {
         width: (styleVar.deviceWidth / 3),

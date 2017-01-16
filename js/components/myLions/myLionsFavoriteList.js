@@ -31,7 +31,7 @@ import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import { getEYC3FullPlayerList,removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import Storage from 'react-native-storage'
 
 class MyLionsFavoriteList extends Component {
@@ -149,19 +149,19 @@ class MyLionsFavoriteList extends Component {
 
     _mergeEYC3Player(playerList, eyc3Players){
         let mergedFavoritePlayers = []
-
-        for (var u in eyc3Players) {
-            if (eyc3Players[u].length > 0) {
-                eyc3Players[u].map((eyc3player, index) => {
-                    playerList.map((player,j) => {
+        playerList.map((player,j) => {
+            for (var u in eyc3Players) {
+                if (eyc3Players[u].length > 0) {
+                    eyc3Players[u].map((eyc3player, index) => {
                         if (eyc3player.id === player.id) {
                             player.eyc3PlayerScore = eyc3player.heightm
-                            mergedFavoritePlayers.push(player)
                         }
                     })
-                })
+                }
             }
-        }
+            mergedFavoritePlayers.push(player)
+        })
+
 
         this.setState({
             isLoaded: true,
@@ -281,6 +281,7 @@ class MyLionsFavoriteList extends Component {
 
     componentDidMount() {
         //removeGoodFormFavoritePlayerList()
+        removeEYC3FullPlayerList()
         setTimeout(()=>{this._getFavoritePlayers(true)},600)
 
     }

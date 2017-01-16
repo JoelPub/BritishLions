@@ -203,11 +203,8 @@ class MyLionsSquad extends Component {
         this.props.pushNewRoute('myLionsUnionsList')
     }
 
-    _toExpert(){
-        PushNotification.localNotificationSchedule({
-          message: "My Notification Message", 
-          date: new Date(Date.now() + (10 * 1000)) 
-        });
+    _myExpertsPick = () => {
+        this.props.drillDown({}, 'myLionsExpertsList')
     }
 
     render() {
@@ -219,7 +216,7 @@ class MyLionsSquad extends Component {
                         this.state.isLoaded?
                             <ScrollView>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                                <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)}/>
+                                <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)} pressExpert={this._myExpertsPick.bind(this)}/>
                                 {
                                     this.state.showScoreCard==='empty'?
                                     <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />

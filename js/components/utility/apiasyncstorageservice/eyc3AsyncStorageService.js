@@ -36,14 +36,14 @@ export async function getEYC3FullPlayerList() {
             return response.json()
           }).then(json => {
             if(json){
-              console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+              console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json[0]['PlayerList']))
               storage.save({
                 key: EYC3_FULL_PLAYERS,
                 expires: 1000 * 3600,
                 id,
-                rawData: json
+                rawData: json[0]['PlayerList']
               });
-              resolve && resolve(json)
+              resolve && resolve(json[0]['PlayerList'])
             }
             else{
               reject && reject(new Error('data parse error'))

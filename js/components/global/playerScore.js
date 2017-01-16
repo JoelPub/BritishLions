@@ -81,7 +81,7 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         fontSize:18,
         textAlign:'center',
-        lineHeight:18,
+        lineHeight:22,
         flex:1,
         marginBottom:10,
         color:'rgb(255,255,255)',
@@ -161,7 +161,7 @@ const styles = styleSheetCreate({
     },
     scoreCardShareWrapper:{
         borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
+        borderColor:'rgb(128,127,131)',
         marginTop: 0,
         paddingVertical:5
     },
@@ -313,10 +313,20 @@ export default class PlayerScore extends Component {
                                     style={styles.btnCardInfo}>
                                     <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                 </ButtonFeedback>
+                                {
+                                this.props.rating.fan_ranking<50?
                                 <View style={styles.summaryWrapper}>
-                                    <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                                    <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                                        <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
                                 </View>
+                                :
+                                <View style={styles.summaryWrapper}>
+                                        <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
+                                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                                        <Text style={styles.summaryText}>of scores are higher than yours.</Text>
+                                </View>
+                                }
                                 <View style={styles.ratingWrapper}>
                                     <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                     <View style={styles.ratingScore}>
@@ -348,7 +358,7 @@ export default class PlayerScore extends Component {
                                     <Image source={require('../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
                                 </View>
                             </View>
-                            <ButtonFeedback rounded onPress={()=>this._toExpert()}   style={[styles.button,styles.btnExpertSquad]}>
+                            <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
                                 <Icon name='md-contact' style={styles.btnExpertIcon} />
                                 <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
                             </ButtonFeedback>
