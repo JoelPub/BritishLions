@@ -720,8 +720,12 @@ module.exports = styleSheetCreate({
         marginLeft: -30
     },
     filterBtns:{
-        paddingTop:31,
-        flexDirection: 'row'
+        paddingTop: 31,
+        paddingBottom: 40,
+        flexDirection: 'row',
+        android: {
+            paddingBottom: 70
+        }
     },
     filterBtnsGroup:{
         width:styleVar.deviceWidth/2,
@@ -735,8 +739,8 @@ module.exports = styleSheetCreate({
         marginTop:20
     },
     btnFilterActive:{
-        width: 142,
         height: 50,
+        width: styleVar.deviceWidth*0.38,
         backgroundColor: 'rgba(208, 7, 42, 0.5)',
         paddingTop:14,
         borderRadius:25,

@@ -180,12 +180,12 @@ class Login extends Component {
                                         callbackParent={this._handleSignIn.bind(this)}/>
 
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        {/*<Icon name='ios-at-outline' style={styles.inputIcon} />*/}
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
+                                        {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
                                         <Input placeholder='Password' defaultValue={this.state.password} secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
                                     </View>
 

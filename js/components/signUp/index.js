@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setAccessGranted } from '../../actions/token'
+import { updateToken } from '../utility/asyncStorageServices'
 import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder,TouchableOpacity, Alert } from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
@@ -16,6 +18,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { actionsApi } from '../utility/urlStorage'
 
 class SignUp extends Component {
     constructor(props) {
@@ -40,13 +43,16 @@ class SignUp extends Component {
             },
             isFormSubmitting: false,
             customMessages: '',
-            customMessagesType: 'error'
+            customMessagesType: 'error',
+            isShowPasswordTips: false
         }
+
         this.constructor.childContextTypes = {
             theme: React.PropTypes.object,
         }
 
-        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/users'
+        this.serviceUsersUrl = actionsApi.goodFormUsers
+        this.serviceRefreshTokenUrl = actionsApi.goodFormRefreshToken
 
         // debounce
         this._handleSignUp = debounce(this._handleSignUp, 500, {leading: true, maxWait: 0, trailing: false})
@@ -64,38 +70,6 @@ class SignUp extends Component {
         this.props.popRoute()
     }
 
-    _reLogin() {
-        this._replaceRoute('login')
-    }
-
-    _userSignUp() {
-        // reset the fields
-        this.setState({
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            newEvent: false,
-            newPartners: false,
-            tc: false
-        })
-
-        // this._scrollView.scrollToPosition(0,0,false)
-        // this.setState({ 
-        //     customMessages: 'Your account has been created successfully.',
-        //     customMessagesType: 'success'
-        // })
-
-        Alert.alert(
-            'Account Registered',
-            'Your account has been created successfully.',
-            [{
-                text: 'SIGN IN',
-                onPress: this._reLogin.bind(this)
-            }]
-        )
-    }
-
     _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
@@ -105,7 +79,7 @@ class SignUp extends Component {
 
         if(isFormValidate) {
             let options = {
-                url: this.serviceUrl,
+                url: this.serviceUsersUrl,
                 data: {
                     'firstName': this.state.firstName,
                     'lastName': this.state.lastName,
@@ -118,14 +92,12 @@ class SignUp extends Component {
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
-                onAxiosEnd: () => {
-                    this.setState({ isFormSubmitting: false })
-                },
                 onSuccess: this._userSignUp.bind(this),
                 onError: (res) => {
                     this.setState({ 
                         customMessages: res,
-                        customMessagesType: 'error'
+                        customMessagesType: 'error',
+                        isFormSubmitting: false
                     })
 
                     this._scrollView.scrollToPosition(0,0,false)
@@ -137,6 +109,79 @@ class SignUp extends Component {
         } else {
             this._scrollView.scrollToPosition(0,0,false)
         }
+    }
+
+    _userSignUp() {
+        // reset the fields
+        this.setState({
+            firstName: '',
+            lastName: '',
+            //email: '',
+            //password: '',
+            newEvent: false,
+            newPartners: false,
+            tc: false
+        })
+
+        // let's login the user
+        this._login()
+
+        // this._scrollView.scrollToPosition(0,0,false)
+        // this.setState({ 
+        //     customMessages: 'Your account has been created successfully.',
+        //     customMessagesType: 'success'
+        // })
+    }
+
+    _login() {
+        let options = {
+            url: this.serviceRefreshTokenUrl,
+            data: {
+                'username': this.state.email,
+                'password': this.state.password,
+                'grant_type': 'password'
+            },
+            onAxiosStart: () => {
+                this.setState({ isFormSubmitting: true })
+            },
+            onAxiosEnd: () => {
+                this.setState({ isFormSubmitting: false })
+            },
+            onSuccess: this._createToken.bind(this),
+            onError: (res) => {
+                this.setState({ 
+                    customMessages: res,
+                    customMessagesType: 'error',
+                    isFormSubmitting: false
+                })
+
+                this._scrollView.scrollToPosition(0,0,false)
+            }
+        }
+
+        service(options)
+    }
+
+    _createToken(res) {
+        let { access_token, refresh_token, first_name, last_name } = res.data
+
+        // reset the fields and hide loader
+        this.setState({
+            email: '',
+            password: ''
+        }, () => {
+           updateToken(access_token, refresh_token, first_name, last_name)
+           this.props.setAccessGranted(true)
+
+           Alert.alert(
+               'Account Registered',
+               'Your account has been created successfully.',
+               [{
+                   text: 'Go to News Page',
+                   onPress: () => { this._replaceRoute('news') }
+               }]
+           ) 
+        })
     }
 
     componentWillMount() {
@@ -185,14 +230,33 @@ class SignUp extends Component {
                                     </View>
 
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        {/*<Icon name='ios-at-outline' style={styles.inputIcon} />*/}
                                         <Input defaultValue={this.state.email} onChange={(event) => this.setState({email: event.nativeEvent.text})} keyboardType='email-address' placeholder='Email' style={styles.input}/>
                                     </View>
 
+                                    {
+                                        this.state.isShowPasswordTips?
+                                            <View style={styles.tips}>
+                                                <Icon name='ios-information-circle-outline' style={styles.tipsIcon}/>
+                                                <View style={styles.tipsTextCol}>
+                                                    <Text style={styles.tipsText}>Password must consist of 8 or more characters and contain an upper and lower case letter, and at least one number.</Text>
+                                                </View>
+                                            </View>
+                                        :
+                                            null
+                                    }
+
                                     <View style={styles.inputGroup}>
-                                        <Icon name='ios-unlock-outline' style={styles.inputIcon} />
-                                        <Input defaultValue={this.state.password} onChange={(event) => this.setState({password: event.nativeEvent.text})} placeholder='Password' secureTextEntry={true} style={styles.input} />
+                                        {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
+                                        <Input defaultValue={this.state.password} 
+                                            onChange={(event) => this.setState({password: event.nativeEvent.text})} 
+                                            onFocus={()=> this.setState({isShowPasswordTips: true})}
+                                            onBlur={()=> this.setState({isShowPasswordTips: false})}
+                                            placeholder='Password' 
+                                            secureTextEntry={true} 
+                                            style={styles.input} />
                                     </View>
+
 
                                     <View style={styles.switchInputWrapper}>
                                         <Grid>
@@ -310,7 +374,8 @@ function bindAction(dispatch) {
     return {
         replaceRoute:(route)=> dispatch(replaceRoute(route)),
         pushNewRoute:(route)=> dispatch(pushNewRoute(route)),
-        popRoute: () => dispatch(popRoute())
+        popRoute: () => dispatch(popRoute()),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 

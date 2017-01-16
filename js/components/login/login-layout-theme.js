@@ -76,30 +76,35 @@ module.exports = styleSheetCreate({
         fontSize: 16,
         padding: 0
     },
-    textInputGroup: {
-        flex: 1,
+
+
+
+    tips: {
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        borderRadius: 25,
-        marginBottom: 15,
-        paddingLeft: 20,
-        paddingRight: 10
-    },
-    textInputIcon: {
-        fontSize: 19,
-        paddingRight: 8,
-        paddingLeft: 4
-    },
-    textInput: {
-        alignSelf: 'stretch',
         flex: 1,
-        fontSize: styleVar.textFontSize,
-        fontFamily: styleVar.fontGeorgia,
-        height: 50,
+        alignItems: 'center',
         borderRadius: 25,
-        color: '#FFF'
+        backgroundColor: 'transparent',
+        marginBottom: 20,
+        borderWidth: 0,
+        paddingLeft: 10,
     },
+    tipsIcon: {
+        fontSize: 30,
+        marginRight: 16
+    },
+    tipsTextCol: {
+        flex: 1
+    },
+    tipsText: {
+        fontSize: 12,
+        lineHeight: 14,
+        padding: 0
+    },
+
+
+
+
     switchInputWrapper: {
         marginBottom: 30
     },
