@@ -385,8 +385,8 @@ class MyLionsPlayerDetails extends Component {
                                             <Text style={styles.btnText}>CHECKING..</Text>
                                         </ButtonFeedback>
                                 }
-                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                <ButtonFeedback onPress={() => this._myLions('myLionsSquad')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY SQUAD</Text>
                                 </ButtonFeedback>
                             </View>
                         </LinearGradient>
@@ -789,127 +789,6 @@ class MyLionsPlayerDetails extends Component {
         service(options)
     }
     
-    render() {
-        let buttonText = ''
-        
-        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
-            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
-        } else {
-            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
-        }
-
-        return (
-            <Container theme={theme}>
-                <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
-
-                    <Content bounces={false}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
-                            <View style={styles.headerPlayerDetails}>
-                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
-                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
-                            </View>
-                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
-                                {
-                                    this.state.isFav === true?
-                                        <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
-                                    :
-                                        <Icon name='md-star-outline' style={styles.searchIcon}/>
-                                }
-                            </ButtonFeedback>
-
-                            <View style={styles.buttons}>
-                                {
-                                    this.state.isDoneUpdatingState?
-                                        <ButtonFeedback
-                                            disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this.updateSquad()}
-                                            style={[
-                                                styles.btn,
-                                                styles.btnLeft,
-                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
-                                            ]}>
-                                            <Text style={styles.btnText}>{buttonText}</Text>
-                                        </ButtonFeedback>
-                                    :
-                                        <ButtonFeedback
-                                            disabled = {true}
-                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
-                                            <Text style={styles.btnText}>CHECKING..</Text>
-                                        </ButtonFeedback>
-                                }
-                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                    <Text style={styles.btnText}>MY LIONS</Text>
-                                </ButtonFeedback>
-                            </View>
-                        </LinearGradient>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Image transparent
-                                    resizeMode='contain'
-                                    source={{uri:this.props.detail.logo}}
-                                    style={styles.detailsNationLogo} />
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={2}>
-                                <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>{this.props.detail.country}</Text>
-                            </Col>
-                        </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>Northhampton Saints</Text>
-                        </View>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
-                            </Col>
-                        </Grid>
-                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>80</Text>
-                            </Col>
-                        </Grid>
-                        {/*
-                            this.props.detail.biog?
-                                <View style={styles.playerDesc}>
-                                    <HTMLView
-                                       value={this.props.detail.biog}
-                                       stylesheet={htmlStyles}
-                                     />
-                                </View>
-                            :
-                                null
-
-                        */}
-                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
-                        <LionsFooter isLoaded={true} />
-                    </Content>
-                    < EYSFooter mySquadBtn={true} />
-                    <LoginRequire/>
-                    <SquadModal
-                        modalVisible={this.state.modalVisible}
-                        callbackParent={this._setModalVisible}>
-                            {this.state.modalContent}
-                    </SquadModal>
-                </View>
-            </Container>
-        )
-    }
 }
 
 function bindAction(dispatch) {
