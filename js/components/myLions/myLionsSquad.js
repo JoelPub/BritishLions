@@ -36,6 +36,7 @@ import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/ap
 import { setPositionToAdd } from '../../actions/position'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
+import SquadPopListModel from  'modes/SquadPop'
 
 const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
 const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
@@ -93,7 +94,6 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            isFormSubmitting: false,
             squadDatafeed:Object.assign({},squadDataMode),            
             modalContent:this.getModalContent(),
             rating:{}
@@ -113,8 +113,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>CLEAR ALL SELECTIONS</Text>
                         <Text style={styles.modalTextCenter}>This will remove all currently assigned players from your squad.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('empty')} label='CONFIRM' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded onPress={()=>this.clearSelection()} label='CONFIRM' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -125,8 +125,8 @@ class MyLionsSquad extends Component {
                         <Text style={styles.modalTitleTextCenter}>AUTO POPULATE</Text>
                         <Text style={styles.modalTextCenter}>This will auto-populate your squad with a random selection of players.</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
-                            <ButtonFeedback rounded disabled = {this.state.isFormSubmitting} onPress={()=>this.changeMode('full')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnCancel} />
+                            <ButtonFeedback rounded onPress={()=>this.autoPop()}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                         </View>
                     </ScrollView>
                 )
@@ -206,6 +206,11 @@ class MyLionsSquad extends Component {
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
+
+    // isPlainObj (value) {
+    //   return value && (value.constructor === Object || value.constructor === undefined)
+    // }
+
 
     render() {
         return (
@@ -369,14 +374,17 @@ class MyLionsSquad extends Component {
                     this._showError(catchedSquad.error)
                 })
             }else{
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.data))
+                // console.log('!!!!final catchedSquad:', JSON.stringify(catchedSquad.data))
                     getSoticFullPlayerList().then((catchedFullPlayerList) => {
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
                             this.fullPlayerList=catchedFullPlayerList
+                            // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
                             // getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                             //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                             //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
                             //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
+                                    console.log('!!!!catchedSquad.data:', catchedSquad.data)
                                     this.setSquadData(this.fullPlayerList,catchedSquad.data,'pull')
                             //     }
                             // }).catch((error) => {
@@ -405,11 +413,10 @@ class MyLionsSquad extends Component {
             data:squadFeed,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                this.setState({ isFormSubmitting: false,isLoaded: true })
+                this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
                 this.setState({
-                    isFormSubmitting: mode==='pop'||!fullFeed?false:true,
                     isLoaded: true,
                     isScoreLoaded: mode==='pop'||!fullFeed?true:false,
                     squadDatafeed:tempFeed,
@@ -427,12 +434,12 @@ class MyLionsSquad extends Component {
                 })
             },
             onError: (res) => {
-                this.setState({ isFormSubmitting: false,isLoaded: true }, () => {
+                this.setState({isLoaded: true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                this.setState({ isFormSubmitting: false,isLoaded: true }, () => {
+                this.setState({isLoaded: true }, () => {
                     this._signInRequired()
                 })
             },
@@ -442,7 +449,7 @@ class MyLionsSquad extends Component {
         for(let pos in squadFeed) {
             // console.log('!!!pos',pos)
             if(pos==='forwards'||pos==='backs') {
-                console.log('!!!forwardsbacks',squadFeed[pos])
+                // console.log('!!!forwardsbacks',squadFeed[pos])
                 let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].toString().split('|')
                 tempArr.map((item,index)=>{
                     tempFeed[pos][index]=this.searchPlayer(player,item)
@@ -489,31 +496,31 @@ class MyLionsSquad extends Component {
 
     }
 
-    changeMode(mode) {
+    autoPop() {
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
             // data:{id:''},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                this.setState({ isFormSubmitting: false, isLoaded:true })
+                this.setState({ isLoaded:true })
             },
             onSuccess: (res) => {
                  this.setState({
-                    isFormSubmitting: false, isLoaded:true
+                    isLoaded:true
                 },()=>{
-                    // console.log('!!!!res',res.data[0])
-                    // this._setModalVisible(false)
-                    this.setSquadData(this.fullPlayerList,res.data[0],'pop')
-                    // removeUserCustomizedSquad()
+                    // console.log('!!!!res',res.data)
+                    // let t=SquadPopListModel.fromJS(res.data)
+                    // console.log('!!!!t.toJS()',t.toJS())
+                    this.setSquadData(this.fullPlayerList,SquadPopListModel.fromJS(res.data).first().toJS(),'pop')
                 })
             },
             onError: (res) => {
-                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
+                this.setState({ isLoaded:true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                this.setState({ isFormSubmitting: false, isLoaded:true }, () => {
+                this.setState({ isLoaded:true }, () => {
                     this._signInRequired()
                 })
             },
@@ -521,15 +528,18 @@ class MyLionsSquad extends Component {
         }
         this._setModalVisible(false)
         this.setState({
-            isFormSubmitting: true,
             isLoaded:false
         },()=>{
-            if(mode==='empty') {
-                this.setSquadData(this.fullPlayerList,emptyDataFeed,mode)
-            }
-            else {
                 service(optionsAutoPop)
-            }
+        })
+    }
+
+    clearSelection() {        
+        this._setModalVisible(false)
+        this.setState({
+            isLoaded:false
+        },()=>{
+            this.setSquadData(this.fullPlayerList,emptyDataFeed,'empty')
         })
     }
 
@@ -545,7 +555,6 @@ class MyLionsSquad extends Component {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                     // console.log('!!!!res',res.data[0])
                     this.setState({
-                        isFormSubmitting: false,
                         isLoaded: true,
                         isScoreLoaded:true,
                         rating:res.data[0]
