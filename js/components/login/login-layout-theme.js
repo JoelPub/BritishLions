@@ -43,6 +43,7 @@ module.exports = styleSheetCreate({
         padding: 0,
         alignSelf: 'center'
     },
+
     pageTitle: {
         alignSelf: 'center',
         marginTop: 55,
@@ -58,6 +59,30 @@ module.exports = styleSheetCreate({
         android: {
             lineHeight: 36,
         }
+    },
+    btnSigninUp:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    mailSignUpView:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 12,
+        marginBottom: 20,
+        height:70,
+        borderTopWidth: 1,
+        borderTopColor: 'white',
+        marginLeft: 0,
+    },
+    mailSignUpText:{
+        paddingTop: 30,
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     inputGroup: {
         flexDirection: 'row',
@@ -216,6 +241,7 @@ module.exports = styleSheetCreate({
     guther: {
         paddingLeft: 30,
         paddingRight: 30,
+        paddingTop: 10
     },
     textUnderline: {
         textDecorationLine: 'underline',

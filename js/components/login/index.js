@@ -82,7 +82,7 @@ class Login extends Component {
             removeToken() 
             this.props.setAccessGranted(false)
         }, 400)
-        this._setupGoogleSignin();
+        this._setupGoogleSignin()
 
     }
 
@@ -114,7 +114,52 @@ class Login extends Component {
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }
+    _SignInWithGoogle = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            console.log(this.state.user.accessToken)
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'google': this.state.user.accessToken ,
+                    'app_version': '1',
+                    'grant_type': 'password'
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._createToken.bind(this),
+                onError: (res) => {
+                    console.log('error')
+                    console.log(res)
+                    if (res == 'Google access token invalid.') {
+                        //go to sign up
+                        this._handleSignUp(true)
+                    }else {
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+                        this._scrollToMessages()
+                    }
 
+                }
+            }
+
+            service(options)
+        }
+        else {
+            this._scrollToMessages()
+        }
+
+    }
     _handleSignIn(isFormValidate) {
         this.setState({
             errorCheck:{
@@ -152,7 +197,47 @@ class Login extends Component {
             this._scrollToMessages()
         }
     }
+    _handleSignUp(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            let options = {
+                url: 'https://www.api-ukchanges2.co.uk/api/users',
+                data: {
+                    'firstName': this.state.user.familyName,
+                    'lastName': this.state.user.givenName,
+                    'email': this.state.user.email,
+                    'password': 'Text1234',
+                    'newEvent': true,
+                    'newPartners': true,
+                    'tc': true
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._SignInWithGoogle,
+                onError: (res) => {
+                    this.setState({
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
 
+                    this._scrollView.scrollToPosition(0,0,false)
+                }
+            }
+
+            service(options)
+
+        } else {
+            this._scrollView.scrollToPosition(0,0,false)
+        }
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
@@ -184,7 +269,8 @@ class Login extends Component {
 
             const user = await GoogleSignin.currentUserAsync();
             console.log(user);
-            this.setState({user});
+            if(user) this._signOut()
+
         }
         catch(err) {
             console.log("Google signin error", err.code, err.message);
@@ -195,9 +281,17 @@ class Login extends Component {
           .then((user) => {
               console.log(user);
               this.setState({user: user});
+              this._SignInWithGoogle(true)
+
           })
           .catch((err) => {
               console.log('WRONG SIGNIN', err);
+          })
+          .done();
+    }
+    _signOut = () => {
+        GoogleSignin.revokeAccess().then(() => GoogleSignin.signOut()).then(() => {
+              this.setState({user: null});
           })
           .done();
     }
