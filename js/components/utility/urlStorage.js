@@ -15,7 +15,7 @@ const EYC3_GET_PLAYER_PROFILE_URL = '/getPlayersProfile'
 const EYC3_GET_PLAYER_PROFILE_URL_NAME = 'EYC3GetPlayersProfile'
 const EYC3_GET_PLAYER_URL = '/getPlayersList'
 const EYC3_GET_PLAYER_URL_NAME = 'EYC3FullPlayers'
-const EYC3_GET_EXPERTS_URL = '/tools/feeds?id=408'
+const EYC3_GET_EXPERTS_URL = '/getExpertList'
 const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'

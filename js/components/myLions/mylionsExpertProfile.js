@@ -25,6 +25,7 @@ import { replaceRoute, pushNewRoute } from '../../actions/route'
 import RatingCardView from './components/RatingCardView'
 import ExpertCard from './components/ExpertCard'
 import EYSFooter from '../global/eySponsoredFooter'
+import PlayerScore from '../global/playerScore'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
@@ -37,14 +38,14 @@ const PosTitle = ({squadData,title}) => (
     <Text style={styles.posTitleCenter}>{title}</Text>
   </View>
 )
-const ExpertsHeaderView = () => (
+const ExpertsHeaderView = ({detail}) => (
   <LinearGradient colors={['#AF001E', '#820417']} style={styles.viewExpertHeader}>
     <Image style={styles.viewExpertHeaderImage} source={imageJameshaskel} />
     <View style={styles.headerPlayerDetails}>
-      <Text style={styles.viewExpertProfileName}>JAMES HASKELL</Text>
+      <Text style={styles.viewExpertProfileName}>{detail.name}</Text>
     </View>
     <View style={styles.headerPlayerDetails}>
-      <Text style={styles.viewExpertProfileDescription}>Lorem ipsum dolor sit amet, consectetur.</Text>
+      <Text style={styles.viewExpertProfileDescription}>{detail.description}</Text>
     </View>
   </LinearGradient>
 )
@@ -55,10 +56,17 @@ class MyLionsExpertProfile extends Component {
     this.state = {
       jobTitle: ['CAPTAIN','KICKER','WILDCARD'],
       squadData:{
-        indivPos:[{position:'captain',id:123},{position:'kicker',id:null},{position:'wildcard',id:123}],
-        forwards:[123,123,123,123,123,123,123,313,3123,31,13,12,312,31,321,312,132,123,123,123],
-        backs:[123,123,123,123,123,123,21,21,312,312,31,3123,31,321,31,312,123,123,123,123,123],
-      }
+        indivPos:[{position:'captain',id:this.props.detail.squad.captain},{position:'kicker',id:this.props.detail.squad.kicker},{position:'wildcard',id:this.props.detail.squad.wildcard}],
+        forwards:this.props.detail.squad.forwards,
+        backs:this.props.detail.squad.backs,
+      },
+      ratingData:{
+          fan_ranking:this.props.detail.fan_ranking,
+          overall_rating:this.props.detail.squad_rating,
+          cohesion_rating:this.props.detail.cohesion_rating,
+          attack_defence_rating:this.props.detail.attack_defence_rating
+      },
+      showScoreCard:'full'
     };
   }
   _mapJSON(data, colMax = 2) {
@@ -87,14 +95,14 @@ class MyLionsExpertProfile extends Component {
   }
 
   render() {
-    let {jobTitle, squadData} = this.state
+    let {jobTitle, squadData, ratingData,showScoreCard} = this.state
     return (
       <Container theme={theme}>
         <View style={styles.container}>
           <LionsHeader back={true} title='MY LIONS' />
           <ScrollView>
-            <ExpertsHeaderView />
-            <RatingCardView onPress={this.ratingViewClick} changeMode={this.changeMode}/>
+            <ExpertsHeaderView detail={this.props.detail}/>
+            <PlayerScore isLoaded={true} rating={ratingData} showScoreCard={showScoreCard} pressInfo={()=>{}} pressExpert={()=>{}}/>
             <View style={styles.individaulPositionRow}>
               {
                 jobTitle.map((item,index)=>{
@@ -168,6 +176,7 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
   return {
+    detail: state.content.drillDownItem,
     route: state.route,
   }
 }, bindAction)(MyLionsExpertProfile)

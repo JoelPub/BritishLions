@@ -28,16 +28,18 @@ import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 
 import ExpertmModel from  'modes/Experts'
-import ExpertsData from  '../../mockDataJson/expertsJson.json'
+//import ExpertsData from  '../../mockDataJson/expertsJson.json'
+
+import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 const ExpertsHeader = () => (
       <Image source={imageJameshaskel} style={styles.cellExpertHeader}  />
 )
-const ExpertDescription = () => (
+const ExpertDescription = ({rowData}) => (
   <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}  >JOHN SMITH</Text>
-    <Text style={styles.textDescription} numberOfLines={2} >Lorem ipsum dolor sitamet, consectetur.</Text>
-    <Text style={styles.textRating}>SQAD RATING: 350</Text>
+    <Text style={styles.textName}  >{rowData.name}</Text>
+    <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
+    <Text style={styles.textRating}>SQAD RATING: {rowData.squad_rating}</Text>
   </View>
 
 )
@@ -45,7 +47,7 @@ const ExpertsCell = ({rowData,onPress}) => (
  <ButtonFeedback onPress= {onPress}>
    <View  style={[styles.cellExpert]}>
      <ExpertsHeader />
-     <ExpertDescription />
+     <ExpertDescription rowData={rowData} />
    </View>
 </ButtonFeedback>
 )
@@ -61,8 +63,8 @@ class MyLionsExpertsList extends Component {
       experts: []
     };
   }
-  _navToDetail = () => {
-    this.props.drillDown({}, 'mylionsExpertProfile')
+  _navToDetail = (item) => {
+    this.props.drillDown(item, 'mylionsExpertProfile')
   }
   render() {
     console.log(this.state.experts)
@@ -75,7 +77,7 @@ class MyLionsExpertsList extends Component {
             <ListView
               dataSource={this.state.dataSource}
               enableEmptySections={true}
-              renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {this._navToDetail} />}
+              renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
             />
             <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -87,10 +89,16 @@ class MyLionsExpertsList extends Component {
   }
   handdleData = () => {
     if (this.isUnMounted) return // return nothing if the component is already unmounted
-    let  experts = ExpertmModel.fromJS(ExpertsData.experts)
-    this.setState({
-      experts: experts,
-      dataSource: this.ds.cloneWithRows(experts.toArray()),
+    getEYC3ExpertsSquads().then((ExpertsData) => {
+        if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
+            let  experts = ExpertmModel.fromJS(ExpertsData.experts)
+            this.setState({
+              experts: experts,
+              dataSource: this.ds.cloneWithRows(experts.toArray()),
+            })
+        }
+    }).catch((error) => {
+        console.log('Error when try to get the EYC3 full player list: ', error)
     })
   }
 
@@ -107,6 +115,7 @@ class MyLionsExpertsList extends Component {
   }
 
   componentDidMount () {
+    removeEYC3ExpertsSquads()
     this.handleComponentUpdate(this.props, true)
   }
 }

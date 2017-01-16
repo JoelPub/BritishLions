@@ -85,14 +85,14 @@ export async function getEYC3ExpertsSquads() {
             return response.json()
           }).then(json => {
             if(json){
-              console.log('Fresh uncached eyc3 experts squads Data: ',JSON.stringify(json))
+              console.log('Fresh uncached eyc3 experts squads Data: ',JSON.stringify(json[0]))
               storage.save({
                 key: EYC3_EXPERTS_SQUADS,
                 expires: 1000 * 3600,
                 id,
-                rawData: json
+                rawData: json[0]
               });
-              resolve && resolve(json)
+              resolve && resolve(json[0])
             }
             else{
               reject && reject(new Error('data parse error'))
@@ -113,7 +113,7 @@ export async function getEYC3ExpertsSquads() {
           console.log('Cached eyc3 experts squads Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          console.log(err.message);
+          console.warn(err.message)
           switch (err.name) {
               case 'NotFoundError':
                  return 0
