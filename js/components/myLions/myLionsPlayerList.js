@@ -42,6 +42,7 @@ class MyLionsPlayerList extends Component {
         this.union=this.unionFeed.uniondata.find((n)=> n.id === this.unionFeed.unionId)
         //this.unionUrl = `https://f3k8a7j4.ssl.hwcdn.net/tools/feeds?id=401&team=${this.unionFeed.unionId}`
         //this.favUrl = 'https://www.api-ukchanges2.co.uk/api/protected/mylionsfavourit?_=1480039224954'
+        this._scrollView = ScrollView
         this.state = {
             isLoaded: false,
             modalVisible: false,
@@ -184,6 +185,8 @@ class MyLionsPlayerList extends Component {
                 playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds)
             })
         }
+
+        this._scrollView.scrollTo({y: 0, animated: false})
     }
 
     handlePlayer(players) {
@@ -517,7 +520,7 @@ class MyLionsPlayerList extends Component {
                         </View>
                     }
                     <LoginRequire/>
-                    <Content bounces={false}>
+                    <ScrollView bounces={false} ref={(scrollView) => { this._scrollView = scrollView }}>
                         <FilterListingModal
                             modalVisible={this.state.filterModalVisible}
                             resultVisible={this.state.filteResultVisible}
@@ -590,7 +593,7 @@ class MyLionsPlayerList extends Component {
                             :
                                 <ActivityIndicator style={loader.centered} size='large' />
                         }
-                    </Content>
+                    </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>
