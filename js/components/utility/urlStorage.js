@@ -4,7 +4,7 @@ const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
-const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=403'
+const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=408'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
 
 const EYC3_AUTO_POPULATED_SQUAD_URL = '/getAutoPopulatedSquad'
@@ -15,7 +15,7 @@ const EYC3_GET_PLAYER_PROFILE_URL = '/getPlayersProfile'
 const EYC3_GET_PLAYER_PROFILE_URL_NAME = 'EYC3GetPlayersProfile'
 const EYC3_GET_PLAYER_URL = '/getPlayersList'
 const EYC3_GET_PLAYER_URL_NAME = 'EYC3FullPlayers'
-const EYC3_GET_EXPERTS_URL = '/tools/feeds?id=403'
+const EYC3_GET_EXPERTS_URL = '/tools/feeds?id=408'
 const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'

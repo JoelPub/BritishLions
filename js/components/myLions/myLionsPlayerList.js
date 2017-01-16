@@ -345,7 +345,7 @@ class MyLionsPlayerList extends Component {
                 })
             }
             else {
-                if( player.name.toLowerCase()===this.nameFilte ) {
+                if( player.name.toLowerCase()===this.nameFilter ) {
                     result=true
                 }
             }
@@ -368,9 +368,10 @@ class MyLionsPlayerList extends Component {
             
 
             //name contain keywords
+            console.warn('club:',this.playerListFeeds[12])
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.position.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
-            //searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
 
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {

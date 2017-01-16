@@ -154,7 +154,7 @@ class MyLionsFavoriteList extends Component {
                 if (eyc3Players[u].length > 0) {
                     eyc3Players[u].map((eyc3player, index) => {
                         if (eyc3player.id === player.id) {
-                            player.eyc3PlayerScore = eyc3player.heightm
+                            player.eyc3PlayerScore = eyc3player.overall_score
                         }
                     })
                 }
