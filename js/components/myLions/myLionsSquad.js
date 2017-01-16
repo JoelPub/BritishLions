@@ -37,10 +37,12 @@ import { setPositionToAdd } from '../../actions/position'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
 import SquadPopListModel from  'modes/SquadPop'
+import SquadModel from  'modes/Squad'
+import SquadShowModel from  'modes/Squad/SquadShowModel'
 
-const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
-const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
-const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
+// const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+// const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
+// const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -94,7 +96,7 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadDatafeed:Object.assign({},squadDataMode),            
+            squadDatafeed:SquadShowModel().toJS(),            
             modalContent:this.getModalContent(),
             rating:{}
         }
@@ -207,9 +209,9 @@ class MyLionsSquad extends Component {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
 
-    // isPlainObj (value) {
-    //   return value && (value.constructor === Object || value.constructor === undefined)
-    // }
+    isPlainObj (value) {
+      return value && (value.constructor === Object || value.constructor === undefined)
+    }
 
 
     render() {
@@ -384,8 +386,10 @@ class MyLionsSquad extends Component {
                             //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                             //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
                             //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
-                                    console.log('!!!!catchedSquad.data:', catchedSquad.data)
-                                    this.setSquadData(this.fullPlayerList,catchedSquad.data,'pull')
+                                    // console.log('!!!!catchedSquad.data:', catchedSquad.data)
+                                    // let t=SquadModel.format(eval(`(${catchedSquad.data})`))
+                                    // console.log('!!!t',t.toJS())
+                                    this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
                             //     }
                             // }).catch((error) => {
                             //     console.log('Error when try to get the EYC3 full player list: ', error)
@@ -400,12 +404,10 @@ class MyLionsSquad extends Component {
         })      
     }
 
-    setSquadData(player,squad,mode){
-        // console.log('!!!squad',squad)
-        let squadFeed=mode==='pop'?squad:eval(`(${squad})`)
-        let updateFeed={backs: "", captain: "", widecard: "", forwards: "", kicker: ""}
-        // console.log('!!!squadFeed',squadFeed)
-        let tempFeed={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+    setSquadData(squad,isPop){
+        // console.log('!!!squad.toJS()',squad.toJS())
+        let squadFeed=squad.toJS()
+        let tempFeed=SquadShowModel().toJS()
         let emptyFeed=true
         let fullFeed=true
         let optionsSaveList = {
@@ -418,12 +420,12 @@ class MyLionsSquad extends Component {
             onSuccess: (res) => {
                 this.setState({
                     isLoaded: true,
-                    isScoreLoaded: mode==='pop'||!fullFeed?true:false,
+                    isScoreLoaded: isPop||!fullFeed?true:false,
                     squadDatafeed:tempFeed,
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
-                    rating:mode==='pop'||!fullFeed?squadFeed.rating:this.state.rating
+                    rating:isPop||!fullFeed?squadFeed.rating:this.state.rating
                 },()=>{
-                    if(fullFeed&&mode!=='pop') {
+                    if(fullFeed&&isPop) {
                         this._setModalVisible(false)
                         this.getRating(squadFeed)
                     }
@@ -448,50 +450,41 @@ class MyLionsSquad extends Component {
 
         for(let pos in squadFeed) {
             // console.log('!!!pos',pos)
-            if(pos==='forwards'||pos==='backs') {
+            // console.log('!!!isPlainObj squadFeed[pos]',this.isPlainObj(squadFeed[pos])?'true':'false')
+            if(squadFeed[pos] instanceof Array) {
                 // console.log('!!!forwardsbacks',squadFeed[pos])
-                let tempArr=mode==='pop'?squadFeed[pos]:squadFeed[pos].toString().split('|')
-                tempArr.map((item,index)=>{
-                    tempFeed[pos][index]=this.searchPlayer(player,item)
+                squadFeed[pos].map((item,index)=>{
+                    // console.log('item',item)
+                    // console.log('index',index)
+                    tempFeed[pos][index]=this.searchPlayer(this.fullPlayerList,item)
                     if(tempFeed[pos][index]===null){
-                        if (mode==='pop') {
-                            squadFeed[pos][index]=null
-                        }
-                        else {
-                            fullFeed=false
-                        }
+                        squadFeed[pos][index]=null
                     }
                     else {
                         emptyFeed=false
                     }
                 })
+                // console.log(tempFeed[pos])
+                // console.log(tempFeed[pos].indexOf(null))
+                if (!isPop&&tempFeed[pos].indexOf(null)!==-1) fullFeed=false
+                squadFeed[pos]=squadFeed[pos].filter((value)=>{value !==null}).join('|')
             }
-            else if(pos==='captain'||pos==='kicker'||pos==='widecard') {
+            else if(!this.isPlainObj(squadFeed[pos])) {
                 // console.log('!!!squadFeed[pos]',squadFeed[pos])
                 // console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
-                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(player,squadFeed[pos])
+                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(this.fullPlayerList,squadFeed[pos])
                 if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
-                    if(mode==='pop') {
-                        squadFeed[pos]=null
-                    }
-                    else{
-                        fullFeed=false
-                    }
+                    squadFeed[pos]=''
+                    if(!isPop) fullFeed=false
                 }
                 else {
                     emptyFeed=false
                 }
             }
         }
-        if(mode==='pop') {
-            for( let v in squadFeed) {
-                if(squadFeed[v] instanceof Array) {
-                    squadFeed[v]=squadFeed[v].filter((value)=>{value !==null}).join('|')
-                }
-            }
-        }
 
         // console.log('!!!final squadFeed',squadFeed)
+        // console.log('!!!fullFeed',fullFeed?'true':'false')
         service(optionsSaveList)
 
     }
@@ -511,7 +504,7 @@ class MyLionsSquad extends Component {
                     // console.log('!!!!res',res.data)
                     // let t=SquadPopListModel.fromJS(res.data)
                     // console.log('!!!!t.toJS()',t.toJS())
-                    this.setSquadData(this.fullPlayerList,SquadPopListModel.fromJS(res.data).first().toJS(),'pop')
+                    this.setSquadData(SquadPopListModel.fromJS(res.data).first(),true)
                 })
             },
             onError: (res) => {
@@ -539,7 +532,9 @@ class MyLionsSquad extends Component {
         this.setState({
             isLoaded:false
         },()=>{
-            this.setSquadData(this.fullPlayerList,emptyDataFeed,'empty')
+            // let t=SquadModel.format(SquadModel().toJS())
+            // console.log('!t',t.toJS())
+            this.setSquadData(SquadModel.format(SquadModel().toJS()))
         })
     }
 
@@ -573,6 +568,7 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
+        // console.log('!!!getRating')
         service(optionsSquadRating)        
     }
 
