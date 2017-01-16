@@ -1,14 +1,18 @@
 import Immutable, { Record, List } from 'immutable'
 import  {isPlainObj } from 'modes/utils/functions'
+import Rating from './Rating'
 
-const FigureModel = Record({
-  'average': '',
-  'name': '',
-  'value': ''
-
+const SquadPopModel = Record({
+  'backs': new List(),
+  'captain': '',
+  'forwards': new List(),
+  'kicker' : '',
+  'widecard': '',
+  'rating': new Rating()
 })
-FigureModel.prototype.constructor.fromJS = function (values) {
- // console.log('@@@FigureModel.fromJS',values)
+
+SquadPopModel.prototype.constructor.fromJS = function (values) {
+ // console.log('@@@SquadPopModel.fromJS',values)
   let that = this
   let nested = Immutable.fromJS(values, function (key, value) {
 
@@ -21,5 +25,4 @@ FigureModel.prototype.constructor.fromJS = function (values) {
   })
   return this(nested)
 }
-
-export default FigureModel
+export default SquadPopModel
