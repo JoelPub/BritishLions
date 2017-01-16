@@ -161,7 +161,7 @@ const styles = styleSheetCreate({
     },
     scoreCardShareWrapper:{
         borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
+        borderColor:'rgb(128,127,131)',
         marginTop: 0,
         paddingVertical:5
     },
