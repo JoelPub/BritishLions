@@ -45,7 +45,7 @@ const ExpertsHeaderView = ({detail}) => (
   <LinearGradient colors={['#AF001E', '#820417']} style={styles.viewExpertHeader}>
     <Image style={styles.viewExpertHeaderImage} source={imageJameshaskel} />
     <View style={styles.headerPlayerDetails}>
-      <Text style={styles.viewExpertProfileName}>{detail.name}</Text>
+      <Text style={styles.viewExpertProfileName}>{detail.name.toUpperCase()}</Text>
     </View>
     <View style={styles.headerPlayerDetails}>
       <Text style={styles.viewExpertProfileDescription}>{detail.description}</Text>
@@ -63,9 +63,9 @@ class MyLionsExpertProfile extends Component {
       squadData:{
         //TODO :this.props.detail.squad.captain,this.props.detail.squad.kicker,this.props.detail.squad.wildcard,
         indivPos:[{position:'captain',id:[8759]},{position:'kicker',id:[88878]},{position:'wildcard',id:[19930]}],
-        forwards:[114146,33315,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
+        forwards:[114146,33315,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
         //this.props.detail.squad.forwards,
-        backs:[120154,8357,118708,88083,4145,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
+        backs:[120154,8357,118708,88083,4145,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
         //this.props.detail.squad.backs,
       },
       ratingData:{

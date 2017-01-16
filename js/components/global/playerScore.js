@@ -21,6 +21,13 @@ const styles = styleSheetCreate({
         borderColor:'rgb(216,217,218)',
         padding:20,
     },
+    scoreCardExpert:{
+        marginVertical:0,
+        borderTopWidth:0,
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)',
+        padding:20,
+    },
     semiCard:{
         paddingTop:29,
         marginBottom:10,
@@ -102,6 +109,10 @@ const styles = styleSheetCreate({
         borderColor:'rgb(128,127,131)',
         marginTop:20,
         paddingVertical:19
+    },
+    ratingWrapperExpert:{
+        borderTopWidth:0,
+        marginTop:0,
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
@@ -289,9 +300,10 @@ export default class PlayerScore extends Component {
     }
 
 	render() {
+        let styleParent = this.props.style || {}
 		return (
 
-            <View style={styles.scoreCard} >
+            <View style={[styles.scoreCard,this.props.isExpertPage&&styles.scoreCardExpert]} >
                 {this.props.showScoreCard!=='full'?
                     <View style={styles.semiCard}>
                         <Text style={styles.semiCardText}>
@@ -333,7 +345,7 @@ export default class PlayerScore extends Component {
                                     }
                                     </View>
                                 }
-                                <View style={styles.ratingWrapper}>
+                                <View style={[styles.ratingWrapper,this.props.isExpertPage&&styles.ratingWrapperExpert]}>
                                     <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                     <View style={styles.ratingScore}>
                                          <Text style={styles.ratingScorePoint}>{this.props.rating.overall_rating}</Text>
@@ -363,9 +375,17 @@ export default class PlayerScore extends Component {
                                         </ButtonFeedback>
                                     </View>
                                 }
-                                <View style={styles.scoreCardFooter}>
-                                    <Image source={require('../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
-                                </View>
+                                {
+                                    this.props.isExpertPage?
+                                    <View style={styles.semiCardFooter}>
+                                        <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
+                                        <Image source={require('../../../images/footer/eyLogo.png')}></Image>
+                                    </View>
+                                    :
+                                    <View style={styles.scoreCardFooter}>
+                                        <Image source={require('../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
+                                    </View>
+                                }
                             </View>
                             {
                                 !this.props.isExpertPage &&

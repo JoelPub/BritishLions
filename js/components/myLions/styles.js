@@ -994,7 +994,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         color: 'white',
         width: 181,
-        lineHeight: 20,
+        lineHeight: 22,
         marginTop: 0,
     },
     textRating: {
@@ -1019,6 +1019,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
+        textAlign:'center',
         paddingTop: 15,
         width: 121,
         android: {

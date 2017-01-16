@@ -37,7 +37,7 @@ const ExpertsHeader = () => (
 )
 const ExpertDescription = ({rowData}) => (
   <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}  >{rowData.name}</Text>
+    <Text style={styles.textName}  >{rowData.name.toUpperCase()}</Text>
     <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
     <Text style={styles.textRating}>SQAD RATING: {rowData.squad_rating}</Text>
   </View>
