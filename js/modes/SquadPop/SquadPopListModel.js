@@ -3,7 +3,7 @@ import SquadPopModel from './Squad'
 
 class SquadPopListModel extends List {
   static fromJS (values) {
-  	console.log('@@@SquadPopListModel.fromJS',values)
+  	// console.log('@@@SquadPopListModel.fromJS',values)
     return List.of(...values.map(it => SquadPopModel.fromJS(it)))
   }
 }

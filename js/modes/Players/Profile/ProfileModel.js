@@ -17,12 +17,12 @@ ProfileModel.prototype.constructor.fromJS = function (values) {
     // console.log('value',value)
     // console.log('Array.isArray(value)',Array.isArray(value))
     // console.log('is list',Immutable.List.isList(value))
-    if (that.prototype[key]) {
+    // if (that.prototype[key]) {
       // console.log('that.prototype[key]',that.prototype[key])
       // console.log('that.prototype[key] instanceof Immutable.List',(that.prototype[key]  instanceof Immutable.List) )
       // console.log('that.prototype[key].constructor',that.prototype[key].constructor)
       // console.log('that.prototype[key].constructor.prototype',that.prototype[key].constructor.prototype)
-    }
+    // }
 
     if (that.prototype[key] && that.prototype[key]  instanceof Immutable.List) {
       // console.log('is list',key)
