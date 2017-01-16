@@ -33,11 +33,17 @@ import ExpertmModel from  'modes/Experts'
 import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 const ExpertsHeader = () => (
-      <Image source={imageJameshaskel} style={styles.cellExpertHeader}  />
+      <View style={styles.searchImg}>
+          <Image transparent
+              resizeMode='stretch'
+              source={imageJameshaskel}
+              style={styles.cellExpertHeader}
+               />
+      </View>
 )
 const ExpertDescription = ({rowData}) => (
   <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}  >{rowData.name.toUpperCase()}</Text>
+    <Text style={styles.textName}  >{rowData.name}</Text>
     <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
     <Text style={styles.textRating}>SQAD RATING: {rowData.squad_rating}</Text>
   </View>
@@ -51,7 +57,6 @@ const ExpertsCell = ({rowData,onPress}) => (
    </View>
 </ButtonFeedback>
 )
-
 class MyLionsExpertsList extends Component {
 
   constructor(props) {

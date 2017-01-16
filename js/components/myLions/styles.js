@@ -777,7 +777,8 @@ module.exports = styleSheetCreate({
     squadTitle:{
         color:'rgb(175,0,30)',
         marginTop:10,
-        fontSize:28
+        fontSize:28,
+        textAlign:'center',
     },
     scoreCardNoBottomW:{
         marginVertical:2,
@@ -968,25 +969,27 @@ module.exports = styleSheetCreate({
         flexDirection: 'row',
         borderTopWidth: 1,
         borderTopColor: 'rgba(216,217,218,1)',
-        height: 136,
+        width: styleVar.deviceWidth,
+        height:styleVar.deviceWidth*9/25,
     },
     cellExpertHeader: {
-        height: 135,
-        width: 135,
+        backgroundColor: '#FFF',
+        width: styleVar.deviceWidth*9/25,
+        height: styleVar.deviceWidth*9/25,
     },
     cellExpertInfo: {
+        flex:16,
         marginTop: 0,
         backgroundColor: '#D00729',
         paddingLeft: 20,
-        flex: 1,
-        height: 135,
+        height:styleVar.deviceWidth*9/25
     },
     textName: {
         fontSize: 24,
         color: 'white',
         width: 187,
         lineHeight: 24,
-        marginTop: 20,
+        marginTop: styleVar.deviceWidth*1/20,
         fontFamily: styleVar.fontCondensed,
     },
     textDescription: {
@@ -994,14 +997,14 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         color: 'white',
         width: 181,
-        lineHeight: 22,
+        lineHeight: 20,
         marginTop: 0,
     },
     textRating: {
         fontSize: 18,
         color: 'white',
         fontFamily: styleVar.fontCondensed,
-        marginTop: 8,
+        marginTop: styleVar.deviceWidth*1/50,
     },
     viewExpertHeader: {
         height: 229,
