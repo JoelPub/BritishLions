@@ -371,7 +371,6 @@ class MyLionsPlayerList extends Component {
             
 
             //name contain keywords
-            console.warn('club:',this.playerListFeeds[12])
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.position.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
