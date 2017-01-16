@@ -109,9 +109,11 @@ class MyLionsPlayerDetails extends Component {
             case 'remove' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>CONFIRM</Text>
-                        <Text style={styles.modalTitleTextCenter}>REMOVE</Text>
-                        <ButtonFeedback rounded label='YES' onPress={()=>this._updateSquad('remove')}  style={styles.modalConfirmBtn} />
+                        <Text style={styles.modalBtnTitle}>REMOVE PLAYER FROM YOUR SQUAD?</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
+                            <ButtonFeedback rounded onPress={()=>this._updateSquad('remove')}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                        </View>
                     </View>
                 )
                 break
@@ -708,7 +710,7 @@ class MyLionsPlayerDetails extends Component {
                     // console.log('$$$$type',type)
                         
                     if(!inSquad&&type==='add') {
-                        console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
                         if(squadFeedTemp[position].length<max) {
                             squadFeedTemp[position].push(this.playerid)
                         }
@@ -724,14 +726,14 @@ class MyLionsPlayerDetails extends Component {
                         // console.log('$$$$squadFeedTemp',squadFeedTemp)
                         
                     }
-                    if(update) this._updateSquadPlayer(squadFeedTemp)
+                    if(update) this._updateSquadPlayer(squadFeedTemp,position)
                  }
 
             }
         })
     }
 
-    _updateSquadPlayer(squadData) {
+    _updateSquadPlayer(squadData,position) {
         // console.log('@@@@squadData',squadData)
         let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
         for (let pos in squadData) {
@@ -746,27 +748,23 @@ class MyLionsPlayerDetails extends Component {
             data: tmpSquadData,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFormSubmitting: false })
             },
             onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                let successDesc = this.state.inSquad? 'REMOVED FROM' : 'ADDED TO'
+                let successDesc = this.state.inSquad? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
-                    this._setModalVisible(true,'message','PLAYER',`${successDesc}  SQUAD`,'OK')
+                    this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
                 })
             },
             onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFormSubmitting: false }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFormSubmitting: false }, () => {
                     this._signInRequired()
                 })
