@@ -13,15 +13,17 @@ import {
   Image
 } from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
+import { connect } from 'react-redux'
 
 import styles from '../styles'
 import styleVar from '../../../themes/variable'
 import shapes from '../../../themes/shapes'
 
+import { drillDown } from '../../../actions/content'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 
-export default class ExpertCard extends Component {
+export class ExpertCard extends Component {
   constructor (props) {
     super(props)
     this.state = {}
@@ -73,3 +75,14 @@ ExpertCard.propTypes = {
   hasTitle: PropTypes.bool
 }
 
+function bindAction(dispatch) {
+    return {
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect((state) => {
+    return {
+        route: state.route,
+    }
+},  bindAction)(ExpertCard)

@@ -28,6 +28,7 @@ import ExpertCard from './components/ExpertCard'
 import EYSFooter from '../global/eySponsoredFooter'
 import PlayerScore from '../global/playerScore'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import Data from '../../../contents/unions/data'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
@@ -55,6 +56,8 @@ class MyLionsExpertProfile extends Component {
 
   constructor(props) {
     super(props)
+    this.uniondata = Data
+
     this.state = {
       jobTitle: ['CAPTAIN','KICKER','WILDCARD'],
       squadData:{
@@ -84,7 +87,10 @@ class MyLionsExpertProfile extends Component {
                  if (this.state.soticFullPlayers[u].length > 0) {
                      this.state.soticFullPlayers[u].map((player, index) => {
                          if (player.id === playerId.toString()) {
-                             Object.assign(player, {'countryid':u})
+                             let union = this.uniondata.find((n)=> n.id===u)
+                             Object.assign(player, {'countryid':u,
+                                                    logo: union.image,
+                                                    country: union.displayname.toUpperCase()})
                              if(typeof player.image==='string') {
                                 if (player.image.indexOf('125.gif') > 0) {
                                      player.image = require(`../../../contents/unions/nations/125.png`)
