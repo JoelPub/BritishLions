@@ -395,35 +395,35 @@ class MyLionsPlayerDetails extends Component {
                             </Col>
                             <Col style={styles.detailsGridCol} size={2}>
                                 <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>{this.props.detail.country}</Text>
+                                <Text style={styles.detail}>{this.props.detail.country} </Text>
                             </Col>
                         </Grid>
                         <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>Northhampton Saints</Text>
+                            <Text style={styles.detail}>{this.props.detail.club} </Text>
                         </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm} </Text>
                             </Col>
                         </Grid>
                         <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>80</Text>
+                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
                             </Col>
                         </Grid>
                         {/*
