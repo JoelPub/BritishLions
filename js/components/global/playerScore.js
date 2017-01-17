@@ -308,24 +308,30 @@ export default class PlayerScore extends Component {
                     this.props.isLoaded? 
                         <View>
                             <View ref='scorecard' style={styles.fullCard}>
-                                <ButtonFeedback 
-                                    onPress={()=>this.props.pressInfo(true,'info')} 
-                                    style={styles.btnCardInfo}>
-                                    <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                </ButtonFeedback>
                                 {
-                                this.props.rating.fan_ranking<50?
-                                <View style={styles.summaryWrapper}>
-                                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                                        <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
-                                </View>
-                                :
-                                <View style={styles.summaryWrapper}>
-                                        <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
-                                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
-                                        <Text style={styles.summaryText}>of scores are higher than yours.</Text>
-                                </View>
+                                    !this.props.isExpertPage &&
+                                    <View>
+                                    <ButtonFeedback
+                                        onPress={()=>this.props.pressInfo(true,'info')}
+                                        style={styles.btnCardInfo}>
+                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                    </ButtonFeedback>
+
+                                    {
+                                    this.props.rating.fan_ranking<50?
+                                    <View style={styles.summaryWrapper}>
+                                            <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                                            <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                                            <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                    </View>
+                                    :
+                                    <View style={styles.summaryWrapper}>
+                                            <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
+                                            <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                                            <Text style={styles.summaryText}>of scores are higher than yours.</Text>
+                                    </View>
+                                    }
+                                    </View>
                                 }
                                 <View style={styles.ratingWrapper}>
                                     <Text style={styles.ratingTitle}>OVERALL RATING</Text>
@@ -344,24 +350,30 @@ export default class PlayerScore extends Component {
                                     </View>
                                     <BarSlider score={this.props.rating.attack_defence_rating*100} fullWidth={styleVar.deviceWidth-100} /> 
                                 </View>
-                                <View style={styles.scoreCardShareWrapper}>
-                                    <ButtonFeedback
-                                        rounded label='Share'
-                                        disabled = {this.state.isSubmitting} 
-                                        onPress={ ()=> this.shareSnapshot('scorecard',this.callback.bind(this)) } 
-                                        style={[styles.button,styles.scoreCardShare]}>
-                                        <Text  style={styles.scoreCardShareText}>SHARE</Text>
-                                        <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
-                                    </ButtonFeedback>
-                                </View>
+                                {
+                                    !this.props.isExpertPage &&
+                                    <View style={styles.scoreCardShareWrapper}>
+                                        <ButtonFeedback
+                                            rounded label='Share'
+                                            disabled = {this.state.isSubmitting}
+                                            onPress={ ()=> this.shareSnapshot('scorecard',this.callback.bind(this)) }
+                                            style={[styles.button,styles.scoreCardShare]}>
+                                            <Text  style={styles.scoreCardShareText}>SHARE</Text>
+                                            <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
+                                        </ButtonFeedback>
+                                    </View>
+                                }
                                 <View style={styles.scoreCardFooter}>
                                     <Image source={require('../../../images/footer/eyLogo.png')} style={styles.scoreCardFooterImg}></Image>
                                 </View>
                             </View>
-                            <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
-                                <Icon name='md-contact' style={styles.btnExpertIcon} />
-                                <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
-                            </ButtonFeedback>
+                            {
+                                !this.props.isExpertPage &&
+                                <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
+                                    <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                    <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
+                                </ButtonFeedback>
+                            }
                         </View>
                         :
                         <ActivityIndicator style={loader.scoreCard} size='small' /> 

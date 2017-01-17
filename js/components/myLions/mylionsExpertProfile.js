@@ -177,7 +177,7 @@ class MyLionsExpertProfile extends Component {
           <LionsHeader back={true} title='MY LIONS' />
           <ScrollView>
             <ExpertsHeaderView detail={this.props.detail}/>
-            <PlayerScore isLoaded={true} rating={ratingData} showScoreCard={showScoreCard} pressInfo={()=>{}} pressExpert={()=>{}}/>
+            <PlayerScore isLoaded={true} rating={ratingData} showScoreCard={showScoreCard} isExpertPage={true} pressInfo={()=>{}} pressExpert={()=>{}}/>
             {
                 this.state.isSquadLoaded ?
                 <View>
