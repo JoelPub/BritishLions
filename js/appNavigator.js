@@ -12,6 +12,7 @@ import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
 import Navigator from 'Navigator'
 import {register} from './components/utility/network'
+import {configure,schedule} from './components/utility/notification'
 
 // Templates/pages
 import SplashPage from './components/splashscreen/'
@@ -51,7 +52,6 @@ import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
 import Storage from 'react-native-storage'
-import PushNotification from 'react-native-push-notification'
 
 Navigator.prototype.replaceWithAnimation = function (route) {
     const activeLength = this.state.presentedIndex + 1
@@ -175,12 +175,11 @@ class AppNavigator extends Component {
         })
         
         register(this.props.store)
+        configure.then(
+            schedule()
+            )
+        
 
-        PushNotification.configure({
-            onNotification: function(notification) {
-                console.log( 'NOTIFICATION:', notification );
-            }
-        })
     }
 
     popRoute() {
