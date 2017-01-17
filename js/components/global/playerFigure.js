@@ -281,103 +281,103 @@ export default class PlayerFigure extends Component {
             <View>
             {
                 this.state.isLoaded?
-                <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
-                    <View style={styles.fullCard}>
-                        <ButtonFeedback 
-                            onPress={()=>this.props.pressInfo(true,'info')}
-                            style={styles.btnCardInfo}>
-                            <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                        </ButtonFeedback>
-                        
-                        <View style={styles.playerOverallRating}>
-                            <Text style={styles.ratingTitle}>OVERALL RATING</Text>
-                            <View style={styles.ratingScore}>
-                                <Text style={styles.ratingScorePoint}>{this.state.profile.overall_rating||'NA'}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playerPerfromanceWrapper}>
-                            <View style={styles.playerPerfromance} >
-                                <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
-                                <Text style={styles.summaryTextHighLight}>{this.state.profile.performance_score}</Text>
-                            </View>
-                            <View style={styles.playerPerfromance}>
-                                <Text style={styles.performanceText}>CONSISTENCY</Text>
-                                {
-                                    this.state.profile.player_consistency>0?
-                                    <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
-                                    :
-                                    <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
-                                }
-                            </View>
-                        </View>
-                        <View style={styles.playerFigureWrapper}>
-                            <View style={styles.playerFigureView}>
-                                <View style={styles.playerFigureTypeView}>
-                                {
-                                    this.state.tabSubjects.map((node,page)=>{
-                                        return (
-                                        <ButtonFeedback 
-                                        style={styles.playerFigureType} 
-                                        onPress={()=>this.changePage(page)}
-                                        key={page}>
-                                            <Text 
-                                            style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
-                                            onLayout={this.measureTab.bind(this,page)}>{node.toUpperCase()}</Text>
-                                            <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
-                                        </ButtonFeedback>
-                                        )
-                                    },this)
-                                }
+                    <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
+                        <View style={styles.fullCard}>
+                            <ButtonFeedback 
+                                onPress={()=>this.props.pressInfo(true,'info')}
+                                style={styles.btnCardInfo}>
+                                <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                            </ButtonFeedback>
+                            
+                            <View style={styles.playerOverallRating}>
+                                <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                                <View style={styles.ratingScore}>
+                                    <Text style={styles.ratingScorePoint}>{this.state.profile.overall_rating||'NA'}</Text>
                                 </View>
-                                <Swiper
-                                    ref='swiper'
-                                    height={320}
-                                    width={styleVar.deviceWidth-100}
-                                    loop={false}
-                                    paginationStyle={styles.pagination}
-                                    dotColor='rgb(95,96,98)'
-                                    activeDotColor='rgb(255,230,0)'
-                                    onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
+                            </View>
+                            <View style={styles.playerPerfromanceWrapper}>
+                                <View style={styles.playerPerfromance} >
+                                    <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
+                                    <Text style={styles.summaryTextHighLight}>{this.state.profile.performance_score}</Text>
+                                </View>
+                                <View style={styles.playerPerfromance}>
+                                    <Text style={styles.performanceText}>CONSISTENCY</Text>
                                     {
-                                        this.state.tabSubjects.map((node,i)=>{
-                                            return(
-                                                <View style={styles.playerFigurePageWrapper} key={i}>
-                                                    {
-                                                        this._mapJSON(this.state.season[node]).map((rowData,index)=>{
-                                                            return(
-                                                                <View style={styles.playerFigureRow} key={index}>
-                                                                {
-                                                                    rowData.map((item, j) => {
-                                                                        return(
-                                                                            <View style={styles.playerFigureUnit} key={j}>
-                                                                                <Text style={styles.playerFigureUpperText}>{item.name}</Text>
-                                                                                <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                                                    <Text style={styles.ratingScorePoint}>{item.value}</Text>
-                                                                                </View>
-                                                                                <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
-                                                                            </View>
-                                                                            )
-                                                                    },this)
-                                                                }
-                                                                </View>
-                                                                )
-                                                        },this)
-                                                    }
-                                                </View>
-                                                )
+                                        this.state.profile.player_consistency>0?
+                                        <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
+                                        :
+                                        <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
+                                    }
+                                </View>
+                            </View>
+                            <View style={styles.playerFigureWrapper}>
+                                <View style={styles.playerFigureView}>
+                                    <View style={styles.playerFigureTypeView}>
+                                    {
+                                        this.state.tabSubjects.map((node,page)=>{
+                                            return (
+                                            <ButtonFeedback 
+                                            style={styles.playerFigureType} 
+                                            onPress={()=>this.changePage(page)}
+                                            key={page}>
+                                                <Text 
+                                                style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
+                                                onLayout={this.measureTab.bind(this,page)}>{node.toUpperCase()}</Text>
+                                                <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
+                                            </ButtonFeedback>
+                                            )
                                         },this)
                                     }
-                                </Swiper>
+                                    </View>
+                                    <Swiper
+                                        ref='swiper'
+                                        height={320}
+                                        width={styleVar.deviceWidth-100}
+                                        loop={false}
+                                        paginationStyle={styles.pagination}
+                                        dotColor='rgb(95,96,98)'
+                                        activeDotColor='rgb(255,230,0)'
+                                        onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
+                                        {
+                                            this.state.tabSubjects.map((node,i)=>{
+                                                return(
+                                                    <View style={styles.playerFigurePageWrapper} key={i}>
+                                                        {
+                                                            this._mapJSON(this.state.season[node]).map((rowData,index)=>{
+                                                                return(
+                                                                    <View style={styles.playerFigureRow} key={index}>
+                                                                    {
+                                                                        rowData.map((item, j) => {
+                                                                            return(
+                                                                                <View style={styles.playerFigureUnit} key={j}>
+                                                                                    <Text style={styles.playerFigureUpperText}>{item.name}</Text>
+                                                                                    <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                                                        <Text style={styles.ratingScorePoint}>{item.value}</Text>
+                                                                                    </View>
+                                                                                    <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
+                                                                                </View>
+                                                                                )
+                                                                        },this)
+                                                                    }
+                                                                    </View>
+                                                                    )
+                                                            },this)
+                                                        }
+                                                    </View>
+                                                    )
+                                            },this)
+                                        }
+                                    </Swiper>
+                                </View>
+                            </View>
+                            <View style={styles.semiCardFooter}>
+                                <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
+                                <Image source={require('../../../images/footer/eyLogo.png')}></Image>
                             </View>
                         </View>
-                        <View style={styles.semiCardFooter}>
-                            <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
-                            <Image source={require('../../../images/footer/eyLogo.png')}></Image>
-                        </View>
                     </View>
-                </View>
                 :
-                <ActivityIndicator style={loader.scoreCard} size='small' /> 
+                    <ActivityIndicator style={loader.scoreCard} size='small' /> 
             }
             </View>            
 			)

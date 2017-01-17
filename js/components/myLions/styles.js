@@ -284,6 +284,16 @@ module.exports = styleSheetCreate({
         paddingBottom: 20,
         marginTop: 20
     },
+    emptyPlayer: {
+        paddingHorizontal: 20,
+        paddingVertical: 20
+    },
+    emptyPlayerText: {
+        fontFamily: styleVar.fontGeorgia,
+        color: styleVar.colorText,
+        fontSize: styleVar.textFontSize,
+        lineHeight: styleVar.textLineHeight,
+    },
     paragraph: {
         fontFamily: styleVar.fontGeorgia,
         color: styleVar.colorText,
