@@ -130,17 +130,17 @@ class MyLionsPlayerDetails extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                        <Text style={styles.modalTitleText}>Overall Rating</Text>
+                        <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                
+                        <Text style={styles.modalTitleText}>Recent Performance</Text>
+                        <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
+                
+                        <Text style={styles.modalTitleText}>Trend</Text>
+                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                
+                        <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
+                        <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
                     </ScrollView>
                 )
                 break
@@ -335,7 +335,131 @@ class MyLionsPlayerDetails extends Component {
         })
     }
 
+<<<<<<< HEAD
     _updateInitialState() {
+=======
+    render() {
+        let buttonText = ''
+        
+        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
+            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
+        } else {
+            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
+        }
+
+        return (
+            <Container theme={theme}>
+                <View style={styles.container}>
+                    <LionsHeader back={true} title='MY LIONS' />
+
+                    <Content bounces={false}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
+                            <View style={styles.headerPlayerDetails}>
+                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                            </View>
+                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
+                                {
+                                    this.state.isFav === true?
+                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
+                                    :
+                                    <Icon name='md-star-outline' style={styles.searchIcon}/>
+                                }
+                            </ButtonFeedback>
+
+                            <View style={styles.buttons}>
+                                {
+                                    this.state.isDoneUpdatingState?
+                                        <ButtonFeedback
+                                            disabled = {this.state.isFormSubmitting}
+                                            onPress={()=> this.updateSquad()}
+                                            style={[
+                                                styles.btn,
+                                                styles.btnLeft,
+                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
+                                            ]}>
+                                            <Text style={styles.btnText}>{buttonText}</Text>
+                                        </ButtonFeedback>
+                                    :
+                                        <ButtonFeedback
+                                            disabled = {true}
+                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
+                                            <Text style={styles.btnText}>CHECKING..</Text>
+                                        </ButtonFeedback>
+                                }
+                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                </ButtonFeedback>
+                            </View>
+                        </LinearGradient>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Image transparent
+                                    resizeMode='contain'
+                                    source={{uri:this.props.detail.logo}}
+                                    style={styles.detailsNationLogo} />
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={2}>
+                                <Text style={styles.detailsLabel}>COUNTRY</Text>
+                                <Text style={styles.detail}>{this.props.detail.country} </Text>
+                            </Col>
+                        </Grid>
+                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Text style={styles.detailsLabel}>CLUB</Text>
+                            <Text style={styles.detail}>{this.props.detail.club} </Text>
+                        </View>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>D.O.B</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>HEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>WEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm} </Text>
+                            </Col>
+                        </Grid>
+                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
+                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
+                            </Col>
+                        </Grid>
+                        {/*
+                            this.props.detail.biog?
+                                <View style={styles.playerDesc}>
+                                    <HTMLView
+                                       value={this.props.detail.biog}
+                                       stylesheet={htmlStyles}
+                                     />
+                                </View>
+                            :
+                                null
+
+                        */}
+                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
+                        <LionsFooter isLoaded={true} />
+                    </Content>
+                    < EYSFooter mySquadBtn={true} />
+                    <LoginRequire/>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
+                </View>
+            </Container>
+        )
+    }
+    _updateInitialState(){
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
         // then user back then go here again

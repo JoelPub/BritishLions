@@ -279,9 +279,9 @@ class MyLionsFavoriteList extends Component {
     }
 
     componentDidMount() {
-        // removeGoodFormFavoritePlayerList()
-        removeEYC3FullPlayerList()
-        setTimeout(()=>{this._getFavoritePlayers(true)}, 600)
+        //removeGoodFormFavoritePlayerList()
+        //removeEYC3FullPlayerList()
+        setTimeout(()=>{this._getFavoritePlayers(true)},600)
     }
 
     componentWillReceiveProps(nextProps) {
