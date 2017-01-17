@@ -129,17 +129,17 @@ class MyLionsPlayerDetails extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
-                    
-                            <Text style={styles.modalTitleText}>OVERALL RATING</Text>
-                            <Text style={styles.modalTextHN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                        <Text style={styles.modalTitleText}>Overall Rating</Text>
+                        <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                
+                        <Text style={styles.modalTitleText}>Recent Performance</Text>
+                        <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
+                
+                        <Text style={styles.modalTitleText}>Trend</Text>
+                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                
+                        <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
+                        <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
                     </ScrollView>
                 )
                 break
@@ -395,35 +395,35 @@ class MyLionsPlayerDetails extends Component {
                             </Col>
                             <Col style={styles.detailsGridCol} size={2}>
                                 <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>{this.props.detail.country}</Text>
+                                <Text style={styles.detail}>{this.props.detail.country} </Text>
                             </Col>
                         </Grid>
                         <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>Northhampton Saints</Text>
+                            <Text style={styles.detail}>{this.props.detail.club} </Text>
                         </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol}>
                                 <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm} </Text>
                             </Col>
                         </Grid>
                         <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
                             </Col>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>80</Text>
+                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
                             </Col>
                         </Grid>
                         {/*
