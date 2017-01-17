@@ -385,6 +385,7 @@ class MyLionsFavoriteList extends Component {
                                                     renderRow={this._renderRow.bind(this)}
                                                     enableEmptySections = {true} 
                                                     contentContainerStyle={styles.gridList}
+                                                    renderFooter ={this._renderFooter}
                                                 />
                                             </View>
                                     } 
