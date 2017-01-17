@@ -90,7 +90,8 @@ const styles = styleSheetCreate({
     },
     playerFigureView:{
         backgroundColor:'rgb(255,255,255)',
-        paddingVertical:30,
+        paddingTop: 30,
+        paddingBottom: 20,
         paddingHorizontal:10,
         borderRadius:5,
     },
@@ -110,12 +111,11 @@ const styles = styleSheetCreate({
         color:'rgb(255,255,255)'
     },
     playerFigurePageWrapper:{
-        justifyContent:'center',
-        height:styleVar.deviceWidth-65,
+        justifyContent: 'center'
     },
     playerFigureRow:{
         flexDirection:'row',
-        marginTop:35,
+        marginTop: 20,
     },
     playerFigureUnit:{
         flex:1,
@@ -182,9 +182,12 @@ const styles = styleSheetCreate({
         color:'rgb(255,255,255)'
     },
     playerFigureWrapper:{
-        paddingVertical:25,
-        paddingHorizontal:20,
+        paddingVertical: 25,
+        paddingHorizontal: 20,
     },
+    pagination: {
+        bottom: 0
+    }
 })
 
 export default class PlayerFigure extends Component {
@@ -326,44 +329,45 @@ export default class PlayerFigure extends Component {
                                     },this)
                                 }
                                 </View>
-                               <Swiper
-                                ref='swiper'
-                                height={styleVar.deviceWidth}
-                                width={styleVar.deviceWidth-100}
-                                loop={false}
-                                dotColor='rgb(95,96,98)'
-                                activeDotColor='rgb(255,230,0)'
-                                onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
-                                {
-                                    this.state.tabSubjects.map((node,i)=>{
-                                        return(
-                                            <View style={styles.playerFigurePageWrapper} key={i}>
-                                                {
-                                                    this._mapJSON(this.state.season[node]).map((rowData,index)=>{
-                                                        return(
-                                                            <View style={styles.playerFigureRow} key={index}>
-                                                            {
-                                                                rowData.map((item, j) => {
-                                                                    return(
-                                                                        <View style={styles.playerFigureUnit} key={j}>
-                                                                            <Text style={styles.playerFigureUpperText}>{item.name}</Text>
-                                                                            <View style={[styles.ratingScore,styles.playerRatingScore]}>
-                                                                                <Text style={styles.ratingScorePoint}>{item.value}</Text>
+                                <Swiper
+                                    ref='swiper'
+                                    height={320}
+                                    width={styleVar.deviceWidth-100}
+                                    loop={false}
+                                    paginationStyle={styles.pagination}
+                                    dotColor='rgb(95,96,98)'
+                                    activeDotColor='rgb(255,230,0)'
+                                    onMomentumScrollEnd={(e, state, context) => this.swiperScroll(e, state, context)}>
+                                    {
+                                        this.state.tabSubjects.map((node,i)=>{
+                                            return(
+                                                <View style={styles.playerFigurePageWrapper} key={i}>
+                                                    {
+                                                        this._mapJSON(this.state.season[node]).map((rowData,index)=>{
+                                                            return(
+                                                                <View style={styles.playerFigureRow} key={index}>
+                                                                {
+                                                                    rowData.map((item, j) => {
+                                                                        return(
+                                                                            <View style={styles.playerFigureUnit} key={j}>
+                                                                                <Text style={styles.playerFigureUpperText}>{item.name}</Text>
+                                                                                <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                                                    <Text style={styles.ratingScorePoint}>{item.value}</Text>
+                                                                                </View>
+                                                                                <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
                                                                             </View>
-                                                                            <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
-                                                                        </View>
-                                                                        )
-                                                                },this)
-                                                            }
-                                                            </View>
-                                                            )
-                                                    },this)
-                                                }
-                                            </View>
-                                            )
-                                    },this)
-                                }
-                            </Swiper>
+                                                                            )
+                                                                    },this)
+                                                                }
+                                                                </View>
+                                                                )
+                                                        },this)
+                                                    }
+                                                </View>
+                                                )
+                                        },this)
+                                    }
+                                </Swiper>
                             </View>
                         </View>
                         <View style={styles.semiCardFooter}>
