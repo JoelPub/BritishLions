@@ -26,14 +26,18 @@ export default class ExpertCard extends Component {
     super(props)
     this.state = {}
   }
+  _showDetail(item, route) {
+      this.props.drillDown(item, route)
+  }
   render () {
-    let {hasTitle, data} = this.props
+    let {hasTitle, data, title} = this.props
     return (
-      <ButtonFeedback >
+      <ButtonFeedback
+       onPress={() => this._showDetail(data,'myLionsPlayerDetails')}>
       <View style={styles.indivPosition}>
         {
           hasTitle ? <View style={styles.indivPosTitle}>
-            <Text style={styles.indivPosTitleText}>{data}</Text>
+            <Text style={styles.indivPosTitleText}>{title}</Text>
           </View> : null
         }
 
@@ -44,14 +48,14 @@ export default class ExpertCard extends Component {
                 height = {styleVar.deviceWidth / 3}>
                 <Image transparent
                        resizeMode='contain'
-                       source={require('../../../../contents/my-lions/players/jameshaskell.png')}
+                       source={data.image}
                        style={styles.playerImage} />
               </ImagePlaceholder>
               <View style={styles.indivPlayerNameWrapper}>
                 <View style={[shapes.triangle]} />
                 <View style={styles.gridBoxTitle}>
-                  <Text style={styles.playerNameText}>JAMES</Text>
-                  <Text style={styles.playerNameText}>HASKELL</Text>
+                  <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
+                  <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
                 </View>
               </View>
             </View>
@@ -61,9 +65,11 @@ export default class ExpertCard extends Component {
     )
   }
 }
+
 ExpertCard.propTypes = {
   number: PropTypes.any,
   data: PropTypes.any,
+  title: PropTypes.any,
   hasTitle: PropTypes.bool
 }
 
