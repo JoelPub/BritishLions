@@ -92,6 +92,7 @@ class MyLionsPlayerDetails extends Component {
                             ]
                         }]
     }
+
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
             case 'add' :
@@ -158,6 +159,8 @@ class MyLionsPlayerDetails extends Component {
     _reLogin() {
         removeToken()
         this.props.setAccessGranted(false)
+        removeGoodFormFavoritePlayerList()
+        removeUserCustomizedSquad()
         this._replaceRoute('login')
     }
 
@@ -179,6 +182,7 @@ class MyLionsPlayerDetails extends Component {
             [{text: 'Dismiss'}]
         )
     }
+
    /*_updateState() {
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
@@ -312,7 +316,6 @@ class MyLionsPlayerDetails extends Component {
         service(options)
     }*/
 
-
     _myLions(route) {
         this.props.pushNewRoute(route)
     }
@@ -324,6 +327,7 @@ class MyLionsPlayerDetails extends Component {
     componentWillUnmount() {
         this.isUnMounted = true
     }
+
     _setModalVisible=(visible,mode,title,subtitle,btn) => {
         this.setState({
             modalVisible:visible,
@@ -331,144 +335,25 @@ class MyLionsPlayerDetails extends Component {
         })
     }
 
-    render() {
-        let buttonText = ''
-        
-        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
-            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
-        } else {
-            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
-        }
-
-        return (
-            <Container theme={theme}>
-                <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
-
-                    <Content bounces={false}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
-                            <View style={styles.headerPlayerDetails}>
-                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
-                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
-                            </View>
-                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
-                                {
-                                    this.state.isFav === true?
-                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
-                                    :
-                                    <Icon name='md-star-outline' style={styles.searchIcon}/>
-                                }
-                            </ButtonFeedback>
-
-                            <View style={styles.buttons}>
-                                {
-                                    this.state.isDoneUpdatingState?
-                                        <ButtonFeedback
-                                            disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this.updateSquad()}
-                                            style={[
-                                                styles.btn,
-                                                styles.btnLeft,
-                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
-                                            ]}>
-                                            <Text style={styles.btnText}>{buttonText}</Text>
-                                        </ButtonFeedback>
-                                    :
-                                        <ButtonFeedback
-                                            disabled = {true}
-                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
-                                            <Text style={styles.btnText}>CHECKING..</Text>
-                                        </ButtonFeedback>
-                                }
-                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                    <Text style={styles.btnText}>MY LIONS</Text>
-                                </ButtonFeedback>
-                            </View>
-                        </LinearGradient>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Image transparent
-                                    resizeMode='contain'
-                                    source={{uri:this.props.detail.logo}}
-                                    style={styles.detailsNationLogo} />
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={2}>
-                                <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>{this.props.detail.country}</Text>
-                            </Col>
-                        </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>Northhampton Saints</Text>
-                        </View>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
-                            </Col>
-                        </Grid>
-                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>80</Text>
-                            </Col>
-                        </Grid>
-                        {/*
-                            this.props.detail.biog?
-                                <View style={styles.playerDesc}>
-                                    <HTMLView
-                                       value={this.props.detail.biog}
-                                       stylesheet={htmlStyles}
-                                     />
-                                </View>
-                            :
-                                null
-
-                        */}
-                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
-                        <LionsFooter isLoaded={true} />
-                    </Content>
-                    < EYSFooter mySquadBtn={true} />
-                    <LoginRequire/>
-                    <SquadModal
-                        modalVisible={this.state.modalVisible}
-                        callbackParent={this._setModalVisible}>
-                            {this.state.modalContent}
-                    </SquadModal>
-                </View>
-            </Container>
-        )
-    }
-    _updateInitialState(){
+    _updateInitialState() {
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
         // then user back then go here again
         // lets check first the player status if its favorite or not
         // this is to prevent glitch
         this.setState({ isDoneUpdatingState: false })
+        removeGoodFormFavoritePlayerList() 
+        
         getGoodFormFavoritePlayerList().then((data)=>{
             // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
-                        this._signInRequired.bind(this)
+                    this._signInRequired.bind(this)
                 }
             }else if(data.error){
                 // console.log('final data:', JSON.stringify(data.error))
-                    this._showError(data.error) // prompt error
+                this._showError(data.error) // prompt error
             }else{
                 let favoritePlayers = (data.data === '')? [] : data.data.split('|')
                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
@@ -504,7 +389,7 @@ class MyLionsPlayerDetails extends Component {
         })
     }
 
-    getPlayerProfile(){
+    getPlayerProfile() {
         let optionsPlayerProfile = {
             url: this.PlayersProfileUrl,
             // data:{id:''},
@@ -541,21 +426,27 @@ class MyLionsPlayerDetails extends Component {
         service(optionsPlayerProfile)
     }
 
-    _updatePlayerFavStatus(){
-        this.setState({ isFormSubmitting: true,btnSubmit:'FAV' })
+    _updatePlayerFavStatus() {
+        this.setState({ isFormSubmitting: true, btnSubmit:'FAV' })
+        
+        // clear cache first to avoid conflict (glitch) in adding a player that is already added
+        // and removing player that is already removed
+        removeGoodFormFavoritePlayerList() 
+
         getGoodFormFavoritePlayerList().then((data)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-            if(data.auth){
+            
+            if (data.auth) {
                 if(data.auth === 'Sign In is Required'){
                     this.setState({ isFormSubmitting: false }, () => {
                         this._signInRequired.bind(this)
                     })
                 }
-            }else if(data.error){
+            } else if(data.error) {
                  this.setState({ isFormSubmitting: false }, () => {
                     this._showError(data.error) // prompt error
                  })
-            }else{
+            } else {
                  let favoritePlayers = (data.data === '')? [] : data.data.split('|')
                  let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
 
@@ -588,29 +479,30 @@ class MyLionsPlayerDetails extends Component {
                      // and if we remove player, the url will be for removing to avoid conflict in the goodform api
                      // but lets prompt a message to the user that the player that user removing is 'already removed'
                      // and the player that user adding is 'already addded'
-
+                     
                      let errorDesc = ''
                      if (this.state.isFav) {
                          // user trying to remove a player that are already removed in the fav list
-                         errorDesc = 'is already removed from your list.'
+                         errorDesc = 'is already removed from your list'
 
                      } else {
                          // user trying to add a player that are already added in the fav list
-                         errorDesc = 'is already added from your list.'
+                         errorDesc = 'is already added from your list'
                      }
 
                      // re correect the isFav state
                      this.setState({isFav, isFormSubmitting: false}, () => {
-                         Alert.alert(
-                             'Player List Update',
-                             `${this.playerName} ${errorDesc}`,
-                             [{ text: 'OK' }]
-                         )
+                         // Alert.alert(
+                         //     'Player List Update',
+                         //     `${this.playerName} ${errorDesc}`,
+                         //     [{ text: 'OK' }]
+                         // )
+
+                         this._setModalVisible(true, 'message', 'PLAYER', `${this.playerName} ${errorDesc}`, 'OK')
                      })
                  } else {
                      // no conflict, just continue
                      this._processUpdate()
-                     removeGoodFormFavoritePlayerList()
                  }
             }
         })
@@ -618,6 +510,7 @@ class MyLionsPlayerDetails extends Component {
 
     _processUpdate() {  
         let url = this.state.isFav? this.favRemoveUrl : this.favAddUrl
+
         let options = {
             url: url,
             data: {
@@ -639,7 +532,7 @@ class MyLionsPlayerDetails extends Component {
             onError: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFormSubmitting: false }, () => {
-                    this._showError(res)
+                    this._showError('There is something going wrong, please refresh the list again.')
                 })
             },
             onAuthorization: () => {
@@ -774,8 +667,128 @@ class MyLionsPlayerDetails extends Component {
 
         service(options)
     }
+    
+    render() {
+        let buttonText = ''
+        
+        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
+            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
+        } else {
+            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
+        }
 
- 
+        return (
+            <Container theme={theme}>
+                <View style={styles.container}>
+                    <LionsHeader back={true} title='MY LIONS' />
+
+                    <Content bounces={false}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
+                            <View style={styles.headerPlayerDetails}>
+                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                            </View>
+                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
+                                {
+                                    this.state.isFav === true?
+                                        <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
+                                    :
+                                        <Icon name='md-star-outline' style={styles.searchIcon}/>
+                                }
+                            </ButtonFeedback>
+
+                            <View style={styles.buttons}>
+                                {
+                                    this.state.isDoneUpdatingState?
+                                        <ButtonFeedback
+                                            disabled = {this.state.isFormSubmitting}
+                                            onPress={()=> this.updateSquad()}
+                                            style={[
+                                                styles.btn,
+                                                styles.btnLeft,
+                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
+                                            ]}>
+                                            <Text style={styles.btnText}>{buttonText}</Text>
+                                        </ButtonFeedback>
+                                    :
+                                        <ButtonFeedback
+                                            disabled = {true}
+                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
+                                            <Text style={styles.btnText}>CHECKING..</Text>
+                                        </ButtonFeedback>
+                                }
+                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                </ButtonFeedback>
+                            </View>
+                        </LinearGradient>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Image transparent
+                                    resizeMode='contain'
+                                    source={{uri:this.props.detail.logo}}
+                                    style={styles.detailsNationLogo} />
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={2}>
+                                <Text style={styles.detailsLabel}>COUNTRY</Text>
+                                <Text style={styles.detail}>{this.props.detail.country}</Text>
+                            </Col>
+                        </Grid>
+                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Text style={styles.detailsLabel}>CLUB</Text>
+                            <Text style={styles.detail}>Northhampton Saints</Text>
+                        </View>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>D.O.B</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob}</Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>HEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm}</Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>WEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm}</Text>
+                            </Col>
+                        </Grid>
+                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace}</Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
+                                <Text style={styles.detail}>80</Text>
+                            </Col>
+                        </Grid>
+                        {/*
+                            this.props.detail.biog?
+                                <View style={styles.playerDesc}>
+                                    <HTMLView
+                                       value={this.props.detail.biog}
+                                       stylesheet={htmlStyles}
+                                     />
+                                </View>
+                            :
+                                null
+
+                        */}
+                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
+                        <LionsFooter isLoaded={true} />
+                    </Content>
+                    < EYSFooter mySquadBtn={true} />
+                    <LoginRequire/>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
+                </View>
+            </Container>
+        )
+    }
 }
 
 function bindAction(dispatch) {

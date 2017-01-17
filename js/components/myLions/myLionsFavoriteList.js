@@ -86,13 +86,11 @@ class MyLionsFavoriteList extends Component {
 
     _renderFooter() {
         return(
-        <View style={{width:styleVar.deviceWidth}} >
-            <LionsFooter isLoaded={true} />
-        </View>
+            <View style={{width:styleVar.deviceWidth}} >
+                <LionsFooter isLoaded={true} />
+            </View>
         )
     }
-
-
 
     handlePlayer(players) {
         players.map((item,index)=>{
@@ -236,14 +234,17 @@ class MyLionsFavoriteList extends Component {
     }*/
 
     _getFavoritePlayers(isInitialLoad = false){
+
         if (isInitialLoad) {
             this.setState({ isLoaded: false })
         } else {
             // means user refresh the page
             this.setState({ isRefreshing: true })
         }
+        
+        removeGoodFormFavoritePlayerList() // clear cache
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.log('final data:', JSON.stringify(data))
+            // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -252,7 +253,7 @@ class MyLionsFavoriteList extends Component {
                     })
                 }
             }else if(data.error){
-                console.log('final data:', JSON.stringify(data.error))
+                // console.log('final data:', JSON.stringify(data.error))
                 this.setState({ isLoaded: true, isRefreshing: false }, () => {
                     this._showError(data.error)
                 })
@@ -267,12 +268,10 @@ class MyLionsFavoriteList extends Component {
                     })
                 } else {
                     // empty favorite player list
-                    this.setState({ isLoaded: true, isRefreshing: false }, () => {
-                        alertBox(
-                            'Message',
-                            'The favourite player list is currently empty, you can add a new favourite player from the player detail page.',
-                            'Dismiss'
-                        )
+                    this.setState({
+                        isLoaded: true, 
+                        isRefreshing: false,
+                        favoritePlayers: this.ds.cloneWithRows([])
                     })
                 }
             }
@@ -280,10 +279,9 @@ class MyLionsFavoriteList extends Component {
     }
 
     componentDidMount() {
-        //removeGoodFormFavoritePlayerList()
+        // removeGoodFormFavoritePlayerList()
         removeEYC3FullPlayerList()
-        setTimeout(()=>{this._getFavoritePlayers(true)},600)
-
+        setTimeout(()=>{this._getFavoritePlayers(true)}, 600)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -296,7 +294,7 @@ class MyLionsFavoriteList extends Component {
                 isLoaded: false,
                 favoritePlayers: this.ds.cloneWithRows([])
             }, () => {
-                setTimeout(()=>{this._getFavoritePlayers(true)},600)
+                setTimeout(()=>{this._getFavoritePlayers(true)}, 600)
             })
         }
     }
@@ -368,18 +366,33 @@ class MyLionsFavoriteList extends Component {
                               MY FAVOURITES
                          </Text>
                      </View>
-                    {
-                        this.state.isLoaded?
-                             <ListView 
-                                dataSource={this.state.favoritePlayers}
-                                renderRow={this._renderRow.bind(this)}
-                                enableEmptySections = {true} 
-                                contentContainerStyle={styles.gridList}
-                                renderFooter ={this._renderFooter}
-                              />
-                        :
-                            <ActivityIndicator style={loader.centered} size='large' />
-                    }
+                     <View style={{flex: 1}}>
+                        {
+                            this.state.isLoaded?
+                                <View>
+                                    {
+                                        !this.state.favoritePlayers.getRowCount()? 
+                                            <View>
+                                                <View style={styles.emptyPlayer}>
+                                                    <Text style={styles.emptyPlayerText}>The favourite player list is currently empty, you can add a new favourite player from the player detail page.</Text>
+                                                </View>
+                                                <LionsFooter isLoaded={true} />
+                                            </View>
+                                        : 
+                                            <View>
+                                                <ListView 
+                                                    dataSource={this.state.favoritePlayers}
+                                                    renderRow={this._renderRow.bind(this)}
+                                                    enableEmptySections = {true} 
+                                                    contentContainerStyle={styles.gridList}
+                                                />
+                                            </View>
+                                    } 
+                                </View>
+                            :
+                                <ActivityIndicator style={loader.centered} size='large' />
+                        }
+                    </View>
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
                 </View>
