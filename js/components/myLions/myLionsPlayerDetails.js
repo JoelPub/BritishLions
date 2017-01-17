@@ -456,6 +456,7 @@ class MyLionsPlayerDetails extends Component {
             </Container>
         )
     }
+
     _updateInitialState(){
         // lets update 'isFav state' to avoid glitch when user
         // go to player details page then update the player (add or removed),
@@ -463,7 +464,6 @@ class MyLionsPlayerDetails extends Component {
         // lets check first the player status if its favorite or not
         // this is to prevent glitch
         this.setState({ isDoneUpdatingState: false })
-        removeGoodFormFavoritePlayerList() 
         
         getGoodFormFavoritePlayerList().then((data)=>{
             // console.log('final data:', JSON.stringify(data))
@@ -618,8 +618,7 @@ class MyLionsPlayerDetails extends Component {
                          //     `${this.playerName} ${errorDesc}`,
                          //     [{ text: 'OK' }]
                          // )
-
-                         this._setModalVisible(true, 'message', 'PLAYER', `${this.playerName} ${errorDesc}`, 'OK')
+                        this._setModalVisible(true, 'message', 'PLAYER', `${this.playerName} ${errorDesc}`, 'OK')
                      })
                  } else {
                      // no conflict, just continue
@@ -654,6 +653,7 @@ class MyLionsPlayerDetails extends Component {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFormSubmitting: false }, () => {
                     this._showError('There is something going wrong, please refresh the list again.')
+                    removeGoodFormFavoritePlayerList() 
                 })
             },
             onAuthorization: () => {

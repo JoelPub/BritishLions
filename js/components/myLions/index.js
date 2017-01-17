@@ -23,6 +23,8 @@ import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 import Data from '../../../contents/my-lions/onboarding/data'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+
 
 class MyLions extends Component {
 
@@ -35,6 +37,7 @@ class MyLions extends Component {
         }
         this.totalPages = 4
         this.pageWindow=[]
+        this.isUnMounted = false
     }
 
     _showList(item, route) {
@@ -97,11 +100,21 @@ class MyLions extends Component {
         })
     }
 
+    _updateFavPlayers() {
+        removeGoodFormFavoritePlayerList() 
+        getGoodFormFavoritePlayerList()
+    }
+
     _renderLogic(isLogin) {
         if (isLogin) {
             // if user is logged in then show the onboarding
             this.setState({ modalVisible: true })
+            this._updateFavPlayers()
         }
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     render() {

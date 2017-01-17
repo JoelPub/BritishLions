@@ -242,7 +242,6 @@ class MyLionsFavoriteList extends Component {
             this.setState({ isRefreshing: true })
         }
         
-        removeGoodFormFavoritePlayerList() // clear cache
         getGoodFormFavoritePlayerList().then((data)=>{
             // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
