@@ -334,10 +334,7 @@ class MyLionsPlayerDetails extends Component {
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
     }
-
-<<<<<<< HEAD
-    _updateInitialState() {
-=======
+    
     render() {
         let buttonText = ''
         
