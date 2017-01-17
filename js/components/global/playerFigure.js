@@ -168,7 +168,8 @@ const styles = styleSheetCreate({
     semiCardFooterText:{
         fontFamily: styleVar.fontGeorgia,
         fontSize:13,
-        marginRight:5,
+        marginRight: 4,
+        marginBottom: -2,
         color:'rgb(255,255,255)'
     },
     performanceText:{
