@@ -334,6 +334,7 @@ class MyLionsPlayerDetails extends Component {
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
     }
+    
 
     _updateInitialState(){
         // lets update 'isFav state' to avoid glitch when user
