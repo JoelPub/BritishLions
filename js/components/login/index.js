@@ -22,14 +22,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
+import fetch from '../utility/fetch'
 
 const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
   <View >
      <ButtonFeedback style={styles.fbAuthButtonView} onPress={fbOnPress} >
-         <FBLogin permissions={["email","user_friends"]}
-                  onLogin = {fbOnPress}
-         >
-         </FBLogin>
+         <Text style={styles.googleAuthText} >Signin in With Facebook</Text>
      </ButtonFeedback>
       <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
           <Text style={styles.googleAuthText} >Signin in With Google</Text>
@@ -172,11 +170,10 @@ class Login extends Component {
             }
         })
         if(isFormValidate) {
-            console.log(this.state.fbUser.accessToken)
             let options = {
                 url: this.serviceUrl,
                 data: {
-                    'Facebook': this.state.fbUser.accessToken ,
+                    'facebook': this.state.fbUser.token,
                     'app_version': '1',
                     'grant_type': 'password'
                 },
@@ -190,9 +187,9 @@ class Login extends Component {
                 onError: (res) => {
                     console.log('error')
                     console.log(res)
-                    if (res == 'Google access token invalid.') {
+                    if (res == 'Facebook access token invalid.') {
                         //go to sign up
-                        this._handleSignUp(true)
+                        this._handleSignUpWithFB(true)
                     }else {
                         this.setState({
                             customMessages: res,
@@ -200,7 +197,6 @@ class Login extends Component {
                         })
                         this._scrollToMessages()
                     }
-
                 }
             }
 
@@ -289,6 +285,64 @@ class Login extends Component {
             this._scrollView.scrollToPosition(0,0,false)
         }
     }
+    _handleSignUpWithFB(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        let {token} =this.state.fbUser.credentials
+        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
+        fetch({ method: 'GET', url:httpUrl }).then(json => {
+            console.log(json)
+            let nameArr = json.name.split(' ')
+           let lastName = nameArr[0]
+           let firstName=  nameArr[1]
+            if(isFormValidate) {
+                let options = {
+                    url: 'https://www.api-ukchanges2.co.uk/api/users',
+                    data: {
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        'email': json.email,
+                        'password': 'Text1234',
+                        'newEvent': true,
+                        'newPartners': true,
+                        'tc': true
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: this._SignInWithFB(true),
+                    onError: (res) => {
+                        console.log('注册失败')
+                        console.log(res)
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+
+                        this._scrollView.scrollToPosition(0,0,false)
+                    }
+                }
+
+                service(options)
+
+            } else {
+                this._scrollView.scrollToPosition(0,0,false)
+            }
+            return json
+        }).catch((error)=>{
+            this.setState({
+                customMessages: error,
+                customMessagesType: 'error'
+            })
+            this._scrollView.scrollToPosition(0,0,false)
+        })
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
@@ -342,14 +396,15 @@ class Login extends Component {
           })
           .done();
     }
+    /* facebook sign in func */
     _handleFBLogin = () => {
-        console.log(1111111111);
         FBLoginManager.login((error, data) => {
            if (!error) {
                console.log(data);
               this.setState({
-               fbUser:data
+               fbUser:data.credentials
               })
+               this._SignInWithFB(true)
            } else {
                 console.log(error, data);
            }
