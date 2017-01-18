@@ -428,10 +428,6 @@ class MyLionsPlayerDetails extends Component {
 
     _updatePlayerFavStatus() {
         this.setState({ isFormSubmitting: true, btnSubmit:'FAV' })
-        
-        // clear cache first to avoid conflict (glitch) in adding a player that is already added
-        // and removing player that is already removed
-        removeGoodFormFavoritePlayerList() 
 
         getGoodFormFavoritePlayerList().then((data)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -505,6 +501,10 @@ class MyLionsPlayerDetails extends Component {
                  }
             }
         })
+
+        // clear cache first to avoid conflict (glitch) in adding a player that is already added
+        // and removing player that is already removed
+        removeGoodFormFavoritePlayerList()
     }
 
     _processUpdate() {  
