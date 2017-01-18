@@ -370,7 +370,7 @@ export default class PlayerScore extends Component {
                             {
                                 !this.props.isExpertPage &&
                                 <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
-                                    <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                    <Icon name='md-list-box' style={styles.btnExpertIcon} />
                                     <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
                                 </ButtonFeedback>
                             }

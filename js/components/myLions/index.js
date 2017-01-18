@@ -139,7 +139,7 @@ class MyLions extends Component {
                                     </Text>
                                 </ButtonFeedback>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={this._myExpertsPick}>
-                                    <Icon name='md-contact' style={styles.btnExpertIcon} />
+                                    <Icon name='md-list-box' style={styles.btnExpertIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel}>
                                         THE EXPERTS' SQUADS
                                     </Text>
