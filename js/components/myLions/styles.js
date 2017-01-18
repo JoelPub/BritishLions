@@ -824,13 +824,18 @@ module.exports = styleSheetCreate({
         fontSize:60,
         color:'rgb(255,255,255)'
     },
-    playerNameText:{
+    playerNameText: {
         textAlign: 'center',
         fontFamily: styleVar.fontCondensed,
         fontSize: 18,
         lineHeight: 18,
-        paddingTop: 4,
-        marginTop: -6
+        paddingBottom: 2,
+        marginTop: -6,
+        backgroundColor: 'transparent',
+        android: {
+            marginTop: -2,
+            paddingBottom: 3,
+        }
     },
     playerImage:{
         backgroundColor: '#FFF',
@@ -838,7 +843,6 @@ module.exports = styleSheetCreate({
         height: styleVar.deviceWidth / 3
     },
     playerNameTextWrapper:{
-        width: styleVar.deviceWidth / 3,
         marginTop:-12,
     },
     posTitle:{
@@ -1088,7 +1092,7 @@ module.exports = styleSheetCreate({
         justifyContent: 'center',
         paddingTop: 14,
         height:styleVar.deviceWidth*0.16,
-        paddingHorizontal:20,
+        paddingHorizontal: 2,
         android: {
             paddingTop: 12,
             paddingBottom: 6

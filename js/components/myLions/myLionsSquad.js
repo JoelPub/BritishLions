@@ -71,8 +71,9 @@ const PlayerImgCell =({data,onPress}) =>(
         <View style={styles.playerNameTextWrapper}>
             <View style={[shapes.triangle]} />
             <View style={styles.titleBox}>
-                 <Text numberOfLines={2} style={styles.playerNameText}>{data.name.toUpperCase()}</Text>
-                </View>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
+            </View>
         </View>
     </ButtonFeedback>
     )
