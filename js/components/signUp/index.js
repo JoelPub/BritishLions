@@ -17,6 +17,8 @@ import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+
 class SignUp extends Component {
     constructor(props) {
         super(props)
@@ -95,7 +97,59 @@ class SignUp extends Component {
             }]
         )
     }
+    _GoogleSignIn = () => {
+        GoogleSignin.signIn()
+          .then((user) => {
+              console.log(user);
+              this.setState({user: user});
+              this._googleHandleSignUp(true)
+          })
+          .catch((err) => {
+              console.log('WRONG SIGNIN', err);
+          })
+          .done();
+    }
+    _googleHandleSignUp(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            let options = {
+                url: 'https://www.api-ukchanges2.co.uk/api/users',
+                data: {
+                    'firstName': this.state.user.familyName,
+                    'lastName': this.state.user.givenName,
+                    'email': this.state.user.email,
+                    'password': 'Text1234',
+                    'newEvent': true,
+                    'newPartners': true,
+                    'tc': true
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._userSignUp.bind(this),
+                onError: (res) => {
+                    this.setState({
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
 
+                    this._scrollView.scrollToPosition(0,0,false)
+                }
+            }
+
+            service(options)
+
+        } else {
+            this._scrollView.scrollToPosition(0,0,false)
+        }
+    }
     _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
@@ -166,16 +220,24 @@ class SignUp extends Component {
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
                                 </View>
-
                                 <View style={styles.guther}>
                                     <CustomMessages
                                         messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
-
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
-
+                                    <View style={styles.btnSigninUp}>
+                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Text style={styles.input}>CONTINUE WITH FACEBOOK</Text>
+                                    </View>
+                                    <ButtonFeedback style={styles.btnSigninUp} onPress={this._GoogleSignIn}>
+                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Text style={styles.input}>CONTINUE WITH GOOGLE</Text>
+                                    </ButtonFeedback>
+                                    <View style={styles.mailSignUpView}>
+                                        <Text style={styles.mailSignUpText}>OR REGISTER WITH EMAIL</Text>
+                                    </View>
                                     <View style={styles.inputGroup}>
                                         <Input defaultValue={this.state.firstName} onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
                                     </View>
