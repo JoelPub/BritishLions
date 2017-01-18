@@ -303,9 +303,16 @@ export default class PlayerFigure extends Component {
                                 <View style={styles.playerPerfromance}>
                                     <Text style={styles.performanceText}>CONSISTENCY</Text>
                                     {
-                                        this.state.profile.player_consistency>0?
+                                        this.state.profile.player_consistency>0&&
                                         <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
-                                        :
+                                    }
+                                    {
+                                        this.state.profile.player_consistency==0&&
+                                        <Icon name='md-arrow-forward' style={styles.playerPerformanceTrend}/>
+                                    }
+                                    {
+
+                                        this.state.profile.player_consistency<0&&
                                         <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
                                     }
                                 </View>
