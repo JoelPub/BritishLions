@@ -153,6 +153,7 @@ dependencies {
     compile(project(":react-native-google-signin")){
         exclude group: "com.google.android.gms" // very important
     }
+    compile project(':react-native-facebook-login')
     compile 'com.google.android.gms:play-services-auth:9.0.0'
 
 }

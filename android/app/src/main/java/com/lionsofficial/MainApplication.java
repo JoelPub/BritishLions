@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.magus.fblogin.FacebookLoginPackage; //
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -46,7 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNSharePackage(),
           new calendarReactPackage(),
           new ReactNativeYouTube(),
-          new LinearGradientPackage()
+          new LinearGradientPackage(),
+          new FacebookLoginPackage()
       );
     }
   };
