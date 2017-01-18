@@ -43,8 +43,12 @@ function errorHandler(error, opt) {
             case 400: // Bad Request (invalid data submitted)
             	if (errorType === 'invalid_grant') {
 								errorDescription = 'The email and password do not match, Please verify and try again.' // refresh token failed
+								console.log(error.response.data.error_description)
 								if (error.response.data.error_description == 'Google access token invalid.') {
 									errorDescription = 'Google access token invalid.'
+								}
+								if (error.response.data.error_description == 'Facebook access token invalid.') {
+									errorDescription = 'Facebook access token invalid.'
 								}
 							} else {
 	                if (modelState) {

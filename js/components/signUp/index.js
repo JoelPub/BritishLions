@@ -18,6 +18,7 @@ import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login'
 
 class SignUp extends Component {
     constructor(props) {
@@ -108,6 +109,78 @@ class SignUp extends Component {
               console.log('WRONG SIGNIN', err);
           })
           .done();
+    }
+    _FBSignIn = () => {
+        FBLoginManager.login((error, data) => {
+            if (!error) {
+                console.log(data);
+                this.setState({
+                    fbUser:data.credentials
+                })
+                this._handleSignUpWithFB(true)
+
+            } else {
+                console.log(error, data);
+            }
+        })
+    }
+    _handleSignUpWithFB(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        let {token} =this.state.fbUser.credentials
+        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
+        fetch({ method: 'GET', url:httpUrl }).then(json => {
+            console.log(json)
+            let nameArr = json.name.split(' ')
+            let lastName = nameArr[0]
+            let firstName=  nameArr[1]
+            if(isFormValidate) {
+                let options = {
+                    url: 'https://www.api-ukchanges2.co.uk/api/users',
+                    data: {
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        'email': json.email,
+                        'password': 'Text1234',
+                        'newEvent': true,
+                        'newPartners': true,
+                        'tc': true
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: this._userSignUp.bind(this),
+                    onError: (res) => {
+                        console.log('注册失败')
+                        console.log(res)
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+
+                        this._scrollView.scrollToPosition(0,0,false)
+                    }
+                }
+
+                service(options)
+
+            } else {
+                this._scrollView.scrollToPosition(0,0,false)
+            }
+            return json
+        }).catch((error)=>{
+            this.setState({
+                customMessages: error,
+                customMessagesType: 'error'
+            })
+            this._scrollView.scrollToPosition(0,0,false)
+        })
     }
     _googleHandleSignUp(isFormValidate){
         this.setState({
@@ -227,10 +300,10 @@ class SignUp extends Component {
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
-                                    <View style={styles.btnSigninUp}>
+                                    <ButtonFeedback style={styles.btnSigninUp} onPress={this._FBSignIn}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Text style={styles.input}>CONTINUE WITH FACEBOOK</Text>
-                                    </View>
+                                    </ButtonFeedback>
                                     <ButtonFeedback style={styles.btnSigninUp} onPress={this._GoogleSignIn}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Text style={styles.input}>CONTINUE WITH GOOGLE</Text>
