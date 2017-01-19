@@ -106,10 +106,16 @@ class MyLions extends Component {
     }
 
     _renderLogic(isLogin) {
-        if (isLogin) {
-            // if user is logged in then show the onboarding
-            this.setState({ modalVisible: true })
+        if (isLogin) { // user is logged in
             this._updateFavPlayers()
+
+            this.setState({ modalVisible: true })
+            this.setState({ modalVisible: isFirst })
+            // // check if user is first login
+            // isFirstLogIn().then((isFirst) => {
+            //     console.log('isFirst: ', isFirst)
+            //     this.setState({ modalVisible: isFirst })
+            // }).catch((error) => {})
         }
     }
 

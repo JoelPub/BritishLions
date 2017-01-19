@@ -5,13 +5,14 @@ import { Alert, AsyncStorage } from 'react-native'
 const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
-export async function updateToken(accessTokenID, refreshTokenID, firstName='', lastName='') {
+export async function updateToken(accessTokenID, refreshTokenID, firstName='', lastName='', is_first_log_in = true) {
     let loginExpired = generateLoginExpiration().toString()
     
     try {
         await AsyncStorage.setItem('ACCESS_TOKEN', accessTokenID)
         await AsyncStorage.setItem('REFRESH_TOKEN', refreshTokenID)
         await AsyncStorage.setItem('USER_FULLNAME', `${firstName} ${lastName}`)
+        await AsyncStorage.setItem('IS_FIRST_LOGIN', is_first_log_in)
 
         if (loginExpired) {
             await AsyncStorage.setItem('LOGIN_EXPIRED', loginExpired)
@@ -56,6 +57,12 @@ export async function getUserFullName() {
         return result
     })
 }
+
+// export async function isFirstLogIn() {
+//     return await AsyncStorage.getItem('IS_FIRST_LOGIN', (err, result) => {
+//         return result
+//     })
+// }
 
 
 function getDateNow() {
