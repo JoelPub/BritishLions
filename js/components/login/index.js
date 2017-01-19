@@ -396,7 +396,7 @@ class Login extends Component {
     _signIn = () => {
         GoogleSignin.signIn()
           .then((user) => {
-              console.log(user);
+              console.log(JSON.stringify(user));
               this.setState({user: user});
               this._SignInWithGoogle(true)
 
