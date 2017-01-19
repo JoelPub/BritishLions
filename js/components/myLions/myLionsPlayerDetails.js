@@ -718,8 +718,8 @@ class MyLionsPlayerDetails extends Component {
                                             <Text style={styles.btnText}>CHECKING..</Text>
                                         </ButtonFeedback>
                                 }
-                                <ButtonFeedback onPress={() => this._myLions('myLionsFavoriteList')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                    <Text style={styles.btnText}>MY LIONS</Text>
+                                <ButtonFeedback onPress={() => this._myLions('myLionsSquad')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY SQUAD</Text>
                                 </ButtonFeedback>
                             </View>
                         </LinearGradient>
