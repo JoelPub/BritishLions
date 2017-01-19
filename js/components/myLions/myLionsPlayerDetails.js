@@ -32,6 +32,7 @@ import { setPositionToAdd } from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
 import SquadModel from  'modes/Squad'
+import Immutable, { Map, List } from 'immutable'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -468,25 +469,21 @@ class MyLionsPlayerDetails extends Component {
                                 this._showError(catchedSquad.error) // prompt error
                             })
                         }else{
-                            let squadFeed=SquadModel.format(eval(`(${catchedSquad.data})`)).toJS()
-                            console.log('@@@squadFeed',squadFeed)
+                            let squadFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
                             let inSquad = false
-                            // let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
-                            for (let pos in squadFeed) {
-                                // squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
-                                // if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
-                                if(squadFeed[pos] instanceof Array) {
-                                    if(squadFeed[pos].indexOf(this.playerid) !== -1) inSquad=true
+                            // console.log('@@@squadFeed.isMap',Map.isMap(squadFeed))
+                            if(Map.isMap(squadFeed)) squadFeed.forEach((value,index)=>{
+                                // console.log('value',value)
+                                if(List.isList(value)) {
+                                    // console.log('find?',value.find(this.playerid)?'true':'false')
+                                    if(value.find(this.playerid)) inSquad=true
                                 }
-                                else if(!this.isPlainObj(squadFeed[pos])) {
-                                    if(squadFeed[pos]!==this.playerid) inSquad=true
+                                else {
+                                    // console.log('equal?',value===this.playerid?'true':'false')
+                                    if(value===this.playerid) inSquad=true
                                 }
-                            }
-                            // console.log('@@@squadFeedTemp',squadFeedTemp)
-
-                            // re-correect/update the Squad state
-                            // and show the button
-                            this.setState({inSquad,squadDataFeed:squadFeed,isDoneUpdatingState: true},()=>{
+                            })
+                            this.setState({inSquad,squadDataFeed:squadFeed.toJS(),isDoneUpdatingState: true},()=>{
                                 this.getPlayerProfile()
                             })
                         }
@@ -508,7 +505,7 @@ class MyLionsPlayerDetails extends Component {
                  this.setState({
                     isLoaded:true
                 },()=>{
-                    console.log('@@@res.data',res.data)
+                    // console.log('@@@res.data',res.data)
                     // let t=ProfileListModel.fromJS(res.data)
                     // console.log('@@@t',t)
                     this.setState({ isLoaded:true, profile:ProfileListModel.fromJS(res.data) })
@@ -675,21 +672,30 @@ class MyLionsPlayerDetails extends Component {
                     this._showError(catchedSquad.error) // prompt error
                 })
             }else{
-                let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`)).toJS()
-                console.log('$$$$tmpFeed',tmpFeed)
+                
+                let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
                 let inSquad = false
-                for (let pos in tmpFeed) {
-                console.log('$$$$inSquad',inSquad)
-                    if(tmpFeed[pos] instanceof Array) {
-                        if(tmpFeed[pos].indexOf(this.playerid) !== -1) inSquad=true
-                        if (type==='remove')  tmpFeed[pos].splice(tmpFeed[pos].indexOf(this.playerid),1)
+                // console.log('@@@tmpFeed.isMap',Map.isMap(tmpFeed))
+                // console.log('@@@tmpFeed',tmpFeed.toJS())
+                if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
+                    // console.log('value',value)
+                    if(List.isList(value)) {
+                        // console.log('find?',value.find(this.playerid)?'true':'false')
+                        if(value.find(this.playerid)){
+                            inSquad=true
+                            if (type==='remove')  tmpFeed=tmpFeed.get(index).splice(value.indexOf(this.playerid),1)
+                        }
                     }
-                    else if(!this.isPlainObj(tmpFeed[pos])) {
-                        if(tmpFeed[pos]===this.playerid) inSquad=true
-                        if (type==='remove')  tmpFeed[pos]=''
+                    else {
+                        // console.log('equal?',value===this.playerid?'true':'false')
+                        if(value===this.playerid) {
+                            inSquad=true
+                            if (type==='remove')  tmpFeed=tmpFeed.set(index,'')
+                        }
                     }
-                }
-                console.log('$$$$inSquad',inSquad)
+                })
+                // console.log('$$$$inSquad',inSquad)
+                // console.log('@@@tmpFeed',tmpFeed.toJS())
                 if (this.state.inSquad !== inSquad) {
                      let errorDesc = ''
                      if (this.state.inSquad) {
@@ -699,7 +705,7 @@ class MyLionsPlayerDetails extends Component {
                          errorDesc = 'is already added to my squad list.'
                      }
 
-                     this.setState({inSquad, squadDataFeed:tmpFeed, isFormSubmitting: false}, () => {
+                     this.setState({inSquad, squadDataFeed:tmpFeed.toJS(), isFormSubmitting: false}, () => {
                          Alert.alert(
                              'MySquad List Update',
                              `${errorDesc}`,
@@ -711,14 +717,15 @@ class MyLionsPlayerDetails extends Component {
                     // console.log('$$$$type',type)
                         
                     if(!inSquad&&type==='add') {
-                        // console.log('$$$$tmpFeed',tmpFeed)
-                        if(tmpFeed[position] instanceof Array) {
-                            if(tmpFeed[position].length<max) {
-                                tmpFeed[position].push(this.playerid)
+                        // console.log('$$$$tmpFeed.toJS()',tmpFeed.toJS())
+                        if(List.isList(tmpFeed.get(position))) {
+                        // console.log('isList',tmpFeed.get(position))
+                            if(tmpFeed.get(position).count()<max) {
+                                tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.playerid))
                             }
                             else {
                                 update=false
-                                this.setState({ squadDataFeed:tmpFeed, isFormSubmitting: false })
+                                this.setState({ squadDataFeed:tmpFeed.toJS(), isFormSubmitting: false })
                                 Alert.alert(
                                  'MySquad List Update',
                                  'Position Is Full',
@@ -726,13 +733,14 @@ class MyLionsPlayerDetails extends Component {
                                 )
                             }
                         }
-                        else if(!this.isPlainObj(tmpFeed[position])) {
-                            if(tmpFeed[position].trim()==='') {
-                                tmpFeed[position]=this.playerid
+                        else{
+                        // console.log('is Not List',tmpFeed.get(position))
+                            if(tmpFeed.get(position).trim()==='') {
+                                tmpFeed=tmpFeed.set(position,this.playerid)
                             }
                             else {
                                 update=false
-                                this.setState({ squadDataFeed:tmpFeed, isFormSubmitting: false })
+                                this.setState({ squadDataFeed:tmpFeed.toJS(), isFormSubmitting: false })
                                 Alert.alert(
                                  'MySquad List Update',
                                  'Position Is Full',
@@ -752,25 +760,27 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquadPlayer(squadData,position) {
-        // console.log('@@@@squadData',squadData)
-        for (let pos in squadData) {
-            if(squadData[pos] instanceof Array) {
-                squadData[pos]=squadData[pos].filter((value)=>{value !==null}).join('|')
+        // console.log('@@@@squadData.toJS()',squadData.toJS())
+        let tmpSquad=squadData.toJS()
+        for (let pos in tmpSquad) {
+            // console.log('tmpSquad[pos]',tmpSquad[pos])
+            if(tmpSquad[pos] instanceof Array) {
+                tmpSquad[pos]=tmpSquad[pos].join('|')
             }
         }
-        // console.log('@@@@tmpSquadData',tmpSquadData)
+        // console.log('@@@@tmpSquad',tmpSquad)
         let options = {
             url: this.saveSquadUrl,
-            data: squadData,
+            data: tmpSquad,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isFormSubmitting: false })
             },
             onSuccess: (res) => {
-                console.log('@@@@onSuccess',this.state.inSquad)
-                console.log('@@@@squadData',squadData)
+                // console.log('@@@@onSuccess',this.state.inSquad)
+                // console.log('@@@@squadData',squadData)
                 let successDesc = this.state.inSquad? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
-                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
+                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
                     this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
