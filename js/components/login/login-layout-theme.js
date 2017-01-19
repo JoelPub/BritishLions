@@ -60,12 +60,22 @@ module.exports = styleSheetCreate({
             lineHeight: 36,
         }
     },
-    btnSigninUp:{
+    btnFBSignUp:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 25,
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(24,101,176,1)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    btnGoogleSignUp:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(228,64,46,1)',
         marginBottom: 20,
         borderWidth: 0,
         height: 50
@@ -77,12 +87,14 @@ module.exports = styleSheetCreate({
         marginBottom: 20,
         height:70,
         borderTopWidth: 1,
-        borderTopColor: 'white',
+        borderTopColor: 'rgba(225,225,225,0.3)',
         marginLeft: 0,
     },
     mailSignUpText:{
-        paddingTop: 30,
+        paddingTop: 38,
         backgroundColor: 'rgba(0,0,0,0)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
     },
     inputGroup: {
         flexDirection: 'row',
@@ -94,32 +106,41 @@ module.exports = styleSheetCreate({
         paddingLeft: 22
     },
     googleAuthButtonView:{
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 25,
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(228,64,46,1)',
         marginBottom: 20,
         borderWidth: 0,
-        height: 40,
-        paddingTop:8
+        height: 50
     },
     fbAuthButtonView:{
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 25,
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(24,101,176,1)',
         marginBottom: 20,
         borderWidth: 0,
-        height: 40,
-        paddingTop:8
+        height: 50
     },
     googleAuthText:{
         alignItems: 'center',
         marginLeft:0,
-        marginRight:0
+        marginRight:0,
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 8
+
     },
     fbAuthText:{
         alignItems: 'center',
         marginLeft:0,
-        marginRight:0
+        marginRight:0,
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 8
     },
     inputIcon: {
         fontSize: 20,
