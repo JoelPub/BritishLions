@@ -131,7 +131,7 @@ module.exports = styleSheetCreate({
         marginRight:0,
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
-        paddingTop: 8
+        paddingTop: 10
 
     },
     fbAuthText:{
@@ -140,7 +140,7 @@ module.exports = styleSheetCreate({
         marginRight:0,
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
-        paddingTop: 8
+        paddingTop: 10
     },
     inputIcon: {
         fontSize: 20,
