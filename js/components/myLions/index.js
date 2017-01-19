@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
 import { isFirstLogIn } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Content, Text, Icon } from 'native-base'
@@ -25,6 +25,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 import Data from '../../../contents/my-lions/onboarding/data'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import loader from '../../themes/loader-position'
 
 
 class MyLions extends Component {
@@ -35,6 +36,7 @@ class MyLions extends Component {
             modalVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
+            isLoaded:true
         }
         this.totalPages = 4
         this.pageWindow=[]
@@ -84,21 +86,36 @@ class MyLions extends Component {
     }
 
     measurePage(page,event) {
-       const { x, width, height, } = event.nativeEvent.layout
-        this.pageWindow.push({index:page,size:height + 70})
+        // console.log('measurePage')
+        if(this.pageWindow.length===this.totalPages) return
+        const { x, width, height, } = event.nativeEvent.layout
+        let i=this.pageWindow.findIndex((value)=>value.index===page)
+        // console.log('page',page)
+        // console.log('i',i)
+        if (i>-1) {
+            this.pageWindow[i].size=height+70
+        }
+        else {
+            this.pageWindow.push({index:page,size:height + 70})
+        }
         if(page===this.state.currentPage) {
            this.setState({
                 swiperWindow: height + 70
             })
         }
+        // console.log('this.pageWindow',this.pageWindow)
 
     }
 
     scrollEnd(e, state, context){
-        this.setState({
-            currentPage:state.index,
-            swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
-        })
+        // console.log('scrollEnd')
+       
+            this.setState({
+                currentPage:state.index,
+                swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
+                isLoaded:false
+            },()=>{this.setState({isLoaded:true})})
+        
     }
 
     _updateFavPlayers() {
@@ -113,7 +130,8 @@ class MyLions extends Component {
             // check if user is first login
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
-                isFirst = isFirst === 'yes'? true : false
+                // isFirst = isFirst === 'yes'? true : false
+                isFirst = true
                 this.setState({ modalVisible: isFirst })
             }).catch((error) => {})
         }
@@ -174,15 +192,15 @@ class MyLions extends Component {
                                     height={this.state.swiperWindow}
                                     ref='swiper'
                                     loop={false}
-                                    dotColor='rgba(255,255,255,0.3)'
+                                    dotColor={this.state.isLoaded?'rgba(255,255,255,0.3)':'transparent'}
                                     activeDotColor='rgb(239,239,244)'
-                                    showsButton={true}
+                                    showsButton={this.state.isLoaded}
                                     onMomentumScrollEnd={this.scrollEnd.bind(this)}
                                     >
                                     {
                                         Data.map((item,index)=>{
                                             return(
-                                                <View key={index} style={styles.onboardingPage} onLayout={this.measurePage.bind(this,index)}>
+                                                <View  key={index} style={[styles.onboardingPage, (!this.state.isLoaded||this.state.currentPage!==index)&&{opacity:0}]} onLayout={this.measurePage.bind(this,index)}>
                                                     {
                                                         item.description.map((desc,i)=>{
                                                             return(
@@ -212,6 +230,7 @@ class MyLions extends Component {
                                         },this)
                                     }
                                 </Swiper>
+                                <ActivityIndicator style={[loader.onboarding, this.state.isLoaded&&{opacity:0}]} size='large' /> 
                             </ScrollView>
 
                             <ButtonFeedback

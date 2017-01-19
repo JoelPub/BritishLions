@@ -13,5 +13,11 @@ module.exports = styleSheetCreate({
     },
     scoreCard: {
     	height:50,
+    },
+    onboarding: {
+    	position:'absolute',
+    	top:150,
+    	left:styleVar.deviceWidth/2,
+    	opacity:1
     }
 })

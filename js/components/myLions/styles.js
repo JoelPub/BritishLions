@@ -989,7 +989,7 @@ module.exports = styleSheetCreate({
         color: 'white',
         width: 187,
         lineHeight: 24,
-        marginTop: styleVar.deviceWidth*1/20,
+        marginTop: styleVar.deviceWidth*1/25,
         fontFamily: styleVar.fontCondensed,
     },
     textDescription: {
