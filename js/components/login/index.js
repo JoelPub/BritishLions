@@ -15,7 +15,7 @@ import ErrorHandler from '../utility/errorhandler/index'
 import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
-import { APP_VERSION, actionsApi } from '../utility/urlStorage'
+import { actionsApi } from '../utility/urlStorage'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -83,8 +83,8 @@ class Login extends Component {
     }
 
     _createToken(res) {
-        let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        
+        let { access_token, refresh_token, first_name, last_name } = res.data
+
         // reset the fields and hide loader
         this.setState({
             email: '',
@@ -93,7 +93,7 @@ class Login extends Component {
             customMessagesType: 'success'
         })
 
-        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
+        updateToken(access_token, refresh_token, first_name, last_name)
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }
@@ -111,7 +111,6 @@ class Login extends Component {
                 data: {
                     'username': this.state.email,
                     'password': this.state.password,
-                    'app_version': APP_VERSION,
                     'grant_type': 'password'
                 },
                 onAxiosStart: () => {
