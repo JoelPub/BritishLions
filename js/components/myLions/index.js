@@ -130,8 +130,7 @@ class MyLions extends Component {
             // check if user is first login
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
-                // isFirst = isFirst === 'yes'? true : false
-                isFirst = true
+                isFirst = isFirst === 'yes'? true : false
                 this.setState({ modalVisible: isFirst })
             }).catch((error) => {})
         }

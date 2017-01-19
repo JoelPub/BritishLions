@@ -40,7 +40,7 @@ const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
             <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
         </View>
         <View style={styles.modalBtnPosRight}>
-            <Text style={styles.modalBtnPosLeftText}>{data.length}/{total}</Text>
+            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array?data.length:data===''?0:1}/{total}</Text>
         </View>
     </ButtonFeedback>
     )
@@ -471,18 +471,21 @@ class MyLionsPlayerDetails extends Component {
                         }else{
                             let squadFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
                             let inSquad = false
+                            // console.log('@@@catchedSquad.data',catchedSquad.data)
                             // console.log('@@@squadFeed.isMap',Map.isMap(squadFeed))
                             if(Map.isMap(squadFeed)) squadFeed.forEach((value,index)=>{
+                                // console.log('index',index)
                                 // console.log('value',value)
                                 if(List.isList(value)) {
-                                    // console.log('find?',value.find(this.playerid)?'true':'false')
-                                    if(value.find(this.playerid)) inSquad=true
+                                    // console.log('%%%%find?',value.indexOf(this.playerid)>-1?'true':'false')
+                                    if(value.indexOf(this.playerid)>-1) inSquad=true
                                 }
                                 else {
                                     // console.log('equal?',value===this.playerid?'true':'false')
                                     if(value===this.playerid) inSquad=true
                                 }
                             })
+                            // console.log('@@@squadFeed',squadFeed.toJS())
                             this.setState({inSquad,squadDataFeed:squadFeed.toJS(),isDoneUpdatingState: true},()=>{
                                 this.getPlayerProfile()
                             })
@@ -494,6 +497,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     getPlayerProfile() {
+        // console.log('getPlayerProfile')
         let optionsPlayerProfile = {
             url: this.PlayersProfileUrl,
             // data:{id:''},
@@ -680,8 +684,8 @@ class MyLionsPlayerDetails extends Component {
                 if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
                     // console.log('value',value)
                     if(List.isList(value)) {
-                        // console.log('find?',value.find(this.playerid)?'true':'false')
-                        if(value.find(this.playerid)){
+                        // console.log('find?',value.indexOf(this.playerid)>-1?'true':'false')
+                        if(value.indexOf(this.playerid)>-1){
                             inSquad=true
                             if (type==='remove')  tmpFeed=tmpFeed.get(index).splice(value.indexOf(this.playerid),1)
                         }
