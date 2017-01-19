@@ -291,14 +291,23 @@ class Login extends Component {
                 submit: false
             }
         })
-        let {token} =this.state.fbUser.credentials
+        console.log('FB获取用户信息')
+        console.log(this.state.fbUser.credentials)
+        let {token} =this.state.fbUser
+        console.log(token)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
         fetch({ method: 'GET', url:httpUrl }).then(json => {
             console.log(json)
             let nameArr = json.name.split(' ')
            let lastName = nameArr[0]
            let firstName=  nameArr[1]
-            if(isFormValidate) {
+            if(!json.email) {
+                this.setState({
+                    customMessages: '你的Facebook账号邮箱信息不能为空',
+                    customMessagesType: 'error'
+                })
+            }
+            if(isFormValidate&&json.email) {
                 let options = {
                     url: 'https://www.api-ukchanges2.co.uk/api/users',
                     data: {
@@ -336,6 +345,7 @@ class Login extends Component {
             }
             return json
         }).catch((error)=>{
+             console.log('FB获取用户信息错误')
             this.setState({
                 customMessages: error,
                 customMessagesType: 'error'
@@ -450,7 +460,9 @@ class Login extends Component {
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignIn.bind(this)}/>
                                    <GoogleAndFBContainer googleOnPress={this._signIn} fbOnPress={this._handleFBLogin}/>
-
+                                    <View style={styles.mailSignUpView}>
+                                        <Text style={styles.mailSignUpText}>OR</Text>
+                                    </View>
                                     <View style={styles.inputGroup}>
                                         <Icon name='ios-at-outline' style={styles.inputIcon} />
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
