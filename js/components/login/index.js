@@ -123,12 +123,28 @@ class Login extends Component {
                 submit: false
             }
         })
+        if(!this.state.user.accessToken){
+            GoogleSignin.getAccessToken()
+              .then((token) => {
+                 this._signInWithGoogleByToken(isFormValidate, token)
+              })
+              .catch((err) => {
+                  console.log(err);
+              })
+              .done();
+        }else {
+            this._signInWithGoogleByToken(isFormValidate, this.state.user.accessToken)
+        }
+
+
+    }
+    _signInWithGoogleByToken = (isFormValidate,accessToken) => {
         if(isFormValidate) {
-            console.log(this.state.user.accessToken)
+            console.log(accessToken)
             let options = {
                 url: this.serviceUrl,
                 data: {
-                    'google': this.state.user.accessToken ,
+                    'google': accessToken ,
                     'app_version': '1',
                     'grant_type': 'password'
                 },
@@ -161,7 +177,6 @@ class Login extends Component {
         else {
             this._scrollToMessages()
         }
-
     }
     _SignInWithFB = (isFormValidate) => {
         this.setState({

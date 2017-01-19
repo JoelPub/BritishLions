@@ -301,11 +301,11 @@ class SignUp extends Component {
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
                                     <ButtonFeedback style={styles.btnFBSignUp} onPress={this._FBSignIn}>
-                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Icon name='logo-facebook' style={styles.inputIcon} />
                                         <Text style={styles.googleAuthText}>CONTINUE WITH FACEBOOK</Text>
                                     </ButtonFeedback>
                                     <ButtonFeedback style={styles.btnGoogleSignUp} onPress={this._GoogleSignIn}>
-                                        <Icon name='ios-at-outline' style={styles.inputIcon} />
+                                        <Icon name='logo-google' style={styles.inputIcon} />
                                         <Text style={styles.googleAuthText}>CONTINUE WITH GOOGLE</Text>
                                     </ButtonFeedback>
                                     <View style={styles.mailSignUpView}>
