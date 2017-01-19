@@ -31,6 +31,7 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
+import SquadModel from  'modes/Squad'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -63,34 +64,8 @@ class MyLionsPlayerDetails extends Component {
             isDoneUpdatingState: false,
             btnSubmit:'',
             modalContent:this.getModalContent(),
-            squadDataFeed: {backs:[],
-                            captain: [], 
-                            widecard: [], 
-                            forwards: [], 
-                            kicker: []
-                            }
-        },
-        this.tabBar = [{subject:'ATTACK',
-                        content:[  
-                            {title:'TRIES',score:'35',average:'20 avg'},
-                            {title:'ASSISTS',score:'12',average:'10 avg'},
-                            {title:'METRES RUN',score:'38',average:'7 avg'},
-                            {title:'LINE BREAKS',score:'7',average:'15 avg'}
-                            ]
-                        },
-                        {subject:'DEFENSE',
-                        content:[  
-                            {title:'TACKLES',score:'18',average:'20 avg'},
-                            {title:'RUCKS',score:'12',average:'10 avg'},
-                            {title:'LINE-IN',score:'22',average:'24 avg'},
-                            {title:'TITLE',score:'14',average:'15 avg'}
-                            ]
-                        },
-                        {subject:'KICKING',
-                        content:[  
-                            {title:'KICKING',score:'12',average:'10 avg'}
-                            ]
-                        }]
+            squadDataFeed: SquadModel().toJS()
+        }
     }
 
     getModalContent(mode,title,subtitle,btn){
@@ -335,6 +310,131 @@ class MyLionsPlayerDetails extends Component {
         })
     }
     
+    isPlainObj (value) {
+      return value && (value.constructor === Object || value.constructor === undefined)
+    }
+
+    render() {
+        let buttonText = ''
+        
+        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
+            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
+        } else {
+            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
+        }
+
+        return (
+            <Container theme={theme}>
+                <View style={styles.container}>
+                    <LionsHeader back={true} title='MY LIONS' />
+
+                    <Content bounces={false}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
+                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
+                            <View style={styles.headerPlayerDetails}>
+                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                            </View>
+                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
+                                {
+                                    this.state.isFav === true?
+                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
+                                    :
+                                    <Icon name='md-star-outline' style={styles.searchIcon}/>
+                                }
+                            </ButtonFeedback>
+
+                            <View style={styles.buttons}>
+                                {
+                                    this.state.isDoneUpdatingState?
+                                        <ButtonFeedback
+                                            disabled = {this.state.isFormSubmitting}
+                                            onPress={()=> this.updateSquad()}
+                                            style={[
+                                                styles.btn,
+                                                styles.btnLeft,
+                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
+                                            ]}>
+                                            <Text style={styles.btnText}>{buttonText}</Text>
+                                        </ButtonFeedback>
+                                    :
+                                        <ButtonFeedback
+                                            disabled = {true}
+                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
+                                            <Text style={styles.btnText}>CHECKING..</Text>
+                                        </ButtonFeedback>
+                                }
+                                <ButtonFeedback onPress={() => this._myLions('myLionsSquad')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
+                                    <Text style={styles.btnText}>MY SQUAD</Text>
+                                </ButtonFeedback>
+                            </View>
+                        </LinearGradient>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Image transparent
+                                    resizeMode='contain'
+                                    source={{uri:this.props.detail.logo}}
+                                    style={styles.detailsNationLogo} />
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={2}>
+                                <Text style={styles.detailsLabel}>COUNTRY</Text>
+                                <Text style={styles.detail}>{this.props.detail.country} </Text>
+                            </Col>
+                        </Grid>
+                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Text style={styles.detailsLabel}>CLUB</Text>
+                            <Text style={styles.detail}>{this.props.detail.club} </Text>
+                        </View>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>D.O.B</Text>
+                                <Text style={styles.detail}>{this.props.detail.dob} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>HEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.heightm} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol}>
+                                <Text style={styles.detailsLabel}>WEIGHT</Text>
+                                <Text style={styles.detail}>{this.props.detail.weightm} </Text>
+                            </Col>
+                        </Grid>
+                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
+                                <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
+                            </Col>
+                            <Col style={styles.detailsGridCol} size={1}>
+                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
+                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
+                            </Col>
+                        </Grid>
+                        {/*
+                            this.props.detail.biog?
+                                <View style={styles.playerDesc}>
+                                    <HTMLView
+                                       value={this.props.detail.biog}
+                                       stylesheet={htmlStyles}
+                                     />
+                                </View>
+                            :
+                                null
+
+                        */}
+                        <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
+                        <LionsFooter isLoaded={true} />
+                    </Content>
+                    < EYSFooter mySquadBtn={true} />
+                    <LoginRequire/>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
+                </View>
+            </Container>
+        )
+    }
 
     _updateInitialState(){
         // lets update 'isFav state' to avoid glitch when user
@@ -368,18 +468,25 @@ class MyLionsPlayerDetails extends Component {
                                 this._showError(catchedSquad.error) // prompt error
                             })
                         }else{
-                            let squadFeed=eval(`(${catchedSquad.data})`)
+                            let squadFeed=SquadModel.format(eval(`(${catchedSquad.data})`)).toJS()
+                            console.log('@@@squadFeed',squadFeed)
                             let inSquad = false
-                            let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
+                            // let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
                             for (let pos in squadFeed) {
-                                squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
-                                if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
+                                // squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
+                                // if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) inSquad=true
+                                if(squadFeed[pos] instanceof Array) {
+                                    if(squadFeed[pos].indexOf(this.playerid) !== -1) inSquad=true
+                                }
+                                else if(!this.isPlainObj(squadFeed[pos])) {
+                                    if(squadFeed[pos]!==this.playerid) inSquad=true
+                                }
                             }
                             // console.log('@@@squadFeedTemp',squadFeedTemp)
 
                             // re-correect/update the Squad state
                             // and show the button
-                            this.setState({inSquad,squadDataFeed:squadFeedTemp,isDoneUpdatingState: true},()=>{
+                            this.setState({inSquad,squadDataFeed:squadFeed,isDoneUpdatingState: true},()=>{
                                 this.getPlayerProfile()
                             })
                         }
@@ -557,8 +664,6 @@ class MyLionsPlayerDetails extends Component {
         })
         let update=true
         getUserCustomizedSquad().then((catchedSquad)=>{
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-            // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
             if(catchedSquad.auth){
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isFormSubmitting: false }, () => {
@@ -566,22 +671,25 @@ class MyLionsPlayerDetails extends Component {
                     })
                 }
             }else if(catchedSquad.error){
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                 this.setState({ isFormSubmitting: false }, () => {
                     this._showError(catchedSquad.error) // prompt error
                 })
             }else{
-                let squadFeed=eval(`(${catchedSquad.data})`)
+                let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`)).toJS()
+                console.log('$$$$tmpFeed',tmpFeed)
                 let inSquad = false
-                let squadFeedTemp={backs:[], captain: [], widecard: [], forwards: [], kicker: [] }
-                for (let pos in squadFeed) {
-                    squadFeedTemp[pos]=squadFeed[pos].trim()!==''?squadFeed[pos].split('|'):squadFeedTemp[pos]
-                    if(squadFeedTemp[pos].indexOf(this.playerid) !== -1) {
-                        inSquad=true
-                        if (type==='remove')  squadFeedTemp[pos].splice(squadFeedTemp[pos].indexOf(this.playerid),1)
+                for (let pos in tmpFeed) {
+                console.log('$$$$inSquad',inSquad)
+                    if(tmpFeed[pos] instanceof Array) {
+                        if(tmpFeed[pos].indexOf(this.playerid) !== -1) inSquad=true
+                        if (type==='remove')  tmpFeed[pos].splice(tmpFeed[pos].indexOf(this.playerid),1)
+                    }
+                    else if(!this.isPlainObj(tmpFeed[pos])) {
+                        if(tmpFeed[pos]===this.playerid) inSquad=true
+                        if (type==='remove')  tmpFeed[pos]=''
                     }
                 }
-
+                console.log('$$$$inSquad',inSquad)
                 if (this.state.inSquad !== inSquad) {
                      let errorDesc = ''
                      if (this.state.inSquad) {
@@ -591,7 +699,7 @@ class MyLionsPlayerDetails extends Component {
                          errorDesc = 'is already added to my squad list.'
                      }
 
-                     this.setState({inSquad, squadDataFeed:squadFeedTemp, isFormSubmitting: false}, () => {
+                     this.setState({inSquad, squadDataFeed:tmpFeed, isFormSubmitting: false}, () => {
                          Alert.alert(
                              'MySquad List Update',
                              `${errorDesc}`,
@@ -603,23 +711,40 @@ class MyLionsPlayerDetails extends Component {
                     // console.log('$$$$type',type)
                         
                     if(!inSquad&&type==='add') {
-                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
-                        if(squadFeedTemp[position].length<max) {
-                            squadFeedTemp[position].push(this.playerid)
+                        // console.log('$$$$tmpFeed',tmpFeed)
+                        if(tmpFeed[position] instanceof Array) {
+                            if(tmpFeed[position].length<max) {
+                                tmpFeed[position].push(this.playerid)
+                            }
+                            else {
+                                update=false
+                                this.setState({ squadDataFeed:tmpFeed, isFormSubmitting: false })
+                                Alert.alert(
+                                 'MySquad List Update',
+                                 'Position Is Full',
+                                 [{ text: 'OK' }]
+                                )
+                            }
                         }
-                        else {
-                            update=false
-                            this.setState({ squadDataFeed:squadFeedTemp, isFormSubmitting: false })
-                            Alert.alert(
-                             'MySquad List Update',
-                             'Position Is Full',
-                             [{ text: 'OK' }]
-                            )
+                        else if(!this.isPlainObj(tmpFeed[position])) {
+                            if(tmpFeed[position].trim()==='') {
+                                tmpFeed[position]=this.playerid
+                            }
+                            else {
+                                update=false
+                                this.setState({ squadDataFeed:tmpFeed, isFormSubmitting: false })
+                                Alert.alert(
+                                 'MySquad List Update',
+                                 'Position Is Full',
+                                 [{ text: 'OK' }]
+                                )
+                            }
                         }
-                        // console.log('$$$$squadFeedTemp',squadFeedTemp)
+                        
+                        // console.log('$$$$tmpFeed',tmpFeed)
                         
                     }
-                    if(update) this._updateSquadPlayer(squadFeedTemp,position)
+                    if(update) this._updateSquadPlayer(tmpFeed,position)
                  }
 
             }
@@ -628,23 +753,22 @@ class MyLionsPlayerDetails extends Component {
 
     _updateSquadPlayer(squadData,position) {
         // console.log('@@@@squadData',squadData)
-        let tmpSquadData = {backs:"", captain: "", widecard: "", forwards: "", kicker: "" }
         for (let pos in squadData) {
-            // squadData[pos].map((node,index)=>{
-            //     tmpSquadData[pos]=index===0?node:`${tmpSquadData[pos]}|${node}`
-            // })
-            tmpSquadData[pos]=squadData[pos].join('|')
+            if(squadData[pos] instanceof Array) {
+                squadData[pos]=squadData[pos].filter((value)=>{value !==null}).join('|')
+            }
         }
         // console.log('@@@@tmpSquadData',tmpSquadData)
         let options = {
             url: this.saveSquadUrl,
-            data: tmpSquadData,
+            data: squadData,
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isFormSubmitting: false })
             },
             onSuccess: (res) => {
-
+                console.log('@@@@onSuccess',this.state.inSquad)
+                console.log('@@@@squadData',squadData)
                 let successDesc = this.state.inSquad? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData }, () => {
                     this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
@@ -667,128 +791,7 @@ class MyLionsPlayerDetails extends Component {
 
         service(options)
     }
-    
-    render() {
-        let buttonText = ''
-        
-        if (this.state.isFormSubmitting&&this.state.btnSubmit==='SQUAD') {
-            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
-        } else {
-            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
-        }
 
-        return (
-            <Container theme={theme}>
-                <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
-
-                    <Content bounces={false}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
-                            <View style={styles.headerPlayerDetails}>
-                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
-                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
-                            </View>
-                            <ButtonFeedback disabled = {this.state.isFormSubmitting} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
-                                {
-                                    this.state.isFav === true?
-                                    <Icon name='md-star' style={[styles.searchIcon,styles.btnFavIcon]}/>
-                                    :
-                                    <Icon name='md-star-outline' style={styles.searchIcon}/>
-                                }
-                            </ButtonFeedback>
-
-                            <View style={styles.buttons}>
-                                {
-                                    this.state.isDoneUpdatingState?
-                                        <ButtonFeedback
-                                            disabled = {this.state.isFormSubmitting}
-                                            onPress={()=> this.updateSquad()}
-                                            style={[
-                                                styles.btn,
-                                                styles.btnLeft,
-                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
-                                            ]}>
-                                            <Text style={styles.btnText}>{buttonText}</Text>
-                                        </ButtonFeedback>
-                                    :
-                                        <ButtonFeedback
-                                            disabled = {true}
-                                            style={[styles.btn, styles.btnLeft, styles.btnRed ]}>
-                                            <Text style={styles.btnText}>CHECKING..</Text>
-                                        </ButtonFeedback>
-                                }
-                                <ButtonFeedback onPress={() => this._myLions('myLionsSquad')} style={[styles.btn, styles.btnRight, styles.btnRed]}>
-                                    <Text style={styles.btnText}>MY SQUAD</Text>
-                                </ButtonFeedback>
-                            </View>
-                        </LinearGradient>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Image transparent
-                                    resizeMode='contain'
-                                    source={{uri:this.props.detail.logo}}
-                                    style={styles.detailsNationLogo} />
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={2}>
-                                <Text style={styles.detailsLabel}>COUNTRY</Text>
-                                <Text style={styles.detail}>{this.props.detail.country} </Text>
-                            </Col>
-                        </Grid>
-                        <View style={[styles.detailsGridCol, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Text style={styles.detailsLabel}>CLUB</Text>
-                            <Text style={styles.detail}>{this.props.detail.club} </Text>
-                        </View>
-                        <Grid style={styles.detailsGrid}>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>D.O.B</Text>
-                                <Text style={styles.detail}>{this.props.detail.dob} </Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>HEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.heightm} </Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol}>
-                                <Text style={styles.detailsLabel}>WEIGHT</Text>
-                                <Text style={styles.detail}>{this.props.detail.weightm} </Text>
-                            </Col>
-                        </Grid>
-                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
-                                <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
-                            </Col>
-                            <Col style={styles.detailsGridCol} size={1}>
-                                <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
-                            </Col>
-                        </Grid>
-                        {/*
-                            this.props.detail.biog?
-                                <View style={styles.playerDesc}>
-                                    <HTMLView
-                                       value={this.props.detail.biog}
-                                       stylesheet={htmlStyles}
-                                     />
-                                </View>
-                            :
-                                null
-
-                        */}
-                        <PlayerFigure tabBar={this.tabBar} profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
-                        <LionsFooter isLoaded={true} />
-                    </Content>
-                    < EYSFooter mySquadBtn={true} />
-                    <LoginRequire/>
-                    <SquadModal
-                        modalVisible={this.state.modalVisible}
-                        callbackParent={this._setModalVisible}>
-                            {this.state.modalContent}
-                    </SquadModal>
-                </View>
-            </Container>
-        )
-    }
 }
 
 function bindAction(dispatch) {
