@@ -4,6 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView } from 'react-native'
+import { isFirstLogIn } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Content, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -109,13 +110,12 @@ class MyLions extends Component {
         if (isLogin) { // user is logged in
             this._updateFavPlayers()
 
-            this.setState({ modalVisible: true })
-            this.setState({ modalVisible: isFirst })
-            // // check if user is first login
-            // isFirstLogIn().then((isFirst) => {
-            //     console.log('isFirst: ', isFirst)
-            //     this.setState({ modalVisible: isFirst })
-            // }).catch((error) => {})
+            // check if user is first login
+            isFirstLogIn().then((isFirst) => {
+                // when first login, it will show the onboarding
+                isFirst = isFirst === 'yes'? true : false
+                this.setState({ modalVisible: isFirst })
+            }).catch((error) => {})
         }
     }
 

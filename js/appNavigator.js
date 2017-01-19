@@ -108,8 +108,9 @@ class AppNavigator extends Component {
                 },
                 onSuccess: (res) => {
                     // Update token 
-                    let { access_token, refresh_token, first_name, last_name } = res.data
-                    updateToken(access_token, refresh_token, first_name, last_name)
+                    let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
+                    updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
+                    
                     // Flag user access granted
                     this.props.setAccessGranted(true)
                 },
