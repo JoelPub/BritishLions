@@ -1,5 +1,8 @@
 'use strict'
 
+
+const APP_VERSION_NO = '2' // release: 2
+
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'

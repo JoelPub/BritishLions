@@ -70,8 +70,8 @@ class LoginRequire extends Component {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
                     // successfully refresh the token
                     // then lets update user's token 
-                    let { access_token, refresh_token, first_name, last_name } = res.data
-                    updateToken(access_token, refresh_token, first_name, last_name)
+                    let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
+                    updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
 
                     this._onFinishCallBack(true) // callback function
                 },

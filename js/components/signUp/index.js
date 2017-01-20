@@ -18,7 +18,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { actionsApi } from '../utility/urlStorage'
+import { APP_VERSION, actionsApi } from '../utility/urlStorage'
 
 class SignUp extends Component {
     constructor(props) {
@@ -139,6 +139,7 @@ class SignUp extends Component {
             data: {
                 'username': this.state.email,
                 'password': this.state.password,
+                'app_version': APP_VERSION,
                 'grant_type': 'password'
             },
             onAxiosStart: () => {
@@ -163,14 +164,14 @@ class SignUp extends Component {
     }
 
     _createToken(res) {
-        let { access_token, refresh_token, first_name, last_name } = res.data
+        let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
 
         // reset the fields and hide loader
         this.setState({
             email: '',
             password: ''
         }, () => {
-           updateToken(access_token, refresh_token, first_name, last_name)
+           updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
            this.props.setAccessGranted(true)
 
            Alert.alert(

@@ -468,7 +468,7 @@ class MyLionsSquad extends Component {
                 // console.log(tempFeed[pos])
                 // console.log(tempFeed[pos].indexOf(null))
                 if (!isPop&&tempFeed[pos].indexOf(null)!==-1) fullFeed=false
-                squadFeed[pos]=squadFeed[pos].filter((value)=>{value !==null}).join('|')
+                squadFeed[pos]=squadFeed[pos].join('|')
             }
             else if(!this.isPlainObj(squadFeed[pos])) {
                 // console.log('!!!squadFeed[pos]',squadFeed[pos])

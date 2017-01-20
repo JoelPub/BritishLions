@@ -7,11 +7,14 @@ const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
 export async function updateToken(accessTokenID, refreshTokenID, firstName='', lastName='') {
     let loginExpired = generateLoginExpiration().toString()
+    is_first_log_in = is_first_log_in === 'true'? 'yes' : 'no'
     
     try {
         await AsyncStorage.setItem('ACCESS_TOKEN', accessTokenID)
         await AsyncStorage.setItem('REFRESH_TOKEN', refreshTokenID)
         await AsyncStorage.setItem('USER_FULLNAME', `${firstName} ${lastName}`)
+        await AsyncStorage.setItem('IS_FIRST_LOGIN', is_first_log_in) // remember: only string are accepted 
+
 
         if (loginExpired) {
             await AsyncStorage.setItem('LOGIN_EXPIRED', loginExpired)
@@ -30,6 +33,8 @@ export async function removeToken() {
         await AsyncStorage.removeItem('ACCESS_TOKEN')
         await AsyncStorage.removeItem('REFRESH_TOKEN')
         await AsyncStorage.removeItem('LOGIN_EXPIRED')
+        await AsyncStorage.removeItem('USER_FULLNAME')
+        await AsyncStorage.removeItem('IS_FIRST_LOGIN')
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -57,6 +62,11 @@ export async function getUserFullName() {
     })
 }
 
+export async function isFirstLogIn() {
+    return await AsyncStorage.getItem('IS_FIRST_LOGIN', (err, result) => {
+        return result
+    })
+}
 
 function getDateNow() {
     let dateNow = new Date // current time and date

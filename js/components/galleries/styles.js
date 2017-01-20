@@ -106,14 +106,14 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 21,
         marginTop: 10,
+        marginRight: 5,
         android: {
             marginTop: 0
         }
     },
     shareLinkIcon: {
         color: styleVar.colorScarlet,
-        fontSize: 21,
-        marginLeft: 5
+        fontSize: 21
     },
     description: {
         padding: 20

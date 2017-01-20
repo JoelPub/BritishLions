@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity } from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
 import styles from './styles'
+import styleVar from '../../themes/variable'
 import PaginationButton from '../utility/paginationButton'
 import LionsHeader from '../global/lionsHeader'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -54,13 +55,15 @@ class Gallery extends Component {
         RNFetchBlob.fetch('GET',imgUrl)
         .then(
             function(res) {
+                callback()
+                
                 Share.open({
                     title:context,
                     message:context,
                     subject:context,
                     url: `data:image/png;base64,${res.base64()}`
                 }).then((info)=>{
-                    callback()
+                    //callback()
                 }).catch((errorMessage)=>{
                     if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
                         alertBox(
@@ -69,12 +72,12 @@ class Gallery extends Component {
                             'Dismiss'
                         )
                     }
-                    callback()
+                    //callback()
                 })
             }
         )
         .catch((errorMessage,statusCode)=>{
-            callback()
+            //callback()
         })
     }
 
@@ -121,7 +124,13 @@ class Gallery extends Component {
                                 onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
-                                <Icon name='md-share-alt' style={styles.shareLinkIcon} />
+                                {
+                                    this.state.isSubmitting?
+                                        <ActivityIndicator color={styleVar.colorScarlet} size='small' /> 
+                                    :
+                                        
+                                        <Icon name='md-share-alt' style={styles.shareLinkIcon} />
+                                }   
                             </TouchableOpacity>
                         </View>
 
