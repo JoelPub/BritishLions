@@ -16,6 +16,12 @@ import styles from './styles'
 import styleVar from '../../themes/variable'
 import StickyFooter from '../utility/stickyFooter'
 
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from 'react-native-google-analytics-bridge';
+
 class News extends Component {
     constructor(props) {
          super(props)
@@ -24,7 +30,8 @@ class News extends Component {
               isRefreshing: false,
               newsFeed: [], 
               isFetchContent: false,
-              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php'             
+              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
+              tracker: new GoogleAnalyticsTracker('UA-88700702-2'),
          }
     }
 
@@ -38,11 +45,13 @@ class News extends Component {
     }
 
     _onRefresh() {
+        this.state.tracker.trackEvent('testcategory', 'onRefresh');
         this.setState({isRefreshing: true})
         this._fetchContent()
     }
 
     componentDidMount() {
+        this.state.tracker.trackScreenView('NEWS');
         setTimeout(() => {
             this._fetchContent()
         }, 1000)
