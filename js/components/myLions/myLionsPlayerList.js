@@ -29,7 +29,7 @@ import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { getEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 
 class MyLionsPlayerList extends Component {
@@ -450,8 +450,10 @@ class MyLionsPlayerList extends Component {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
+
                 getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        console.log(eyc3CatchedFullPlayerList)
                         this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                      }
                  }).catch((error) => {
@@ -463,6 +465,7 @@ class MyLionsPlayerList extends Component {
                 this._showError(error) // prompt error
             })
         })
+        removeEYC3FullPlayerList()
     }
 
     componentDidMount() {

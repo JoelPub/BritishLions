@@ -84,7 +84,8 @@ class Login extends Component {
 
     _createToken(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        
+        console.log('this.state.email: ', this.state.email)
+        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         this.setState({
             email: '',
@@ -92,8 +93,6 @@ class Login extends Component {
             customMessages: '',
             customMessagesType: 'success'
         })
-
-        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }

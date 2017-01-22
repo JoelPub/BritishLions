@@ -4,10 +4,12 @@ import { Alert, AsyncStorage } from 'react-native'
 import Storage from 'react-native-storage'
 import { getAssembledUrl } from '../urlStorage'
 
+import { getAccessToken, getUserId } from '../asyncStorageServices'
 const EYC3_FULL_PLAYERS = 'EYC3FullPlayers' // Note: Do not use underscore("_") in key!// 注意:请不要在key中使用_下划线符号!
 const EYC3_EXPERTS_SQUADS = 'EYC3ExpertsSquads'
 
 export function removeEYC3FullPlayerList(){
+    console.log('list cleanup')
     storage.remove({
         key: EYC3_FULL_PLAYERS,
         id: '1001'
@@ -29,33 +31,46 @@ export async function getEYC3FullPlayerList() {
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
         EYC3FullPlayers(params){
-          let {id, resolve, reject } = params
-          fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
-            method: 'POST'
-          }).then(response => {
-            return response.json()
-          }).then(json => {
-            if(json){
-              console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json[0]['PlayerList']))
-              storage.save({
-                key: EYC3_FULL_PLAYERS,
-                expires: 1000 * 3600,
-                id,
-                rawData: json[0]['PlayerList']
-              });
-              resolve && resolve(json[0]['PlayerList'])
-            }
-            else{
-              reject && reject(new Error('data parse error'))
-            }
-          }).catch(err => {
-            console.log('Warning error: ',err)
-            reject && reject(err)
+        console.log('start........................')
+          getAccessToken().then((accessToken) => {
+              getUserId().then((userID) =>{
+              console.log('accessToken: ',accessToken)
+              console.log('userID: ',userID)
+                  let {id, resolve, reject } = params
+                  fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
+                    method: 'POST',
+                    data: {
+                      'access_token':accessToken,
+                      'id':userID
+                    }
+                  }).then(response => {
+                    return response.json()
+                  }).then(json => {
+                    if(json){
+                      console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+                      storage.save({
+                        key: EYC3_FULL_PLAYERS,
+                        expires: 1000 * 3600,
+                        id,
+                        rawData: json[0]
+                      });
+                      resolve && resolve(json[0])
+                    }
+                    else{
+                      reject && reject(new Error('data parse error'))
+                    }
+                  }).catch(err => {
+                    console.log('Warning error: ',err)
+                    reject && reject(err)
+                  })
+              })
           })
         }
-      }
+    }
 
-    return  await storage.load({
+
+    return
+    await storage.load({
           key: EYC3_FULL_PLAYERS,
           autoSync: true,
           id:'1001',
@@ -71,7 +86,7 @@ export async function getEYC3FullPlayerList() {
               case 'ExpiredError':
                  return -1
           }
-        })
+    })
 }
 
 
