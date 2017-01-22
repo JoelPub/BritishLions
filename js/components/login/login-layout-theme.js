@@ -43,6 +43,7 @@ module.exports = styleSheetCreate({
         padding: 0,
         alignSelf: 'center'
     },
+
     pageTitle: {
         alignSelf: 'center',
         marginTop: 55,
@@ -59,6 +60,42 @@ module.exports = styleSheetCreate({
             lineHeight: 36,
         }
     },
+    btnFBSignUp:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(24,101,176,1)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    btnGoogleSignUp:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(228,64,46,1)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    mailSignUpView:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 12,
+        marginBottom: 20,
+        height:70,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(225,225,225,0.3)',
+        marginLeft: 0,
+    },
+    mailSignUpText:{
+        paddingTop: 38,
+        backgroundColor: 'rgba(0,0,0,0)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+    },
     inputGroup: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -67,6 +104,43 @@ module.exports = styleSheetCreate({
         marginBottom: 20,
         borderWidth: 0,
         paddingLeft: 22
+    },
+    googleAuthButtonView:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(228,64,46,1)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    fbAuthButtonView:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'rgba(24,101,176,1)',
+        marginBottom: 20,
+        borderWidth: 0,
+        height: 50
+    },
+    googleAuthText:{
+        alignItems: 'center',
+        marginLeft:0,
+        marginRight:0,
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 10
+
+    },
+    fbAuthText:{
+        alignItems: 'center',
+        marginLeft:0,
+        marginRight:0,
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        paddingTop: 10
     },
     inputIcon: {
         fontSize: 20,
@@ -193,6 +267,7 @@ module.exports = styleSheetCreate({
     guther: {
         paddingLeft: 30,
         paddingRight: 30,
+        paddingTop: 10
     },
     textUnderline: {
         textDecorationLine: 'underline',

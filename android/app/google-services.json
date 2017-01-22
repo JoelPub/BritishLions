@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "919182744809",
+    "project_id": "lionsofficial-b7455"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919182744809:android:a3693ef201c7c1f0",
+        "android_client_info": {
+          "package_name": "com.lionsofficial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919182744809-4o4elrfo6ujcq0tvi540ujd3da3sie6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lionsofficial",
+            "certificate_hash": "E033CFB83A28E7967C59AE36E26A4183A325865B"
+          }
+        },
+        {
+          "client_id": "919182744809-l0nasmpe0ghoqe3j390g2rtup6q13vbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo3Z0-pUs0PyESyiTPYHLkw-myajCPwLc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

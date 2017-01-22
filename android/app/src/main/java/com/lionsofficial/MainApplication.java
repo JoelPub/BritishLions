@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.os.Bundle;
 
 import com.facebook.react.ReactApplication;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
@@ -24,6 +25,9 @@ import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add
 import java.util.Arrays;
 import java.util.List;
 
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.magus.fblogin.FacebookLoginPackage; //
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -36,13 +40,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGoogleSigninPackage(),
             new ReactNativePushNotificationPackage(),
             new RNFetchBlobPackage(),
             new RNViewShotPackage(),
             new RNSharePackage(),
           new calendarReactPackage(),
           new ReactNativeYouTube(),
-          new LinearGradientPackage()
+          new LinearGradientPackage(),
+          new FacebookLoginPackage()
       );
     }
   };
