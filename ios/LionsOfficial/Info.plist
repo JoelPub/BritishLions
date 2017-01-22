@@ -56,6 +56,15 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb360826577619872</string>
+      </array>
+    </dict>
+  </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
