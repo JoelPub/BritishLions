@@ -5,7 +5,7 @@ const SquadModel = Record({
   'captain': '',
   'forwards': '',
   'kicker' : '',
-  'widecard': ''
+  'wildcard': ''
 })
 
 SquadModel.prototype.constructor.format = function (values) {

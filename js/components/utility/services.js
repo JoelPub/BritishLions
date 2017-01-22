@@ -94,13 +94,13 @@ export function callApi(opt) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-				console.log('%%%post')
+				// console.log('%%%post')
 				axios.post(
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
 					// console.log('%%%success',res)
-					console.log('%%%success')
+					// console.log('%%%success')
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -112,7 +112,7 @@ export function callApi(opt) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-					console.log('%%%error',error)
+					// console.log('%%%error',error)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -198,7 +198,8 @@ export function service(options) {
 		onAxiosStart: null,
 		onAxiosEnd: null,
 		isRequiredToken: false,
-		isRefreshToken: false
+		isRefreshToken: false,
+		channel: ''
 	}
 
 	let opt = Object.assign(defaults, options)
@@ -206,46 +207,13 @@ export function service(options) {
 	if (opt.isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
-				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
-				callApi(opt)
-			} else {
-				// Sign In is Required
-				if (opt.onAuthorization) {
-					opt.onAuthorization('Sign In is Required')
+				if(opt.channel==='EYC3') {
+					axios.defaults.headers.common['Content-Type'] = 'application/json'
+					opt.data = Object.assign(opt.data,{'access_token':accessToken})
 				}
-			}
-		}).catch((error) => {
-			// Sign In is Required
-			if (opt.onAuthorization) {
-				opt.onAuthorization('Sign In is Required')
-			}
-    	})
-	} else {
-		callApi(opt)
-	}
-}
-
-export function serviceEYC3(options) {
-	let defaults = {
-		url: '',
-		data: {},
-		method: 'post',
-		headers: {'Content-Type': 'application/json'},
-		onSuccess: null,
-		onError: null,
-		onAuthorization: null,
-		onAxiosStart: null,
-		onAxiosEnd: null,
-		isRequiredToken: false,
-		isRefreshToken: false
-	}
-
-	let opt = Object.assign(defaults, options)
-	if (opt.isRequiredToken) {
-		getAccessToken().then((accessToken) => {
-			if (accessToken) {
-				opt.data = Object.assign(opt.data,{'access_token':accessToken})
-	console.log('%%%opt',opt)
+				else {
+					axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
+				}				
 				callApi(opt)
 			} else {
 				// Sign In is Required

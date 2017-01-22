@@ -31,6 +31,8 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
+import SeasonListModel from  'modes/Players/Profile/SeasonList'
+import SeasonModel from 'modes/Players/Profile/SeasonList/Season'
 import SquadModel from  'modes/Squad'
 import Immutable, { Map, List } from 'immutable'
 
@@ -77,7 +79,7 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
                         <PositionButton position='captain' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','captain',1)} subject='CAPTAIN' data={this.state.squadDataFeed.captain} total='1'/>
                         <PositionButton position='kicker' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','kicker',1)} subject='KICKER' data={this.state.squadDataFeed.kicker} total='1'/>
-                        <PositionButton position='widecard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','widecard',1)} subject='WIDECARD' data={this.state.squadDataFeed.widecard} total='1'/>
+                        <PositionButton position='wildcard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','wildcard',1)} subject='WILDCARD' data={this.state.squadDataFeed.wildcard} total='1'/>
                         <PositionButton position='forwards' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','forwards',16)} subject='FORWARD' data={this.state.squadDataFeed.forwards} total='16'/>
                         <PositionButton position='backs' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','backs',16)} subject='BACK' data={this.state.squadDataFeed.backs} total='16'/>
                     </View>
@@ -500,7 +502,7 @@ class MyLionsPlayerDetails extends Component {
         // console.log('getPlayerProfile')
         let optionsPlayerProfile = {
             url: this.PlayersProfileUrl,
-            // data:{id:''},
+            data:{id:this.playerid},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })
@@ -510,12 +512,21 @@ class MyLionsPlayerDetails extends Component {
                     isLoaded:true
                 },()=>{
                     // console.log('@@@res.data',res.data)
-                    // let t=ProfileListModel.fromJS(res.data)
-                    // console.log('@@@t',t)
-                    this.setState({ isLoaded:true, profile:ProfileListModel.fromJS(res.data) })
-                    // this._setModalVisible(false)
-                    // this.setSquadData(this.fullPlayerList,res.data[0],'pop')
-                    // removeUserCustomizedSquad()
+                    let profile=ProfileListModel.fromJS([new ProfileModel()])
+                    if(res.data instanceof Array  && res.data.length!==0) {   
+                        // console.log('is Array')                     
+                        profile=ProfileListModel.fromJS(res.data)
+                    }
+                    else { 
+                        // console.log('is not Array')
+                        profile=profile.update(0,value=>{
+                            return value=value.update('seasons',v=>{
+                                return v=SeasonListModel.fromJS([new SeasonModel()])
+                            })
+                        })
+                    }
+                    // console.log('@@@profile.toJS()',profile.toJS())
+                    this.setState({ profile })
                 })
             },
             onError: (res) => {
@@ -528,7 +539,8 @@ class MyLionsPlayerDetails extends Component {
                     this._signInRequired()
                 })
             },
-            isRequiredToken: true
+            isRequiredToken: true,
+            channel:'EYC3'
         }
 
         service(optionsPlayerProfile)

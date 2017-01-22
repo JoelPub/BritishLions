@@ -25,7 +25,7 @@ import refresh from '../../themes/refresh-control'
 import { drillDown } from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken, getUserId } from '../utility/asyncStorageServices'
-import { service, serviceEYC3 } from '../utility/services'
+import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import Swiper from 'react-native-swiper'
@@ -42,9 +42,9 @@ import SquadModel from  'modes/Squad'
 import SquadShowModel from  'modes/Squad/SquadShowModel'
 import Immutable, { Map, List } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
-// const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
-// const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
-// const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
+// const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'wildcard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
+// const emptyDataFeed='{backs: "", captain: "", wildcard: "", forwards: "", kicker: ""}'
+// const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", wildcard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -418,21 +418,67 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        // let squadFeed=squad
-        console.log('!!!squad.toJS()',squad.toJS())
+        // console.log('!!!squad.toJS()',squad.toJS())
         let tempFeed=new SquadShowModel()
-        console.log('!!!tempFeed.toJS()',tempFeed.toJS())
+        // console.log('!!!tempFeed.toJS()',tempFeed.toJS())
         let tmpSquad=new SquadModel()
-        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let emptyFeed=true
         let fullFeed=true
+
+        let optionsSaveList = {
+            url: this.saveSquadUrl,
+            data:tmpSquad.toJS(),
+            onAxiosStart: () => {
+                // console.log('!!!onAxiosStart')
+            },
+            onAxiosEnd: () => {
+                // console.log('!!!onAxiosEnd')
+                this.setState({ isLoaded: true })
+            },
+            onSuccess: (res) => {
+                // console.log('!!!onSuccess')
+                this.setState({
+                    isLoaded: true,
+                    isScoreLoaded: isPop||!fullFeed?true:false,
+                    squadDatafeed:tempFeed.toJS(),
+                    showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
+                    rating:isPop?rating.toJS():this.state.rating
+                },()=>{
+                    // console.log('!!!fullFeed',fullFeed)
+                    // console.log('!!!isPop',isPop)
+                    if(fullFeed&&!isPop) {
+                        this._setModalVisible(false)
+                        this.getRating(squad.toJS())
+                    }
+                    else {
+                        this._setModalVisible(false)
+                        removeUserCustomizedSquad()
+                    }  
+                })
+            },
+            onError: (res) => {
+                // console.log('!!!onError')
+                this.setState({isLoaded: true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                // console.log('!!!onAuthorization')
+                this.setState({isLoaded: true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true
+        }
+
         squad.forEach((value,index)=>{
-            console.log('index',index)
+            // console.log('index',index)
             if(List.isList(value)) {
-                console.log('value.toJS()',value.toJS())
-                console.log('is List')
+                // console.log('value.toJS()',value.toJS())
+                // console.log('is List')
                 if (value.count()>0) {
-                    console.log('not empty List')
+                    // console.log('not empty List')
                     value.forEach((node,i)=>{
                         // console.log('node',node)
                         tempFeed=tempFeed.update(index,value=>{
@@ -454,7 +500,7 @@ class MyLionsSquad extends Component {
                     if (!isPop&&tempFeed.get(index).indexOf(null)!==-1) fullFeed=false
                 }
                 else {
-                    console.log('empty List')
+                    // console.log('empty List')
                     tempFeed.get(index).forEach((v,i)=>{
                         tempFeed=tempFeed.update(index,value=>{
                             value[i]=null
@@ -465,14 +511,14 @@ class MyLionsSquad extends Component {
                 }
             }
             else if(!Map.isMap(value)) {
-                console.log('value',value)
-                console.log('is not List or Map')
+                // console.log('value',value)
+                // console.log('is not List or Map')
                 // let cursor = Cursor.from(tempFeed,['indivPos'],newData => {data = newData})
                 let i =tempFeed.get('indivPos').findIndex((node)=>node.position===index)
                 // let i =cursor.findIndex((node)=>node.position===index)
                 if(i>-1) {
-                    console.log('found i',i)
-                    console.log('tempFeed',tempFeed.get('indivPos')[i])
+                    // console.log('found i',i)
+                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
                     // tempFeed.get('indivPos')[i].info=this.searchPlayer(this.fullPlayerList,value) 
                     tempFeed=tempFeed.update('indivPos',v=>{
                         v[i].info=this.searchPlayer(this.fullPlayerList,value)
@@ -495,10 +541,9 @@ class MyLionsSquad extends Component {
             }
 
         })
-        console.log('!!!final squad',squad.toJS())
-        console.log('!!!fullFeed',fullFeed?'true':'false')
-        // tmpSquad=squad.toJS()
-        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        // console.log('!!!final squad',squad.toJS())
+        // console.log('!!!fullFeed',fullFeed?'true':'false')
+        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -511,63 +556,18 @@ class MyLionsSquad extends Component {
         //         tmpSquad[pos]=tmpSquad[pos].join('|')
         //     }
         // }
-        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
                         rating=rating.set(index,squad.get(index))
                     })
-        let optionsSaveList = {
-            url: this.saveSquadUrl,
-            data:tmpSquad.toJS(),
-            onAxiosStart: () => {
-                console.log('!!!onAxiosStart')
-            },
-            onAxiosEnd: () => {
-                console.log('!!!onAxiosEnd')
-                this.setState({ isLoaded: true })
-            },
-            onSuccess: (res) => {
-                console.log('!!!onSuccess')
-                this.setState({
-                    isLoaded: true,
-                    isScoreLoaded: isPop||!fullFeed?true:false,
-                    squadDatafeed:tempFeed.toJS(),
-                    showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
-                    rating:isPop?rating.toJS():this.state.rating
-                },()=>{
-                    console.log('!!!fullFeed',fullFeed)
-                    console.log('!!!isPop',isPop)
-                    if(fullFeed&&!isPop) {
-                        this._setModalVisible(false)
-                        this.getRating(squad.toJS())
-                    }
-                    else {
-                        this._setModalVisible(false)
-                        removeUserCustomizedSquad()
-                    }  
-                })
-            },
-            onError: (res) => {
-                console.log('!!!onError')
-                this.setState({isLoaded: true }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                console.log('!!!onAuthorization')
-                this.setState({isLoaded: true }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
 
         service(optionsSaveList)
 
     }
 
     autoPop() {
-        console.log('!!!autoPop')
+        // console.log('!!!autoPop')
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
             data:{id:this.state.userID},
@@ -579,7 +579,7 @@ class MyLionsSquad extends Component {
                  this.setState({
                     isLoaded:true
                 },()=>{
-                    console.log('!!!!res',res.data)
+                    // console.log('!!!!res',res.data)
                     // let t=SquadPopModel.format(SquadPopModel(res.data))
                     // console.log('!!!!t.toJS()',t.toJS())
                     this.setSquadData(SquadPopModel.format(SquadPopModel(res.data)),true)
@@ -595,13 +595,14 @@ class MyLionsSquad extends Component {
                     this._signInRequired()
                 })
             },
-            isRequiredToken: true
+            isRequiredToken: true,
+            channel: 'EYC3'
         }
         this._setModalVisible(false)
         this.setState({
             isLoaded:false
         },()=>{
-                serviceEYC3(optionsAutoPop)
+                service(optionsAutoPop)
         })
     }
 
@@ -623,7 +624,7 @@ class MyLionsSquad extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (res) => {
-                    console.log('!!!!res',res.data[0])
+                    // console.log('!!!!res',res.data[0])
                     this.setState({
                         isLoaded: true,
                         isScoreLoaded:true,
@@ -642,7 +643,7 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-        console.log('!!!getRating')
+        // console.log('!!!getRating')
         service(optionsSquadRating)        
     }
 

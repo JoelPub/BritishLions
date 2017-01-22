@@ -6,7 +6,7 @@ const SquadPopModel = Record({
   'captain': '',
   'forwards': '',
   'kicker' : '',
-  'widecard': '',
+  'wildcard': '',
   'attack_defence_rating': '',
   'overall_rating': '',
   'cohesion_rating': '',
