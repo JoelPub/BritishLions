@@ -126,7 +126,6 @@ class Login extends Component {
         if(!this.state.user.accessToken){
             NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
             .then((token) => {
-                console.warn(token)
                 console.log(token)
                 this._signInWithGoogleByToken(isFormValidate, token)
             })
@@ -272,11 +271,21 @@ class Login extends Component {
             }
         })
         if(isFormValidate) {
+            let lastName = ''
+            let firstName = ''
+            if(this.state.user.name){
+                let nameArr = this.state.user.name.split(' ')
+                lastName = nameArr[0]
+                firstName=  nameArr[1]
+            }else if(this.state.user.familyName){
+                lastName = this.state.user.familyName
+                firstName=  this.state.user.givenName
+            }
             let options = {
                 url: 'https://www.api-ukchanges2.co.uk/api/users',
                 data: {
-                    'firstName': this.state.user.familyName,
-                    'lastName': this.state.user.givenName,
+                    'firstName': firstName,
+                    'lastName': lastName,
                     'email': this.state.user.email,
                     'password': 'Text1234',
                     'newEvent': true,
@@ -323,10 +332,13 @@ class Login extends Component {
            let lastName = nameArr[0]
            let firstName=  nameArr[1]
             if(!json.email) {
-                this.setState({
-                    customMessages: '你的Facebook账号邮箱信息不能为空',
-                    customMessagesType: 'error'
-                })
+                Alert.alert(
+                  'Sorry',
+                  'we do not support facebook account using mobile registered currently, please sign up with a valid email address',
+                  [
+                    {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
+                  ]
+                )
             }
             if(isFormValidate&&json.email) {
                 let options = {
