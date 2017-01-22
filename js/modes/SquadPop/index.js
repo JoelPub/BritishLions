@@ -1,2 +1,2 @@
-import SquadPopListModel  from './SquadPopListModel'
-export default SquadPopListModel
+import SquadPopModel  from './SquadPopModel'
+export default SquadPopModel

@@ -6,7 +6,6 @@ const Rating = Record({
   'cohesion_rating': '',
   'fan_ranking': '',
   'overall_rating': '',
-  'total_fans': '',
 })
 
 Rating.prototype.constructor.fromJS = function (values) {

@@ -94,10 +94,12 @@ export function callApi(opt) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
+				console.log('%%%post')
 				axios.post(
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
+					console.log('%%%success',res)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -109,6 +111,7 @@ export function callApi(opt) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
+					console.log('%%%error',error)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -203,6 +206,45 @@ export function service(options) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
 				axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
+				callApi(opt)
+			} else {
+				// Sign In is Required
+				if (opt.onAuthorization) {
+					opt.onAuthorization('Sign In is Required')
+				}
+			}
+		}).catch((error) => {
+			// Sign In is Required
+			if (opt.onAuthorization) {
+				opt.onAuthorization('Sign In is Required')
+			}
+    	})
+	} else {
+		callApi(opt)
+	}
+}
+
+export function serviceEYC3(options) {
+	let defaults = {
+		url: '',
+		data: {},
+		method: 'post',
+		headers: {'Content-Type': 'application/json'},
+		onSuccess: null,
+		onError: null,
+		onAuthorization: null,
+		onAxiosStart: null,
+		onAxiosEnd: null,
+		isRequiredToken: false,
+		isRefreshToken: false
+	}
+
+	let opt = Object.assign(defaults, options)
+	if (opt.isRequiredToken) {
+		getAccessToken().then((accessToken) => {
+			if (accessToken) {
+				opt.data = Object.assign(opt.data,{'access_token':accessToken})
+	console.log('%%%opt',opt)
 				callApi(opt)
 			} else {
 				// Sign In is Required

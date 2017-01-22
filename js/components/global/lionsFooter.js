@@ -152,7 +152,7 @@ export default class Footer extends Component {
                         </View>
 
                         <View style={styles.textCorpRow}>
-                            <Text style={styles.textCorp}>© 2016 British Irish Lions Limited</Text>
+                            <Text style={styles.textCorp}>© 2017 British Irish Lions Limited</Text>
                         </View>
 
                     </LinearGradient>

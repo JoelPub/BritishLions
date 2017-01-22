@@ -25,7 +25,7 @@ import refresh from '../../themes/refresh-control'
 import { drillDown } from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
-import { service } from '../utility/services'
+import { service, serviceEYC3 } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import Swiper from 'react-native-swiper'
@@ -36,10 +36,12 @@ import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/ap
 import { setPositionToAdd } from '../../actions/position'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
-import SquadPopListModel from  'modes/SquadPop'
+import SquadPopModel from  'modes/SquadPop'
+import Rating from  'modes/SquadPop/Rating'
 import SquadModel from  'modes/Squad'
 import SquadShowModel from  'modes/Squad/SquadShowModel'
-
+import Immutable, { Map, List } from 'immutable'
+import Cursor from 'immutable/contrib/cursor'
 // const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'widecard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
 // const emptyDataFeed='{backs: "", captain: "", widecard: "", forwards: "", kicker: ""}'
 // const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", widecard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
@@ -71,8 +73,8 @@ const PlayerImgCell =({data,onPress}) =>(
         <View style={styles.playerNameTextWrapper}>
             <View style={[shapes.triangle]} />
             <View style={styles.titleBox}>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
             </View>
         </View>
     </ButtonFeedback>
@@ -99,7 +101,7 @@ class MyLionsSquad extends Component {
             isSubmitting: false,
             squadDatafeed:SquadShowModel().toJS(),            
             modalContent:this.getModalContent(),
-            rating:{}
+            rating:Rating().toJS()
         }
         this.isUnMounted = false
         this.uniondata = Data
@@ -387,7 +389,7 @@ class MyLionsSquad extends Component {
                             //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                             //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
                             //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
-                                    // console.log('!!!!catchedSquad.data:', catchedSquad.data)
+                                    console.log('!!!!catchedSquad.data:', catchedSquad.data)
                                     // let t=SquadModel.format(eval(`(${catchedSquad.data})`))
                                     // console.log('!!!t',t.toJS())
                                     this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
@@ -406,29 +408,114 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        // console.log('!!!squad.toJS()',squad.toJS())
-        let squadFeed=squad.toJS()
-        let tempFeed=SquadShowModel().toJS()
+        let squadFeed=squad
+        console.log('!!!squadFeed.toJS()',squadFeed.toJS())
+        let tempFeed=new SquadShowModel()
+        console.log('!!!tempFeed.toJS()',tempFeed.toJS())
+        let tmpSquad=new SquadModel()
+        console.log('!!!tmpSquad',tmpSquad)
         let emptyFeed=true
         let fullFeed=true
+        squadFeed.forEach((value,index)=>{
+            console.log('index',index)
+            if(List.isList(value)) {
+                console.log('value.toJS()',value.toJS())
+                console.log('is List')
+                if (value.count()>0) {
+                    console.log('not empty List')
+                    value.forEach((node,i)=>{
+                        console.log('node',node)
+                        // tempFeed[index][i]=this.searchPlayer(this.fullPlayerList,node)
+                        tempFeed=tempFeed.set(index,value.set(i,this.searchPlayer(this.fullPlayerList,node)))
+                        console.log('ok')
+                        // tempFeed=tempFeed.setIn([index,i],this.searchPlayer(this.fullPlayerList,node))
+                        // if(tempFeed[index][i]===null){
+                        if(tempFeed.getIn([index,i])===null) {
+                            squadFeed=squadFeed.setIn([index,i],null)
+                        }
+                        else {
+                            emptyFeed=false
+                        }
+                    })                                            
+                    if (!isPop&&tempFeed.get(index).indexOf(null)!==-1) fullFeed=false
+                }
+                else {
+                    console.log('empty List')
+                    if (!isPop) fullFeed=false
+                }
+            }
+            else if(!Map.isMap(value)) {
+                console.log('value',value)
+                console.log('is not List or Map')
+                // let cursor = Cursor.from(tempFeed,['indivPos'],newData => {data = newData})
+                let i =tempFeed.get('indivPos').findIndex((node)=>node.position===index)
+                // let i =cursor.findIndex((node)=>node.position===index)
+                if(i>-1) {
+                    console.log('found i',i)
+                    console.log('tempFeed',tempFeed.get('indivPos')[i].info)
+                    tempFeed.get('indivPos')[i].info=this.searchPlayer(this.fullPlayerList,value)                    
+                    console.log('tempFeed',tempFeed.get('indivPos')[i].info)
+                    // cursor=cursor.set(i,cursor.get(i).position=this.searchPlayer(this.fullPlayerList,value))
+                    // tempFeed=tempFeed.setIn(['indivPos',i,'info'],this.searchPlayer(this.fullPlayerList,value))
+                    // tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info=this.searchPlayer(this.fullPlayerList,value)
+                    // if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info===null) {
+                    // if(tempFeed.getIn(['indivPos',i,'info'])===null) {
+                    if(tempFeed.get('indivPos')[i].info===null) {
+                        squadFeed=squadFeed.set(index,'')
+                        if(!isPop) fullFeed=false
+                    }
+                    else {
+                        emptyFeed=false
+                    }
+                }
+            }
+
+        })
+        console.log('!!!final squadFeed',squadFeed.toJS())
+        console.log('!!!fullFeed',fullFeed?'true':'false')
+        // tmpSquad=squadFeed.toJS()
+        console.log('!!!tmpSquad',tmpSquad)
+        tmpSquad.forEach((value,index)=>{
+            if(List.isList(squadFeed.get(index))) {
+                if(squadFeed.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squadFeed.get(index).join('|'))
+                else tmpSquad=tmpSquad.set(index,'')
+            }
+            else tmpSquad=tmpSquad.set(index,squadFeed.get(index))
+        })
+        // for (let pos in tmpSquad) {
+        //     if(tmpSquad[pos] instanceof Array) {
+        //         tmpSquad[pos]=tmpSquad[pos].join('|')
+        //     }
+        // }
+        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        let rating=Rating()
+        if (isPop)    rating.forEach((value,index)=>{
+                        rating=rating.set(index,squadFeed.get(index))
+                    })
         let optionsSaveList = {
             url: this.saveSquadUrl,
-            data:squadFeed,
-            onAxiosStart: () => {},
+            data:tmpSquad.toJS(),
+            onAxiosStart: () => {
+                console.log('!!!onAxiosStart')
+            },
             onAxiosEnd: () => {
+                console.log('!!!onAxiosEnd')
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
+                console.log('!!!onSuccess')
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
-                    squadDatafeed:tempFeed,
+                    squadDatafeed:tempFeed.toJS(),
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
-                    rating:isPop||!fullFeed?squadFeed.rating:this.state.rating
+                    rating:isPop?rating.toJS():this.state.rating
                 },()=>{
-                    if(fullFeed&&isPop) {
+                    console.log('!!!fullFeed',fullFeed)
+                    console.log('!!!isPop',isPop)
+                    if(fullFeed&&!isPop) {
                         this._setModalVisible(false)
-                        this.getRating(squadFeed)
+                        this.getRating(squadFeed.toJS())
                     }
                     else {
                         this._setModalVisible(false)
@@ -437,11 +524,13 @@ class MyLionsSquad extends Component {
                 })
             },
             onError: (res) => {
+                console.log('!!!onError')
                 this.setState({isLoaded: true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
+                console.log('!!!onAuthorization')
                 this.setState({isLoaded: true }, () => {
                     this._signInRequired()
                 })
@@ -449,51 +538,15 @@ class MyLionsSquad extends Component {
             isRequiredToken: true
         }
 
-        for(let pos in squadFeed) {
-            // console.log('!!!pos',pos)
-            // console.log('!!!isPlainObj squadFeed[pos]',this.isPlainObj(squadFeed[pos])?'true':'false')
-            if(squadFeed[pos] instanceof Array) {
-                // console.log('!!!forwardsbacks',squadFeed[pos])
-                squadFeed[pos].map((item,index)=>{
-                    // console.log('item',item)
-                    // console.log('index',index)
-                    tempFeed[pos][index]=this.searchPlayer(this.fullPlayerList,item)
-                    if(tempFeed[pos][index]===null){
-                        squadFeed[pos][index]=null
-                    }
-                    else {
-                        emptyFeed=false
-                    }
-                })
-                // console.log(tempFeed[pos])
-                // console.log(tempFeed[pos].indexOf(null))
-                if (!isPop&&tempFeed[pos].indexOf(null)!==-1) fullFeed=false
-                squadFeed[pos]=squadFeed[pos].join('|')
-            }
-            else if(!this.isPlainObj(squadFeed[pos])) {
-                // console.log('!!!squadFeed[pos]',squadFeed[pos])
-                // console.log('!!!index',tempFeed['indivPos'].findIndex((element)=>element.position===pos))
-                tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info=this.searchPlayer(this.fullPlayerList,squadFeed[pos])
-                if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===pos)].info===null) {
-                    squadFeed[pos]=''
-                    if(!isPop) fullFeed=false
-                }
-                else {
-                    emptyFeed=false
-                }
-            }
-        }
-
-        // console.log('!!!final squadFeed',squadFeed)
-        // console.log('!!!fullFeed',fullFeed?'true':'false')
         service(optionsSaveList)
 
     }
 
     autoPop() {
+        console.log('!!!autoPop')
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
-            // data:{id:''},
+            data:{id:"1@2.com"},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })
@@ -502,10 +555,10 @@ class MyLionsSquad extends Component {
                  this.setState({
                     isLoaded:true
                 },()=>{
-                    // console.log('!!!!res',res.data)
-                    // let t=SquadPopListModel.fromJS(res.data)
+                    console.log('!!!!res',res.data)
+                    // let t=SquadPopModel.format(SquadPopModel(res.data))
                     // console.log('!!!!t.toJS()',t.toJS())
-                    this.setSquadData(SquadPopListModel.fromJS(res.data).first(),true)
+                    this.setSquadData(SquadPopModel.format(SquadPopModel(res.data)),true)
                 })
             },
             onError: (res) => {
@@ -524,7 +577,7 @@ class MyLionsSquad extends Component {
         this.setState({
             isLoaded:false
         },()=>{
-                service(optionsAutoPop)
+                serviceEYC3(optionsAutoPop)
         })
     }
 
@@ -544,18 +597,14 @@ class MyLionsSquad extends Component {
             url: this.getMySquadRatingUrl,
             data: squadList,
             onAxiosStart: () => {},
-            onAxiosEnd: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-            },
+            onAxiosEnd: () => {},
             onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                    // console.log('!!!!res',res.data[0])
+                    console.log('!!!!res',res.data[0])
                     this.setState({
                         isLoaded: true,
                         isScoreLoaded:true,
                         rating:res.data[0]
-                    },()=>{
-                            
+                    },()=>{                            
                             removeUserCustomizedSquad()
                     })
             },
@@ -569,7 +618,7 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-        // console.log('!!!getRating')
+        console.log('!!!getRating')
         service(optionsSquadRating)        
     }
 
