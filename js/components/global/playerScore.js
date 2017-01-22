@@ -360,7 +360,7 @@ export default class PlayerScore extends Component {
                                         <Text style={styles.barSliderText}>ATTACK</Text>
                                         <Text style={styles.barSliderText}>DEFENCE</Text>
                                     </View>
-                                    <BarSlider score={this.props.rating.attack_defence_rating*100} fullWidth={styleVar.deviceWidth-100} /> 
+                                    <BarSlider score={this.props.rating.attack_defence_rating} fullWidth={styleVar.deviceWidth-100} /> 
                                 </View>
                                 {
                                     !this.props.isExpertPage &&

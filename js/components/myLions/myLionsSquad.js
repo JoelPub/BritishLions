@@ -24,7 +24,7 @@ import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
 import { drillDown } from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
-import { removeToken } from '../utility/asyncStorageServices'
+import { removeToken, getUserId } from '../utility/asyncStorageServices'
 import { service, serviceEYC3 } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
@@ -101,7 +101,8 @@ class MyLionsSquad extends Component {
             isSubmitting: false,
             squadDatafeed:SquadShowModel().toJS(),            
             modalContent:this.getModalContent(),
-            rating:Rating().toJS()
+            rating:Rating().toJS(),
+            userID:'',
         }
         this.isUnMounted = false
         this.uniondata = Data
@@ -189,6 +190,15 @@ class MyLionsSquad extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+
+    componentWillMount() {
+        console.log('!!!componentWillMount')
+        // get user id
+        getUserId().then((userID) => {
+            console.log('!!!userID',userID)
+            this.setState({userID})
+        }).catch((error) => {})
     }
 
     _showError(error) {
@@ -408,15 +418,15 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        let squadFeed=squad
-        console.log('!!!squadFeed.toJS()',squadFeed.toJS())
+        // let squadFeed=squad
+        console.log('!!!squad.toJS()',squad.toJS())
         let tempFeed=new SquadShowModel()
         console.log('!!!tempFeed.toJS()',tempFeed.toJS())
         let tmpSquad=new SquadModel()
-        console.log('!!!tmpSquad',tmpSquad)
+        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let emptyFeed=true
         let fullFeed=true
-        squadFeed.forEach((value,index)=>{
+        squad.forEach((value,index)=>{
             console.log('index',index)
             if(List.isList(value)) {
                 console.log('value.toJS()',value.toJS())
@@ -424,14 +434,18 @@ class MyLionsSquad extends Component {
                 if (value.count()>0) {
                     console.log('not empty List')
                     value.forEach((node,i)=>{
-                        console.log('node',node)
-                        // tempFeed[index][i]=this.searchPlayer(this.fullPlayerList,node)
-                        tempFeed=tempFeed.set(index,value.set(i,this.searchPlayer(this.fullPlayerList,node)))
-                        console.log('ok')
-                        // tempFeed=tempFeed.setIn([index,i],this.searchPlayer(this.fullPlayerList,node))
-                        // if(tempFeed[index][i]===null){
-                        if(tempFeed.getIn([index,i])===null) {
-                            squadFeed=squadFeed.setIn([index,i],null)
+                        // console.log('node',node)
+                        tempFeed=tempFeed.update(index,value=>{
+                            value[i]=this.searchPlayer(this.fullPlayerList,node)
+                            return value
+                        })
+                        // console.log('!!!tempFeed[index][i].id',tempFeed.get(index)[i].id)
+                        if(tempFeed.get(index)[i]===null) {
+                            squad=squad.setIn([index,i],null)
+                            squad=squad.update(index,value=>{
+                                value[i]=null
+                                return value
+                            })
                         }
                         else {
                             emptyFeed=false
@@ -441,6 +455,12 @@ class MyLionsSquad extends Component {
                 }
                 else {
                     console.log('empty List')
+                    tempFeed.get(index).forEach((v,i)=>{
+                        tempFeed=tempFeed.update(index,value=>{
+                            value[i]=null
+                            return value
+                        })
+                    })
                     if (!isPop) fullFeed=false
                 }
             }
@@ -452,16 +472,20 @@ class MyLionsSquad extends Component {
                 // let i =cursor.findIndex((node)=>node.position===index)
                 if(i>-1) {
                     console.log('found i',i)
-                    console.log('tempFeed',tempFeed.get('indivPos')[i].info)
-                    tempFeed.get('indivPos')[i].info=this.searchPlayer(this.fullPlayerList,value)                    
-                    console.log('tempFeed',tempFeed.get('indivPos')[i].info)
+                    console.log('tempFeed',tempFeed.get('indivPos')[i])
+                    // tempFeed.get('indivPos')[i].info=this.searchPlayer(this.fullPlayerList,value) 
+                    tempFeed=tempFeed.update('indivPos',v=>{
+                        v[i].info=this.searchPlayer(this.fullPlayerList,value)
+                        return v
+                    })                   
+                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
                     // cursor=cursor.set(i,cursor.get(i).position=this.searchPlayer(this.fullPlayerList,value))
                     // tempFeed=tempFeed.setIn(['indivPos',i,'info'],this.searchPlayer(this.fullPlayerList,value))
                     // tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info=this.searchPlayer(this.fullPlayerList,value)
                     // if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info===null) {
                     // if(tempFeed.getIn(['indivPos',i,'info'])===null) {
                     if(tempFeed.get('indivPos')[i].info===null) {
-                        squadFeed=squadFeed.set(index,'')
+                        squad=squad.set(index,'')
                         if(!isPop) fullFeed=false
                     }
                     else {
@@ -471,16 +495,16 @@ class MyLionsSquad extends Component {
             }
 
         })
-        console.log('!!!final squadFeed',squadFeed.toJS())
+        console.log('!!!final squad',squad.toJS())
         console.log('!!!fullFeed',fullFeed?'true':'false')
-        // tmpSquad=squadFeed.toJS()
-        console.log('!!!tmpSquad',tmpSquad)
+        // tmpSquad=squad.toJS()
+        console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         tmpSquad.forEach((value,index)=>{
-            if(List.isList(squadFeed.get(index))) {
-                if(squadFeed.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squadFeed.get(index).join('|'))
+            if(List.isList(squad.get(index))) {
+                if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
                 else tmpSquad=tmpSquad.set(index,'')
             }
-            else tmpSquad=tmpSquad.set(index,squadFeed.get(index))
+            else tmpSquad=tmpSquad.set(index,squad.get(index))
         })
         // for (let pos in tmpSquad) {
         //     if(tmpSquad[pos] instanceof Array) {
@@ -490,7 +514,7 @@ class MyLionsSquad extends Component {
         console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
-                        rating=rating.set(index,squadFeed.get(index))
+                        rating=rating.set(index,squad.get(index))
                     })
         let optionsSaveList = {
             url: this.saveSquadUrl,
@@ -515,7 +539,7 @@ class MyLionsSquad extends Component {
                     console.log('!!!isPop',isPop)
                     if(fullFeed&&!isPop) {
                         this._setModalVisible(false)
-                        this.getRating(squadFeed.toJS())
+                        this.getRating(squad.toJS())
                     }
                     else {
                         this._setModalVisible(false)
@@ -546,7 +570,7 @@ class MyLionsSquad extends Component {
         console.log('!!!autoPop')
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
-            data:{id:"1@2.com"},
+            data:{id:this.state.userID},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })

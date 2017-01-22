@@ -99,7 +99,8 @@ export function callApi(opt) {
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
-					console.log('%%%success',res)
+					// console.log('%%%success',res)
+					console.log('%%%success')
 					isInternetConnected = true
 
 					// use for loading, after state
