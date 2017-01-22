@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.facebook.react.ReactApplication;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNGoogleSigninPackage(),
+            new GoogleAnalyticsBridgePackage(),
             new ReactNativePushNotificationPackage(),
             new RNFetchBlobPackage(),
             new RNViewShotPackage(),
