@@ -18,7 +18,10 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import { APP_VERSION, actionsApi } from '../utility/urlStorage'
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login'
 
 class SignUp extends Component {
     constructor(props) {
@@ -69,7 +72,131 @@ class SignUp extends Component {
     _popRoute() {
         this.props.popRoute()
     }
+    _GoogleSignIn = () => {
+        GoogleSignin.signIn()
+          .then((user) => {
+              console.log(user);
+              this.setState({user: user});
+              this._googleHandleSignUp(true)
+          })
+          .catch((err) => {
+              console.log('WRONG SIGNIN', err);
+          })
+          .done();
+    }
+    _FBSignIn = () => {
+        FBLoginManager.loginWithPermissions(["email"],(error, data) => {
+            if (!error) {
+                console.log(data);
+                this.setState({
+                    fbUser:data.credentials
+                })
+                this._handleSignUpWithFB(true)
 
+            } else {
+                console.log(error, data);
+            }
+        })
+    }
+    _handleSignUpWithFB(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        let {token} =this.state.fbUser.credentials
+        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
+        fetch({ method: 'GET', url:httpUrl }).then(json => {
+            console.log(json)
+            let nameArr = json.name.split(' ')
+            let lastName = nameArr[0]
+            let firstName=  nameArr[1]
+            if(isFormValidate) {
+                let options = {
+                    url: 'https://www.api-ukchanges2.co.uk/api/users',
+                    data: {
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        'email': json.email,
+                        'password': 'Text1234',
+                        'newEvent': true,
+                        'newPartners': true,
+                        'tc': true
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: this._userSignUp.bind(this),
+                    onError: (res) => {
+                        console.log('注册失败')
+                        console.log(res)
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+
+                        this._scrollView.scrollToPosition(0,0,false)
+                    }
+                }
+
+                service(options)
+
+            } else {
+                this._scrollView.scrollToPosition(0,0,false)
+            }
+            return json
+        }).catch((error)=>{
+            this.setState({
+                customMessages: error,
+                customMessagesType: 'error'
+            })
+            this._scrollView.scrollToPosition(0,0,false)
+        })
+    }
+    _googleHandleSignUp(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            let options = {
+                url: 'https://www.api-ukchanges2.co.uk/api/users',
+                data: {
+                    'firstName': this.state.user.familyName,
+                    'lastName': this.state.user.givenName,
+                    'email': this.state.user.email,
+                    'password': 'Text1234',
+                    'newEvent': true,
+                    'newPartners': true,
+                    'tc': true
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._userSignUp.bind(this),
+                onError: (res) => {
+                    this.setState({
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
+
+                    this._scrollView.scrollToPosition(0,0,false)
+                }
+            }
+
+            service(options)
+
+        } else {
+            this._scrollView.scrollToPosition(0,0,false)
+        }
+    }
     _handleSignUp(isFormValidate){
         this.setState({
             errorCheck:{
@@ -212,16 +339,24 @@ class SignUp extends Component {
                                 <View style={styles.pageTitle}>
                                     <Text style={styles.pageTitleText}>JOIN THE PRIDE</Text>
                                 </View>
-
                                 <View style={styles.guther}>
                                     <CustomMessages
                                         messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
-
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
-
+                                    <ButtonFeedback style={styles.btnFBSignUp} onPress={this._FBSignIn}>
+                                        <Icon name='logo-facebook' style={styles.inputIcon} />
+                                        <Text style={styles.googleAuthText}>CONTINUE WITH FACEBOOK</Text>
+                                    </ButtonFeedback>
+                                    <ButtonFeedback style={styles.btnGoogleSignUp} onPress={this._GoogleSignIn}>
+                                        <Icon name='logo-google' style={styles.inputIcon} />
+                                        <Text style={styles.googleAuthText}>CONTINUE WITH GOOGLE</Text>
+                                    </ButtonFeedback>
+                                    <View style={styles.mailSignUpView}>
+                                        <Text style={styles.mailSignUpText}>OR REGISTER WITH EMAIL</Text>
+                                    </View>
                                     <View style={styles.inputGroup}>
                                         <Input defaultValue={this.state.firstName} onChange={(event) => this.setState({firstName: event.nativeEvent.text})} placeholder='First Name' style={styles.input} />
                                     </View>
