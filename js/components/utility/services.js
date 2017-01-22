@@ -191,6 +191,7 @@ export function service(options) {
 	let defaults = {
 		url: '',
 		data: {},
+		auth:{},
 		method: 'post',
 		onSuccess: null,
 		onError: null,
@@ -212,7 +213,10 @@ export function service(options) {
 					opt.data = Object.assign(opt.data,{'access_token':accessToken})
 				}
 				else {
-					axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
+				    opt.auth = Object.assign(opt.auth,{bearer: accessToken})
+
+                    //THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
+					//axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
 				}				
 				callApi(opt)
 			} else {
