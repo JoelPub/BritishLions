@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken, removeToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, PanResponder} from 'react-native'
+import { Keyboard, Dimensions, Image, PanResponder, NativeModules} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -18,6 +18,22 @@ import OverlayLoader from '../utility/overlayLoader'
 import { APP_VERSION, actionsApi } from '../utility/urlStorage'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+
+var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
+import fetch from '../utility/fetch'
+
+const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
+  <View >
+     <ButtonFeedback style={styles.fbAuthButtonView} onPress={fbOnPress} >
+         <Text style={styles.googleAuthText} >Signin in With Facebook</Text>
+     </ButtonFeedback>
+      <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
+          <Text style={styles.googleAuthText} >Signin in With Google</Text>
+      </ButtonFeedback>
+  </View>
+)
 
 class Login extends Component {
     constructor(props) {
@@ -64,10 +80,13 @@ class Login extends Component {
         // just to make sure that token was removed and
         // isAccessGranted flag is set to false when 
         // user is in the login page
+
         setTimeout(() => {
             removeToken() 
             this.props.setAccessGranted(false)
         }, 400)
+        this._setupGoogleSignin()
+
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -88,6 +107,7 @@ class Login extends Component {
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         this.setState({
+            user: null,
             email: '',
             password: '',
             customMessages: '',
@@ -96,7 +116,108 @@ class Login extends Component {
         this.props.setAccessGranted(true)
         this._replaceRoute('news')
     }
+    _SignInWithGoogle = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(!this.state.user.accessToken){
+            NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
+            .then((token) => {
+                console.log(token)
+                this._signInWithGoogleByToken(isFormValidate, token)
+            })
+        }else {
+            this._signInWithGoogleByToken(isFormValidate, this.state.user.accessToken)
+        }
 
+
+    }
+    _signInWithGoogleByToken = (isFormValidate,accessToken) => {
+        if(isFormValidate) {
+            console.log(accessToken)
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'google': accessToken ,
+                    'app_version': '1',
+                    'grant_type': 'password'
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._createToken.bind(this),
+                onError: (res) => {
+                    console.log('error')
+                    console.log(res)
+                    if (res == 'Google access token invalid.') {
+                        //go to sign up
+                        this._handleSignUp(true)
+                    }else {
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+                        this._scrollToMessages()
+                    }
+
+                }
+            }
+
+            service(options)
+        }
+        else {
+            this._scrollToMessages()
+        }
+    }
+    _SignInWithFB = (isFormValidate) => {
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            let options = {
+                url: this.serviceUrl,
+                data: {
+                    'facebook': this.state.fbUser.token,
+                    'app_version': '1',
+                    'grant_type': 'password'
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._createToken.bind(this),
+                onError: (res) => {
+                    console.log('error')
+                    console.log(res)
+                    if (res == 'Facebook access token invalid.') {
+                        //go to sign up
+                        this._handleSignUpWithFB(true)
+                    }else {
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+                        this._scrollToMessages()
+                    }
+                }
+            }
+
+            service(options)
+        }
+        else {
+            this._scrollToMessages()
+        }
+
+    }
     _handleSignIn(isFormValidate) {
         this.setState({
             errorCheck:{
@@ -135,7 +256,128 @@ class Login extends Component {
             this._scrollToMessages()
         }
     }
+    _handleSignUp(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        if(isFormValidate) {
+            let lastName = ''
+            let firstName = ''
+            if(this.state.user.name){
+                let nameArr = this.state.user.name.split(' ')
+                lastName = nameArr[0]
+                firstName=  nameArr[1]
+            }else if(this.state.user.familyName){
+                lastName = this.state.user.familyName
+                firstName=  this.state.user.givenName
+            }
+            let options = {
+                url: 'https://www.api-ukchanges2.co.uk/api/users',
+                data: {
+                    'firstName': firstName,
+                    'lastName': lastName,
+                    'email': this.state.user.email,
+                    'password': 'Text1234',
+                    'newEvent': true,
+                    'newPartners': true,
+                    'tc': true
+                },
+                onAxiosStart: () => {
+                    this.setState({ isFormSubmitting: true })
+                },
+                onAxiosEnd: () => {
+                    this.setState({ isFormSubmitting: false })
+                },
+                onSuccess: this._SignInWithGoogle,
+                onError: (res) => {
+                    this.setState({
+                        customMessages: res,
+                        customMessagesType: 'error'
+                    })
 
+                    this._scrollView.scrollToPosition(0,0,false)
+                }
+            }
+
+            service(options)
+
+        } else {
+            this._scrollView.scrollToPosition(0,0,false)
+        }
+    }
+    _handleSignUpWithFB(isFormValidate){
+        this.setState({
+            errorCheck:{
+                submit: false
+            }
+        })
+        console.log('FB获取用户信息')
+        console.log(this.state.fbUser.credentials)
+        let {token} =this.state.fbUser
+        console.log(token)
+        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
+        fetch({ method: 'GET', url:httpUrl }).then(json => {
+            console.log(json)
+            let nameArr = json.name.split(' ')
+           let lastName = nameArr[0]
+           let firstName=  nameArr[1]
+            if(!json.email) {
+                Alert.alert(
+                  'Sorry',
+                  'we do not support facebook account using mobile registered currently, please sign up with a valid email address',
+                  [
+                    {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
+                  ]
+                )
+            }
+            if(isFormValidate&&json.email) {
+                let options = {
+                    url: 'https://www.api-ukchanges2.co.uk/api/users',
+                    data: {
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        'email': json.email,
+                        'password': 'Text1234',
+                        'newEvent': true,
+                        'newPartners': true,
+                        'tc': true
+                    },
+                    onAxiosStart: () => {
+                        this.setState({ isFormSubmitting: true })
+                    },
+                    onAxiosEnd: () => {
+                        this.setState({ isFormSubmitting: false })
+                    },
+                    onSuccess: this._SignInWithFB(true),
+                    onError: (res) => {
+                        console.log('注册失败')
+                        console.log(res)
+                        this.setState({
+                            customMessages: res,
+                            customMessagesType: 'error'
+                        })
+
+                        this._scrollView.scrollToPosition(0,0,false)
+                    }
+                }
+
+                service(options)
+
+            } else {
+                this._scrollView.scrollToPosition(0,0,false)
+            }
+            return json
+        }).catch((error)=>{
+             console.log('FB获取用户信息错误')
+            this.setState({
+                customMessages: error,
+                customMessagesType: 'error'
+            })
+            this._scrollView.scrollToPosition(0,0,false)
+        })
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
@@ -154,6 +396,71 @@ class Login extends Component {
     focusMessage(event) {
         this.msgboxPosX=event.nativeEvent.layout.x
         this.msgboxPosY=event.nativeEvent.layout.y     
+    }
+    /* google sign in func */
+    async _setupGoogleSignin() {
+        try {
+            await GoogleSignin.hasPlayServices({ autoResolve: false });
+            await GoogleSignin.configure({
+                // scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+                iosClientId: '919182744809-hlhpkfff5bp1rb5ft71ojeg0h2hu2mb1.apps.googleusercontent.com',
+                offlineAccess: false
+            });
+
+            const user = await GoogleSignin.currentUserAsync();
+
+            console.log(user);
+            if(user) this._signOut()
+            this._fbSignOut()
+
+        }
+        catch(err) {
+            console.log("Google signin error", err.code, err.message);
+        }
+    }
+    _signIn = () => {
+        GoogleSignin.signIn()
+          .then((user) => {
+              console.log(JSON.stringify(user));
+              this.setState({user: user});
+              this._SignInWithGoogle(true)
+
+          })
+          .catch((err) => {
+              console.log('WRONG SIGNIN', err);
+          })
+          .done();
+    }
+
+    /* facebook sign in func */
+    _handleFBLogin = () => {
+        FBLoginManager.loginWithPermissions(["email"],(error, data) => {
+           if (!error) {
+               console.log(data);
+              this.setState({
+               fbUser:data.credentials
+              })
+               this._SignInWithFB(true)
+           } else {
+                console.log(error, data);
+           }
+        })
+
+    }
+    _signOut = () => {
+        GoogleSignin.revokeAccess().then(() => GoogleSignin.signOut()).then(() => {
+              this.setState({user: null});
+          })
+          .done();
+    }
+    _fbSignOut = () => {
+        FBLoginManager.logout((error, data)=>{
+            if (!error) {
+                this.setState({ user : null});
+            } else {
+                console.log(error, data);
+            }
+        })
     }
 
     render() {
@@ -178,7 +485,10 @@ class Login extends Component {
                                         ref = 'errorHandlerElem'
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignIn.bind(this)}/>
-
+                                   <GoogleAndFBContainer googleOnPress={this._signIn} fbOnPress={this._handleFBLogin}/>
+                                    <View style={styles.mailSignUpView}>
+                                        <Text style={styles.mailSignUpText}>OR</Text>
+                                    </View>
                                     <View style={styles.inputGroup}>
                                         {/*<Icon name='ios-at-outline' style={styles.inputIcon} />*/}
                                         <Input placeholder='Email' defaultValue={this.state.email} keyboardType='email-address' style={[styles.input]} onChange={(event) => this.setState({email:event.nativeEvent.text})} />
