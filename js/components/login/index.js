@@ -129,14 +129,6 @@ class Login extends Component {
                 console.log(token)
                 this._signInWithGoogleByToken(isFormValidate, token)
             })
-            //GoogleSignin.getAccessToken()
-              //.then((token) => {
-                // this._signInWithGoogleByToken(isFormValidate, token)
-              //})
-              //.catch((err) => {
-                //  console.log(err);
-              //})
-              //.done();
         }else {
             this._signInWithGoogleByToken(isFormValidate, this.state.user.accessToken)
         }
