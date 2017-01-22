@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.os.Bundle;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
             new ReactNativePushNotificationPackage(),
             new RNFetchBlobPackage(),
             new RNViewShotPackage(),
