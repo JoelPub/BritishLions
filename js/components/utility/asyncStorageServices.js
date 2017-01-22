@@ -71,15 +71,13 @@ export async function isFirstLogIn() {
     })
 }
 
-<<<<<<< HEAD
+
 export async function getUserId() {
     return await AsyncStorage.getItem('LOGGED_IN_EMAIL', (err, result) => {
         return result
     })
 }
 
-=======
->>>>>>> a7e7899059950aaa9dc978748ac8da1bb741e7c2
 function getDateNow() {
     let dateNow = new Date // current time and date
     //dateNow = 'Tue Dec 21 2016 19:17:59 GMT+0800 (PHT)'
