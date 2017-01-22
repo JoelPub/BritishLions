@@ -38,7 +38,7 @@ class MyLions extends Component {
             currentPage: 0,
             isLoaded:true
         }
-        this.totalPages = 4
+        this.totalPages = 3
         this.pageWindow=[]
         this.isUnMounted = false
     }
