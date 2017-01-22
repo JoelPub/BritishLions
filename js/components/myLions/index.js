@@ -112,9 +112,8 @@ class MyLions extends Component {
        
             this.setState({
                 currentPage:state.index,
-                swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size,
-                isLoaded:false
-            },()=>{this.setState({isLoaded:true})})
+                swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size
+            })
         
     }
 
@@ -131,6 +130,7 @@ class MyLions extends Component {
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
                 isFirst = isFirst === 'yes'? true : false
+                // isFirst = true
                 this.setState({ modalVisible: isFirst })
             }).catch((error) => {})
         }
@@ -229,7 +229,6 @@ class MyLions extends Component {
                                         },this)
                                     }
                                 </Swiper>
-                                <ActivityIndicator style={[loader.onboarding, this.state.isLoaded&&{opacity:0}]} size='large' /> 
                             </ScrollView>
 
                             <ButtonFeedback

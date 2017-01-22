@@ -286,7 +286,8 @@ module.exports = styleSheetCreate({
     },
     emptyPlayer: {
         paddingHorizontal: 20,
-        paddingVertical: 20
+        paddingVertical: 20,
+        minHeight: styleVar.deviceHeight-408
     },
     emptyPlayerText: {
         fontFamily: styleVar.fontGeorgia,
