@@ -111,7 +111,7 @@ class SignUp extends Component {
           .done();
     }
     _FBSignIn = () => {
-        FBLoginManager.login((error, data) => {
+        FBLoginManager.loginWithPermissions(["email"],(error, data) => {
             if (!error) {
                 console.log(data);
                 this.setState({

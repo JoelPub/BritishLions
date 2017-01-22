@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken, removeToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, PanResponder} from 'react-native'
+import { Keyboard, Dimensions, Image, PanResponder, NativeModules} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -124,14 +124,20 @@ class Login extends Component {
             }
         })
         if(!this.state.user.accessToken){
-            GoogleSignin.getAccessToken()
-              .then((token) => {
-                 this._signInWithGoogleByToken(isFormValidate, token)
-              })
-              .catch((err) => {
-                  console.log(err);
-              })
-              .done();
+            NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
+            .then((token) => {
+                console.warn(token)
+                console.log(token)
+                this._signInWithGoogleByToken(isFormValidate, token)
+            })
+            //GoogleSignin.getAccessToken()
+              //.then((token) => {
+                // this._signInWithGoogleByToken(isFormValidate, token)
+              //})
+              //.catch((err) => {
+                //  console.log(err);
+              //})
+              //.done();
         }else {
             this._signInWithGoogleByToken(isFormValidate, this.state.user.accessToken)
         }
@@ -421,9 +427,10 @@ class Login extends Component {
           })
           .done();
     }
+
     /* facebook sign in func */
     _handleFBLogin = () => {
-        FBLoginManager.login((error, data) => {
+        FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {
                console.log(data);
               this.setState({

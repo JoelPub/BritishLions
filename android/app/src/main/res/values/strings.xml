@@ -4,7 +4,7 @@
 
 
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
-    <string name="app_name">Lions Official</string>
-    <string name="fb_app_id">{FB_APP_ID}</string>
-    <string name="fb_login_protocol_scheme">fb{FB_APP_ID}</string>
+    <string name="app_name">lions-official-test</string>
+    <string name="fb_app_id">601947266657333</string>
+    <string name="fb_login_protocol_scheme">fb{601947266657333}</string>
 </resources>

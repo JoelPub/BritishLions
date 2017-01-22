@@ -46,7 +46,7 @@
 	<key>CFBundleVersion</key>
 	<string>12</string>
 	<key>FacebookAppID</key>
-	<string>360826577619872</string>
+	<string>601947266657333</string>
 	<key>FacebookDisplayName</key>
 	<string>lionssofficial</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -61,7 +61,7 @@
     <dict>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>fb360826577619872</string>
+        <string>fb601947266657333</string>
       </array>
     </dict>
   </array>
