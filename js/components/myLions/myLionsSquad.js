@@ -193,10 +193,10 @@ class MyLionsSquad extends Component {
     }
 
     componentWillMount() {
-        console.log('!!!componentWillMount')
+        // console.log('!!!componentWillMount')
         // get user id
         getUserId().then((userID) => {
-            console.log('!!!userID',userID)
+            // console.log('!!!userID',userID)
             this.setState({userID})
         }).catch((error) => {})
     }
@@ -425,7 +425,82 @@ class MyLionsSquad extends Component {
         // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let emptyFeed=true
         let fullFeed=true
+        squad.forEach((value,index)=>{
+            // console.log('index',index)
+            if(List.isList(value)) {
+                // console.log('value.toJS()',value.toJS())
+                // console.log('is List')
+                if (value.count()>0) {
+                    // console.log('not empty List')
+                    value.forEach((node,i)=>{
+                        // console.log('node',node)
+                        tempFeed=tempFeed.update(index,value=>{
+                            value[i]=this.searchPlayer(this.fullPlayerList,node)
+                            return value
+                        })
+                        // console.log('!!!tempFeed[index][i].id',tempFeed.get(index)[i].id)
+                        if(tempFeed.get(index)[i]===null) {
+                            squad=squad.setIn([index,i],null)
+                            squad=squad.update(index,value=>{
+                                value[i]=null
+                                return value
+                            })
+                        }
+                        else {
+                            emptyFeed=false
+                        }
+                    })                                            
+                    if (!isPop&&tempFeed.get(index).indexOf(null)!==-1) fullFeed=false
+                }
+                else {
+                    // console.log('empty List')
+                    tempFeed.get(index).forEach((v,i)=>{
+                        tempFeed=tempFeed.update(index,value=>{
+                            value[i]=null
+                            return value
+                        })
+                    })
+                    if (!isPop) fullFeed=false
+                }
+            }
+            else if(!Map.isMap(value)) {
+                // console.log('value',value)
+                // console.log('is not List or Map')
+                let i =tempFeed.get('indivPos').findIndex((node)=>node.position===(isPop?(index==='widecard')?'wildcard':index:index))
+                if(i>-1) {
+                    // console.log('found i',i)
+                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
+                    tempFeed=tempFeed.update('indivPos',v=>{
+                        v[i].info=this.searchPlayer(this.fullPlayerList,value)
+                        return v
+                    })                   
+                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
+                    if(tempFeed.get('indivPos')[i].info===null) {
+                        squad=squad.set(index,'')
+                        if(!isPop) fullFeed=false
+                    }
+                    else {
+                        emptyFeed=false
+                    }
+                }
+            }
 
+        })
+        // console.log('!!!final squad',squad.toJS())
+        // console.log('!!!fullFeed',fullFeed?'true':'false')
+        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        tmpSquad.forEach((value,index)=>{
+            if(List.isList(squad.get(index))) {
+                if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
+                else tmpSquad=tmpSquad.set(index,'')
+            }
+            else tmpSquad=tmpSquad.set(index,squad.get(isPop?index==='widecard'?'wildcard':index:index))
+        })
+        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        let rating=Rating()
+        if (isPop)    rating.forEach((value,index)=>{
+                        rating=rating.set(index,squad.get(index))
+                    })
         let optionsSaveList = {
             url: this.saveSquadUrl,
             data:tmpSquad.toJS(),
@@ -471,96 +546,6 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-
-        squad.forEach((value,index)=>{
-            // console.log('index',index)
-            if(List.isList(value)) {
-                // console.log('value.toJS()',value.toJS())
-                // console.log('is List')
-                if (value.count()>0) {
-                    // console.log('not empty List')
-                    value.forEach((node,i)=>{
-                        // console.log('node',node)
-                        tempFeed=tempFeed.update(index,value=>{
-                            value[i]=this.searchPlayer(this.fullPlayerList,node)
-                            return value
-                        })
-                        // console.log('!!!tempFeed[index][i].id',tempFeed.get(index)[i].id)
-                        if(tempFeed.get(index)[i]===null) {
-                            squad=squad.setIn([index,i],null)
-                            squad=squad.update(index,value=>{
-                                value[i]=null
-                                return value
-                            })
-                        }
-                        else {
-                            emptyFeed=false
-                        }
-                    })                                            
-                    if (!isPop&&tempFeed.get(index).indexOf(null)!==-1) fullFeed=false
-                }
-                else {
-                    // console.log('empty List')
-                    tempFeed.get(index).forEach((v,i)=>{
-                        tempFeed=tempFeed.update(index,value=>{
-                            value[i]=null
-                            return value
-                        })
-                    })
-                    if (!isPop) fullFeed=false
-                }
-            }
-            else if(!Map.isMap(value)) {
-                // console.log('value',value)
-                // console.log('is not List or Map')
-                // let cursor = Cursor.from(tempFeed,['indivPos'],newData => {data = newData})
-                let i =tempFeed.get('indivPos').findIndex((node)=>node.position===index)
-                // let i =cursor.findIndex((node)=>node.position===index)
-                if(i>-1) {
-                    // console.log('found i',i)
-                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
-                    // tempFeed.get('indivPos')[i].info=this.searchPlayer(this.fullPlayerList,value) 
-                    tempFeed=tempFeed.update('indivPos',v=>{
-                        v[i].info=this.searchPlayer(this.fullPlayerList,value)
-                        return v
-                    })                   
-                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
-                    // cursor=cursor.set(i,cursor.get(i).position=this.searchPlayer(this.fullPlayerList,value))
-                    // tempFeed=tempFeed.setIn(['indivPos',i,'info'],this.searchPlayer(this.fullPlayerList,value))
-                    // tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info=this.searchPlayer(this.fullPlayerList,value)
-                    // if(tempFeed['indivPos'][tempFeed['indivPos'].findIndex((element)=>element.position===index)].info===null) {
-                    // if(tempFeed.getIn(['indivPos',i,'info'])===null) {
-                    if(tempFeed.get('indivPos')[i].info===null) {
-                        squad=squad.set(index,'')
-                        if(!isPop) fullFeed=false
-                    }
-                    else {
-                        emptyFeed=false
-                    }
-                }
-            }
-
-        })
-        // console.log('!!!final squad',squad.toJS())
-        // console.log('!!!fullFeed',fullFeed?'true':'false')
-        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
-        tmpSquad.forEach((value,index)=>{
-            if(List.isList(squad.get(index))) {
-                if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
-                else tmpSquad=tmpSquad.set(index,'')
-            }
-            else tmpSquad=tmpSquad.set(index,squad.get(index))
-        })
-        // for (let pos in tmpSquad) {
-        //     if(tmpSquad[pos] instanceof Array) {
-        //         tmpSquad[pos]=tmpSquad[pos].join('|')
-        //     }
-        // }
-        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
-        let rating=Rating()
-        if (isPop)    rating.forEach((value,index)=>{
-                        rating=rating.set(index,squad.get(index))
-                    })
 
         service(optionsSaveList)
 
