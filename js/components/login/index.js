@@ -15,7 +15,7 @@ import ErrorHandler from '../utility/errorhandler/index'
 import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
-import { APP_VERSION, actionsApi } from '../utility/urlStorage'
+import { actionsApi } from '../utility/urlStorage'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -231,7 +231,6 @@ class Login extends Component {
                 data: {
                     'username': this.state.email,
                     'password': this.state.password,
-                    'app_version': APP_VERSION,
                     'grant_type': 'password'
                 },
                 onAxiosStart: () => {

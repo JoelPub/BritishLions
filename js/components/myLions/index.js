@@ -123,6 +123,7 @@ class MyLions extends Component {
     }
 
     _renderLogic(isLogin) {
+
         if (isLogin) { // user is logged in
             this._updateFavPlayers()
 
