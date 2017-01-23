@@ -43,7 +43,7 @@ export function fetchContent(url):Action {
                     .catch(function(error) {
                         alertBox(
                           'An Error Occured',
-                          'Something went wrong with your request. Please check your internet and try again later.' + error,
+                          'Something went wrong with your request. Please check your internet and try again later.',
                           'Dismiss'
                         )
                     })

@@ -141,13 +141,13 @@ class MyLionsSquad extends Component {
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>A score out of 500 based on their selected position, cohesion rating, individual player performance over the last two years and their most recent five games.</Text>
+                        <Text style={styles.modalTextRN}>A score out of 500 based on your selected players, cohesion rating, individual player performances over the last two years and their most recent five games.</Text>
                 
                         <Text style={styles.modalTitleText}>Your Squad Ranking</Text>
-                        <Text style={styles.modalTextRN}>Percentile ranking in relation at other fans selecting squads.</Text>
+                        <Text style={styles.modalTextRN}>Percentile ranking in relation to other fan’s selected squads.</Text>
                 
                         <Text style={styles.modalTitleText}>Cohesion</Text>
-                        <Text style={styles.modalTextRN}>Rating out of 100 where 0 means that your squad have played no games together and 100 means that your quad have player all their games together over the last two years.</Text>
+                        <Text style={styles.modalTextRN}>A rating out of 100 where 0 means that your squad has played no games together and 100 means that your squad has played all their games together over the last two years.</Text>
                 
                         <Text style={styles.modalTitleText}>Attack / Defence</Text>
                         <Text style={styles.modalTextRN}>Assessment of the balance of the attacking and defensive capabilities of your squad.</Text>
