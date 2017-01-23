@@ -32,7 +32,7 @@ export async function updateToken(accessTokenID, refreshTokenID, firstName='', l
 
 export async function removeToken() {
     try {
-        await AsyncStorage.removeItem('ACCESS_TOKEN')
+        await AsyncStorage.removeItem('ACCESS_TOKEN') 
         await AsyncStorage.removeItem('REFRESH_TOKEN')
         await AsyncStorage.removeItem('LOGIN_EXPIRED')
         await AsyncStorage.removeItem('USER_FULLNAME')
