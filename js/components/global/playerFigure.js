@@ -1,7 +1,9 @@
 'use strict'
 
 import React, { Component } from 'react'
-import {Image, View, Text, ActivityIndicator} from 'react-native'
+import { connect } from 'react-redux'
+import {Image, View, Text, ActivityIndicator, Alert, ScrollView} from 'react-native'
+import { service } from '../utility/services'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -10,6 +12,13 @@ import Swiper from 'react-native-swiper'
 import loader from '../../themes/loader-position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
+import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { setAccessGranted } from '../../actions/token'
+import { removeToken } from '../utility/asyncStorageServices'
+import { replaceRoute } from '../../actions/route'
+import { getAssembledUrl } from '../utility/urlStorage'
+import SquadModal from '../global/squadModal'
 
 const gridBorderColor = 'rgb(216, 217, 218)'
 
@@ -187,20 +196,47 @@ const styles = styleSheetCreate({
     },
     pagination: {
         bottom: 0
-    }
+    },
+    modalViewWrapper:{
+        paddingHorizontal:28,
+        marginVertical:54,
+        backgroundColor:'transparent'
+    },
+    modalTitleText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        lineHeight: 28,
+        marginTop: 28,
+        color: '#FFF'
+    },
+    modalTextRN: {
+        fontFamily: 'Helvetica Neue',
+        fontSize:16,
+        lineHeight: 18,
+        color: '#FFF',
+        android: {
+            marginTop: 5
+        }
+    },
 })
 
-export default class PlayerFigure extends Component {
+
+class PlayerFigure extends Component {
 	constructor(props){
         super(props)
+
         this.state = {
             underlineLength:[],
-            tabStatus:[],
-            tabSubjects:[],
-            profile:{},
-            season:{},
-            isLoaded:false
+            tabStatus: [],
+            tabSubjects: [],
+            profile: ProfileListModel.fromJS([new ProfileModel()]),
+            season: {},
+            isLoaded: false,
+            isUnMounted: false,
+            PlayersProfileUrl: getAssembledUrl('EYC3GetPlayersProfile'),
+            modalVisible: false,
     	}
+
         this.currentPage = 0
     }
 
@@ -233,7 +269,6 @@ export default class PlayerFigure extends Component {
         })
         this.setState({underlineLength:widthArray.slice()})
         this.updateStyle(page) 
-
     }
 
     _mapJSON(data, colMax = 2) {
@@ -255,7 +290,7 @@ export default class PlayerFigure extends Component {
         return newData
     }
 
-    componentWillReceiveProps(nextProps,nextState) {
+    /*componentWillReceiveProps(nextProps,nextState) {
         // console.log('@@@nextProps',nextProps.profile.toJS())
         // console.log('@@@thisProps',this.props.profile.toJS())
         // console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
@@ -273,7 +308,104 @@ export default class PlayerFigure extends Component {
 
             this.setState({isLoaded:true,profile,season,tabSubjects})
         }
+    }*/
 
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        removeGoodFormFavoritePlayerList()
+        removeUserCustomizedSquad()
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'Your session has expired',
+            'Please sign in your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
+    _showError(error) {
+        Alert.alert(
+            'An error occured',
+            error,
+            [{text: 'Dismiss'}]
+        )
+    }
+
+    _getPlayerProfile() {
+        let optionsPlayerProfile = {
+            url: this.state.PlayersProfileUrl,
+            data: { id: this.props.playerID },
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                if (this.state.isUnMounted) return // return nothing if the component is already unmounted
+
+                this.setState({ isLoaded: true })
+            },
+            onSuccess: (res) => {
+                if (this.state.isUnMounted) return // return nothing if the component is already unmounted
+                
+                // console.log('@@@res.data', res.data)
+                let profile = ProfileListModel.fromJS([new ProfileModel()])
+                if(res.data instanceof Array  && res.data.length!==0) {   
+                    // console.log('is Array')                     
+                    profile = ProfileListModel.fromJS(res.data)
+                }
+                else { 
+                    // console.log('is not Array')
+                    profile = profile.update(0,value=>{
+                        return value=value.update('seasons',v=>{
+                            return v=SeasonListModel.fromJS([new SeasonModel()])
+                        })
+                    })
+                }
+
+                if(!profile.equals({}) && !profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
+                    console.log('@@seasons',nextProps.profile.first().get('seasons').first().toJS())
+                    let profile = profile.first().toJS()
+                    let season = profile.first().get('seasons').first().toJS()
+                    let tabSubjects=[]
+                    for (let v in season) {
+                        // console.log('@@@v',v)
+                        // console.log('@@@season[v]',season[v])
+                        if(v!=='season name') tabSubjects.push(v)
+                    }
+
+                    this.setState({ profile, season, tabSubjects})
+                }
+            },
+            onError: (res) => {
+                if (this.state.isUnMounted) return // return nothing if the component is already unmounted
+
+                this._showError(res)
+            },
+            onAuthorization: () => {
+                if (this.state.isUnMounted) return // return nothing if the component is already unmounted
+
+                this._signInRequired()
+            },
+            isRequiredToken: true,
+            channel:'EYC3'
+        }
+
+        service(optionsPlayerProfile)
+    }
+
+    componentDidMount() {
+        this._getPlayerProfile()
+    }
+
+    componentWillUnmount() {
+        this.setState({ isUnMounted: true })
     }
 
 	render() {
@@ -281,10 +413,10 @@ export default class PlayerFigure extends Component {
             <View>
             {
                 this.state.isLoaded?
-                    <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
+                    <View style={[styles.detailsGridColFull, styles.playerCardWrapper]}>
                         <View style={styles.fullCard}>
                             <ButtonFeedback 
-                                onPress={()=>this.props.pressInfo(true,'info')}
+                                onPress={()=> { this.setState({modalVisible: true}) }}
                                 style={styles.btnCardInfo}>
                                 <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                             </ButtonFeedback>
@@ -382,6 +514,23 @@ export default class PlayerFigure extends Component {
                                 <Image source={require('../../../images/footer/eyLogo.png')}></Image>
                             </View>
                         </View>
+                        <SquadModal
+                            modalVisible={this.state.modalVisible}
+                            callbackParent={()=> { this.setState({modalVisible: false}) }}>
+                                <ScrollView style={styles.modalViewWrapper}>
+                                    <Text style={styles.modalTitleText}>PLAYER RATING</Text>
+                                    <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                                
+                                    <Text style={styles.modalTitleText}>RECENT PERFORMANCE</Text>
+                                    <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
+                                
+                                    <Text style={styles.modalTitleText}>TREND</Text>
+                                    <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                                
+                                    <Text style={styles.modalTitleText}>ATTACK / DEFENCE / KICKING</Text>
+                                    <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
+                                </ScrollView>
+                        </SquadModal>
                     </View>
                 :
                     <ActivityIndicator style={loader.scoreCard} size='small' /> 
@@ -389,5 +538,14 @@ export default class PlayerFigure extends Component {
             </View>            
 			)
 	}
-
 }
+
+
+function bindAction(dispatch) {
+    return {
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+    }
+}
+
+export default connect(null, bindAction)(PlayerFigure)
