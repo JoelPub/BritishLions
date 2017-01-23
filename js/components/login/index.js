@@ -436,6 +436,9 @@ class Login extends Component {
 
     /* facebook sign in func */
     _handleFBLogin = () => {
+        FBLoginManager.onCancel(()=>{
+            console.log("User cancelled.")
+        })
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {
                console.log(data);
