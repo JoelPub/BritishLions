@@ -135,7 +135,8 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:28,
-        color:'rgb(95,96,98)'
+        color:'rgb(95,96,98)',
+        backgroundColor:'transparent'
     },
     barGraphWrapper:{
         height:105,
