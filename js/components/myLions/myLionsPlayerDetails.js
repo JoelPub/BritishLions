@@ -108,7 +108,7 @@ class MyLionsPlayerDetails extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                        <Text style={styles.modalTitleText}>Overall Rating</Text>
+                        <Text style={styles.modalTitleText}>Player Rating</Text>
                         <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
                 
                         <Text style={styles.modalTitleText}>Recent Performance</Text>
