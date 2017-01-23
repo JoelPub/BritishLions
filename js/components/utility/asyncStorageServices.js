@@ -5,6 +5,7 @@ import { Alert, AsyncStorage } from 'react-native'
 const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
+
 export async function updateToken(accessTokenID, refreshTokenID, firstName='', lastName='', is_first_log_in = true, logged_in_email='') {
     let loginExpired = generateLoginExpiration().toString()
     is_first_log_in = is_first_log_in === 'true'? 'yes' : 'no'
@@ -15,6 +16,7 @@ export async function updateToken(accessTokenID, refreshTokenID, firstName='', l
         await AsyncStorage.setItem('USER_FULLNAME', `${firstName} ${lastName}`)
         await AsyncStorage.setItem('IS_FIRST_LOGIN', is_first_log_in) // remember: only string are accepted
         if(logged_in_email  !== '') await AsyncStorage.setItem('LOGGED_IN_EMAIL', logged_in_email)
+
 
         if (loginExpired) {
             await AsyncStorage.setItem('LOGIN_EXPIRED', loginExpired)
@@ -30,7 +32,7 @@ export async function updateToken(accessTokenID, refreshTokenID, firstName='', l
 
 export async function removeToken() {
     try {
-        await AsyncStorage.removeItem('ACCESS_TOKEN')
+        await AsyncStorage.removeItem('ACCESS_TOKEN') 
         await AsyncStorage.removeItem('REFRESH_TOKEN')
         await AsyncStorage.removeItem('LOGIN_EXPIRED')
         await AsyncStorage.removeItem('USER_FULLNAME')
@@ -68,6 +70,7 @@ export async function isFirstLogIn() {
         return result
     })
 }
+
 
 export async function getUserId() {
     return await AsyncStorage.getItem('LOGGED_IN_EMAIL', (err, result) => {
