@@ -78,4 +78,8 @@ export const actionsApi = {
     goodFormSaveUserCusromizedSquad: getAssembledUrl(GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL),
     goodFormUsers: getAssembledUrl(GOODFORM_USERS_URL)
+
 }
+
+
+export const APP_VERSION = APP_VERSION_NO 
