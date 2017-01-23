@@ -376,7 +376,6 @@ class MyLionsSquad extends Component {
             
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
-            if(this.isUnMounted) return
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true }, () => {
@@ -390,105 +389,102 @@ class MyLionsSquad extends Component {
                 })
             }else{
                 // console.log('!!!!final catchedSquad:', JSON.stringify(catchedSquad.data))
-                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
-                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                            // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
-                            this.fullPlayerList=catchedFullPlayerList
-                            // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
-                            // getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
-                            //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                            //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
-                            //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
-                                    console.log('!!!!catchedSquad.data:', catchedSquad.data)
-                                    // let t=SquadModel.format(eval(`(${catchedSquad.data})`))
-                                    // console.log('!!!t',t.toJS())
-                                    this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
-                            //     }
-                            // }).catch((error) => {
-                            //     console.log('Error when try to get the EYC3 full player list: ', error)
-                            // })
-                        }
-                    }).catch((error) => {
-                        this.setState({ isLoaded: true }, () => {
-                            this._showError(error) // prompt error
-                        })
+                getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                    if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                        this.fullPlayerList=catchedFullPlayerList
+                        // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
+                        // getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
+                        //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+                        //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
+                        //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
+                        //         console.log('!!!!catchedSquad.data:', catchedSquad.data)
+                        //         let t=SquadModel.format(eval(`(${catchedSquad.data})`))
+                        //         console.log('!!!t',t.toJS())
+                                this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
+                        //     }
+                        // }).catch((error) => {
+                        //     console.log('Error when try to get the EYC3 full player list: ', error)
+                        // })
+                    }
+                }).catch((error) => {
+                    this.setState({ isLoaded: true }, () => {
+                        this._showError(error) // prompt error
                     })
+                })
             }
         })      
     }
 
     setSquadData(squad,isPop){
-        // console.log('!!!squad.toJS()',squad.toJS())
         let tempFeed=new SquadShowModel()
-        // console.log('!!!tempFeed.toJS()',tempFeed.toJS())
         let tmpSquad=new SquadModel()
+        // console.log('!!!squad.toJS()',squad.toJS())
+        // console.log('!!!tempFeed.toJS()',tempFeed.toJS())
         // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let emptyFeed=true
         let fullFeed=true
-        squad.forEach((value,index)=>{
+        tempFeed.forEach((value,index)=>{
             // console.log('index',index)
-            if(List.isList(value)) {
-                // console.log('value.toJS()',value.toJS())
-                // console.log('is List')
-                if (value.count()>0) {
-                    // console.log('not empty List')
-                    value.forEach((node,i)=>{
-                        // console.log('node',node)
-                        tempFeed=tempFeed.update(index,value=>{
-                            value[i]=this.searchPlayer(this.fullPlayerList,node)
-                            return value
+            if(index==='backs'||index==='forwards') {
+                value.map((v,i)=>{
+                    // console.log('i',i)
+                    // console.log('squad.get(index).get(i)',squad.get(index).get(i))
+                    if(squad.get(index).get(i)!==undefined) {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i]=this.searchPlayer(this.fullPlayerList,squad.get(index).get(i))
+                            return val
                         })
-                        // console.log('!!!tempFeed[index][i].id',tempFeed.get(index)[i].id)
-                        if(tempFeed.get(index)[i]===null) {
-                            squad=squad.setIn([index,i],null)
-                            squad=squad.update(index,value=>{
-                                value[i]=null
-                                return value
-                            })
-                        }
-                        else {
-                            emptyFeed=false
-                        }
-                    })                                            
-                    if (!isPop&&tempFeed.get(index).indexOf(null)!==-1) fullFeed=false
-                }
-                else {
-                    // console.log('empty List')
-                    tempFeed.get(index).forEach((v,i)=>{
-                        tempFeed=tempFeed.update(index,value=>{
-                            value[i]=null
-                            return value
+                        // console.log('tempFeed.get(index)[i].id',tempFeed.get(index)[i].id)
+                    }
+                    else {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i]=null
+                            return val
                         })
-                    })
-                    if (!isPop) fullFeed=false
-                }
+                    }
+                    if(tempFeed.get(index)[i]===null) {
+                        squad=squad.update(index,val=>{
+                            val[i]=null
+                            return val
+                        })
+                    }
+                    else {
+                        emptyFeed=false
+                    }
+                })
             }
-            else if(!Map.isMap(value)) {
-                // console.log('value',value)
-                // console.log('is not List or Map')
-                let i =tempFeed.get('indivPos').findIndex((node)=>node.position===(isPop?(index==='widecard')?'wildcard':index:index))
-                if(i>-1) {
-                    // console.log('found i',i)
-                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
-                    tempFeed=tempFeed.update('indivPos',v=>{
-                        v[i].info=this.searchPlayer(this.fullPlayerList,value)
-                        return v
-                    })                   
-                    // console.log('tempFeed',tempFeed.get('indivPos')[i])
-                    if(tempFeed.get('indivPos')[i].info===null) {
-                        squad=squad.set(index,'')
+            else {
+                value.map((v,i)=>{
+                    // console.log('i',i)
+                    // console.log('v.position',v.position)
+                    // console.log('squad.get(v.position)',squad.get(v.position))
+                    let p=isPop?v.position:v.position==='wildcard'?'widecard':v.position
+                    if(squad.get(p)&&squad.get(p).trim()!=='') {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=this.searchPlayer(this.fullPlayerList,squad.get(p))
+                            return val
+                        })
+                        // console.log('tempFeed.get(index)[i].info.id',tempFeed.get(index)[i].info.id)
+                    }
+                    else {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=null
+                            return val
+                        })
+                    }
+                    if(tempFeed.get(index)[i].info===null) {
+                        squad=squad.set(p,'')
                         if(!isPop) fullFeed=false
                     }
                     else {
                         emptyFeed=false
                     }
-                }
+                })
             }
-
         })
         // console.log('!!!final squad',squad.toJS())
         // console.log('!!!fullFeed',fullFeed?'true':'false')
-        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
+        // console.log('!!!isPop',isPop?'true':'false')
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -529,7 +525,7 @@ class MyLionsSquad extends Component {
                     else {
                         this._setModalVisible(false)
                         removeUserCustomizedSquad()
-                    }  
+                    }
                 })
             },
             onError: (res) => {
