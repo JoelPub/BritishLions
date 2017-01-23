@@ -80,4 +80,4 @@ export const actionsApi = {
 }
 
 
-export const APP_VERSION = APP_VERSION_NO
+export const APP_VERSION = APP_VERSION_NO 
