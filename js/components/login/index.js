@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken, removeToken } from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions, Image, PanResponder, NativeModules} from 'react-native'
+import { Keyboard, Dimensions,Image, PanResponder, NativeModules} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -27,9 +27,11 @@ import fetch from '../utility/fetch'
 const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
   <View >
      <ButtonFeedback style={styles.fbAuthButtonView} onPress={fbOnPress} >
+         <Icon name='logo-facebook' style={styles.inputIcon} />
          <Text style={styles.googleAuthText} >Signin in With Facebook</Text>
      </ButtonFeedback>
       <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
+          <Icon name='logo-google' style={styles.inputIcon} />
           <Text style={styles.googleAuthText} >Signin in With Google</Text>
       </ButtonFeedback>
   </View>

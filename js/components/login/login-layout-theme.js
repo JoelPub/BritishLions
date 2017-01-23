@@ -131,7 +131,10 @@ module.exports = styleSheetCreate({
         marginRight:0,
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
-        paddingTop: 10
+        paddingTop: 10,
+        android:{
+            paddingTop: 5,
+        }
 
     },
     fbAuthText:{
@@ -143,8 +146,11 @@ module.exports = styleSheetCreate({
         paddingTop: 10
     },
     inputIcon: {
+        position: 'absolute',
         fontSize: 20,
-        marginRight: 5
+        left: 25,
+        top: 14
+
     },
     input: {
         fontSize: 16,
