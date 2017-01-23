@@ -401,6 +401,7 @@ class MyLionsPlayerDetails extends Component {
                 let successDesc = this.state.isFav? 'REMOVED FROM' : 'ADDED TO'
                 this.setState({ isFav: !this.state.isFav }, () => {
                     this._setModalVisible(true,'message','PLAYER',`${successDesc}  FAVOURITES`,'OK')
+                    removeGoodFormFavoritePlayerList() 
                 })
             },
             onError: (res) => {

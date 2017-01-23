@@ -208,7 +208,7 @@ class AppNavigator extends Component {
                     ref={(ref) => this._drawer = ref}
                     type='overlay'
                     content={<LionsSideBar navigator={this._navigator} />}
-                    tapToClose={false}
+                    tapToClose={true}
                     onClose={() => this.closeDrawer()}
                     side='right'
                     openDrawerOffset={0.21}
