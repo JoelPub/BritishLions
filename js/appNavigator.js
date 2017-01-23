@@ -53,6 +53,13 @@ import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
 import Storage from 'react-native-storage'
 
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from 'react-native-google-analytics-bridge';
+
+
 Navigator.prototype.replaceWithAnimation = function (route) {
     const activeLength = this.state.presentedIndex + 1
     const activeStack = this.state.routeStack.slice(0, activeLength)
@@ -94,8 +101,10 @@ class AppNavigator extends Component {
 
     constructor(props){
         super(props)
-
         this.serviceUrl = actionsApi.goodFormRefreshToken
+        this.state = {
+            tracker: new GoogleAnalyticsTracker('UA-88700702-2'),
+        }
     }
 
     _refreshToken() {    
@@ -208,7 +217,7 @@ class AppNavigator extends Component {
                     ref={(ref) => this._drawer = ref}
                     type='overlay'
                     content={<LionsSideBar navigator={this._navigator} />}
-                    tapToClose={false}
+                    tapToClose={true}
                     onClose={() => this.closeDrawer()}
                     side='right'
                     openDrawerOffset={0.21}
@@ -247,13 +256,14 @@ class AppNavigator extends Component {
         )
     }
 
-    renderScene(route, navigator) {
+    renderScene = (route, navigator) => {
         if(route.component) {
             var Component = route.component
             return (
                 <Component navigator={navigator} route={route} {...route.passProps} />
             )
         }
+        this.state.tracker.trackScreenView(route.id);
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />

@@ -51,7 +51,6 @@ class News extends Component {
     }
 
     componentDidMount() {
-        this.state.tracker.trackScreenView('NEWS');
         setTimeout(() => {
             this._fetchContent()
         }, 1000)

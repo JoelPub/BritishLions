@@ -137,9 +137,11 @@ class MyLionsFavoriteList extends Component {
             }
         }
         getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
-             if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+            if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
                 this._mergeEYC3Player(favoritePlayers, eyc3CatchedFullPlayerList)
-             }
+            }
         }).catch((error) => {
             console.log('Error when try to get the EYC3 full player list: ', error)
         })
@@ -234,6 +236,7 @@ class MyLionsFavoriteList extends Component {
     }*/
 
     _getFavoritePlayers(isInitialLoad = false){
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
 
         if (isInitialLoad) {
             this.setState({ isLoaded: false })
@@ -245,6 +248,7 @@ class MyLionsFavoriteList extends Component {
         getGoodFormFavoritePlayerList().then((data)=>{
             // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
+            
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true, isRefreshing: false }, () => {
@@ -259,6 +263,8 @@ class MyLionsFavoriteList extends Component {
             }else{
                 if (data.data !== '') {
                     getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                        if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                             this._listPlayer(data.data, catchedFullPlayerList)
                         }
