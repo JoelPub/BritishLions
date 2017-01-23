@@ -39,6 +39,7 @@ export async function getGoodFormFavoritePlayerList() {
           let opt = {
           		url: getAssembledUrl(GOODFORM_FAVORITE_PLAYERS),
           		data: {},
+          		auth: {},
           		method: 'get',
           		onSuccess: (res) => {
           		     if(res){
@@ -78,7 +79,7 @@ export async function getGoodFormFavoritePlayerList() {
           	if (opt.isRequiredToken) {
                 getAccessToken().then((accessToken) => {
                     if (accessToken) {
-                        axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
+                        opt.auth = Object.assign(opt.auth,{bearer: accessToken})
                         callApi(opt)
                     } else {
                         // Sign In is Required
@@ -127,6 +128,7 @@ export async function getUserCustomizedSquad() {
           let opt = {
               url: getAssembledUrl(GOODFORM_USER_SQUAD),
               data: {},
+              auth: {},
               method: 'get',
               onSuccess: (res) => {
                    if(res){
@@ -166,7 +168,7 @@ export async function getUserCustomizedSquad() {
             if (opt.isRequiredToken) {
                 getAccessToken().then((accessToken) => {
                     if (accessToken) {
-                        axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
+                        opt.auth = Object.assign(opt.auth,{bearer: accessToken})
                         callApi(opt)
                     } else {
                         // Sign In is Required
