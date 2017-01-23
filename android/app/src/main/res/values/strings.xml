@@ -1,10 +1,7 @@
 <resources>
 
-
-
-
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
-    <string name="app_name">lions-official-test</string>
-    <string name="fb_app_id">601947266657333</string>
-    <string name="fb_login_protocol_scheme">fb{601947266657333}</string>
+    <string name="app_name">lions-official</string>
+    <string name="fb_app_id">251610908595186</string>
+    <string name="fb_login_protocol_scheme">fb{251610908595186}</string>
 </resources>
