@@ -141,7 +141,7 @@ class Login extends Component {
                 url: this.serviceUrl,
                 data: {
                     'google': accessToken ,
-                    'app_version': '1',
+                    'app_version': APP_VERSION,
                     'grant_type': 'password'
                 },
                 onAxiosStart: () => {
@@ -185,7 +185,7 @@ class Login extends Component {
                 url: this.serviceUrl,
                 data: {
                     'facebook': this.state.fbUser.token,
-                    'app_version': '1',
+                    'app_version': APP_VERSION,
                     'grant_type': 'password'
                 },
                 onAxiosStart: () => {
