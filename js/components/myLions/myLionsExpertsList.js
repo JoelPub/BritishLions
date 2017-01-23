@@ -83,6 +83,7 @@ class MyLionsExpertsList extends Component {
               dataSource={this.state.dataSource}
               enableEmptySections={true}
               renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
+              style={styles.squadListView}
             />
             <LionsFooter isLoaded={true} />
           </ScrollView>
