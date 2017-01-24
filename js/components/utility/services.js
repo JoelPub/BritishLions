@@ -74,7 +74,7 @@ function errorHandler(error, opt) {
 }
 
 
-export function callApi(opt) {
+export function callApi(opt, axiosInstance) {
 	let isInternetConnected = false
 
 	// use for loading, initial state
@@ -102,7 +102,7 @@ export function callApi(opt) {
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
 				// console.log('%%%post')
-				axios.post(
+				axiosInstance.post(
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
@@ -137,7 +137,7 @@ export function callApi(opt) {
 					}
 				})
 			} else {
-				axios.get(
+				axiosInstance.get(
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
@@ -211,27 +211,34 @@ export function service(options) {
 	}
 
 	let opt = Object.assign(defaults, options)
+	
+
 
 	if (opt.isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
-				if(opt.channel==='EYC3') {
-					axios.defaults.headers.common['Content-Type'] = 'application/json'
-					opt.data = Object.assign(opt.data,{'access_token':accessToken})
-				}
-				else {
-				    opt.auth = Object.assign(opt.auth,{bearer: accessToken})
 
-                    //THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
-					//axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`
-				}				
-				callApi(opt)
+				if(opt.channel === 'EYC3') {
+					//axios.defaults.headers.common['Content-Type'] = 'application/json'
+					opt.data = Object.assign(opt.data, {'access_token':accessToken})
+				}	
+
+				const axiosInstance = axios.create()
+				axiosInstance.interceptors.request.use((config) => {
+					config.headers.common['Authorization'] = `bearer ${accessToken}`
+
+					return config
+				})
+
+				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT	
+				callApi(opt, axiosInstance)
 			} else {
 				// Sign In is Required
 				if (opt.onAuthorization) {
 					opt.onAuthorization('Sign In is Required')
 				}
 			}
+
 		}).catch((error) => {
 			// Sign In is Required
 			if (opt.onAuthorization) {
@@ -239,6 +246,9 @@ export function service(options) {
 			}
     	})
 	} else {
-		callApi(opt)
+		axios.interceptors.request.use((config) => {
+			return config
+		})
+		callApi(opt, axios)
 	}
 }

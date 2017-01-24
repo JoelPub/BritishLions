@@ -8,8 +8,8 @@ module.exports = styleSheetCreate({
     centered: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: styleVar.deviceHeight,
-		marginTop: -50
+		height: styleVar.deviceHeight-50,
+		marginTop: 50
     },
     scoreCard: {
     	height:50,

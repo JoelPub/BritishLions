@@ -26,6 +26,8 @@ class SponsorDetailsSub extends Component {
     }
 
     render() {
+        let shareLinkIcon = this.props.details.url? <Icon name='md-open' style={styles.shareLinkIcon} /> : null
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -50,7 +52,7 @@ class SponsorDetailsSub extends Component {
 
                             <View style={styles.shareLinkWrapper}>
                                 <ExternalLink style={styles.shareLink} url={this.props.details.url}>
-                                    <Text style={styles.shareLinkText}><Icon name='md-open' style={styles.shareLinkIcon} /> {this.props.details.label.toUpperCase()}</Text>
+                                    <Text style={styles.shareLinkText}>{shareLinkIcon} {this.props.details.label.toUpperCase()}</Text>
                                 </ExternalLink>
                             </View>
 

@@ -292,15 +292,15 @@ class SignUp extends Component {
 
     _createToken(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-
+        
+        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in, this.state.email)
+        this.props.setAccessGranted(true)
+        
         // reset the fields and hide loader
         this.setState({
             email: '',
             password: ''
         }, () => {
-           updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
-           this.props.setAccessGranted(true)
-
            Alert.alert(
                'Account Registered',
                'Your account has been created successfully.',
@@ -351,7 +351,7 @@ class SignUp extends Component {
                                         <Text style={styles.googleAuthText}>CONTINUE WITH FACEBOOK</Text>
                                     </ButtonFeedback>
                                     <ButtonFeedback style={styles.btnGoogleSignUp} onPress={this._GoogleSignIn}>
-                                        <Icon name='logo-google' style={styles.inputIcon} />
+                                        <Icon name='logo-googleplus' style={styles.inputIcon} />
                                         <Text style={styles.googleAuthText}>CONTINUE WITH GOOGLE</Text>
                                     </ButtonFeedback>
                                     <View style={styles.mailSignUpView}>

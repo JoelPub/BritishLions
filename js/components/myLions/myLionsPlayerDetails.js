@@ -31,8 +31,8 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
-import SeasonListModel from  'modes/Players/Profile/SeasonList'
-import SeasonModel from 'modes/Players/Profile/SeasonList/Season'
+import FigureListModel from  'modes/Players/Profile/SeasonList/Season/FigureList'
+import FigureModel from 'modes/Players/Profile/SeasonList/Season/FigureList/Figure'
 import SquadModel from  'modes/Squad'
 import Immutable, { Map, List } from 'immutable'
 
@@ -107,6 +107,23 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
                 break
+            case 'info' :
+                return (
+                    <ScrollView style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleText}>Player Rating</Text>
+                        <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                
+                        <Text style={styles.modalTitleText}>Recent Performance</Text>
+                        <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
+                
+                        <Text style={styles.modalTitleText}>Trend</Text>
+                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                
+                        <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
+                        <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
+                    </ScrollView>
+                )
+                break
             default:
                 return (
                     <View>
@@ -158,6 +175,7 @@ class MyLionsPlayerDetails extends Component {
         // Let's have a parallel request
         this._updateFavStatus()
         this._updateMySquadStatus()
+        this.getPlayerProfile()
     }
 
     componentWillUnmount() {
@@ -175,17 +193,15 @@ class MyLionsPlayerDetails extends Component {
         this.setState({ isFavPlayerUpdating: true })
         
         getGoodFormFavoritePlayerList().then((data)=>{
-            // console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
                     this._signInRequired.bind(this)
                 }
             }else if(data.error){
-                // console.log('final data:', JSON.stringify(data.error))
                 this._showError(data.error) // prompt error
             }else{
-                let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                let favoritePlayers = (data.data === ''||data.data===undefined)? [] : data.data.split('|')
                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
 
                 // re-correect/update the isFav state
@@ -199,30 +215,21 @@ class MyLionsPlayerDetails extends Component {
         this.setState({isMySquadPlayerUpdating: true})
 
         getUserCustomizedSquad().then((catchedSquad)=>{
-            // console.log('final catchedSquad:', JSON.stringify(catchedSquad))
             if(catchedSquad.error){
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                 this.setState({ isMySquadPlayerUpdating: false }, () => {
                     this._showError(catchedSquad.error) // prompt error
                 })
             }else{
                 let squadFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
                 let inSquad = false
-                // console.log('@@@catchedSquad.data',catchedSquad.data)
-                // console.log('@@@squadFeed.isMap',Map.isMap(squadFeed))
                 if(Map.isMap(squadFeed)) squadFeed.forEach((value,index)=>{
-                    // console.log('index',index)
-                    // console.log('value',value)
                     if(List.isList(value)) {
-                        // console.log('%%%%find?',value.indexOf(this.playerid)>-1?'true':'false')
                         if(value.indexOf(this.playerid)>-1) inSquad=true
                     }
                     else {
-                        // console.log('equal?',value===this.playerid?'true':'false')
                         if(value===this.playerid) inSquad=true
                     }
                 })
-                // console.log('@@@squadFeed',squadFeed.toJS())
                 this.setState({inSquad,squadDataFeed:squadFeed.toJS(), isMySquadPlayerUpdating: false})
             }
         })
@@ -233,6 +240,49 @@ class MyLionsPlayerDetails extends Component {
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
+    }
+
+    getPlayerProfile() {
+        let optionsPlayerProfile = {
+            url: this.PlayersProfileUrl,
+            data:{player_id:this.playerid},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                this.setState({ isLoaded:true })
+            },
+            onSuccess: (res) => {
+                 this.setState({
+                    isLoaded:true
+                },()=>{
+                    let profile=ProfileListModel.fromJS([new ProfileModel()])
+                    if(res.data instanceof Array  && res.data.length!==0) {
+                        profile=ProfileListModel.fromJS(res.data)
+                    }
+                    else {
+                        profile=profile.update(0,value=>{
+                            return value=value.update('Attack',v=>{
+                                return v=FigureListModel.fromJS([new FigureModel()])
+                            })
+                        })
+                    }
+                    this.setState({ profile })
+                })
+            },
+            onError: (res) => {
+                this.setState({isLoaded:true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({isLoaded:true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true,
+            channel:'EYC3'
+        }
+
+        service(optionsPlayerProfile)
     }
 
     _updatePlayerFavStatus() {
@@ -381,27 +431,22 @@ class MyLionsPlayerDetails extends Component {
                 
                 let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
                 let inSquad = false
-                // console.log('@@@tmpFeed.isMap',Map.isMap(tmpFeed))
-                // console.log('@@@tmpFeed',tmpFeed.toJS())
                 if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
-                    // console.log('value',value)
                     if(List.isList(value)) {
-                        // console.log('find?',value.indexOf(this.playerid)>-1?'true':'false')
                         if(value.indexOf(this.playerid)>-1){
                             inSquad=true
-                            if (type==='remove')  tmpFeed=tmpFeed.get(index).splice(value.indexOf(this.playerid),1)
+                            if (type==='remove')  tmpFeed=tmpFeed.update(index,val=>{
+                                    return value.splice(value.indexOf(this.playerid),1)
+                                })
                         }
                     }
                     else {
-                        // console.log('equal?',value===this.playerid?'true':'false')
                         if(value===this.playerid) {
                             inSquad=true
                             if (type==='remove')  tmpFeed=tmpFeed.set(index,'')
                         }
                     }
                 })
-                // console.log('$$$$inSquad',inSquad)
-                // console.log('@@@tmpFeed',tmpFeed.toJS())
                 if (this.state.inSquad !== inSquad) {
                      let errorDesc = ''
                      if (this.state.inSquad) {
@@ -419,13 +464,8 @@ class MyLionsPlayerDetails extends Component {
                          )
                      })
                  } else {
-                    // console.log('$$$$inSquad',inSquad)
-                    // console.log('$$$$type',type)
-                        
                     if(!inSquad&&type==='add') {
-                        // console.log('$$$$tmpFeed.toJS()',tmpFeed.toJS())
                         if(List.isList(tmpFeed.get(position))) {
-                        // console.log('isList',tmpFeed.get(position))
                             if(tmpFeed.get(position).count()<max) {
                                 tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.playerid))
                             }
@@ -440,7 +480,6 @@ class MyLionsPlayerDetails extends Component {
                             }
                         }
                         else{
-                        // console.log('is Not List',tmpFeed.get(position))
                             if(tmpFeed.get(position).trim()==='') {
                                 tmpFeed=tmpFeed.set(position,this.playerid)
                             }
@@ -455,8 +494,6 @@ class MyLionsPlayerDetails extends Component {
                             }
                         }
                         
-                        // console.log('$$$$tmpFeed',tmpFeed)
-                        
                     }
                     if(update) this._updateSquadPlayer(tmpFeed,position)
                  }
@@ -466,25 +503,19 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquadPlayer(squadData,position) {
-        // console.log('@@@@squadData.toJS()',squadData.toJS())
-        let tmpSquad=squadData.toJS()
-        for (let pos in tmpSquad) {
-            // console.log('tmpSquad[pos]',tmpSquad[pos])
-            if(tmpSquad[pos] instanceof Array) {
-                tmpSquad[pos]=tmpSquad[pos].join('|')
-            }
-        }
-        // console.log('@@@@tmpSquad',tmpSquad)
+        squadData.forEach((value,index)=>{
+            if(List.isList(value)) squadData=squadData.update(index,val=>{
+                                                    return val.join('|')
+                                                })
+        })
         let options = {
             url: this.saveSquadUrl,
-            data: tmpSquad,
+            data: squadData.toJS(),
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isMySquadPlayerSubmitting: false })
             },
             onSuccess: (res) => {
-                // console.log('@@@@onSuccess',this.state.inSquad)
-                // console.log('@@@@squadData',squadData)
                 let successDesc = this.state.inSquad? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
                     this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
@@ -551,7 +582,7 @@ class MyLionsPlayerDetails extends Component {
                                         </ButtonFeedback>
                                     :
                                         <ButtonFeedback
-                                            disabled = {this.state.isMySquadPlayerUpdating || this.state.isMySquadPlayerSubmitting}
+                                            disabled = {this.state.isMySquadPlayerUpdating}
                                             onPress={()=> this.updateSquad()}
                                             style={[
                                                 styles.btn,
@@ -618,7 +649,7 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                        <PlayerFigure playerID={this.playerid} />
+                        <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
