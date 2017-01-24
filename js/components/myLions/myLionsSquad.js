@@ -43,9 +43,6 @@ import SquadShowModel from  'modes/Squad/SquadShowModel'
 import SquadRatingModel from 'modes/Squad/Rating'
 import Immutable, { Map, List } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
-// const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'wildcard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
-// const emptyDataFeed='{backs: "", captain: "", wildcard: "", forwards: "", kicker: ""}'
-// const fullDataFeed='{backs: "114146|9351|4986|62298|92503|90007|62075|114875|100873|62278|62237|107144|5062|115391|62241|90226", captain: "8759", wildcard: "88878", forwards: "19930|113227|99843|106742|112534|5061|99064|113014|4955|84780|73050|92346|99808|115498|9072|112599", kicker: "88434"}'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -84,7 +81,7 @@ const PositionTitle =({pos,data}) =>(
     <View style={styles.posTitle}>
       <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
       <Text style={styles.posTitleRight}>
-       {data.filter((value)=>value!==null).length} / 16
+       {data.filter((value)=>value!==null).length} / {data.length}
       </Text>
     </View>
 )
@@ -194,10 +191,7 @@ class MyLionsSquad extends Component {
     }
 
     componentWillMount() {
-        // console.log('!!!componentWillMount')
-        // get user id
         getUserId().then((userID) => {
-            // console.log('!!!userID',userID)
             this.setState({userID})
         }).catch((error) => {})
     }
@@ -350,18 +344,13 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        // console.log('!!!componentDidMount')
         setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('!!!componentWillReceiveProps')
-        // console.log('!!!nextProps.route',nextProps.route)
         let routes = globalNav.navigator.getCurrentRoutes()
-        // console.log('!!!routes',routes)
         
         // re render after 'back nav' pressed
-        // if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsSquad') {
             if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
             this.setState({
                 isLoaded: false,
@@ -372,7 +361,6 @@ class MyLionsSquad extends Component {
     }
 
     _getSquad(){
-        // console.log('!!!_getSquad')
         if (this.isUnMounted) return // return nothing if the component is already unmounted
             
         this.setState({ isLoaded: false })
@@ -384,28 +372,14 @@ class MyLionsSquad extends Component {
                     })
                 }
             }else if(catchedSquad.error){
-                // console.log('final catchedSquad:', JSON.stringify(catchedSquad.error))
                 this.setState({ isLoaded: true }, () => {
                     this._showError(catchedSquad.error)
                 })
             }else{
-                // console.log('!!!!final catchedSquad:', JSON.stringify(catchedSquad.data))
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
-                        // console.log('fullPlayerlist is plainobj?',this.isPlainObj(this.fullPlayerList)?'true':'false')
-                        // getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
-                        //      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                        //         console.log('catchedFullPlayerList',catchedFullPlayerList['125'].length)
-                        //         console.log('eyc3CatchedFullPlayerList',eyc3CatchedFullPlayerList)
-                        //         console.log('!!!!catchedSquad.data:', catchedSquad.data)
-                        //         let t=SquadModel.format(eval(`(${catchedSquad.data})`))
-                        //         console.log('!!!t',t.toJS())
                                 this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
-                        //     }
-                        // }).catch((error) => {
-                        //     console.log('Error when try to get the EYC3 full player list: ', error)
-                        // })
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -419,23 +393,16 @@ class MyLionsSquad extends Component {
     setSquadData(squad,isPop){
         let tempFeed=new SquadShowModel()
         let tmpSquad=new SquadModel()
-        // console.log('!!!squad.toJS()',squad.toJS())
-        // console.log('!!!tempFeed.toJS()',tempFeed.toJS())
-        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let emptyFeed=true
         let fullFeed=true
         tempFeed.forEach((value,index)=>{
-            // console.log('index',index)
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    // console.log('i',i)
-                    // console.log('squad.get(index).get(i)',squad.get(index).get(i))
                     if(squad.get(index).get(i)!==undefined) {
                         tempFeed=tempFeed.update(index,val=>{
                             val[i]=this.searchPlayer(this.fullPlayerList,squad.get(index).get(i))
                             return val
                         })
-                        // console.log('tempFeed.get(index)[i].id',tempFeed.get(index)[i].id)
                     }
                     else {
                         tempFeed=tempFeed.update(index,val=>{
@@ -456,16 +423,12 @@ class MyLionsSquad extends Component {
             }
             else {
                 value.map((v,i)=>{
-                    // console.log('i',i)
-                    // console.log('v.position',v.position)
-                    // console.log('squad.get(v.position)',squad.get(v.position))
                     let p=isPop?v.position:v.position==='wildcard'?'widecard':v.position
                     if(squad.get(p)&&squad.get(p).trim()!=='') {
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=this.searchPlayer(this.fullPlayerList,squad.get(p))
                             return val
                         })
-                        // console.log('tempFeed.get(index)[i].info.id',tempFeed.get(index)[i].info.id)
                     }
                     else {
                         tempFeed=tempFeed.update(index,val=>{
@@ -483,19 +446,13 @@ class MyLionsSquad extends Component {
                 })
             }
         })
-        // console.log('!!!final squad',squad.toJS())
-        // console.log('!!!fullFeed',fullFeed?'true':'false')
-        // console.log('!!!isPop',isPop?'true':'false')
         tmpSquad.forEach((value,index)=>{
-            // console.log('index',index)
             if(List.isList(squad.get(index))) {
-                // console.log('is list')
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
                 else tmpSquad=tmpSquad.set(index,'')
             }
             else tmpSquad=tmpSquad.set(index,squad.get(isPop?index==='widecard'?'wildcard':index:index))
         })
-        // console.log('!!!tmpSquad.toJS()',tmpSquad.toJS())
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
                         rating=rating.set(index,squad.get(index))
@@ -504,14 +461,11 @@ class MyLionsSquad extends Component {
             url: this.saveSquadUrl,
             data:tmpSquad.toJS(),
             onAxiosStart: () => {
-                // console.log('!!!onAxiosStart')
             },
             onAxiosEnd: () => {
-                // console.log('!!!onAxiosEnd')
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
-                // console.log('!!!onSuccess')
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
@@ -519,8 +473,6 @@ class MyLionsSquad extends Component {
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
                     rating:isPop?rating.toJS():this.state.rating
                 },()=>{
-                    // console.log('!!!fullFeed',fullFeed)
-                    // console.log('!!!isPop',isPop)
                     if(fullFeed&&!isPop) {
                         this._setModalVisible(false)
                         this.getRating(squad)
@@ -532,13 +484,11 @@ class MyLionsSquad extends Component {
                 })
             },
             onError: (res) => {
-                // console.log('!!!onError')
                 this.setState({isLoaded: true }, () => {
                     this._showError(res)
                 })
             },
             onAuthorization: () => {
-                // console.log('!!!onAuthorization')
                 this.setState({isLoaded: true }, () => {
                     this._signInRequired()
                 })
@@ -551,7 +501,6 @@ class MyLionsSquad extends Component {
     }
 
     autoPop() {
-        // console.log('!!!autoPop')
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
             data:{id:this.state.userID},
@@ -563,9 +512,6 @@ class MyLionsSquad extends Component {
                  this.setState({
                     isLoaded:true
                 },()=>{
-                    // console.log('!!!!res',res.data)
-                    // let t=SquadPopModel.format(SquadPopModel(res.data))
-                    // console.log('!!!!t.toJS()',t.toJS())
                     this.setSquadData(SquadPopModel.format(SquadPopModel(res.data)),true)
                 })
             },
@@ -595,18 +541,13 @@ class MyLionsSquad extends Component {
         this.setState({
             isLoaded:false
         },()=>{
-            // let t=SquadModel.format(SquadModel().toJS())
-            // console.log('!t',t.toJS())
             this.setSquadData(SquadModel.format(SquadModel().toJS()))
         })
     }
 
     getRating(squadList){
-        // console.log('!!!getRating',squadList.toJS())
         let tempSquad=SquadRatingModel()
-        // console.log('!!!tempSquad.toJS()',tempSquad.toJS())
         squadList.forEach((value,index)=>{
-            // console.log('index',index)
             if(List.isList(value)) {
                 value.forEach((v,i)=>{
                     tempSquad=tempSquad.update(index,val=>{
@@ -619,21 +560,14 @@ class MyLionsSquad extends Component {
                 tempSquad=tempSquad.set(index,parseInt(value))
             }
         })
-
-        // console.log('!!!id',this.state.userID)
-        // console.log('!!!tempSquad.toJS()',tempSquad.toJS())
-        // console.log('!!!tempSquad.toString()',JSON.stringify(tempSquad))
         let optionsSquadRating = {
             url: this.getMySquadRatingUrl,
             data: {id:this.state.userID,squad:JSON.stringify(tempSquad)},
             onAxiosStart: () => {
-                    // console.log('!!!!onAxiosStart')
                 },
             onAxiosEnd: () => {
-                    // console.log('!!!!onAxiosEnd')
                 },
             onSuccess: (res) => {
-                    // console.log('!!!!res.data',res.data)
                     let rating=Rating()
                     rating.forEach((value,index)=>{
                         rating=rating.set(index,res.data[index])
@@ -647,13 +581,9 @@ class MyLionsSquad extends Component {
                     })
             },
             onError: (res) => {
-                    // console.log('!!!!onError',res)
-                
                     this._showError(res)
             },
             onAuthorization: () => {
-                    // console.log('!!!!onAuthorization')
-                
                     this._signInRequired()
             },
             isRequiredToken: true,
