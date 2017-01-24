@@ -55,7 +55,11 @@ function errorHandler(error, opt) {
 	                    errorDescription = errorSlice(modelState)
 	                }
 	            }
-                break
+							case 404:
+								if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
+									errorDescription = 'You have not yet registered as a user, please join the pride first.'
+								}
+								break
         }
 
         if(statusCode === 401) {
