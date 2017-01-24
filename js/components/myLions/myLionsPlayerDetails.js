@@ -193,7 +193,7 @@ class MyLionsPlayerDetails extends Component {
         this.setState({ isFavPlayerUpdating: true })
         
         getGoodFormFavoritePlayerList().then((data)=>{
-            // console.log('final data:', JSON.stringify(data))
+            console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -203,7 +203,7 @@ class MyLionsPlayerDetails extends Component {
                 // console.log('final data:', JSON.stringify(data.error))
                 this._showError(data.error) // prompt error
             }else{
-                let favoritePlayers = (data.data === '')? [] : data.data.split('|')
+                let favoritePlayers = (data.data === ''||data.data===undefined)? [] : data.data.split('|')
                 let isFav = (favoritePlayers.indexOf(this.playerid) !== -1)
 
                 // re-correect/update the isFav state
@@ -455,7 +455,9 @@ class MyLionsPlayerDetails extends Component {
                         // console.log('find?',value.indexOf(this.playerid)>-1?'true':'false')
                         if(value.indexOf(this.playerid)>-1){
                             inSquad=true
-                            if (type==='remove')  tmpFeed=tmpFeed.get(index).splice(value.indexOf(this.playerid),1)
+                            if (type==='remove')  tmpFeed=tmpFeed.update(index,val=>{
+                                    return value.splice(value.indexOf(this.playerid),1)
+                                })
                         }
                     }
                     else {
