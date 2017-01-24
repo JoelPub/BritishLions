@@ -10,6 +10,7 @@ import Swiper from 'react-native-swiper'
 import loader from '../../themes/loader-position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
+import Immutable, { Map, List } from 'immutable'
 
 const gridBorderColor = 'rgb(216, 217, 218)'
 
@@ -255,20 +256,14 @@ export default class PlayerFigure extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState) {
-        // console.log('@@@nextProps',nextProps.profile.toJS())
-        // console.log('@@@thisProps',this.props.profile.toJS())
-        // console.log('@@@equal?',nextProps.profile.equals(this.props.profile)?'true':'false')
-        // console.log('@@@isnull?',nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))?'true':'false')
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
-            // console.log('@@Attack',nextProps.profile.first().get('Attack').first().toJS())
-            let profile=nextProps.profile.first().toJS()
-            // let season=nextProps.profile.first().get('seasons').first().toJS()
-            // let tabSubjects=[]
-            // for (let v in season) {
-            //     if(v!=='season name') tabSubjects.push(v)
-            // }
-
-            this.setState({isLoaded:true,profile})
+            let profile=nextProps.profile.first()
+            profile.forEach((value,index)=>{
+                if(index==='Kicking'&&value.trim()!=='') {
+                    profile=profile.set(index,JSON.parse(value))
+                }
+            })
+            this.setState({isLoaded:true,profile:profile.toJS()})
         }
 
     }
