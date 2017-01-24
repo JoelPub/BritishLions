@@ -287,10 +287,10 @@ module.exports = styleSheetCreate({
     emptyPlayer: {
         paddingHorizontal: 20,
         paddingVertical: 20,
-        minHeight: styleVar.deviceHeight-408
+        minHeight: styleVar.deviceHeight-405
     },
     squadListView: {
-        minHeight: styleVar.deviceHeight-408
+        minHeight: styleVar.deviceHeight-405
     },
     emptyPlayerText: {
         fontFamily: styleVar.fontGeorgia,
