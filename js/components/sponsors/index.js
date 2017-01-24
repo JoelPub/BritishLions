@@ -58,7 +58,7 @@ class Sponsors extends Component {
     }
 
     render() {
-        let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers']
+        let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers', 'Charity', 'Media']
 
                                         
         return (
