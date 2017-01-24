@@ -351,7 +351,7 @@ class SignUp extends Component {
                                         <Text style={styles.googleAuthText}>CONTINUE WITH FACEBOOK</Text>
                                     </ButtonFeedback>
                                     <ButtonFeedback style={styles.btnGoogleSignUp} onPress={this._GoogleSignIn}>
-                                        <Icon name='logo-google' style={styles.inputIcon} />
+                                        <Icon name='logo-googleplus' style={styles.inputIcon} />
                                         <Text style={styles.googleAuthText}>CONTINUE WITH GOOGLE</Text>
                                     </ButtonFeedback>
                                     <View style={styles.mailSignUpView}>
