@@ -40,6 +40,7 @@ import SquadPopModel from  'modes/SquadPop'
 import Rating from  'modes/SquadPop/Rating'
 import SquadModel from  'modes/Squad'
 import SquadShowModel from  'modes/Squad/SquadShowModel'
+import SquadRatingModel from 'modes/Squad/Rating'
 import Immutable, { Map, List } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
 // const squadDataMode={indivPos:[{position:'captain',info:null},{position:'kicker',info:null},{position:'wildcard',info:null}], forwards:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], backs:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], }
@@ -486,7 +487,9 @@ class MyLionsSquad extends Component {
         // console.log('!!!fullFeed',fullFeed?'true':'false')
         // console.log('!!!isPop',isPop?'true':'false')
         tmpSquad.forEach((value,index)=>{
+            console.log('index',index)
             if(List.isList(squad.get(index))) {
+                console.log('is list')
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
                 else tmpSquad=tmpSquad.set(index,'')
             }
@@ -520,7 +523,7 @@ class MyLionsSquad extends Component {
                     // console.log('!!!isPop',isPop)
                     if(fullFeed&&!isPop) {
                         this._setModalVisible(false)
-                        this.getRating(squad.toJS())
+                        this.getRating(squad)
                     }
                     else {
                         this._setModalVisible(false)
@@ -599,32 +602,63 @@ class MyLionsSquad extends Component {
     }
 
     getRating(squadList){
+        // console.log('!!!getRating',squadList.toJS())
+        let tempSquad=SquadRatingModel()
+        // console.log('!!!tempSquad.toJS()',tempSquad.toJS())
+        squadList.forEach((value,index)=>{
+            // console.log('index',index)
+            if(List.isList(value)) {
+                value.forEach((v,i)=>{
+                    tempSquad=tempSquad.update(index,val=>{
+                        val[i]=parseInt(v)
+                        return val
+                    })
+                })
+            }
+            else {
+                tempSquad=tempSquad.set(index,parseInt(value))
+            }
+        })
+
+        // console.log('!!!id',this.state.userID)
+        // console.log('!!!tempSquad.toJS()',tempSquad.toJS())
+        // console.log('!!!tempSquad.toString()',JSON.stringify(tempSquad))
         let optionsSquadRating = {
             url: this.getMySquadRatingUrl,
-            data: squadList,
-            onAxiosStart: () => {},
-            onAxiosEnd: () => {},
+            data: {id:this.state.userID,squad:JSON.stringify(tempSquad)},
+            onAxiosStart: () => {
+                    // console.log('!!!!onAxiosStart')
+                },
+            onAxiosEnd: () => {
+                    // console.log('!!!!onAxiosEnd')
+                },
             onSuccess: (res) => {
-                    // console.log('!!!!res',res.data[0])
+                    // console.log('!!!!res.data',res.data)
+                    let rating=Rating()
+                    rating.forEach((value,index)=>{
+                        rating=rating.set(index,res.data[index])
+                    })
                     this.setState({
                         isLoaded: true,
                         isScoreLoaded:true,
-                        rating:res.data[0]
+                        rating
                     },()=>{                            
                             removeUserCustomizedSquad()
                     })
             },
             onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    // console.log('!!!!onError',res)
+                
                     this._showError(res)
             },
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                    // console.log('!!!!onAuthorization')
+                
                     this._signInRequired()
             },
-            isRequiredToken: true
+            isRequiredToken: true,
+            channel: 'EYC3'
         }
-        // console.log('!!!getRating')
         service(optionsSquadRating)        
     }
 
