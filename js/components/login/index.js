@@ -31,7 +31,7 @@ const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
          <Text style={styles.googleAuthText} >SIGN IN WITH FACEBOOK</Text>
      </ButtonFeedback>
       <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
-          <Icon name='logo-google' style={styles.inputIcon} />
+          <Icon name='logo-googleplus' style={styles.inputIcon} />
           <Text style={styles.googleAuthText} >SIGN IN WITH GOOGLE</Text>
       </ButtonFeedback>
   </View>
@@ -436,15 +436,13 @@ class Login extends Component {
 
     /* facebook sign in func */
     _handleFBLogin = () => {
-        FBLoginManager.onCancel(()=>{
-            console.log("User cancelled.")
-        })
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {
                console.log(data);
               this.setState({
                fbUser:data.credentials
               })
+
                this._SignInWithFB(true)
            } else {
                 console.log(error, data);

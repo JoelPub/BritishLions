@@ -148,7 +148,7 @@ module.exports = styleSheetCreate({
     inputIcon: {
         position: 'absolute',
         fontSize: 24,
-        left: 25,
+        left: 18,
         top: 14
 
     },
