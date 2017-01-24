@@ -487,9 +487,9 @@ class MyLionsSquad extends Component {
         // console.log('!!!fullFeed',fullFeed?'true':'false')
         // console.log('!!!isPop',isPop?'true':'false')
         tmpSquad.forEach((value,index)=>{
-            console.log('index',index)
+            // console.log('index',index)
             if(List.isList(squad.get(index))) {
-                console.log('is list')
+                // console.log('is list')
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
                 else tmpSquad=tmpSquad.set(index,'')
             }

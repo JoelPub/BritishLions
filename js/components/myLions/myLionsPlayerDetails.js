@@ -31,8 +31,8 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import { setPositionToAdd } from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
-import SeasonListModel from  'modes/Players/Profile/SeasonList'
-import SeasonModel from 'modes/Players/Profile/SeasonList/Season'
+import FigureListModel from  'modes/Players/Profile/SeasonList/Season/FigureList'
+import FigureModel from 'modes/Players/Profile/SeasonList/Season/FigureList/Figure'
 import SquadModel from  'modes/Squad'
 import Immutable, { Map, List } from 'immutable'
 
@@ -107,6 +107,23 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
                 break
+            case 'info' :
+                return (
+                    <ScrollView style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleText}>Player Rating</Text>
+                        <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                
+                        <Text style={styles.modalTitleText}>Recent Performance</Text>
+                        <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
+                
+                        <Text style={styles.modalTitleText}>Trend</Text>
+                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                
+                        <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
+                        <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
+                    </ScrollView>
+                )
+                break
             default:
                 return (
                     <View>
@@ -158,6 +175,7 @@ class MyLionsPlayerDetails extends Component {
         // Let's have a parallel request
         this._updateFavStatus()
         this._updateMySquadStatus()
+        this.getPlayerProfile()
     }
 
     componentWillUnmount() {
@@ -233,6 +251,54 @@ class MyLionsPlayerDetails extends Component {
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
+    }
+
+    getPlayerProfile() {
+        // console.log('getPlayerProfile')
+        let optionsPlayerProfile = {
+            url: this.PlayersProfileUrl,
+            data:{player_id:this.playerid},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+                this.setState({ isLoaded:true })
+            },
+            onSuccess: (res) => {
+                 this.setState({
+                    isLoaded:true
+                },()=>{
+                    // console.log('@@@res.data',res.data)
+                    let profile=ProfileListModel.fromJS([new ProfileModel()])
+                    if(res.data instanceof Array  && res.data.length!==0) {   
+                        // console.log('is Array')                     
+                        profile=ProfileListModel.fromJS(res.data)
+                    }
+                    else { 
+                        // console.log('is not Array')
+                        profile=profile.update(0,value=>{
+                            return value=value.update('Attack',v=>{
+                                return v=FigureListModel.fromJS([new FigureModel()])
+                            })
+                        })
+                    }
+                    // console.log('@@@profile.toJS()',profile.toJS())
+                    this.setState({ profile })
+                })
+            },
+            onError: (res) => {
+                this.setState({isLoaded:true }, () => {
+                    this._showError(res)
+                })
+            },
+            onAuthorization: () => {
+                this.setState({isLoaded:true }, () => {
+                    this._signInRequired()
+                })
+            },
+            isRequiredToken: true,
+            channel:'EYC3'
+        }
+
+        service(optionsPlayerProfile)
     }
 
     _updatePlayerFavStatus() {
@@ -551,7 +617,7 @@ class MyLionsPlayerDetails extends Component {
                                         </ButtonFeedback>
                                     :
                                         <ButtonFeedback
-                                            disabled = {this.state.isMySquadPlayerUpdating || this.state.isMySquadPlayerSubmitting}
+                                            disabled = {this.state.isMySquadPlayerUpdating}
                                             onPress={()=> this.updateSquad()}
                                             style={[
                                                 styles.btn,
@@ -618,7 +684,7 @@ class MyLionsPlayerDetails extends Component {
                                 null
 
                         */}
-                        <PlayerFigure playerID={this.playerid} />
+                        <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
                         <LionsFooter isLoaded={true} />
                     </Content>
                     < EYSFooter mySquadBtn={true} />
