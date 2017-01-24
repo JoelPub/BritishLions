@@ -28,11 +28,11 @@ const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
   <View >
      <ButtonFeedback style={styles.fbAuthButtonView} onPress={fbOnPress} >
          <Icon name='logo-facebook' style={styles.inputIcon} />
-         <Text style={styles.googleAuthText} >Signin in With Facebook</Text>
+         <Text style={styles.googleAuthText} >SIGN IN WITH FACEBOOK</Text>
      </ButtonFeedback>
       <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
           <Icon name='logo-google' style={styles.inputIcon} />
-          <Text style={styles.googleAuthText} >Signin in With Google</Text>
+          <Text style={styles.googleAuthText} >SIGN IN WITH GOOGLE</Text>
       </ButtonFeedback>
   </View>
 )
