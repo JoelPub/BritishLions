@@ -3,7 +3,7 @@
 import { Alert, AsyncStorage } from 'react-native'
 import Storage from 'react-native-storage'
 import { getAssembledUrl } from '../urlStorage'
-import {callApi} from '../services'
+import { service } from '../services'
 import { getAccessToken } from '../asyncStorageServices'
 import axios from 'axios'
 
@@ -43,7 +43,7 @@ export async function getGoodFormFavoritePlayerList() {
           		method: 'get',
           		onSuccess: (res) => {
           		     if(res){
-                         console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         //console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_FAVORITE_PLAYERS,
                            id,
@@ -56,7 +56,7 @@ export async function getGoodFormFavoritePlayerList() {
                      }
           		},
           		onError: (error) =>{
-          		    console.log('Warning error: ',error)
+          		    //console.log('Warning error: ',error)
           		    let errData = {
                         error:error,
                         auth:null
@@ -64,7 +64,7 @@ export async function getGoodFormFavoritePlayerList() {
                     reject && reject(errData)
           		},
           		onAuthorization: (msg) => {
-          		    console.log('msg', msg)
+          		    //console.log('msg', msg)
           		    let errData = {
                         error:null,
                         auth:msg
@@ -76,26 +76,9 @@ export async function getGoodFormFavoritePlayerList() {
           		isRequiredToken: true,
           		isRefreshToken: false
           	}
-          	if (opt.isRequiredToken) {
-                getAccessToken().then((accessToken) => {
-                    if (accessToken) {
-                        opt.auth = Object.assign(opt.auth,{bearer: accessToken})
-                        callApi(opt)
-                    } else {
-                        // Sign In is Required
-                        if (opt.onAuthorization) {
-                            opt.onAuthorization('Sign In is Required')
-                        }
-                    }
-                }).catch((error) => {
-                    // Sign In is Required
-                    if (opt.onAuthorization) {
-                        opt.onAuthorization('Sign In is Required')
-                    }
-                })
-            } else {
-                callApi(opt)
-            }
+
+            service(opt)
+          
         }
       }
 
@@ -105,10 +88,10 @@ export async function getGoodFormFavoritePlayerList() {
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          console.log('Cached Goodform Data: ',JSON.stringify(ret))
+          //console.log('Cached Goodform Data: ',JSON.stringify(ret))
           return ret
         }).catch(errData => {
-          console.log('error:', errData)
+          //console.log('error:', errData)
           return errData
         })
 }
@@ -132,7 +115,7 @@ export async function getUserCustomizedSquad() {
               method: 'get',
               onSuccess: (res) => {
                    if(res){
-                         console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         //console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_USER_SQUAD,
                            id,
@@ -145,7 +128,7 @@ export async function getUserCustomizedSquad() {
                      }
               },
               onError: (error) =>{
-                  console.log('Warning error: ',error)
+                  //console.log('Warning error: ',error)
                   let errData = {
                         error:error,
                         auth:null
@@ -153,7 +136,7 @@ export async function getUserCustomizedSquad() {
                     reject && reject(errData)
               },
               onAuthorization: (msg) => {
-                  console.log('msg', msg)
+                  //console.log('msg', msg)
                   let errData = {
                         error:null,
                         auth:msg
@@ -165,26 +148,8 @@ export async function getUserCustomizedSquad() {
               isRequiredToken: true,
               isRefreshToken: false
             }
-            if (opt.isRequiredToken) {
-                getAccessToken().then((accessToken) => {
-                    if (accessToken) {
-                        opt.auth = Object.assign(opt.auth,{bearer: accessToken})
-                        callApi(opt)
-                    } else {
-                        // Sign In is Required
-                        if (opt.onAuthorization) {
-                            opt.onAuthorization('Sign In is Required')
-                        }
-                    }
-                }).catch((error) => {
-                    // Sign In is Required
-                    if (opt.onAuthorization) {
-                        opt.onAuthorization('Sign In is Required')
-                    }
-                })
-            } else {
-                callApi(opt)
-            }
+
+            service(opt)
         }
       }
 
@@ -194,10 +159,10 @@ export async function getUserCustomizedSquad() {
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          console.log('Cached Goodform Data: ',JSON.stringify(ret))
+          //console.log('Cached Goodform Data: ',JSON.stringify(ret))
           return ret
         }).catch(errData => {
-          console.log('error:', errData)
+          //console.log('error:', errData)
           return errData
         })
 }

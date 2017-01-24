@@ -280,6 +280,7 @@
 		00E356EE1AD99517003FC87E /* LionsOfficialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LionsOfficialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LionsOfficialTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LionsOfficialTests.m; sourceTree = "<group>"; };
+		04267D711E36C1F5007F7C41 /* LionsOfficial.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LionsOfficial.entitlements; path = LionsOfficial/LionsOfficial.entitlements; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LionsOfficial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LionsOfficial.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -492,6 +493,7 @@
 		13B07FAE1A68108700A75B9A /* LionsOfficial */ = {
 			isa = PBXGroup;
 			children = (
+				04267D711E36C1F5007F7C41 /* LionsOfficial.entitlements */,
 				C243C18D1E24DA190052394C /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -759,6 +761,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = FU2WCVW9Q9;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1190,6 +1197,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = LionsOfficial/LionsOfficial.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FU2WCVW9Q9;
@@ -1233,6 +1241,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = LionsOfficial/LionsOfficial.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FU2WCVW9Q9;
 				FRAMEWORK_SEARCH_PATHS = (
