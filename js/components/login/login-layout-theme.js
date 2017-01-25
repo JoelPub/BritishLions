@@ -131,7 +131,7 @@ module.exports = styleSheetCreate({
         marginRight:0,
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
-        paddingTop: 10,
+        paddingTop: 15,
         android:{
             paddingTop: 5,
         }
