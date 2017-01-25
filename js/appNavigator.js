@@ -11,7 +11,7 @@ import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
 import Navigator from 'Navigator'
-import {register} from './components/utility/network'
+import { register } from './components/utility/network'
 import {configure,schedule} from './components/utility/notification'
 
 // Templates/pages
@@ -187,9 +187,7 @@ class AppNavigator extends Component {
         register(this.props.store)
         configure.then(
             schedule()
-            )
-        
-
+        )
     }
 
     popRoute() {
