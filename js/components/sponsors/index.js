@@ -58,8 +58,8 @@ class Sponsors extends Component {
     }
 
     render() {
-        let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers', 'Charity', 'Media']
-
+        //let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers', 'Charity', 'Media']
+        let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers']
                                         
         return (
             <Container theme={theme}>
