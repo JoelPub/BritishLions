@@ -113,14 +113,14 @@ export async function getEYC3ExpertsSquads() {
                         return response.json()
                     }).then(json => {
                         if (json) {
-                            //console.log('Fresh uncached eyc3 experts squads Data: ', json[0])
+                            console.log('Fresh uncached eyc3 experts squads Data: ', json)
                             storage.save({
                                 key: EYC3_EXPERTS_SQUADS,
                                 expires: 1000 * 3600,
                                 id,
-                                rawData: json[0]
+                                rawData: json
                             });
-                            resolve && resolve(json[0])
+                            resolve && resolve(json)
                         } else {
                             reject && reject(new Error('data parse error'))
                         }
