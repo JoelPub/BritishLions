@@ -421,6 +421,7 @@ class Login extends Component {
         }
     }
     _signIn = () => {
+        if(this.state.isFormSubmitting) return;
         GoogleSignin.signIn()
           .then((user) => {
               console.log(JSON.stringify(user));
@@ -436,6 +437,7 @@ class Login extends Component {
 
     /* facebook sign in func */
     _handleFBLogin = () => {
+        if(this.state.isFormSubmitting) return;
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {
                console.log(data);
