@@ -153,7 +153,7 @@ class MyLionsFavoriteList extends Component {
             for (var u in eyc3Players) {
                 if (eyc3Players[u].length > 0) {
                     eyc3Players[u].map((eyc3player, index) => {
-                        if (eyc3player.id === player.id) {
+                        if (eyc3player.id.toString() === player.id.toString()) {
                             player.eyc3PlayerScore = eyc3player.overall_score
                         }
                     })

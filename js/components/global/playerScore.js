@@ -65,6 +65,14 @@ const styles = styleSheetCreate({
         backgroundColor:'rgb(95,96,98)',
         borderRadius:5,
     },
+    btnCardInfoWrapper:{
+        height:48,
+        width:48,
+        backgroundColor:'transparent',
+        position:'absolute',
+        right:0,
+        top:0
+    },
     btnCardInfo:{
         height:24,
         width:24,
@@ -326,8 +334,10 @@ export default class PlayerScore extends Component {
                                     <View>
                                     <ButtonFeedback
                                         onPress={()=>this.props.pressInfo(true,'info')}
-                                        style={styles.btnCardInfo}>
-                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                        style={styles.btnCardInfoWrapper}>
+                                        <View style={styles.btnCardInfo}>
+                                            <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                        </View>
                                     </ButtonFeedback>
 
                                     {
