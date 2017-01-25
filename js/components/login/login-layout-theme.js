@@ -107,8 +107,6 @@ module.exports = styleSheetCreate({
     },
     googleAuthButtonView:{
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         borderRadius: 25,
         backgroundColor: 'rgba(228,64,46,1)',
         marginBottom: 20,
@@ -117,13 +115,20 @@ module.exports = styleSheetCreate({
     },
     fbAuthButtonView:{
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         borderRadius: 25,
         backgroundColor: 'rgba(24,101,176,1)',
         marginBottom: 20,
         borderWidth: 0,
         height: 50
+    },
+    googleFBSupView:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 25,
+        borderWidth: 0,
+        height: 50,
+        justifyContent: 'center',
+        paddingLeft:10,
     },
     googleAuthText:{
         alignItems: 'center',
@@ -143,13 +148,18 @@ module.exports = styleSheetCreate({
         marginRight:0,
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
-        paddingTop: 10
+        paddingTop: 15,
+        android:{
+            paddingTop: 5,
+        }
     },
+
     inputIcon: {
-        position: 'absolute',
         fontSize: 24,
-        left: 18,
-        top: 14
+        marginTop:14,
+        marginLeft:14,
+        width:30,
+        height:20
 
     },
     input: {
