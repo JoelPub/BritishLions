@@ -97,7 +97,7 @@ class MyLionsExpertsList extends Component {
     if (this.isUnMounted) return // return nothing if the component is already unmounted
     getEYC3ExpertsSquads().then((ExpertsData) => {
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
-            let  experts = ExpertmModel.fromJS(ExpertsData.experts)
+            let  experts = ExpertmModel.fromJS(ExpertsData)
             this.setState({
               experts: experts,
               dataSource: this.ds.cloneWithRows(experts.toArray()),
