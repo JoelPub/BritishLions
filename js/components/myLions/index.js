@@ -147,8 +147,8 @@ class MyLions extends Component {
                         <LionsHeader title='MY LIONS' />
                         <Content >
                             <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
-                                <Image resizeMode='stretch'
-                                source={require('../../../images/content/mylionsBanner.png')} style={styles.mylionsBanner}>
+                                <Image resizeMode='cover'
+                                source={require('../../../images/content/mylionsBanner.jpg')} style={styles.mylionsBanner}>
                                 </Image>
                             </ImagePlaceholder>
 
