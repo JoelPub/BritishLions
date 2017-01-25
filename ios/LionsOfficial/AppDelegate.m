@@ -55,7 +55,13 @@
   return google || fb ;
   
 }
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
+{
+  BOOL fb = [[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options];
+             
+  return  fb ;
 
+}
 
 // Required to register for notifications
 - (void)application:(UIApplication *)application
