@@ -72,7 +72,7 @@ export async function getEYC3FullPlayerList() {
     }
 
 
-    return    await storage.load({
+    return await storage.load({
           key: EYC3_FULL_PLAYERS,
           autoSync: true,
           id:'1001',
@@ -95,31 +95,43 @@ export async function getEYC3FullPlayerList() {
 export async function getEYC3ExpertsSquads() {
     storage.sync = {
         EYC3ExpertsSquads(params){
-          let {id, resolve, reject } = params
-          fetch(getAssembledUrl(EYC3_EXPERTS_SQUADS), {
-            method: 'POST'
-          }).then(response => {
-            return response.json()
-          }).then(json => {
-            if(json){
-              console.log('Fresh uncached eyc3 experts squads Data: ',JSON.stringify(json[0]))
-              storage.save({
-                key: EYC3_EXPERTS_SQUADS,
-                expires: 1000 * 3600,
-                id,
-                rawData: json[0]
-              });
-              resolve && resolve(json[0])
-            }
-            else{
-              reject && reject(new Error('data parse error'))
-            }
-          }).catch(err => {
-            console.log('Warning error: ',err)
-            reject && reject(err)
-          })
+            getAccessToken().then((accessToken) => {
+                getUserId().then((userID) =>{
+                    console.log('accessToken: ', accessToken)
+                    console.log('userID: ', userID)
+                    let {id, resolve, reject } = params
+                    fetch(getAssembledUrl(EYC3_EXPERTS_SQUADS), {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json; charset=utf-8"
+                        },
+                        body: JSON.stringify({
+                            'access_token':accessToken,
+                            'id':userID
+                        })
+                    }).then(response => {
+                        return response.json()
+                    }).then(json => {
+                        if (json) {
+                            //console.log('Fresh uncached eyc3 experts squads Data: ', json[0])
+                            storage.save({
+                                key: EYC3_EXPERTS_SQUADS,
+                                expires: 1000 * 3600,
+                                id,
+                                rawData: json[0]
+                            });
+                            resolve && resolve(json[0])
+                        } else {
+                            reject && reject(new Error('data parse error'))
+                        }
+                    }).catch(err => {
+                        //console.log('Warning error: ',err)
+                        reject && reject(err)
+                    }) 
+                })
+            })
         }
-      }
+    }
 
     return  await storage.load({
           key: EYC3_EXPERTS_SQUADS,
@@ -127,10 +139,10 @@ export async function getEYC3ExpertsSquads() {
           id:'1101',
           syncInBackground: true
         }).then(ret => {
-          console.log('Cached eyc3 experts squads Data: ',JSON.stringify(ret))
+          //console.log('Cached eyc3 experts squads Data: ', ret)
           return ret
         }).catch(err => {
-          console.warn(err.message)
+          //console.warn(err.message)
           switch (err.name) {
               case 'NotFoundError':
                  return 0
