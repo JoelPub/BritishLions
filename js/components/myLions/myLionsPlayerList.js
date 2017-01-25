@@ -465,7 +465,6 @@ class MyLionsPlayerList extends Component {
                 this._showError(error) // prompt error
             })
         })
-        removeEYC3FullPlayerList()
     }
 
     componentDidMount() {
