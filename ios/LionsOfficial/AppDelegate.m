@@ -58,11 +58,13 @@
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
   BOOL fb = [[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options];
+  BOOL google = [[GIDSignIn sharedInstance] handleURL:url
+                                    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                           annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
              
-  return  fb ;
+  return  fb || google;
 
 }
-
 // Required to register for notifications
 - (void)application:(UIApplication *)application
  didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
