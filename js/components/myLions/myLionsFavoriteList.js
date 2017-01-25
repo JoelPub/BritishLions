@@ -377,14 +377,14 @@ class MyLionsFavoriteList extends Component {
                                 <View>
                                     {
                                         !this.state.favoritePlayers.getRowCount()? 
-                                            <View>
+                                            <ScrollView>
                                                 <View style={styles.emptyPlayer}>
                                                     <Text style={styles.emptyPlayerText}>The favourite player list is currently empty, you can add a new favourite player from the player detail page.</Text>
                                                 </View>
                                                 <LionsFooter isLoaded={true} />
-                                            </View>
+                                            </ScrollView>
                                         : 
-                                            <View>
+                                            <ScrollView>
                                                 <ListView 
                                                     dataSource={this.state.favoritePlayers}
                                                     renderRow={this._renderRow.bind(this)}
@@ -392,7 +392,7 @@ class MyLionsFavoriteList extends Component {
                                                     contentContainerStyle={styles.gridList}
                                                     renderFooter ={this._renderFooter}
                                                 />
-                                            </View>
+                                            </ScrollView>
                                     } 
                                 </View>
                             :
