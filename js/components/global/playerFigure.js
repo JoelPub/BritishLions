@@ -259,8 +259,10 @@ export default class PlayerFigure extends Component {
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
             let profile=nextProps.profile.first()
             profile.forEach((value,index)=>{
-                if(index==='Kicking'&&value.trim()!=='') {
-                    profile=profile.set(index,JSON.parse(value))
+                if (value.trim){
+                    if(index==='Kicking'&&value.trim()!==''&&value.trim) {
+                        profile=profile.set(index,JSON.parse(value))
+                    }
                 }
             })
             this.setState({isLoaded:true,profile:profile.toJS()})
