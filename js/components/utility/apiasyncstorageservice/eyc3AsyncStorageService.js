@@ -39,10 +39,13 @@ export async function getEYC3FullPlayerList() {
                   let {id, resolve, reject } = params
                   fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
                     method: 'POST',
-                    data: {
+                    headers: {
+                              "Content-Type": "application/json; charset=utf-8"
+                            },
+                    body: JSON.stringify({
                       'access_token':accessToken,
                       'id':userID
-                    }
+                    })
                   }).then(response => {
                     return response.json()
                   }).then(json => {
@@ -69,8 +72,7 @@ export async function getEYC3FullPlayerList() {
     }
 
 
-    return
-    await storage.load({
+    return    await storage.load({
           key: EYC3_FULL_PLAYERS,
           autoSync: true,
           id:'1001',
