@@ -88,6 +88,7 @@ export function callApi(opt, axiosInstance) {
 
 
 	NetInfo.fetch().done((connectionInfo) => {
+		console.log('connectionInfo service: ', connectionInfo)
 		let netInfos = connectionInfo.toLowerCase()
 
 		if(netInfos === 'unknown' || netInfos === 'none') {

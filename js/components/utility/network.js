@@ -2,17 +2,14 @@ import { NetInfo } from 'react-native'
 import { setNetworkStatus } from '../../actions/network'
 
 export function register(store){
-	NetInfo.addEventListener('change',
-	        (connectionInfo) => {
-	        		store.dispatch(setNetworkStatus(connectionInfo))
-	        }
-        )
+	NetInfo.addEventListener('change', (connectionInfo) => {
+		console.log('connectionInfo: ', connectionInfo)
+        store.dispatch(setNetworkStatus(connectionInfo))
+    })
 }
 
 export function getNetinfo(callback) {
-	NetInfo.fetch().done(
-	        (connectionInfo) => {
-	        		callback(connectionInfo.toUpperCase())
-	        }
-        )
+	NetInfo.fetch().done((connectionInfo) => {
+		callback(connectionInfo.toUpperCase())
+    })
 }
