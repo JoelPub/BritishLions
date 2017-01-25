@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ListView} from 'react-native'
+import { Image, View, ScrollView, ListView, ActivityIndicator} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -18,6 +18,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import EYSFooter from '../global/eySponsoredFooter'
+import loader from '../../themes/loader-position'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
@@ -43,9 +44,9 @@ const ExpertsHeader = () => (
 )
 const ExpertDescription = ({rowData}) => (
   <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}  >{rowData.name}</Text>
+    <Text style={styles.textName}>{rowData.name}</Text>
     <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
-    <Text style={styles.textRating}>SQAD RATING: {rowData.squad_rating}</Text>
+    <Text style={styles.textRating}>SQUAD RATING: {rowData.squad_rating}</Text>
   </View>
 
 )
@@ -65,7 +66,8 @@ class MyLionsExpertsList extends Component {
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
-      experts: []
+      experts: [],
+      isLoaded: false
     };
   }
   _navToDetail = (item) => {
@@ -77,16 +79,22 @@ class MyLionsExpertsList extends Component {
       <Container theme={theme}>
         <View style={styles.container}>
           <LionsHeader back={true} title='MY LIONS' />
-          <ScrollView>
+          <View style={{flex: 1}}>
             <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
-            <ListView
-              dataSource={this.state.dataSource}
-              enableEmptySections={true}
-              renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
-              style={styles.squadListView}
-            />
+            {
+              this.state.isLoaded?
+                <ListView
+                  dataSource={this.state.dataSource}
+                  enableEmptySections={true}
+                  renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
+                  style={styles.squadListView}
+                />
+
+              :
+                <ActivityIndicator style={loader.centered} size='large' />
+            }
             <LionsFooter isLoaded={true} />
-          </ScrollView>
+          </View>
           <EYSFooter mySquadBtn={true}/>
           <LoginRequire/>
         </View>
@@ -94,13 +102,16 @@ class MyLionsExpertsList extends Component {
     )
   }
   handdleData = () => {
-    if (this.isUnMounted) return // return nothing if the component is already unmounted
     getEYC3ExpertsSquads().then((ExpertsData) => {
+      if (this.isUnMounted) return // return nothing if the component is already unmounted
+        
+      console.log('ExpertsData: ', ExpertsData)
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
             let  experts = ExpertmModel.fromJS(ExpertsData)
             this.setState({
               experts: experts,
               dataSource: this.ds.cloneWithRows(experts.toArray()),
+              isLoaded: true
             })
         }
     }).catch((error) => {
