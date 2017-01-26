@@ -245,18 +245,19 @@ class MyLionsPlayerList extends Component {
 
      _mergeEYC3Player(playerList, eyc3Players){
          let mergedPlayers = []
-         // console.log('eyc3Players:', eyc3Players)
-         // console.log('playerList:', playerList)
-         // if (eyc3Players.length > 0) {
-         //     eyc3Players.map((eyc3player, index) => {
-         //         playerList.map((player,j) => {
-         //             if (eyc3player.id === player.id) {
-         //                 player.eyc3PlayerScore = eyc3player.heightm
-         //                 mergedPlayers.push(player)
-         //             }
-         //         })
-         //     })
-         // }
+         console.log('eyc3Players:', JSON.stringify(eyc3Players[0]))
+         console.log('playerList:', JSON.stringify(playerList))
+         if (eyc3Players.length > 0) {
+              for(var i = 0; i<eyc3Players.length; i++){
+                  for(var j = 0; j<playerList.length; j++){
+                      if (eyc3Players[i].id.toString() === playerList[j].id) {
+                          console.log('succeed:', JSON.stringify(eyc3Players[i].id))
+                          playerList[j].eyc3PlayerScore = eyc3Players[i]["overall_score"]
+                          mergedPlayers.push(playerList[j])
+                      }
+                  }
+              }
+         }
          playerList.map((item,index)=>{
             let r=eyc3Players.find((node)=>node.id.toString()===item.id)
             mergedPlayers.push(Object.assign(item,{eycsPlayerScore:r===undefined?'N/A':r.overall_score}))
