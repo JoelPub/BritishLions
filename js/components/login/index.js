@@ -46,8 +46,8 @@ class Login extends Component {
         super(props)
         this._scrollView = KeyboardAwareScrollView
         this.state = {
-            email: 'anonuevoroy@gmail.com',
-            password: '123456pP',
+            email: '',
+            password: '',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -324,9 +324,11 @@ class Login extends Component {
         let {token} =this.state.fbUser
         console.log(token)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
-        fetch({ method: 'GET', url:httpUrl }).then(json => {
-            console.log(json)
-            let nameArr = json.name.split(' ')
+        fetch({ method: 'GET',url: httpUrl })
+           .then((response) => response.json())
+           .then( (json) => {
+           console.log('json: ', json)
+           let nameArr  = json.name.split(' ')
            let lastName = nameArr[0]
            let firstName=  nameArr[1]
             if(!json.email) {

@@ -35,6 +35,8 @@ class SignUp extends Component {
             newEvent: false,
             newPartners: false,
             tc: false,
+            loginType:'',
+            loginToken:'',
             visibleHeight: Dimensions.get('window').height,
             errorCheck: {
                 firstName: null,
@@ -73,14 +75,15 @@ class SignUp extends Component {
         this.props.popRoute()
     }
     _GoogleSignIn = () => {
+         this.setState({user: {}})
         GoogleSignin.signIn()
           .then((user) => {
               console.log(user);
-              this.setState({user: user});
+              this.setState({user: user})
               this._googleHandleSignUp(true)
           })
           .catch((err) => {
-              console.log('WRONG SIGNIN', err);
+              console.log('WRONG SIGNIN', err)
           })
           .done();
     }
@@ -105,11 +108,13 @@ class SignUp extends Component {
             }
         })
         let {token} =this.state.fbUser.credentials
-        console.log('this.state.fbUser.credentials: ',this.state.fbUser.credentials)
+        console.log('this.state.fbUser.credentials: ',this.state.fbUser)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
-        fetch({ method: 'GET', url:httpUrl }).then(json => {
-            console.log(json)
-            let nameArr = json.name.split(' ')
+        fetch({ method: 'GET',url: httpUrl })
+            .then((response) => response.json())
+            .then( (json) => {
+            console.log('json: ', json)
+            let nameArr  = json.name.split(' ')
             let lastName = nameArr[0]
             let firstName=  nameArr[1]
             if(isFormValidate) {
@@ -130,7 +135,13 @@ class SignUp extends Component {
                     onAxiosEnd: () => {
                         this.setState({ isFormSubmitting: false })
                     },
-                    onSuccess: this._userSignUp.bind(this),
+                    onSuccess: () => {
+                        this.setState({
+                            loginType:'facebook',
+                            loginToken:token,
+                        })
+                        this._userSignUp()
+                    },
                     onError: (res) => {
                         console.log('注册失败')
                         console.log(res)
@@ -142,6 +153,7 @@ class SignUp extends Component {
                         this._scrollView.scrollToPosition(0,0,false)
                     }
                 }
+                console.log('postion 222,', JSON.stringify(options))
 
                 service(options)
 
@@ -179,7 +191,7 @@ class SignUp extends Component {
                 data: {
                     'firstName': firstName,
                     'lastName': lastName,
-                    'email': this.state.user.email,
+                    'email':this.state.user.email,
                     'password': 'Text1234',
                     'newEvent': true,
                     'newPartners': true,
@@ -191,7 +203,24 @@ class SignUp extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._userSignUp.bind(this),
+                onSuccess: () => {
+                   console.log(JSON.stringify(this.state.user.accessToken))
+                   if(!this.state.user.accessToken){
+                       NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
+                       .then((token) => {
+                            this.setState({
+                               loginType:'google',
+                               loginToken:token,
+                            })
+                       })
+                   }else {
+                        this.setState({
+                           loginType:'google',
+                           loginToken:this.state.user.accessToken,
+                        })
+                   }
+                   this._userSignUp()
+                },
                 onError: (res) => {
                     this.setState({
                         customMessages: res,
@@ -201,7 +230,7 @@ class SignUp extends Component {
                     this._scrollView.scrollToPosition(0,0,false)
                 }
             }
-
+            console.log('postion 111,', JSON.stringify(options))
             service(options)
 
         } else {
@@ -230,7 +259,7 @@ class SignUp extends Component {
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
-                onSuccess: this._userSignUp.bind(this),
+                onSuccess: this._userSignUp(),
                 onError: (res) => {
                     this.setState({ 
                         customMessages: res,
@@ -242,6 +271,7 @@ class SignUp extends Component {
                 },
                 channel:'SignUp'
             }
+            console.log('postion 333,', JSON.stringify(options))
 
             service(options)
 
@@ -273,11 +303,13 @@ class SignUp extends Component {
     }
 
     _login() {
+        console.log('starting....token: ', this.state.loginToken)
+        console.log('starting....loginType: ', this.state.loginType)
         let options = {
             url: this.serviceRefreshTokenUrl,
             data: {
-                'username': this.state.email,
-                'password': this.state.password,
+                'facebook': this.state.loginType === 'facebook' ? this.state.loginToken : '',
+                'google': this.state.loginType === 'google' ? this.state.loginToken : '',
                 'app_version': APP_VERSION,
                 'grant_type': 'password'
             },
@@ -298,6 +330,7 @@ class SignUp extends Component {
                 this._scrollView.scrollToPosition(0,0,false)
             }
         }
+        console.log('postion 444,', JSON.stringify(options))
 
         service(options)
     }
