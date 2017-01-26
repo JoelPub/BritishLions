@@ -191,7 +191,7 @@ class SignUp extends Component {
                 data: {
                     'firstName': firstName,
                     'lastName': lastName,
-                    'email':this.state.user.email,
+                    'email': this.state.user.email,
                     'password': 'Text1234',
                     'newEvent': true,
                     'newPartners': true,
