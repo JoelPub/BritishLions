@@ -28,19 +28,19 @@ import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyn
 
 
 //import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
-//import ExpertsData from  '../../mockDataJson/expertsJson.json'
+import ExpertsDataJSON from  '../../mockDataJson/expertsJson.json'
 
 
 const ExpertsHeader = ({rowData}) => (
     <View style={styles.searchImg}>
-        <Image transparent resizeMode='stretch' source={{uri:rowData.experts.image}} style={styles.cellExpertHeader} />
+        {<Image transparent resizeMode='stretch' source={{uri:rowData.image}} style={styles.cellExpertHeader} />}
     </View>
 )
 const ExpertDescription = ({rowData}) => (
     <View style={styles.cellExpertInfo}>
-        <Text style={styles.textName}>{rowData.experts.name}</Text>
-        <Text style={styles.textDescription} numberOfLines={2} >{rowData.experts.description}</Text>
-        <Text style={styles.textRating}>SQUAD RATING: {rowData.experts.squad_rating}</Text>
+        <Text style={styles.textName}>{rowData.name}</Text>
+        <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
+        <Text style={styles.textRating}>SQUAD RATING: {rowData.squad_rating}</Text>
     </View>
 
 )
@@ -70,17 +70,21 @@ class MyLionsExpertsList extends Component {
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
-      if (this.isUnMounted) return // return nothing if the component is already unmounted
-      if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
-          let experts = ExpertmModel.fromJS(ExpertsData)
-          //console.log(ExpertsData, experts.toArray(), experts.toJS())
-          this.setState({
-            experts: ExpertsData,
-            //dataSource: this.ds.cloneWithRows(experts.toArray()),
-            dataSource: this.ds.cloneWithRows(ExpertsData),
-            isLoaded: true
-          })
-      }
+        //ExpertsData = ExpertsData[0]
+        ExpertsData = ExpertsDataJSON // mock data only please remove once api is ready
+
+        //console.log('ExpertsData From EY: ', ExpertsData)
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
+        
+        if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
+            let experts = ExpertmModel.fromJS(ExpertsData.experts)
+            
+            this.setState({
+                experts: ExpertsData,
+                dataSource: this.ds.cloneWithRows(experts.toArray()),
+                isLoaded: true
+            })
+        }
     }).catch((error) => {
         console.log('Error when try to get the EYC3 full player list: ', error)
     })
