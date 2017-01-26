@@ -164,11 +164,21 @@ class SignUp extends Component {
             }
         })
         if(isFormValidate) {
+            let lastName = ''
+            let firstName = ''
+            if(this.state.user.name){
+                let nameArr = this.state.user.name.split(' ')
+                lastName = nameArr[0]
+                firstName=  nameArr[1]
+            }else if(this.state.user.familyName){
+                lastName = this.state.user.familyName
+                firstName=  this.state.user.givenName
+            }
             let options = {
                 url: 'https://www.api-ukchanges2.co.uk/api/users',
                 data: {
-                    'firstName': this.state.user.familyName,
-                    'lastName': this.state.user.givenName,
+                    'firstName': firstName,
+                    'lastName': lastName,
                     'email': this.state.user.email,
                     'password': 'Text1234',
                     'newEvent': true,
