@@ -579,7 +579,7 @@ class MyLionsPlayerDetails extends Component {
                                         </ButtonFeedback>
                                     :
                                         <ButtonFeedback
-                                            disabled = {this.state.isMySquadPlayerUpdating}
+                                            disabled = {this.state.isMySquadPlayerUpdating || this.state.isMySquadPlayerSubmitting}
                                             onPress={()=> this.updateSquad()}
                                             style={[
                                                 styles.btn,
