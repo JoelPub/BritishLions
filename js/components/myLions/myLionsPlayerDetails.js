@@ -477,6 +477,7 @@ class MyLionsPlayerDetails extends Component {
                             }
                         }
                         else{
+                            console.log('tmpFeed: ', tmpFeed)
                             if(tmpFeed.get(position).trim()==='') {
                                 tmpFeed=tmpFeed.set(position,this.playerid)
                             }
