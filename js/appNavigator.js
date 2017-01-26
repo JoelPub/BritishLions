@@ -157,7 +157,7 @@ class AppNavigator extends Component {
         var storage = new Storage({
             size: 1000,
             storageBackend: AsyncStorage,
-            defaultExpires: 1000 * 3600 * 24,
+            defaultExpires: 1000 * 3600,
             enableCache: true,
         })
         global.storage = storage
