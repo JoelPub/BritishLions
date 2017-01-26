@@ -9,7 +9,7 @@ const EYC3_FULL_PLAYERS = 'EYC3FullPlayers' // Note: Do not use underscore("_") 
 const EYC3_EXPERTS_SQUADS = 'EYC3ExpertsSquads'
 
 export function removeEYC3FullPlayerList(){
-    console.log('list cleanup')
+    //console.log('list cleanup')
     storage.remove({
         key: EYC3_FULL_PLAYERS,
         id: '1001'
@@ -31,11 +31,11 @@ export async function getEYC3FullPlayerList() {
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
         EYC3FullPlayers(params){
-        console.log('start........................')
+          //console.log('start........................')
           getAccessToken().then((accessToken) => {
               getUserId().then((userID) =>{
-              console.log('accessToken: ',accessToken)
-              console.log('userID: ',userID)
+                  //console.log('accessToken: ',accessToken)
+                  //console.log('userID: ',userID)
                   let {id, resolve, reject } = params
                   fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
                     method: 'POST',
@@ -50,7 +50,7 @@ export async function getEYC3FullPlayerList() {
                     return response.json()
                   }).then(json => {
                     if(json){
-                      console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+                      //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
                       storage.save({
                         key: EYC3_FULL_PLAYERS,
                         expires: 1000 * 3600,
@@ -63,7 +63,7 @@ export async function getEYC3FullPlayerList() {
                       reject && reject(new Error('data parse error'))
                     }
                   }).catch(err => {
-                    console.log('Warning error: ',err)
+                    //console.log('Warning error: ',err)
                     reject && reject(err)
                   })
               })
@@ -78,10 +78,10 @@ export async function getEYC3FullPlayerList() {
           id:'1001',
           syncInBackground: true
         }).then(ret => {
-          console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+          //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          console.log(err.message);
+          //console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
