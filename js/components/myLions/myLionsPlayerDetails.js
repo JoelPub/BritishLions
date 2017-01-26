@@ -251,22 +251,19 @@ class MyLionsPlayerDetails extends Component {
                 this.setState({ isLoaded:true })
             },
             onSuccess: (res) => {
-                 this.setState({
-                    isLoaded:true
-                },()=>{
-                    let profile=ProfileListModel.fromJS([new ProfileModel()])
-                    if(res.data instanceof Array  && res.data.length!==0) {
-                        profile=ProfileListModel.fromJS(res.data)
-                    }
-                    else {
-                        profile=profile.update(0,value=>{
-                            return value=value.update('Attack',v=>{
-                                return v=FigureListModel.fromJS([new FigureModel()])
-                            })
+                let profile = ProfileListModel.fromJS([new ProfileModel()])
+
+                if (res.data instanceof Array  && res.data.length!==0) {
+                    profile=ProfileListModel.fromJS(res.data)
+                } else {
+                    profile = profile.update(0,value=>{
+                        return value=value.update('Attack',v=>{
+                            return v=FigureListModel.fromJS([new FigureModel()])
                         })
-                    }
-                    this.setState({ profile })
-                })
+                    })
+                }
+                
+                this.setState({ profile, isLoaded: true })
             },
             onError: (res) => {
                 this.setState({isLoaded:true }, () => {
@@ -582,7 +579,7 @@ class MyLionsPlayerDetails extends Component {
                                         </ButtonFeedback>
                                     :
                                         <ButtonFeedback
-                                            disabled = {this.state.isMySquadPlayerUpdating}
+                                            disabled = {this.state.isMySquadPlayerUpdating || this.state.isMySquadPlayerSubmitting}
                                             onPress={()=> this.updateSquad()}
                                             style={[
                                                 styles.btn,

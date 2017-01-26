@@ -105,7 +105,7 @@ module.exports = styleSheetCreate({
         borderWidth: 0,
         paddingLeft: 22
     },
-    googleAuthButtonView:{
+    authButton: {
         flexDirection: 'row',
         borderRadius: 25,
         backgroundColor: 'rgba(228,64,46,1)',
@@ -113,62 +113,53 @@ module.exports = styleSheetCreate({
         borderWidth: 0,
         height: 50
     },
-    fbAuthButtonView:{
-        flexDirection: 'row',
-        borderRadius: 25,
-        backgroundColor: 'rgba(24,101,176,1)',
-        marginBottom: 20,
-        borderWidth: 0,
-        height: 50
+    authButtonFB: {
+        backgroundColor: 'rgba(24,101,176,1)'
     },
-    googleFBSupView:{
+    authButtonGoogle: {
+        backgroundColor: 'rgba(228,64,46,1)'
+    },
+    authButtonIcon: {
+        fontSize: 24,
+        marginTop: 14,
+        marginLeft: 16,
+        width: 40,
+        height: 20,
+        android: {
+            marginTop: 13
+        }
+    },
+    authButtonTextView:{
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 25,
         borderWidth: 0,
         height: 50,
-        justifyContent: 'center',
-        paddingLeft:10,
+        justifyContent: 'center'
     },
-    googleAuthText:{
+    authButtonText:{
+        backgroundColor: 'transparent',
         alignItems: 'center',
-        marginLeft:0,
-        marginRight:0,
+        marginLeft: 0,
+        marginRight: 0,
         fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        paddingTop: 15,
-        android:{
-            paddingTop: 5,
-        }
-
-    },
-    fbAuthText:{
-        alignItems: 'center',
-        marginLeft:0,
-        marginRight:0,
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
+        fontSize: 23,
         paddingTop: 15,
         android:{
             paddingTop: 5,
         }
     },
-
     inputIcon: {
-        fontSize: 24,
+        fontSize: 23,
         marginTop:14,
         marginLeft:14,
         width:30,
         height:20
-
     },
     input: {
         fontSize: 16,
         padding: 0
     },
-
-
-
     tips: {
         flexDirection: 'row',
         flex: 1,

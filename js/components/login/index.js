@@ -26,16 +26,16 @@ import fetch from '../utility/fetch'
 
 const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
   <View >
-     <ButtonFeedback style={styles.fbAuthButtonView} onPress={fbOnPress} >
-         <Icon name='logo-facebook' style={styles.inputIcon} />
-         <View style={styles.googleFBSupView}>
-             <Text style={styles.fbAuthText} >SIGN IN WITH FACEBOOK</Text>
+     <ButtonFeedback style={[styles.authButton, styles.authButtonFB]} onPress={fbOnPress} >
+         <Icon name='logo-facebook' style={styles.authButtonIcon} />
+         <View style={styles.authButtonTextView}>
+             <Text style={styles.authButtonText}>SIGN IN WITH FACEBOOK</Text>
          </View>
      </ButtonFeedback>
-      <ButtonFeedback style={styles.googleAuthButtonView} onPress={googleOnPress}>
-          <Icon name='logo-googleplus' style={styles.inputIcon} />
-          <View style={styles.googleFBSupView}>
-            <Text style={styles.googleAuthText}>SIGN IN WITH GOOGLE</Text>
+      <ButtonFeedback style={[styles.authButton, styles.authButtonGoogle]} onPress={googleOnPress}>
+          <Icon name='logo-googleplus' style={styles.authButtonIcon} />
+          <View style={styles.authButtonTextView}>
+            <Text style={styles.authButtonText}>SIGN IN WITH GOOGLE</Text>
           </View>
       </ButtonFeedback>
   </View>

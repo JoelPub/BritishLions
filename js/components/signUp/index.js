@@ -391,14 +391,22 @@ class SignUp extends Component {
                                     <ErrorHandler
                                         errorCheck={this.state.errorCheck}
                                         callbackParent={this._handleSignUp.bind(this)}/>
-                                    <ButtonFeedback style={styles.btnFBSignUp} onPress={this._FBSignIn}>
-                                        <Icon name='logo-facebook' style={styles.inputIcon} />
-                                        <Text style={styles.googleAuthText}>CONTINUE WITH FACEBOOK</Text>
-                                    </ButtonFeedback>
-                                    <ButtonFeedback style={styles.btnGoogleSignUp} onPress={this._GoogleSignIn}>
-                                        <Icon name='logo-googleplus' style={styles.inputIcon} />
-                                        <Text style={styles.googleAuthText}>CONTINUE WITH GOOGLE</Text>
-                                    </ButtonFeedback>
+
+                                    <View>
+                                        <ButtonFeedback style={[styles.authButton, styles.authButtonFB]} onPress={this._FBSignIn}>
+                                            <Icon name='logo-facebook' style={styles.authButtonIcon} />
+                                            <View style={styles.authButtonTextView}>
+                                                <Text style={styles.authButtonText}>CONTINUE WITH FACEBOOK</Text>
+                                            </View>
+                                        </ButtonFeedback>
+                                        <ButtonFeedback style={[styles.authButton, styles.authButtonGoogle]} onPress={this._GoogleSignIn}>
+                                            <Icon name='logo-googleplus' style={styles.authButtonIcon} />
+                                            <View style={styles.authButtonTextView}>
+                                              <Text style={styles.authButtonText}>CONTINUE WITH GOOGLE</Text>
+                                            </View>
+                                        </ButtonFeedback>
+                                    </View>
+
                                     <View style={styles.mailSignUpView}>
                                         <Text style={styles.mailSignUpText}>OR REGISTER WITH EMAIL</Text>
                                     </View>

@@ -203,16 +203,16 @@ export default class PlayerFigure extends Component {
 	constructor(props){
         super(props)
         this.state = {
-            underlineLength:[],
-            tabStatus:[],
-            tabSubjects:['Attack','Defense','Kicking'],
+            underlineLength: [],
+            tabStatus: [],
+            tabSubjects: ['Attack','Defense','Kicking'],
             profile:{},
             isLoaded:false
     	}
         this.currentPage = 0
     }
 
-    changePage(page) {
+    changePage (page) {
         this.updateStyle(page) 
         this.refs['swiper'].scrollBy(page-this.currentPage,true)
         this.currentPage=page
@@ -241,7 +241,6 @@ export default class PlayerFigure extends Component {
         })
         this.setState({underlineLength:widthArray.slice()})
         this.updateStyle(page) 
-
     }
 
     _mapJSON(data, colMax = 2) {
@@ -275,7 +274,6 @@ export default class PlayerFigure extends Component {
             })
             this.setState({isLoaded:true,profile:profile.toJS()})
         }
-
     }
 
 	render() {
@@ -307,16 +305,16 @@ export default class PlayerFigure extends Component {
                                 <View style={styles.playerPerfromance}>
                                     <Text style={styles.performanceText}>CONSISTENCY</Text>
                                     {
-                                        this.state.profile.player_consistency>0&&
+                                        this.state.profile.player_consistency == 1&&
                                         <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
                                     }
                                     {
-                                        this.state.profile.player_consistency==0&&
+                                        this.state.profile.player_consistency == 2&&
                                         <Icon name='md-arrow-forward' style={styles.playerPerformanceTrend}/>
                                     }
                                     {
 
-                                        this.state.profile.player_consistency<0&&
+                                        this.state.profile.player_consistency == 3&&
                                         <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
                                     }
                                 </View>
@@ -325,17 +323,20 @@ export default class PlayerFigure extends Component {
                                 <View style={styles.playerFigureView}>
                                     <View style={styles.playerFigureTypeView}>
                                     {
-                                        this.state.tabSubjects.map((node,page)=>{
+                                        this.state.tabSubjects.map((node, page)=>{
+                                            node = node.toUpperCase()
                                             return (
-                                            <ButtonFeedback 
-                                            style={styles.playerFigureType} 
-                                            onPress={()=>this.changePage(page)}
-                                            key={page}>
-                                                <Text 
-                                                style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
-                                                onLayout={this.measureTab.bind(this,page)}>{node.toUpperCase()}</Text>
-                                                <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
-                                            </ButtonFeedback>
+                                                <ButtonFeedback 
+                                                    style={styles.playerFigureType} 
+                                                    onPress={()=>this.changePage(page)}
+                                                    key={page}>
+                                                    <Text 
+                                                        style={[styles.playerFigureTypeText,{color:this.state.tabStatus[page]?styleVar.colorTextDarkGrey:styleVar.colorGrey2}]}
+                                                        onLayout={this.measureTab.bind(this,page)}>
+                                                            { node === 'DEFENSE'? 'DEFENCE': node}
+                                                    </Text>
+                                                    <View style={{height:3,width:this.state.underlineLength[page],backgroundColor:this.state.tabStatus[page]?styleVar.colorYellow:'transparent'}} />
+                                                </ButtonFeedback>
                                             )
                                         },this)
                                     }
@@ -393,5 +394,4 @@ export default class PlayerFigure extends Component {
             </View>            
 			)
 	}
-
 }
