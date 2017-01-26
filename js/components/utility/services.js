@@ -38,7 +38,7 @@ function errorHandler(error, opt) {
                 errorDescription = 'Authorization has been denied. Please try again later.'
                 break
             case 409:
-                errorDescription = 'The email you entered is already in use by another account. Please specify a different email address.'
+                errorDescription = opt.channel==='MyAccount'?'The email you entered is already in use. Please specify a different email address.':'The email you entered is already in use by another account. Please specify a different email address.'
                 break
             case 400: // Bad Request (invalid data submitted)
             	if (errorType === 'invalid_grant') {

@@ -239,7 +239,8 @@ class SignUp extends Component {
                     })
 
                     this._scrollView.scrollToPosition(0,0,false)
-                }
+                },
+                channel:'SignUp'
             }
 
             service(options)

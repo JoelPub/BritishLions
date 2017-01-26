@@ -395,7 +395,7 @@ class MyLionsFavoriteList extends Component {
                                     } 
                                 </View>
                             :
-                                <ActivityIndicator style={styles.loaderPos} size='large' />
+                                <ActivityIndicator style={styles.loaderPos2} size='large' />
                         }
                     </View>
                     <EYSFooter mySquadBtn={true}/>
