@@ -89,7 +89,7 @@ class SignUp extends Component {
             if (!error) {
                 console.log(data);
                 this.setState({
-                    fbUser:data.credentials
+                    fbUser:data
                 })
                 this._handleSignUpWithFB(true)
 
@@ -105,6 +105,7 @@ class SignUp extends Component {
             }
         })
         let {token} =this.state.fbUser.credentials
+        console.log('this.state.fbUser.credentials: ',this.state.fbUser.credentials)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
         fetch({ method: 'GET', url:httpUrl }).then(json => {
             console.log(json)
