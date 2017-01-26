@@ -1109,7 +1109,7 @@ module.exports = styleSheetCreate({
     loaderPos: {
         alignSelf: 'center'
     },
-    loaderPos: {
+    loaderPos2: {
         alignSelf: 'center',
         marginTop: 20
     }

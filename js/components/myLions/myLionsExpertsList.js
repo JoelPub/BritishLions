@@ -20,44 +20,39 @@ import ImageCircle from '../utility/imageCircle'
 import EYSFooter from '../global/eySponsoredFooter'
 import loader from '../../themes/loader-position'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
-
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
-
-
 import { drillDown } from '../../actions/content'
-
 import { globalNav } from '../../appNavigator'
-
 import ExpertmModel from  'modes/Experts'
-//import ExpertsData from  '../../mockDataJson/expertsJson.json'
-
 import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
-const ExpertsHeader = () => (
-      <View style={styles.searchImg}>
-          <Image transparent
-              resizeMode='stretch'
-              source={imageJameshaskel}
-              style={styles.cellExpertHeader}
-               />
-      </View>
+
+//import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
+//import ExpertsData from  '../../mockDataJson/expertsJson.json'
+
+
+const ExpertsHeader = ({rowData}) => (
+    <View style={styles.searchImg}>
+        <Image transparent resizeMode='stretch' source={{uri:rowData.experts.image}} style={styles.cellExpertHeader} />
+    </View>
 )
 const ExpertDescription = ({rowData}) => (
-  <View style={styles.cellExpertInfo}>
-    <Text style={styles.textName}>{rowData.name}</Text>
-    <Text style={styles.textDescription} numberOfLines={2} >{rowData.description}</Text>
-    <Text style={styles.textRating}>SQUAD RATING: {rowData.squad_rating}</Text>
-  </View>
+    <View style={styles.cellExpertInfo}>
+        <Text style={styles.textName}>{rowData.experts.name}</Text>
+        <Text style={styles.textDescription} numberOfLines={2} >{rowData.experts.description}</Text>
+        <Text style={styles.textRating}>SQUAD RATING: {rowData.experts.squad_rating}</Text>
+    </View>
 
 )
-const ExpertsCell = ({rowData,onPress}) => (
- <ButtonFeedback onPress= {onPress}>
-   <View  style={[styles.cellExpert]}>
-     <ExpertsHeader />
-     <ExpertDescription rowData={rowData} />
-   </View>
-</ButtonFeedback>
+const ExpertsCell = ({rowData, onPress}) => (
+    <ButtonFeedback onPress= {onPress}>
+        <View style={[styles.cellExpert]}>
+            <ExpertsHeader rowData={rowData}  />
+            <ExpertDescription rowData={rowData} />
+        </View> 
+    </ButtonFeedback>
 )
+
 class MyLionsExpertsList extends Component {
 
   constructor(props) {
@@ -76,16 +71,16 @@ class MyLionsExpertsList extends Component {
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
       if (this.isUnMounted) return // return nothing if the component is already unmounted
-
-      console.log('ExpertsData: ', ExpertsData)
-        if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
-            let  experts = ExpertmModel.fromJS(ExpertsData)
-            this.setState({
-              experts: experts,
-              dataSource: this.ds.cloneWithRows(experts.toArray()),
-              isLoaded: true
-            })
-        }
+      if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
+          let experts = ExpertmModel.fromJS(ExpertsData)
+          //console.log(ExpertsData, experts.toArray(), experts.toJS())
+          this.setState({
+            experts: ExpertsData,
+            //dataSource: this.ds.cloneWithRows(experts.toArray()),
+            dataSource: this.ds.cloneWithRows(ExpertsData),
+            isLoaded: true
+          })
+      }
     }).catch((error) => {
         console.log('Error when try to get the EYC3 full player list: ', error)
     })
@@ -115,7 +110,6 @@ class MyLionsExpertsList extends Component {
   }
 
   render() {
-    console.log(this.state.experts)
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -127,7 +121,7 @@ class MyLionsExpertsList extends Component {
                 <ListView
                   dataSource={this.state.dataSource}
                   enableEmptySections={true}
-                  renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
+                  renderRow={(rowData) => <ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
                   style={styles.squadListView}
                   renderFooter ={this._renderFooter}
                 />

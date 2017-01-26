@@ -97,8 +97,8 @@ export async function getEYC3ExpertsSquads() {
         EYC3ExpertsSquads(params){
             getAccessToken().then((accessToken) => {
                 getUserId().then((userID) =>{
-                    console.log('accessToken: ', accessToken)
-                    console.log('userID: ', userID)
+                    //console.log('accessToken: ', accessToken)
+                    //console.log('userID: ', userID)
                     let {id, resolve, reject } = params
                     fetch(getAssembledUrl(EYC3_EXPERTS_SQUADS), {
                         method: 'POST',
@@ -113,7 +113,7 @@ export async function getEYC3ExpertsSquads() {
                         return response.json()
                     }).then(json => {
                         if (json) {
-                            console.log('Fresh uncached eyc3 experts squads Data: ', json)
+                            //console.log('Fresh uncached eyc3 experts squads Data: ', json)
                             storage.save({
                                 key: EYC3_EXPERTS_SQUADS,
                                 expires: 1000 * 3600,
