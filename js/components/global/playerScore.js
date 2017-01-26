@@ -274,7 +274,7 @@ export default class PlayerScore extends Component {
             })
             .then(
                 res => Share.open({
-                    title:context,
+                    title:`I picked my Lions 2017 squad for New Zealand, and scored in the ${this.props.rating.fan_ranking}%. Download the Lions app to see how we compare.`,
                     message:`I picked my Lions 2017 squad for New Zealand, and scored in the ${this.props.rating.fan_ranking}%. Download the Lions app to see how we compare.`,
                     subject:context,
                     url: `data:image/png;base64,${res}`
