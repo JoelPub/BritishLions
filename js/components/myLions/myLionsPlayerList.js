@@ -77,6 +77,7 @@ class MyLionsPlayerList extends Component {
                                     resizeMode='contain'
                                     source={rowData.image} 
                                     style={styles.gridBoxImg}
+                                    defaultSource={rowData.image}
                                     key={rowID}/>
                             </ImagePlaceholder>
                         </View>
