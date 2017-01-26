@@ -141,7 +141,8 @@ class MyAccount extends Component {
                             customMessagesEmailType: 'error'
                         })
                      },
-                    isRequiredToken: true
+                    isRequiredToken: true,
+                    channel:'MyAccount'
                 }
 
                 service(options)
