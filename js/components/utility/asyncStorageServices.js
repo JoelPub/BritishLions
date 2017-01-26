@@ -80,29 +80,29 @@ export async function getUserId() {
 
 function getDateNow() {
     let dateNow = new Date // current time and date
-    //dateNow = 'Tue Dec 21 2016 19:17:59 GMT+0800 (PHT)'
+    //dateNow = 'Thu Jan 26 2017 19:08:40 GMT+0800 (PHT)'
     //console.log('dateNow: ', dateNow)
-    return Date.parse(dateNow)
+    return dateNow
 }
 
 function generateLoginExpiration() {
-    let dateNow = getDateNow()
-    let dateExpired = new Date
+    let dateExpired = getDateNow()
 
-    // add 3hours and 50minutes
+    // add 3hours and 50minutes, it will return date parse, no need to parse again
     dateExpired = dateExpired.setHours(dateExpired.getHours() + 3, dateExpired.getMinutes() + 50)
     //console.log('dateExpired: ', new Date(dateExpired))
-    return dateExpired
+    return dateExpired 
 }
 
 export async function checkIfLogin() {
-    let dateNow = getDateNow()
+    let dateNow = Date.parse(getDateNow())
     let distance = 0
     let dateExpired  = await AsyncStorage.getItem('LOGIN_EXPIRED')
     
     if (dateExpired) { // if have value and not null
         dateExpired = parseInt(dateExpired)
         distance = dateExpired - dateNow
+        //console.log(dateExpired, dateNow, distance)
         if (distance > 0) {
             return true  // token still valid
         }
