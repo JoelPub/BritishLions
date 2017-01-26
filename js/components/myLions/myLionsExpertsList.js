@@ -73,38 +73,10 @@ class MyLionsExpertsList extends Component {
   _navToDetail = (item) => {
     this.props.drillDown(item, 'mylionsExpertProfile')
   }
-  render() {
-    console.log(this.state.experts)
-    return (
-      <Container theme={theme}>
-        <View style={styles.container}>
-          <LionsHeader back={true} title='MY LIONS' />
-          <View style={{flex: 1}}>
-            <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
-            {
-              this.state.isLoaded?
-                <ListView
-                  dataSource={this.state.dataSource}
-                  enableEmptySections={true}
-                  renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
-                  style={styles.squadListView}
-                />
-
-              :
-                <ActivityIndicator style={loader.centered} size='large' />
-            }
-            <LionsFooter isLoaded={true} />
-          </View>
-          <EYSFooter mySquadBtn={true}/>
-          <LoginRequire/>
-        </View>
-      </Container>
-    )
-  }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
       if (this.isUnMounted) return // return nothing if the component is already unmounted
-        
+
       console.log('ExpertsData: ', ExpertsData)
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
             let  experts = ExpertmModel.fromJS(ExpertsData)
@@ -134,6 +106,41 @@ class MyLionsExpertsList extends Component {
   componentDidMount () {
     removeEYC3ExpertsSquads()
     this.handleComponentUpdate(this.props, true)
+  }
+
+  _renderFooter() {
+    return ( 
+      <LionsFooter isLoaded={true} />
+    )
+  }
+
+  render() {
+    console.log(this.state.experts)
+    return (
+      <Container theme={theme}>
+        <View style={styles.container}>
+          <LionsHeader back={true} title='MY LIONS' />
+          <View style={{flex: 1}}>
+            <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
+            {
+              this.state.isLoaded?
+                <ListView
+                  dataSource={this.state.dataSource}
+                  enableEmptySections={true}
+                  renderRow={(rowData) =><ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
+                  style={styles.squadListView}
+                  renderFooter ={this._renderFooter}
+                />
+
+              :
+                <ActivityIndicator style={styles.loaderPos} size='large' />
+            }
+          </View>
+          <EYSFooter mySquadBtn={true}/>
+          <LoginRequire/>
+        </View>
+      </Container>
+    )
   }
 }
 

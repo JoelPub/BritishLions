@@ -18,7 +18,6 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
-import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
 import { drillDown } from '../../actions/content'
@@ -396,7 +395,7 @@ class MyLionsFavoriteList extends Component {
                                     } 
                                 </View>
                             :
-                                <ActivityIndicator style={loader.centered} size='large' />
+                                <ActivityIndicator style={styles.loaderPos} size='large' />
                         }
                     </View>
                     <EYSFooter mySquadBtn={true}/>

@@ -1106,4 +1106,12 @@ module.exports = styleSheetCreate({
             paddingBottom: 6
         }
     },
+    loaderPos: {
+        alignSelf: 'center'
+    },
+    loaderPos: {
+        alignSelf: 'center',
+        marginTop: 20
+    }
+
 })
