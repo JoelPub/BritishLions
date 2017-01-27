@@ -86,7 +86,7 @@ export function callApi(opt, axiosInstance) {
 		opt.onAxiosStart()
 	}
 
-    console.warn('getting connectionInfo... ')
+    console.log('getting connectionInfo... ')
 
 	NetInfo.fetch().done((connectionInfo) => {
 		console.log('connectionInfo service: ', connectionInfo)

@@ -42,7 +42,7 @@ const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
             <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
         </View>
         <View style={styles.modalBtnPosRight}>
-            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array ? data.length:(data==='' ? 0:1)}/{total}</Text>
+            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array ? data.length : (data===''  ? 0: data.toString().split('|').length)}/{total}</Text>
         </View>
     </ButtonFeedback>
     )
