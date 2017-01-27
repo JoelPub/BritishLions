@@ -43,12 +43,12 @@ class SponsorDetails extends Component {
                                 {this.props.details.partner? <Text style={styles.wrapperPartner}>{this.props.details.partner}</Text> : null }
                             </View>
                             
-                            <ImagePlaceholder height={187}>
+                            <View style={styles.bannerContainer}>
                                 <Image transparent
                                     resizeMode='contain'
                                     source={this.props.details.banner}
                                     style={styles.banner} />
-                            </ImagePlaceholder>
+                            </View>
 
                             <View style={styles.shareLinkWrapper}>
                                 <ExternalLink style={styles.shareLink} url={this.props.details.url}>
