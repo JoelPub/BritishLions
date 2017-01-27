@@ -581,10 +581,13 @@ class MyLionsPlayerList extends Component {
                         {
                             this.state.isLoaded?
                                 <View>
-                                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                                        <Image source={this.unionFeed.logo} style={styles.imageCircle}/>
+                                    <View style={styles.header}>
+                                        <View style={styles.playerPic}>
+                                            <Image resizeMode='cover' source={this.unionFeed.logo} style={styles.playerPicImg}/>
+                                            <Image source={require('../../../images/redCircle.png')} style={styles.playerPicCover}/>
+                                        </View>
                                         <Text style={styles.headerTitle}>{this.unionFeed.name}</Text>
-                                    </LinearGradient>
+                                    </View>
                                     <ListView
                                         dataSource={this.state.playerListFeeds}
                                         renderRow={this._renderRow.bind(this)}

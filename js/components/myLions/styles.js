@@ -1011,6 +1011,7 @@ module.exports = styleSheetCreate({
         marginTop: styleVar.deviceWidth*1/50,
     },
     viewExpertHeader: {
+        backgroundColor: styleVar.brandPrimary,
         height: 229,
         width: null,
         alignItems: 'center'
@@ -1112,6 +1113,32 @@ module.exports = styleSheetCreate({
     loaderPos2: {
         alignSelf: 'center',
         marginTop: 20
-    }
-
+    },
+    playerPic: {
+        width: 100,
+        height: 100,
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        marginTop: 15,
+        marginBottom: 5,
+        borderRadius:50,
+        android: {
+            marginBottom: 15,
+            borderRadius:100,
+        }
+    },
+    playerPicImg: {
+        width: 100,
+        height: 100,
+        position: 'absolute',
+        top: 0,
+        left: 0
+    },
+    playerPicCover: {
+        width: 100,
+        height: 100,
+        top: 0,
+        left: 0,
+        position: 'absolute',
+    } 
 })

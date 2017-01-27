@@ -559,8 +559,12 @@ class MyLionsPlayerDetails extends Component {
                     <LionsHeader back={true} title='MY LIONS' />
 
                     <Content bounces={false}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
+                        <View style={styles.header}>
+                            <View style={styles.playerPic}>
+                                <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
+                                <Image source={require('../../../images/redCircle.png')} style={styles.playerPicCover}/>
+                            </View>
+                            
                             <View style={styles.headerPlayerDetails}>
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
@@ -601,7 +605,7 @@ class MyLionsPlayerDetails extends Component {
                                     <Text style={styles.btnText}>MY SQUAD</Text>
                                 </ButtonFeedback>
                             </View>
-                        </LinearGradient>
+                        </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
