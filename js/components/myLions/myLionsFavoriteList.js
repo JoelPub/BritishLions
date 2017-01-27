@@ -329,7 +329,7 @@ class MyLionsFavoriteList extends Component {
     _signInRequired() {
         Alert.alert(
             'Your session has expired',
-            'Please sign in your account.',
+            'Please sign into your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)
@@ -378,7 +378,7 @@ class MyLionsFavoriteList extends Component {
                                         !this.state.favoritePlayers.getRowCount()? 
                                             <ScrollView>
                                                 <View style={styles.emptyPlayer}>
-                                                    <Text style={styles.emptyPlayerText}>The favourite player list is currently empty, you can add a new favourite player from the player detail page.</Text>
+                                                    <Text style={styles.emptyPlayerText}>Your Favourite Players list is currently empty, you can add Favourite Players from the Player Detail screen.</Text>
                                                 </View>
                                                 <LionsFooter isLoaded={true} />
                                             </ScrollView>

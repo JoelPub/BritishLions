@@ -66,7 +66,7 @@ class MyAccount extends Component {
     _signInRequired() {
         Alert.alert(
             'Your session has expired',
-            'Please sign in your account.',
+            'Please sign into your account.',
             [{
                 text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
@@ -129,7 +129,7 @@ class MyAccount extends Component {
                             this.props.setAccessGranted(false)
                             Alert.alert(
                                 'Messages',
-                                'Your email is successfully changed.',
+                                'Your email has been successfully changed.',
                                 [{text: 'RE SIGN IN', onPress: this._reLogin.bind(this)}]
                             )
                         })
@@ -182,7 +182,7 @@ class MyAccount extends Component {
                         this.setState({
                             password: '',
                             confirmPassword: '',
-                            customMessages: 'Your password is successfully changed.',
+                            customMessages: 'Your password has been successfully changed.',
                             customMessagesType: 'success'
                         })
                     },
@@ -245,7 +245,7 @@ class MyAccount extends Component {
                                             <View style={styles.tips}>
                                                 <Icon name='ios-information-circle-outline' style={styles.tipsIcon}/>
                                                 <View style={styles.tipsTextCol}>
-                                                    <Text style={styles.tipsText}>Password must consist of 8 or more characters and contain an upper and lower case letter, and at least one number.</Text>
+                                                    <Text style={styles.tipsText}>Password must contain 8 or more characters, an upper and lower case letter, and at least one number.</Text>
                                                 </View>
                                             </View>
                                         :

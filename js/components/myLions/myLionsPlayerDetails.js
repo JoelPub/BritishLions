@@ -147,7 +147,7 @@ class MyLionsPlayerDetails extends Component {
     _signInRequired() {
         Alert.alert(
             'Your session has expired',
-            'Please sign in your account.',
+            'Please sign into your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)
@@ -388,7 +388,7 @@ class MyLionsPlayerDetails extends Component {
             onError: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({ isFavPlayerUpdating: false }, () => {
-                    this._showError('There is something going wrong, please refresh the list again.')
+                    this._showError('An error occured, please refresh the list again.')
                     removeGoodFormFavoritePlayerList() 
                 })
             },
