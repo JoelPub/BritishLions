@@ -38,7 +38,7 @@ import Immutable, { Map, List } from 'immutable'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
-        <View style={[styles.modalBtnPositionLeft,posToAdd!==''&&posToAdd.toUpperCase()!==position.toUpperCase()&&{opacity:0.7}]}>
+        <View style={[styles.modalBtnPositionLeft,posToAdd!==''&&posToAdd!==null&&posToAdd.toString().toUpperCase()!==position.toString().toUpperCase()&&{opacity:0.7}]}>
             <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
         </View>
         <View style={styles.modalBtnPosRight}>
@@ -409,9 +409,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquad(type,position,max){
-        this.setState({ isMySquadPlayerSubmitting: true, btnSubmit:'SQUAD' },()=>{
-            this._setModalVisible(false)
-        })
+
         let update=true
         getUserCustomizedSquad().then((catchedSquad)=>{
             if(catchedSquad.auth){
@@ -468,6 +466,7 @@ class MyLionsPlayerDetails extends Component {
                             }
                             else {
                                 update=false
+                                console.log("squadDataFeed:tmpFeed.toJS()1, ", JSON.stringify(tmpFeed.toJS()))
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
                                 Alert.alert(
                                  'MySquad List Update',
@@ -483,17 +482,21 @@ class MyLionsPlayerDetails extends Component {
                             }
                             else {
                                 update=false
+                                console.log("squadDataFeed:tmpFeed.toJS()2, ", JSON.stringify(tmpFeed.toJS()))
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
                                 Alert.alert(
-                                 'MySquad List Update',
-                                 'Position Is Full',
-                                 [{ text: 'OK' }]
+                                   'MySquad List Update',
+                                   'Position Is Full',
+                                   [{ text: 'OK' }]
                                 )
                             }
                         }
                         
                     }
-                    if(update) this._updateSquadPlayer(tmpFeed,position)
+                    if(update){
+                        console.log("updating......")
+                        this._updateSquadPlayer(tmpFeed,position)
+                    }
                  }
 
             }
@@ -501,6 +504,9 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquadPlayer(squadData,position) {
+        this.setState({ isMySquadPlayerSubmitting: true, btnSubmit:'SQUAD' },()=>{
+            this._setModalVisible(false)
+        })
         squadData.forEach((value,index)=>{
             if(List.isList(value)) squadData=squadData.update(index,val=>{
                                                     return val.join('|')
