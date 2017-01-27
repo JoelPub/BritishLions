@@ -42,7 +42,7 @@ const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
             <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
         </View>
         <View style={styles.modalBtnPosRight}>
-            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array?data.length:data===''?0:1}/{total}</Text>
+            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array ? data.length:(data==='' ? 0:1)}/{total}</Text>
         </View>
     </ButtonFeedback>
     )
@@ -76,6 +76,7 @@ class MyLionsPlayerDetails extends Component {
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
             case 'add' :
+
                 return(
                     <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
