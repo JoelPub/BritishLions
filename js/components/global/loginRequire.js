@@ -38,7 +38,7 @@ class LoginRequire extends Component {
         
         Alert.alert(
             'Your session has expired',
-            'Please sign in your account again.',
+            'Please sign into your account again.',
             [{
                 text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)

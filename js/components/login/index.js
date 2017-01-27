@@ -334,7 +334,7 @@ class Login extends Component {
             if(!json.email) {
                 Alert.alert(
                   'Sorry',
-                  'we do not support facebook account using mobile registered currently, please sign up with a valid email address',
+                  'Sign up with Facebook is not yet supported, please sign up with a valid email address',
                   [
                     {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
                   ]

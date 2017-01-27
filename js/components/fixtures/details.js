@@ -60,7 +60,7 @@ class FixtureDetails extends Component {
                         })
                         .then(id => {
                             // handle success
-                            alertBox('Sucess','Saved to Calendar')
+                            alertBox('Success','Saved to Calendar')
                         })
                         .catch(error => {
                             // handle error

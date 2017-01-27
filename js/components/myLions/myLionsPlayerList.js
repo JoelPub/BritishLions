@@ -138,7 +138,7 @@ class MyLionsPlayerList extends Component {
     _signInRequired() {
         Alert.alert(
             'Your session has expired',
-            'Please sign in your account.',
+            'Please sign into your account.',
             [{
                 text: 'SIGN IN', 
                 onPress: this._reLogin.bind(this)

@@ -259,7 +259,9 @@ class SignUp extends Component {
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
-                onSuccess: this._userSignUp(),
+                onSuccess: (res) => {
+                    this._userSignUp()
+                },
                 onError: (res) => {
                     this.setState({ 
                         customMessages: res,
@@ -281,12 +283,11 @@ class SignUp extends Component {
     }
 
     _userSignUp() {
+        console.log('called')
         // reset the fields
         this.setState({
             firstName: '',
             lastName: '',
-            //email: '',
-            //password: '',
             newEvent: false,
             newPartners: false,
             tc: false
@@ -308,13 +309,19 @@ class SignUp extends Component {
         let options = {
             url: this.serviceRefreshTokenUrl,
             data: {
+                'username': this.state.email,
+                'password': this.state.password,
                 'facebook': this.state.loginType === 'facebook' ? this.state.loginToken : '',
                 'google': this.state.loginType === 'google' ? this.state.loginToken : '',
                 'app_version': APP_VERSION,
                 'grant_type': 'password'
             },
             onAxiosStart: () => {
-                this.setState({ isFormSubmitting: true })
+                this.setState({ 
+                    isFormSubmitting: true,
+                    username: '',
+                    password: '',
+                })
             },
             onAxiosEnd: () => {
                 this.setState({ isFormSubmitting: false })

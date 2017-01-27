@@ -27,7 +27,6 @@ import ExpertmModel from  'modes/Experts'
 import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 
-//import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 import ExpertsDataJSON from  '../../mockDataJson/expertsJson.json'
 
 

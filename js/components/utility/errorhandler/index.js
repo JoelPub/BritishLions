@@ -143,12 +143,12 @@ export default class ErrorHandler extends Component {
 	            }
 	            else if(!!(nextProps.errorCheck.password) && (/^(?![a-zA-Z]+$)(?![a-z\d]+$)(?![A-Z\d]+$)[a-zA-Z\d]{8,}$/.test(nextProps.errorCheck.password) === false)) {
 	            	this.setState({
-	                    passwordMsg: 'Password must contain a digit, an upper and a lower case letter'
+	                    passwordMsg: 'Password must contain a digit, an upper case and a lower case letter'
 	                })
 	            }
 	            else if((nextProps.errorCheck.password !== nextProps.errorCheck.confirmPassword) && (typeof nextProps.errorCheck.confirmPassword !== 'undefined')) {
 	            	this.setState({
-	                    confirmPasswordMsg: 'Confirm Password does not match the password '
+	                    confirmPasswordMsg: 'Password and Confirmation do not match'
 	                })
 	            }
 	            this.setState({show:true})

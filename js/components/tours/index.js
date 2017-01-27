@@ -32,7 +32,7 @@ class Tours extends Component {
                         </View>
                         <View style={styles.pageContent}>
                             <Text style={[styles.pageHeader, styles.pageText]}>
-                                The British & Irish Lions is the last of the great rugby tours bringing together the best players from the four home unions and a support that is unique in world sport.
+                                The British & Irish Lions is the last of the great rugby tours bringing together the best players from the four home unions and support that is unique in world sport.
                             </Text>
                             <Text style={styles.pageText}>
                                 From Leicester to Limerick, Cardiff to Caledonia, fans unite under one banner – The Lions. A Lions Tour is not just about great rugby, it’s also the holiday of a lifetime, great experiences and special memories.
@@ -44,13 +44,13 @@ class Tours extends Component {
                                 An official Supporter Tour guarantees that genuine fans have the best possible access to official tickets, flights and accommodation as well as many other incredible supporter experiences.
                             </Text>
                             <Text style={styles.pageText}>
-                                From watching the team train to eve of Test events with a glittering array of former players and legends, supporter villages on the day of the Test matches and so much more, an official Supporter Tour offers the very best fan experiences.
+                                From watching the team train, to eve of Test events with a glittering array of former players and legends, to supporter villages on the day of the Test matches and so much more, an official Supporter Tour offers the very best fan experiences.
                             </Text>
                             <Text style={styles.pageText}>
-                                Staff will be with you every step of the way – from the moment you make contact right the way through until you land – it’s our commitment to you and what makes us different.
+                                Staff will be with you every step of the way – from the moment you make contact until the moment you land – it’s our commitment to you that makes us different.
                             </Text>
                             <Text style={styles.pageText}>
-                                An official Tour means you are assured of quality, 100% security and a service that means 98% of clients would recommend us and 95% of past bookers would book again in the future.
+                                An official Tour means you are assured of quality, security and a service that means 98% of clients would recommend us and 95% of past bookers book again in the future.
                             </Text>
                             <Text style={styles.pageText}>
                                 The Lions exist to Tour – we will make it a reality.

@@ -35,7 +35,7 @@ function errorHandler(error, opt) {
                 errorDescription = 'Something went wrong with your request. Please try again later.'
                 break
             case 401:
-                errorDescription = 'Authorization has been denied. Please try again later.'
+                errorDescription = 'Authorization failed. Please try again later.'
                 break
             case 409:
                 errorDescription = opt.channel==='MyAccount'?'The email you entered is already in use. Please specify a different email address.':'The email you entered is already in use by another account. Please specify a different email address.'
