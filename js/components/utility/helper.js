@@ -5,3 +5,10 @@ export function ucWords(str) {
 
     return str
 }
+
+export function strToUpper(str) {
+    if (str)
+    	return str.toUpperCase()
+
+    return str
+}
