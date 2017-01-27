@@ -61,11 +61,15 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:32,
-        paddingTop:8,
-        color:'rgb(255,255,255)'
+        paddingTop: 10,
+        marginRight: 10,
+        color:'rgb(255,255,255)',
+        android: {
+            paddingTop: 0,
+        }
     },
     playerPerfromanceWrapper:{
-        flexDirection:'row',
+        flexDirection:'row'
     },
     playerPerfromance:{
         flex:1,
@@ -74,7 +78,7 @@ const styles = styleSheetCreate({
         borderLeftWidth:1,
         borderBottomWidth:1,
         borderColor:'rgb(128,127,131)',
-        paddingTop:18,
+        paddingTop: 20,
         paddingHorizontal:16,
         paddingBottom:1,
         alignItems:'center',
@@ -125,6 +129,7 @@ const styles = styleSheetCreate({
     playerFigureRow:{
         flexDirection:'row',
         marginTop: 20,
+        marginBottom: 20
     },
     playerFigureUnit:{
         flex:1,
@@ -133,18 +138,22 @@ const styles = styleSheetCreate({
     playerFigureUpperText:{
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        marginBottom:5
+        fontSize: 18,
+        lineHeight: 18,
+        marginBottom: 5,
+        textAlign: 'center'
     },
-    ratingScore:{
-        marginLeft: 10,
+    ratingScore: {
         height: 70,
         width: 70,
         borderRadius:35,
         backgroundColor:'rgb(255,230,0)',
         justifyContent:'center',
         alignItems:'center',
-        paddingTop: 10
+        paddingTop: 12,
+        android: {
+            paddingTop: 5
+        }
     },
     playerRatingScore:{
         borderWidth:1,
@@ -160,8 +169,8 @@ const styles = styleSheetCreate({
     playerFigureLowerText:{
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
-        marginTop:5
+        fontSize: 18,
+        marginTop: 5
     },
     semiCardFooter:{
         flexDirection: 'row',
@@ -358,7 +367,7 @@ export default class PlayerFigure extends Component {
                                     </View>
                                     <Swiper
                                         ref='swiper'
-                                        height={320}
+                                        height={350}
                                         width={styleVar.deviceWidth-100}
                                         loop={false}
                                         paginationStyle={styles.pagination}
@@ -378,7 +387,7 @@ export default class PlayerFigure extends Component {
                                                                             return(
                                                                                 <View style={styles.playerFigureUnit} key={j}>
                                                                                     <Text style={styles.playerFigureUpperText}>{strToUpper(item.name)}</Text>
-                                                                                    <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                                                    <View style={[styles.ratingScore, styles.playerRatingScore]}>
                                                                                         <Text style={styles.ratingScorePoint}>{item.value}</Text>
                                                                                     </View>
                                                                                     <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>

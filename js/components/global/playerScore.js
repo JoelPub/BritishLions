@@ -66,12 +66,12 @@ const styles = styleSheetCreate({
         borderRadius:5,
     },
     btnCardInfoWrapper:{
-        height:48,
-        width:48,
+        height: 48,
+        width: 48,
         backgroundColor:'transparent',
         position:'absolute',
-        right:0,
-        top:0
+        right: 6,
+        top: 6
     },
     btnCardInfo:{
         height:24,
@@ -79,8 +79,8 @@ const styles = styleSheetCreate({
         borderRadius:12,
         backgroundColor:'rgb(255,255,255)',
         position:'absolute',
-        right:5,
-        top:5
+        right: 0,
+        top: 0
     },
     cardInfoIcon:{
         fontSize:24,
@@ -88,9 +88,9 @@ const styles = styleSheetCreate({
         color:'rgb(95,96,98)',
         backgroundColor:'transparent'
     },
-    summaryWrapper:{
-        paddingHorizontal:30,
-        marginVertical:30,
+    summaryWrapper: {
+        paddingHorizontal: 20,
+        paddingTop: 30
     },
     summaryText:{
         fontFamily: styleVar.fontGeorgia,
@@ -98,16 +98,16 @@ const styles = styleSheetCreate({
         textAlign:'center',
         lineHeight:22,
         flex:1,
-        marginBottom:10,
+        marginBottom: 10,
         color:'rgb(255,255,255)',
     },
     summaryTextHighLight:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:44,
-        lineHeight:44,
+        fontSize: 44,
+        lineHeight: 44,
         textAlign:'center',
         color:'rgb(255,230,0)',
-        flex:1,
+        marginTop: 1,
     },
     ratingWrapper:{
         flexDirection:'row',
@@ -115,7 +115,7 @@ const styles = styleSheetCreate({
         alignItems:'center',
         borderTopWidth:1,
         borderColor:'rgb(128,127,131)',
-        marginTop:20,
+        marginTop: 10,
         paddingVertical:19
     },
     ratingWrapperExpert:{
@@ -126,8 +126,11 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:32,
-        paddingTop:8,
+        paddingTop: 12,
         color:'rgb(255,255,255)',
+        android: {
+            paddingTop: 0
+        }
     },
     ratingScore:{
         marginLeft:10,
@@ -137,7 +140,10 @@ const styles = styleSheetCreate({
         backgroundColor:'rgb(255,230,0)',
         justifyContent:'center',
         alignItems:'center',
-        paddingTop:10,
+        paddingTop: 15,
+        android: {
+            paddingTop: 6
+        }
     },
     ratingScorePoint:{
         fontFamily: styleVar.fontCondensed,
@@ -147,9 +153,9 @@ const styles = styleSheetCreate({
         backgroundColor:'transparent'
     },
     barGraphWrapper:{
-        height:105,
+        height: 105,
         borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
+        borderColor: 'rgb(128, 127, 131)',
         paddingHorizontal:25,
         paddingTop:15
     },
@@ -164,14 +170,14 @@ const styles = styleSheetCreate({
         }
     },
     barSliderWrapper:{
-        height:108,
+        height: 112,
         borderTopWidth:1,
-        borderColor:'rgb(128,127,131)',
+        borderColor:'rgb(128,127,131)'
     },
     barSliderTextWrapper:{
         flexDirection:'row',
         justifyContent:'space-between',
-        paddingHorizontal:25,
+        paddingHorizontal: 25,
     },
     barSliderText:{
         fontFamily: styleVar.fontCondensed,
@@ -183,15 +189,16 @@ const styles = styleSheetCreate({
         borderTopWidth:1,
         borderColor:'rgb(128,127,131)',
         marginTop: 0,
-        paddingVertical:5
+        paddingVertical: 5
     },
     scoreCardShare:{
         backgroundColor:'rgb(255,230,0)',
         flexDirection:'row',
-        paddingLeft:20
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 24
     },
     scoreCardShareText:{
-        textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
@@ -202,7 +209,8 @@ const styles = styleSheetCreate({
         marginLeft: 5,
         width: 34,
         color: 'rgb(95,96,98)',
-        fontSize:24
+        fontSize: 26,
+        marginTop: -3
     },
     scoreCardFooter:{
         backgroundColor:'rgb(128,128,128)',
@@ -222,6 +230,10 @@ const styles = styleSheetCreate({
         marginBottom:0,
         marginLeft:10,
         marginRight:10,
+        paddingTop: 5,
+        android: {
+            paddingTop: 9
+        }
     },
     btnExpertIcon: {
         marginBottom: 3,
@@ -332,28 +344,27 @@ export default class PlayerScore extends Component {
                                 {
                                     !this.props.isExpertPage &&
                                     <View>
-                                    <ButtonFeedback
-                                        onPress={()=>this.props.pressInfo(true,'info')}
-                                        style={styles.btnCardInfoWrapper}>
-                                        <View style={styles.btnCardInfo}>
-                                            <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                        </View>
-                                    </ButtonFeedback>
-
-                                    {
-                                    this.props.rating.fan_ranking<50?
-                                    <View style={styles.summaryWrapper}>
-                                            <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                                            <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                                            <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
-                                    </View>
-                                    :
-                                    <View style={styles.summaryWrapper}>
-                                            <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
-                                            <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
-                                            <Text style={styles.summaryText}>of scores are higher than yours.</Text>
-                                    </View>
-                                    }
+                                        {
+                                            this.props.rating.fan_ranking<50?
+                                                <View style={styles.summaryWrapper}>
+                                                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                                                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                                                        <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                                </View>
+                                            :
+                                                <View style={styles.summaryWrapper}>
+                                                        <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
+                                                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                                                        <Text style={styles.summaryText}>of scores are higher than yours.</Text>
+                                                </View>
+                                        }
+                                        <ButtonFeedback
+                                            onPress={()=>this.props.pressInfo(true,'info')}
+                                            style={styles.btnCardInfoWrapper}>
+                                            <View style={styles.btnCardInfo}>
+                                                <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                            </View>
+                                        </ButtonFeedback>
                                     </View>
                                 }
                                 <View style={[styles.ratingWrapper,this.props.isExpertPage&&styles.ratingWrapperExpert]}>

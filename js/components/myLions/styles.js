@@ -133,7 +133,7 @@ module.exports = styleSheetCreate({
         backgroundColor: 'rgb(10, 127, 64)',
     },
     btnLeftRed: {
-        backgroundColor: 'rgb(175, 0, 30)',
+        backgroundColor: 'rgb(154, 2, 28)',
     },
     btnRed: {
         backgroundColor: 'rgb(208, 7, 42)',
