@@ -101,6 +101,9 @@ const styles = styleSheetCreate({
         color:'rgb(255,230,0)',
         flex:1,
     },
+    summaryTextHighLight2:{
+        marginTop: 20
+    },
     playerFigureView:{
         backgroundColor:'rgb(255,255,255)',
         paddingTop: 30,
@@ -308,7 +311,7 @@ export default class PlayerFigure extends Component {
                                 <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                 <View style={styles.ratingScore}>
                                     <Text style={styles.ratingScorePoint}>
-                                        { this.state.profile.overall_score||'NA' }
+                                        { this.state.profile.overall_score || 'NA' }
                                     </Text>
                                 </View>
                                 <ButtonFeedback 
@@ -324,7 +327,9 @@ export default class PlayerFigure extends Component {
                                 <View style={styles.playerPerfromance} >
                                     <Text style={styles.performanceText}>RECENT</Text>
                                     <Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>
-                                    <Text style={styles.summaryTextHighLight}>{this.state.profile.performance_score}</Text>
+                                    <Text style={styles.summaryTextHighLight}>
+                                        { this.state.profile.performance_score || 'N/A' }
+                                    </Text>
                                 </View>
                                 <View style={styles.playerPerfromance}>
                                     <Text style={[styles.performanceText, styles.consitencyText]}>CONSISTENCY</Text>
@@ -340,6 +345,10 @@ export default class PlayerFigure extends Component {
 
                                         this.state.profile.player_consistency == 3&&
                                         <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
+                                    }
+                                    { 
+                                        this.state.profile.player_consistency === ''&& 
+                                        <Text style={[styles.summaryTextHighLight, styles.summaryTextHighLight2]}>N/A</Text>
                                     }
                                 </View>
                             </View>
@@ -388,9 +397,13 @@ export default class PlayerFigure extends Component {
                                                                                 <View style={styles.playerFigureUnit} key={j}>
                                                                                     <Text style={styles.playerFigureUpperText}>{strToUpper(item.name)}</Text>
                                                                                     <View style={[styles.ratingScore, styles.playerRatingScore]}>
-                                                                                        <Text style={styles.ratingScorePoint}>{item.value}</Text>
+                                                                                        <Text style={styles.ratingScorePoint}>
+                                                                                            { item.value === 'NaN'? 'N/A' : item.value }
+                                                                                        </Text>
                                                                                     </View>
-                                                                                    <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>
+                                                                                    <Text style={styles.playerFigureLowerText}>
+                                                                                        { item.average === 'NaN'? 'N/A' : item.value } avg
+                                                                                    </Text>
                                                                                 </View>
                                                                                 )
                                                                         },this)
