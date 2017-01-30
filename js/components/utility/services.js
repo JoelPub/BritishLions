@@ -22,7 +22,9 @@ function errorSlice(errObj) {
 }
 
 function errorHandler(error, opt) {
-	//console.log('error: ', error.response)
+	console.log('error-opt: ', opt)
+	console.log('error-error: ', error)
+
     if(error.response != undefined){
         let statusCode = error.response.status
         let errorType = error.response.data.error
@@ -107,7 +109,8 @@ export function callApi(opt, axiosInstance) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-				// console.log('%%%post')
+				 console.log('%%%post,',opt.url )
+				 console.log('%%%postData,',JSON.stringify(opt.data) )
 				axiosInstance.post(
 				    opt.url,
 				    qs.stringify(opt.data)
@@ -125,7 +128,7 @@ export function callApi(opt, axiosInstance) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-					// console.log('%%%error',error)
+					console.log('%%%error',error)
 					isInternetConnected = true
 
 					// use for loading, after state

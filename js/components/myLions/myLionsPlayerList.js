@@ -258,10 +258,10 @@ class MyLionsPlayerList extends Component {
                   }
               }
          }
-         playerList.map((item,index)=>{
-            let r=eyc3Players.find((node)=>node.id.toString()===item.id)
-            mergedPlayers.push(Object.assign(item,{eycsPlayerScore:r===undefined?'N/A':r.overall_score}))
-         })
+         //playerList.map((item,index)=>{
+         //   let r=eyc3Players.find((node)=>node.id.toString()===item.id)
+         //   mergedPlayers.push(Object.assign(item,{eycsPlayerScore:r===undefined?'N/A':r.overall_score}))
+         //})
          // console.log('mergedPlayers:', mergedPlayers)
         this._getFavoritePlayers(mergedPlayers)
      }
