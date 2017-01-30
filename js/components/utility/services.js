@@ -86,11 +86,12 @@ export function callApi(opt, axiosInstance) {
 		opt.onAxiosStart()
 	}
 
+    console.log('getting connectionInfo... ')
 
 	NetInfo.fetch().done((connectionInfo) => {
 		console.log('connectionInfo service: ', connectionInfo)
 		let netInfos = connectionInfo.toLowerCase()
-
+        console.log('netInfos: ', netInfos)
 		if(netInfos === 'unknown' || netInfos === 'none') {
 			// No internet connection
 
@@ -235,7 +236,8 @@ export function service(options) {
 					return config
 				})
 
-				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT	
+				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
+				console.log('getting here 111')
 				callApi(opt, axiosInstance)
 			} else {
 				// Sign In is Required
@@ -254,6 +256,7 @@ export function service(options) {
 		axios.interceptors.request.use((config) => {
 			return config
 		})
+        console.log('getting here 222')
 		callApi(opt, axios)
 	}
 }

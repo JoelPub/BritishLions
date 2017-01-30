@@ -125,17 +125,20 @@ module.exports = styleSheetCreate({
         marginLeft: 16,
         width: 40,
         height: 20,
+        position: 'absolute',
         android: {
             marginTop: 13
         }
     },
     authButtonTextView:{
+        backgroundColor: 'transparent',
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 25,
         borderWidth: 0,
         height: 50,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     authButtonText:{
         backgroundColor: 'transparent',
@@ -148,6 +151,9 @@ module.exports = styleSheetCreate({
         android:{
             paddingTop: 5,
         }
+    },
+    authButtonTextSignUpFB: {
+        paddingLeft: 5
     },
     inputIcon: {
         fontSize: 23,

@@ -42,7 +42,7 @@ const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
             <Text style={styles.modalBtnPosLeftText}>{subject.toUpperCase()}</Text>
         </View>
         <View style={styles.modalBtnPosRight}>
-            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array?data.length:data===''?0:1}/{total}</Text>
+            <Text style={styles.modalBtnPosLeftText}>{data instanceof Array ? data.length : (data===''  ? 0: data.toString().split('|').length)}/{total}</Text>
         </View>
     </ButtonFeedback>
     )
@@ -76,6 +76,7 @@ class MyLionsPlayerDetails extends Component {
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
             case 'add' :
+
                 return(
                     <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
@@ -560,8 +561,12 @@ class MyLionsPlayerDetails extends Component {
                     <LionsHeader back={true} title='MY LIONS' />
 
                     <Content bounces={false}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.header}>
-                            <Image source={this.props.detail.image} style={styles.imageCircle}/>
+                        <View style={styles.header}>
+                            <View style={styles.playerPic}>
+                                <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
+                                <Image source={require('../../../images/redCircle.png')} style={styles.playerPicCover}/>
+                            </View>
+                            
                             <View style={styles.headerPlayerDetails}>
                                 <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
@@ -602,7 +607,7 @@ class MyLionsPlayerDetails extends Component {
                                     <Text style={styles.btnText}>MY SQUAD</Text>
                                 </ButtonFeedback>
                             </View>
-                        </LinearGradient>
+                        </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent

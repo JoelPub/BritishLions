@@ -415,6 +415,7 @@ class MyLionsSquad extends Component {
                             val[i]=null
                             return val
                         })
+                        if(!isPop) fullFeed=false
                     }
                     else {
                         emptyFeed=false
@@ -466,6 +467,7 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
+                console.warn("fedd1: ", JSON.stringify(fullFeed))
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,

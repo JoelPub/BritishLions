@@ -42,7 +42,7 @@ const PosTitle = ({squadData,title}) => (
   </View>
 )
 const ExpertsHeaderView = ({detail}) => (
-  <LinearGradient colors={['#AF001E', '#820417']} style={styles.viewExpertHeader}>
+  <View style={styles.viewExpertHeader}>
     <Image style={styles.viewExpertHeaderImage} source={imageJameshaskel} />
     <View style={styles.headerPlayerDetails}>
       <Text style={styles.viewExpertProfileName}>{detail.name.toUpperCase()}</Text>
@@ -50,7 +50,7 @@ const ExpertsHeaderView = ({detail}) => (
     <View style={styles.headerPlayerDetails}>
       <Text style={styles.viewExpertProfileDescription}>{detail.description}</Text>
     </View>
-  </LinearGradient>
+  </View>
 )
 class MyLionsExpertProfile extends Component {
 

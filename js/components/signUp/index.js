@@ -403,13 +403,13 @@ class SignUp extends Component {
                                         <ButtonFeedback style={[styles.authButton, styles.authButtonFB]} onPress={this._FBSignIn}>
                                             <Icon name='logo-facebook' style={styles.authButtonIcon} />
                                             <View style={styles.authButtonTextView}>
-                                                <Text style={styles.authButtonText}>CONTINUE WITH FACEBOOK</Text>
+                                                <Text style={[styles.authButtonText, styles.authButtonTextSignUpFB]}>CONTINUE WITH FACEBOOK</Text>
                                             </View>
                                         </ButtonFeedback>
                                         <ButtonFeedback style={[styles.authButton, styles.authButtonGoogle]} onPress={this._GoogleSignIn}>
                                             <Icon name='logo-googleplus' style={styles.authButtonIcon} />
                                             <View style={styles.authButtonTextView}>
-                                              <Text style={styles.authButtonText}>CONTINUE WITH GOOGLE</Text>
+                                              <Text style={[styles.authButtonText]}>CONTINUE WITH GOOGLE</Text>
                                             </View>
                                         </ButtonFeedback>
                                     </View>

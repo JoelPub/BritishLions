@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import {Image, View, Text, ActivityIndicator} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
+import { strToUpper } from '../utility/helper'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styleVar from '../../themes/variable'
 import Swiper from 'react-native-swiper'
@@ -28,21 +29,21 @@ const styles = styleSheetCreate({
         borderRadius:5,
     },
     btnCardInfoWrapper:{
-        height:48,
-        width:48,
-        backgroundColor:'transparent',
-        position:'absolute',
-        right:0,
-        top:0
+        height: 48,
+        width: 48,
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        right: 5,
+        top: 5
     },
     btnCardInfo:{
-        height:24,
-        width:24,
+        height: 24,
+        width: 24,
         borderRadius:12,
         backgroundColor:'rgb(255,255,255)',
         position:'absolute',
-        right:5,
-        top:5
+        right: 0,
+        top: 0
     },
     cardInfoIcon:{
         fontSize:24,
@@ -54,18 +55,21 @@ const styles = styleSheetCreate({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        paddingBottom:20,
-        marginTop:20,
+        paddingVertical: 20
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
         lineHeight:32,
-        paddingTop:8,
-        color:'rgb(255,255,255)'
+        paddingTop: 10,
+        marginRight: 10,
+        color:'rgb(255,255,255)',
+        android: {
+            paddingTop: 0,
+        }
     },
     playerPerfromanceWrapper:{
-        flexDirection:'row',
+        flexDirection:'row'
     },
     playerPerfromance:{
         flex:1,
@@ -74,7 +78,7 @@ const styles = styleSheetCreate({
         borderLeftWidth:1,
         borderBottomWidth:1,
         borderColor:'rgb(128,127,131)',
-        paddingTop:18,
+        paddingTop: 20,
         paddingHorizontal:16,
         paddingBottom:1,
         alignItems:'center',
@@ -125,6 +129,7 @@ const styles = styleSheetCreate({
     playerFigureRow:{
         flexDirection:'row',
         marginTop: 20,
+        marginBottom: 20
     },
     playerFigureUnit:{
         flex:1,
@@ -133,18 +138,22 @@ const styles = styleSheetCreate({
     playerFigureUpperText:{
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontCondensed,
-        fontSize:18,
-        marginBottom:5
+        fontSize: 18,
+        lineHeight: 18,
+        marginBottom: 5,
+        textAlign: 'center'
     },
-    ratingScore:{
-        marginLeft:10,
-        height:70,
-        width:70,
+    ratingScore: {
+        height: 70,
+        width: 70,
         borderRadius:35,
         backgroundColor:'rgb(255,230,0)',
         justifyContent:'center',
         alignItems:'center',
-        paddingTop:10,
+        paddingTop: 12,
+        android: {
+            paddingTop: 5
+        }
     },
     playerRatingScore:{
         borderWidth:1,
@@ -153,15 +162,15 @@ const styles = styleSheetCreate({
     },
     ratingScorePoint:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:28,
-        lineHeight:28,
+        fontSize: 28,
+        lineHeight: 28,
         color:'rgb(95,96,98)'
     },
     playerFigureLowerText:{
         color:'rgb(95,96,98)',
         fontFamily: styleVar.fontGeorgia,
-        fontSize:18,
-        marginTop:5
+        fontSize: 18,
+        marginTop: 5
     },
     semiCardFooter:{
         flexDirection: 'row',
@@ -187,8 +196,20 @@ const styles = styleSheetCreate({
         textAlign:'center',
         lineHeight:18,
         flex:1,
-        marginBottom:10,
         color:'rgb(255,255,255)'
+    },
+    performanceText2: {
+        marginTop: -4,
+        marginBottom: 5,
+        android: {
+            marginTop: 0
+        }
+    },
+    consitencyText: {
+        marginBottom: 4,
+        android: {
+            marginTop: 0
+        }
     },
     playerFigureWrapper:{
         paddingVertical: 25,
@@ -283,27 +304,30 @@ export default class PlayerFigure extends Component {
                 this.state.isLoaded?
                     <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
                         <View style={styles.fullCard}>
-                            <ButtonFeedback 
-                                onPress={()=>this.props.pressInfo(true,'info')}
-                                    style={styles.btnCardInfoWrapper}> 
-                                <View style={styles.btnCardInfo}>
-                                    <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                </View>
-                            </ButtonFeedback>
-                            
                             <View style={styles.playerOverallRating}>
                                 <Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                 <View style={styles.ratingScore}>
-                                    <Text style={styles.ratingScorePoint}>{this.state.profile.overall_score||'NA'}</Text>
+                                    <Text style={styles.ratingScorePoint}>
+                                        { this.state.profile.overall_score||'NA' }
+                                    </Text>
                                 </View>
+                                <ButtonFeedback 
+                                    onPress={()=>this.props.pressInfo(true,'info')}
+                                        style={styles.btnCardInfoWrapper}> 
+                                    <View style={styles.btnCardInfo}>
+                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                    </View>
+                                </ButtonFeedback>
                             </View>
+
                             <View style={styles.playerPerfromanceWrapper}>
                                 <View style={styles.playerPerfromance} >
-                                    <Text style={styles.performanceText} numberOfLines={2}>RECENT PERFORMANCE</Text>
+                                    <Text style={styles.performanceText}>RECENT</Text>
+                                    <Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>
                                     <Text style={styles.summaryTextHighLight}>{this.state.profile.performance_score}</Text>
                                 </View>
                                 <View style={styles.playerPerfromance}>
-                                    <Text style={styles.performanceText}>CONSISTENCY</Text>
+                                    <Text style={[styles.performanceText, styles.consitencyText]}>CONSISTENCY</Text>
                                     {
                                         this.state.profile.player_consistency == 1&&
                                         <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
@@ -343,7 +367,7 @@ export default class PlayerFigure extends Component {
                                     </View>
                                     <Swiper
                                         ref='swiper'
-                                        height={320}
+                                        height={350}
                                         width={styleVar.deviceWidth-100}
                                         loop={false}
                                         paginationStyle={styles.pagination}
@@ -362,8 +386,8 @@ export default class PlayerFigure extends Component {
                                                                         rowData.map((item, j) => {
                                                                             return(
                                                                                 <View style={styles.playerFigureUnit} key={j}>
-                                                                                    <Text style={styles.playerFigureUpperText}>{item.name}</Text>
-                                                                                    <View style={[styles.ratingScore,styles.playerRatingScore]}>
+                                                                                    <Text style={styles.playerFigureUpperText}>{strToUpper(item.name)}</Text>
+                                                                                    <View style={[styles.ratingScore, styles.playerRatingScore]}>
                                                                                         <Text style={styles.ratingScorePoint}>{item.value}</Text>
                                                                                     </View>
                                                                                     <Text style={styles.playerFigureLowerText}>{item.average} avg</Text>

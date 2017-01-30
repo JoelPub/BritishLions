@@ -164,7 +164,7 @@ module.exports = styleSheetCreate({
         textAlign: 'center',
         android: {
             marginTop: 5,
-            lineHeight: 28
+            lineHeight: 20
         }
     },
     shareLinkIcon: {
@@ -176,6 +176,10 @@ module.exports = styleSheetCreate({
     banner: {
         height: 187,
         alignSelf: 'center'
+    },
+    bannerContainer: {
+        height: 187,
+        backgroundColor: '#FFF'
     },
     description: {
         padding: 20
