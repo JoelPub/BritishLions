@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import {Image, View, Text, ActivityIndicator} from 'react-native'
+import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import ButtonFeedback from '../utility/buttonFeedback'
@@ -12,6 +12,7 @@ import loader from '../../themes/loader-position'
 import Share from 'react-native-share'
 import RNViewShot from 'react-native-view-shot'
 import PushNotification from 'react-native-push-notification'
+import SquadModal from './squadModal'
 
 const styles = styleSheetCreate({
     scoreCard:{
@@ -72,6 +73,10 @@ const styles = styleSheetCreate({
         position:'absolute',
         right: 6,
         top: 6
+    },
+    btnCardInfoWrapper2: {
+        right: 4,
+        top: 8
     },
     btnCardInfo:{
         height:24,
@@ -264,6 +269,23 @@ const styles = styleSheetCreate({
         marginLeft: 30,
         marginRight: 30,
     },
+    modalViewWrapper:{
+        paddingHorizontal:28,
+        marginVertical:54,
+        backgroundColor:'transparent',
+    },
+    modalTitleText:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:28,
+        marginTop:28,
+        color: '#FFF'
+    },
+    modalText:{
+        fontFamily: 'Helvetica Neue',
+        fontSize:16,
+        color: '#FFF'
+    },
 })
 
 export default class PlayerScore extends Component {
@@ -271,6 +293,7 @@ export default class PlayerScore extends Component {
         super(props)
         this.state = {            
             isSubmitting: false,
+            isModalExpertSquadVisible: false
     	}
     }
 
@@ -320,6 +343,10 @@ export default class PlayerScore extends Component {
         });
     }
 
+    _setModalExpertSquadVisible(isModalExpertSquadVisible) {
+        this.setState({ isModalExpertSquadVisible })
+    }
+
 	render() {
         let styleParent = this.props.style || {}
 		return (
@@ -343,29 +370,29 @@ export default class PlayerScore extends Component {
                             <View ref='scorecard' style={styles.fullCard}>
                                 {
                                     !this.props.isExpertPage &&
-                                    <View>
-                                        {
-                                            this.props.rating.fan_ranking<50?
-                                                <View style={styles.summaryWrapper}>
-                                                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                                                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                                                        <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                        <View>
+                                            {
+                                                this.props.rating.fan_ranking<50?
+                                                    <View style={styles.summaryWrapper}>
+                                                            <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                                                            <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                                                            <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                                    </View>
+                                                :
+                                                    <View style={styles.summaryWrapper}>
+                                                            <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
+                                                            <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                                                            <Text style={styles.summaryText}>of scores are higher than yours.</Text>
+                                                    </View>
+                                            }
+                                            <ButtonFeedback
+                                                onPress={()=>this.props.pressInfo(true,'info')}
+                                                style={styles.btnCardInfoWrapper}>
+                                                <View style={styles.btnCardInfo}>
+                                                    <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                                 </View>
-                                            :
-                                                <View style={styles.summaryWrapper}>
-                                                        <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
-                                                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
-                                                        <Text style={styles.summaryText}>of scores are higher than yours.</Text>
-                                                </View>
-                                        }
-                                        <ButtonFeedback
-                                            onPress={()=>this.props.pressInfo(true,'info')}
-                                            style={styles.btnCardInfoWrapper}>
-                                            <View style={styles.btnCardInfo}>
-                                                <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                            </View>
-                                        </ButtonFeedback>
-                                    </View>
+                                            </ButtonFeedback>
+                                        </View>
                                 }
                                 <View style={[styles.ratingWrapper,this.props.isExpertPage&&styles.ratingWrapperExpert]}>
                                     <Text style={styles.ratingTitle}>OVERALL RATING</Text>
@@ -410,19 +437,38 @@ export default class PlayerScore extends Component {
                                 }
                             </View>
                             {
-                                !this.props.isExpertPage &&
-                                <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
-                                    <Icon name='md-list-box' style={styles.btnExpertIcon} />
-                                    <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
-                                </ButtonFeedback>
+                                this.props.isExpertPage?
+                                    <ButtonFeedback 
+                                        onPress={() => this._setModalExpertSquadVisible(true)} 
+                                        style={[styles.btnCardInfoWrapper, styles.btnCardInfoWrapper2]}> 
+                                        <View style={styles.btnCardInfo}>
+                                            <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                        </View>
+                                    </ButtonFeedback>
+                                :
+                                    <ButtonFeedback rounded onPress={()=>this.props.pressExpert()}   style={[styles.button,styles.btnExpertSquad]}>
+                                        <Icon name='md-list-box' style={styles.btnExpertIcon} />
+                                        <Text style={styles.btnExpertLabel}>THE EXPERTS' SQUADS</Text>
+                                    </ButtonFeedback>
                             }
                         </View>
                         :
                         <ActivityIndicator style={loader.scoreCard} size='small' /> 
                     }
                     </View>
-                   
                 }
+                <SquadModal
+                    modalVisible={this.state.isModalExpertSquadVisible}
+                    callbackParent={() => this._setModalExpertSquadVisible(false)}>
+                        <ScrollView style={styles.modalViewWrapper}>
+                            <Text style={styles.modalTitleText}>Overall Rating</Text>
+                            <Text style={styles.modalText}>A score out of 500 based on your selected players, cohesion rating, individual player performances over the last two years, and their most recent five games.</Text>
+                            <Text style={styles.modalTitleText}>Cohesion</Text>
+                            <Text style={styles.modalText}>A rating out of 100 where 0 means that your squad has played no games together and 100 means that your squad has played all their games together over the last two years.</Text>
+                            <Text style={styles.modalTitleText}>Attack / Defence</Text>
+                            <Text style={styles.modalText}>Assessment of the balance of the attacking and defensive capabilities of your squad.</Text>
+                        </ScrollView>
+                </SquadModal>
             </View>            
 			)
 	}
