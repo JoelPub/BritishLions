@@ -29,7 +29,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import PlayerScore from '../global/playerScore'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import Data from '../../../contents/unions/data'
-
+import SquadModel from  'modes/Experts/One/Squad'
 //import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
 import { drillDown } from '../../actions/content'
@@ -59,16 +59,22 @@ class MyLionsExpertProfile extends Component {
   constructor (props) {
     super(props)
     this.uniondata = Data
+    let squad = SquadModel.fromJS(this.props.detail.squad)
 
     this.state = {
       jobTitle: ['CAPTAIN', 'KICKER', 'WILDCARD'],
       squadData:{
         //TODO :this.props.detail.squad.captain,this.props.detail.squad.kicker,this.props.detail.squad.wildcard,
-        indivPos:[{position:'captain',id:[8759]},{position:'kicker',id:[88878]},{position:'wildcard',id:[19930]}],
-        forwards:[114146,33315,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
-        //this.props.detail.squad.forwards,
-        backs:[120154,8357,118708,88083,4145,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
-        //this.props.detail.squad.backs,
+        //forwards: [114146,33315,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
+        //backs: [120154,8357,118708,88083,4145,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
+        
+        indivPos: [
+            {position:'captain', id: [squad.captain]},
+            {position:'kicker', id: [squad.kicker]},
+            {position:'wildcard', id: [squad.widecard]}
+        ],
+        forwards: squad.forwards.toArray(),
+        backs: squad.backs.toArray(),
       },
       ratingData:{
           fan_ranking: this.props.detail.fan_ranking,
@@ -177,12 +183,7 @@ class MyLionsExpertProfile extends Component {
 
   render() {
     let {jobTitle, squadData, ratingData,showScoreCard} = this.state
-    let  {detail} = this.props
-    console.log(detail)
-   let Expert = detail ;
-    console.log(Expert.name)
-    console.log(Expert.image)
-    console.log(Expert.description)
+    
     return (
       <Container theme={theme}>
         <View style={styles.container}>
