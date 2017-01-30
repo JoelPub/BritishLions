@@ -30,7 +30,7 @@ import PlayerScore from '../global/playerScore'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import Data from '../../../contents/unions/data'
 
-import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
+//import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
 
 import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
@@ -42,24 +42,26 @@ const PosTitle = ({squadData,title}) => (
   </View>
 )
 const ExpertsHeaderView = ({detail}) => (
-  <View style={styles.viewExpertHeader}>
-    <Image style={styles.viewExpertHeaderImage} source={imageJameshaskel} />
-    <View style={styles.headerPlayerDetails}>
-      <Text style={styles.viewExpertProfileName}>{detail.name.toUpperCase()}</Text>
+    <View style={styles.viewExpertHeader}>
+        <Image style={styles.viewExpertHeaderImage} source={{uri: detail.image}} />
+
+        <View style={styles.headerPlayerDetails}>
+            <Text style={styles.viewExpertProfileName}>{detail.name.toUpperCase()}</Text>
+        </View>
+
+        <View style={styles.headerPlayerDetails}>
+            <Text style={styles.viewExpertProfileDescription}>{detail.description}</Text>
+        </View>
     </View>
-    <View style={styles.headerPlayerDetails}>
-      <Text style={styles.viewExpertProfileDescription}>{detail.description}</Text>
-    </View>
-  </View>
 )
 class MyLionsExpertProfile extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.uniondata = Data
 
     this.state = {
-      jobTitle: ['CAPTAIN','KICKER','WILDCARD'],
+      jobTitle: ['CAPTAIN', 'KICKER', 'WILDCARD'],
       squadData:{
         //TODO :this.props.detail.squad.captain,this.props.detail.squad.kicker,this.props.detail.squad.wildcard,
         indivPos:[{position:'captain',id:[8759]},{position:'kicker',id:[88878]},{position:'wildcard',id:[19930]}],
@@ -69,16 +71,17 @@ class MyLionsExpertProfile extends Component {
         //this.props.detail.squad.backs,
       },
       ratingData:{
-          fan_ranking:this.props.detail.fan_ranking,
-          overall_rating:this.props.detail.squad_rating,
-          cohesion_rating:this.props.detail.cohesion_rating,
-          attack_defence_rating:this.props.detail.attack_defence_rating
+          fan_ranking: this.props.detail.fan_ranking,
+          overall_rating: this.props.detail.squad_rating,
+          cohesion_rating: this.props.detail.cohesion_rating,
+          attack_defence_rating: this.props.detail.attack_defence_rating
       },
       showScoreCard:'full',
       soticFullPlayers: [],
       isSquadLoaded: false
     }
   }
+
   _mapSoticData(data, soticData, isHeroCard) {
       let items = []
       data.map((playerId)=>{
@@ -114,6 +117,7 @@ class MyLionsExpertProfile extends Component {
       if(isHeroCard && items.length>0) return items[0]
       return items
   }
+
   _mapJSON(data, colMax = 2) {
       let i = 0
       let k = 0
@@ -135,6 +139,7 @@ class MyLionsExpertProfile extends Component {
 
   _getSquadDetail(){
       this.setState({ isSquadLoaded: false })
+
       getSoticFullPlayerList().then((catchedFullPlayerList) => {
           if (this.isUnMounted) return // return nothing if the component is already unmounted
           if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
@@ -161,6 +166,7 @@ class MyLionsExpertProfile extends Component {
   ratingViewClick = () => {
     console.log('icon被点击')
   }
+
   changeMode = () => {
     console.log('ratingView被点击')
   }
@@ -171,6 +177,7 @@ class MyLionsExpertProfile extends Component {
 
   render() {
     let {jobTitle, squadData, ratingData,showScoreCard} = this.state
+    
     return (
       <Container theme={theme}>
         <View style={styles.container}>
