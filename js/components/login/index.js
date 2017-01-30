@@ -22,7 +22,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
-import fetch from '../utility/fetch'
+//import fetch from '../utility/fetch'
 
 const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
   <View >
@@ -320,14 +320,14 @@ class Login extends Component {
             }
         })
         console.log('FB获取用户信息')
-        console.log(this.state.fbUser.credentials)
+        console.log(this.state.fbUser)
         let {token} =this.state.fbUser
         console.log(token)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
-        fetch({ method: 'GET',url: httpUrl })
+        fetch(httpUrl.toString())
            .then((response) => response.json())
            .then( (json) => {
-           console.log('json: ', json)
+           console.log('json: ', JSON.stringify(json))
            let nameArr  = json.name.split(' ')
            let lastName = nameArr[0]
            let firstName=  nameArr[1]
@@ -378,7 +378,7 @@ class Login extends Component {
             }
             return json
         }).catch((error)=>{
-             console.log('FB获取用户信息错误')
+             console.log('FB获取用户信息错误, error: ', error)
             this.setState({
                 customMessages: error,
                 customMessagesType: 'error'
