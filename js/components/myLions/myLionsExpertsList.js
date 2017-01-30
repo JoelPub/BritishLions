@@ -27,7 +27,7 @@ import ExpertmModel from  'modes/Experts'
 import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 
 
-import ExpertsDataJSON from  '../../mockDataJson/expertsJson.json'
+//import ExpertsDataJSON from  '../../mockDataJson/expertsJson.json'
 
 
 const ExpertsHeader = ({rowData}) => (
@@ -69,10 +69,8 @@ class MyLionsExpertsList extends Component {
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
-        //ExpertsData = ExpertsData[0]
-        ExpertsData = ExpertsDataJSON // mock data only please remove once api is ready
+        ExpertsData = ExpertsData
 
-        //console.log('ExpertsData From EY: ', ExpertsData)
         if (this.isUnMounted) return // return nothing if the component is already unmounted
         
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
