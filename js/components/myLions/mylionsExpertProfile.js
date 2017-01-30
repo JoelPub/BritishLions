@@ -177,7 +177,12 @@ class MyLionsExpertProfile extends Component {
 
   render() {
     let {jobTitle, squadData, ratingData,showScoreCard} = this.state
-    
+    let  {detail} = this.props
+    console.log(detail)
+   let Expert = detail ;
+    console.log(Expert.name)
+    console.log(Expert.image)
+    console.log(Expert.description)
     return (
       <Container theme={theme}>
         <View style={styles.container}>
