@@ -554,8 +554,11 @@ class MyLionsPlayerDetails extends Component {
         }
         console.log(this.props.detail)
         let logo = ''
-        if (this.props.detail) logo = String(this.props.detail.logo)
-        return (
+        let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
+        if (this.props.detail) {
+            logo = String(this.props.detail.logo)
+        }
+         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
@@ -568,7 +571,7 @@ class MyLionsPlayerDetails extends Component {
                             </View>
                             
                             <View style={styles.headerPlayerDetails}>
-                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerName}>{name}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
                             <ButtonFeedback disabled = {this.state.isFavPlayerUpdating} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
