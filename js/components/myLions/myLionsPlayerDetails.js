@@ -551,7 +551,9 @@ class MyLionsPlayerDetails extends Component {
         } else {
             buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
         }
-
+        console.log(this.props.detail)
+        let logo = ''
+        if (this.props.detail) logo = String(this.props.detail.logo)
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -605,7 +607,7 @@ class MyLionsPlayerDetails extends Component {
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={{uri:this.props.detail.logo}}
+                                    source={{uri:logo}}
                                     style={styles.detailsNationLogo} />
                             </Col>
                             <Col style={styles.detailsGridCol} size={2}>
