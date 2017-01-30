@@ -120,7 +120,7 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        this._replaceRoute('news')
+        this._replaceRoute('myLions')
     }
     _SignInWithGoogle = (isFormValidate) => {
         this.setState({

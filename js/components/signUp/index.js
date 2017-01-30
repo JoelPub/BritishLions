@@ -357,8 +357,8 @@ class SignUp extends Component {
                'Account Registered',
                'Your account has been created successfully.',
                [{
-                   text: 'Go to News Page',
-                   onPress: () => { this._replaceRoute('news') }
+                   text: 'Go to My Lions Page',
+                   onPress: () => { this._replaceRoute('myLions') }
                }]
            ) 
         })
