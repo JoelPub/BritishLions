@@ -100,6 +100,8 @@ class MyLionsPlayerDetails extends Component {
                 )
                 break
             case 'message' :
+                title = title === 'WIDECARD'? 'WILDCARD' : title
+
                 return(
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalBtnTitle}>{title}</Text>

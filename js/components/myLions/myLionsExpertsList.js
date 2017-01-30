@@ -69,8 +69,6 @@ class MyLionsExpertsList extends Component {
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
-        ExpertsData = ExpertsData
-
         if (this.isUnMounted) return // return nothing if the component is already unmounted
         
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
