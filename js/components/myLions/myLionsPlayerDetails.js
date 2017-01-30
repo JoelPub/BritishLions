@@ -552,8 +552,13 @@ class MyLionsPlayerDetails extends Component {
         } else {
             buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
         }
-
-        return (
+        console.log(this.props.detail)
+        let logo = ''
+        let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
+        if (this.props.detail) {
+            logo = String(this.props.detail.logo)
+        }
+         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader back={true} title='MY LIONS' />
@@ -566,7 +571,7 @@ class MyLionsPlayerDetails extends Component {
                             </View>
                             
                             <View style={styles.headerPlayerDetails}>
-                                <Text style={styles.headerPlayerName}>{this.props.detail.name.toUpperCase()}</Text>
+                                <Text style={styles.headerPlayerName}>{name}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
                             <ButtonFeedback disabled = {this.state.isFavPlayerUpdating} onPress={()=>this._updatePlayerFavStatus()} style={styles.btnSearchPlayer}>
@@ -610,7 +615,7 @@ class MyLionsPlayerDetails extends Component {
                             <Col style={styles.detailsGridCol} size={1}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={{uri:this.props.detail.logo}}
+                                    source={{uri:logo}}
                                     style={styles.detailsNationLogo} />
                             </Col>
                             <Col style={styles.detailsGridCol} size={2}>
