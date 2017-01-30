@@ -10,8 +10,8 @@ var deviceWidth = Dimensions.get('window').width
 module.exports = StyleSheet.create({
     galleryPoster: {
         height: 270,
-        width: null,
-        position: 'relative'
+        position: 'relative',
+        resizeMode: 'contain'
     },
     slide: {
         flex: 1,
