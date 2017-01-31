@@ -103,7 +103,7 @@ class AppNavigator extends Component {
         super(props)
         this.serviceUrl = actionsApi.goodFormRefreshToken
         this.state = {
-            tracker: new GoogleAnalyticsTracker('UA-88700702-2'),
+            tracker: new GoogleAnalyticsTracker('UA-91181535-1'),
         }
     }
 
