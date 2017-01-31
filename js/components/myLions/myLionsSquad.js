@@ -467,7 +467,7 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
-                console.warn("fedd1: ", JSON.stringify(fullFeed))
+                //console.warn("fedd1: ", JSON.stringify(fullFeed))
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
