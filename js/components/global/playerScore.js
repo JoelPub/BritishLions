@@ -394,7 +394,7 @@ export default class PlayerScore extends Component {
                                     !this.props.isExpertPage &&
                                         <View>
                                             {
-                                                parseInt(this.props.rating.fan_ranking) < 50?
+                                                parseInt(this.props.rating.fan_ranking) < 5?
                                                     <View style={styles.summaryWrapper}>
                                                             <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
                                                             <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
@@ -403,7 +403,7 @@ export default class PlayerScore extends Component {
                                                     </View>
                                                 :
                                                     <View style={styles.summaryWrapper}>
-                                                            <Text style={styles.summaryText}>There’s room to improve  your squad!</Text>
+                                                            <Text style={styles.summaryText}>There’s room to improve your squad!</Text>
                                                             <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
                                                             <Text style={styles.summaryText}>of scores are higher than yours.</Text>
                                                     </View>
