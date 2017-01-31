@@ -45,4 +45,13 @@ export default [{   year:2017,
                     minute:30,
                     second:0,
                     message:"Only acouple of weeks until the official Lions squad is announced, log into My Lions to finalise your squad"
+                },
+                {
+                    year:2017,
+                    month:0,
+                    day:31,
+                    hour:8,
+                    minute:20,
+                    second:0,
+                    message:"This is for testing purposes."
                 }]
