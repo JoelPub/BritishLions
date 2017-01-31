@@ -88,10 +88,10 @@ export function callApi(opt, axiosInstance) {
 		opt.onAxiosStart()
 	}
 
-    console.log('getting connectionInfo... ')
+    //console.log('getting connectionInfo... ')
 
 	NetInfo.fetch().done((connectionInfo) => {
-		console.log('connectionInfo service: ', connectionInfo)
+		//console.log('connectionInfo service: ', connectionInfo)
 		let netInfos = connectionInfo.toLowerCase()
         console.log('netInfos: ', netInfos)
 		if(netInfos === 'unknown' || netInfos === 'none') {
@@ -109,8 +109,8 @@ export function callApi(opt, axiosInstance) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-				 console.log('%%%post,',opt.url )
-				 console.log('%%%postData,',JSON.stringify(opt.data) )
+				 //console.log('%%%post,',opt.url )
+				 //console.log('%%%postData,',JSON.stringify(opt.data) )
 				axiosInstance.post(
 				    opt.url,
 				    qs.stringify(opt.data)

@@ -60,6 +60,7 @@ class MyLionsExpertProfile extends Component {
     super(props)
     this.uniondata = Data
     let squad = SquadModel.fromJS(this.props.detail.squad)
+    this.isUnMounted = false
 
     this.state = {
       jobTitle: ['CAPTAIN', 'KICKER', 'WILDCARD'],
@@ -148,6 +149,7 @@ class MyLionsExpertProfile extends Component {
 
       getSoticFullPlayerList().then((catchedFullPlayerList) => {
           if (this.isUnMounted) return // return nothing if the component is already unmounted
+            
           if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
               this.setState({
                 soticFullPlayers: catchedFullPlayerList,
@@ -179,6 +181,10 @@ class MyLionsExpertProfile extends Component {
 
   componentDidMount() {
     setTimeout(()=>{this._getSquadDetail()},600)
+  }
+
+  componentWillUnmount() {
+      this.isUnMounted = true
   }
 
   render() {
@@ -271,7 +277,7 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
   return {
-    detail: state.content.drillDownItem,
+    detail: state.content.drillDownItemSub,
     route: state.route,
   }
 }, bindAction)(MyLionsExpertProfile)
