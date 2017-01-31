@@ -343,6 +343,28 @@ export default class PlayerScore extends Component {
         });
     }
 
+    _toRating(rate) {
+        let finalRate = 0
+        rate = parseInt(rate)
+
+        switch(rate) {
+            case 1:
+                finalRate = 5
+                break
+            case 2:
+                finalRate = 10
+                break
+            case 3:
+                finalRate = 25
+                break
+            case 4:
+                finalRate = 50
+                break
+        }
+
+        return finalRate + '%'
+    }
+
     _setModalExpertSquadVisible(isModalExpertSquadVisible) {
         this.setState({ isModalExpertSquadVisible })
     }
@@ -372,11 +394,12 @@ export default class PlayerScore extends Component {
                                     !this.props.isExpertPage &&
                                         <View>
                                             {
-                                                this.props.rating.fan_ranking<50?
+                                                parseInt(this.props.rating.fan_ranking) < 50?
                                                     <View style={styles.summaryWrapper}>
                                                             <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
                                                             <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                                                            <Text style={styles.summaryTextHighLight}>TOP {this.props.rating.fan_ranking}%</Text>
+                                                            <Text style={styles.summaryTextHighLight}>
+                                                                TOP {this._toRating(this.props.rating.fan_ranking)}</Text>
                                                     </View>
                                                 :
                                                     <View style={styles.summaryWrapper}>

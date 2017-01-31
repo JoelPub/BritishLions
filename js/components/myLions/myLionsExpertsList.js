@@ -21,7 +21,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import loader from '../../themes/loader-position'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 import imageJameshaskel from '../../../contents/my-lions/players/jameshaskell.png'
-import { drillDown } from '../../actions/content'
+import { drillReplace } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 import ExpertmModel from  'modes/Experts'
 import{ getEYC3ExpertsSquads, removeEYC3ExpertsSquads } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
@@ -65,13 +65,11 @@ class MyLionsExpertsList extends Component {
     };
   }
   _navToDetail = (item) => {
-    this.props.drillDown(item, 'mylionsExpertProfile')
+     this.props.drillReplace(item, 'mylionsExpertProfile', false)
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
-
         //console.log('ExpertsData: ', ExpertsData)
-
         if (this.isUnMounted) return // return nothing if the component is already unmounted
         
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
@@ -143,8 +141,8 @@ class MyLionsExpertsList extends Component {
 
 function bindAction(dispatch) {
   return {
-    drillDown: (data, route)=>dispatch(drillDown(data, route)),
-    replaceRoute:(route)=>dispatch(replaceRoute(route)),
+    drillReplace: (data, route, isSub)=>dispatch(drillReplace(data, route, isSub)),
+    replaceRoute:(route)=>dispatch(replaceRoute(route))
   }
 }
 
