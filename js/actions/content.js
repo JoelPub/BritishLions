@@ -92,14 +92,17 @@ export function drillDown(item, route:string):Action {
     }
 }
 
-export function drillReplace(item, route:string, isSub):Action {
+export function drillReplace(item, route:string, isSub, isPushNewRoute: false):Action {
     return (dispatch, getState) => {
-      if(isSub) {
-          dispatch(pushContentItem({item}))
-      } else {
-          dispatch(pushContentItemSub({item}))
-      }
+        if (isSub)
+            dispatch(pushContentItem({item}))
+        else 
+            dispatch(pushContentItemSub({item}))
+        
 
-      dispatch(replaceRoute(route))
+        if (isPushNewRoute) 
+            dispatch(pushNewRoute(route))
+        else
+            dispatch(replaceRoute(route))
     }
 }

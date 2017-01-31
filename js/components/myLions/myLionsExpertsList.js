@@ -65,7 +65,7 @@ class MyLionsExpertsList extends Component {
     };
   }
   _navToDetail = (item) => {
-     this.props.drillReplace(item, 'mylionsExpertProfile', false)
+     this.props.drillReplace(item, 'mylionsExpertProfile', false, true)
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
@@ -141,7 +141,7 @@ class MyLionsExpertsList extends Component {
 
 function bindAction(dispatch) {
   return {
-    drillReplace: (data, route, isSub)=>dispatch(drillReplace(data, route, isSub)),
+    drillReplace: (data, route, isSub, isPushNewRoute)=>dispatch(drillReplace(data, route, isSub, isPushNewRoute)),
     replaceRoute:(route)=>dispatch(replaceRoute(route))
   }
 }
