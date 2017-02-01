@@ -131,6 +131,8 @@ module.exports = styleSheetCreate({
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
+        paddingLeft: 35,
+        paddingRight: 25
     },
     btnLeftRed: {
         backgroundColor: 'rgb(154, 2, 28)',
@@ -160,7 +162,7 @@ module.exports = styleSheetCreate({
         color: '#FFF',
         fontFamily: styleVar.fontCondensed,
         android: {
-            marginTop: 0
+            marginTop: 4
         }
     },
     gridBox: {
