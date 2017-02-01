@@ -6,7 +6,7 @@ const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
 
-export async function updateToken(accessTokenID, refreshTokenID, firstName='', lastName='', is_first_log_in = true, logged_in_email='') {
+export async function updateToken(accessTokenID='', refreshTokenID='', firstName='', lastName='', is_first_log_in = true, logged_in_email='') {
     let loginExpired = generateLoginExpiration().toString()
     is_first_log_in = is_first_log_in === 'true'? 'yes' : 'no'
     

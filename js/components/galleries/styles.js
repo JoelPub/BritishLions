@@ -71,6 +71,7 @@ module.exports = styleSheetCreate({
         }
     },
     galleryDetailHeaderText: {
+        textAlign: 'center',
         fontSize: 24,
         lineHeight: 24,
         fontFamily: styleVar.fontCondensed,
