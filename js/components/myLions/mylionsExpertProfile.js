@@ -63,7 +63,7 @@ class MyLionsExpertProfile extends Component {
     this.isUnMounted = false
 
     this.state = {
-      jobTitle: ['CAPTAIN', 'KICKER', 'WILDCARD'],
+      jobTitle: ['CAPTAIN', 'KICKER', 'STAR'],
       squadData:{
         //TODO :this.props.detail.squad.captain,this.props.detail.squad.kicker,this.props.detail.squad.wildcard,
         //forwards: [114146,33315,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759,8759],
