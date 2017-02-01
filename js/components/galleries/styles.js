@@ -10,6 +10,9 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
+    backgroundList: {
+        backgroundColor: '#ce1030'
+    },
     entryShow:{
         opacity:1
     },

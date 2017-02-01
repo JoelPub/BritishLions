@@ -50,26 +50,28 @@ class Galleries extends Component {
                         this.state.isLoaded?
                             <Content>
                                 <StickyFooter>
-                                    {
-                                       this.state.galleriesFeed.map(function(data, index) {
-                                            return (
-                                               <ButtonFeedback
-                                                    style={styles.btn}
-                                                    key={index}
-                                                    onPress={() => this._drillDown(data)}>
-                                                    <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
-                                                        <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
-                                                    </ImagePlaceholder>
-                                                    <View style={[shapes.triangle, styles.triangle]} />
-                                                    <View style={styles.galleriesContent}>
-                                                        <Text numberOfLines={1} style={styles.galleriesHeader}>
-                                                            {data.title? data.title.toUpperCase() : ' '}
-                                                        </Text>
-                                                    </View>
-                                                </ButtonFeedback>
-                                            )
-                                        }, this)
-                                    }
+                                    <View style={styles.backgroundList}>
+                                        {
+                                           this.state.galleriesFeed.map(function(data, index) {
+                                                return (
+                                                   <ButtonFeedback
+                                                        style={styles.btn}
+                                                        key={index}
+                                                        onPress={() => this._drillDown(data)}>
+                                                        <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
+                                                            <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
+                                                        </ImagePlaceholder>
+                                                        <View style={[shapes.triangle, styles.triangle]} />
+                                                        <View style={styles.galleriesContent}>
+                                                            <Text numberOfLines={1} style={styles.galleriesHeader}>
+                                                                {data.title? data.title.toUpperCase() : ' '}
+                                                            </Text>
+                                                        </View>
+                                                    </ButtonFeedback>
+                                                )
+                                            }, this)
+                                        }
+                                    </View>
                                 </StickyFooter>
                             </Content>
                           :
