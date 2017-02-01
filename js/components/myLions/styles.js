@@ -131,8 +131,8 @@ module.exports = styleSheetCreate({
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
-        paddingLeft: 35,
-        paddingRight: 25
+        paddingLeft: 40,
+        paddingRight: 30
     },
     btnLeftRed: {
         backgroundColor: 'rgb(154, 2, 28)',
@@ -146,14 +146,14 @@ module.exports = styleSheetCreate({
     btnLeft: {
         borderTopLeftRadius: 25,
         borderBottomLeftRadius: 25,
-        paddingLeft: 25,
-        paddingRight: 15
+        paddingLeft: 30,
+        paddingRight: 20
     },
     btnRight: {
         borderTopRightRadius: 25,
         borderBottomRightRadius: 25,
-        paddingLeft: 15,
-        paddingRight: 25
+        paddingLeft: 20,
+        paddingRight: 30
     },
     btnText: {
         marginTop: 10,
