@@ -82,7 +82,7 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTitleTextCenter}>SELECT A POSITION</Text>
                         <PositionButton position='captain' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','captain',1)} subject='CAPTAIN' data={this.state.squadDataFeed.captain} total='1'/>
                         <PositionButton position='kicker' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','kicker',1)} subject='KICKER' data={this.state.squadDataFeed.kicker} total='1'/>
-                        <PositionButton position='wildcard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','widecard',1)} subject='WILDCARD' data={this.state.squadDataFeed.widecard} total='1'/>
+                        <PositionButton position='wildcard' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','widecard',1)} subject='STAR' data={this.state.squadDataFeed.widecard} total='1'/>
                         <PositionButton position='forwards' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','forwards',16)} subject='FORWARD' data={this.state.squadDataFeed.forwards} total='16'/>
                         <PositionButton position='backs' posToAdd={this.props.positionToAdd} onPress = {()=>this._updateSquad('add','backs',16)} subject='BACK' data={this.state.squadDataFeed.backs} total='16'/>
                     </View>
@@ -100,7 +100,7 @@ class MyLionsPlayerDetails extends Component {
                 )
                 break
             case 'message' :
-                title = title === 'WIDECARD'? 'WILDCARD' : title
+                title = title === 'WIDECARD'? 'STAR' : title
 
                 return(
                     <View style={styles.modalViewWrapper}>

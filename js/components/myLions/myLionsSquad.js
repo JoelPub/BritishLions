@@ -242,10 +242,13 @@ class MyLionsSquad extends Component {
                                     <View style={styles.individaulPositionRow}>
                                     {
                                         this.state.squadDatafeed.indivPos.map((item,index)=>{
+                                            let position = item.position.toUpperCase()
                                             return (
                                                 <View style={styles.indivPosition} key={index}>
                                                     <View style={styles.indivPosTitle}>
-                                                        <Text style={styles.indivPosTitleText}>{item.position.toUpperCase()}</Text>
+                                                        <Text style={styles.indivPosTitleText}>
+                                                            { position === 'WILDCARD'? 'STAR' : position }
+                                                        </Text>
                                                     </View>
                                                     {
                                                     item.info===null?
