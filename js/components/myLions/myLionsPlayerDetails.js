@@ -119,8 +119,8 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTitleText}>Recent Performance</Text>
                         <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
                 
-                        <Text style={styles.modalTitleText}>Trend</Text>
-                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>
+                        {/*<Text style={styles.modalTitleText}>Trend</Text>
+                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>*/}
                 
                         <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
                         <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>

@@ -75,15 +75,16 @@ const styles = styleSheetCreate({
         flex:1,
         justifyContent:'flex-start',
         borderTopWidth:1,
-        borderLeftWidth:1,
+        //borderLeftWidth:1,
         borderBottomWidth:1,
         borderColor:'rgb(128,127,131)',
-        paddingTop: 20,
+        paddingTop: 25,
         paddingHorizontal:16,
         paddingBottom:1,
         alignItems:'center',
         android:{
             paddingBottom:5,
+            paddingTop: 20
         }
     },
     playerPerformanceTrend:{
@@ -100,6 +101,7 @@ const styles = styleSheetCreate({
         textAlign:'center',
         color:'rgb(255,230,0)',
         flex:1,
+        marginTop: 5
     },
     summaryTextHighLight2:{
         marginTop: 20
@@ -325,13 +327,13 @@ export default class PlayerFigure extends Component {
 
                             <View style={styles.playerPerfromanceWrapper}>
                                 <View style={styles.playerPerfromance} >
-                                    <Text style={styles.performanceText}>RECENT</Text>
-                                    <Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>
+                                    <Text style={styles.performanceText}>RECENT PERFORMANCE</Text>
+                                    {/*<Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>*/}
                                     <Text style={styles.summaryTextHighLight}>
                                         { this.state.profile.performance_score || 'N/A' }
                                     </Text>
                                 </View>
-                                <View style={styles.playerPerfromance}>
+                                {/*<View style={styles.playerPerfromance}>
                                     <Text style={[styles.performanceText, styles.consitencyText]}>TREND</Text>
                                     {
                                         this.state.profile.player_consistency == 1&&
@@ -350,7 +352,7 @@ export default class PlayerFigure extends Component {
                                         this.state.profile.player_consistency === ''&& 
                                         <Text style={[styles.summaryTextHighLight, styles.summaryTextHighLight2]}>N/A</Text>
                                     }
-                                </View>
+                                </View>*/}
                             </View>
                             <View style={styles.playerFigureWrapper}>
                                 <View style={styles.playerFigureView}>
