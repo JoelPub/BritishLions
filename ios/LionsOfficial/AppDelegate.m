@@ -25,6 +25,14 @@
 {
   NSURL *jsCodeLocation;
   [NSThread sleepForTimeInterval:3.0];  //我这里设置的是3秒
+  if([application currentUserNotificationSettings].types==UIUserNotificationTypeNone){
+    //设置提示支持的提示方式
+    //        UIUserNotificationTypeBadge   提示图标
+    //        UIUserNotificationTypeSound   提示声音
+    //        UIUserNotificationTypeAlert   提示弹框
+    UIUserNotificationSettings * setting=[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+    [application registerUserNotificationSettings:setting];
+  }
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
@@ -42,7 +50,6 @@
   return [[FBSDKApplicationDelegate sharedInstance] application:application
                                   didFinishLaunchingWithOptions:launchOptions];
 }
-
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
