@@ -936,8 +936,11 @@ module.exports = styleSheetCreate({
         marginTop:28
     },
     modalText:{
-        fontFamily: styleVar.fontGeorgia,
+        fontFamily: 'Helvetica Neue',
         fontSize:16,
+    },
+    modalTextMTop: {
+        marginTop: 28
     },
     modalTextHN:{
         fontFamily: 'Helvetica Neue',

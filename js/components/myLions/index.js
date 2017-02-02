@@ -258,17 +258,24 @@ class MyLions extends Component {
                         modalVisible={this.state.modalInfoVisible}
                         callbackParent={() => this._setModalVisible(false)}>
                             <ScrollView style={styles.modalViewWrapper}>
-                                <Text style={styles.modalTitleText}>Player Rating</Text>
-                                <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                                <Text style={styles.modalTitleText}>Overall Rating</Text>
+                                <Text style={styles.modalText}>To provide an overall rating for the players EYC3 took the results of 720 games played in 2015/2016 looking at Internationals and top tier club rugby. In addition, as new games are played including the 6 Nations Tournament, player performance will actively update their rating.</Text>
                                 
+                                <Text style={[styles.modalText, styles.modalTextMTop]}>For each of these games there are over 150 features collected on player performance. Using advanced analytic techniques EYC3 identified the 30 most influential factors in a team winning a game. These factors were split into Defensive and Attacking attributes and weighted by position. i.e. A fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
+
+
                                 <Text style={styles.modalTitleText}>Recent Performance</Text>
-                                <Text style={styles.modalTextRN}>Average rating of player performance over the last five games based on their attack and defence statistics.</Text>
-                                
-                                {/*<Text style={styles.modalTitleText}>Trend</Text>
-                                <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>*/}
-                                
-                                <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
-                                <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
+                                <Text style={styles.modalText}>Rugby is a game of momentum as such we have calculated how well each player has performed in the last 5 matches, this provides an indication if the players overall rating is likely to increase.</Text>
+
+
+                                <Text style={styles.modalTitleText}>Squad Rating</Text>
+                                <Text style={styles.modalText}>Your squad score will take into account all the ratings of your individual players and allows you to choose which players ratings you want to boost by nominating a Captain, Kicker and a Star player (the player you nominate as your best performer).</Text>
+
+                                <Text style={styles.modalTitleText}>Cohesion</Text>
+                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your player’s are with each other the better they will perform in a game. EYC3 has developed an algorithim to rate the cohesion of your squad based on international and top tier club rugby games over the last two years.</Text>
+
+                                <Text style={styles.modalTitleText}>Attack/Defense</Text>
+                                <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see if it’s strength lies in attack or defense or you have created a more balanced team.</Text>
                             </ScrollView>
                     </SquadModal>
                 </View>
