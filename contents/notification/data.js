@@ -1,8 +1,8 @@
 export default [{   year:2017,
                     month:1,
-                    day:7,
-                    hour:9,
-                    minute:30,
+                    day:2,
+                    hour:5,
+                    minute:26,
                     second:0,
                     message:"Player statistics have been updated from the weekend's games, log into My Lions to update your squad"
                 },
