@@ -107,7 +107,7 @@ export default [
         "label": "Visit the Robert Walters website",
         "image": require("./robertwalters.png"),
         "banner": require("./banner/robertwalters.png"),
-        "description": ""
+        "description": "<p>ROBERT WALTERS</p><p>Trust us to field the best</p><p>We've always known how to pick the best candidates for the big roles. And we've always understood what makes a great team. After all, we run our business on the basis of group effort and shared reward. This is why we've continued our sponsorship of The British & Irish Lions and their Tour to New Zealand in 2017.</p><p>Robert Walters sponsorship of British & Irish Lions continues our partnership with rugby internationally which currently includes sponsorship of the Japanese and Brazilian rugby teams.</p><p>Our story begins in 1985, when our CEO, Robert Walters, opened our first office in Central London. Rob has led the company ever since and has the same passion and commitment today.</p><p>Over the last 30 years the business has grown and so has our ambition. We now operate across 27 countries and employ over 2,900 people. It's a powerful success story built on the strength of our people.</p><p>Organisations rely on us to find high quality professionals for a range of specialist roles. Professionals, who are looking for a new role, whether it's on a permanent, interim or contract basis, trust us to find them their ideal job.</p><p>To find out how Robert Walters can find you your ideal role or help your business hire new talent please visit <a href=\"http://www.robertwalters.co.uk\">www.robertwalters.co.uk</a> or call +44 (0)20 7379 3333.</p>"
     },
     {
         "id": "11",
