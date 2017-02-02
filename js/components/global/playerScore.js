@@ -309,8 +309,8 @@ export default class PlayerScore extends Component {
             })
             .then(
                 res => Share.open({
-                    title:("I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch").toString(),
-                    message:("I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch").toString(),
+                    title:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
+                    message:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
                     subject:context,
                     url: `data:image/png;base64,${res}`
                 }).then((info)=>{
