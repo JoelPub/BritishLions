@@ -182,12 +182,12 @@ class MyLions extends Component {
                                     </Text>
                                 </ButtonFeedback>
 
-                                {/*<ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
                                     <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
                                         INFORMATION
                                     </Text>
-                                </ButtonFeedback>*/}
+                                </ButtonFeedback>
                             </View>
                             <LionsFooter isLoaded={true} />
                         </Content>
@@ -258,12 +258,6 @@ class MyLions extends Component {
                         modalVisible={this.state.modalInfoVisible}
                         callbackParent={() => this._setModalVisible(false)}>
                             <ScrollView style={styles.modalViewWrapper}>
-                                <Text style={styles.modalTitleText}>Overall Rating</Text>
-                                <Text style={styles.modalText}>A score out of 500 based on your selected players, cohesion rating, individual player performances over the last two years, and their most recent five games.</Text>
-                                <Text style={styles.modalTitleText}>Cohesion</Text>
-                                <Text style={styles.modalText}>A rating out of 100 where 0 means that your squad has played no games together and 100 means that your squad has played all their games together over the last two years.</Text>
-                                <Text style={styles.modalTitleText}>Attack / Defence</Text>
-                                <Text style={styles.modalText}>Assessment of the balance of the attacking and defensive capabilities of your squad.</Text>
                             </ScrollView>
                     </SquadModal>
                 </View>
