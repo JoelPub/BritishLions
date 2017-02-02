@@ -61,7 +61,7 @@ class MyLionsExpertProfile extends Component {
     this.uniondata = Data
     let squad = SquadModel.fromJS(this.props.detail.squad)
     this.isUnMounted = false
-
+    console.log("squad, ", JSON.stringify(squad))
     this.state = {
       jobTitle: ['CAPTAIN', 'KICKER', 'STAR'],
       squadData:{
@@ -72,7 +72,7 @@ class MyLionsExpertProfile extends Component {
         indivPos: [
             {position:'captain', id: [squad.captain]},
             {position:'kicker', id: [squad.kicker]},
-            {position:'wildcard', id: [squad.widecard]}
+            {position:'wildcard', id: [squad.wildcard]}
         ],
         forwards: squad.forwards.toArray(),
         backs: squad.backs.toArray(),

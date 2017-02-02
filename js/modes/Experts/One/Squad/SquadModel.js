@@ -3,7 +3,7 @@ import  {isPlainObj } from 'modes/utils/functions'
 const SquadModel = Record({
   'captain': '',
   'kicker': '',
-  'widecard': '',
+  'wildcard': '',
   'forwards': new List(),
   'backs': new List ()
 })
