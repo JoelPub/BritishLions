@@ -53,7 +53,9 @@ const AddPlayerCell = ({pos,onPress})=>(
             <View style={[shapes.triangle]} />
             <View style={styles.titleBox}>
                 <Text style={styles.playerNameText}>ADD</Text>
-                <Text style={styles.playerNameText}>{pos.toUpperCase()}</Text>
+                <Text style={styles.playerNameText}>
+                    { pos.toUpperCase() === 'WILDCARD'? 'STAR' : pos.toUpperCase() }
+                </Text>
                 </View>
         </View>
     </ButtonFeedback>
