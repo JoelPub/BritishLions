@@ -131,8 +131,8 @@ module.exports = styleSheetCreate({
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
-        paddingLeft: 40,
-        paddingRight: 30
+        //paddingLeft: 40,
+        //paddingRight: 30
     },
     btnLeftRed: {
         backgroundColor: 'rgb(154, 2, 28)',
@@ -146,8 +146,9 @@ module.exports = styleSheetCreate({
     btnLeft: {
         borderTopLeftRadius: 25,
         borderBottomLeftRadius: 25,
-        paddingLeft: 30,
-        paddingRight: 20
+        paddingLeft: 0,
+        paddingRight: 0,
+        width: 120,
     },
     btnRight: {
         borderTopRightRadius: 25,
@@ -156,6 +157,7 @@ module.exports = styleSheetCreate({
         paddingRight: 30
     },
     btnText: {
+        alignSelf: 'center',
         marginTop: 10,
         fontSize: 24,
         lineHeight: 24,
@@ -336,7 +338,11 @@ module.exports = styleSheetCreate({
     resultDesc: {
         flex:16,
         backgroundColor:'rgb(208,7,41)',
-        height:styleVar.deviceWidth*9/25
+        height:styleVar.deviceWidth*9/25,
+        justifyContent: 'center'
+    },
+    resultDescDetail: {
+        width: null
     },
     resultRowBtn: {
         flex:1,
@@ -347,11 +353,11 @@ module.exports = styleSheetCreate({
     },
     resultRowTitleText: {
         fontSize:24,
-        lineHeight:26,
+        lineHeight: 24,
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         paddingLeft:22,
-        marginTop:43,
+        //marginTop: 20,
     },
     resultRowSubtitleText: {
         fontSize:18,
@@ -930,8 +936,11 @@ module.exports = styleSheetCreate({
         marginTop:28
     },
     modalText:{
-        fontFamily: styleVar.fontGeorgia,
+        fontFamily: 'Helvetica Neue',
         fontSize:16,
+    },
+    modalTextMTop: {
+        marginTop: 28
     },
     modalTextHN:{
         fontFamily: 'Helvetica Neue',
