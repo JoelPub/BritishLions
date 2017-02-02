@@ -470,6 +470,9 @@ module.exports = styleSheetCreate({
             marginTop: -7,
         }
     },
+    btnInformation: {
+        marginTop: 20
+    },
     btnFavourites: {
         backgroundColor:'rgb(128,127,131)',
         flexDirection:'row',

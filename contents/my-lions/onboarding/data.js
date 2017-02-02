@@ -1,16 +1,24 @@
 export default [
     {
         "id": "1",
-        "description": ["Join the debate and select your own Lions squad of 35 players to travel to New Zealand.",
-                        "You have the ability to browse, search and select players as part of the 2017 squad.  Your selected squad will then receive a rating which you will be able to compare with experts or your friends."]
+        "description": [
+            "Join the debate and select your own Lions squad to travel to New Zealand.",
+            "EY has developed an algorithm to rate your squad by analysing player statistics over the last two years in international and top tier club competitions."
+        ]
     },
     {
         "id": "2",
-        "description": ["Detailed information for each player is available for over 700 eligible players, including the latest statistics and performance ratings provided by EY, our analytics sponsor."]
+        "description": [
+            "The statistics have been weighted to take into account the competition level and the key attack and defence metrics for each position.",
+            "In addition to selecting your forwards and backs, you will have the ability to nominate your Captain, Kicker and Star player whose rating will be multiplied to boost your score."
+        ]
     },
     {
         "id": "3",
-        "description": ["Choose your captain, kicker, forwards, backs, and wild card player to make up a squad of 35 to receive your squad rating which will be determined by the balance of attack vs defence and team cohesion.",
-                        "Let’s start selecting your squad."]
+        "description": [
+            "You can search the list of eligible players by home union then by name, club or position.",
+            "Player statistics will be updated after every round of the RBS 6 Nations. You can update your squad by adding or removing players.",
+            "Start selecting your squad!"
+        ]
     }
 ]
