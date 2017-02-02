@@ -376,7 +376,26 @@ class MyLionsPlayerList extends Component {
             //name contain keywords
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.position.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
-            searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+            //searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
+
+            // searchResult = searchResult.concat(
+            //     this.playerListFeeds.filter((player) => {
+            //         if (player.name)
+            //             player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1
+            //     })
+            // )
+            // searchResult = searchResult.concat(
+            //     this.playerListFeeds.filter((player)=> {
+            //         if (player.position)
+            //             player.position.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1
+            //     })
+            // )
+            searchResult = searchResult.concat(
+                this.playerListFeeds.filter((player)=> {
+                    if (player.club)
+                        return player.club.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1
+                })
+            )
 
             //break keywords to single characters and match
             for (let i=0;i<strSearch.length;i++ ) {
