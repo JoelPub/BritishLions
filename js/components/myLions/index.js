@@ -182,12 +182,12 @@ class MyLions extends Component {
                                     </Text>
                                 </ButtonFeedback>
 
-                                {/*<ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
-                                    <Icon name='md-information-circle' style={styles.btnFavouritesIcon} />
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
+                                    <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
                                         INFORMATION
                                     </Text>
-                                </ButtonFeedback>*/}
+                                </ButtonFeedback>
                             </View>
                             <LionsFooter isLoaded={true} />
                         </Content>

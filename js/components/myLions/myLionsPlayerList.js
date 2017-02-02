@@ -113,8 +113,10 @@ class MyLionsPlayerList extends Component {
                              />
                     </View>
                     <View style={styles.resultDesc}>
-                        <Text style={styles.resultRowTitleText}>{rowData.name.toUpperCase()}</Text>
-                        <Text style={styles.resultRowSubtitleText}>{rowData.position}</Text>
+                        <View style={styles.resultDescDetail}>
+                            <Text style={styles.resultRowTitleText}>{rowData.name.toUpperCase()}</Text>
+                            <Text style={styles.resultRowSubtitleText}>{rowData.position}</Text>
+                        </View>
                     </View>
                 </ButtonFeedback>
             </View>

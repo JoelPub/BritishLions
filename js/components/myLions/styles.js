@@ -338,7 +338,11 @@ module.exports = styleSheetCreate({
     resultDesc: {
         flex:16,
         backgroundColor:'rgb(208,7,41)',
-        height:styleVar.deviceWidth*9/25
+        height:styleVar.deviceWidth*9/25,
+        justifyContent: 'center'
+    },
+    resultDescDetail: {
+        width: null
     },
     resultRowBtn: {
         flex:1,
@@ -349,11 +353,11 @@ module.exports = styleSheetCreate({
     },
     resultRowTitleText: {
         fontSize:24,
-        lineHeight:26,
+        lineHeight: 24,
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         paddingLeft:22,
-        marginTop:43,
+        //marginTop: 20,
     },
     resultRowSubtitleText: {
         fontSize:18,
