@@ -176,7 +176,12 @@ class MyLionsPlayerDetails extends Component {
     
     componentDidMount() {
         // Let's have a parallel request
-        this._updateFavStatus()
+
+        setTimeout(()=>{
+            // adding delay to solve the issue of LIONS-690
+            this._updateFavStatus()
+        }, 600)
+
         this._updateMySquadStatus()
         this.getPlayerProfile()
     }
@@ -554,7 +559,7 @@ class MyLionsPlayerDetails extends Component {
         } else {
             buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
         }
-        console.log(this.props.detail)
+
         let logo = ''
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
         if (this.props.detail) {
