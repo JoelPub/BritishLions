@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Platform, Alert,  ScrollView, Modal, ActivityIndicator } from 'react-native'
-import { Container, Thumbnail, Header, Title, Content, Text, Button, Icon } from 'native-base'
+import { Container, Thumbnail, Header, Title, Text, Button, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -49,7 +49,7 @@ const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
 class MyLionsPlayerDetails extends Component {
     constructor(props){
         super(props)
-
+        this._scrollView = ScrollView
         this.isUnMounted = false
         this.favAddUrl = getAssembledUrl('AddGoodFormFavoritePlayers')
         this.favRemoveUrl = getAssembledUrl('RemoveGoodFormFavoritePlayers')
@@ -576,9 +576,13 @@ class MyLionsPlayerDetails extends Component {
          return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='MY LIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
 
-                    <Content bounces={false}>
+                    <ScrollView bounces={false} ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.header}>
                             <View style={styles.playerPic}>
                                 <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
@@ -680,7 +684,7 @@ class MyLionsPlayerDetails extends Component {
                         */}
                         <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     < EYSFooter mySquadBtn={true} />
                     <LoginRequire/>
                     <SquadModal

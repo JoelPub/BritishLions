@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, ListView, ActivityIndicator} from 'react-native'
-import { Container, Content, Text, Button, Icon, Input } from 'native-base'
+import { Container, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -56,6 +56,7 @@ class MyLionsExpertsList extends Component {
 
   constructor(props) {
     super(props)
+    this._scrollView = ScrollView
     this.isUnMounted = false
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
@@ -113,7 +114,13 @@ class MyLionsExpertsList extends Component {
     return (
       <Container theme={theme}>
         <View style={styles.container}>
-          <LionsHeader back={true} title='MY LIONS' />
+
+          <LionsHeader 
+              back={true} 
+              title='MY LIONS'
+              contentLoaded={this.state.isLoaded}
+              scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+
           <View style={{flex: 1}}>
             <Text style={[styles.headerTitle,styles.squadTitle]}>THE EXPERTS' SQUADS</Text>
             {
@@ -124,6 +131,7 @@ class MyLionsExpertsList extends Component {
                   renderRow={(rowData) => <ExpertsCell rowData={rowData} onPress = {() => this._navToDetail(rowData)} />}
                   style={styles.squadListView}
                   renderFooter ={this._renderFooter}
+                  ref={(scrollView) => { this._scrollView = scrollView }}
                 />
 
               :

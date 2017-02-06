@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, NativeModules } from 'react-native'
-import { Container, Header, Title, Content, Text, Icon } from 'native-base'
+import { Image, View, Platform, NativeModules, ScrollView } from 'react-native'
+import { Container, Header, Title, Text, Icon } from 'native-base'
 import { alertBox } from '../utility/alertBox'
 import EYSFooter from '../global/eySponsoredFooter'
 import theme from '../../themes/base-theme'
@@ -23,7 +23,7 @@ class FixtureDetails extends Component {
 
     constructor(props){
         super(props)
-
+        this._scrollView = ScrollView
         this.state = {
             isGameIsOn: false
         }
@@ -78,13 +78,15 @@ class FixtureDetails extends Component {
     }
 
     render() {
-        
-
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
-                    <LionsHeader back={true} title='FIXTURES' />
-                    <Content>
+                    <LionsHeader 
+                        back={true} 
+                        title='FIXTURES'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
                             <View style={[styles.fixtureBanner, styles.fixtureBannerDetail]}>
                                 <Text style={[styles.dateText, styles.dateTextDetail]}>{this.props.details.date.toUpperCase()}</Text>
@@ -118,7 +120,7 @@ class FixtureDetails extends Component {
                             <Text style={styles.pageText}>{this.props.details.description}</Text>
                         </View>
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     <EYSFooter />
                 </View>
             </Container>

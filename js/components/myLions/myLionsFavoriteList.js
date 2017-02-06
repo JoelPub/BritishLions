@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Platform, ListView } from 'react-native'
-import { Container, Content, Text, Button, Icon, Input } from 'native-base'
+import { Container, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -42,6 +42,7 @@ class MyLionsFavoriteList extends Component {
         this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
         this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
         this.uniondata = Data
+        this._scrollView = ScrollView
 
         this.state = {
             isRefreshing: false,
@@ -364,7 +365,11 @@ class MyLionsFavoriteList extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='MY LIONS' 
+                        contentLoaded={this.state.isLoaded}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                      <View style={styles.myLionsSharedHeader}>
                          <Text style={styles.myLionsSharedHeaderText}>
                               MY FAVOURITES
@@ -376,14 +381,14 @@ class MyLionsFavoriteList extends Component {
                                 <View>
                                     {
                                         !this.state.favoritePlayers.getRowCount()? 
-                                            <ScrollView>
+                                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                                 <View style={styles.emptyPlayer}>
                                                     <Text style={styles.emptyPlayerText}>Your Favourite Players list is currently empty, you can add Favourite Players from the Player Detail screen.</Text>
                                                 </View>
                                                 <LionsFooter isLoaded={true} />
                                             </ScrollView>
                                         : 
-                                            <ScrollView>
+                                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                                 <ListView 
                                                     dataSource={this.state.favoritePlayers}
                                                     renderRow={this._renderRow.bind(this)}

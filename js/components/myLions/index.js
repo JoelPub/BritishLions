@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
 import { isFirstLogIn } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -42,6 +42,7 @@ class MyLions extends Component {
         this.totalPages = 3
         this.pageWindow=[]
         this.isUnMounted = false
+        this._scrollView = ScrollView
     }
 
     _showList(item, route) {
@@ -77,7 +78,6 @@ class MyLions extends Component {
         },()=>{
             this.refs['swiper'].scrollBy(1,true)
         })
-
     }
 
     _setModalVisible=(visible) => {
@@ -152,8 +152,11 @@ class MyLions extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                        <LionsHeader title='MY LIONS' />
-                        <Content >
+                        <LionsHeader 
+                            title='MY LIONS'
+                            contentLoaded={true}
+                            scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                        <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                             <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
                                 <Image resizeMode='cover'
                                 source={require('../../../images/content/mylionsBanner.jpg')} style={styles.mylionsBanner}>
@@ -190,7 +193,7 @@ class MyLions extends Component {
                                 </ButtonFeedback>
                             </View>
                             <LionsFooter isLoaded={true} />
-                        </Content>
+                        </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire onFinish={this._renderLogic.bind(this)}/>
                     <Modal

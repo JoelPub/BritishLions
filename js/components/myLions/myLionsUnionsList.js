@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { drillDown } from '../../actions/content'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -22,6 +22,7 @@ class MyLionsUnionsList extends Component {
 
     constructor(props) {
          super(props)
+         this._scrollView = ScrollView
     }
 
     _showList(item, route) {
@@ -52,14 +53,18 @@ class MyLionsUnionsList extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
                     <View style={styles.headerContainer}>
-                        <LionsHeader back={true} title='MY LIONS' />
+                        <LionsHeader 
+                            back={true} 
+                            title='MY LIONS'
+                            contentLoaded={true}
+                            scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                         <View style={styles.myLionsSharedHeader}>
                          <Text style={styles.myLionsSharedHeaderText}>
                               HOME UNIONS
                          </Text>
                         </View>
                     </View>
-                    <Content>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                          {
                             this._mapJSON(Data).map((rowData, index) => {
                                 return (
@@ -108,7 +113,7 @@ class MyLionsUnionsList extends Component {
                         }
                         <LionsFooter isLoaded={true} />
                         <LoginRequire/>
-                    </Content>
+                    </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
                 </View>
             </Container>

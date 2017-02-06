@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform } from 'react-native'
-import { Container, Content, Text, Button, Icon } from 'native-base'
+import { Image, View, Platform, ScrollView } from 'react-native'
+import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
@@ -18,14 +18,22 @@ import PaginationButton from '../utility/paginationButton'
 
 
 class NewsDetailsSub extends Component {
-
+    constructor(props) {
+         super(props)
+         this._scrollView = ScrollView
+    }
+    
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
 
-                    <LionsHeader back={true} title='NEWS' />
-                    <Content>
+                    <LionsHeader 
+                        back={true} 
+                        title='NEWS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={270}>
                             <Image source={{uri: this.props.article.image}} style={styles.banner}>
                                 <Image transparent
@@ -67,8 +75,7 @@ class NewsDetailsSub extends Component {
                         </View>
 
                         <LionsFooter isLoaded={true} />
-
-                    </Content>
+                    </ScrollView>
                     <EYSFooter/>
                 </View>
 

@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { drillDown } from '../../actions/content'
-import { Container, Content, Text } from 'native-base'
+import { Container, Text } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
@@ -20,6 +20,10 @@ import data from '../../../contents/fixtures/data.json'
 import images from './images'
 
 class Fixtures extends Component {
+    constructor(props) {
+         super(props)
+         this._scrollView = ScrollView
+    }
 
     _drillDown(data) {
         this.props.drillDown(data, 'fixtureDetails')
@@ -29,8 +33,11 @@ class Fixtures extends Component {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
-                    <LionsHeader title='FIXTURES' />
-                    <Content>
+                    <LionsHeader 
+                        title='FIXTURES'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                           {
                              data.map(function(item) {
                                 return (
@@ -58,7 +65,7 @@ class Fixtures extends Component {
                              resizeMode='cover'
                              />
                           <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     <EYSFooter />
                 </View>
             </Container>

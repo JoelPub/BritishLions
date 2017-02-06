@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Image, View, ScrollView } from 'react-native'
+import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
 import LionsHeader from '../global/lionsHeader'
@@ -14,12 +14,20 @@ import ExternalLink from '../utility/externalLink'
 import styleVar from '../../themes/variable'
 
 class Competition extends Component {
+    constructor(props) {
+         super(props)
+         this._scrollView = ScrollView
+    }
+    
     render() {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.container}>
-                    <LionsHeader title='COMPETITIONS' />
-                    <Content>
+                    <LionsHeader 
+                        title='COMPETITIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
                             <Image source={require('../../../images/content/competitionsBanner.png')} style={styles.pagePoster} />
                         </ImagePlaceholder>
@@ -42,7 +50,7 @@ class Competition extends Component {
                             </Text>
                         </View>
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     < EYSFooter />
                 </View>
             </Container>

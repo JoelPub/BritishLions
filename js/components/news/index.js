@@ -25,6 +25,7 @@ import {
 class News extends Component {
     constructor(props) {
          super(props)
+         this._scrollView = ScrollView
          this.state = {
               isLoaded: false,
               isRefreshing: false,
@@ -76,10 +77,14 @@ class News extends Component {
             <Container theme={theme}>
                 <View style={styles.background}>
 
-                    <LionsHeader title='NEWS' />
+                    <LionsHeader 
+                        title='NEWS' 
+                        contentLoaded={this.state.isLoaded}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded?
                             <ScrollView
+                                ref={(scrollView) => { this._scrollView = scrollView }}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}

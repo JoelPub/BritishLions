@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
-import { Container, Content, Text, Button, Icon } from 'native-base'
+import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -19,6 +19,7 @@ import styleVar from '../../themes/variable'
 class Galleries extends Component {
     constructor(props) {
         super(props)
+        this._scrollView = ScrollView
         this.state = {
             isLoaded: false,
             galleriesFeed: [],       
@@ -45,10 +46,13 @@ class Galleries extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader title='GALLERIES' />
+                    <LionsHeader 
+                        title='GALLERIES'
+                        contentLoaded={this.state.isLoaded}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded?
-                            <Content>
+                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
                                     <View style={styles.backgroundList}>
                                         {
@@ -73,7 +77,7 @@ class Galleries extends Component {
                                         }
                                     </View>
                                 </StickyFooter>
-                            </Content>
+                            </ScrollView>
                           :
                             <ActivityIndicator
                                 style={loader.centered}

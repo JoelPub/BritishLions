@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Linking } from 'react-native'
+import { Image, View, Linking, ScrollView } from 'react-native'
 import { drillDown, saveContent } from '../../actions/content'
-import { Container, Content, Text } from 'native-base'
+import { Container, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -21,6 +21,10 @@ import styleVar from '../../themes/variable'
 import Data from '../../../contents/sponsors/data'
 
 class Sponsors extends Component {
+    constructor(props) {
+         super(props)
+         this._scrollView = ScrollView
+    }
 
     _mapJSONbyCategories(data, category, colMax = 2) {
         let cat = category.toLowerCase()
@@ -64,8 +68,11 @@ class Sponsors extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader title='SPONSORS' />
-                    <Content>
+                    <LionsHeader 
+                        title='SPONSORS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         {
                             catSponsors.map((category, index) => {
                                 return (
@@ -120,7 +127,7 @@ class Sponsors extends Component {
                             }, this)
                         }
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     < EYSFooter />
                 </View>
             </Container>
