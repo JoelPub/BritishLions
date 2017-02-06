@@ -122,17 +122,17 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
                 
                         <Text style={styles.modalTitleText}>Attack</Text>
-                        <Text style={styles.modalTextRN}>Metres â€?the average number of metres gained from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Lineouts won â€?the average number of lineouts won from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Scrums won â€?the average number of scrums won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Clean breaks â€?the average number of clean breaks in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Offloads â€?the average number of offloads in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Tries â€?the average number of tries scored in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Metres â€“ the average number of metres gained from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Lineouts won â€“ the average number of lineouts won from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Scrums won â€“ the average number of scrums won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Clean breaks â€“ the average number of clean breaks in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Offloads â€“ the average number of offloads in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Tries â€“ the average number of tries scored in overall games started in the last two seasons</Text>
                 
                         <Text style={styles.modalTitleText}>Defence</Text>
-                        <Text style={styles.modalTextRN}>Missed tackles â€?the average number of tackles missed in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Turnovers won â€?the average number of turnovers won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Collection success â€?the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Missed tackles â€“ the average number of tackles missed in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Turnovers won â€“ the average number of turnovers won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Collection success â€“ the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
                     </ScrollView>
                 )
                 break
