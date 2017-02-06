@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Linking, ActivityIndicator } from 'react-native'
+import { Image, View, Linking, ActivityIndicator, ScrollView } from 'react-native'
 import { drillDown, saveContent } from '../../actions/content'
-import { Container, Content, Text } from 'native-base'
+import { Container, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -26,6 +26,7 @@ class Unions extends Component {
 
     constructor(props) {
          super(props)
+         this._scrollView = ScrollView
          this.state = {
               isLoaded: false
          }
@@ -67,8 +68,11 @@ class Unions extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader title='UNIONS' />
-                    <Content>
+                    <LionsHeader 
+                        title='UNIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         {
                             this._mapJSON(Data).map((rowData, index) => {
                                 return (
@@ -110,7 +114,7 @@ class Unions extends Component {
                             }, this)
                         }
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     <EYSFooter />
                 </View>
             </Container>

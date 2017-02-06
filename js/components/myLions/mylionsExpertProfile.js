@@ -58,6 +58,7 @@ class MyLionsExpertProfile extends Component {
 
   constructor (props) {
     super(props)
+    this._scrollView = ScrollView
     this.uniondata = Data
     let squad = SquadModel.fromJS(this.props.detail.squad)
     this.isUnMounted = false
@@ -193,8 +194,14 @@ class MyLionsExpertProfile extends Component {
     return (
       <Container theme={theme}>
         <View style={styles.container}>
-          <LionsHeader back={true} title='MY LIONS' />
-          <ScrollView>
+
+          <LionsHeader 
+              back={true} 
+              title='MY LIONS'
+              contentLoaded={true}
+              scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+          
+          <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <ExpertsHeaderView detail={this.props.detail}/>
             <PlayerScore isLoaded={true} rating={ratingData} showScoreCard={showScoreCard} isExpertPage={true} pressInfo={()=>{}} pressExpert={()=>{}}/>
             {

@@ -47,6 +47,17 @@ const styles = styleSheetCreate({
         	marginTop: -4
         }
     },
+    textHeader2: {
+        android: {
+            marginTop: 0,
+        }
+    },
+    textHeaderBtn: {
+        android: {
+            height: 28,
+            marginTop: -4
+        }
+    },
     logoHeaderLink: {
         width: 27,
         height: 34,
@@ -76,6 +87,11 @@ class LionsHeader extends Component {
         this.props.pushNewRoute(route)
     }
 
+    scrollToTop = () => {
+        if (this.props.contentLoaded)
+            this.props.scrollToTop()
+    }
+
 	getBackArrowHTML() {
 		return (
 			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute()}>
@@ -96,6 +112,20 @@ class LionsHeader extends Component {
         )
     }
 
+    getTitleHTMl(title) {
+        if (this.props.scrollToTop && this.props.contentLoaded) {
+            return (
+                <ButtonFeedback style={styles.textHeaderBtn} onPress={this.scrollToTop}>
+                    <Text style={[styles.textHeader, styles.textHeader2]}>{title}</Text>
+                </ButtonFeedback>
+            )
+        }
+
+        return (
+            <Text style={styles.textHeader}>{title}</Text>
+        )
+    }
+
     render() {
     	let title = this.props.title || ''
         let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
@@ -104,7 +134,7 @@ class LionsHeader extends Component {
             <Header>
                 {backArrowSwitch}
 
-                <Text style={styles.textHeader}>{title}</Text>
+                {this.getTitleHTMl(title)}
 
     			<ButtonFeedback style={styles.btn} onPress={this.props.openDrawer}>
     				<Icon name='md-menu' style={styles.headerIcon} />

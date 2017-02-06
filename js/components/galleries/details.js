@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator } from 'react-native'
-import { Container, Header, Content, Text, Button, Icon } from 'native-base'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import { Container, Header, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -91,8 +91,12 @@ class Gallery extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader back={true} title='GALLERIES' />
-                    <Content>
+                    <LionsHeader 
+                        back={true} 
+                        title='GALLERIES'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.galleryDetailHeader}>
                             <Text style={styles.galleryDetailHeaderText}>
                                 {this.props.content.title}
@@ -141,7 +145,7 @@ class Gallery extends Component {
                         </View>
 
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
 
                     <EYSFooter />
                 </View>

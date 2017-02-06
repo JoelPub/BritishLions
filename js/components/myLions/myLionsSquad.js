@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, RefreshControl, ActivityIndicator, Alert, Modal } from 'react-native'
-import { Container, Content, Text, Button, Icon, Input } from 'native-base'
+import { Container, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
@@ -91,6 +91,7 @@ class MyLionsSquad extends Component {
 
     constructor(props){
         super(props)
+        this._scrollView = ScrollView
         this.state={
             isLoaded: false,
             isScoreLoaded: false,
@@ -230,10 +231,14 @@ class MyLionsSquad extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='MY LIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded?
-                            <ScrollView>
+                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
                                 <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)} pressExpert={this._myExpertsPick.bind(this)}/>
                                 {
@@ -242,7 +247,7 @@ class MyLionsSquad extends Component {
                                     :
                                     <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
                                 }
-                                <ScrollView >
+                                <View>
                                     <View style={styles.individaulPositionRow}>
                                     {
                                         this.state.squadDatafeed.indivPos.map((item,index)=>{
@@ -333,7 +338,7 @@ class MyLionsSquad extends Component {
                                         }
                                     </Swiper>
                                     <LionsFooter isLoaded={true} />
-                                </ScrollView>
+                                </View>
                             </ScrollView>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />

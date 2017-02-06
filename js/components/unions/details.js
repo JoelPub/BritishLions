@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, WebView } from 'react-native'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Image, View, Platform, WebView, ScrollView } from 'react-native'
+import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import staticStyles from '../../themes/static-page'
@@ -24,6 +24,7 @@ import styleVar from '../../themes/variable'
 class UnionDetails extends Component {
     constructor(props){
         super(props)
+        this._scrollView = ScrollView
         this.state={
           height:0,
         }
@@ -34,9 +35,13 @@ class UnionDetails extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
 
-                    <LionsHeader back={true} title='UNIONS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='UNIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
 
-                    <Content>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
 
                             <View style={styles.wrapper}>
@@ -89,7 +94,7 @@ class UnionDetails extends Component {
                         </View>
 
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     < EYSFooter />
                 </View>
             </Container>

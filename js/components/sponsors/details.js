@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Image, View, ScrollView } from 'react-native'
+import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
@@ -23,6 +23,7 @@ import JSON from '../../../contents/sponsors/data'
 class SponsorDetails extends Component {
     constructor(props){
         super(props)
+        this._scrollView = ScrollView
     }
 
     render() {
@@ -32,9 +33,13 @@ class SponsorDetails extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
 
-                    <LionsHeader back={true} title='SPONSORS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='SPONSORS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
 
-                    <Content>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
 
                             <View style={styles.wrapper}>
@@ -67,7 +72,7 @@ class SponsorDetails extends Component {
                         </View>
 
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     < EYSFooter />
                 </View>
             </Container>

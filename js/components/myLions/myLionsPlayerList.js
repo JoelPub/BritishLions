@@ -522,7 +522,11 @@ class MyLionsPlayerList extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader back={true} title='MY LIONS' />
+                    <LionsHeader 
+                        back={true} 
+                        title='MY LIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded&&
                         <View>

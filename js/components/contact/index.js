@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View } from 'react-native'
-import { Container, Content, Text, Icon } from 'native-base'
+import { Image, ScrollView } from 'react-native'
+import { Container, View, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
 import LionsHeader from '../global/lionsHeader'
@@ -15,6 +15,11 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import styleVar from '../../themes/variable'
 
 class LionsStore extends Component {
+    constructor(props) {
+         super(props)
+         this._scrollView = ScrollView
+    }
+
     render() {
         let subject = encodeURIComponent('British & Irish Lions')
         let mailto = 'mailto:office@lionsrugby.com?subject=' + subject
@@ -22,8 +27,11 @@ class LionsStore extends Component {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.container}>
-                    <LionsHeader title='CONTACT' />
-                    <Content>
+                    <LionsHeader 
+                        title='CONTACT'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
                             <Image source={require('../../../images/header/blionsBanner.jpg')} style={styles.pagePoster} />
                         </ImagePlaceholder>
@@ -78,7 +86,7 @@ class LionsStore extends Component {
                             </View>
                         </View>
                         <LionsFooter isLoaded={true} />
-                    </Content>
+                    </ScrollView>
                     <EYSFooter />
                 </View>
             </Container>
