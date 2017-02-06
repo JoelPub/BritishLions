@@ -59,6 +59,8 @@ class LionsTV extends Component {
                                             let publishDate = new Date(data.snippet.publishedAt).toLocaleDateString()
                                             let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
                                             let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
+                                            let imageURL = data.snippet.thumbnails.standard? data.snippet.thumbnails.standard.url : data.snippet.thumbnails.high.url
+                                            
                                             return (
                                                <ButtonFeedback
                                                     style={styles.btn}
@@ -67,7 +69,7 @@ class LionsTV extends Component {
                                                     <Image
                                                         source={require('../../../images/placeholder/banner.png')}
                                                         style={styles.placeholderImage}>
-                                                        <Image source={{uri: data.snippet.thumbnails.standard.url}} style={styles.lionsTvGalleryImage}/>
+                                                        <Image source={{uri: imageURL}} style={styles.lionsTvGalleryImage}/>
                                                     </Image>
                                                     <View style={[shapes.triangle, {marginTop: -11}]} />
                                                     <View style={styles.lionsTvGalleryContent}>
