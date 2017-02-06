@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -18,6 +18,7 @@ import StickyFooter from '../utility/stickyFooter'
 class LionsTV extends Component {
     constructor(props) {
          super(props)
+         this._scrollView = ScrollView
          this.state = {
               isLoaded: false,
               videosFeed: {items:[]}, 
@@ -48,10 +49,13 @@ class LionsTV extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader title='LIONS TV' />
+                    <LionsHeader 
+                        title='LIONS TV' 
+                        contentLoaded={this.state.isLoaded}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded?
-                            <Content>
+                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
                                     { this.state.videosFeed.items &&
                                         this.state.videosFeed.items.map(function(data, index) {
@@ -60,7 +64,7 @@ class LionsTV extends Component {
                                             let month = publishDate.split('/')[0]?publishDate.split('/')[0]:''
                                             let day = publishDate.split('/')[1]?publishDate.split('/')[1]:''
                                             let imageURL = data.snippet.thumbnails.standard? data.snippet.thumbnails.standard.url : data.snippet.thumbnails.high.url
-                                            
+
                                             return (
                                                <ButtonFeedback
                                                     style={styles.btn}
@@ -86,7 +90,7 @@ class LionsTV extends Component {
                                         }, this)
                                     }
                                 </StickyFooter>
-                            </Content>
+                            </ScrollView>
                         :
                             <ActivityIndicator
                               style={loader.centered}

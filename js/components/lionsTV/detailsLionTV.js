@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Linking,Image, View, NativeModules, WebView, Alert, TouchableOpacity } from 'react-native'
-import { Container, Content, Text, Button, Icon } from 'native-base'
+import { Linking, Image, View, NativeModules, WebView, Alert, TouchableOpacity, ScrollView } from 'react-native'
+import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
@@ -20,6 +20,7 @@ class DetailsLionsTV extends Component {
 
   constructor(props) {
          super(props)
+         this._scrollView = ScrollView
          this.state = {
               isReady: false,
               status: null,
@@ -91,8 +92,12 @@ class DetailsLionsTV extends Component {
     return(
       <Container theme={theme}>
           <View style={styles.background}>
-              <LionsHeader title='LIONS TV' back={true} />
-              <Content>
+              <LionsHeader 
+                  title='LIONS TV' 
+                  back={true}
+                  contentLoaded={true}
+                  scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+              <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                   <View style={[styles.lionsTvGalleryContent, styles.lionsTvGalleryContentDetail]}>
                       <Text numberOfLines={4} style={[styles.headline, styles.headlineDetail]}>
                           {this.convertToUppercase(this.props.details.snippet.title)}
@@ -162,7 +167,7 @@ class DetailsLionsTV extends Component {
                       </Text>
                   </View>
                   <LionsFooter isLoaded={true} />
-              </Content>
+              </ScrollView>
               <EYSFooter />
             </View>
         </Container>
