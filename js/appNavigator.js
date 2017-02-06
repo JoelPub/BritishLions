@@ -261,6 +261,7 @@ class AppNavigator extends Component {
                 <Component navigator={navigator} route={route} {...route.passProps} />
             )
         }
+        this.state.tracker.allowIDFA(true);
         this.state.tracker.trackScreenView(route.id);
         switch (route.id) {
             case 'splashscreen':
