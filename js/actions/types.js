@@ -17,6 +17,7 @@ export type Action =
     | { type: 'SET_ACCESS_GRANTED'}
     | { type: 'SET_NETWORK_STATUS' }
     | { type: 'SET_POSITION_TOADD' }
+    | { type: 'SET_POSITION_TOREMOVE' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

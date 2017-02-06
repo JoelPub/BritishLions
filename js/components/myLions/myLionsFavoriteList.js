@@ -32,6 +32,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList,removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import Storage from 'react-native-storage'
+import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
 
 class MyLionsFavoriteList extends Component {
 
@@ -339,6 +340,9 @@ class MyLionsFavoriteList extends Component {
     }
 
     _showDetail(item, route) {
+        
+        this.props.setPositionToAdd('')
+        this.props.setPositionToRemove('')
         this.props.drillDown(item, 'myLionsPlayerDetails')
     }
 
@@ -415,7 +419,9 @@ function bindAction(dispatch) {
     return {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
+        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
     }
 }
 

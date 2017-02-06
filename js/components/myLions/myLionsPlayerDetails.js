@@ -28,13 +28,14 @@ import SquadModal from '../global/squadModal'
 import PlayerFigure from '../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
-import { setPositionToAdd } from '../../actions/position'
+import { setPositionToAdd , setPositionToRemove} from '../../actions/position'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
 import FigureListModel from  'modes/Players/Profile/SeasonList/Season/FigureList'
 import FigureModel from 'modes/Players/Profile/SeasonList/Season/FigureList/Figure'
 import SquadModel from  'modes/Squad'
 import Immutable, { Map, List } from 'immutable'
+import { strToUpper } from '../utility/helper'
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -121,17 +122,17 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
                 
                         <Text style={styles.modalTitleText}>Attack</Text>
-                        <Text style={styles.modalTextRN}>Metres â€“ the average number of metres gained from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Lineouts won â€“ the average number of lineouts won from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Scrums won â€“ the average number of scrums won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Clean breaks â€“ the average number of clean breaks in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Offloads â€“ the average number of offloads in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Tries â€“ the average number of tries scored in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Metres â€?the average number of metres gained from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Lineouts won â€?the average number of lineouts won from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Scrums won â€?the average number of scrums won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Clean breaks â€?the average number of clean breaks in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Offloads â€?the average number of offloads in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Tries â€?the average number of tries scored in overall games started in the last two seasons</Text>
                 
                         <Text style={styles.modalTitleText}>Defence</Text>
-                        <Text style={styles.modalTextRN}>Missed tackles â€“ the average number of tackles missed in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Turnovers won â€“ the average number of turnovers won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Collection success â€“ the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Missed tackles â€?the average number of tackles missed in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Turnovers won â€?the average number of turnovers won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Collection success â€?the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
                     </ScrollView>
                 )
                 break
@@ -421,7 +422,7 @@ class MyLionsPlayerDetails extends Component {
     }
 
     updateSquad(){
-        this.state.inSquad?this._setModalVisible(true,'remove'):this._setModalVisible(true,'add')
+        this.state.inSquad&&this.props.positionToRemove!==''?this._setModalVisible(true,'remove'):this._setModalVisible(true,'add')
     }
 
     _updateSquad(type,position,max){
@@ -446,7 +447,9 @@ class MyLionsPlayerDetails extends Component {
                     if(List.isList(value)) {
                         if(value.indexOf(this.playerid)>-1){
                             inSquad=true
-                            if (type==='remove')  tmpFeed=tmpFeed.update(index,val=>{
+                            console.log('!!!index',index)
+                            console.log('!!!this.props.positionToRemove',this.props.positionToRemove)
+                            if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.update(index,val=>{
                                     return value.splice(value.indexOf(this.playerid),1)
                                 })
                         }
@@ -454,28 +457,30 @@ class MyLionsPlayerDetails extends Component {
                     else {
                         if(value===this.playerid) {
                             inSquad=true
-                            if (type==='remove')  tmpFeed=tmpFeed.set(index,'')
+                            console.log('!!!index',index)
+                            console.log('!!!this.props.positionToRemove',this.props.positionToRemove)
+                            if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.set(index,'')
                         }
                     }
                 })
-                if (this.state.inSquad !== inSquad) {
-                     let errorDesc = ''
-                     if (this.state.inSquad) {
-                         errorDesc = 'is already removed from my squad list.'
+                // if (this.state.inSquad !== inSquad) {
+                //      let errorDesc = ''
+                //      if (this.state.inSquad) {
+                //          errorDesc = 'is already removed from my squad list.'
 
-                     } else {
-                         errorDesc = 'is already added to my squad list.'
-                     }
+                //      } else {
+                //          errorDesc = 'is already added to my squad list.'
+                //      }
 
-                     this.setState({inSquad, squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false}, () => {
-                         Alert.alert(
-                             'MySquad List Update',
-                             `${errorDesc}`,
-                             [{ text: 'OK' }]
-                         )
-                     })
-                 } else {
-                    if(!inSquad&&type==='add') {
+                //      this.setState({inSquad, squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false}, () => {
+                //          Alert.alert(
+                //              'MySquad List Update',
+                //              `${errorDesc}`,
+                //              [{ text: 'OK' }]
+                //          )
+                //      })
+                //  } else {
+                    if(type==='add') {
                         if(List.isList(tmpFeed.get(position))) {
                             if(tmpFeed.get(position).count()<max) {
                                 tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.playerid))
@@ -513,7 +518,7 @@ class MyLionsPlayerDetails extends Component {
                         console.log("updating......")
                         this._updateSquadPlayer(tmpFeed,position)
                     }
-                 }
+                 // }
 
             }
         })
@@ -536,11 +541,12 @@ class MyLionsPlayerDetails extends Component {
                 this.setState({ isMySquadPlayerSubmitting: false })
             },
             onSuccess: (res) => {
-                let successDesc = this.state.inSquad? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+                let successDesc = this.state.inSquad&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
                     this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
+                    this.props.setPositionToRemove('')
                 })
             },
             onError: (res) => {
@@ -563,9 +569,9 @@ class MyLionsPlayerDetails extends Component {
         let buttonText = ''
         
         if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
-            buttonText = this.state.inSquad === true? 'REMOVING..':'ADDING..'
+            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'ADDING..'
         } else {
-            buttonText = this.state.inSquad === true? 'REMOVE':'ADD'
+            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
         }
 
         let logo = ''
@@ -620,7 +626,7 @@ class MyLionsPlayerDetails extends Component {
                                             style={[
                                                 styles.btn,
                                                 styles.btnLeft,
-                                                this.state.inSquad === true? styles.btnLeftRed : styles.btnGreen
+                                                this.state.inSquad === true&&this.props.positionToRemove!==''? styles.btnLeftRed : styles.btnGreen
                                             ]}>
                                             <Text style={styles.btnText}>{buttonText}</Text>
                                         </ButtonFeedback>
@@ -703,7 +709,8 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position))
+        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
+        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position))
     }
 }
 
@@ -711,6 +718,7 @@ export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
-        positionToAdd: state.position.positionToAdd
+        positionToAdd: state.position.positionToAdd,
+        positionToRemove: state.position.positionToRemove
     }
 }, bindAction)(MyLionsPlayerDetails)

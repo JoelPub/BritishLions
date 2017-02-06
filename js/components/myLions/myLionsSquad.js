@@ -33,7 +33,7 @@ import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { setPositionToAdd } from '../../actions/position'
+import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
 import SquadPopModel from  'modes/SquadPop'
@@ -209,12 +209,15 @@ class MyLionsSquad extends Component {
         )
     }
 
-    _showDetail(item, route) {
+    _showDetail(item, route,playerPos) {
+        this.props.setPositionToAdd('')
+        this.props.setPositionToRemove(playerPos)
         this.props.drillDown(item, route)
     }
 
     _addPlayer(playerPos) {
         this.props.setPositionToAdd(playerPos)
+        this.props.setPositionToRemove('')
         this.props.pushNewRoute('myLionsUnionsList')
     }
 
@@ -263,7 +266,7 @@ class MyLionsSquad extends Component {
                                                     item.info===null?
                                                     <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
                                                     :
-                                                    <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails')}/>
+                                                    <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails',item.position)}/>
                                                     }
                                                 </View>
                                             )
@@ -291,7 +294,7 @@ class MyLionsSquad extends Component {
                                                                                 item===null?
                                                                                 <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
                                                                                 :
-                                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','forwards')}/>
                                                                             }
                                                                         </View>
                                                                     )
@@ -325,7 +328,7 @@ class MyLionsSquad extends Component {
                                                                         item===null?                                                        
                                                                            <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
                                                                         :
-                                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails')}/>
+                                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','backs')}/>
                                                                     }
                                                                     </View>
                                                                     )
@@ -645,7 +648,8 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position))
+        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
+        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
     }
 }
 
