@@ -395,19 +395,21 @@ export default class PlayerFigure extends Component {
                                                                     <View style={styles.playerFigureRow} key={index}>
                                                                     {
                                                                         rowData.map((item, j) => {
-                                                                            return(
-                                                                                <View style={styles.playerFigureUnit} key={j}>
-                                                                                    <Text style={styles.playerFigureUpperText}>{strToUpper(item.name)}</Text>
-                                                                                    <View style={[styles.ratingScore, styles.playerRatingScore]}>
-                                                                                        <Text style={styles.ratingScorePoint}>
-                                                                                            { item.value === 'NaN'? 'N/A' : item.value }
+                                                                            let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
+                                                                            let name = strToUpper(item.name)
+                                                                            if (name != 'MISSED TACKLES') {
+                                                                                return(
+                                                                                    <View style={styles.playerFigureUnit} key={j}>
+                                                                                        <Text style={styles.playerFigureUpperText}>{ name }</Text>
+                                                                                        <View style={[styles.ratingScore, styles.playerRatingScore]}>
+                                                                                            <Text style={styles.ratingScorePoint}>{ value }</Text>
+                                                                                        </View>
+                                                                                        <Text style={styles.playerFigureLowerText}>
+                                                                                            { item.average === 'NaN'? 'N/A' : item.value } avg
                                                                                         </Text>
                                                                                     </View>
-                                                                                    <Text style={styles.playerFigureLowerText}>
-                                                                                        { item.average === 'NaN'? 'N/A' : item.value } avg
-                                                                                    </Text>
-                                                                                </View>
                                                                                 )
+                                                                            }
                                                                         },this)
                                                                     }
                                                                     </View>
