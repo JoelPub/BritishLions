@@ -113,17 +113,25 @@ class MyLionsPlayerDetails extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                        <Text style={styles.modalTitleText}>Player Rating</Text>
-                        <Text style={styles.modalTextRN}>A score out of 10 based on recent player performance compared to all other eligible players for their position over the last two years and their most recent five games.</Text>
+                        <Text style={styles.modalTitleText}>Overall Rating</Text>
+                        <Text style={styles.modalTextRN}>To provide an overall player rating EYC3 took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
+                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
                 
                         <Text style={styles.modalTitleText}>Recent Performance</Text>
-                        <Text style={styles.modalTextRN}>Rugby is a game of momentum as such we have calculated how well each player has performed in the last 5 matches, this provides an indication if the players overall rating is likely to increase.</Text>
+                        <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
                 
-                        {/*<Text style={styles.modalTitleText}>Trend</Text>
-                        <Text style={styles.modalTextRN}>Trend rating of player performance over the last five games compared with their performance over the last two years.</Text>*/}
+                        <Text style={styles.modalTitleText}>Attack</Text>
+                        <Text style={styles.modalTextRN}>Metres – the average number of metres gained from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Lineouts won – the average number of lineouts won from overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Scrums won – the average number of scrums won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Clean breaks – the average number of clean breaks in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Offloads – the average number of offloads in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Tries – the average number of tries scored in overall games started in the last two seasons</Text>
                 
-                        <Text style={styles.modalTitleText}>Attack / Defence / Kicking</Text>
-                        <Text style={styles.modalTextRN}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see if it’s strength lies in attack or defense or you have created a more balanced team.</Text>
+                        <Text style={styles.modalTitleText}>Defence</Text>
+                        <Text style={styles.modalTextRN}>Missed tackles – the average number of tackles missed in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Turnovers won – the average number of turnovers won in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Collection success – the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
                     </ScrollView>
                 )
                 break
