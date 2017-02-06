@@ -396,7 +396,7 @@ export default class PlayerFigure extends Component {
                                                                     {
                                                                         rowData.map((item, j) => {
                                                                             let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
-                                                                            let name = strToUpper(item.name)
+                                                                            let name = strToUpper(item.name.trim())
                                                                             if (name != 'MISSED TACKLES') {
                                                                                 return(
                                                                                     <View style={styles.playerFigureUnit} key={j}>
