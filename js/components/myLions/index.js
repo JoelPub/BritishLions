@@ -259,23 +259,23 @@ class MyLions extends Component {
                         callbackParent={() => this._setModalVisible(false)}>
                             <ScrollView style={styles.modalViewWrapper}>
                                 <Text style={styles.modalTitleText}>Overall Rating</Text>
-                                <Text style={styles.modalText}>To provide an overall rating for the players EYC3 took the results of 720 games played in 2015/2016 looking at Internationals and top tier club rugby. In addition, as new games are played including the 6 Nations Tournament, player performance will actively update their rating.</Text>
+                                <Text style={styles.modalText}>To provide an overall player rating EYC3 have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
                                 
-                                <Text style={[styles.modalText, styles.modalTextMTop]}>For each of these games there are over 150 features collected on player performance. Using advanced analytic techniques EYC3 identified the 30 most influential factors in a team winning a game. These factors were split into Defensive and Attacking attributes and weighted by position. i.e. A fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
+                                <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
 
 
                                 <Text style={styles.modalTitleText}>Recent Performance</Text>
-                                <Text style={styles.modalText}>Rugby is a game of momentum as such we have calculated how well each player has performed in the last 5 matches, this provides an indication if the players overall rating is likely to increase.</Text>
+                                <Text style={styles.modalText}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
 
 
                                 <Text style={styles.modalTitleText}>Squad Rating</Text>
-                                <Text style={styles.modalText}>Your squad score will take into account all the ratings of your individual players and allows you to choose which players ratings you want to boost by nominating a Captain, Kicker and a Star player (the player you nominate as your best performer).</Text>
+                                <Text style={styles.modalText}>A score out of 500 based on your selected players cohesion rating and individual player performances over the last two years and their most recent five games. Your squad rating will take into account all the ratings of your selected players and allows you to choose which players’ ratings you want to boost by nominating a Captain, Kicker and a Star player i.e the player you nominate as your best performer.</Text>
 
                                 <Text style={styles.modalTitleText}>Cohesion</Text>
-                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your player’s are with each other the better they will perform in a game. EYC3 has developed an algorithim to rate the cohesion of your squad based on international and top tier club rugby games over the last two years.</Text>
+                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EYC3 has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 0 means that your players have played no games together and 100 means that your squad has played all their games together over the last two seasons.</Text>
 
-                                <Text style={styles.modalTitleText}>Attack/Defense</Text>
-                                <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see if it’s strength lies in attack or defense or you have created a more balanced team.</Text>
+                                <Text style={styles.modalTitleText}>Attack and Defence</Text>
+                                <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
                 </View>
