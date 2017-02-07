@@ -100,6 +100,26 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
                 break
+            case 'replace' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                        </View>
+                    </View>
+                )
+                break
+            case 'squad' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
+                        </View>
+                )
+                break
             case 'message' :
                 title = title === 'WIDECARD'? 'STAR' : title
 
@@ -467,11 +487,7 @@ class MyLionsPlayerDetails extends Component {
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                Alert.alert(
-                                 'MySquad List Update',
-                                 'Position Is Full',
-                                 [{ text: 'OK' }]
-                                )
+                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
                             }
                         }
                         else{
@@ -481,11 +497,7 @@ class MyLionsPlayerDetails extends Component {
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                Alert.alert(
-                                   'MySquad List Update',
-                                   'Position Is Full',
-                                   [{ text: 'OK' }]
-                                )
+                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
                             }
                         }
                         
