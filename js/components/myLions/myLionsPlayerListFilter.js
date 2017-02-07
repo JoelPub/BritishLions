@@ -36,12 +36,6 @@ export default class MyLionsPlayerListFilter extends Component {
                                <ButtonFeedback onPress={()=>this.props.getFilteredPosition('lock')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'lock')]}>
                                    <Text style={styles.btnFilterTxt}>LOCK</Text>
                                </ButtonFeedback>
-                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('flanker')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'flanker')]}>
-                                    <Text style={styles.btnFilterTxt}>FLANKER</Text>
-                               </ButtonFeedback>
-                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('no. 8')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'no. 8')]}>
-                                    <Text style={styles.btnFilterTxt}>NUMBER 8</Text>
-                               </ButtonFeedback>
                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('back row')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'back row')]}>
                                    <Text style={styles.btnFilterTxt}>BACK ROW</Text>
                               </ButtonFeedback>

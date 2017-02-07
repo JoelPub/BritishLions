@@ -31,6 +31,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
+import { strToUpper } from '../utility/helper'
 
 class MyLionsPlayerList extends Component {
 
@@ -214,6 +215,8 @@ class MyLionsPlayerList extends Component {
                     players[index].image = {uri:image}
                 } 
             }
+            if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8'||strToUpper(item.position)==='BACK ROW') players[index].position='Back Row'
+
             
         })
         return players
