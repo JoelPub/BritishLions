@@ -30,7 +30,7 @@ class LionsStore extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
                             <Image 
-                                source={require('../../../images/content/storeBanner.png')} 
+                                source={require('../../../images/content/storeBanner.jpg')} 
                                 style={styles.pagePoster} />
                         </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
