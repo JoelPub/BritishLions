@@ -439,47 +439,26 @@ class MyLionsPlayerDetails extends Component {
                 this.setState({ isMySquadPlayerSubmitting: false }, () => {
                     this._showError(catchedSquad.error) // prompt error
                 })
-            }else{
-                
-                let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
-                let inSquad = false
-                if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
-                    if(List.isList(value)) {
-                        if(value.indexOf(this.playerid)>-1){
-                            inSquad=true
-                            console.log('!!!index',index)
-                            console.log('!!!this.props.positionToRemove',this.props.positionToRemove)
-                            if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.update(index,val=>{
-                                    return value.splice(value.indexOf(this.playerid),1)
-                                })
+            }else{                
+                    let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
+                    let inSquad = false
+                    if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
+                        if(List.isList(value)) {
+                            if(value.indexOf(this.playerid)>-1){
+                                inSquad=true
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.update(index,val=>{
+                                                                                                                        return value.splice(value.indexOf(this.playerid),1)
+                                                                                                                    })
+                            }
                         }
-                    }
-                    else {
-                        if(value===this.playerid) {
-                            inSquad=true
-                            console.log('!!!index',index)
-                            console.log('!!!this.props.positionToRemove',this.props.positionToRemove)
-                            if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.set(index,'')
+                        else {
+                            if(value===this.playerid) {
+                                inSquad=true
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove))  tmpFeed=tmpFeed.set(index,'')
+                            }
                         }
-                    }
-                })
-                // if (this.state.inSquad !== inSquad) {
-                //      let errorDesc = ''
-                //      if (this.state.inSquad) {
-                //          errorDesc = 'is already removed from my squad list.'
+                    })
 
-                //      } else {
-                //          errorDesc = 'is already added to my squad list.'
-                //      }
-
-                //      this.setState({inSquad, squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false}, () => {
-                //          Alert.alert(
-                //              'MySquad List Update',
-                //              `${errorDesc}`,
-                //              [{ text: 'OK' }]
-                //          )
-                //      })
-                //  } else {
                     if(type==='add') {
                         if(List.isList(tmpFeed.get(position))) {
                             if(tmpFeed.get(position).count()<max) {
@@ -487,7 +466,6 @@ class MyLionsPlayerDetails extends Component {
                             }
                             else {
                                 update=false
-                                console.log("squadDataFeed:tmpFeed.toJS()1, ", JSON.stringify(tmpFeed.toJS()))
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
                                 Alert.alert(
                                  'MySquad List Update',
@@ -497,13 +475,11 @@ class MyLionsPlayerDetails extends Component {
                             }
                         }
                         else{
-                            console.log('tmpFeed: ', tmpFeed)
                             if(tmpFeed.get(position).trim()==='') {
                                 tmpFeed=tmpFeed.set(position,this.playerid)
                             }
                             else {
                                 update=false
-                                console.log("squadDataFeed:tmpFeed.toJS()2, ", JSON.stringify(tmpFeed.toJS()))
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
                                 Alert.alert(
                                    'MySquad List Update',
@@ -515,10 +491,8 @@ class MyLionsPlayerDetails extends Component {
                         
                     }
                     if(update){
-                        console.log("updating......")
                         this._updateSquadPlayer(tmpFeed,position)
                     }
-                 // }
 
             }
         })
