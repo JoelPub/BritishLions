@@ -17,7 +17,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { replaceRoute } from '../../actions/route'
+import { pushNewRoute } from '../../actions/route'
 import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
@@ -191,6 +191,13 @@ class MyLions extends Component {
                                         INFORMATION
                                     </Text>
                                 </ButtonFeedback>
+
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre') }>
+                                    <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
+                                    <Text style={styles.btnFavouritesLabel}>
+                                        COMPETITION CENTRE
+                                    </Text>
+                                </ButtonFeedback>
                             </View>
                             <LionsFooter isLoaded={true} />
                         </ScrollView>
@@ -289,7 +296,7 @@ class MyLions extends Component {
 
 function bindAction(dispatch) {
     return {
-        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
