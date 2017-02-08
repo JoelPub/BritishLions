@@ -18,7 +18,6 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
-import styleVar from '../../themes/variable'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
@@ -28,7 +27,6 @@ import { removeToken, getUserId } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
-import Swiper from 'react-native-swiper'
 import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
@@ -45,50 +43,8 @@ import SquadRatingModel from 'modes/Squad/Rating'
 import Immutable, { Map, List } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
 import { strToUpper } from '../utility/helper'
+import SquadList from '../global/squadList'
 
-const AddPlayerCell = ({pos,onPress})=>(
-    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
-        <View style={styles.posAddWrapper}>
-            <Icon name='md-person-add' style={styles.addPlayerIcon} />
-        </View>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText}>ADD</Text>
-                <Text style={styles.playerNameText}>
-                    { pos.toUpperCase() === 'WILDCARD'? 'STAR' : pos.toUpperCase() }
-                </Text>
-                </View>
-        </View>
-    </ButtonFeedback>
-    )
-const PlayerImgCell =({data,onPress}) =>(
-    <ButtonFeedback onPress={onPress} style={styles.posBtn}>
-        <ImagePlaceholder 
-            width = {styleVar.deviceWidth / 3}
-            height = {styleVar.deviceWidth / 3}>
-            <Image transparent
-                resizeMode='contain'
-                source={data.image}
-                style={styles.playerImage} />
-        </ImagePlaceholder>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
-            </View>
-        </View>
-    </ButtonFeedback>
-    )
-const PositionTitle =({pos,data}) =>(
-    <View style={styles.posTitle}>
-      <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
-      <Text style={styles.posTitleRight}>
-       {data.filter((value)=>value!==null).length} / {data.length}
-      </Text>
-    </View>
-)
 class MyLionsSquad extends Component {
 
     constructor(props){
@@ -174,25 +130,6 @@ class MyLionsSquad extends Component {
         })
     }
 
-    _mapJSON(data, colMax = 2) {
-        let i = 0
-        let k = 0
-        let newData = []
-        let items = []
-        let length = data.length
-
-        for( i = 0; i <data.length; (i += colMax)) {
-            for( k = 0; k < colMax; k++ ) {
-                if(data[i + k]!==undefined)
-                    items.push(data[i + k])
-            }
-
-            newData.push(items)
-            items = []
-        }
-        return newData
-    }
-
     componentWillUnmount() {
         this.isUnMounted = true
     }
@@ -253,95 +190,7 @@ class MyLionsSquad extends Component {
                                     <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
                                 }
                                 <View>
-                                    <View style={styles.individaulPositionRow}>
-                                    {
-                                        this.state.squadDatafeed.indivPos.map((item,index)=>{
-                                            let position = item.position.toUpperCase()
-                                            return (
-                                                <View style={styles.indivPosition} key={index}>
-                                                    <View style={styles.indivPosTitle}>
-                                                        <Text style={styles.indivPosTitleText}>
-                                                            { position === 'WILDCARD'? 'STAR' : position }
-                                                        </Text>
-                                                    </View>
-                                                    {
-                                                    item.info===null?
-                                                    <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
-                                                    :
-                                                    <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails',item.position)}/>
-                                                    }
-                                                </View>
-                                            )
-                                        },this) 
-                                    }                                
-                                    </View>
-
-                                    <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
-                                    <Swiper
-                                    ref='swiper'
-                                    height={styleVar.deviceWidth*0.63}
-                                    loop={false}
-                                    dotColor='rgba(255,255,255,0.3)'
-                                    activeDotColor='rgb(239,239,244)'
-                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                                        {
-                                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
-                                                return(
-                                                    <View style={styles.posSwiperRow} key={i}>
-                                                        {
-                                                            rowData.map((item,index)=>{
-                                                                return(
-                                                                        <View style={styles.posWrapper} key={index}>
-                                                                            {   
-                                                                                item===null?
-                                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
-                                                                                :
-                                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','forwards')}/>
-                                                                            }
-                                                                        </View>
-                                                                    )
-                                                            }, this)
-                                                        }
-                                                    </View>
-                                                )
-
-                                            },this)
-                                        }
-
-                                    </Swiper>
-                                    
-                                    <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
-                                    <Swiper
-                                    ref='swiper'
-                                    height={styleVar.deviceWidth*0.63}
-                                    loop={false}
-                                    dotColor='rgba(255,255,255,0.3)'
-                                    activeDotColor='rgb(239,239,244)'
-                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                                        {
-                                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
-                                                return(
-                                                    <View style={styles.posSwiperRow} key={i}>
-                                                        {
-                                                            rowData.map((item,index)=>{
-                                                                return(
-                                                                    <View style={styles.posWrapper} key={index}>
-                                                                    {
-                                                                        item===null?                                                        
-                                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
-                                                                        :
-                                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','backs')}/>
-                                                                    }
-                                                                    </View>
-                                                                    )
-                                                            }, this)
-                                                        }
-                                                    </View>
-                                                )
-
-                                            },this)
-                                        }
-                                    </Swiper>
+                                    <SquadList squadDatafeed={this.state.squadDatafeed} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                     <LionsFooter isLoaded={true} />
                                 </View>
                             </ScrollView>
@@ -365,6 +214,7 @@ class MyLionsSquad extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('!!!mySquad componentWillReceiveProps')
         let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed

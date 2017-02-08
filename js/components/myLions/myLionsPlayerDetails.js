@@ -39,6 +39,7 @@ import Immutable, { Map, List } from 'immutable'
 import { strToUpper } from '../utility/helper'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import Swiper from 'react-native-swiper'
+import SquadList from '../global/squadList'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -162,92 +163,7 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <ScrollView >
                         <Text style={styles.modalBtnTitle}>{title}</Text>
-                        <View style={styles.individaulPositionRow}>
-                        {
-                            this.props.squadToShow.indivPos.map((item,index)=>{
-                                let position = item.position.toUpperCase()
-                                return (
-                                    <View style={styles.indivPosition} key={index}>
-                                        <View style={styles.indivPosTitle}>
-                                            <Text style={styles.indivPosTitleText}>
-                                                { position === 'WILDCARD'? 'STAR' : position }
-                                            </Text>
-                                        </View>
-                                        {
-                                        item.info===null?
-                                        <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
-                                        :
-                                        <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails',item.position)}/>
-                                        }
-                                    </View>
-                                )
-                            },this) 
-                        }                                
-                        </View>
-                        <PositionTitle pos='FORWARDS' data={this.props.squadToShow.forwards}/>
-                        <Swiper
-                        height={styleVar.deviceWidth*0.63}
-                        loop={false}
-                        dotColor='rgba(255,255,255,0.3)'
-                        activeDotColor='rgb(239,239,244)'
-                        paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                                this._mapJSON(this.props.squadToShow.forwards,3).map((rowData,i)=>{
-                                    return(
-                                        <View style={styles.posSwiperRow} key={i}>
-                                            {
-                                                rowData.map((item,index)=>{
-                                                    return(
-                                                            <View style={styles.posWrapper} key={index}>
-                                                                {   
-                                                                    item===null?
-                                                                    <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
-                                                                    :
-                                                                    <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','forwards')}/>
-                                                                }
-                                                            </View>
-                                                        )
-                                                }, this)
-                                            }
-                                        </View>
-                                    )
-
-                                },this)
-                            }
-
-                        </Swiper>
-                        
-                        <PositionTitle pos='BACKS' data={this.props.squadToShow.backs}/>
-                        <Swiper
-                        height={styleVar.deviceWidth*0.63}
-                        loop={false}
-                        dotColor='rgba(255,255,255,0.3)'
-                        activeDotColor='rgb(239,239,244)'
-                        paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                            {
-                                this._mapJSON(this.props.squadToShow.backs,3).map((rowData,i)=>{
-                                    return(
-                                        <View style={styles.posSwiperRow} key={i}>
-                                            {
-                                                rowData.map((item,index)=>{
-                                                    return(
-                                                        <View style={styles.posWrapper} key={index}>
-                                                        {
-                                                            item===null?                                                        
-                                                               <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
-                                                            :
-                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','backs')}/>
-                                                        }
-                                                        </View>
-                                                        )
-                                                }, this)
-                                            }
-                                        </View>
-                                    )
-
-                                },this)
-                            }
-                        </Swiper>
+                        <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
                     </ScrollView>
                 )
@@ -294,6 +210,18 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
         }
+    }    
+    _addPlayer(playerPos) {
+        Alert.alert(
+            '_addPlayer',
+            [{ text: 'OK' }]
+        )
+    }
+    _replacePlayer(item, route,playerPos) {
+        Alert.alert(
+            '_replacePlayer',
+            [{ text: 'OK' }]
+        )
     }
 
     _mapJSON(data, colMax = 2) {
@@ -355,7 +283,7 @@ class MyLionsPlayerDetails extends Component {
     }
     
     componentDidMount() {
-        console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
         // Let's have a parallel request
 
         setTimeout(()=>{
@@ -372,8 +300,9 @@ class MyLionsPlayerDetails extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState) {
-        console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
-        console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
+        console.log('!!!details componentWillReceiveProps')
+        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        // console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
     }
 
     _updateFavStatus() {

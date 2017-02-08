@@ -289,6 +289,7 @@ export default class PlayerFigure extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState) {
+        console.log('!!!Figure componentWillReceiveProps')
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
             let profile=nextProps.profile.first()
             profile.forEach((value,index)=>{

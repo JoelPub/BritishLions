@@ -33,6 +33,7 @@ import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from 
 import { getEYC3FullPlayerList,removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import Storage from 'react-native-storage'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
+import { strToUpper } from '../utility/helper'
 
 class MyLionsFavoriteList extends Component {
 
