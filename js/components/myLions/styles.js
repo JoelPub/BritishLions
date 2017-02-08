@@ -956,6 +956,64 @@ module.exports = styleSheetCreate({
         marginTop:28,
         textAlign:'center'
     },
+    modalCreateGroupTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:36,
+        lineHeight:36,
+        marginTop:28,
+        textAlign:'center'
+    },
+    modalCreateGroupContent:{
+        fontSize:16,
+        lineHeight:22,
+        marginTop:10,
+        textAlign:'center'
+    },
+    modalCreateGroupSubTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:28,
+        marginTop:50,
+        textAlign:'center'
+    },
+    modalCreateGroupInput:{
+        fontSize: 32,
+        backgroundColor: 'white',
+        marginTop:20,
+        borderRadius:4,
+        color: 'black',
+        height: 60,
+        paddingLeft: 5
+    },
+    createGroupFooter:{
+        marginTop: 24,
+        alignItems: 'center',
+    },
+    footerBtn:{
+        width: 280,
+        height: 50,
+        borderRadius:25,
+        justifyContent: 'center',
+        paddingTop: 15,
+        alignItems: 'center',
+        flexDirection: 'row',
+        android: {
+            paddingTop: 0,
+        },
+        backgroundColor:'rgb(9,127,64)',
+    },
+    footerBtnText:{
+        fontSize: 24,
+        lineHeight: 24,
+        fontFamily: styleVar.fontCondensed
+    },
+    modalTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:36,
+        lineHeight:36,
+        marginTop:28,
+        textAlign:'center'
+    },
     modalTextCenter:{
         fontFamily: 'Helvetica Neue',
         fontSize:16,

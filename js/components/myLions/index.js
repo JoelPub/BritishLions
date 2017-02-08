@@ -28,6 +28,8 @@ import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from 
 import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
 
+import CreateGroupModal from './createGroup'
+
 class MyLions extends Component {
 
     constructor(props) {
@@ -35,6 +37,7 @@ class MyLions extends Component {
         this.state = {
             modalVisible: false,
             modalInfoVisible: false,
+            modalCreateGroupVisible: true,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
             isLoaded:true
@@ -86,7 +89,13 @@ class MyLions extends Component {
             modalInfoVisible: visible
         })
     }
-
+    _setModalCreateGroupVisible = () => {
+        let visible  = !this.state.modalCreateGroupVisible
+        this.setState({
+            modalVisible: visible,
+            modalCreateGroupVisible: visible
+        })
+    }
     measurePage(page,event) {
         // console.log('measurePage')
         if(this.pageWindow.length===this.totalPages) return
@@ -149,6 +158,7 @@ class MyLions extends Component {
     }
 
     render() {
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -274,6 +284,7 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
+                    <CreateGroupModal modalVisible = {this.state.modalCreateGroupVisible } callbackParent ={this._setModalCreateGroupVisible}/>
                 </View>
             </Container>
         )
