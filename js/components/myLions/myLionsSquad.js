@@ -34,6 +34,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
+import { setSquadToShow } from '../../actions/squad'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
 import SquadPopModel from  'modes/SquadPop'
@@ -482,7 +483,6 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
-                //console.warn("fedd1: ", JSON.stringify(fullFeed))
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
@@ -490,12 +490,12 @@ class MyLionsSquad extends Component {
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
                     rating:isPop?rating.toJS():this.state.rating
                 },()=>{
+                    this._setModalVisible(false)
+                    this.props.setSquadToShow(tempFeed.toJS())
                     if(fullFeed&&!isPop) {
-                        this._setModalVisible(false)
                         this.getRating(squad)
                     }
                     else {
-                        this._setModalVisible(false)
                         removeUserCustomizedSquad()
                     }
                 })
@@ -650,6 +650,7 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
     }
 }
 

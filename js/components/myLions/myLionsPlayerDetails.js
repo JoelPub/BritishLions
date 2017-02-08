@@ -114,7 +114,6 @@ class MyLionsPlayerDetails extends Component {
             btnSubmit:'',
             modalContent:this.getModalContent(),
             squadDataFeed: SquadModel().toJS(),
-            squadPopfeed:SquadShowModel().toJS(),
             isFavPlayerUpdating: false,
             isMySquadPlayerUpdating: false,
             isMySquadPlayerSubmitting: false
@@ -165,7 +164,7 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalBtnTitle}>{title}</Text>
                         <View style={styles.individaulPositionRow}>
                         {
-                            this.state.squadPopfeed.indivPos.map((item,index)=>{
+                            this.props.squadToShow.indivPos.map((item,index)=>{
                                 let position = item.position.toUpperCase()
                                 return (
                                     <View style={styles.indivPosition} key={index}>
@@ -185,7 +184,7 @@ class MyLionsPlayerDetails extends Component {
                             },this) 
                         }                                
                         </View>
-                        <PositionTitle pos='FORWARDS' data={this.state.squadPopfeed.forwards}/>
+                        <PositionTitle pos='FORWARDS' data={this.props.squadToShow.forwards}/>
                         <Swiper
                         height={styleVar.deviceWidth*0.63}
                         loop={false}
@@ -193,7 +192,7 @@ class MyLionsPlayerDetails extends Component {
                         activeDotColor='rgb(239,239,244)'
                         paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
-                                this._mapJSON(this.state.squadPopfeed.forwards,3).map((rowData,i)=>{
+                                this._mapJSON(this.props.squadToShow.forwards,3).map((rowData,i)=>{
                                     return(
                                         <View style={styles.posSwiperRow} key={i}>
                                             {
@@ -218,7 +217,7 @@ class MyLionsPlayerDetails extends Component {
 
                         </Swiper>
                         
-                        <PositionTitle pos='BACKS' data={this.state.squadPopfeed.backs}/>
+                        <PositionTitle pos='BACKS' data={this.props.squadToShow.backs}/>
                         <Swiper
                         height={styleVar.deviceWidth*0.63}
                         loop={false}
@@ -226,7 +225,7 @@ class MyLionsPlayerDetails extends Component {
                         activeDotColor='rgb(239,239,244)'
                         paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                             {
-                                this._mapJSON(this.state.squadPopfeed.backs,3).map((rowData,i)=>{
+                                this._mapJSON(this.props.squadToShow.backs,3).map((rowData,i)=>{
                                     return(
                                         <View style={styles.posSwiperRow} key={i}>
                                             {
@@ -356,6 +355,7 @@ class MyLionsPlayerDetails extends Component {
     }
     
     componentDidMount() {
+        console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
         // Let's have a parallel request
 
         setTimeout(()=>{
@@ -369,6 +369,11 @@ class MyLionsPlayerDetails extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+
+    componentWillReceiveProps(nextProps,nextState) {
+        console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
     }
 
     _updateFavStatus() {
@@ -857,6 +862,7 @@ export default connect((state) => {
         detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
         positionToAdd: state.position.positionToAdd,
-        positionToRemove: state.position.positionToRemove
+        positionToRemove: state.position.positionToRemove,
+        squadToShow: state.squad.squadToShow,
     }
 }, bindAction)(MyLionsPlayerDetails)

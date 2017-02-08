@@ -88,12 +88,8 @@ export function callApi(opt, axiosInstance) {
 		opt.onAxiosStart()
 	}
 
-    //console.log('getting connectionInfo... ')
-
 	NetInfo.fetch().done((connectionInfo) => {
-		//console.log('connectionInfo service: ', connectionInfo)
 		let netInfos = connectionInfo.toLowerCase()
-        console.log('netInfos: ', netInfos)
 		if(netInfos === 'unknown' || netInfos === 'none') {
 			// No internet connection
 
@@ -109,14 +105,10 @@ export function callApi(opt, axiosInstance) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-				 //console.log('%%%post,',opt.url )
-				 //console.log('%%%postData,',JSON.stringify(opt.data) )
 				axiosInstance.post(
 				    opt.url,
 				    qs.stringify(opt.data)
 				).then(function(res) {
-					// console.log('%%%success',res)
-					// console.log('%%%success')
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -128,7 +120,6 @@ export function callApi(opt, axiosInstance) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-					console.log('%%%error',error)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -240,7 +231,6 @@ export function service(options) {
 				})
 
 				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
-				console.log('getting here 111')
 				callApi(opt, axiosInstance)
 			} else {
 				// Sign In is Required
@@ -259,7 +249,6 @@ export function service(options) {
 		axios.interceptors.request.use((config) => {
 			return config
 		})
-        console.log('getting here 222')
 		callApi(opt, axios)
 	}
 }
