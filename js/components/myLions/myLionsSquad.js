@@ -44,6 +44,7 @@ import SquadShowModel from  'modes/Squad/SquadShowModel'
 import SquadRatingModel from 'modes/Squad/Rating'
 import Immutable, { Map, List } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
+import { strToUpper } from '../utility/helper'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -635,7 +636,7 @@ class MyLionsSquad extends Component {
                     } 
                 }
                 if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='back row'
-                if(strToUpper(result.position)==='Utility Back') result.position='full back'
+                if(strToUpper(result.position)==='UTILITY BACK') result.position='full back'
                 return result
             }
         }
