@@ -59,9 +59,6 @@ export default class MyLionsPlayerListFilter extends Component {
                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('full back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'full back')]}>
                                    <Text style={styles.btnFilterTxt}>FULL-BACK</Text>
                               </ButtonFeedback>
-                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('utility back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'utility back')]}>
-                                   <Text style={styles.btnFilterTxt}>UTILITY BACK</Text>
-                              </ButtonFeedback>
                            </View>
                        </View>
                    </View>
