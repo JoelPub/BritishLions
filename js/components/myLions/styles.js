@@ -451,7 +451,7 @@ module.exports = styleSheetCreate({
     },
     btnExpert: {
         height:50,
-        backgroundColor:'rgb(38,38,38)',
+        backgroundColor:'rgb(175,0,30)',
         flexDirection:'row',
         paddingTop:5,
         marginTop: 0
@@ -480,7 +480,7 @@ module.exports = styleSheetCreate({
         marginTop: 20
     },
     btnFavourites: {
-        backgroundColor:'rgb(128,127,131)',
+        backgroundColor:'rgb(175,0,30)',
         flexDirection:'row',
         marginTop: 0,
         marginBottom: 0,
