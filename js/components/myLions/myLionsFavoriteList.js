@@ -116,6 +116,8 @@ class MyLionsFavoriteList extends Component {
                     players[index].image = {uri:image}
                 } 
             }
+            if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8') players[index].position='back row'
+            if(strToUpper(item.position)==='Utility Back') players[index].position='full back'
             
         })
         return players

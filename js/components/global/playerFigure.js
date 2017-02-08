@@ -405,7 +405,7 @@ export default class PlayerFigure extends Component {
                                                                                             <Text style={styles.ratingScorePoint}>{ value }</Text>
                                                                                         </View>
                                                                                         <Text style={styles.playerFigureLowerText}>
-                                                                                            { item.average === 'NaN'? 'N/A' : item.value } avg
+                                                                                            {  item.average === 'NaN'? 'N/A' : item.average } avg
                                                                                         </Text>
                                                                                     </View>
                                                                                 )

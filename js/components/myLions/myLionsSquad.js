@@ -634,6 +634,8 @@ class MyLionsSquad extends Component {
                         result.image = {uri:result.image}
                     } 
                 }
+                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='back row'
+                if(strToUpper(result.position)==='Utility Back') result.position='full back'
                 return result
             }
         }
