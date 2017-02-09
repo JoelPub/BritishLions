@@ -113,6 +113,13 @@ const styles = styleSheetCreate({
         width:styleVar.deviceWidth/3+1,
         marginLeft:-1
     },
+    posAddWrapper:{
+        width:styleVar.deviceWidth / 3,
+        height:styleVar.deviceWidth / 3,
+        backgroundColor:'rgb(175,0,30)',
+        justifyContent:'center',
+        alignItems:'center',
+    },
 })
 
 const AddPlayerCell = ({pos,onPress})=>(

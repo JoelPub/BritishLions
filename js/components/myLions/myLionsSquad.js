@@ -38,12 +38,11 @@ import PlayerScore from '../global/playerScore'
 import SquadPopModel from  'modes/SquadPop'
 import Rating from  'modes/SquadPop/Rating'
 import SquadModel from  'modes/Squad'
-import SquadShowModel from  'modes/Squad/SquadShowModel'
 import SquadRatingModel from 'modes/Squad/Rating'
-import Immutable, { Map, List } from 'immutable'
+import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
-import { strToUpper } from '../utility/helper'
 import SquadList from '../global/squadList'
+import {convertSquadToShow} from '../global/squadToShow'
 
 class MyLionsSquad extends Component {
 
@@ -58,7 +57,6 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadDatafeed:SquadShowModel().toJS(),            
             modalContent:this.getModalContent(),
             rating:Rating().toJS(),
             userID:'',
@@ -190,7 +188,7 @@ class MyLionsSquad extends Component {
                                     <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
                                 }
                                 <View>
-                                    <SquadList squadDatafeed={this.state.squadDatafeed} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
+                                    <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                     <LionsFooter isLoaded={true} />
                                 </View>
                             </ScrollView>
@@ -210,15 +208,20 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
+        console.log('!!!mySquad componentDidMount')
         setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('!!!mySquad componentWillReceiveProps')
+        console.log('!!!this.props.squadToShow',this.props.squadToShow)
+        console.log('!!!nextProps.squadToShow',nextProps.squadToShow)
+        console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
         let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed
             if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
+        console.log('!!!!!',nextProps.route.routes)
             this.setState({
                 isLoaded: false,
             }, () => {
@@ -258,26 +261,14 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        let tempFeed=new SquadShowModel()
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
-        tempFeed.forEach((value,index)=>{
+        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,isPop,this.uniondata)
+        showSquadFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    if(squad.get(index).get(i)!==undefined) {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=this.searchPlayer(this.fullPlayerList,squad.get(index).get(i))
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=null
-                            return val
-                        })
-                    }
-                    if(tempFeed.get(index)[i]===null) {
+                    if(showSquadFeed.get(index)[i]===null) {
                         squad=squad.update(index,val=>{
                             val[i]=null
                             return val
@@ -292,19 +283,7 @@ class MyLionsSquad extends Component {
             else {
                 value.map((v,i)=>{
                     let p=isPop?v.position:v.position==='wildcard'?'widecard':v.position
-                    if(squad.get(p)&&squad.get(p).trim()!=='') {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=this.searchPlayer(this.fullPlayerList,squad.get(p))
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=null
-                            return val
-                        })
-                    }
-                    if(tempFeed.get(index)[i].info===null) {
+                    if(showSquadFeed.get(index)[i].info===null) {
                         squad=squad.set(p,'')
                         if(!isPop) fullFeed=false
                     }
@@ -337,12 +316,10 @@ class MyLionsSquad extends Component {
                 this.setState({
                     isLoaded: true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
-                    squadDatafeed:tempFeed.toJS(),
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
                     rating:isPop?rating.toJS():this.state.rating
                 },()=>{
                     this._setModalVisible(false)
-                    this.props.setSquadToShow(tempFeed.toJS())
                     if(fullFeed&&!isPop) {
                         this.getRating(squad)
                     }
@@ -364,8 +341,17 @@ class MyLionsSquad extends Component {
             isRequiredToken: true
         }
 
-        service(optionsSaveList)
-
+        console.log('!!!compare')
+        console.log('!!!showSquadFeed',showSquadFeed.toJS())
+        console.log('!!!Iterable.isIterable(showSquadFeed)',Iterable.isIterable(showSquadFeed)?'true':'false')
+        console.log('!!!this.props.squadToSHow',this.props.squadToShow)
+        if(!showSquadFeed.toMap().equals(Map(this.props.squadToShow))) {
+            console.log('!!!not equal')
+            this.props.setSquadToShow(showSquadFeed.toJS())
+        } else {
+            console.log('!!!equal')
+            service(optionsSaveList)            
+        }
     }
 
     autoPop() {
@@ -459,40 +445,6 @@ class MyLionsSquad extends Component {
         }
         service(optionsSquadRating)        
     }
-
-    searchPlayer(player,id) {
-        let result=null
-        for(let union in player) {
-            result=player[union].find((item)=>item.id===id.toString())
-            if(result !== undefined) {
-                let unionInfo = this.uniondata.find((n)=> n.id===union)
-                Object.assign(result, {
-                    logo: unionInfo.image, 
-                    country: unionInfo.displayname.toUpperCase(),
-                    countryid: unionInfo.id
-                })
-
-                if(typeof result.image==='string') {
-                   if (result.image.indexOf('125.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/125.png`)
-                    } else if (result.image.indexOf('126.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/126.png`)
-                    } else if (result.image.indexOf('127.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/127.png`)
-                    } else if (result.image.indexOf('128.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/128.png`)
-                    } else {
-                        result.image = {uri:result.image}
-                    } 
-                }
-                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='back row'
-                if(strToUpper(result.position)==='UTILITY BACK') result.position='full back'
-                return result
-            }
-        }
-        return result===undefined?null:result
-    }
-
 }
 
 function bindAction(dispatch) {
@@ -510,6 +462,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         route: state.route,
+        squadToShow: state.squad.squadToShow,
     }
 }, bindAction)(MyLionsSquad)
 
