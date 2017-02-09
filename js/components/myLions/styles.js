@@ -441,7 +441,7 @@ module.exports = styleSheetCreate({
     },
     btnMysquadLabel: {
         fontFamily: styleVar.fontCondensed,
-        fontSize: 44,
+        fontSize: 36,
         lineHeight: 44,
         marginTop: 21,
         marginLeft: 14,
