@@ -976,6 +976,13 @@ module.exports = styleSheetCreate({
         marginTop:50,
         textAlign:'center'
     },
+    modalErrorGroupSubTitle:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:28,
+        marginTop:30,
+        textAlign:'center'
+    },
     modalCreateGroupInput:{
         fontSize: 32,
         backgroundColor: 'white',
@@ -1001,6 +1008,62 @@ module.exports = styleSheetCreate({
             paddingTop: 0,
         },
         backgroundColor:'rgb(9,127,64)',
+    },
+    footerCloseBtn:{
+        width: 280,
+        height: 50,
+        borderRadius:25,
+        justifyContent: 'center',
+        paddingTop: 12,
+        alignItems: 'center',
+        flexDirection: 'row',
+        android: {
+            paddingTop: 0,
+        },
+        backgroundColor:'rgb(208,7,41)',
+        marginTop: 20
+    },
+    footerBtnIcon: {
+        fontSize: 24,
+        color: styleVar.colorIcon,
+        marginTop: -8,
+        marginLeft: 5,
+        android: {
+            marginTop: 0,
+        }
+    },
+    footerErrorBtn:{
+        width: 280,
+        height: 50,
+        borderRadius:25,
+        justifyContent: 'center',
+        paddingTop: 12,
+        alignItems: 'center',
+        flexDirection: 'row',
+        android: {
+            paddingTop: 0,
+        },
+        backgroundColor:'rgb(208,7,41)',
+    },
+    footerShareBtn:{
+        width: 280,
+        height: 50,
+        borderRadius:25,
+        justifyContent: 'center',
+        paddingTop: 12,
+        alignItems: 'center',
+        flexDirection: 'row',
+        android: {
+            paddingTop: 0,
+        },
+        backgroundColor:'rgb(255,255,255)',
+        marginTop: 5
+    },
+    footerShareText:{
+        fontSize: 24,
+        lineHeight: 24,
+        fontFamily: styleVar.fontCondensed,
+        color: 'rgb(170,0,30)',
     },
     footerBtnText:{
         fontSize: 24,

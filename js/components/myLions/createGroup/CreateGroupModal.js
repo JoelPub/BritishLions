@@ -7,28 +7,113 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 
 import styles from '../styles'
 
+const CreateButton = ({onPress}) => (
+  <View style={styles.createGroupFooter}>
+    <ButtonFeedback
+      style={styles.footerBtn} onPress= {onPress}>
+      <Text style={styles.footerBtnText}>CREATE</Text>
+    </ButtonFeedback>
+  </View>
+)
+const ErrorButton = ({onPress}) => (
+  <View style={styles.createGroupFooter}>
+    <ButtonFeedback
+      style={styles.footerErrorBtn} onPress= {onPress}>
+      <Text style={styles.footerBtnText}>GO BACK</Text>
+    </ButtonFeedback>
+  </View>
+)
+const ShareButton = ({onPress,close}) => (
+  <View style={styles.createGroupFooter}>
+    <ButtonFeedback
+      style={styles.footerShareBtn} onPress= {onPress}>
+      <Text style={styles.footerShareText}>SHARE</Text>
+      <Icon name='ios-share-alt' style={styles.footerBtnIcon} />
+    </ButtonFeedback>
+    <ButtonFeedback
+      style={styles.footerCloseBtn} onPress= {close}>
+      <Text style={styles.footerBtnText}>CLOSE</Text>
+    </ButtonFeedback>
+  </View>
+)
 class GreateGroupModal extends Component {
   constructor(props){
     super(props)
+    this.state = {
+      modalType: 'success'
+    };
   }
   callbackParent = ()=> {
     this.props.callbackParent()
   }
+  getDetail = (description) =>{
+    let PageData = {
+      title: '' ,
+      contentText: '',
+      subTitle: '',
+      subContentText: ''
+    }
+    switch(description)
+    {
+      case 'create':
+      {
+        PageData.title = 'MY PRIDE'
+        PageData.contentText =  'Create a private group and invite friends.Names must be .<insert EYC3 naming requirements/rules>'
+        PageData.subTitle = 'GROUP NAME'
+        PageData.subContentText = ''
+      }
+        break;
+      case 'error':
+      {
+        PageData.title = 'ERROR'
+        PageData.contentText =  'Unfortunatelyt the following error occured when attempting to create your group.'
+        PageData.subTitle = 'INVALID GROUP NAME'
+        PageData.subContentText = 'Please choose a valid group name and try again.'
+      }
+        break;
+      case 'success':
+      {
+        PageData.title = 'SUCCESS'
+        PageData.contentText =  'Your private group  has been successfully created.'
+        PageData.subTitle = '<INVITE CODE>'
+        PageData.subContentText = 'Invite friends to join your group by sharing this code. You may view the code for later reference at any time within your private group view.'
+      }
+        break;
+
+      default:
+        break
+    }
+    return PageData
+  }
+  createGroupClick = () => {
+
+  }
+  goBackClick = () => {
+
+  }
+  shareClick = () => {
+
+  }
   render() {
-    let contentText = 'Create a private group and invite friends.Names must be .<insert EYC3 naming requirements/rules>'
+    let { modalType } = this.state
+    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
+    let subTitleStyle  = styles.modalCreateGroupSubTitle
+    if(modalType !== 'create'){
+      subTitleStyle = styles.modalErrorGroupSubTitle
+    }
+
     return(
       <SquadModal modalVisible={true} callbackParent = {this.callbackParent} >
         <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
-          <Text style={styles.modalCreateGroupTitle}>MY PRIDE</Text>
+          <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-          <Text style={styles.modalCreateGroupSubTitle}>GROUP NAME</Text>
-          <TextInput style={styles.modalCreateGroupInput}/>
-          <View style={styles.createGroupFooter}>
-            <ButtonFeedback
-              style={styles.footerBtn}>
-              <Text style={styles.footerBtnText}>CREATE</Text>
-            </ButtonFeedback>
-          </View>
+          <Text style={subTitleStyle}>{subTitle}</Text>
+          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
+          {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
+          {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
+          {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
+          {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
+          {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
         </View>
       </SquadModal>
     )
@@ -36,6 +121,7 @@ class GreateGroupModal extends Component {
 }
 GreateGroupModal.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
-  callbackParent: PropTypes.func.isRequired
+  callbackParent: PropTypes.func.isRequired,
+  modalType: PropTypes.string,
 }
 export default GreateGroupModal
