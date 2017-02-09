@@ -23,7 +23,7 @@ class Galleries extends Component {
         this._scrollView = ScrollView
         this.state = {
             isLoaded: false,
-            galleriesFeed: this.ds.cloneWithRows([]),
+            galleriesFeed: this.ds.cloneWithRows([{title:'Galleries',thumb50:null}]),
         }
         this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php'
     }
@@ -48,7 +48,8 @@ class Galleries extends Component {
             <ButtonFeedback
                 style={styles.btn}
                 key={rowID}
-                onPress={() => this._drillDown(rowData)}>
+                onPress={() => this._drillDown(rowData)}
+                disabled={!this.state.isLoaded}>
                 <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
                     <Image source={{uri: rowData.thumb50}} style={styles.galleriesImage} />
                 </ImagePlaceholder>
