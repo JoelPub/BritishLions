@@ -37,10 +37,12 @@ class Galleries extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            isLoaded: nextProps.isLoaded,
-            galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed)
-        })
+        if(nextProps.galleriesFeed&&nextProps.galleriesFeed[0]&&nextProps.galleriesFeed[0].thumb50) {
+            this.setState({
+                isLoaded: nextProps.isLoaded,
+                galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed)
+            })           
+        }
     }
     _renderRow(rowData, sectionID, rowID, highlightRow) {
         
