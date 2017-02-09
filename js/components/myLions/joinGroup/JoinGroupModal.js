@@ -11,7 +11,7 @@ const CreateButton = ({onPress}) => (
   <View style={styles.createGroupFooter}>
     <ButtonFeedback
       style={styles.footerBtn} onPress= {onPress}>
-      <Text style={styles.footerBtnText}>CREATE</Text>
+      <Text style={styles.footerBtnText}>SUBMIT</Text>
     </ButtonFeedback>
   </View>
 )
@@ -19,24 +19,19 @@ const ErrorButton = ({onPress}) => (
   <View style={styles.createGroupFooter}>
     <ButtonFeedback
       style={styles.footerErrorBtn} onPress= {onPress}>
-      <Text style={styles.footerBtnText}>GO BACK</Text>
+      <Text style={styles.footerBtnText}>OK</Text>
     </ButtonFeedback>
   </View>
 )
-const ShareButton = ({onPress,close}) => (
+const ShareButton = ({onPress}) => (
   <View style={styles.createGroupFooter}>
     <ButtonFeedback
-      style={styles.footerShareBtn} onPress= {onPress}>
-      <Text style={styles.footerShareText}>SHARE</Text>
-      <Icon name='ios-share-alt' style={styles.footerBtnIcon} />
-    </ButtonFeedback>
-    <ButtonFeedback
-      style={styles.footerCloseBtn} onPress= {close}>
-      <Text style={styles.footerBtnText}>CLOSE</Text>
+      style={styles.footerCloseBtn} onPress= {onPress}>
+      <Text style={styles.footerBtnText}>OK</Text>
     </ButtonFeedback>
   </View>
 )
-class GreateGroupModal extends Component {
+class JoinGroupModal extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -55,31 +50,30 @@ class GreateGroupModal extends Component {
     }
     switch(description)
     {
-      case 'create':
+      case 'join':
       {
-        PageData.title = 'MY PRIDE'
-        PageData.contentText =  'Create a private group and invite friends.Names must be .<insert EYC3 naming requirements/rules>'
-        PageData.subTitle = 'GROUP NAME'
+        PageData.title = 'JOIN GROUP'
+        PageData.contentText =  'Enter your group invite code below to join.'
+        PageData.subTitle = ''
         PageData.subContentText = ''
       }
         break;
       case 'error':
       {
         PageData.title = 'ERROR'
-        PageData.contentText =  'Unfortunatelyt the following error occured when attempting to create your group.'
-        PageData.subTitle = 'INVALID GROUP NAME'
-        PageData.subContentText = 'Please choose a valid group name and try again.'
+        PageData.contentText =  'Something went wrong when trying to join the group. Please try again later.'
+        PageData.subTitle = ''
+        PageData.subContentText = ''
       }
         break;
       case 'success':
       {
         PageData.title = 'SUCCESS'
-        PageData.contentText =  'Your private group  has been successfully created.'
-        PageData.subTitle = '<INVITE CODE>'
-        PageData.subContentText = 'Invite friends to join your group by sharing this code. You may view the code for later reference at any time within your private group view.'
+        PageData.contentText =  'You are now a member of .'
+        PageData.subTitle = ''
+        PageData.subContentText = ''
       }
         break;
-
       default:
         break
     }
@@ -107,21 +101,18 @@ class GreateGroupModal extends Component {
         <View style={[styles.modalViewWrapper,styles.modalGropp]}>
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-          <Text style={subTitleStyle}>{subTitle}</Text>
-          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
-          {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
-          {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
+          {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
+          {modalType==='join' ? <CreateButton onPress={this.createGroupClick} /> : null}
           {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
-          {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
           {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
         </View>
       </SquadModal>
     )
   }
 }
-GreateGroupModal.propTypes = {
+JoinGroupModal.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
 }
-export default GreateGroupModal
+export default JoinGroupModal
