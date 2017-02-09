@@ -37,7 +37,7 @@ class MyLions extends Component {
         this.state = {
             modalVisible: false,
             modalInfoVisible: false,
-            modalCreateGroupVisible: true,
+            modalCreateGroupVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
             isLoaded:true
