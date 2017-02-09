@@ -64,6 +64,7 @@ class MyLionsSquad extends Component {
         this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
+        this.catchedSquad={}
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
         this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
@@ -222,11 +223,16 @@ class MyLionsSquad extends Component {
         // re render after 'back nav' pressed
             if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
         console.log('!!!!!',nextProps.route.routes)
-            this.setState({
-                isLoaded: false,
-            }, () => {
-                setTimeout(()=>{this._getSquad()},600)
-            })
+            if(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))) {
+                this.setSquadData(SquadModel.format(eval(`(${this.catchedSquad})`)))
+            }
+            else {
+                this.setState({
+                    isLoaded: false,
+                }, () => {
+                    setTimeout(()=>{this._getSquad()},600)
+                })
+            }
         }
     }
 
@@ -249,7 +255,8 @@ class MyLionsSquad extends Component {
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
-                                this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
+                        this.catchedSquad=catchedSquad.data
+                                this.setSquadData(SquadModel.format(eval(`(${this.catchedSquad})`)))
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -345,12 +352,13 @@ class MyLionsSquad extends Component {
         console.log('!!!showSquadFeed',showSquadFeed.toJS())
         console.log('!!!Iterable.isIterable(showSquadFeed)',Iterable.isIterable(showSquadFeed)?'true':'false')
         console.log('!!!this.props.squadToSHow',this.props.squadToShow)
-        if(!showSquadFeed.toMap().equals(Map(this.props.squadToShow))) {
-            console.log('!!!not equal')
-            this.props.setSquadToShow(showSquadFeed.toJS())
-        } else {
+        if(showSquadFeed.toMap().equals(Map(this.props.squadToShow))) {
             console.log('!!!equal')
-            service(optionsSaveList)            
+            service(optionsSaveList)
+        } else {
+            console.log('!!!not equal')
+            if (JSON.stringify(this.props.squadToShow)!=='{}') this.setState({isLoaded:true})
+            this.props.setSquadToShow(showSquadFeed.toJS())
         }
     }
 
