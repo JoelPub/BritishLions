@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { drillDown } from '../../actions/content'
 import { Image, Text, View, ScrollView, ListView } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
@@ -127,6 +128,10 @@ class MyLionsCompetitionGameListing extends Component {
         this.isUnMounted = true
     }
 
+    _drillDown = (data, route) => {
+        this.props.drillDown(data, route)
+    }
+
     _mapJSON(data, colMax = 2) {
         let i = 0
         let k = 0
@@ -147,7 +152,6 @@ class MyLionsCompetitionGameListing extends Component {
     }
 
     _renderRow(rowData, sectionID, rowID, highlightRow) {
-        console.log('rowData:', rowData)
         return (
             <Grid key={rowID}>
                 <Row>
@@ -191,7 +195,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                 </ButtonFeedback>
                                             </View>
                                         </View>
-                                        <ButtonFeedback>
+                                        <ButtonFeedback onPress={()=> { this._drillDown([], 'myLionsCompetitionGameResults') }}>
                                             <View style={triangleShape} />
                                             <View style={statusBox}>
                                                 <Text style={locStyle.statusBoxText}>
@@ -213,22 +217,22 @@ class MyLionsCompetitionGameListing extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                        <LionsHeader 
-                            back={true}
-                            title='MY LIONS'
-                            contentLoaded={true}
-                            scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                        
-                        <View style={styles.pageTitle}>
-                            <Text style={styles.pageTitleText}>ROUND 1 COMPETITION</Text>
-                        </View>
+                    <LionsHeader 
+                        back={true}
+                        title='MY LIONS'
+                        contentLoaded={true}
+                        scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    
+                    <View style={styles.pageTitle}>
+                        <Text style={styles.pageTitleText}>ROUND 1 COMPETITION</Text>
+                    </View>
 
-                        <ListView
-                            ref={(scrollView) => { this._scrollView = scrollView }}
-                            dataSource={this.state.gameList}
-                            renderRow={this._renderRow.bind(this)}
-                            enableEmptySections = {true}
-                            renderFooter={() => <LionsFooter isLoaded={true} /> } />
+                    <ListView
+                        ref={(scrollView) => { this._scrollView = scrollView }}
+                        dataSource={this.state.gameList}
+                        renderRow={this._renderRow.bind(this)}
+                        enableEmptySections = {true}
+                        renderFooter={() => <LionsFooter isLoaded={true} /> } />
                         
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
@@ -238,5 +242,10 @@ class MyLionsCompetitionGameListing extends Component {
     }
 }
 
+function bindAction(dispatch) {
+    return {
+            drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
 
-export default connect(null,  null)(MyLionsCompetitionGameListing)
+export default connect(null,  bindAction)(MyLionsCompetitionGameListing)
