@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, ScrollView } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView, ListView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -19,10 +19,11 @@ import styleVar from '../../themes/variable'
 class Galleries extends Component {
     constructor(props) {
         super(props)
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this._scrollView = ScrollView
         this.state = {
             isLoaded: false,
-            galleriesFeed: [],       
+            galleriesFeed: this.ds.cloneWithRows([]),
         }
         this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php'
     }
@@ -38,10 +39,28 @@ class Galleries extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             isLoaded: nextProps.isLoaded,
-            galleriesFeed: nextProps.galleriesFeed
+            galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed)
         })
     }
-
+    _renderRow(rowData, sectionID, rowID, highlightRow) {
+        
+        return (
+            <ButtonFeedback
+                style={styles.btn}
+                key={rowID}
+                onPress={() => this._drillDown(rowData)}>
+                <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
+                    <Image source={{uri: rowData.thumb50}} style={styles.galleriesImage} />
+                </ImagePlaceholder>
+                <View style={[shapes.triangle, styles.triangle]} />
+                <View style={styles.galleriesContent}>
+                    <Text numberOfLines={1} style={styles.galleriesHeader}>
+                        {rowData.title? rowData.title.toUpperCase() : ' '}
+                    </Text>
+                </View>
+            </ButtonFeedback>
+        )
+    }
     render() {
         return (
             <Container theme={theme}>
@@ -50,40 +69,16 @@ class Galleries extends Component {
                         title='GALLERIES'
                         contentLoaded={this.state.isLoaded}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    {
-                        this.state.isLoaded?
-                            <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <StickyFooter>
-                                    <View style={styles.backgroundList}>
-                                        {
-                                           this.state.galleriesFeed.map(function(data, index) {
-                                                return (
-                                                   <ButtonFeedback
-                                                        style={styles.btn}
-                                                        key={index}
-                                                        onPress={() => this._drillDown(data)}>
-                                                        <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
-                                                            <Image source={{uri: data.thumb50}} style={styles.galleriesImage} />
-                                                        </ImagePlaceholder>
-                                                        <View style={[shapes.triangle, styles.triangle]} />
-                                                        <View style={styles.galleriesContent}>
-                                                            <Text numberOfLines={1} style={styles.galleriesHeader}>
-                                                                {data.title? data.title.toUpperCase() : ' '}
-                                                            </Text>
-                                                        </View>
-                                                    </ButtonFeedback>
-                                                )
-                                            }, this)
-                                        }
-                                    </View>
-                                </StickyFooter>
-                            </ScrollView>
-                          :
-                            <ActivityIndicator
-                                style={loader.centered}
-                                size='large'
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <StickyFooter>
+                            <ListView 
+                                dataSource={this.state.galleriesFeed}
+                                renderRow={this._renderRow.bind(this)}
+                                enableEmptySections = {true} 
+                                contentContainerStyle={styles.backgroundList}
                             />
-                    }
+                        </StickyFooter>
+                    </ScrollView>
                     <EYSFooter />
                 </View>
             </Container>
