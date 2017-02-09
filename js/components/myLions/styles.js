@@ -441,8 +441,8 @@ module.exports = styleSheetCreate({
     },
     btnMysquadLabel: {
         fontFamily: styleVar.fontCondensed,
-        fontSize: 44,
-        lineHeight: 44,
+        fontSize: 36,
+        lineHeight: 36,
         marginTop: 21,
         marginLeft: 14,
         android: {
@@ -949,6 +949,9 @@ module.exports = styleSheetCreate({
     modalUpdateView:{
         height:styleVar.deviceHeight-200,
     },
+    modalGropp:{
+        height:styleVar.deviceHeight,
+    },
     modalTitleTextCenter:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
@@ -1004,9 +1007,6 @@ module.exports = styleSheetCreate({
         paddingTop: 15,
         alignItems: 'center',
         flexDirection: 'row',
-        android: {
-            paddingTop: 0,
-        },
         backgroundColor:'rgb(9,127,64)',
     },
     footerCloseBtn:{
@@ -1017,11 +1017,11 @@ module.exports = styleSheetCreate({
         paddingTop: 12,
         alignItems: 'center',
         flexDirection: 'row',
-        android: {
-            paddingTop: 0,
-        },
         backgroundColor:'rgb(208,7,41)',
-        marginTop: 20
+        marginTop: 20,
+        android: {
+            paddingTop: 8,
+        }
     },
     footerBtnIcon: {
         fontSize: 24,
@@ -1068,6 +1068,7 @@ module.exports = styleSheetCreate({
     footerBtnText:{
         fontSize: 24,
         lineHeight: 24,
+        paddingTop: 0,
         fontFamily: styleVar.fontCondensed
     },
     modalTitle:{
