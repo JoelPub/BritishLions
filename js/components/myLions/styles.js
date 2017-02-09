@@ -1298,9 +1298,6 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         textAlign:'center',
     },
-    buttonWithIcon: {
-
-    },
     roundButton: {
         height: 50,
         backgroundColor: styleVar.brandLightColor,
@@ -1312,6 +1309,9 @@ module.exports = styleSheetCreate({
             paddingTop: 0,
         }
     },
+    roundButtonAlt: {
+        backgroundColor: '#FFF'
+    },
     roundButtonIcon: {
         marginBottom: 5,
         color: 'rgb(255,204,40)',
@@ -1321,6 +1321,7 @@ module.exports = styleSheetCreate({
         }
     },
     roundButtonLabel: {
+        backgroundColor: 'transparent',
         textAlign:'left',
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
@@ -1328,5 +1329,8 @@ module.exports = styleSheetCreate({
         paddingTop:5,
         marginLeft: 5,
         color: '#FFF'
+    },
+    roundButtonLabelAlt: {
+        color: styleVar.colorScarlet
     }
 })

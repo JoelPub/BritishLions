@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { drillDown } from '../../actions/content'
 import { Image, Text, View, ScrollView } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
@@ -17,7 +18,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import ProfileSummaryCard from './components/profileSummaryCard'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 
-const styles2 = styleSheetCreate({
+const locStyle = styleSheetCreate({
     round: {
         backgroundColor: 'rgb(191, 191, 191)',
         paddingHorizontal: 20,
@@ -93,31 +94,31 @@ const Round = ({title, lock}) => {
     let bgColor = lock? ['#bfbfbf', '#bfbfbf'] : ['#af001e', '#820417']
 
     return (
-        <LinearGradient style={styles2.round} colors={bgColor}>
+        <LinearGradient style={locStyle.round} colors={bgColor}>
 
-            <View style={styles2.roundStatus}>
+            <View style={locStyle.roundStatus}>
                 {
                     lock? 
-                        <Icon name='md-lock' style={styles2.roundStatusIcon} />
+                        <Icon name='md-lock' style={locStyle.roundStatusIcon} />
                     :
-                        <View style={styles2.roundPlay}>
-                            <Icon name='ios-play' style={styles2.roundPlayIcon} />
+                        <View style={locStyle.roundPlay}>
+                            <Icon name='ios-play' style={locStyle.roundPlayIcon} />
                         </View>
                 }
             </View>
 
-            <View style={styles2.roundHeader}>
-                <View style={styles2.roundHeaderImage}>
+            <View style={locStyle.roundHeader}>
+                <View style={locStyle.roundHeaderImage}>
                     <Image 
-                        style={styles2.roundHeaderImg} 
+                        style={locStyle.roundHeaderImg} 
                         source={require('../../../images/logo.png')}></Image>
                 </View>
-                <View style={styles2.roundHeaderTitle}>
-                    <Text style={styles2.roundHeaderTitleText}>{ title }</Text>
+                <View style={locStyle.roundHeaderTitle}>
+                    <Text style={locStyle.roundHeaderTitleText}>{ title }</Text>
                 </View>
             </View>
-            <View style={styles2.roundContent}>
-                <Text style={styles2.roundContentText}>Donee accumsan nisi non libero faucibus, nee pharetra odio suscipit.</Text>
+            <View style={locStyle.roundContent}>
+                <Text style={locStyle.roundContentText}>Donee accumsan nisi non libero faucibus, nee pharetra odio suscipit.</Text>
             </View>
         </LinearGradient>
     )
@@ -132,6 +133,10 @@ class MyLionsCompetitionCentre extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+
+    _drillDown = (data) => {
+        this.props.drillDown(data, 'myLionsCompetitionGameListing')
     }
 
     render() {
@@ -162,18 +167,18 @@ class MyLionsCompetitionCentre extends Component {
                             </View>
 
                             <View style={{
-                                backgroundColor: 'rgb(239, 239, 240)',
-                                borderColor: 'rgb(216, 217, 218)',
+                                backgroundColor: styleVar.colorGrey,
+                                borderColor: styleVar.colorGrey2,
                                 borderTopWidth: 1,
                                 paddingTop: 30
                             }}>
                                 <View style={styles.guther}>
                                     <View style={styles.rounds}>
-                                        <ButtonFeedback>
+                                        <ButtonFeedback onPress={()=> { this._drillDown([]) }}>
                                             <Round title='ROUND 1 COMPETITION'/>
                                         </ButtonFeedback>
 
-                                        <ButtonFeedback>
+                                        <ButtonFeedback onPress={()=> { this._drillDown([]) }}>
                                             <Round title='ROUND 2 COMPETITION'/>
                                         </ButtonFeedback>
 
@@ -194,4 +199,10 @@ class MyLionsCompetitionCentre extends Component {
 }
 
 
-export default connect(null,  null)(MyLionsCompetitionCentre)
+function bindAction(dispatch) {
+    return {
+            drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect(null,  bindAction)(MyLionsCompetitionCentre)
