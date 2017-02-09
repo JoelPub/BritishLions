@@ -1177,6 +1177,16 @@ module.exports = styleSheetCreate({
         backgroundColor: 'transparent',
         textAlign:'center',
     },
+    pageTitleBtnIconRight: {
+        position: 'absolute',
+        right: 12,
+        top: 16
+    },
+    pageTitleBtnIcon: {
+        color: styleVar.colorScarlet,
+        fontSize: 28,
+        lineHeight: 28
+    },
     roundButton: {
         height: 50,
         backgroundColor: styleVar.brandLightColor,

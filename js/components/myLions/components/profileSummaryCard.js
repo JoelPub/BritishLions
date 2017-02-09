@@ -4,18 +4,12 @@ import React, { Component } from 'react'
 import { Image, View, Text, Platform } from 'react-native'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import SummaryCardWrapper from './summaryCardWrapper'
 import styleVar from '../../../themes/variable'
 
 const styles = styleSheetCreate({
-    card: {
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: 'rgb(95, 96, 98)',
-        borderRadius: 5,
-    },
     cardContent: {
-         flex: 1,
-         paddingVertical: 20
+        paddingVertical: 20
     },
     cardRow1: {
         marginBottom: 15
@@ -99,25 +93,6 @@ const styles = styleSheetCreate({
             marginTop: 4,
         }
     },
-
-
-    footer: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        backgroundColor: 'rgb(128, 128, 128)',
-        height: 50,
-        paddingBottom: 9,
-        paddingRight: 11,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-    },
-    footerText: {
-        fontFamily: styleVar.fontGeorgia,
-        fontSize:13,
-        marginRight:5,
-        color:'rgb(255, 255, 255)',
-    },
     yellowText: {
         color: 'rgb(255, 230, 0)'
     }
@@ -126,10 +101,6 @@ const styles = styleSheetCreate({
 export default class ProfileSummaryCard extends Component {
 	constructor(props){
         super(props)
-        this.state = {            
-            isSubmitting: false,
-            isModalExpertSquadVisible: false
-    	}
     }
 
 	render() {
@@ -167,7 +138,7 @@ export default class ProfileSummaryCard extends Component {
         )
 
 		return (
-            <View style={styles.card}>
+            <SummaryCardWrapper>
                 <View style={styles.cardContent}>
                     <Grid style={[styles.cardRow, styles.cardRow1]}>
                         <Col style={{width: Platform.OS === 'android'? 95 : 98}}>
@@ -200,12 +171,7 @@ export default class ProfileSummaryCard extends Component {
                         </Col>
                     </Grid>
                 </View>
-
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}> Analytics Sponsored by </Text>
-                    <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
-                </View>
-            </View>          
+            </SummaryCardWrapper>          
 		)
 	}
 }
