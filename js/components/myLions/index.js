@@ -28,6 +28,8 @@ import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from 
 import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
 
+import CreateGroupModal from './createGroup'
+
 class MyLions extends Component {
 
     constructor(props) {
@@ -35,6 +37,7 @@ class MyLions extends Component {
         this.state = {
             modalVisible: false,
             modalInfoVisible: false,
+            modalCreateGroupVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
             isLoaded:true
@@ -48,16 +51,16 @@ class MyLions extends Component {
     _showList(item, route) {
         this.props.drillDown(item, route)
     }
-
+    // R2
     _myLions(){
         this._showList({}, 'myLionsFavoriteList')
     }
-
+    // R2
     _mySquad(){
         this._setModalVisible(false)
         this.props.drillDown({}, 'myLionsSquad')
     }
-
+   //  R2
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
@@ -86,7 +89,13 @@ class MyLions extends Component {
             modalInfoVisible: visible
         })
     }
-
+    _setModalCreateGroupVisible = () => {
+        let visible  = !this.state.modalCreateGroupVisible
+        this.setState({
+            modalVisible: visible,
+            modalCreateGroupVisible: visible
+        })
+    }
     measurePage(page,event) {
         // console.log('measurePage')
         if(this.pageWindow.length===this.totalPages) return
@@ -149,6 +158,7 @@ class MyLions extends Component {
     }
 
     render() {
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -169,33 +179,19 @@ class MyLions extends Component {
                                         style={styles.btnMysquadIcon}>
                                     </Image>
                                     <Text style={styles.btnMysquadLabel}>
-                                        MY SQUAD
+                                        OFFICIAL SQUAD
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={this._myExpertsPick}>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
                                     <Icon name='md-list-box' style={styles.btnExpertIcon} />
-                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel}>
-                                        THE EXPERTS' SQUADS
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
+                                        COMPETITION CENTRE
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} onPress={() => this._myLions()}>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} >
                                     <Icon name='md-star' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
-                                        FAVOURITES
-                                    </Text>
-                                </ButtonFeedback>
-
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
-                                    <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
-                                    <Text style={styles.btnFavouritesLabel}>
-                                        INFORMATION
-                                    </Text>
-                                </ButtonFeedback>
-
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre') }>
-                                    <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
-                                    <Text style={styles.btnFavouritesLabel}>
-                                        COMPETITION CENTRE
+                                        COMPETITION LADDER
                                     </Text>
                                 </ButtonFeedback>
                             </View>
@@ -288,6 +284,7 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
+                    <CreateGroupModal modalVisible = {this.state.modalCreateGroupVisible } callbackParent ={this._setModalCreateGroupVisible}/>
                 </View>
             </Container>
         )

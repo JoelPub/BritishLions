@@ -33,7 +33,7 @@ const styles = styleSheetCreate({
     },
 })
 
-export default class SquadModal extends Component {
+export default class  SquadModal extends Component {
 	constructor(props){
         super(props)
         this.state = {
