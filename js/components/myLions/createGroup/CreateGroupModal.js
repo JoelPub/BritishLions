@@ -104,7 +104,7 @@ class GreateGroupModal extends Component {
 
     return(
       <SquadModal modalVisible={true} callbackParent = {this.callbackParent} >
-        <View style={[styles.modalViewWrapper,styles.modalUpdateView]}>
+        <View style={[styles.modalViewWrapper,styles.modalGropp]}>
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
           <Text style={subTitleStyle}>{subTitle}</Text>
