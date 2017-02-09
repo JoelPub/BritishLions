@@ -29,6 +29,7 @@ import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
 
 import CreateGroupModal from './createGroup'
+import JoinGroupModal from  './joinGroup'
 
 class MyLions extends Component {
 
@@ -285,6 +286,7 @@ class MyLions extends Component {
                             </ScrollView>
                     </SquadModal>
                     <CreateGroupModal modalVisible = {this.state.modalCreateGroupVisible } callbackParent ={this._setModalCreateGroupVisible}/>
+                    <JoinGroupModal modalVisible = {false} callbackParent ={this._setModalCreateGroupVisible}/>
                 </View>
             </Container>
         )
