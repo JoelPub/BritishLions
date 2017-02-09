@@ -262,10 +262,9 @@ class MyLions extends Component {
                         callbackParent={() => this._setModalVisible(false)}>
                             <ScrollView style={styles.modalViewWrapper}>
                                 <Text style={styles.modalTitleText}>Overall Rating</Text>
-                                <Text style={styles.modalText}>To provide an overall player rating EYC3 have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
+                                <Text style={styles.modalText}>To provide an overall player rating EY have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
                                 
-                                <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
-
+                                <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
 
                                 <Text style={styles.modalTitleText}>Recent Performance</Text>
                                 <Text style={styles.modalText}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
@@ -275,7 +274,7 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>A score out of 500 based on your selected players cohesion rating and individual player performances over the last two years and their most recent five games. Your squad rating will take into account all the ratings of your selected players and allows you to choose which players’ ratings you want to boost by nominating a Captain, Kicker and a Star player i.e the player you nominate as your best performer.</Text>
 
                                 <Text style={styles.modalTitleText}>Cohesion</Text>
-                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EYC3 has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 0 means that your players have played no games together and 100 means that your squad has played all their games together over the last two seasons.</Text>
+                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EY has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 100 means all of your squad have started at least one game with every other player in your squad. There is an assumption that professional players will gel together in training camp so a baseline score of 50 is given.</Text>
 
                                 <Text style={styles.modalTitleText}>Attack and Defence</Text>
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>

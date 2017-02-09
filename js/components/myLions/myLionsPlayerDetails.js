@@ -183,8 +183,8 @@ class MyLionsPlayerDetails extends Component {
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>To provide an overall player rating EYC3 took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
-                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
+                        <Text style={styles.modalTextRN}>To provide an overall player rating EY took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
+                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
                 
                         <Text style={styles.modalTitleText}>Recent Performance</Text>
                         <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
