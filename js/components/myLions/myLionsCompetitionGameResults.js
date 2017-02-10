@@ -15,6 +15,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import Versus from './components/versus'
 import SummaryCardWrapper from './components/summaryCardWrapper'
+import SquadModal from '../global/squadModal'
 import shapes from '../../themes/shapes'
 import styles from './styles'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
@@ -120,7 +121,10 @@ const locStyle = styleSheetCreate({
         fontSize: 44,
         lineHeight: 44,
         color: 'rgb(255, 230, 0)',
-        marginTop: 10
+        marginTop: 10,
+        android: {
+            marginBottom: 8
+        }
     },
     summaryTextSmall: {
         fontFamily: styleVar.fontCondensed,
@@ -132,7 +136,10 @@ const locStyle = styleSheetCreate({
     },
     summaryValue2: {
         marginBottom: -5,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        android: {
+            marginBottom: 8
+        }
     },
 
     summaryShare:{
@@ -150,17 +157,28 @@ const locStyle = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         color: 'rgb(95,96,98)',
-        paddingTop: 7
+        paddingTop: 7,
+        android: {
+            paddingTop: 0
+        }
     },
     summaryShareIcon:{
         marginLeft: 5,
         width: 34,
         color: 'rgb(95,96,98)',
         fontSize: 26,
-        marginTop: -1
+        marginTop: -1,
+        android: {
+            marginTop: -4
+        }
     },
+    borderTop: {
+        borderColor: styleVar.colorGrey2,
+        borderTopWidth: 1,
+        paddingTop: 40,
+        paddingBottom: 15
+    }
 })
-
 
 const Summary = ({data}) => (
     <View style={locStyle.summary}>
@@ -232,6 +250,9 @@ class MyLionsCompetitionGameResults extends Component {
     constructor(props) {
         super(props)
         this.isUnMounted = false
+        this.state = {
+            modalResults: false
+        }
     }
 
     componentWillUnmount() {
@@ -250,7 +271,9 @@ class MyLionsCompetitionGameResults extends Component {
                     
                     <View style={styles.pageTitle}>
                         <Text style={styles.pageTitleText}>RESULTS</Text>
-                        <ButtonFeedback style={styles.pageTitleBtnIconRight}>
+                        <ButtonFeedback 
+                            style={styles.pageTitleBtnIconRight} 
+                            onPress={() => { this.setState({modalResults: true}) }}>
                             <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                         </ButtonFeedback>
                     </View>
@@ -272,7 +295,25 @@ class MyLionsCompetitionGameResults extends Component {
                                 <Summary data={[]} />
                             </SummaryCardWrapper>
                         </View>
+
+                        <View style={[styles.guther, locStyle.borderTop]}>
+                            <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]}>
+                                <Icon name='md-analytics' style={styles.roundButtonIcon} />
+                                <Text style={styles.roundButtonLabel}>
+                                    COMPETITION CENTRE
+                                </Text>
+                            </ButtonFeedback>
+                        </View>
                     </ScrollView>
+
+                    <SquadModal 
+                        modalVisible={this.state.modalResults}
+                        callbackParent={() => {}}>
+                            <View style={[styles.modalContent]}>
+                                <Text style={styles.modalContentTitleText}>RESULTS</Text>
+                                <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                            </View>
+                    </SquadModal>
                         
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>

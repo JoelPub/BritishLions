@@ -931,13 +931,15 @@ module.exports = styleSheetCreate({
     },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
-        fontSize:28,
-        lineHeight:28,
-        marginTop:28
+        fontSize: 28,
+        lineHeight: 28,
+        marginTop: 28,
+        color: '#FFF'
     },
     modalText:{
         fontFamily: 'Helvetica Neue',
         fontSize:16,
+        color: '#FFF'
     },
     modalTextMTop: {
         marginTop: 28
@@ -1279,7 +1281,7 @@ module.exports = styleSheetCreate({
     },
 
 
-    // R3
+    // R3 
     guther: {
         paddingHorizontal: 20
     },
@@ -1311,7 +1313,7 @@ module.exports = styleSheetCreate({
     },
     roundButton: {
         height: 50,
-        backgroundColor: styleVar.brandLightColor,
+        backgroundColor: styleVar.colorScarlet,
         flexDirection:'row',
         marginTop: 0,
         marginBottom: 0,
@@ -1343,5 +1345,24 @@ module.exports = styleSheetCreate({
     },
     roundButtonLabelAlt: {
         color: styleVar.colorScarlet
-    }
+    },
+    modalContent: {
+        paddingHorizontal: 28,
+        marginTop: 60
+    },
+    modalContentTitleText: {
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        lineHeight: 28,
+        color: '#FFF'
+    },
+    modalContentText: {
+        fontFamily: 'Helvetica Neue',
+        fontSize: 16,
+        lineHeight: 22,
+        color: '#FFF',
+        android: {
+            lineHeight: 26
+        }
+    },
 })
