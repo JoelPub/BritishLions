@@ -40,7 +40,7 @@ import { strToUpper } from '../utility/helper'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import Swiper from 'react-native-swiper'
 import SquadList from '../global/squadList'
-import { setSquadToShow } from '../../actions/squad'
+import { setSquadToShow,setSquadData } from '../../actions/squad'
 import {removePlayer,addPlayer} from '../global/squadToShow'
 
 const AddPlayerCell = ({pos,onPress})=>(
@@ -286,6 +286,7 @@ class MyLionsPlayerDetails extends Component {
     
     componentDidMount() {
         // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        console.log('!!!Details componentDidMount')
         // Let's have a parallel request
 
         setTimeout(()=>{
@@ -536,19 +537,20 @@ class MyLionsPlayerDetails extends Component {
     _updateSquad(type,position,max){
 
         let update=true
-        getUserCustomizedSquad().then((catchedSquad)=>{
-            if(catchedSquad.auth){
-                if(catchedSquad.auth === 'Sign In is Required'){
-                    this.setState({ isMySquadPlayerSubmitting: false }, () => {
-                        this._signInRequired.bind(this)
-                    })
-                }
-            }else if(catchedSquad.error){
-                this.setState({ isMySquadPlayerSubmitting: false }, () => {
-                    this._showError(catchedSquad.error) // prompt error
-                })
-            }else{                
-                    let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
+        // getUserCustomizedSquad().then((catchedSquad)=>{
+        //     if(catchedSquad.auth){
+        //         if(catchedSquad.auth === 'Sign In is Required'){
+        //             this.setState({ isMySquadPlayerSubmitting: false }, () => {
+        //                 this._signInRequired.bind(this)
+        //             })
+        //         }
+        //     }else if(catchedSquad.error){
+        //         this.setState({ isMySquadPlayerSubmitting: false }, () => {
+        //             this._showError(catchedSquad.error) // prompt error
+        //         })
+        //     }else{ 
+                    console.log('details this.props.squadData',this.props.squadData)               
+                    let tmpFeed=SquadModel.format(eval(`(${this.props.squadData})`))
                     let inSquad = false
                     if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
                         if(List.isList(value)) {
@@ -566,6 +568,7 @@ class MyLionsPlayerDetails extends Component {
                             if(value===this.playerid) {
                                 inSquad=true
                                 if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove)) {
+                                    console.log('!!!tmpFeed',tmpFeed.toJS())
                                     tmpFeed=tmpFeed.set(index,'')
                                     this.props.setSquadToShow(removePlayer(this.props.squadToShow,index))
                                 } 
@@ -602,8 +605,8 @@ class MyLionsPlayerDetails extends Component {
                         this._updateSquadPlayer(tmpFeed,position)
                     }
 
-            }
-        })
+            // }
+        // })
     }
 
     _updateSquadPlayer(squadData,position) {
@@ -626,6 +629,8 @@ class MyLionsPlayerDetails extends Component {
                 let successDesc = this.state.inSquad&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
                     this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
+                    console.log('!!!squadData',squadData)
+                    this.props.setSquadData(JSON.stringify(squadData))
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
                     this.props.setPositionToRemove('')
@@ -794,6 +799,7 @@ function bindAction(dispatch) {
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 
@@ -804,5 +810,6 @@ export default connect((state) => {
         positionToAdd: state.position.positionToAdd,
         positionToRemove: state.position.positionToRemove,
         squadToShow: state.squad.squadToShow,
+        squadData: state.squad.squadData,
     }
 }, bindAction)(MyLionsPlayerDetails)
