@@ -40,6 +40,8 @@ import { strToUpper } from '../utility/helper'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import Swiper from 'react-native-swiper'
 import SquadList from '../global/squadList'
+import { setSquadToShow } from '../../actions/squad'
+import {removePlayer,addPlayer} from '../global/squadToShow'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -552,15 +554,21 @@ class MyLionsPlayerDetails extends Component {
                         if(List.isList(value)) {
                             if(value.indexOf(this.playerid)>-1){
                                 inSquad=true
-                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.update(index,val=>{
-                                                                                                                        return value.splice(value.indexOf(this.playerid),1)
-                                                                                                                    })
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {  
+                                    tmpFeed=tmpFeed.update(index,val=>{
+                                        return value.splice(value.indexOf(this.playerid),1)
+                                    })
+                                    this.props.setSquadToShow(removePlayer(this.props.squadToShow,index,this.playerid))
+                                }
                             }
                         }
                         else {
                             if(value===this.playerid) {
                                 inSquad=true
-                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove))  tmpFeed=tmpFeed.set(index,'')
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove)) {
+                                    tmpFeed=tmpFeed.set(index,'')
+                                    this.props.setSquadToShow(removePlayer(this.props.squadToShow,index))
+                                } 
                             }
                         }
                     })
@@ -569,6 +577,7 @@ class MyLionsPlayerDetails extends Component {
                         if(List.isList(tmpFeed.get(position))) {
                             if(tmpFeed.get(position).count()<max) {
                                 tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.playerid))
+                                this.props.setSquadToShow(addPlayer(this.props.squadToShow,position,this.props.detail,this.playerid))
                             }
                             else {
                                 update=false
@@ -579,6 +588,7 @@ class MyLionsPlayerDetails extends Component {
                         else{
                             if(tmpFeed.get(position).trim()==='') {
                                 tmpFeed=tmpFeed.set(position,this.playerid)
+                                this.props.setSquadToShow(addPlayer(this.props.squadToShow,position,this.props.detail))
                             }
                             else {
                                 update=false
@@ -782,7 +792,8 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position))
+        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
     }
 }
 

@@ -74,3 +74,24 @@ function  searchPlayer(player,id,uniondata) {
         }
         return result===undefined?null:result
     }
+
+export function removePlayer(squadToShow,position,playerid) {
+    if(playerid) {
+        squadToShow[position].splice([squadToShow[position].findIndex((value)=>value&&value.id===playerid)],1)
+        squadToShow[position].push(null)
+    }
+    else {
+        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=null
+    }
+    return squadToShow
+}
+export function addPlayer(squadToShow,position,detail,playerid) {
+    if(playerid) {
+        squadToShow[position][squadToShow[position].findIndex((value)=>value===null)]=detail
+    }
+    else {
+        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
+    }
+    
+    return squadToShow
+}
