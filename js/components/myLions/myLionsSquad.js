@@ -32,7 +32,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
-import { setSquadToShow } from '../../actions/squad'
+import { setSquadToShow,setSquadData } from '../../actions/squad'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
 import SquadPopModel from  'modes/SquadPop'
@@ -216,21 +216,23 @@ class MyLionsSquad extends Component {
         console.log('!!!this.props.squadToShow',this.props.squadToShow)
         console.log('!!!nextProps.squadToShow',nextProps.squadToShow)
         console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
+        console.log('!!!this.props.squadData',this.props.squadData)
+        console.log('!!!nextProps.squadData',nextProps.squadData)
         let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed
             if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
-        console.log('!!!!!',nextProps.route.routes)
-            if(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))) {
-                this.setSquadData(SquadModel.format(eval(`(${this.catchedSquad})`)))
-            }
-            else {
-                this.setState({
-                    isLoaded: false,
-                }, () => {
-                    setTimeout(()=>{this._getSquad()},600)
-                })
-            }
+            // console.log('!!!!!',nextProps.route.routes)
+            // if(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))) {
+                this.setSquadData(SquadModel.format(eval(`(${this.props.squadData})`)))
+            // }
+            // else {
+            //     this.setState({
+            //         isLoaded: false,
+            //     }, () => {
+            //         setTimeout(()=>{this._getSquad()},600)
+            //     })
+            // }
         }
     }
 
@@ -253,8 +255,8 @@ class MyLionsSquad extends Component {
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
-                        this.catchedSquad=catchedSquad.data
-                                this.setSquadData(SquadModel.format(eval(`(${this.catchedSquad})`)))
+                        // this.catchedSquad=catchedSquad.data
+                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -266,6 +268,7 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
+        console.log('!!!setSquadData',this.props.squadData)
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
@@ -298,6 +301,7 @@ class MyLionsSquad extends Component {
                 })
             }
         })
+        console.log('!!!setSquadData',this.props.squadData)
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -357,6 +361,8 @@ class MyLionsSquad extends Component {
             console.log('!!!not equal')
             if (JSON.stringify(this.props.squadToShow)!=='{}') this.setState({isLoaded:true})
             this.props.setSquadToShow(showSquadFeed.toJS())
+            console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
+            this.props.setSquadData(JSON.stringify(tmpSquad))
         }
     }
 
@@ -462,6 +468,7 @@ function bindAction(dispatch) {
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 
@@ -469,6 +476,7 @@ export default connect((state) => {
     return {
         route: state.route,
         squadToShow: state.squad.squadToShow,
+        squadData: state.squad.squadData,
     }
 }, bindAction)(MyLionsSquad)
 
