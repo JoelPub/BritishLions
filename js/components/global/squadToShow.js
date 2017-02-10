@@ -2,6 +2,32 @@
 
 import SquadShowModel from  'modes/Squad/SquadShowModel'
 import { strToUpper } from '../utility/helper'
+export function compareShowSquad(rSquad,jSquad){
+    let result=true
+    rSquad.forEach((value,index)=>{
+        if(index==='backs'||index==='forwards'){
+            value.map((v,i)=>{
+                if(v===null){
+                    if(jSquad[index][i]!==null) result=false
+                }
+                else{
+                    if(jSquad[index][i]===null||jSquad[index][i].id!==v.id) result=false
+                }
+            })
+        }
+        else {
+            value.map((v,i)=>{
+                if(v.info===null) {
+                    if(jSquad[index][i].info!==null) result=false
+                }
+                else {
+                    if(jSquad[index][i].info===null||jSquad[index][i].info.id!==v.info.id) result=false
+                }
+            })
+        }
+    })
+    return result
+}
 export function convertSquadToShow(squad,fullPlayerList,isPop,uniondata) {
     let tempFeed=new SquadShowModel()
     tempFeed.forEach((value,index)=>{

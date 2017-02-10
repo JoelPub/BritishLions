@@ -42,7 +42,8 @@ import SquadRatingModel from 'modes/Squad/Rating'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
 import SquadList from '../global/squadList'
-import {convertSquadToShow} from '../global/squadToShow'
+import {convertSquadToShow,compareShowSquad} from '../global/squadToShow'
+import SquadShowModel from  'modes/Squad/SquadShowModel'
 
 class MyLionsSquad extends Component {
 
@@ -213,10 +214,10 @@ class MyLionsSquad extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('!!!mySquad componentWillReceiveProps')
-        // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos[0].info.id||'NA':'null')
-        // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos[0].info.id||'NA':'null')
-        console.log('!!!this.props.squadToShow',this.props.squadToShow)
-        console.log('!!!nextProps.squadToShow',nextProps.squadToShow)
+        console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
+        // console.log('!!!this.props.squadToShow',this.props.squadToShow)
+        // console.log('!!!nextProps.squadToShow',nextProps.squadToShow)
         console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
         console.log('!!!this.props.squadData',this.props.squadData)
         console.log('!!!nextProps.squadData',nextProps.squadData)
@@ -278,9 +279,9 @@ class MyLionsSquad extends Component {
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
-        console.log('1')
+        // console.log('1')
         let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,isPop,this.uniondata)
-        console.log('1.1')
+        // console.log('1.1')
         showSquadFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
@@ -309,7 +310,7 @@ class MyLionsSquad extends Component {
                 })
             }
         })
-        console.log('2')
+        // console.log('2')
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -317,7 +318,7 @@ class MyLionsSquad extends Component {
             }
             else tmpSquad=tmpSquad.set(index,squad.get(isPop?index==='widecard'?'wildcard':index:index))
         })
-        console.log('3')
+        // console.log('3')
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
                         rating=rating.set(index,squad.get(index))
@@ -358,13 +359,13 @@ class MyLionsSquad extends Component {
             isRequiredToken: true
         }
         console.log('!!!compare')
-        console.log('!!!this.state.isLoaded',this.state.isLoaded)
-        // console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos[0].info.id||'NA':'null')
-        console.log('!!!showSquadFeed',showSquadFeed.toJS())
+        // console.log('!!!this.state.isLoaded',this.state.isLoaded)
+        console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
+        console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
         // console.log('!!!Iterable.isIterable(showSquadFeed)',Iterable.isIterable(showSquadFeed)?'true':'false')
-        // console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos[0].info.id||'NA':'null')
-        console.log('!!!this.props.squadToSHow',this.props.squadToShow)
-        if(showSquadFeed.toMap().equals(Map(this.props.squadToShow))) {
+        // console.log('!!!showSquadFeed',showSquadFeed.toJS())
+        // console.log('!!!this.props.squadToSHow',this.props.squadToShow)
+        if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
             console.log('!!!equal')
             service(optionsSaveList)
         } else {
