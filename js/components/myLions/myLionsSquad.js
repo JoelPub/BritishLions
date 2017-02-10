@@ -98,19 +98,17 @@ class MyLionsSquad extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                        <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>To provide an overall rating for the players EYC3 took the results of 720 games played in 2015/2016 looking at Internationals and top tier club rugby. In addition, as new games are played including the 6 Nations Tournament, player performance will actively update their rating.</Text>
-                            
-                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each of these games there are over 150 features collected on player performance. Using advanced analytic techniques EYC3 identified the 30 most influential factors in a team winning a game. These factors were split into Defensive and Attacking attributes and weighted by position. i.e. A fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
-                        
-                        <Text style={styles.modalTitleText}>Your Squad Ranking</Text>
-                        <Text style={styles.modalTextRN}>Your squad score will take into account all the ratings of your individual players and allows you to choose which players ratings you want to boost by nominating a Captain, Kicker and a Star player (the player you nominate as your best performer).</Text>
-                
-                        <Text style={styles.modalTitleText}>Cohesion</Text>
-                        <Text style={styles.modalTextRN}>Rugby is a team sport, the more familiar your player’s are with each other the better they will perform in a game. EYC3 has developed an algorithim to rate the cohesion of your squad based on international and top tier club rugby games over the last two years.</Text>
-                
-                        <Text style={styles.modalTitleText}>Attack / Defence</Text>
-                        <Text style={styles.modalTextRN}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see if it’s strength lies in attack or defense or you have created a more balanced team.</Text>
+                        <Text style={styles.modalTitleText}>Squad rating</Text>
+                            <Text style={styles.modalText}>A score out of 500 based on your selected players, cohesion rating, individual player performances over the last two years and their most recent five games. Your squad rating will take into account all the ratings of your individual players and allows you to choose which players’ ratings you want to boost by nominating a Captain, Kicker and a Star player i.e the player you nominate as your best performer.</Text>
+
+                            <Text style={styles.modalTitleText}>Squad rating percentage</Text>
+                            <Text style={styles.modalText}>Whether your squad is in the top five, 10, 25, 50 per cent of squads submitted.</Text>
+
+                            <Text style={styles.modalTitleText}>Cohesion</Text>
+                            <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EY has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 100 means all of your squad have started at least one game with every other player in your squad. There is an assumption that professional players will gel together in training camp so a baseline score of 50 is given.</Text>
+
+                            <Text style={styles.modalTitleText}>Attack & Defence</Text>
+                            <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see its balance and if it is weighted towards attack or defence.</Text>
                     </ScrollView>
                 )
                 break
