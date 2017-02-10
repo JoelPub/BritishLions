@@ -15,6 +15,7 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import Versus from './components/versus'
+import LinearGradient from 'react-native-linear-gradient'
 import SquadModal from '../global/squadModal'
 import shapes from '../../themes/shapes'
 import styles from './styles'
@@ -42,9 +43,10 @@ const locStyle = styleSheetCreate({
         justifyContent: 'center',
         borderBottomWidth: 1,
         borderBottomColor: styleVar.colorGrey2,
-        paddingTop: 25,
+        paddingTop: 15,
         paddingBottom: 5,
         paddingHorizontal: 12,
+        backgroundColor: styleVar.colorGrey
         
     },
     gridBoxTitleText: {
@@ -57,6 +59,22 @@ const locStyle = styleSheetCreate({
     headerText2: {
         fontFamily: styleVar.fontCondensed,
         marginBottom: -8
+    },
+
+    btns: {
+        padding: 30,
+        backgroundColor: 'rgb(103, 3, 20)'
+    },
+    btn: {
+    },
+    btnBg: {
+        height: 80
+    },
+    btnText: {
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 36,
+        lineHeight: 36,
+        color: '#FFF',
     }
 })
 
@@ -144,7 +162,7 @@ class MyLionsCompetitionGameResults extends Component {
                                                             <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
                                                                 FIRSTNAME
                                                             </Text>
-                                                            <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
+                                                            <Text style={[locStyle.gridBoxTitleText, {marginTop: -5}]} numberOfLines={1}>
                                                                 LASTNAME
                                                             </Text>
                                                         </View>
@@ -156,6 +174,21 @@ class MyLionsCompetitionGameResults extends Component {
                                 }
                             </Row>
                         </Grid>
+
+                        <View style={[locStyle.btns]}>
+                            <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
+                                 <ButtonFeedback style={locStyle.btn}>
+                                    <Text style={locStyle.btnText}>
+                                        TEAM
+                                    </Text>
+                                </ButtonFeedback>
+                            </LinearGradient>
+                            
+
+                                
+                            
+                        </View>
+
                     </ScrollView>
 
                     <SquadModal 
