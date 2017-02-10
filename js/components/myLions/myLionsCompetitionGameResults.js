@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { pushNewRoute } from '../../actions/route'
 import { Image, Text, View, ScrollView, ListView } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
@@ -297,7 +298,10 @@ class MyLionsCompetitionGameResults extends Component {
                         </View>
 
                         <View style={[styles.guther, locStyle.borderTop]}>
-                            <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]}>
+                            <ButtonFeedback 
+                                rounded 
+                                style={[styles.roundButton, {marginBottom: 30}]}
+                                onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
                                 <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                 <Text style={styles.roundButtonLabel}>
                                     COMPETITION CENTRE
@@ -323,4 +327,10 @@ class MyLionsCompetitionGameResults extends Component {
     }
 }
 
-export default connect(null,  null)(MyLionsCompetitionGameResults)
+function bindAction(dispatch) {
+    return {
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+    }
+}
+
+export default connect(null,  bindAction)(MyLionsCompetitionGameResults)
