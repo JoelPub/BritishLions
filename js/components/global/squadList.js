@@ -172,7 +172,7 @@ export default class SquadList extends Component {
         super(props)
     }
     componentWillReceiveProps(nextProps,nextState) {
-        console.log('!!!squadList componentWillReceiveProps')
+        console.log('@@@squadList componentWillReceiveProps')
         // console.log('!!!this.props',this.props)
         // console.log('!!!this.state',this.state)
         // console.log('!!!nextProps',nextProps)

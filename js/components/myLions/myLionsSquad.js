@@ -366,16 +366,22 @@ class MyLionsSquad extends Component {
         // console.log('!!!showSquadFeed',showSquadFeed.toJS())
         // console.log('!!!this.props.squadToSHow',this.props.squadToShow)
         if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
-            console.log('!!!equal')
+            console.log('!!!show equal')
             service(optionsSaveList)
         } else {
-            console.log('!!!not equal')
+            console.log('!!!show not equal')
             console.log('!!!this.props.squadData',this.props.squadData)
             if (JSON.stringify(this.props.squadToShow)!=='{}'&&this.props.squadData!==null) this.setState({isLoaded:true})
             this.props.setSquadToShow(showSquadFeed.toJS())
         }
         console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
-        if(JSON.stringify(tmpSquad)!==this.props.squadData) this.props.setSquadData(JSON.stringify(tmpSquad))
+        if(JSON.stringify(tmpSquad)!==this.props.squadData) {
+            console.log('!!!squad not equal')
+            this.props.setSquadData(JSON.stringify(tmpSquad))
+        }
+        else {
+            console.log('!!!squad equal')
+        }
 
     }
 
