@@ -3,6 +3,7 @@
 import SquadShowModel from  'modes/Squad/SquadShowModel'
 import { strToUpper } from '../utility/helper'
 export function compareShowSquad(rSquad,jSquad){
+    if (JSON.stringify(jSquad)==='{}') return false
     let result=true
     rSquad.forEach((value,index)=>{
         if(index==='backs'||index==='forwards'){

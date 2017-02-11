@@ -12,7 +12,6 @@ export function setSquadToShow(squadToShow):Action {
     }
 }
 export function setSquadData(squadData):Action {
-	console.log('action squadData',squadData)
     return {
         type: SET_SQUAD_DATA,
         squadData

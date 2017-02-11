@@ -214,11 +214,9 @@ class MyLionsSquad extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('!!!mySquad componentWillReceiveProps')
-        console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
-        console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
-        // console.log('!!!this.props.squadToShow',this.props.squadToShow)
-        // console.log('!!!nextProps.squadToShow',nextProps.squadToShow)
-        console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
+        // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
+        // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
         console.log('!!!this.props.squadData',this.props.squadData)
         console.log('!!!nextProps.squadData',nextProps.squadData)
         console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
@@ -227,8 +225,8 @@ class MyLionsSquad extends Component {
         // re render after 'back nav' pressed
             if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
             // console.log('!!!!!',nextProps.route.routes)
-            // if(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))) {
-                if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
+                // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
+                if(nextProps.squadData!==null) {
                     console.log('pass')
                     this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))  
                 }                
@@ -263,7 +261,7 @@ class MyLionsSquad extends Component {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
-                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
+                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)),false,true)
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -274,8 +272,8 @@ class MyLionsSquad extends Component {
         })      
     }
 
-    setSquadData(squad,isPop){
-        console.log('!!!setSquadData',this.props.squadData)
+    setSquadData(squad,isPop,mounted){
+        console.log('!!!setSquadData mounted',mounted)
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
@@ -333,6 +331,7 @@ class MyLionsSquad extends Component {
             },
             onSuccess: (res) => {
                 this.setState({
+                    isLoaded:true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
                     rating:isPop?rating.toJS():this.state.rating
@@ -358,29 +357,27 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-        console.log('!!!compare')
-        // console.log('!!!this.state.isLoaded',this.state.isLoaded)
-        console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
-        console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
-        // console.log('!!!Iterable.isIterable(showSquadFeed)',Iterable.isIterable(showSquadFeed)?'true':'false')
-        // console.log('!!!showSquadFeed',showSquadFeed.toJS())
-        // console.log('!!!this.props.squadToSHow',this.props.squadToShow)
-        if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
-            console.log('!!!show equal')
-            service(optionsSaveList)
-        } else {
-            console.log('!!!show not equal')
-            console.log('!!!this.props.squadData',this.props.squadData)
-            if (JSON.stringify(this.props.squadToShow)!=='{}'&&this.props.squadData!==null) this.setState({isLoaded:true})
-            this.props.setSquadToShow(showSquadFeed.toJS())
-        }
+        // console.log('!!!compare')
+        // console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
+        // console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
+        //     console.log('!!!show equal')
+        //     service(optionsSaveList)
+        // } else {
+        //     console.log('!!!show not equal')
+        //     if (JSON.stringify(this.props.squadToShow)!=='{}'&&this.props.squadData!==null) this.setState({isLoaded:true})
+        //     this.props.setSquadToShow(showSquadFeed.toJS())
+        // }
         console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
+        console.log('!!!this.props.squadData',this.props.squadData)
         if(JSON.stringify(tmpSquad)!==this.props.squadData) {
             console.log('!!!squad not equal')
             this.props.setSquadData(JSON.stringify(tmpSquad))
+            this.props.setSquadToShow(showSquadFeed.toJS())
         }
         else {
             console.log('!!!squad equal')
+            service(optionsSaveList)
         }
 
     }

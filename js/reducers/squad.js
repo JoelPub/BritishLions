@@ -23,7 +23,6 @@ export default function (state:State = initialState, action:Action): State {
         }
     }
     if (action.type === SET_SQUAD_DATA) {
-    	console.log('reducer squadData',action.squadData)
         return {
             ...state,
             squadData: action.squadData
