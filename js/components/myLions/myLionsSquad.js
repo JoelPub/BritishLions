@@ -62,7 +62,7 @@ class MyLionsSquad extends Component {
             rating:Rating().toJS(),
             userID:'',
         }
-        this.isUnMounted = false
+        // this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
         this.catchedSquad={}
@@ -128,9 +128,9 @@ class MyLionsSquad extends Component {
         })
     }
 
-    componentWillUnmount() {
-        this.isUnMounted = true
-    }
+    // componentWillUnmount() {
+    //     this.isUnMounted = true
+    // }
 
     componentWillMount() {
         getUserId().then((userID) => {
@@ -217,17 +217,17 @@ class MyLionsSquad extends Component {
         // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
         // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
         // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
-        console.log('!!!this.props.squadData',this.props.squadData)
+        // console.log('!!!this.props.squadData',this.props.squadData)
         console.log('!!!nextProps.squadData',nextProps.squadData)
-        console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
-        let routes = globalNav.navigator.getCurrentRoutes()
+        // console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
+        // let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed
-            if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
+            // if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
             // console.log('!!!!!',nextProps.route.routes)
                 // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
                 if(nextProps.squadData!==null) {
-                    console.log('pass')
+                    // console.log('pass')
                     this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))  
                 }                
             // }
@@ -238,11 +238,11 @@ class MyLionsSquad extends Component {
             //         setTimeout(()=>{this._getSquad()},600)
             //     })
             // }
-        }
+        // }
     }
 
     _getSquad(){
-        if (this.isUnMounted) return // return nothing if the component is already unmounted
+        // if (this.isUnMounted) return 
             
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
@@ -379,6 +379,7 @@ class MyLionsSquad extends Component {
             console.log('!!!squad equal')
             service(optionsSaveList)
         }
+        
 
     }
 
@@ -490,7 +491,6 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        route: state.route,
         squadToShow: state.squad.squadToShow,
         squadData: state.squad.squadData,
     }

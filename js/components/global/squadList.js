@@ -9,6 +9,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import shapes from '../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../themes/variable'
+import Immutable, { Map, List,Iterable } from 'immutable'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -171,15 +172,16 @@ export default class SquadList extends Component {
 	constructor(props){
         super(props)
     }
-    componentWillReceiveProps(nextProps,nextState) {
-        console.log('@@@squadList componentWillReceiveProps')
-        // console.log('!!!this.props',this.props)
-        // console.log('!!!this.state',this.state)
-        // console.log('!!!nextProps',nextProps)
-        // console.log('!!!nextState',nextState)
-    }
+    // shouldComponentUpdate(nextProps,nextState) {
+    //     console.log('@@@squadList shouldComponentUpdate')
+    //     console.log('@@@this.props.squadDatafeed',JSON.stringify(this.props.squadDatafeed)!=='{}'?this.props.squadDatafeed.indivPos:'null')
+    //     console.log('@@@nextProps.squadDatafeed',JSON.stringify(nextProps.squadDatafeed)!=='{}'?nextProps.squadDatafeed.indivPos:'null')
+    //     console.log('@@@this.props.squadDatafeed=nextProps.squadDatafeed',Map(this.props.squadDatafeed).equals(Map(nextProps.squadDatafeed))?'true':'false')
+    //     return !Map(this.props.squadDatafeed).equals(Map(nextProps.squadDatafeed))
+    // }
 
 	render() {
+        console.log('@@@render squadList')
 		return (
 
             <View>
