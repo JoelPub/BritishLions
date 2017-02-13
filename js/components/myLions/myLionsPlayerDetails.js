@@ -155,8 +155,8 @@ class MyLionsPlayerDetails extends Component {
             case 'replace' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>{title}</Text>
-                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
@@ -167,7 +167,7 @@ class MyLionsPlayerDetails extends Component {
             case 'squad' :
                 return(
                     <ScrollView style={styles.modalSquadView}>
-                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
                         <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._updateSquad.bind(this)}/>
                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
                     </ScrollView>
@@ -176,8 +176,8 @@ class MyLionsPlayerDetails extends Component {
             case 'confirm' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>{title}</Text>
-                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
                             <ButtonFeedback rounded onPress={()=>this._updateSquad('replace',this.playerPos,0,this.seq)}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
