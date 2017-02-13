@@ -1,7 +1,7 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { PUSH_CONTENT_ITEM, PUSH_CONTENT_ITEM_SUB, SET_CONTENT } from '../actions/content'
+import { PUSH_CONTENT_ITEM, PUSH_CONTENT_ITEM_SUB, SET_CONTENT, REPLACE_CONTENT_SHARE } from '../actions/content'
 // import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
@@ -43,6 +43,13 @@ export default function (state:State = initialState, action:Action): State {
             drillDownItemSub: action.item
         }
     }
+    if (action.type === REPLACE_CONTENT_SHARE) {
+        return {
+            ...state,
+            drillDownItemShare: action.item
+        }
+    }
+
 
     // if (action.type === REHYDRATE) {
     //   const savedData = action['payload']['content'] || state
