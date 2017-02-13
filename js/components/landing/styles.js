@@ -24,6 +24,9 @@ module.exports = styleSheetCreate({
         color: styleVar.colorScarlet,
         backgroundColor: 'transparent',
         textAlign:'center',
+        android: {
+            paddingBottom: 5
+        }
     },
     mainBanner: {
         height: styleVar.deviceWidth,
@@ -108,7 +111,10 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         textAlign: 'center',
         color: '#FFF',
-        paddingBottom: 3
+        paddingBottom: 3,
+        android: {
+            paddingBottom: 10
+        }
     },
     bannerDesc:{
         fontSize: 14,
@@ -116,23 +122,28 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         textAlign: 'center',
         color: '#FFF',
-        paddingBottom: 11,
-        marginTop: -5
+        paddingBottom: 12,
+        marginTop: -9
     },
     bannerImg: {
         width: styleVar.deviceWidth,
         height: 200
     },
 
+    swiper: {
+        backgroundColor: '#fff'
+    },
     swiperWrapper: {
         paddingBottom: 40,
         backgroundColor: styleVar.colorText,
+        android: {
+           paddingBottom: 0,
+        }
     },
     swiperPaginationStyle: {
-        bottom: -25
-    },
-    pagination: {
-        backgroundColor: styleVar.colorText,
-        height: 50
+        bottom: -25,
+        android: {
+            bottom: 18
+        }
     }
 })

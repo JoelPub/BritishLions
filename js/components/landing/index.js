@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { Image, View, Text, ScrollView, ActivityIndicator, Platform } from 'react-native'
 import { Container, Icon } from 'native-base'
 import { drillDown, fetchContent } from '../../actions/content'
 import { pushNewRoute } from '../../actions/route'
@@ -21,8 +21,8 @@ import Swiper from 'react-native-swiper'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
-import data from '../../../contents/fixtures/data.json'
-import images from '../../../contents/fixtures/images'
+import fixturesList from '../../../contents/fixtures/data.json'
+import fixturesImages from '../../../contents/fixtures/images'
 
 class Landing extends Component {
 
@@ -34,6 +34,7 @@ class Landing extends Component {
             isLoaded: false,
             isFetchContent: false,
             newsFeed: [], 
+            fixturesList: this._limitList(fixturesList, 1)
         }
     }
 
@@ -41,8 +42,8 @@ class Landing extends Component {
         this.props.pushNewRoute(route)
     }
 
-    _drillDown(data) {
-        //this.props.drillDown(data, 'fixtureDetails')
+    _drillDown(data, route) {
+        this.props.drillDown(data, route)
     }
 
     _fetchContent(){
@@ -50,8 +51,12 @@ class Landing extends Component {
         this.setState({ isFetchContent: true })
     }
 
-    _filterNewsFeed() {
-        // TODO
+    _limitList(list, limit=null) {
+        if (limit) {
+            return list.slice(0, limit)
+        }
+
+        return list
     }
 
     componentDidMount() {
@@ -65,14 +70,13 @@ class Landing extends Component {
             this.setState({
                 isLoaded: nextProps.isLoaded,
                 isRefreshing: nextProps.isRefreshing,
-                newsFeed: nextProps.newsFeed,
+                newsFeed: this._limitList(nextProps.newsFeed, 3),
                 isFetchContent: false
             })
         }
     }
 
     render() {    
-
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -120,21 +124,20 @@ class Landing extends Component {
 
                             <View style={styles.swiperWrapper}>
                                 <Swiper
-                                    height={250}
+                                    height={Platform.OS === 'android'? 295 : 250}
                                     loop={false}
                                     dotColor='rgba(255,255,255,0.3)'
                                     activeDotColor='rgb(239,239,244)'
                                     paginationStyle={styles.swiperPaginationStyle}>
                                     {
                                         this.state.newsFeed.map(function(item, index) {
-                                            
                                             let headline = item.headline || ''
                                             let image = item.image
 
                                             return (
                                                 <ButtonFeedback key={index}
                                                     style={styles.banner}
-                                                    onPress={() => this._drillDown([])}>
+                                                    onPress={() => this._drillDown(item, 'newsDetails')}>
                                                     <ImagePlaceholder height={200}>
                                                         <Image
                                                             resizeMode='cover' 
@@ -162,21 +165,31 @@ class Landing extends Component {
                                     UPCOMING FIXTURE
                                 </Text>
                             </View>
-                            <ButtonFeedback key={1}
-                                style={styles.banner}
-                                onPress={() => this._drillDown([])}>
-                                <ImagePlaceholder height={200}>
-                                    {/*<Image
-                                        resizeMode='cover' 
-                                        style={styles.bannerImg}
-                                        source={images[item.id]} />*/}
-                                </ImagePlaceholder>
-                                <View style={[shapes.triangle, {marginTop: -12}]} />
-                                <View style={styles.bannerDetails}>
-                                    <Text style={styles.bannerTitle}>03 JUNE</Text>
-                                    <Text style={styles.bannerDesc}>TITLE </Text>
-                                </View>
-                            </ButtonFeedback>
+                            {
+                                this.state.fixturesList.map(function(item, index) {
+                                    let date = item.date.toUpperCase() || ''
+                                    let title = item.title || ''
+                                    let image = fixturesImages[item.id]
+
+                                    return (
+                                        <ButtonFeedback key={index}
+                                            style={styles.banner}
+                                            onPress={() => this._drillDown(item, 'fixtureDetails')}>
+                                            <ImagePlaceholder height={200}>
+                                                <Image
+                                                    resizeMode='cover' 
+                                                    style={styles.bannerImg}
+                                                    source={image} />
+                                            </ImagePlaceholder>
+                                            <View style={[shapes.triangle, {marginTop: -12}]} />
+                                            <View style={styles.bannerDetails}>
+                                                <Text style={styles.bannerTitle}>{ date }</Text>
+                                                <Text style={styles.bannerDesc}>{ title }</Text>
+                                            </View>
+                                        </ButtonFeedback>
+                                    )
+                                }, this)
+                            }
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
