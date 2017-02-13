@@ -146,13 +146,13 @@ class MyLionsSquad extends Component {
         )
     }
 
-    _showDetail(item, route,playerPos) {
+    _showDetail(item, route,playerPos,max,seq) {
         this.props.setPositionToAdd('')
         this.props.setPositionToRemove(playerPos)
         this.props.drillDown(item, route)
     }
 
-    _addPlayer(playerPos) {
+    _addPlayer(type,playerPos,max) {
         this.props.setPositionToAdd(playerPos)
         this.props.setPositionToRemove('')
         this.props.pushNewRoute('myLionsUnionsList')

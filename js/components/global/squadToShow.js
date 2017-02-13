@@ -69,6 +69,25 @@ export function convertSquadToShow(squad,fullPlayerList,isPop,uniondata) {
         return tempFeed    
 }
 
+export function checkFullSquad(squadShow) {
+    let result=true
+    console.log('squadShow',squadShow)
+    for(let node in squadShow) {
+            console.log('node',node)
+        if(node==='backs'||node==='forwards') {
+            squadShow[node].map((value,index)=>{
+                if(value===null) result=false
+            })
+        }
+        else {
+            squadShow[node].map((value,index)=>{
+                if(value.info===null) result=false
+            })
+        }
+    }
+    return result    
+}
+
 function  searchPlayer(player,id,uniondata) {
         let result=null
         for(let union in player) {
@@ -94,8 +113,8 @@ function  searchPlayer(player,id,uniondata) {
                         result.image = {uri:result.image}
                     } 
                 }
-                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='back row'
-                if(strToUpper(result.position)==='UTILITY BACK') result.position='full back'
+                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='Back Row'
+                if(strToUpper(result.position)==='UTILITY BACK') result.position='Full Back'
                 return result
             }
         }
@@ -120,5 +139,21 @@ export function addPlayer(squadToShow,position,detail,playerid) {
         squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
     }
     
+    return squadToShow
+}
+export function replacePlayer(squadToShow,position,detail,playerid,sequence) {
+    console.log('squadToShow',squadToShow)
+    console.log('position',position)
+    console.log('detail',detail)
+    console.log('playerid',playerid)
+    console.log('sequence',sequence)
+    if(playerid) {
+        squadToShow[position][sequence]=detail
+    }
+    else {
+        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
+    }
+    
+    console.log('squadToShow',squadToShow)
     return squadToShow
 }
