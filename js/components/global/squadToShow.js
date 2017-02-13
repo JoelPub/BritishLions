@@ -113,8 +113,8 @@ function  searchPlayer(player,id,uniondata) {
                         result.image = {uri:result.image}
                     } 
                 }
-                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='back row'
-                if(strToUpper(result.position)==='UTILITY BACK') result.position='full back'
+                if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='Back Row'
+                if(strToUpper(result.position)==='UTILITY BACK') result.position='Full Back'
                 return result
             }
         }
