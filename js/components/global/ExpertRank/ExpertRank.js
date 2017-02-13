@@ -39,11 +39,11 @@ const styles = styleSheetCreate({
 
   },
   profileNameText: {
-    fontFamily: styleVar.fontGeorgia,
+    fontFamily: styleVar.fontCondensed,
     fontSize:36,
     color:'rgb(255,255,255)',
-    paddingLeft: 20,
-    paddingTop: 20
+    paddingLeft: 8,
+    paddingTop: 8
   }
 
 
