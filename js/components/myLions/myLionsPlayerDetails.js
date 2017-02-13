@@ -41,7 +41,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import Swiper from 'react-native-swiper'
 import SquadList from '../global/squadList'
 import { setSquadToShow,setSquadData } from '../../actions/squad'
-import {removePlayer,addPlayer} from '../global/squadToShow'
+import {removePlayer,addPlayer,replacePlayer,checkFullSquad} from '../global/squadToShow'
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
@@ -119,7 +119,8 @@ class MyLionsPlayerDetails extends Component {
             squadDataFeed: SquadModel().toJS(),
             isFavPlayerUpdating: false,
             isMySquadPlayerUpdating: false,
-            isMySquadPlayerSubmitting: false
+            isMySquadPlayerSubmitting: false,
+            fullSquad:true
         }
     }
 
@@ -165,7 +166,7 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <ScrollView >
                         <Text style={styles.modalBtnTitle}>{title}</Text>
-                        <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
+                        <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._updateSquad.bind(this)}/>
                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
                     </ScrollView>
                 )
@@ -212,18 +213,9 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
         }
-    }    
-    _addPlayer(playerPos) {
-        Alert.alert(
-            '_addPlayer',
-            [{ text: 'OK' }]
-        )
     }
-    _replacePlayer(item, route,playerPos) {
-        Alert.alert(
-            '_replacePlayer',
-            [{ text: 'OK' }]
-        )
+    _replacePlayer(item, route,playerPos,max,seq) {
+        this._updateSquad('replace',playerPos,max,seq)
     }
 
     _mapJSON(data, colMax = 2) {
@@ -531,10 +523,17 @@ class MyLionsPlayerDetails extends Component {
     }
 
     updateSquad(){
-        this.state.inSquad&&this.props.positionToRemove!==''?this._setModalVisible(true,'remove'):this._setModalVisible(true,'add')
+        if(this.state.inSquad&&this.props.positionToRemove!=='') {
+            this._setModalVisible(true,'remove')
+        }
+        else {
+            this.fullSquad=checkFullSquad(this.props.squadToShow)
+            console.log('this.fullSquad',this.fullSquad)
+            this.fullSquad?this._setModalVisible(true,'replace','SQUAD FULL','CANNOT ADD NEW PLAYER AS YOUR SQUAD IS FULL \n PLEASE SELECT A PLAYER TO REPLACE'):this._setModalVisible(true,'add')
+        }
     }
 
-    _updateSquad(type,position,max){
+    _updateSquad(type,position,max,seq){
 
         let update=true
         // getUserCustomizedSquad().then((catchedSquad)=>{
@@ -598,6 +597,40 @@ class MyLionsPlayerDetails extends Component {
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
                                 this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
                             }
+                        }
+                        
+                    }
+                    
+
+                    if(type==='replace') {
+                        if(List.isList(tmpFeed.get(position))) {
+                            // if(tmpFeed.get(position).count()<max) {
+                                console.log('tmpFeed',tmpFeed.toJS())
+                                console.log('position',position)
+                                console.log('seq',seq)
+                                tmpFeed=tmpFeed.update(position,val=>{
+                                    val=val.set(seq,this.playerid)
+                                    return val
+                                })
+                                console.log('tmpFeed',tmpFeed.toJS())
+                                this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,this.playerid,seq))
+                            // }
+                            // else {
+                            //     update=false
+                            //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                            // }
+                        }
+                        else{
+                            // if(tmpFeed.get(position).trim()==='') {
+                                tmpFeed=tmpFeed.set(position==='wildcard'?'widecard':position,this.playerid)
+                                this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,null,seq))
+                            // }
+                            // else {
+                            //     update=false
+                            //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                            // }
                         }
                         
                     }
