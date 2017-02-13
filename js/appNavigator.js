@@ -16,6 +16,7 @@ import {configure,schedule} from './components/utility/notification'
 
 // Templates/pages
 import SplashPage from './components/splashscreen/'
+import Landing from './components/landing/'
 import Login from './components/login/'
 import SignUp from './components/signUp/'
 import ForgotPassword from './components/forgotPassword'
@@ -175,7 +176,7 @@ class AppNavigator extends Component {
         BackAndroid.addEventListener('hardwareBackPress', () => {
             var routes = this._navigator.getCurrentRoutes()
 
-            if(routes[routes.length - 1].id == 'news' || routes[routes.length - 1].id == 'login') {
+            if(routes[routes.length - 1].id == 'landing' || routes[routes.length - 1].id == 'login') {
                 return false
             }
             else {
@@ -247,7 +248,7 @@ class AppNavigator extends Component {
                                 }
                             }
                         }}
-                        initialRoute={{id: (Platform.OS === 'android') ? 'splashscreen' : 'news', statusBarHidden: true}}
+                        initialRoute={{id: (Platform.OS === 'android') ? 'splashscreen' : 'landing', statusBarHidden: true}}
                         renderScene={this.renderScene} />
                 </Drawer>
             </View>
@@ -266,6 +267,8 @@ class AppNavigator extends Component {
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />
+            case 'landing':
+                return <Landing navigator={navigator} />
             case 'login':
                 return <Login navigator={navigator} />
             case 'forgotPassword':
@@ -333,7 +336,7 @@ class AppNavigator extends Component {
             case 'contact':
                 return <Contact navigator={navigator} />
             default :
-                return <News navigator={navigator}  />
+                return <Landing navigator={navigator}  />
         }
     }
 }

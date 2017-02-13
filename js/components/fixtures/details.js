@@ -17,7 +17,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
-import images from './images'
+import images from '../../../contents/fixtures/images'
 
 class FixtureDetails extends Component {
 
