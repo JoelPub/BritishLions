@@ -158,8 +158,8 @@ class MyLionsPlayerDetails extends Component {
                         <Text style={styles.modalTitleTextCenter}>{title}</Text>
                         <Text style={styles.modalTextCenter}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modlaBtnConfirm,styles.btnCancelBlack]} />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                         </View>
                     </View>
                 )

@@ -982,6 +982,9 @@ module.exports = styleSheetCreate({
     btnConfirmGreen:{
         backgroundColor: 'rgb(9,127,64)',
     },
+    btnCancelBlack:{
+        backgroundColor: 'rgb(0,0,0)',
+    },
     imgExpertHeader: {
         width: (styleVar.deviceWidth / 3),
         height: (styleVar.deviceHeight / 3.7)
