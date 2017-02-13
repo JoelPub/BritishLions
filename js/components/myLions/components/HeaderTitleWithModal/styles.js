@@ -16,7 +16,7 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     backgroundColor: 'transparent',
     fontSize:28,
-    height: 60,
+    height: 59,
     textAlign:'center',
     paddingTop: 25,
   },

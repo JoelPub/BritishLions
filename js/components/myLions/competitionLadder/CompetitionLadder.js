@@ -19,6 +19,8 @@ import loader from '../../../themes/loader-position'
 import LoginRequire from '../../global/loginRequire'
 import LionsHeader from '../../global/lionsHeader'
 import LionsFooter from '../../global/lionsFooter'
+import GrayContainer from '../../global/GrayContainer'
+import ExpertRank from  '../../global/ExpertRank'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
@@ -29,6 +31,8 @@ import EYSFooter from '../../global/eySponsoredFooter'
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
 
+import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import PlayerScore from '../../global/playerScore'
 
 class CompetitionLadder extends Component {
 
@@ -67,6 +71,10 @@ class CompetitionLadder extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+            <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
+            <GrayContainer >
+              <ExpertRank />
+            </GrayContainer>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>

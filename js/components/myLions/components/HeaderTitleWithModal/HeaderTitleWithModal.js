@@ -4,7 +4,7 @@ import React, {
   Children
 } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Container, Content, Text Icon, Input } from 'native-base'
+import { Container, Content, Text, Icon, Input } from 'native-base'
 import  styles from './styles'
 
 class HeaderTitleWithModal extends Component {
@@ -15,6 +15,7 @@ class HeaderTitleWithModal extends Component {
     }
   }
   render (){
+    let { title } = this.props
     return (
       <View style={styles.container}>
         <Text style={styles.groupTitle}>{title}</Text>
@@ -24,3 +25,6 @@ class HeaderTitleWithModal extends Component {
   }
 }
 export default HeaderTitleWithModal
+HeaderTitleWithModal.propTypes = {
+  title: PropTypes.string.isRequired,
+}
