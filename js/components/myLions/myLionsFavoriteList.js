@@ -47,6 +47,7 @@ class MyLionsFavoriteList extends Component {
         this.isUnMounted = false
         this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
         this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
+        this.squadUrl = getAssembledUrl('GoodFormUserCustomizedSquad')
         this.uniondata = Data
         this._scrollView = ScrollView
 
@@ -131,13 +132,12 @@ class MyLionsFavoriteList extends Component {
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
         let playerids = playerList.split('|')
-            let optionsSquad = {
-                url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
-                method: 'get',
-                onSuccess: (res) => {
-                    console.log('res',res)
+        let optionsSquad = {
+            url: this.squadUrl,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
                     let squad=SquadModel.format(eval(`(${res.data})`))
-                    console.log('squad',squad)
                     let tmpSquad=new SquadModel()
                     let showSquadFeed=convertSquadToShow(squad,playerFeed,false,this.uniondata)
                     showSquadFeed.forEach((value,index)=>{
@@ -169,10 +169,12 @@ class MyLionsFavoriteList extends Component {
                     })
                     this.props.setSquadData(JSON.stringify(tmpSquad))
                     this.props.setSquadToShow(showSquadFeed.toJS())
-                },
-                isRequiredToken: true
-            }
-            service(optionsSquad)
+                }
+                
+            },
+            isRequiredToken: true
+        }
+        service(optionsSquad)
 
         for (var u in playerFeed) {
             if (playerFeed[u].length > 0) {
@@ -479,8 +481,6 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         route: state.route,
-        squadToShow: state.squad.squadToShow,
-        squadData: state.squad.squadData,
     }
 }, bindAction)(MyLionsFavoriteList)
 

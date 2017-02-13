@@ -929,6 +929,9 @@ module.exports = styleSheetCreate({
         marginVertical:54,
         backgroundColor:'transparent',
     },
+    modalSquadView:{
+        marginTop:49
+    },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
