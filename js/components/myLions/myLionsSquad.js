@@ -169,7 +169,8 @@ class MyLionsSquad extends Component {
         //console.log(this.state.rating)
         let data = {
             rating: this.state.rating,
-            showScoreCard: this.state.showScoreCard
+            showScoreCard: this.state.showScoreCard,
+            squadDatafeed: this.props.squadToShow
         }
         this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
     }

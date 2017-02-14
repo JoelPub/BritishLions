@@ -2,6 +2,7 @@
 
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
+import shapes from '../../../themes/shapes'
 
 const gridBorderColor = 'rgb(216, 217, 218)'
 module.exports = styleSheetCreate({
@@ -9,7 +10,13 @@ module.exports = styleSheetCreate({
     flex: 1,
     width: null,
     height: null,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingHorizontal:20,
+    paddingTop: 30,
+  },
+  smallContainer: {
+    borderColor: 'rgb(216,217,218)',
+    borderWidth: 1
   },
   header: {
     backgroundColor: styleVar.brandPrimary,
@@ -50,14 +57,14 @@ module.exports = styleSheetCreate({
   },
   viewShareHeader: {
     backgroundColor: styleVar.brandPrimary,
-    height: 229,
+    height: 180,
     width: null,
     alignItems: 'center'
   },
   viewHeaderImage: {
     marginTop: 20,
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 130,
   },
   scoreCard:{
     marginVertical:2,
@@ -148,7 +155,7 @@ module.exports = styleSheetCreate({
     lineHeight:22,
     flex:1,
     marginBottom: 10,
-    color:'black',
+    color:'rgb(38,38,38)',
   },
   summaryTextHighLight:{
     fontFamily: styleVar.fontCondensed,
@@ -163,10 +170,10 @@ module.exports = styleSheetCreate({
     justifyContent:'center',
     alignItems:'center',
     borderTopWidth:1,
-    borderColor:'rgb(128,127,131)',
+    borderColor:'rgb(216,217,218)',
     marginTop: 10,
     paddingVertical:19,
-    backgroundColor: 'rgb(128,127,131)',
+    backgroundColor: 'rgb(239,239,224)',
   },
   ratingWrapperExpert:{
     borderTopWidth:0,
@@ -177,7 +184,7 @@ module.exports = styleSheetCreate({
     fontSize:28,
     lineHeight:32,
     paddingTop: 12,
-    color:'rgb(255,255,255)',
+    color:'rgb(38,38,38)',
     android: {
       paddingTop: 0
     }
@@ -205,7 +212,7 @@ module.exports = styleSheetCreate({
   barGraphWrapper:{
     height: 105,
     borderTopWidth:1,
-    borderColor: 'rgb(128, 127, 131)',
+    borderColor: 'rgb(216, 217, 218)',
     paddingHorizontal:25,
     paddingTop:15
   },
@@ -214,7 +221,7 @@ module.exports = styleSheetCreate({
     fontSize:18,
     textAlign:'left',
     marginTop: 12,
-    color:'black',
+    color:'rgb(38,38,38)',
     android: {
       marginTop: 8,
     }
@@ -233,7 +240,7 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     fontSize:18,
     marginTop: 25,
-    color:'black',
+    color:'rgb(38,38,38)'
   },
   scoreCardShareWrapper:{
     borderTopWidth:1,
@@ -331,4 +338,105 @@ module.exports = styleSheetCreate({
     fontSize:16,
     color: '#FFF'
   },
+  posWrapper:{
+    width:(styleVar.deviceWidth-40)/3+1,
+    marginLeft:-1
+  },
+  indivPosTitle:{
+    borderTopWidth:1,
+    borderLeftWidth:1,
+    borderBottomWidth:1,
+    borderColor:'rgb(216,217,218)',
+    height:50,
+    paddingTop:12,
+    backgroundColor:'rgb(239,239,240)',
+    borderRightWidth:1
+  },
+  indivPosTitleText:{
+    color:'rgb(175,0,30)',
+    textAlign:'center',
+    fontFamily: styleVar.fontCondensed,
+    fontSize:18,
+    lineHeight:18,
+  },
+  posBtn:{
+    borderLeftWidth:1,
+    borderColor:'rgb(255,255,255)'
+  },
+  playerNameTextWrapper:{
+    marginTop:-12,
+    borderColor: 'rgb(216,217,218)',
+    borderWidth: 1
+  },
+  titleBox: {
+    position: 'relative',
+    backgroundColor: 'white',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 14,
+    height:styleVar.deviceWidth*0.16,
+    paddingHorizontal: 2,
+    android: {
+      paddingTop: 12,
+      paddingBottom: 6
+    }
+  },
+  playerNameText: {
+    textAlign: 'center',
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 21,
+    lineHeight: 21,
+    paddingBottom: 2,
+    marginTop: -6,
+    backgroundColor: 'transparent',
+    android: {
+      marginTop: -2,
+      paddingBottom: 3,
+    },
+    color: 'rgb(38,38,38)'
+  },
+  jobBoxContainer:{
+    flexDirection: 'row'
+  },
+  rankTitleView: {
+    borderTopWidth:1,
+    borderLeftWidth:1,
+    borderBottomWidth:1,
+    borderColor:'rgb(216,217,218)',
+    height:40,
+    paddingTop:12,
+    backgroundColor:'rgb(239,239,240)',
+    borderRightWidth:1
+  },
+  rankTableContainer: {
+  },
+  nubTextSupContainer:{
+    width: (styleVar.deviceWidth-40)/2,
+    paddingLeft: 20,
+    paddingTop: 20,
+    paddingBottom: 30
+  },
+  rankNubTextContainer:{
+    flexDirection: 'row'
+  },
+  rankNumber: {
+    color:'rgb(175,0,30)',
+    fontFamily: styleVar.fontCondensed,
+    fontSize:18,
+    lineHeight:18,
+  },
+  rankPlayerName: {
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 21,
+    lineHeight: 21,
+    paddingBottom: 2,
+    marginTop: 0,
+    backgroundColor: 'transparent',
+    android: {
+      marginTop: -2,
+      paddingBottom: 3,
+    },
+    color: 'rgb(38,38,38)'
+  }
 })
