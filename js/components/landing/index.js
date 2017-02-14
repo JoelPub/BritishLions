@@ -178,6 +178,7 @@ class Landing extends Component {
     }
 
     _getSquad() {
+        console.log('get squad...')
         getUserCustomizedSquad().then((catchedSquad)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
 
@@ -301,11 +302,15 @@ class Landing extends Component {
     componentDidMount() {
         setTimeout(() => {
             this._fetchContent()
+
+            if (this.props.isAccessGranted) {
+                this._getSquad()
+            }
         }, 600)
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.isAccessGranted) {
+        if (nextProps.isAccessGranted) {
             this._getSquad()
         }
     }
@@ -463,7 +468,7 @@ class Landing extends Component {
                                 <ButtonFeedback 
                                     rounded 
                                     style={[styles.button, styles.btnMysquad]} 
-                                    onPress={() => this._navigateTo('myLionsSquad')}
+                                    onPress={() => this._drillDown([{backRoute: 'landing'}], 'myLionsSquad')}
                                 >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={styles.btnMysquadIcon}>
