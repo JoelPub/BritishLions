@@ -108,8 +108,8 @@ class MyLionsShareView extends Component {
 
   componentDidMount() {
     setTimeout(()=>{
-      this.shareSnapshot()
-    })
+      this.shareSnapshot('scorecard',this.callback)
+    },2000)
 
   }
 
@@ -153,6 +153,10 @@ class MyLionsShareView extends Component {
     this.setState({
       isSubmitting:false
     })
+    this.backNav()
+  }
+  backNav = () => {
+    this.props.drillDown({}, 'myLionsSquad')
   }
   render() {
     let { indivPos, forwards, backs } =this.props.data.squadDatafeed
@@ -211,7 +215,7 @@ class MyLionsShareView extends Component {
                 <EYSFooter mySquadBtn={true}/>
               </ScrollView>
           </View>
-
+          {this.state.isSubmitting ? <ActivityIndicator style={loader.scoreCard} size='small' /> : null }
         </View>
       </Container>
     )
