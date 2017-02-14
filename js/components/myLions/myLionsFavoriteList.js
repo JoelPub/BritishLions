@@ -29,11 +29,15 @@ import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import LionsFooter from '../global/lionsFooter'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
+import { getUserCustomizedSquad, removeUserCustomizedSquad,getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList,removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import Storage from 'react-native-storage'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
 import { strToUpper } from '../utility/helper'
+import SquadModel from  'modes/Squad'
+import {convertSquadToShow,compareShowSquad} from '../global/squadToShow'
+import { setSquadToShow,setSquadData } from '../../actions/squad'
+import Immutable, { Map, List,Iterable } from 'immutable'
 
 class MyLionsFavoriteList extends Component {
 
@@ -43,6 +47,7 @@ class MyLionsFavoriteList extends Component {
         this.isUnMounted = false
         this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
         this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
+        this.squadUrl = getAssembledUrl('GoodFormUserCustomizedSquad')
         this.uniondata = Data
         this._scrollView = ScrollView
 
@@ -127,6 +132,49 @@ class MyLionsFavoriteList extends Component {
     _listPlayer(playerList, playerFeed){
         let favoritePlayers = []
         let playerids = playerList.split('|')
+        let optionsSquad = {
+            url: this.squadUrl,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    let squad=SquadModel.format(eval(`(${res.data})`))
+                    let tmpSquad=new SquadModel()
+                    let showSquadFeed=convertSquadToShow(squad,playerFeed,false,this.uniondata)
+                    showSquadFeed.forEach((value,index)=>{
+                        if(index==='backs'||index==='forwards') {
+                            value.map((v,i)=>{
+                                if(showSquadFeed.get(index)[i]===null) {
+                                    squad=squad.update(index,val=>{
+                                        val[i]=null
+                                        return val
+                                    })
+                                }
+                            })
+                        }
+                        else {
+                            value.map((v,i)=>{
+                                let p=v.position==='wildcard'?'widecard':v.position
+                                if(showSquadFeed.get(index)[i].info===null) {
+                                    squad=squad.set(p,'')
+                                }
+                            })
+                        }
+                    })
+                    tmpSquad.forEach((value,index)=>{
+                        if(List.isList(squad.get(index))) {
+                            if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
+                            else tmpSquad=tmpSquad.set(index,'')
+                        }
+                        else tmpSquad=tmpSquad.set(index,squad.get(index))
+                    })
+                    this.props.setSquadData(JSON.stringify(tmpSquad))
+                    this.props.setSquadToShow(showSquadFeed.toJS())
+                }
+                
+            },
+            isRequiredToken: true
+        }
+        service(optionsSquad)
 
         for (var u in playerFeed) {
             if (playerFeed[u].length > 0) {
@@ -425,6 +473,8 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 

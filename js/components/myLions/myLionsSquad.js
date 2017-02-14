@@ -273,7 +273,7 @@ class MyLionsSquad extends Component {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
-                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)),false,true)
+                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -284,14 +284,12 @@ class MyLionsSquad extends Component {
         })      
     }
 
-    setSquadData(squad,isPop,mounted){
-        console.log('!!!setSquadData mounted',mounted)
+    setSquadData(squad,isPop){
+        console.log('!!!setSquadData')
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
-        // console.log('1')
         let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,isPop,this.uniondata)
-        // console.log('1.1')
         showSquadFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{

@@ -92,6 +92,14 @@ class LionsHeader extends Component {
             this.props.scrollToTop()
     }
 
+    onpressLogo = () => {
+        if (this.props.title === 'LANDING') {
+            this.scrollToTop()
+        } else {
+            this.pushNewRoute('landing')
+        }
+    }
+
 	getBackArrowHTML() {
 		return (
 			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute()}>
@@ -102,7 +110,7 @@ class LionsHeader extends Component {
 
     getLogoHTML() {
         return (
-            <ButtonFeedback onPress={() => this.pushNewRoute('news')} style={styles.logoHeaderLink}>
+            <ButtonFeedback onPress={this.onpressLogo} style={styles.logoHeaderLink}>
                 <Image
                     resizeMode='contain'
                   	transparent
@@ -128,6 +136,7 @@ class LionsHeader extends Component {
 
     render() {
     	let title = this.props.title || ''
+        title = title === 'LANDING'? '' : title
         let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
 
         return (
