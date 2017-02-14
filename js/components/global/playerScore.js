@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
@@ -288,7 +288,7 @@ const styles = styleSheetCreate({
     },
 })
 
-export default class PlayerScore extends Component {
+class PlayerScore extends Component {
 	constructor(props){
         super(props)
         this.state = {            
@@ -334,6 +334,11 @@ export default class PlayerScore extends Component {
         this.setState({
             isSubmitting:false
         })
+    }
+    shareClick = (data) => {
+      if(this.props.shareClick) {
+          this.props.shareClick()
+      }
     }
 
     _toExpert(){
@@ -440,7 +445,7 @@ export default class PlayerScore extends Component {
                                         <ButtonFeedback
                                             rounded label='Share'
                                             disabled = {this.state.isSubmitting}
-                                            onPress={ ()=> this.shareSnapshot('scorecard',this.callback.bind(this)) }
+                                            onPress={this.shareClick}
                                             style={[styles.button,styles.scoreCardShare]}>
                                             <Text  style={styles.scoreCardShareText}>SHARE</Text>
                                             <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
@@ -501,4 +506,8 @@ export default class PlayerScore extends Component {
 			)
 	}
 
+}
+export default PlayerScore
+PlayerScore.propTypes = {
+    shareClick: PropTypes.func,
 }

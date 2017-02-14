@@ -21,7 +21,7 @@ import { replaceRoute, pushNewRoute } from '../../actions/route'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
-import { drillDown } from '../../actions/content'
+import { drillDown ,shareReplace} from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken, getUserId } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
@@ -165,8 +165,14 @@ class MyLionsSquad extends Component {
     isPlainObj (value) {
       return value && (value.constructor === Object || value.constructor === undefined)
     }
-
-
+    goShare = () => {
+        console.log(this.state.rating)
+        let data = {
+            rating: this.state.rating,
+            showScoreCard: this.state.showScoreCard
+        }
+        this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
+    }
     render() {
         return (
             <Container theme={theme}>
@@ -180,7 +186,13 @@ class MyLionsSquad extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                                <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)} pressExpert={this._myExpertsPick.bind(this)}/>
+                                <PlayerScore isLoaded={this.state.isScoreLoaded}
+                                             rating={this.state.rating}
+                                             showScoreCard={this.state.showScoreCard}
+                                             pressInfo={this._setModalVisible.bind(this)}
+                                             pressExpert={this._myExpertsPick.bind(this)}
+                                             shareClick={this.goShare}
+                                />
                                 {
                                     this.state.showScoreCard==='empty'?
                                     <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
@@ -484,6 +496,7 @@ function bindAction(dispatch) {
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
         setSquadData:(squad)=>dispatch(setSquadData(squad)),
+        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }
 

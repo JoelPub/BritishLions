@@ -11,6 +11,7 @@ export const SET_CONTENT = 'SET_CONTENT'
 export const PUSH_CONTENT_ITEM = 'PUSH_CONTENT_ITEM'
 export const PUSH_CONTENT_ITEM_SUB = 'PUSH_CONTENT_ITEM_SUB'
 export const REPLACE_CONTENT_ITEM = 'REPLACE_CONTENT_ITEM'
+export const REPLACE_CONTENT_SHARE = 'REPLACE_CONTENT_SHARE'
 
 export function fetchContent(url):Action {
     return (dispatch, getState) => {
@@ -84,6 +85,12 @@ export function pushContentItemSub({item}):Action {
         item
     }
 }
+export function share({item}):Action {
+    return {
+        type: REPLACE_CONTENT_SHARE,
+        item
+    }
+}
 
 export function drillDown(item, route:string):Action {
     return (dispatch, getState) => {
@@ -101,6 +108,16 @@ export function drillReplace(item, route:string, isSub, isPushNewRoute: false):A
         
 
         if (isPushNewRoute) 
+            dispatch(pushNewRoute(route))
+        else
+            dispatch(replaceRoute(route))
+    }
+}
+
+export function shareReplace(item, route:string, isSub, isPushNewRoute: false):Action {
+    return (dispatch, getState) => {
+            dispatch(share({item}))
+        if (isPushNewRoute)
             dispatch(pushNewRoute(route))
         else
             dispatch(replaceRoute(route))
