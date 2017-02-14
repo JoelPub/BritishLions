@@ -64,13 +64,13 @@ export default class BarGraph extends Component {
 	}
     
     render() {
-        let fullBarStyle = this.props.isRed ? styles.fullBar : styles.fullBarR
+        let fullBarStyle = this.props.isRed ? styles.fullBarR : styles.fullBar
         let scoreBar = this.props.isRed ?  styles.scoreBarR :styles.scoreBar
         let scoreText = this.props.isRed ? styles.scoreTextR : styles.scoreText
         return (
                 <View style={styles.barWrapper}>
                     <View style={styles.progressView}>
-                        <View style={[styles.fullBar,{width:this.props.fullWidth}]}></View>
+                        <View style={[fullBarStyle,{width:this.props.fullWidth}]}></View>
                         <View style={[scoreBar,{width:this.props.fullWidth*this.props.score/100}]}></View>
                     </View>
                     <Text style={scoreText}>{this.props.score}</Text>

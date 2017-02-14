@@ -44,10 +44,11 @@ export default class BarSlider extends Component {
 	}
     
     render() {
+        let fullBar = this.props.isRed ? styles.fullBarR : styles.fullBar
          let scoreBar = this.props.isRed ? styles.scoreBarR : styles.scoreBar
         return (
             <View style={styles.barWrapper}>
-                <View style={[styles.fullBar,{width:this.props.fullWidth}]} />
+                <View style={[fullBar,{width:this.props.fullWidth}]} />
                 <Icon name='md-disc' style={[scoreBar,{paddingLeft:this.props.fullWidth*this.props.score/100}]}/>
             </View>
             )
