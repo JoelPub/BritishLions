@@ -181,7 +181,7 @@ export default class SquadList extends Component {
     // }
 
 	render() {
-        console.log('@@@render squadList')
+        //console.log('@@@render squadList')
 		return (
 
             <View>

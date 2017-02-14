@@ -12,13 +12,35 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink from '../utility/externalLink'
 import styleVar from '../../themes/variable'
+import {getSoticSuppliedImage} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 
 class LionsStore extends Component {
     constructor(props) {
          super(props)
          this._scrollView = ScrollView
+         this.state = {
+             isImage: false,
+             imageUrl:''
+         }
+
+    }
+    _setUpImage(){
+        getSoticSuppliedImage('Store').then((imageUrl)=>{
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
+            if (imageUrl !== null && imageUrl !== 0 && imageUrl !== -1) {
+                this.setState({
+                    isImage:(imageUrl !== '') ? true : false,
+                    imageUrl:imageUrl
+                })
+            }
+        }).catch((error) => {
+            console.log("A error occured while trying to get the header image: ", error)
+        })
     }
 
+    componentDidMount() {
+        setTimeout(()=>{this._setUpImage()},600)
+    }
     render() {
         return (
             <Container theme={theme} style={styles.container}>
@@ -29,9 +51,11 @@ class LionsStore extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={styleVar.deviceHeight / 3.4}>
-                            <Image 
-                                source={require('../../../images/content/storeBanner.jpg')} 
-                                style={styles.pagePoster} />
+                             {this.state.isImage ?
+                                <Image source={{uri:this.state.imageUrl}} style={styles.pagePoster} />
+                                :
+                                null
+                             }
                         </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
                             <ExternalLink url='http://store.lionsrugby.com'>

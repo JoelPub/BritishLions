@@ -120,70 +120,70 @@ export default [
         "banner": require("./banner/rhino.jpg"),
         "description": "<p>Rhino Rugby is both the official Supplier of Training Equipment and official Training Ball Licensee to the British & Irish Lions tour to New Zealand in 2017.</p><p>Rhino are moreover performing both roles, uniquely, for the third successive Lions tour, having done so for the tours to South Africa in 2009 and Australia in 2013.</p><p>Rhino is the world's leading supplier of technical training equipment for rugby, and in addition the group also owns Powa Products - New Zealand's leading brand and business in this sector.</p><p>In the rugby ball market, the Rhino Vortex Elite has been the match ball for the Guinness PRO12 competition for the last 4 years, and in rugby league for the European Super League, Ladbroke's Challenge Cup and the Kingstone Press Championship. The winners of the Rhino Golden Boot award for the best goalkicker in the PRO12 in recent seasons have included Jonathan Sexton, Leigh Halfpenny and Ian Madigan, all with success rates in the 85-90% range.</p><p>The full range of British & Irish Lions training and supporter balls can be found at the official Rhinos website.</p>"
     },
-    // {
-    //     "id": "12",
-    //     "category": "charity",
-    //     "title": "Gosh",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "Gosh",
-    //     "image": require("./gosh.jpg"),
-    //     "banner": require("./banner/gosh.jpg"),
-    //     "description": ""
-    // },
-    // {
-    //     "id": "13",
-    //     "category": "charity",
-    //     "title": "Temple Street",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "Temple Street",
-    //     "image": require("./templestreet.jpg"),
-    //     "banner": require("./banner/templestreet.jpg"),
-    //     "description": ""
-    // },
-    // {
-    //     "id": "14",
-    //     "category": "charity",
-    //     "title": "Velindre",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "Velindre",
-    //     "image": require("./velindre.jpg"),
-    //     "banner": require("./banner/velindre.jpg"),
-    //     "description": ""
-    // },
-    // {
-    //     "id": "15",
-    //     "category": "charity",
-    //     "title": "Cure Parkinson's",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "Cure Parkinson's",
-    //     "image": require("./tcpt.jpg"),
-    //     "banner": require("./banner/tcpt.jpg"),
-    //     "description": ""
-    // },
-    // {
-    //     "id": "16",
-    //     "category": "media",
-    //     "title": "The Telegraph",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "The Telegraph",
-    //     "image": require("./telegraph.jpg"),
-    //     "banner": require("./banner/telegraph.jpg"),
-    //     "description": ""
-    // },
-    // {
-    //     "id": "17",
-    //     "category": "media",
-    //     "title": "Sky Sports",
-    //     "url": "",
-    //     "partner": "",
-    //     "label": "Sky Sports",
-    //     "image": require("./skysports.jpg"),
-    //     "banner": require("./banner/skysports.jpg"),
-    //     "description": ""
-    // }
+     {
+         "id": "12",
+         "category": "charity",
+         "title": "Gosh",
+         "url": "",
+         "partner": "",
+         "label": "Gosh",
+         "image": require("./gosh.jpg"),
+         "banner": require("./banner/gosh.jpg"),
+         "description": ""
+     },
+     {
+         "id": "13",
+         "category": "charity",
+         "title": "Temple Street",
+         "url": "",
+         "partner": "",
+         "label": "Temple Street",
+         "image": require("./templestreet.jpg"),
+         "banner": require("./banner/templestreet.jpg"),
+         "description": ""
+     },
+     {
+         "id": "14",
+         "category": "charity",
+         "title": "Velindre",
+         "url": "",
+         "partner": "",
+         "label": "Velindre",
+         "image": require("./velindre.jpg"),
+         "banner": require("./banner/velindre.jpg"),
+         "description": ""
+     },
+     {
+         "id": "15",
+         "category": "charity",
+         "title": "Cure Parkinson's",
+         "url": "",
+         "partner": "",
+         "label": "Cure Parkinson's",
+         "image": require("./tcpt.jpg"),
+         "banner": require("./banner/tcpt.jpg"),
+         "description": ""
+     },
+     {
+         "id": "16",
+         "category": "media",
+         "title": "The Telegraph",
+         "url": "",
+         "partner": "",
+         "label": "The Telegraph",
+         "image": require("./telegraph.jpg"),
+         "banner": require("./banner/telegraph.jpg"),
+         "description": ""
+     },
+     {
+         "id": "17",
+         "category": "media",
+         "title": "Sky Sports",
+         "url": "",
+         "partner": "",
+         "label": "Sky Sports",
+         "image": require("./skysports.jpg"),
+         "banner": require("./banner/skysports.jpg"),
+         "description": ""
+     }
 ]
