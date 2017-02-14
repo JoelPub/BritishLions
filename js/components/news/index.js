@@ -27,11 +27,42 @@ class News extends Component {
               isRefreshing: false,
               newsFeed: [], 
               isFetchContent: false,
-              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
+              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
          }
     }
 
     _drillDown(item) {
+        let imgPathArr=item.image.split('/')
+        console.log('imgPathArr',imgPathArr)
+        imgPathArr.pop()
+        let imgPath=imgPathArr.join('/')
+        console.log('imgPath',imgPath)
+        console.log('item.article',item.article)
+        item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
+        item.article=item.article.replace(/\n/ig,'')
+        console.log('item.article',item.article)
+        item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)
+        console.log('item.article',item.article)
+        let startPos=0
+        if(item.article.match(/width/ig)!==null) {
+             item.article.match(/width/ig).map((value,index)=>{
+                console.log('index',index)
+                startPos=item.article.indexOf('width',startPos)
+                let styleLen=item.article.indexOf('\"',startPos)-startPos
+                item.article=item.article.substring(0,startPos)+'width: 325px; height: 0px;'+item.article.substring(item.article.indexOf('\"',startPos))
+                startPos=item.article.indexOf('\"',startPos)
+                console.log('startPos',startPos)
+                console.log('styleLen',styleLen)
+
+
+            })           
+        }
+        console.log('item.article.length',item.article.length)
+        for (let i=0;i<item.article.length;) {
+            let j=i+1000<item.article.length?i+1000:item.article.length
+            console.log(item.article.substring(i,j))
+            i=j
+        }
         this.props.drillDown(item, 'newsDetails')
     }
 
