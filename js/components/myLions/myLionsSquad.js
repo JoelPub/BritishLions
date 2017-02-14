@@ -175,12 +175,15 @@ class MyLionsSquad extends Component {
         this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
     }
     render() {
-        console.log('drillDownItem', this.props.drillDownItem)
+        let { drillDownItem } = this.props
+        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
+        
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
+                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -227,7 +230,6 @@ class MyLionsSquad extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log('!!!mySquad componentWillReceiveProps')
         // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
         // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
         // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
