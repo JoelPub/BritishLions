@@ -529,7 +529,7 @@ class Login extends Component {
                             </View>
                         </KeyboardAwareScrollView>
                 
-                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('landing')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 

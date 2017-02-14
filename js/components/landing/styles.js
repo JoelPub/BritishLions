@@ -11,6 +11,11 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
+    guther: {
+        padding: 20,
+        paddingTop: 0,
+        backgroundColor: styleVar.colorGrey,
+    },
     pageTitle: {
         backgroundColor: 'transparent',
         paddingTop: 20,
@@ -35,8 +40,8 @@ module.exports = styleSheetCreate({
         backgroundColor: 'white'
     },
     btnWrapper: {
-        backgroundColor: styleVar.colorGrey,
-        padding: 30
+        marginTop: 30,
+        paddingBottom: 10
     },
     roundButton: {
         height: 50,
@@ -140,10 +145,107 @@ module.exports = styleSheetCreate({
            paddingBottom: 0,
         }
     },
+    swiperWrapperEmpty: {
+        backgroundColor: '#FFF'
+    },
     swiperPaginationStyle: {
         bottom: -25,
         android: {
             bottom: 18
         }
+    },
+
+
+    padder: {
+        padding: 20
+    },
+    squad: {
+        marginTop: 20
+    },
+    squadCompleted: {
+        padding: 20,
+        paddingBottom: 5
+    },
+    squadTitleText: {
+        fontSize: 25,
+        lineHeight: 25,
+        fontFamily: styleVar.fontCondensed,
+        color: '#FFF',
+        textAlign: 'center'
+    },
+    squadCountText: {
+        color: styleVar.colorYellow,
+        fontSize: 36,
+        lineHeight: 36,
+        fontFamily: styleVar.fontCondensed,
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 0
+    },
+    squadText: {
+        fontSize: 16,
+        lineHeight: 20,
+        fontFamily: styleVar.fontGeorgia,
+        color: '#FFF',
+        textAlign: 'center'
+    },
+    squadText2: {
+        marginTop: -10,
+        paddingBottom: 20,
+        android: {
+            marginTop: 0
+        }
+    },
+    squadPercentage: {
+        color: styleVar.colorYellow,
+        fontSize: 45,
+        lineHeight: 45,
+        fontFamily: styleVar.fontCondensed,
+        textAlign: 'center',
+        marginTop: 15
+    },
+    squadRating: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopWidth: 1,
+        borderTopColor: 'rgb(128, 127, 131)',
+        padding: 20,
+        paddingBottom: 20
+    },
+    squadRatingText: {
+        color: '#FFF',
+        fontSize: 28,
+        lineHeight: 28,
+        fontFamily: styleVar.fontCondensed,
+        textAlign: 'center',
+        marginTop: 11
+    },
+    squadCircle: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 10,
+        marginHorizontal: 15,
+        backgroundColor: 'rgb(255, 230, 0)',
+    },
+    squadCircleText: {
+        backgroundColor: 'transparent',
+        color: 'rgb(95, 96, 98)',
+        fontSize: 36,
+        lineHeight: 36,
+        textAlign: 'center',
+        fontFamily: styleVar.fontCondensed,
+        marginTop: 4,
+        android: {
+            marginTop: -6
+        }
+    },
+    squadIndicator: {
+        padding: 20,
+        paddingBottom: 0,        
+        alignItems: 'center'
     }
 })
