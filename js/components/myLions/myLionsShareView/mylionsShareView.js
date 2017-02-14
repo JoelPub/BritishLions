@@ -22,7 +22,7 @@ import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
-import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { replaceRoute, pushNewRoute,popToRoute ,popRoute} from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 import logo from '../../../../images/logos/british-and-irish-lions.png'
 import BarSlider from '../../utility/barSlider'
@@ -156,7 +156,7 @@ class MyLionsShareView extends Component {
     this.backNav()
   }
   backNav = () => {
-    this.props.drillDown({}, 'myLionsSquad')
+    this.props.popRoute()
   }
   render() {
     let { indivPos, forwards, backs } =this.props.data.squadDatafeed
@@ -226,6 +226,7 @@ function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
+    popRoute:(route)=>dispatch(popRoute()),
   }
 }
 
