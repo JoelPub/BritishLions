@@ -22,6 +22,11 @@ const styles = styleSheetCreate({
         fontSize:32,
         color:'rgb(255,230,0)',
         marginTop:-18
+    },
+    scoreBarR:{
+        fontSize:32,
+        color:styleVar.brandPrimary,
+        marginTop:-18
     }
 
 })
@@ -32,10 +37,11 @@ export default class BarSlider extends Component {
 	}
     
     render() {
+         let scoreBar = this.props.isRed ? styles.scoreBarR : styles.scoreBar
         return (
             <View style={styles.barWrapper}>
                 <View style={[styles.fullBar,{width:this.props.fullWidth}]} />
-                <Icon name='md-disc' style={[styles.scoreBar,{paddingLeft:this.props.fullWidth*this.props.score/100}]}/>    
+                <Icon name='md-disc' style={[scoreBar,{paddingLeft:this.props.fullWidth*this.props.score/100}]}/>
             </View>
             )
     }
