@@ -92,7 +92,6 @@ class Login extends Component {
             this.props.setAccessGranted(false)
         }, 400)
         this._setupGoogleSignin()
-
     }
 
     shouldComponentUpdate(nextProps, nextState) {

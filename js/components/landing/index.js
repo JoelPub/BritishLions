@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert } from 'react-native'
 import { Container, Icon } from 'native-base'
-import { drillDown, fetchContent } from '../../actions/content'
+import { drillDown } from '../../actions/content'
 import { pushNewRoute } from '../../actions/route'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -25,6 +25,7 @@ import Rating from  'modes/SquadPop/Rating'
 import { getAssembledUrl } from '../utility/urlStorage'
 import { getUserId } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
+import { sortBy } from 'lodash'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -39,12 +40,15 @@ class Landing extends Component {
         this.isUnMounted = false
         this.totalPlayer = 35
         this.getMySquadRatingUrl = getAssembledUrl('EYC3GetMySquadRating')
+        this.latestUpdatesFeeds = []
 
         this.state = {
-            apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
+            apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
+            apiGalleriesUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php',
+            apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY',
             isLoaded: false,
             isFetchContent: false,
-            newsFeed: [], 
+            latestUpdatesFeeds: [], 
             fixturesList: this._limitList(fixturesList, 1),
             isFullPlayer: true,
             totalPlayerSelected: 0,
@@ -62,9 +66,88 @@ class Landing extends Component {
         this.props.drillDown(data, route)
     }
 
+    _fetchNews() {
+        let options = {
+            url: this.state.apiNewsUrl,
+            method: 'get',
+            data: {},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {},
+            onSuccess: (json) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                
+                this._latestUpdate('news', json.data, 1)
+            },
+            onError: (res) => {
+                //this._showError(res)
+            }
+        }
+
+        service(options)    
+    }
+
+    _fetchGalleries() {
+        let options = {
+            url: this.state.apiGalleriesUrl,
+            method: 'get',
+            data: {},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {},
+            onSuccess: (json) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                
+                this._latestUpdate('galleries', json.data, 3)
+            },
+            onError: (res) => {
+                //this._showError(res)
+            }
+        }
+
+        service(options)    
+    }
+
+    _fetchTV() {
+        let options = {
+            url: this.state.apiTvUrl,
+            method: 'get',
+            data: {},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {},
+            onSuccess: (json) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                
+                this._latestUpdate('lions tv', json.data.items, 2)
+            },
+            onError: (res) => {
+                //this._showError(res)
+            }
+        }
+
+        service(options)    
+    }
+
+    _fetchFixture() {
+        let dateNow = new Date
+        //let dateEnd = Date.parse(dateEnd)
+    }
+
     _fetchContent() {
-        this.props.fetchContent(this.state.apiUrl)
-        this.setState({ isFetchContent: true })
+        this._fetchNews()
+        this._fetchGalleries() 
+        this._fetchTV()
+        this._fetchFixture()
+    }
+
+    _latestUpdate(cat, data, order) {
+        data = this._limitList(data, 1)[0]
+        data.category = cat
+        data.order = order
+        this.latestUpdatesFeeds.push(data)
+
+        this.setState({
+            latestUpdatesFeeds: sortBy(this.latestUpdatesFeeds, ['order']),
+            isLoaded: true
+        })
     }
 
     _limitList(list, limit=null) {
@@ -75,7 +158,7 @@ class Landing extends Component {
         return list
     }
 
-     _showError(error) {
+    _showError(error) {
         Alert.alert(
             'An error occured',
             error,
@@ -159,7 +242,6 @@ class Landing extends Component {
     }
 
     _toRating(rate) {
-        console.log(rate)
         let finalRate = 0
         rate = parseInt(rate)
 
@@ -191,7 +273,6 @@ class Landing extends Component {
             },
             onSuccess: (rating) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
-                console.log(rating)
                 this.setState({
                     rating: rating.data
                 },()=>{      
@@ -224,15 +305,6 @@ class Landing extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.isFetchContent) {
-            this.setState({
-                isLoaded: true,
-                isRefreshing: nextProps.isRefreshing,
-                newsFeed: this._limitList(nextProps.newsFeed, 3),
-                isFetchContent: false
-            })
-        }
-
         if (this.props.isAccessGranted) {
             this._getSquad()
         }
@@ -243,7 +315,7 @@ class Landing extends Component {
     }
 
     _renderNewsFeed() {
-        let styleSwiperWrapper = this.state.newsFeed.length? [styles.swiperWrapper] : [styles.swiperWrapper, styles.swiperWrapperEmpty]
+        let styleSwiperWrapper = this.state.latestUpdatesFeeds.length? [styles.swiperWrapper] : [styles.swiperWrapper, styles.swiperWrapperEmpty]
         return (
             <View style={styleSwiperWrapper}>
                 <Swiper
@@ -253,24 +325,45 @@ class Landing extends Component {
                     activeDotColor='rgb(239,239,244)'
                     paginationStyle={styles.swiperPaginationStyle}>
                     {
-                        this.state.newsFeed.map(function(item, index) {
-                            let headline = item.headline || ''
-                            let image = item.image
+                        this.state.latestUpdatesFeeds.map(function(item, index) {
+                            let category = item.category || ''
+                            let imageURL = ''
+                            let route = ''
+
+                            switch (category) {
+                                case 'news':
+                                    route = 'news'
+                                    imageURL = item.image
+                                    break
+                                case 'galleries':
+                                    route = 'galleries'
+                                    imageURL = item.thumb50
+                                    break
+                                case 'lions tv':
+                                    route = 'lionsTv'
+                                    imageURL = item.snippet.thumbnails.standard? item.snippet.thumbnails.standard.url : item.snippet.thumbnails.high.url
+                                    break
+                            }
 
                             return (
                                 <ButtonFeedback key={index}
                                     style={styles.banner}
-                                    onPress={() => this._navigateTo('news')}>
+                                    onPress={() => this._navigateTo(route)}>
                                     <ImagePlaceholder height={200}>
-                                        <Image
-                                            resizeMode='cover' 
-                                            style={styles.bannerImg}
-                                            source={{uri: image}} />
+                                        {
+                                            imageURL?
+                                                <Image
+                                                    resizeMode='cover' 
+                                                    style={styles.bannerImg}
+                                                    source={{uri: imageURL}} />
+                                            :
+                                                null
+                                        }
                                     </ImagePlaceholder>
                                     <View style={[shapes.triangle, {marginTop: -12}]} />
                                     <View style={styles.bannerDetails}>
                                         <Text style={styles.bannerTitle} numberOfLines={1}>
-                                            {headline.toUpperCase()}
+                                            {category.toUpperCase()}
                                         </Text>
                                     </View>  
                                 </ButtonFeedback>
@@ -280,11 +373,9 @@ class Landing extends Component {
                 </Swiper>
             </View>
         )
-
     }
 
     render() {    
-        console.log(this.state)
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -384,7 +475,6 @@ class Landing extends Component {
                             </View>
                         </View>
 
-
                         <View>
                             <View style={styles.pageTitle}>
                                 <Text style={styles.pageTitleText}>
@@ -400,7 +490,6 @@ class Landing extends Component {
                                     this._renderNewsFeed()
                             }
                         </View>
-
 
                         <View>
                             <View style={styles.pageTitle}>
@@ -445,7 +534,6 @@ class Landing extends Component {
 
 function bindAction(dispatch) {
     return {
-        fetchContent: (url)=>dispatch(fetchContent(url)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
