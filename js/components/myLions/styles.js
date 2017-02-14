@@ -929,6 +929,9 @@ module.exports = styleSheetCreate({
         marginVertical:54,
         backgroundColor:'transparent',
     },
+    modalSquadView:{
+        marginTop:49
+    },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
         fontSize:28,
@@ -978,6 +981,9 @@ module.exports = styleSheetCreate({
     },
     btnConfirmGreen:{
         backgroundColor: 'rgb(9,127,64)',
+    },
+    btnCancelBlack:{
+        backgroundColor: 'rgb(0,0,0)',
     },
     imgExpertHeader: {
         width: (styleVar.deviceWidth / 3),

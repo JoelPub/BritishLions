@@ -108,6 +108,8 @@ class MyLionsPlayerDetails extends Component {
         this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.playerPos=null,
+        this.seq=0,
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
@@ -153,23 +155,35 @@ class MyLionsPlayerDetails extends Component {
             case 'replace' :
                 return(
                     <View style={styles.modalViewWrapper}>
-                        <Text style={styles.modalBtnTitle}>{title}</Text>
-                        <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
-                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modlaBtnConfirm,styles.btnCancelBlack]} />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
                         </View>
                     </View>
                 )
                 break
             case 'squad' :
                 return(
-                    <ScrollView >
-                        <Text style={styles.modalBtnTitle}>{title}</Text>
+                    <ScrollView style={styles.modalSquadView}>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
                         <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._updateSquad.bind(this)}/>
                         <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
                     </ScrollView>
                 )
+                break
+            case 'confirm' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
+                            <ButtonFeedback rounded onPress={()=>this._updateSquad('replace',this.playerPos,0,this.seq)}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                        </View>
+                    </View>
+                    )
                 break
             case 'message' :
                 title = title === 'WIDECARD'? 'STAR' : title
@@ -215,7 +229,10 @@ class MyLionsPlayerDetails extends Component {
         }
     }
     _replacePlayer(item, route,playerPos,max,seq) {
-        this._updateSquad('replace',playerPos,max,seq)
+        this.playerPos=playerPos
+        this.seq=seq
+        this._setModalVisible(true,'confirm','REPLACE PLAYER WITH',this.playerName)
+        // this._updateSquad('replace',playerPos,max,seq)
     }
 
     _mapJSON(data, colMax = 2) {
@@ -689,7 +706,7 @@ class MyLionsPlayerDetails extends Component {
         let buttonText = ''
         
         if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
-            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'ADDING..'
+            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'UPDATING..'
         } else {
             buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
         }
