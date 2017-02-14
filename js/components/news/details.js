@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView } from 'react-native'
+import { Image, View, Platform, ScrollView,WebView } from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -20,8 +20,11 @@ import PaginationButton from '../utility/paginationButton'
 
 class NewsDetails extends Component {
     constructor(props) {
-         super(props)
-         this._scrollView = ScrollView
+        super(props)
+        this.state={
+          height:0,
+        }
+        this._scrollView = ScrollView
     }
     
     render() {
@@ -69,11 +72,21 @@ class NewsDetails extends Component {
                             </ButtonFeedback>
                         </View>
 
-                        <View style={styles.content}>
-                            <HTMLView
-                               value={this.props.article.article}
-                               stylesheet={htmlStyles}
-                             />
+                        <View style={[styles.description,{height:this.state.height}]}>
+                            <WebView
+                                style={{height:this.state.height}}
+                                bounces={false}
+                                scrollEnabled={false}
+                                source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
+                                onNavigationStateChange={(title)=>{
+                                    if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
+                                        this.setState({
+                                            height:(parseInt(title.title))
+                                        })
+                                    }
+                                }}
+                            />
+                            
                             <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
                         </View>
 
