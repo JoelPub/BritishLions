@@ -104,7 +104,7 @@ class MyLionsShareView extends Component {
                 <Text style={styles.barSliderText}>ATTACK</Text>
                 <Text style={styles.barSliderText}>DEFENCE</Text>
               </View>
-              <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-100} />
+              <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-90} />
             </View>
           </ScrollView>
           <EYSFooter mySquadBtn={true}/>

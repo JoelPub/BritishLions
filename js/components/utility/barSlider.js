@@ -18,6 +18,13 @@ const styles = styleSheetCreate({
         marginTop:16,
         paddingHorizontal:25,
     },
+    fullBarR:{
+        height:8,
+        backgroundColor:'rgb(239,239,240)',
+        borderRadius:4,
+        marginTop:16,
+        paddingHorizontal:25,
+    },
     scoreBar:{
         fontSize:32,
         color:'rgb(255,230,0)',

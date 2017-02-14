@@ -9,7 +9,9 @@ module.exports = styleSheetCreate({
     flex: 1,
     width: null,
     height: null,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingHorizontal:20,
+    paddingTop: 30,
   },
   header: {
     backgroundColor: styleVar.brandPrimary,
@@ -50,14 +52,14 @@ module.exports = styleSheetCreate({
   },
   viewShareHeader: {
     backgroundColor: styleVar.brandPrimary,
-    height: 229,
+    height: 180,
     width: null,
     alignItems: 'center'
   },
   viewHeaderImage: {
     marginTop: 20,
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 130,
   },
   scoreCard:{
     marginVertical:2,
@@ -148,7 +150,7 @@ module.exports = styleSheetCreate({
     lineHeight:22,
     flex:1,
     marginBottom: 10,
-    color:'black',
+    color:'rgb(38,38,38)',
   },
   summaryTextHighLight:{
     fontFamily: styleVar.fontCondensed,
@@ -163,10 +165,10 @@ module.exports = styleSheetCreate({
     justifyContent:'center',
     alignItems:'center',
     borderTopWidth:1,
-    borderColor:'rgb(128,127,131)',
+    borderColor:'rgb(216,217,218)',
     marginTop: 10,
     paddingVertical:19,
-    backgroundColor: 'rgb(128,127,131)',
+    backgroundColor: 'rgb(239,239,224)',
   },
   ratingWrapperExpert:{
     borderTopWidth:0,
@@ -177,7 +179,7 @@ module.exports = styleSheetCreate({
     fontSize:28,
     lineHeight:32,
     paddingTop: 12,
-    color:'rgb(255,255,255)',
+    color:'rgb(38,38,38)',
     android: {
       paddingTop: 0
     }
@@ -205,7 +207,7 @@ module.exports = styleSheetCreate({
   barGraphWrapper:{
     height: 105,
     borderTopWidth:1,
-    borderColor: 'rgb(128, 127, 131)',
+    borderColor: 'rgb(216, 217, 218)',
     paddingHorizontal:25,
     paddingTop:15
   },
@@ -214,7 +216,7 @@ module.exports = styleSheetCreate({
     fontSize:18,
     textAlign:'left',
     marginTop: 12,
-    color:'black',
+    color:'rgb(38,38,38)',
     android: {
       marginTop: 8,
     }
@@ -233,7 +235,7 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     fontSize:18,
     marginTop: 25,
-    color:'black',
+    color:'rgb(38,38,38)'
   },
   scoreCardShareWrapper:{
     borderTopWidth:1,

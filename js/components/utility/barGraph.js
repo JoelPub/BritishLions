@@ -24,7 +24,7 @@ const styles = styleSheetCreate({
     },
     fullBarR: {
         height:8,
-        backgroundColor:styleVar.brandPrimary,
+        backgroundColor:'rgb(239,239,240)',
     },
     scoreBar: {
         height:8,
