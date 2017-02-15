@@ -59,6 +59,13 @@ class Landing extends Component {
         }
     }
 
+    _mySquad(data, route) {
+        if (this.props.isAccessGranted)
+            this.props.drillDown(data, route)
+        else
+            this._reLogin()
+    }
+
     _navigateTo(route) {
         this.props.pushNewRoute(route)
     }
@@ -479,7 +486,7 @@ class Landing extends Component {
                                 <ButtonFeedback 
                                     rounded 
                                     style={[styles.button, styles.btnMysquad]} 
-                                    onPress={() => this._drillDown([{backRoute: 'landing'}], 'myLionsSquad')}
+                                    onPress={() => this._mySquad([{backRoute: 'landing'}], 'myLionsSquad')}
                                 >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={styles.btnMysquadIcon}>
