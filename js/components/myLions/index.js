@@ -57,7 +57,9 @@ class MyLions extends Component {
         this._setModalVisible(false)
         this.props.drillDown({}, 'myLionsSquad')
     }
-
+    _myBrowse = () => {
+        this.props.drillDown({}, 'myLionsUnionsList')
+    }
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
@@ -184,7 +186,12 @@ class MyLions extends Component {
                                         FAVOURITES
                                     </Text>
                                 </ButtonFeedback>
-
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styles.btnInformation]} onPress={this._myBrowse}>
+                                    <Icon name='md-people' style={styles.btnFavouritesIcon} />
+                                    <Text style={styles.btnFavouritesLabel}>
+                                        BROWSE PLAYER
+                                    </Text>
+                                </ButtonFeedback>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
                                     <Icon name='ios-information-circle-outline' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
