@@ -62,7 +62,7 @@ class MyLionsSquad extends Component {
             rating:Rating().toJS(),
             userID:'',
         }
-        this.isUnMounted = false
+        // this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
         this.catchedSquad={}
@@ -70,7 +70,6 @@ class MyLionsSquad extends Component {
         this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
         this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
     }
-
     getModalContent(mode){
         switch(mode)  {
             case 'clear' :
@@ -129,9 +128,9 @@ class MyLionsSquad extends Component {
         })
     }
 
-    componentWillUnmount() {
-        this.isUnMounted = true
-    }
+    // componentWillUnmount() {
+    //     this.isUnMounted = true
+    // }
 
     componentWillMount() {
         getUserId().then((userID) => {
@@ -164,10 +163,10 @@ class MyLionsSquad extends Component {
     }
 
     isPlainObj (value) {
-        return value && (value.constructor === Object || value.constructor === undefined)
+      return value && (value.constructor === Object || value.constructor === undefined)
     }
-
     goShare = () => {
+        //console.log(this.state.rating)
         let data = {
             rating: this.state.rating,
             showScoreCard: this.state.showScoreCard,
@@ -175,17 +174,13 @@ class MyLionsSquad extends Component {
         }
         this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
     }
-
     render() {
-        let { drillDownItem } = this.props
-        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
-        
+        console.log('drillDownItem', this.props.drillDownItem)
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
-                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -215,7 +210,7 @@ class MyLionsSquad extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
                     <EYSFooter mySquadBtn={true}/>
-                    <LoginRequire onFinish={this._renderLogic.bind(this)}/>
+                    <LoginRequire/>
                     <SquadModal
                         modalVisible={this.state.modalVisible}
                         callbackParent={this._setModalVisible}>
@@ -226,13 +221,13 @@ class MyLionsSquad extends Component {
         )
     }
 
-    _renderLogic(isLogin) {
-        if (isLogin) { // user is logged in 
-            setTimeout(() => this._getSquad(), 600) 
-        }
+    componentDidMount() {
+        //console.log('!!!mySquad componentDidMount')
+        setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
+        //console.log('!!!mySquad componentWillReceiveProps')
         // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
         // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
         // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
@@ -259,33 +254,12 @@ class MyLionsSquad extends Component {
             // }
         // }
     }
-    
-    _replaceRoute(route) {
-        this.props.replaceRoute(route)
-    }
-
-    _reLogin() {
-        removeToken()
-        this.props.setAccessGranted(false)
-        this._replaceRoute('login')
-    }
-
-    _signInRequired() {
-        Alert.alert(
-            'Your session has expired',
-            'Please sign into your account.',
-            [{
-                text: 'SIGN IN', 
-                onPress: this._reLogin.bind(this)
-            }]
-        )
-    }
 
     _getSquad(){
+        // if (this.isUnMounted) return 
+            
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true }, () => {
@@ -298,8 +272,6 @@ class MyLionsSquad extends Component {
                 })
             }else{
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
-                    if (this.isUnMounted) return // return nothing if the component is already unmounted
-
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
@@ -315,6 +287,7 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
+        //console.log('!!!setSquadData')
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
@@ -418,6 +391,8 @@ class MyLionsSquad extends Component {
             //console.log('!!!squad equal')
             service(optionsSaveList)
         }
+        
+
     }
 
     autoPop() {

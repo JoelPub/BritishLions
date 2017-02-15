@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert } from 'react-native'
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
-import { pushNewRoute, replaceRoute } from '../../actions/route'
-import { setAccessGranted } from '../../actions/token'
+import { pushNewRoute } from '../../actions/route'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../themes/variable'
@@ -24,7 +23,7 @@ import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/ap
 import SquadModel from  'modes/Squad'
 import Rating from  'modes/SquadPop/Rating'
 import { getAssembledUrl } from '../utility/urlStorage'
-import { getUserId, removeToken } from '../utility/asyncStorageServices'
+import { getUserId } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 
@@ -172,16 +171,6 @@ class Landing extends Component {
             error,
             [{text: 'Dismiss'}]
         )
-    }
-
-    _replaceRoute(route) {
-        this.props.replaceRoute(route)
-    }
-
-    _reLogin() {
-        removeToken()
-        this.props.setAccessGranted(false)
-        this._replaceRoute('login')
     }
 
     _signInRequired() {
@@ -558,9 +547,7 @@ class Landing extends Component {
 function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route)),
-        replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
 

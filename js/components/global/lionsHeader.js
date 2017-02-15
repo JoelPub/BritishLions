@@ -80,10 +80,7 @@ class LionsHeader extends Component {
 	}
 
 	popRoute() {
-        if (this.props.backRoute) 
-            this.props.pushNewRoute(this.props.backRoute)
-        else
-	       this.props.popRoute()
+	    this.props.popRoute()
 	}
 
     pushNewRoute(route) {
