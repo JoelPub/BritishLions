@@ -12,6 +12,9 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
+    guther: {
+        paddingHorizontal: 20
+    },
     header: {
         backgroundColor: styleVar.brandPrimary,
         height: null,
@@ -959,6 +962,11 @@ module.exports = styleSheetCreate({
         marginTop:28,
         textAlign:'center'
     },
+    modalTitleTextCenterReplacePlayer: {
+        android: {
+            marginBottom: 10
+        }
+    },
     modalTextCenter:{
         fontFamily: 'Helvetica Neue',
         fontSize:16,
@@ -1109,6 +1117,9 @@ module.exports = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20
+    },
+    modalConfirmBtnBlack: {
+         backgroundColor: 'rgb(0,0,0)'
     },
     btnFavIcon:{
         color:'rgb(255,204,40)'
