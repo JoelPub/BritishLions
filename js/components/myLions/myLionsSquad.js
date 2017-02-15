@@ -457,7 +457,8 @@ class MyLionsSquad extends Component {
         })
         let optionsSquadRating = {
             url: this.getMySquadRatingUrl,
-            data: {id:this.state.userID,squad:JSON.stringify(tempSquad)},
+            data: {id:this.state.userID,squad:tempSquad.toJS()},
+            isQsStringify:false,
             onAxiosStart: () => {
                 },
             onAxiosEnd: () => {

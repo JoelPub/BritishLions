@@ -105,9 +105,11 @@ export function callApi(opt, axiosInstance) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
+                console.log("qs.stringify(opt.data)", opt.data)
+                console.log("opt.isQsStringify", opt.isQsStringify)
 				axiosInstance.post(
 				    opt.url,
-				    qs.stringify(opt.data)
+				    opt.isQsStringify ? qs.stringify(opt.data) : opt.data
 				).then(function(res) {
 					isInternetConnected = true
 
@@ -139,7 +141,7 @@ export function callApi(opt, axiosInstance) {
 			} else {
 				axiosInstance.get(
 				    opt.url,
-				    qs.stringify(opt.data)
+				    opt.isQsStringify ? qs.stringify(opt.data) : opt.data
 				).then(function(res) {
 					isInternetConnected = true
 
@@ -207,7 +209,8 @@ export function service(options) {
 		onAxiosEnd: null,
 		isRequiredToken: false,
 		isRefreshToken: false,
-		channel: ''
+		channel: '',
+		isQsStringify:true
 	}
 
 	let opt = Object.assign(defaults, options)
