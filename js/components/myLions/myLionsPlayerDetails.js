@@ -167,9 +167,11 @@ class MyLionsPlayerDetails extends Component {
             case 'squad' :
                 return(
                     <ScrollView style={styles.modalSquadView}>
-                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={[styles.modalTitleTextCenter, styles.modalTitleTextCenterReplacePlayer]}>{title}</Text>
                         <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._updateSquad.bind(this)}/>
-                        <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modalConfirmBtn} />
+                        <View style={styles.guther}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modalConfirmBtn, styles.modalConfirmBtnBlack]} />
+                        </View>
                     </ScrollView>
                 )
                 break
