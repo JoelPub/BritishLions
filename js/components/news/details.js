@@ -27,22 +27,26 @@ class NewsDetails extends Component {
           isLoaded:false
         }
         this._scrollView = ScrollView
+        this.webview = WebView
     }
     onLoadRequest(e){
+     console.log('!!!!!! can open URI: ' + e.url)
+
      if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') !== -1){
-        gotoURL(e.url)
-          return true; 
-         }
+     console.log('come in Here')
+     }
     else{
-       return false; 
+    console.log('come in here111')
+        this.goToURL(e.url)
         } 
     }
     goToURL(url) {
             Linking.canOpenURL(url).then(supported => {
                 if (supported) {
+                    console.log('open URI: ' + url)
                     Linking.openURL(url)
                 } else {
-                    // console.log('This device doesnt support URI: ' + url)
+                     console.log('This device doesnt support URI: ' + url)
                 }
             })
       }
@@ -91,11 +95,12 @@ class NewsDetails extends Component {
                             </ButtonFeedback>
                         </View>
 
-                        
+
                             <View style={[styles.description,{height:this.state.height}]}>
                                 <WebView
                                     style={{height:this.state.height}}
                                     bounces={false}
+                                    ref={(webview) => { this.webview = webview }}
                                     scrollEnabled={false}
                                     source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
                                     onNavigationStateChange={(title)=>{
@@ -104,10 +109,12 @@ class NewsDetails extends Component {
                                                 height:(parseInt(title.title)+250),
                                                 isLoaded:true
                                             })
+                                        }else{
+                                            console.log('start loading',this.webview.stopLoading)
+                                            this.webview.stopLoading()
+                                            this.onLoadRequest(title)
                                         }
                                     }}
-                                    onShouldStartLoadWithRequest={this.onLoadRequest}
-                                    onNavigationState={this.onLoadRequest}
                                 />
                                 {
                                 this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
