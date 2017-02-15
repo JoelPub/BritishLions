@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView , ActivityIndicator} from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -23,12 +23,29 @@ class NewsDetails extends Component {
     constructor(props) {
         super(props)
         this.state={
-          height:300,
+          height:0,
           isLoaded:false
         }
         this._scrollView = ScrollView
     }
-    
+    onLoadRequest(e){
+     if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') !== -1){
+        gotoURL(e.url)
+          return true; 
+         }
+    else{
+       return false; 
+        } 
+    }
+    goToURL(url) {
+            Linking.canOpenURL(url).then(supported => {
+                if (supported) {
+                    Linking.openURL(url)
+                } else {
+                    // console.log('This device doesnt support URI: ' + url)
+                }
+            })
+      }
     render() {
         return (
             <Container theme={theme}>
@@ -89,8 +106,12 @@ class NewsDetails extends Component {
                                             })
                                         }
                                     }}
+                                    onShouldStartLoadWithRequest={this.onLoadRequest}
+                                    onNavigationState={this.onLoadRequest}
                                 />
-                                <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                                {
+                                this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                                }
                             </View>
                             {
                             !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='small' />
