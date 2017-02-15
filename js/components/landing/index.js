@@ -161,6 +161,8 @@ class Landing extends Component {
     }
 
     _latestUpdate(cat, data, order) {
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
+
         data = this._limitList(data, 1)[0]
         data.category = cat
         data.order = order
@@ -313,9 +315,11 @@ class Landing extends Component {
                 })
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._showError(res)
             },
             onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._signInRequired()
             },
             isRequiredToken: true,

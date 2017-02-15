@@ -62,7 +62,7 @@ class MyLionsSquad extends Component {
             rating:Rating().toJS(),
             userID:'',
         }
-        // this.isUnMounted = false
+        this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
         this.catchedSquad={}
@@ -128,9 +128,9 @@ class MyLionsSquad extends Component {
         })
     }
 
-    // componentWillUnmount() {
-    //     this.isUnMounted = true
-    // }
+    componentWillUnmount() {
+        this.isUnMounted = true
+    }
 
     componentWillMount() {
         getUserId().then((userID) => {
@@ -175,12 +175,15 @@ class MyLionsSquad extends Component {
         this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
     }
     render() {
-        console.log('drillDownItem', this.props.drillDownItem)
+        let { drillDownItem } = this.props
+        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
+                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -254,12 +257,33 @@ class MyLionsSquad extends Component {
             // }
         // }
     }
+    
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'Your session has expired',
+            'Please sign into your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
 
     _getSquad(){
-        // if (this.isUnMounted) return 
-            
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true }, () => {
@@ -272,6 +296,8 @@ class MyLionsSquad extends Component {
                 })
             }else{
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                    if (this.isUnMounted) return // return nothing if the component is already unmounted
+                        
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
