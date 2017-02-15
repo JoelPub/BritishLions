@@ -148,7 +148,27 @@ class MyLionsShareView extends Component {
         )
     })
   }
+  _toRating = (rate) => {
+    let finalRate = 0
+    rate = parseInt(rate)
 
+    switch(rate) {
+      case 1:
+        finalRate = 5
+        break
+      case 2:
+        finalRate = 10
+        break
+      case 3:
+        finalRate = 25
+        break
+      case 4:
+        finalRate = 50
+        break
+    }
+
+    return finalRate + '%'
+  }
   callback = () => {
     this.setState({
       isSubmitting:false
