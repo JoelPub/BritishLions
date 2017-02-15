@@ -28,6 +28,7 @@ class NewsDetails extends Component {
         }
         this._scrollView = ScrollView
         this.webview = WebView
+        this.stopPost=false
     }
     onLoadRequest(e){
      console.log('!!!!!! can open URI: ' + e.url)
@@ -50,6 +51,17 @@ class NewsDetails extends Component {
                 }
             })
       }
+    postMessage = () => {
+        console.log('!!!postMessage');
+        if (this.webview) {
+          this.webview.postMessage('window.postMessage(document.body.clientHeight)')
+        }
+      }
+    onMessage = e => {
+        console.log('!!!onMessage',e.nativeEvent.data)
+        this.stopPost=true
+        this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
+      }
     render() {
         return (
             <Container theme={theme}>
@@ -102,19 +114,16 @@ class NewsDetails extends Component {
                                     bounces={false}
                                     ref={(webview) => { this.webview = webview }}
                                     scrollEnabled={false}
-                                    source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
-                                    onNavigationStateChange={(title)=>{
-                                        if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
-                                            this.setState({
-                                                height:(parseInt(title.title)+250),
-                                                isLoaded:true
-                                            })
-                                        }else{
-                                            console.log('start loading',this.webview.stopLoading)
+                                    source={{html:`<!DOCTYPE html><html><head><title>XHTML Tag Reference</title><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}</body></html>`}}
+                                    onNavigationStateChange={(e)=>{
+                                            console.log('start loading',e)
+                                            console.log('stopPost',this.stopPost)
+                                            if (!this.stopPost) this.postMessage()
                                             this.webview.stopLoading()
-                                            this.onLoadRequest(title)
-                                        }
+                                            this.onLoadRequest(e)
                                     }}
+                                    injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"
+                                    onMessage={this.onMessage}
                                 />
                                 {
                                 this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />

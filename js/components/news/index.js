@@ -53,11 +53,8 @@ class News extends Component {
                 startPos=item.article.indexOf('\"',startPos)
                 console.log('startPos',startPos)
                 console.log('styleLen',styleLen)
-
-
             })           
         }
-        // setTimeout(()=>{
             let startPos1=0
             if(item.article.match(/<script/ig)!==null) {
                  item.article.match(/<script/ig).map((value,index)=>{
@@ -68,11 +65,8 @@ class News extends Component {
                     startPos1=item.article.indexOf('<script',startPos1)
                     console.log('startPos1',startPos1)
                     console.log('styleLen',styleLen)
-
-
                 })           
             }
-            // setTimeout(()=>{
                 let startPos2=0
                 if(item.article.match(/<iframe/ig)!==null) {
                      item.article.match(/<iframe/ig).map((value,index)=>{
@@ -83,10 +77,20 @@ class News extends Component {
                         startPos2=item.article.indexOf('<iframe',startPos2)
                         console.log('startPos2',startPos2)
                         console.log('styleLen',styleLen)
-
-
                     })
                 }
+                // let startPos3=0
+                // if(item.article.match(/<a /ig)!==null) {
+                //      item.article.match(/<a /ig).map((value,index)=>{
+                //         console.log('index',index)
+                //         startPos3=item.article.indexOf('<a ',startPos3)
+                //         let styleLen=item.article.indexOf('href',startPos3)-startPos3
+                //         item.article=item.article.substring(0,startPos3+3)+' target="_blank" '+ item.article.substring(item.article.indexOf('href',startPos3))
+                //         startPos3=item.article.indexOf('<a ',startPos3+3)
+                //         console.log('startPos3',startPos3)
+                //         console.log('styleLen',styleLen)
+                //     })
+                // }
                 console.log('Final item.article',item.article)
                 // console.log('item.article.length',item.article.length)
                 // for (let i=0;i<item.article.length;) {
