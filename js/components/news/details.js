@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView } from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -16,6 +16,7 @@ import htmlStyles from '../../themes/html-styles'
 import { shareTextWithTitle } from '../utility/socialShare'
 import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
+import loader from '../../themes/loader-position'
 
 
 class NewsDetails extends Component {
@@ -23,10 +24,28 @@ class NewsDetails extends Component {
         super(props)
         this.state={
           height:0,
+          isLoaded:false
         }
         this._scrollView = ScrollView
     }
-    
+    onLoadRequest(e){
+     if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') !== -1){
+        gotoURL(e.url)
+          return true; 
+         }
+    else{
+       return false; 
+        } 
+    }
+    goToURL(url) {
+            Linking.canOpenURL(url).then(supported => {
+                if (supported) {
+                    Linking.openURL(url)
+                } else {
+                    // console.log('This device doesnt support URI: ' + url)
+                }
+            })
+      }
     render() {
         return (
             <Container theme={theme}>
@@ -72,23 +91,31 @@ class NewsDetails extends Component {
                             </ButtonFeedback>
                         </View>
 
-                        <View style={[styles.description,{height:this.state.height}]}>
-                            <WebView
-                                style={{height:this.state.height}}
-                                bounces={false}
-                                scrollEnabled={false}
-                                source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
-                                onNavigationStateChange={(title)=>{
-                                    if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
-                                        this.setState({
-                                            height:(parseInt(title.title)+250)
-                                        })
-                                    }
-                                }}
-                            />
-                            
-                            <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
-                        </View>
+                        
+                            <View style={[styles.description,{height:this.state.height}]}>
+                                <WebView
+                                    style={{height:this.state.height}}
+                                    bounces={false}
+                                    scrollEnabled={false}
+                                    source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
+                                    onNavigationStateChange={(title)=>{
+                                        if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
+                                            this.setState({
+                                                height:(parseInt(title.title)+250),
+                                                isLoaded:true
+                                            })
+                                        }
+                                    }}
+                                    onShouldStartLoadWithRequest={this.onLoadRequest}
+                                    onNavigationState={this.onLoadRequest}
+                                />
+                                {
+                                this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                                }
+                            </View>
+                            {
+                            !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='small' />
+                            }
 
                         <LionsFooter isLoaded={true} />
                     </ScrollView>

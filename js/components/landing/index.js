@@ -50,7 +50,7 @@ class Landing extends Component {
             isLoaded: false,
             isFetchContent: false,
             latestUpdatesFeeds: [], 
-            fixturesList: this._limitList(fixturesList, 1),
+            fixturesList: [],
             isFullPlayer: true,
             totalPlayerSelected: 0,
             isLoadedSquad: false,
@@ -135,8 +135,22 @@ class Landing extends Component {
     }
 
     _fetchFixture() {
+        let fixturesLeft = []
         let dateNow = new Date
-        //let dateEnd = Date.parse(dateEnd)
+        //dateNow = 'Wed Jun 29 2017 10:44:07 GMT+0800 (PHT)'
+        dateNow = Date.parse(dateNow)
+
+        fixturesList.map(function(item, index) {
+            let dateSched = Date.parse(item.date)
+            
+            if (dateSched > dateNow) {
+                fixturesLeft.push(item)
+            }
+        })
+
+        this.setState({
+            fixturesList: this._limitList(fixturesLeft, 1)
+        })
     }
 
     _fetchContent() {
@@ -147,6 +161,8 @@ class Landing extends Component {
     }
 
     _latestUpdate(cat, data, order) {
+        if (this.isUnMounted) return // return nothing if the component is already unmounted
+
         data = this._limitList(data, 1)[0]
         data.category = cat
         data.order = order
@@ -299,9 +315,11 @@ class Landing extends Component {
                 })
             },
             onError: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._showError(res)
             },
             onAuthorization: () => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._signInRequired()
             },
             isRequiredToken: true,
@@ -515,11 +533,16 @@ class Landing extends Component {
                         </View>
 
                         <View>
-                            <View style={styles.pageTitle}>
-                                <Text style={styles.pageTitleText}>
-                                    UPCOMING FIXTURE
-                                </Text>
-                            </View>
+                            {
+                                this.state.fixturesList.length? 
+                                    <View style={styles.pageTitle}>
+                                        <Text style={styles.pageTitleText}>
+                                            UPCOMING FIXTURE
+                                        </Text>
+                                    </View>
+                                :
+                                    null
+                            }
                             {
                                 this.state.fixturesList.map(function(item, index) {
                                     let date = item.date.toUpperCase() || ''

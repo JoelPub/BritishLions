@@ -44,10 +44,10 @@ class News extends Component {
         item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)
         console.log('item.article',item.article)
         let startPos=0
-        if(item.article.match(/width/ig)!==null) {
-             item.article.match(/width/ig).map((value,index)=>{
+        if(item.article.match(/width:/ig)!==null) {
+             item.article.match(/width:/ig).map((value,index)=>{
                 console.log('index',index)
-                startPos=item.article.indexOf('width',startPos)
+                startPos=item.article.indexOf('width:',startPos)
                 let styleLen=item.article.indexOf('\"',startPos)-startPos
                 item.article=item.article.substring(0,startPos)+'width: 325px; height: 210px;'+item.article.substring(item.article.indexOf('\"',startPos))
                 startPos=item.article.indexOf('\"',startPos)
@@ -57,15 +57,47 @@ class News extends Component {
 
             })           
         }
-        item.article=item.article.substring(0,item.article.indexOf('<script',0))+item.article.substring(item.article.indexOf('script>',0)+7)
-                
-        // console.log('item.article.length',item.article.length)
-        // for (let i=0;i<item.article.length;) {
-        //     let j=i+1000<item.article.length?i+1000:item.article.length
-        //     console.log(item.article.substring(i,j))
-        //     i=j
-        // }
-        this.props.drillDown(item, 'newsDetails')
+        // setTimeout(()=>{
+            let startPos1=0
+            if(item.article.match(/<script/ig)!==null) {
+                 item.article.match(/<script/ig).map((value,index)=>{
+                    console.log('index',index)
+                    startPos1=item.article.indexOf('<script',startPos1)
+                    let styleLen=item.article.indexOf('script>',startPos1)-startPos1
+                    item.article=item.article.substring(0,startPos1)+item.article.substring(item.article.indexOf('script>',startPos1)+7)
+                    startPos1=item.article.indexOf('<script',startPos1)
+                    console.log('startPos1',startPos1)
+                    console.log('styleLen',styleLen)
+
+
+                })           
+            }
+            // setTimeout(()=>{
+                let startPos2=0
+                if(item.article.match(/<iframe/ig)!==null) {
+                     item.article.match(/<iframe/ig).map((value,index)=>{
+                        console.log('index',index)
+                        startPos2=item.article.indexOf('<iframe',startPos2)
+                        let styleLen=item.article.indexOf('iframe>',startPos2)-startPos2
+                        item.article=item.article.substring(0,startPos2)+item.article.substring(item.article.indexOf('iframe>',startPos2)+7)
+                        startPos2=item.article.indexOf('<iframe',startPos2)
+                        console.log('startPos2',startPos2)
+                        console.log('styleLen',styleLen)
+
+
+                    })
+                }
+                console.log('Final item.article',item.article)
+                // console.log('item.article.length',item.article.length)
+                // for (let i=0;i<item.article.length;) {
+                //     let j=i+1000<item.article.length?i+1000:item.article.length
+                //     console.log(item.article.substring(i,j))
+                //     i=j
+                // }
+                this.props.drillDown(item, 'newsDetails')
+        //     },2000)
+        // },2000)
+        
     }
 
     _fetchContent(){
