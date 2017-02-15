@@ -59,7 +59,7 @@ class Landing extends Component {
         }
     }
 
-    _mySquad(data, route) {
+    _myLions(data, route) {
         if (this.props.isAccessGranted)
             this.props.drillDown(data, route)
         else
@@ -198,6 +198,7 @@ class Landing extends Component {
         removeToken()
         this.props.setAccessGranted(false)
         this._replaceRoute('login')
+        //this._drillDown([{backRoute: 'landing'}], 'login')
     }
 
     _signInRequired() {
@@ -428,12 +429,14 @@ class Landing extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         {
                             !this.props.isAccessGranted?
-                                <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
-                                    <Image 
-                                        resizeMode='cover'
-                                        source={require('../../../images/content/mylionsBanner.jpg')} style={styles.mainBanner}>
-                                    </Image>
-                                </ImagePlaceholder>
+                                <ButtonFeedback onPress={() => this._myLions('myLions')}>
+                                    <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
+                                        <Image 
+                                            resizeMode='cover'
+                                            source={require('../../../images/content/mylionsBanner.jpg')} style={styles.mainBanner}>
+                                        </Image>
+                                    </ImagePlaceholder>
+                                </ButtonFeedback>
                             : 
                                 null
                         }
@@ -504,7 +507,7 @@ class Landing extends Component {
                                 <ButtonFeedback 
                                     rounded 
                                     style={[styles.button, styles.btnMysquad]} 
-                                    onPress={() => this._mySquad([{backRoute: 'landing'}], 'myLionsSquad')}
+                                    onPress={() => this._myLions([{backRoute: 'landing'}], 'myLionsSquad')}
                                 >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={styles.btnMysquadIcon}>
