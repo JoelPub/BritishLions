@@ -81,7 +81,7 @@ class NewsDetails extends Component {
                                 onNavigationStateChange={(title)=>{
                                     if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
                                         this.setState({
-                                            height:(parseInt(title.title))
+                                            height:(parseInt(title.title)+250)
                                         })
                                     }
                                 }}

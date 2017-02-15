@@ -49,7 +49,7 @@ class News extends Component {
                 console.log('index',index)
                 startPos=item.article.indexOf('width',startPos)
                 let styleLen=item.article.indexOf('\"',startPos)-startPos
-                item.article=item.article.substring(0,startPos)+'width: 325px; height: 0px;'+item.article.substring(item.article.indexOf('\"',startPos))
+                item.article=item.article.substring(0,startPos)+'width: 325px; height: 210px;'+item.article.substring(item.article.indexOf('\"',startPos))
                 startPos=item.article.indexOf('\"',startPos)
                 console.log('startPos',startPos)
                 console.log('styleLen',styleLen)
@@ -57,12 +57,14 @@ class News extends Component {
 
             })           
         }
-        console.log('item.article.length',item.article.length)
-        for (let i=0;i<item.article.length;) {
-            let j=i+1000<item.article.length?i+1000:item.article.length
-            console.log(item.article.substring(i,j))
-            i=j
-        }
+        item.article=item.article.substring(0,item.article.indexOf('<script',0))+item.article.substring(item.article.indexOf('script>',0)+7)
+                
+        // console.log('item.article.length',item.article.length)
+        // for (let i=0;i<item.article.length;) {
+        //     let j=i+1000<item.article.length?i+1000:item.article.length
+        //     console.log(item.article.substring(i,j))
+        //     i=j
+        // }
         this.props.drillDown(item, 'newsDetails')
     }
 
