@@ -32,76 +32,64 @@ class News extends Component {
     }
 
     _drillDown(item) {
-        let imgPathArr=item.image.split('/')
-        console.log('imgPathArr',imgPathArr)
-        imgPathArr.pop()
-        let imgPath=imgPathArr.join('/')
-        console.log('imgPath',imgPath)
-        console.log('item.article',item.article)
-        item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
-        item.article=item.article.replace(/\n/ig,'')
-        console.log('item.article',item.article)
-        item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)
-        console.log('item.article',item.article)
-        let startPos=0
-        if(item.article.match(/width:/ig)!==null) {
-             item.article.match(/width:/ig).map((value,index)=>{
-                console.log('index',index)
-                startPos=item.article.indexOf('width:',startPos)
-                let styleLen=item.article.indexOf('\"',startPos)-startPos
-                item.article=item.article.substring(0,startPos)+'width: 325px; height: 210px;'+item.article.substring(item.article.indexOf('\"',startPos))
-                startPos=item.article.indexOf('\"',startPos)
-                console.log('startPos',startPos)
-                console.log('styleLen',styleLen)
-            })           
+                this.props.drillDown(item, 'newsDetails')
+    }
+    processArticle(dataFeed){
+        dataFeed.map((item,index)=>{
+            item.article=item.article.replace(/\n/ig,'')
+            handleImg(item)
+            handleImgStyle(item)
+            handleInlineScript(item)
+            handleVideo(item)
+
+        })
+            
+        function handleImg(item) {
+            let imgPathArr=item.image.split('/')
+            imgPathArr.pop()
+            let imgPath=imgPathArr.join('/')
+            item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
+            item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)                
         }
-            let startPos1=0
+        function handleImgStyle(item) {
+            let imgStylePos=0
+            if(item.article.match(/width:/ig)!==null) {
+                 item.article.match(/width:/ig).map((value,index)=>{
+                    imgStylePos=item.article.toLowerCase().indexOf('width:',imgStylePos)
+                    let styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos)-imgStylePos
+                    let strStyle=item.article.toLowerCase().substr(imgStylePos,styleLen)
+                    let orgWidth=strStyle.substring(6,strStyle.indexOf('px'))
+                    let orgHeight=strStyle.indexOf('height:')===-1?'210':strStyle.substring(strStyle.indexOf('height:')+7,strStyle.indexOf('px',strStyle.indexOf('height')))
+                    item.article=item.article.substring(0,imgStylePos)+`width: ${parseInt(styleVar.deviceWidth)-50}px; height: ${(parseInt(styleVar.deviceWidth)-50)*parseInt(orgHeight)/parseInt(orgWidth)}px;`+item.article.substring(item.article.indexOf('\"',imgStylePos))
+                    imgStylePos=item.article.indexOf('\"',imgStylePos)
+                })           
+            }               
+        }
+        function handleInlineScript(item) {
+            let scriptPos=0
             if(item.article.match(/<script/ig)!==null) {
                  item.article.match(/<script/ig).map((value,index)=>{
-                    console.log('index',index)
-                    startPos1=item.article.indexOf('<script',startPos1)
-                    let styleLen=item.article.indexOf('script>',startPos1)-startPos1
-                    item.article=item.article.substring(0,startPos1)+item.article.substring(item.article.indexOf('script>',startPos1)+7)
-                    startPos1=item.article.indexOf('<script',startPos1)
-                    console.log('startPos1',startPos1)
-                    console.log('styleLen',styleLen)
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
+                    let styleLen=item.article.toLowerCase().indexOf('script>',scriptPos)-scriptPos
+                    item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('script>',scriptPos)+7)
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
                 })           
             }
-                let startPos2=0
-                if(item.article.match(/<iframe/ig)!==null) {
-                     item.article.match(/<iframe/ig).map((value,index)=>{
-                        console.log('index',index)
-                        startPos2=item.article.indexOf('<iframe',startPos2)
-                        let styleLen=item.article.indexOf('iframe>',startPos2)-startPos2
-                        item.article=item.article.substring(0,startPos2)+item.article.substring(item.article.indexOf('iframe>',startPos2)+7)
-                        startPos2=item.article.indexOf('<iframe',startPos2)
-                        console.log('startPos2',startPos2)
-                        console.log('styleLen',styleLen)
-                    })
-                }
-                // let startPos3=0
-                // if(item.article.match(/<a /ig)!==null) {
-                //      item.article.match(/<a /ig).map((value,index)=>{
-                //         console.log('index',index)
-                //         startPos3=item.article.indexOf('<a ',startPos3)
-                //         let styleLen=item.article.indexOf('href',startPos3)-startPos3
-                //         item.article=item.article.substring(0,startPos3+3)+' target="_blank" '+ item.article.substring(item.article.indexOf('href',startPos3))
-                //         startPos3=item.article.indexOf('<a ',startPos3+3)
-                //         console.log('startPos3',startPos3)
-                //         console.log('styleLen',styleLen)
-                //     })
-                // }
-                console.log('Final item.article',item.article)
-                // console.log('item.article.length',item.article.length)
-                // for (let i=0;i<item.article.length;) {
-                //     let j=i+1000<item.article.length?i+1000:item.article.length
-                //     console.log(item.article.substring(i,j))
-                //     i=j
-                // }
-                this.props.drillDown(item, 'newsDetails')
-        //     },2000)
-        // },2000)
-        
+
+        }
+        function handleVideo(item) {
+            let videoPos=0
+            if(item.article.match(/<iframe/ig)!==null) {
+                 item.article.match(/<iframe/ig).map((value,index)=>{
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
+                    let styleLen=item.article.toLowerCase().indexOf('iframe>',videoPos)-videoPos
+                    item.article=item.article.substring(0,videoPos)+item.article.substring(item.article.toLowerCase().indexOf('iframe>',videoPos)+7)
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
+                })
+            }
+
+        }
+        return dataFeed
     }
 
     _fetchContent(){
@@ -125,7 +113,7 @@ class News extends Component {
             this.setState({
                 isLoaded: nextProps.isLoaded,
                 isRefreshing: nextProps.isRefreshing,
-                newsFeed: nextProps.newsFeed,
+                newsFeed: this.processArticle(nextProps.newsFeed),
                 isFetchContent: false
             })
         }
