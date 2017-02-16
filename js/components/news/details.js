@@ -124,14 +124,12 @@ class NewsDetails extends Component {
                                     }}
                                     injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"
                                     onMessage={this.onMessage}
+                                    renderLoading={()=><ActivityIndicator style={loader.centered} size='small' />}
                                 />
                                 {
                                 this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
                                 }
                             </View>
-                            {
-                            !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='small' />
-                            }
 
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
