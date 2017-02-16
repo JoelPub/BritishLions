@@ -613,7 +613,9 @@ class MyLionsPlayerDetails extends Component {
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
+                                let star = ''
+                                star = position ==='widecard'?'STAR':position.toUpperCase()
+                                this._setModalVisible(true,'replace',`${star} POSITION FULL`,`THE ${star} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             }
                         }
                         

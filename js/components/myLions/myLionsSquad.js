@@ -123,6 +123,10 @@ class MyLionsSquad extends Component {
     }
 
     _setModalVisible=(visible,mode) => {
+        if(!this.state.isNetwork){
+            this.showNetError()
+            return
+        }
         this.setState({
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode):this.getModalContent()
@@ -154,7 +158,13 @@ class MyLionsSquad extends Component {
             [{text: 'Dismiss'}]
         )
     }
-
+    showNetError  = ()=> {
+        Alert.alert(
+          'An error occured',
+          'Please make sure that you\'re connected to the network.',
+          [{text: 'Dismiss'}]
+        )
+    }
     _showDetail(item, route,playerPos,max,seq) {
         this.props.setPositionToAdd('')
         this.props.setPositionToRemove(playerPos)
