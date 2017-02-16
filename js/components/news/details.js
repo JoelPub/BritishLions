@@ -31,34 +31,25 @@ class NewsDetails extends Component {
         this.stopPost=false
     }
     onLoadRequest(e){
-     console.log('!!!!!! can open URI: ' + e.url)
-
-     if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') !== -1){
-     console.log('come in Here')
-     }
-    else{
-    console.log('come in here111')
-        this.goToURL(e.url)
-        } 
+        if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
+            this.goToURL(e.url)
+        }
     }
     goToURL(url) {
-            Linking.canOpenURL(url).then(supported => {
-                if (supported) {
-                    console.log('open URI: ' + url)
-                    Linking.openURL(url)
-                } else {
-                     console.log('This device doesnt support URI: ' + url)
-                }
-            })
-      }
+    Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url)
+            } else {
+                console.log('This device doesnt support URI: ' + url)
+            }
+        })
+    }
     postMessage = () => {
-        console.log('!!!postMessage');
         if (this.webview) {
           this.webview.postMessage('window.postMessage(document.body.clientHeight)')
         }
       }
     onMessage = e => {
-        console.log('!!!onMessage',e.nativeEvent.data)
         this.stopPost=true
         this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
       }
@@ -116,10 +107,7 @@ class NewsDetails extends Component {
                                     scrollEnabled={false}
                                     source={{html:`<!DOCTYPE html><html><head><title>XHTML Tag Reference</title><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}</body></html>`}}
                                     onNavigationStateChange={(e)=>{
-                                            console.log('start loading',e)
-                                            console.log('stopPost',this.stopPost)
                                             if (!this.stopPost) this.postMessage()
-                                            //this.webview.stopLoading()
                                             this.onLoadRequest(e)
                                     }}
                                     injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"

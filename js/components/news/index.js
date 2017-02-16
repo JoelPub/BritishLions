@@ -32,11 +32,7 @@ class News extends Component {
     }
 
     _drillDown(item) {
-                // let pItem=this.processArticle(item)
                 this.props.drillDown(item, 'newsDetails')
-        //     },2000)
-        // },2000)
-        
     }
     processArticle(dataFeed){
         dataFeed.map((item,index)=>{
@@ -45,23 +41,13 @@ class News extends Component {
             handleImgStyle(item)
             handleInlineScript(item)
             handleVideo(item)
-            console.log('Final item.article',item.article)
-            // console.log('item.article.length',item.article.length)
-            // for (let i=0;i<item.article.length;) {
-            //     let j=i+1000<item.article.length?i+1000:item.article.length
-            //     console.log(item.article.substring(i,j))
-            //     i=j
-            // }
 
         })
             
         function handleImg(item) {
             let imgPathArr=item.image.split('/')
-            console.log('imgPathArr',imgPathArr)
             imgPathArr.pop()
             let imgPath=imgPathArr.join('/')
-            console.log('imgPath',imgPath)
-            console.log('item.article',item.article)
             item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
             item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)                
         }
@@ -69,16 +55,13 @@ class News extends Component {
             let imgStylePos=0
             if(item.article.match(/width:/ig)!==null) {
                  item.article.match(/width:/ig).map((value,index)=>{
-                    console.log('index',index)
                     imgStylePos=item.article.toLowerCase().indexOf('width:',imgStylePos)
-                    let styleLen=item.article.indexOf('\"',imgStylePos)-imgStylePos
+                    let styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos)-imgStylePos
                     let strStyle=item.article.toLowerCase().substr(imgStylePos,styleLen)
                     let orgWidth=strStyle.substring(6,strStyle.indexOf('px'))
                     let orgHeight=strStyle.indexOf('height:')===-1?'210':strStyle.substring(strStyle.indexOf('height:')+7,strStyle.indexOf('px',strStyle.indexOf('height')))
                     item.article=item.article.substring(0,imgStylePos)+`width: ${parseInt(styleVar.deviceWidth)-50}px; height: ${(parseInt(styleVar.deviceWidth)-50)*parseInt(orgHeight)/parseInt(orgWidth)}px;`+item.article.substring(item.article.indexOf('\"',imgStylePos))
                     imgStylePos=item.article.indexOf('\"',imgStylePos)
-                    console.log('imgStylePos',imgStylePos)
-                    console.log('styleLen',styleLen)
                 })           
             }               
         }
@@ -86,13 +69,10 @@ class News extends Component {
             let scriptPos=0
             if(item.article.match(/<script/ig)!==null) {
                  item.article.match(/<script/ig).map((value,index)=>{
-                    console.log('index',index)
-                    scriptPos=item.article.indexOf('<script',scriptPos)
-                    let styleLen=item.article.indexOf('script>',scriptPos)-scriptPos
-                    item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.indexOf('script>',scriptPos)+7)
-                    scriptPos=item.article.indexOf('<script',scriptPos)
-                    console.log('scriptPos',scriptPos)
-                    console.log('styleLen',styleLen)
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
+                    let styleLen=item.article.toLowerCase().indexOf('script>',scriptPos)-scriptPos
+                    item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('script>',scriptPos)+7)
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
                 })           
             }
 
@@ -101,13 +81,10 @@ class News extends Component {
             let videoPos=0
             if(item.article.match(/<iframe/ig)!==null) {
                  item.article.match(/<iframe/ig).map((value,index)=>{
-                    console.log('index',index)
-                    videoPos=item.article.indexOf('<iframe',videoPos)
-                    let styleLen=item.article.indexOf('iframe>',videoPos)-videoPos
-                    item.article=item.article.substring(0,videoPos)+item.article.substring(item.article.indexOf('iframe>',videoPos)+7)
-                    videoPos=item.article.indexOf('<iframe',videoPos)
-                    console.log('videoPos',videoPos)
-                    console.log('styleLen',styleLen)
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
+                    let styleLen=item.article.toLowerCase().indexOf('iframe>',videoPos)-videoPos
+                    item.article=item.article.substring(0,videoPos)+item.article.substring(item.article.toLowerCase().indexOf('iframe>',videoPos)+7)
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
                 })
             }
 
