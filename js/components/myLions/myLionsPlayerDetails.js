@@ -553,7 +553,6 @@ class MyLionsPlayerDetails extends Component {
     }
 
     _updateSquad(type,position,max,seq){
-
         let update=true
         // getUserCustomizedSquad().then((catchedSquad)=>{
         //     if(catchedSquad.auth){
@@ -567,7 +566,7 @@ class MyLionsPlayerDetails extends Component {
         //             this._showError(catchedSquad.error) // prompt error
         //         })
         //     }else{ 
-                    console.log('details this.props.squadData',this.props.squadData)               
+                    // console.log('details this.props.squadData',this.props.squadData)               
                     let tmpFeed=SquadModel.format(eval(`(${this.props.squadData})`))
                     let inSquad = false
                     if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
@@ -624,14 +623,14 @@ class MyLionsPlayerDetails extends Component {
                     if(type==='replace') {
                         if(List.isList(tmpFeed.get(position))) {
                             // if(tmpFeed.get(position).count()<max) {
-                                console.log('tmpFeed',tmpFeed.toJS())
-                                console.log('position',position)
-                                console.log('seq',seq)
+                                //console.log('tmpFeed',tmpFeed.toJS())
+                                //console.log('position',position)
+                                //console.log('seq',seq)
                                 tmpFeed=tmpFeed.update(position,val=>{
                                     val=val.set(seq,this.playerid)
                                     return val
                                 })
-                                console.log('tmpFeed',tmpFeed.toJS())
+                                //console.log('tmpFeed',tmpFeed.toJS())
                                 this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,this.playerid,seq))
                             // }
                             // else {
@@ -654,14 +653,14 @@ class MyLionsPlayerDetails extends Component {
                         
                     }
                     if(update){
-                        this._updateSquadPlayer(tmpFeed,position)
+                        this._updateSquadPlayer(tmpFeed,position, type)
                     }
 
             // }
         // })
     }
 
-    _updateSquadPlayer(squadData,position) {
+    _updateSquadPlayer(squadData,position, type='') {
         this.setState({ isMySquadPlayerSubmitting: true, btnSubmit:'SQUAD' },()=>{
             this._setModalVisible(false)
         })
@@ -679,9 +678,16 @@ class MyLionsPlayerDetails extends Component {
             },
             onSuccess: (res) => {
                 let successDesc = this.state.inSquad&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+                position = position?position.toUpperCase() : ''
+
+                if (type === 'replace') {
+                    successDesc = 'PLAYER SUCCESSFULLY REPLACED '
+                    position = ''
+                }
+
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
-                    this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
-                    console.log('!!!squadData',squadData)
+                    this._setModalVisible(true, 'message', position, successDesc, 'OK')
+                    //console.log('!!!squadData',squadData)
                     this.props.setSquadData(JSON.stringify(squadData))
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
