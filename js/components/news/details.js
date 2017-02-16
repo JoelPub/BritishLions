@@ -119,18 +119,19 @@ class NewsDetails extends Component {
                                             console.log('start loading',e)
                                             console.log('stopPost',this.stopPost)
                                             if (!this.stopPost) this.postMessage()
-                                            this.webview.stopLoading()
+                                            //this.webview.stopLoading()
                                             this.onLoadRequest(e)
                                     }}
                                     injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"
                                     onMessage={this.onMessage}
-                                    renderLoading={()=><ActivityIndicator style={loader.centered} size='small' />}
                                 />
                                 {
                                 this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
                                 }
                             </View>
-
+                            {
+                                !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='large' />
+                            }
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter/>
