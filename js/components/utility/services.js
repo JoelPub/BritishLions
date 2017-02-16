@@ -81,9 +81,9 @@ function errorHandler(error, opt) {
 }
 
 
-export function callApi(opt, axiosInstance) {
+export function callApi(opt, axiosInstance, tryTimes = 0) {
 	let isInternetConnected = false
-
+    tryTimes += 1
 	// use for loading, initial state
 	if (opt.onAxiosStart) {
 		opt.onAxiosStart()
@@ -99,8 +99,14 @@ export function callApi(opt, axiosInstance) {
 			}
 
 			if (opt.onError) {
-				//opt.onError('Please make sure that you\'re connected to the network.')
-				callApi(opt, axiosInstance)
+				//
+				if(tryTimes < 5){
+				    setTimeout(() => callApi(opt, axiosInstance, tryTimes), 5000)
+				}
+				else
+				{
+				    opt.onError('Please make sure that you\'re connected to the network.')
+				}
 			}
 		} else {
 			// There's an internet connection
