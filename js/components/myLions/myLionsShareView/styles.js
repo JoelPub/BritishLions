@@ -144,6 +144,9 @@ module.exports = styleSheetCreate({
     color:'rgb(95,96,98)',
     backgroundColor:'transparent'
   },
+  wrapper:{
+    borderTopWidth:0
+  },
   summaryWrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,

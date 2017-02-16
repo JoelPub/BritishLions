@@ -115,7 +115,7 @@ class MyLionsShareView extends Component {
 
   componentDidMount() {
     setTimeout(()=>{
-      this.shareSnapshot('scorecard',this.callback)
+      //this.shareSnapshot('scorecard',this.callback)
     },2000)
 
   }
@@ -128,7 +128,7 @@ class MyLionsShareView extends Component {
       isSubmitting:true
     })
     setTimeout(()=>{
-      RNViewShot.takeSnapshot(this._scrollView ,{
+      RNViewShot.takeSnapshot(this.refs['scorecard'] ,{
           format:'png',
           quality: 1,
           result: 'base64'
@@ -192,56 +192,60 @@ class MyLionsShareView extends Component {
         <View style={styles.container}>
           <View style={styles.smallContainer} >
               <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} >
-                <ShareHeaderView />
-                <View>
-                  {
-                    parseInt(this.props.data.rating.fan_ranking) < 5?
-                      <View style={styles.summaryWrapper}>
-                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                        <Text style={styles.summaryTextHighLight}>
-                          TOP {this._toRating(this.props.data.rating.fan_ranking)}</Text>
-                      </View>
-                      :
-                      <View style={styles.summaryWrapper}>
-                        <Text style={styles.summaryText}>There’s room to improve your squad!</Text>
-                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
-                        <Text style={[styles.summaryText, styles.summaryText2]}>of scores are higher than yours.</Text>
-                      </View>
-                  }
-                </View>
-                <View style={styles.ratingWrapper}>
-                  <Text style={styles.ratingTitle}>OVERALL RATING</Text>
-                  <View style={styles.ratingScore}>
-                    <Text style={styles.ratingScorePoint}>{this.props.data.rating.overall_rating}</Text>
+
+                <View ref='scorecard' style={styles.wrapper}>
+                  <ShareHeaderView />
+                  <View ref='scorecard' style={styles.summaryWrapper}>
+                    {
+                      parseInt(this.props.data.rating.fan_ranking) < 5?
+                        <View >
+                          <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                          <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                          <Text style={styles.summaryTextHighLight}>
+                            TOP {this._toRating(this.props.data.rating.fan_ranking)}</Text>
+                        </View>
+                        :
+                        <View>
+                          <Text style={styles.summaryText}>There’s room to improve your squad!</Text>
+                          <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                          <Text style={[styles.summaryText, styles.summaryText2]}>of scores are higher than yours.</Text>
+                        </View>
+                    }
                   </View>
-                </View>
-                <View style={styles.barGraphWrapper}>
-                  <Text style={styles.barGraphText}>COHESION</Text>
-                  <BarGraph score={this.props.data.rating.cohesion_rating} isRed = {true} fullWidth={styleVar.deviceWidth-150} />
-                </View>
-                <View style={styles.barSliderWrapper}>
-                  <View style={styles.barSliderTextWrapper}>
-                    <Text style={styles.barSliderText}>ATTACK</Text>
-                    <Text style={styles.barSliderText}>DEFENCE</Text>
+                  <View style={styles.ratingWrapper}>
+                    <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                    <View style={styles.ratingScore}>
+                      <Text style={styles.ratingScorePoint}>{this.props.data.rating.overall_rating}</Text>
+                    </View>
                   </View>
-                  <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-90} />
-                </View>
-                <View style={styles.jobBoxContainer}>
-                  {
-                    indivPos.map((item,i)=>{
-                      let position = item.position === 'WILDCARD'? 'STAR' : item.position.toUpperCase()
-                      let firstName = item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" "))
-                      let lastName = item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length)
-                      return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
-                    })
-                  }
-                </View>
-                <RankingTable title={'FORWARDS'}  array={forwards} />
-                <RankingTable title={'BACKS'} array={backs}  />
-                <View style={styles.footer}>
+
+                  <View style={styles.barGraphWrapper}>
+                    <Text style={styles.barGraphText}>COHESION</Text>
+                    <BarGraph score={this.props.data.rating.cohesion_rating} isRed = {true} fullWidth={styleVar.deviceWidth-150} />
+                  </View>
+                  <View style={styles.barSliderWrapper}>
+                    <View style={styles.barSliderTextWrapper}>
+                      <Text style={styles.barSliderText}>ATTACK</Text>
+                      <Text style={styles.barSliderText}>DEFENCE</Text>
+                    </View>
+                    <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-90} />
+                  </View>
+                  <View style={styles.jobBoxContainer}>
+                    {
+                      indivPos.map((item,i)=>{
+                        let position = item.position === 'WILDCARD'? 'STAR' : item.position.toUpperCase()
+                        let firstName = item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" "))
+                        let lastName = item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length)
+                        return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
+                      })
+                    }
+                  </View>
+                  <RankingTable title={'FORWARDS'}  array={forwards} />
+                  <RankingTable title={'BACKS'} array={backs}  />
+                  <View style={styles.footer}>
                     <Text style={styles.footerText}> Analytics Sponsored by </Text>
                     <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
+                </View>
                 </View>
               </ScrollView>
           </View>
