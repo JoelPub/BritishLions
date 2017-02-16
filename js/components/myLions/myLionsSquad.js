@@ -61,6 +61,7 @@ class MyLionsSquad extends Component {
             modalContent:this.getModalContent(),
             rating:Rating().toJS(),
             userID:'',
+            isNetwork: true
         }
         this.isUnMounted = false
         this.uniondata = Data
@@ -139,6 +140,14 @@ class MyLionsSquad extends Component {
     }
 
     _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+
         Alert.alert(
             'An error occured',
             error,
@@ -305,7 +314,7 @@ class MyLionsSquad extends Component {
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
-                        this._showError(error) // prompt error
+                            this._showError(error) // prompt error
                     })
                 })
             }
