@@ -115,7 +115,7 @@ class MyLionsShareView extends Component {
 
   componentDidMount() {
     setTimeout(()=>{
-      //this.shareSnapshot('scorecard',this.callback)
+      this.shareSnapshot('scorecard',this.callback)
     },2000)
 
   }
