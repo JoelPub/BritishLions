@@ -57,11 +57,11 @@ function errorHandler(error, opt) {
 	                    errorDescription = errorSlice(modelState)
 	                }
 	            }
-							case 404:
-								if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
-									errorDescription = 'You have not yet registered as a user, please join the pride first.'
-								}
-								break
+            case 404:
+                if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
+                    errorDescription = 'You have not yet registered as a user, please join the pride first.'
+                }
+                break
         }
 
         if(statusCode === 401) {
@@ -75,7 +75,8 @@ function errorHandler(error, opt) {
             }
         }
 	}else{
-	    opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    //opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    console.log('!!!Something went wrong with the request...........', opt)
 	}
 }
 

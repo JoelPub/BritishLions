@@ -189,7 +189,7 @@ class MyLions extends Component {
                                 <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styles.btnInformation]} onPress={this._myBrowse}>
                                     <Icon name='md-people' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
-                                        BROWSE PLAYER
+                                        VIEW PLAYERS
                                     </Text>
                                 </ButtonFeedback>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, styles.btnInformation]} onPress={() => this._openInformation()}>
