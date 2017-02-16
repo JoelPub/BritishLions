@@ -99,7 +99,8 @@ export function callApi(opt, axiosInstance) {
 			}
 
 			if (opt.onError) {
-				opt.onError('Please make sure that you\'re connected to the network.')
+				//opt.onError('Please make sure that you\'re connected to the network.')
+				callApi(opt, axiosInstance)
 			}
 		} else {
 			// There's an internet connection
