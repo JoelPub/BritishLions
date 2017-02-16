@@ -337,6 +337,7 @@ class Landing extends Component {
     }
 
     componentDidMount() {
+        console.log('componentDidMount')
         setTimeout(() => {
             this._fetchContent()
 
@@ -347,9 +348,11 @@ class Landing extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps')
         if (nextProps.isAccessGranted) {
             this._getSquad()
         }
+
     }
 
     componentWillUnmount() {
@@ -593,6 +596,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         newsFeed: state.content.contentState,
-        isAccessGranted: state.token.isAccessGranted
+        isAccessGranted: state.token.isAccessGranted,
+        routeCount: state.route.routes.length
     }
 }, bindAction)(Landing)
