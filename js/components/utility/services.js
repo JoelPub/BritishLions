@@ -57,11 +57,11 @@ function errorHandler(error, opt) {
 	                    errorDescription = errorSlice(modelState)
 	                }
 	            }
-							case 404:
-								if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
-									errorDescription = 'You have not yet registered as a user, please join the pride first.'
-								}
-								break
+            case 404:
+                if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
+                    errorDescription = 'You have not yet registered as a user, please join the pride first.'
+                }
+                break
         }
 
         if(statusCode === 401) {
@@ -75,14 +75,15 @@ function errorHandler(error, opt) {
             }
         }
 	}else{
-	    opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    //opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    console.log('!!!Something went wrong with the request...........', opt)
 	}
 }
 
 
-export function callApi(opt, axiosInstance) {
+export function callApi(opt, axiosInstance, tryTimes = 0) {
 	let isInternetConnected = false
-
+    tryTimes += 1
 	// use for loading, initial state
 	if (opt.onAxiosStart) {
 		opt.onAxiosStart()
@@ -98,7 +99,14 @@ export function callApi(opt, axiosInstance) {
 			}
 
 			if (opt.onError) {
-				opt.onError('Please make sure that you\'re connected to the network.')
+				//
+				if(tryTimes < 5){
+				    setTimeout(() => callApi(opt, axiosInstance, tryTimes), 5000)
+				}
+				else
+				{
+				    opt.onError('Please make sure that you\'re connected to the network.')
+				}
 			}
 		} else {
 			// There's an internet connection

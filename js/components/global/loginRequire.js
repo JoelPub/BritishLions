@@ -80,6 +80,7 @@ class LoginRequire extends Component {
 
                     // token failed to update, ask user to sign in again
                     setTimeout(() => {
+                        console.warn('error1: ', error)
                         this._askToSignIn()
                         this._onFinishCallBack(false) // callback function
                     }, 300)
@@ -90,6 +91,7 @@ class LoginRequire extends Component {
                 
             // We can't get the existing refresh token of the user here
             // ask user to sign in again
+            console.warn('error2: ', error)
             this._askToSignIn()
             this._onFinishCallBack(false) // callback function
         })

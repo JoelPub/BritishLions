@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator, Platform} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -47,19 +47,26 @@ const  NoteName = ({title,firstName,lastName}) => (
     <View style={styles.posBtn}>
       <View style={styles.playerNameTextWrapper}>
         <View style={styles.titleBox}>
-          <Text style={styles.playerNameText} numberOfLines={1}>{firstName}</Text>
+          <Text style={[styles.playerNameText, styles.playerFNameText]} numberOfLines={1}>{firstName}</Text>
           <Text style={styles.playerNameText} numberOfLines={1}>{lastName}</Text>
         </View>
       </View>
     </View>
   </View>
 )
-const RankNubText = ({num,name}) => (
-  <View style={styles.rankNubTextContainer}>
-    <Text style={styles.rankNumber}>{num+'. '}</Text>
-    <Text style={styles.rankPlayerName}>{name}</Text>
+const RankNubText = ({num,name,colWidth}) => (
+  <View style={[styles.rankNubTextContainer]}>
+      <Grid>
+        <Col style={{width: Platform.OS === 'android'? colWidth + 1 : colWidth}}>
+          <Text style={styles.rankNumber}>{num+'. '}</Text>
+        </Col>
+        <Col> 
+          <Text style={styles.rankPlayerName}>{name}</Text>
+        </Col>
+      </Grid>
   </View>
-  )
+)
+
 const  RankingTable = ({title,array}) => {
   console.log(array)
   return(
@@ -71,14 +78,14 @@ const  RankingTable = ({title,array}) => {
       <View style={styles.nubTextSupContainer}>
         {
           array.map((item,i)=>{
-          if(i<8) return(<RankNubText key={i} num={i+1} name={item.name} />)
+          if(i<8) return(<RankNubText key={i} num={i+1} name={item.name} colWidth={13} />)
           })
         }
       </View>
       <View style={styles.nubTextSupContainer}>
         {
           array.map((item,i)=>{
-            if(i>=8) return(<RankNubText key={i} num={i+1} name={item.name} />)
+            if(i>=8) return(<RankNubText key={i} num={i+1} name={item.name} colWidth={19} />)
           })
         }
       </View>
@@ -121,7 +128,7 @@ class MyLionsShareView extends Component {
       isSubmitting:true
     })
     setTimeout(()=>{
-      RNViewShot.takeSnapshot(this._scrollView ,{
+      RNViewShot.takeSnapshot(this.refs['scorecard'] ,{
           format:'png',
           quality: 1,
           result: 'base64'
@@ -185,54 +192,61 @@ class MyLionsShareView extends Component {
         <View style={styles.container}>
           <View style={styles.smallContainer} >
               <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} >
-                <ShareHeaderView />
-                <View>
-                  {
-                    parseInt(this.props.data.rating.fan_ranking) < 5?
-                      <View style={styles.summaryWrapper}>
-                        <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
-                        <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
-                        <Text style={styles.summaryTextHighLight}>
-                          TOP {this._toRating(this.props.data.rating.fan_ranking)}</Text>
-                      </View>
-                      :
-                      <View style={styles.summaryWrapper}>
-                        <Text style={styles.summaryText}>There’s room to improve your squad!</Text>
-                        <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
-                        <Text style={styles.summaryText}>of scores are higher than yours.</Text>
-                      </View>
-                  }
-                </View>
-                <View style={styles.ratingWrapper}>
-                  <Text style={styles.ratingTitle}>OVERALL RATING</Text>
-                  <View style={styles.ratingScore}>
-                    <Text style={styles.ratingScorePoint}>{this.props.data.rating.overall_rating}</Text>
+
+                <View ref='scorecard' style={styles.wrapper}>
+                  <ShareHeaderView />
+                  <View ref='scorecard' style={styles.summaryWrapper}>
+                    {
+                      parseInt(this.props.data.rating.fan_ranking) < 5?
+                        <View >
+                          <Text style={styles.summaryText}>Congratulations. Your squad has earned the following rating.</Text>
+                          <Text style={styles.summaryText}>Your squad score is ranked in the</Text>
+                          <Text style={styles.summaryTextHighLight}>
+                            TOP {this._toRating(this.props.data.rating.fan_ranking)}</Text>
+                        </View>
+                        :
+                        <View>
+                          <Text style={styles.summaryText}>There’s room to improve your squad!</Text>
+                          <Text style={styles.summaryTextHighLight}>MORE THAN 50%</Text>
+                          <Text style={[styles.summaryText, styles.summaryText2]}>of scores are higher than yours.</Text>
+                        </View>
+                    }
                   </View>
-                </View>
-                <View style={styles.barGraphWrapper}>
-                  <Text style={styles.barGraphText}>COHESION</Text>
-                  <BarGraph score={this.props.data.rating.cohesion_rating} isRed = {true} fullWidth={styleVar.deviceWidth-150} />
-                </View>
-                <View style={styles.barSliderWrapper}>
-                  <View style={styles.barSliderTextWrapper}>
-                    <Text style={styles.barSliderText}>ATTACK</Text>
-                    <Text style={styles.barSliderText}>DEFENCE</Text>
+                  <View style={styles.ratingWrapper}>
+                    <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                    <View style={styles.ratingScore}>
+                      <Text style={styles.ratingScorePoint}>{this.props.data.rating.overall_rating}</Text>
+                    </View>
                   </View>
-                  <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-90} />
+
+                  <View style={styles.barGraphWrapper}>
+                    <Text style={styles.barGraphText}>COHESION</Text>
+                    <BarGraph score={this.props.data.rating.cohesion_rating} isRed = {true} fullWidth={styleVar.deviceWidth-150} />
+                  </View>
+                  <View style={styles.barSliderWrapper}>
+                    <View style={styles.barSliderTextWrapper}>
+                      <Text style={styles.barSliderText}>ATTACK</Text>
+                      <Text style={styles.barSliderText}>DEFENCE</Text>
+                    </View>
+                    <BarSlider score={this.props.data.rating.attack_defence_rating} isRed={true} fullWidth={styleVar.deviceWidth-90} />
+                  </View>
+                  <View style={styles.jobBoxContainer}>
+                    {
+                      indivPos.map((item,i)=>{
+                        let position = item.position === 'WILDCARD'? 'STAR' : item.position.toUpperCase()
+                        let firstName = item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" "))
+                        let lastName = item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length)
+                        return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
+                      })
+                    }
+                  </View>
+                  <RankingTable title={'FORWARDS'}  array={forwards} />
+                  <RankingTable title={'BACKS'} array={backs}  />
+                  <View style={styles.footer}>
+                    <Text style={styles.footerText}> Analytics Sponsored by </Text>
+                    <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
                 </View>
-                <View style={styles.jobBoxContainer}>
-                  {
-                    indivPos.map((item,i)=>{
-                      let position = item.position === 'WILDCARD'? 'STAR' : item.position
-                      let firstName = item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" "))
-                      let lastName = item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length)
-                      return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
-                    })
-                  }
                 </View>
-                <RankingTable title={'FORWARDS'}  array={forwards} />
-                <RankingTable title={'BACKS'} array={backs}  />
-                <EYSFooter mySquadBtn={true}/>
               </ScrollView>
           </View>
           {this.state.isSubmitting ? <ActivityIndicator style={loader.scoreCard} size='small' /> : null }

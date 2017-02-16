@@ -144,9 +144,15 @@ module.exports = styleSheetCreate({
     color:'rgb(95,96,98)',
     backgroundColor:'transparent'
   },
+  wrapper:{
+    borderTopWidth:0
+  },
   summaryWrapper: {
     paddingHorizontal: 20,
-    paddingTop: 30
+    paddingTop: 20,
+    android: {
+      paddingBottom: 5
+    }
   },
   summaryText:{
     fontFamily: styleVar.fontGeorgia,
@@ -156,6 +162,12 @@ module.exports = styleSheetCreate({
     flex:1,
     marginBottom: 10,
     color:'rgb(38,38,38)',
+  },
+  summaryText2: {
+    marginTop: -13,
+    android: {
+      marginTop: 0
+    }
   },
   summaryTextHighLight:{
     fontFamily: styleVar.fontCondensed,
@@ -173,7 +185,7 @@ module.exports = styleSheetCreate({
     borderColor:'rgb(216,217,218)',
     marginTop: 10,
     paddingVertical:19,
-    backgroundColor: 'rgb(239,239,224)',
+    backgroundColor: 'rgb(240,239,245)',
   },
   ratingWrapperExpert:{
     borderTopWidth:0,
@@ -349,7 +361,7 @@ module.exports = styleSheetCreate({
     borderColor:'rgb(216,217,218)',
     height:50,
     paddingTop:12,
-    backgroundColor:'rgb(239,239,240)',
+    backgroundColor:'rgb(240,239,245)',
     borderRightWidth:1
   },
   indivPosTitleText:{
@@ -366,7 +378,12 @@ module.exports = styleSheetCreate({
   playerNameTextWrapper:{
     marginTop:-12,
     borderColor: 'rgb(216,217,218)',
-    borderWidth: 1
+    borderWidth: 1,
+    paddingTop: 0,
+    paddingBottom: 13,
+    android: {
+      paddingTop: 10,
+    }
   },
   titleBox: {
     position: 'relative',
@@ -396,6 +413,12 @@ module.exports = styleSheetCreate({
     },
     color: 'rgb(38,38,38)'
   },
+  playerFNameText: {
+    marginTop: 10,
+    android: {
+      marginTop: 12
+    }
+  },
   jobBoxContainer:{
     flexDirection: 'row'
   },
@@ -406,19 +429,21 @@ module.exports = styleSheetCreate({
     borderColor:'rgb(216,217,218)',
     height:40,
     paddingTop:12,
-    backgroundColor:'rgb(239,239,240)',
+    backgroundColor:'rgb(240,239,245)',
     borderRightWidth:1
-  },
-  rankTableContainer: {
   },
   nubTextSupContainer:{
     width: (styleVar.deviceWidth-40)/2,
-    paddingLeft: 20,
+    paddingLeft: 15,
+    paddingRight: 5,
     paddingTop: 20,
-    paddingBottom: 30
+    paddingBottom: 10
   },
   rankNubTextContainer:{
-    flexDirection: 'row'
+    flexDirection: 'row',
+  },
+  rankNubTextContainerCol:{
+    width: 20
   },
   rankNumber: {
     color:'rgb(175,0,30)',
@@ -438,5 +463,23 @@ module.exports = styleSheetCreate({
       paddingBottom: 3,
     },
     color: 'rgb(38,38,38)'
+  },
+  footer: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+      backgroundColor: 'rgb(128, 128, 128)',
+      height: 50,
+      paddingBottom: 9,
+      paddingRight: 11,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 5,
+  },
+  footerText: {
+      fontFamily: styleVar.fontGeorgia,
+      fontSize:13,
+      marginRight:5,
+      color:'rgb(255, 255, 255)',
+      marginBottom: -4
   }
 })
