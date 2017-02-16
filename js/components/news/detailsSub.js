@@ -2,10 +2,11 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView } from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
+import styleVar from '../../themes/variable'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -15,14 +16,43 @@ import htmlStyles from '../../themes/html-styles'
 import { shareTextWithTitle } from '../utility/socialShare'
 import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
+import loader from '../../themes/loader-position'
 
 
 class NewsDetailsSub extends Component {
     constructor(props) {
          super(props)
+        this.state={
+          height:0,
+          isLoaded:false
+        }
          this._scrollView = ScrollView
+        this.webview = WebView
+        this.stopPost=false
     }
-    
+    onLoadRequest(e){
+        if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
+            this.goToURL(e.url)
+        }
+    }
+    goToURL(url) {
+    Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url)
+            } else {
+                console.log('This device doesnt support URI: ' + url)
+            }
+        })
+    }
+    postMessage = () => {
+        if (this.webview) {
+          this.webview.postMessage('window.postMessage(document.body.clientHeight)')
+        }
+      }
+    onMessage = e => {
+        this.stopPost=true
+        this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
+    }
     render() {
         return (
             <Container theme={theme}>
@@ -36,10 +66,12 @@ class NewsDetailsSub extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={270}>
                             <Image source={{uri: this.props.article.image}} style={styles.banner}>
-                                <Image transparent
+                                <Image 
+                                    transparent
                                     resizeMode='cover'
                                     source={require('../../../images/shadows/rectangle.png')}
                                     style={styles.newsPosterContent}>
+
                                 </Image>
                             </Image>
                         </ImagePlaceholder>
@@ -66,14 +98,28 @@ class NewsDetailsSub extends Component {
                             </ButtonFeedback>
                         </View>
 
-                        <View style={styles.content}>
-                            <HTMLView
-                               value={this.props.article.article}
-                               stylesheet={htmlStyles}
-                             />
-                            <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', true]} />
-                        </View>
 
+                            <View style={[styles.description,{height:this.state.height}]}>
+                                <WebView
+                                    style={{height:this.state.height}}
+                                    bounces={false}
+                                    ref={(webview) => { this.webview = webview }}
+                                    scrollEnabled={false}
+                                    source={{html:`<!DOCTYPE html><html><head><title>XHTML Tag Reference</title><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}</body></html>`}}
+                                    onNavigationStateChange={(e)=>{
+                                            if (!this.stopPost) this.postMessage()
+                                            this.onLoadRequest(e)
+                                    }}
+                                    injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"
+                                    onMessage={this.onMessage}
+                             />
+                                {
+                                this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                                }
+                        </View>
+                            {
+                                !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='large' />
+                            }
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter/>
