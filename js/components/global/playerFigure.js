@@ -133,12 +133,24 @@ const styles = styleSheetCreate({
     },
     playerFigureRow:{
         flexDirection:'row',
+        flexWrap:'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
         marginTop: 20,
-        marginBottom: 20
+        marginBottom: 20,
     },
     playerFigureUnit:{
-        flex:1,
-        alignItems:'center'
+        alignItems:'center',
+        marginBottom: 30,
+        width: styleVar.deviceWidth/3,
+        //backgroundColor: 'green',
+        //borderLeftWidth: 1,
+        //borderLeftColor: '#CCC',
+    },
+    playerFigureUnit2: {
+        flexDirection: 'column',
+        width: styleVar.deviceWidth/2,
+        //backgroundColor: 'pink',
     },
     playerFigureUpperText:{
         color:'rgb(95,96,98)',
@@ -226,7 +238,7 @@ const styles = styleSheetCreate({
 })
 
 export default class PlayerFigure extends Component {
-	constructor(props){
+    constructor(props){
         super(props)
         this.state = {
             underlineLength: [],
@@ -234,7 +246,7 @@ export default class PlayerFigure extends Component {
             tabSubjects: ['Attack','Defense','Kicking'],
             profile:{},
             isLoaded:false
-    	}
+        }
         this.currentPage = 0
     }
 
@@ -303,8 +315,8 @@ export default class PlayerFigure extends Component {
         }
     }
 
-	render() {
-		return (
+    render() {
+        return (
             <View>
             {
                 this.state.isLoaded?
@@ -390,33 +402,28 @@ export default class PlayerFigure extends Component {
                                             this.state.tabSubjects.map((node,i)=>{
                                                 return(
                                                     <View style={styles.playerFigurePageWrapper} key={i}>
+                                                        <View style={styles.playerFigureRow}>
                                                         {
-                                                            this._mapJSON(this.state.profile[node]).map((rowData,index)=>{
-                                                                return(
-                                                                    <View style={styles.playerFigureRow} key={index}>
-                                                                    {
-                                                                        rowData.map((item, j) => {
-                                                                            let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
-                                                                            let name = strToUpper(item.name.trim())
-                                                                            if (name != 'MISSED TACKLES') {
-                                                                                return(
-                                                                                    <View style={styles.playerFigureUnit} key={j}>
-                                                                                        <Text style={styles.playerFigureUpperText}>{ name }</Text>
-                                                                                        <View style={[styles.ratingScore, styles.playerRatingScore]}>
-                                                                                            <Text style={styles.ratingScorePoint}>{ value }</Text>
-                                                                                        </View>
-                                                                                        <Text style={styles.playerFigureLowerText}>
-                                                                                            {  item.average === 'NaN'? 'N/A' : item.average } avg
-                                                                                        </Text>
-                                                                                    </View>
-                                                                                )
-                                                                            }
-                                                                        },this)
-                                                                    }
-                                                                    </View>
+                                                            this.state.profile[node].map((item, j) => {
+                                                                let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
+                                                                let name = strToUpper(item.name.trim())
+                                                                let playerFigureUnit = name !== 'TACKLES'? [styles.playerFigureUnit] : [styles.playerFigureUnit, styles.playerFigureUnit2]
+                                                                if (name != 'MISSED TACKLES') {
+                                                                    return(
+                                                                        <View style={playerFigureUnit} key={j}>
+                                                                            <Text style={styles.playerFigureUpperText}>{ name }</Text>
+                                                                            <View style={[styles.ratingScore, styles.playerRatingScore]}>
+                                                                                <Text style={styles.ratingScorePoint}>{ value }</Text>
+                                                                            </View>
+                                                                            <Text style={styles.playerFigureLowerText}>
+                                                                                {  item.average === 'NaN'? 'N/A' : item.average } avg
+                                                                            </Text>
+                                                                        </View>
                                                                     )
+                                                                }
                                                             },this)
                                                         }
+                                                        </View>
                                                     </View>
                                                     )
                                             },this)
@@ -434,6 +441,6 @@ export default class PlayerFigure extends Component {
                     <ActivityIndicator style={loader.scoreCard} size='small' /> 
             }
             </View>            
-			)
-	}
+            )
+    }
 }
