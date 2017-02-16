@@ -960,7 +960,10 @@ module.exports = styleSheetCreate({
         fontSize:28,
         lineHeight:28,
         marginTop:28,
-        textAlign:'center'
+        textAlign:'center',
+        android: {
+            marginBottom: 10
+        }
     },
     modalTitleTextCenterReplacePlayer: {
         android: {
@@ -971,6 +974,12 @@ module.exports = styleSheetCreate({
         fontFamily: 'Helvetica Neue',
         fontSize:16,
         textAlign:'center'
+    },
+    modalTextCenterUppCase: {
+        lineHeight: 20,
+        android: {
+            lineHeight: 23
+        }
     },
     modalBtnWrapper:{
         marginTop:15,

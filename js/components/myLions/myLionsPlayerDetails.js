@@ -156,7 +156,7 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleTextCenter}>{title}</Text>
-                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
+                        <Text style={[styles.modalTextCenter, styles.modalTextCenterUppCase]}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modlaBtnConfirm,styles.btnCancelBlack]} />
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
@@ -179,7 +179,7 @@ class MyLionsPlayerDetails extends Component {
                 return(
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleTextCenter}>{title}</Text>
-                        <Text style={styles.modalTextCenter}>{subtitle}</Text>
+                        <Text style={[styles.modalTextCenter, styles.modalTextCenterUppCase]}>{subtitle}</Text>
                         <View style={styles.modalBtnWrapper}>
                             <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
                             <ButtonFeedback rounded onPress={()=>this._updateSquad('replace',this.playerPos,0,this.seq)}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
@@ -548,7 +548,7 @@ class MyLionsPlayerDetails extends Component {
         else {
             this.fullSquad=checkFullSquad(this.props.squadToShow)
             console.log('this.fullSquad',this.fullSquad)
-            this.fullSquad?this._setModalVisible(true,'replace','SQUAD FULL','CANNOT ADD NEW PLAYER AS YOUR SQUAD IS FULL \n PLEASE SELECT A PLAYER TO REPLACE'):this._setModalVisible(true,'add')
+            this.fullSquad?this._setModalVisible(true,'replace','SQUAD FULL','CANNOT ADD NEW PLAYER AS YOUR SQUAD IS FULL. \n\n PLEASE SELECT A PLAYER TO REPLACE.'):this._setModalVisible(true,'add')
         }
     }
 
@@ -603,7 +603,7 @@ class MyLionsPlayerDetails extends Component {
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             }
                         }
                         else{
@@ -614,7 +614,7 @@ class MyLionsPlayerDetails extends Component {
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             }
                         }
                         
@@ -637,7 +637,7 @@ class MyLionsPlayerDetails extends Component {
                             // else {
                             //     update=false
                             //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             // }
                         }
                         else{
@@ -648,7 +648,7 @@ class MyLionsPlayerDetails extends Component {
                             // else {
                             //     update=false
                             //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED \n PLEASE SELECT A PLAYER TO REPLACE`)
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE  ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             // }
                         }
                         
