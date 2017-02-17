@@ -188,7 +188,7 @@ class MyLions extends Component {
                                         COMPETITION CENTRE
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} >
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} onPress={() => this.props.pushNewRoute('competitionLadder')} >
                                     <Icon name='md-star' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
                                         COMPETITION LADDER
