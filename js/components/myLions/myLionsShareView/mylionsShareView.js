@@ -36,7 +36,7 @@ import { globalNav } from '../../../appNavigator'
 
 const ShareHeaderView = ({detail}) => (
   <View style={styles.viewShareHeader}>
-    <Image style={styles.viewHeaderImage} source={logo} />
+    <Image resizeMode='contain' style={styles.viewHeaderImage} source={logo} />
   </View>
 )
 const  NoteName = ({title,firstName,lastName}) => (

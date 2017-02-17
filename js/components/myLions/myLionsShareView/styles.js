@@ -63,8 +63,8 @@ module.exports = styleSheetCreate({
   },
   viewHeaderImage: {
     marginTop: 20,
-    width: 120,
-    height: 130,
+    width: 130,
+    height: 140,
   },
   scoreCard:{
     marginVertical:2,
