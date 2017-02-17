@@ -98,8 +98,7 @@ class Countdown extends Component {
 
     componentDidMount() {
         let dateNow = new Date
-        let utcString = Platform.OS === 'android'?' UTC ':''
-        let dateEnd = new Date((this.props.endDate? this.props.endDate : dateNow)+utcString)
+        let dateEnd = new Date(this.props.endDate? this.props.endDate : dateNow)
         //dateNow = '27 October 2016 22:50:00'
         //dateEnd = '28 October 2016 22:50:03'
 
