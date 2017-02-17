@@ -373,7 +373,7 @@ module.exports = styleSheetCreate({
     lineHeight:18,
   },
   posBtn:{
-    borderLeftWidth:1,
+    borderLeftWidth:0,
     borderColor:'rgb(255,255,255)'
   },
   playerNameTextWrapper:{
