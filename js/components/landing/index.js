@@ -56,6 +56,7 @@ class Landing extends Component {
             isLoadedSquad: false,
             userID: '',
             rating: Rating().toJS(),
+            isNetwork: true
         }
     }
 
@@ -184,6 +185,13 @@ class Landing extends Component {
     }
 
     _showError(error) {
+        if(!this.state.isNetwork) return
+
+        if(error === 'Please make sure that you\'re connected to the network.') {
+            this.setState({
+                isNetwork: false
+            })
+        }
         Alert.alert(
             'An error occured',
             error,
