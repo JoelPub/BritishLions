@@ -279,8 +279,9 @@ class MyLionsPlayerDetails extends Component {
         )
     }
 
-    if(error !== ''){
-        _showError(error) {
+
+    _showError(error) {
+         if(error !== ''){
             Alert.alert(
                 'An error occured',
                 error,
