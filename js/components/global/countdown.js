@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCountDownTimerEnd } from '../../actions/timer'
-import { View, Text } from 'react-native'
+import { View, Text,Platform } from 'react-native'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 
@@ -98,7 +98,7 @@ class Countdown extends Component {
 
     componentDidMount() {
         let dateNow = new Date
-        let dateEnd = this.props.endDate? this.props.endDate : dateNow
+        let dateEnd = new Date(this.props.endDate? this.props.endDate : dateNow)
         //dateNow = '27 October 2016 22:50:00'
         //dateEnd = '28 October 2016 22:50:03'
 
