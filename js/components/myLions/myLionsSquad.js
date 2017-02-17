@@ -123,7 +123,7 @@ class MyLionsSquad extends Component {
     }
 
     _setModalVisible=(visible,mode) => {
-        if(!this.state.isNetwork){
+        if(this.props.netWork.connectionInfo==='NONE'){
             this.showNetError()
             return
         }
@@ -553,6 +553,7 @@ export default connect((state) => {
         drillDownItem: state.content.drillDownItem,
         squadToShow: state.squad.squadToShow,
         squadData: state.squad.squadData,
+        netWork: state.network
     }
 }, bindAction)(MyLionsSquad)
 
