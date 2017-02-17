@@ -137,11 +137,12 @@ class Landing extends Component {
     _fetchFixture() {
         let fixturesLeft = []
         let dateNow = new Date
-        //dateNow = 'Wed Jun 29 2017 10:44:07 GMT+0800 (PHT)'
+        //dateNow = 'Wed Jun 03 2017 17:34:00 GMT+0800 (PHT)'
         dateNow = Date.parse(dateNow)
 
         fixturesList.map(function(item, index) {
-            let dateSched = Date.parse(item.date)
+            let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
+            //console.log(dateSched, new Date(`${item.date} ${item.time}`))
             
             if (dateSched > dateNow) {
                 fixturesLeft.push(item)
