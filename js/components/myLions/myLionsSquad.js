@@ -151,12 +151,13 @@ class MyLionsSquad extends Component {
                isNetwork: false
            })
        }
-
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
     showNetError  = ()=> {
         Alert.alert(

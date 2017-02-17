@@ -150,11 +150,13 @@ class MyLionsPlayerList extends Component {
     }
 
     _showError(error) {
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
 
     _getFilteredPosition=(value)=>{
