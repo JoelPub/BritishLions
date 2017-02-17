@@ -162,7 +162,7 @@ export default [
          "label": "Cure Parkinson's",
          "image": require("./tcpt.jpg"),
          "banner": require("./banner/tcpt.jpg"),
-         "description": "<p>The Cure Parkinson’s Trust (CPT) was set up in 2005 by four people living with the condition. It has one bold aim to cure Parkinson’s. CPT funds innovative projects and inspirational scientists to slow, stop and reverse Parkinson’s. For further information see www.cureparkinsons.org. <a href=\"http://www.cureparkinsons.org\">www.cureparkinsons.org</a>.</p>"
+         "description": "<p>The Cure Parkinson’s Trust (CPT) was set up in 2005 by four people living with the condition. It has one bold aim to cure Parkinson’s. CPT funds innovative projects and inspirational scientists to slow, stop and reverse Parkinson’s. For further information see <a href=\"http://www.cureparkinsons.org\">www.cureparkinsons.org</a>.</p>"
      },
      {
          "id": "16",
