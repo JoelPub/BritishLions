@@ -74,6 +74,7 @@ class CompetitionLadder extends Component {
             <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
             <GrayContainer >
               <ExpertRank />
+
             </GrayContainer>
             <LionsFooter isLoaded={true} />
           </ScrollView>
