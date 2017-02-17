@@ -34,7 +34,7 @@ function errorHandler(error, opt) {
         switch(statusCode) {
             case 500: // Internal Server Error (server error)
             case 403: // Forbidden (SSL required)
-                errorDescription = 'Something went wrong with your request. Please try again later.'
+                //errorDescription = 'Something went wrong with your request. Please try again later.'
                 break
             case 401:
                 errorDescription = 'Authorization failed. Please try again later.'
