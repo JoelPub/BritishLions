@@ -64,13 +64,13 @@ export default class  SquadModal extends Component {
                 visible={this.state.modalVisible}
                 transparent={true}
                 onRequestClose={()=>this._setModalVisible(false)}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
-                            <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
-                            style={styles.btnClose}>
-                                <Icon name='md-close' style={styles.btnCloseIcon}/>
-                            </ButtonFeedback>
-            				    {this.props.children}
-                        </LinearGradient>
+                    <LinearGradient colors={['#AF001E', '#81071C']} style={styles.onboarding}>
+                        <ButtonFeedback onPress={()=>this._setModalVisible(false)} 
+                        style={styles.btnClose}>
+                            <Icon name='md-close' style={styles.btnCloseIcon}/>
+                        </ButtonFeedback>
+        				    {this.props.children}
+                    </LinearGradient>
             </Modal>
 			)
 	}

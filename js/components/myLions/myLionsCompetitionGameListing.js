@@ -161,6 +161,7 @@ class MyLionsCompetitionGameListing extends Component {
                             let triangleShape = item.isGameEnd? [shapes.triangle] : [shapes.triangle, locStyle.shapeGreen]
                             let statusBoxText = item.isGameEnd? 'VIEW RESULTS' : 'PLAY'
                             let statusBox = [locStyle.statusBox, ]
+                            let statusBoxRoute = item.isGameEnd? 'myLionsCompetitionGameResults' : 'myLionsManageGame'
                             if (!item.isGameEnd) {
                                 statusBox.push(locStyle.greenBg)
                             }
@@ -195,7 +196,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                 </ButtonFeedback>
                                             </View>
                                         </View>
-                                        <ButtonFeedback onPress={()=> { this._drillDown([], 'myLionsCompetitionGameResults') }}>
+                                        <ButtonFeedback onPress={()=> { this._drillDown([], statusBoxRoute) }}>
                                             <View style={triangleShape} />
                                             <View style={statusBox}>
                                                 <Text style={locStyle.statusBoxText}>

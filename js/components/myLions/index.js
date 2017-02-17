@@ -1,4 +1,3 @@
-
 'use strict'
 
 import React, { Component } from 'react'
@@ -184,7 +183,7 @@ class MyLions extends Component {
                                     </Text>
                                 </ButtonFeedback>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
-                                    <Icon name='md-list-box' style={styles.btnExpertIcon} />
+                                    <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
                                         COMPETITION CENTRE
                                     </Text>
