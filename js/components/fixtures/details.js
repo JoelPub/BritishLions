@@ -37,8 +37,8 @@ class FixtureDetails extends Component {
 
     calendarAddEvent(params){
         let utcString = Platform.OS === 'android'?' UTC ':''
-        let dateOfEvent = new Date(params.details.date+utcString).toISOString() // UTC Format
-        let endDateOfEvent = new Date(params.details.date+utcString)
+        let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`+utcString).toISOString() // UTC Format
+        let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`+utcString)
         endDateOfEvent.setHours(endDateOfEvent.getHours() + 1) // Add 1 hour for Event, to provide time range display
         let endTime = endDateOfEvent.toISOString() // UTC Format
 
@@ -101,7 +101,7 @@ class FixtureDetails extends Component {
                             <View style={styles.titleBar}>
                                 <Text style={styles.titleBarText}>{this.props.details.stadium}</Text>
                             </View>
-                            <Countdown endDate={this.props.details.date}/> 
+                            <Countdown endDate={`${this.props.details.date} ${this.props.details.time}`}/> 
                             <View style={styles.titleBarLink}>
                                 {
                                     this.state.isGameIsOn?
