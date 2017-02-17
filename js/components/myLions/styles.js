@@ -1066,15 +1066,15 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         textAlign:'center',
         paddingTop: 15,
-        width: 121,
+        paddingHorizontal: 20,
         android: {
             paddingTop: 14
         }
     },
     viewExpertProfileDescription: {
         fontFamily: styleVar.fontGeorgia,
+        paddingHorizontal: 20,
         fontSize: 18,
-        width: 226,
         lineHeight:20,
         textAlign:'center',
         android: {
