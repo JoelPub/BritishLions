@@ -145,7 +145,8 @@ module.exports = styleSheetCreate({
     backgroundColor:'transparent'
   },
   wrapper:{
-    borderTopWidth:0
+    borderTopWidth:0,
+    backgroundColor: '#FFF'
   },
   summaryWrapper: {
     paddingHorizontal: 20,
@@ -372,7 +373,7 @@ module.exports = styleSheetCreate({
     lineHeight:18,
   },
   posBtn:{
-    borderLeftWidth:1,
+    borderLeftWidth:0,
     borderColor:'rgb(255,255,255)'
   },
   playerNameTextWrapper:{

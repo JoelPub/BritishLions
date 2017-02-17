@@ -129,7 +129,7 @@ export default [
          "label": "Gosh",
          "image": require("./gosh.jpg"),
          "banner": require("./banner/gosh.jpg"),
-         "description": ""
+         "description": "<p>Great Ormond Street Hospital is one of the world’s leading children’s hospitals with the broadest range of dedicated, children’s healthcare specialists under one roof in the UK.</p><p>The hospital’s pioneering research and treatment gives hope to children from across the UK with the rarest, most complex and often life-threatening conditions. Patients and families are central to everything we do – from the moment they come through the door and for as long as they need.</p><p>Great Ormond Street Hospital Children’s Charity needs to raise money to support the hospital to give children who need help the most, the best chance for life. The charity funds research into pioneering new treatments for children, provides the most up to date medical equipment, funds support services for children and their families and supports the essential rebuilding and refurbishment of the hospital. For more information visit <a href=\"http://www.gosh.org\">www.gosh.org</a></p>"
      },
      {
          "id": "13",
@@ -140,7 +140,7 @@ export default [
          "label": "Temple Street",
          "image": require("./templestreet.jpg"),
          "banner": require("./banner/templestreet.jpg"),
-         "description": ""
+         "description": "<p>Temple Street Foundation was established in 2000 and exists to raise funds to make Temple Street Children’s University Hospital a better place. Every year Temple Street relies on the generosity of donors to help raise funds to redevelop hospital wards, fund vital equipment & services and invest in research. Having access to state of the art facilities & equipment literally saves lives. To learn more visit <a href=\"http://templestreet.com\">www.templestreet.com</a></p>"
      },
      {
          "id": "14",
@@ -151,7 +151,7 @@ export default [
          "label": "Velindre",
          "image": require("./velindre.jpg"),
          "banner": require("./banner/velindre.jpg"),
-         "description": ""
+         "description": "<p>Velindre Cancer Centre has been providing care, support and treatment to cancer patients and their families since 1956; in their 60th anniversary year they aspire to deliver the best cancer services in the world through care, quality and excellence.</p><p>They are the premier provider of radiotherapy and other specialised anti-cancer treatments in Wales. Access to radiotherapy is critical to improving patient outcomes for cancer: the evidence tells us that approximately 40% of patients with cancer would benefit from radiotherapy treatment, and recent advances at Velindre means that it can be delivered with remarkable precision.</p><p>Velindre support cancer patients and their families through difficult times, and their specially trained and highly committed staff strive every single day to make this time as comfortable as possible.</p><p>Money raised from the Victory over Cancer campaign will be used to fund ground breaking research and buy specialist equipment, so staff have access to the most up to date training and techniques available. The incidence of cancer is rising by 1% each year in Wales. By 2020 one in two people will be affected by cancer in Wales.</p><p>People in Wales living with cancer will increase by 80% between 2010 and 2030. However, cancer survival rates have doubled in the last 40 years, meaning that more people in Wales are surviving cancer because of better treatments and earlier detection.</p><p>People can show their support by visiting <a href=\"http://www.velindrefundraising.com\">www.velindrefundraising.com</a></p>"
      },
      {
          "id": "15",
@@ -162,21 +162,10 @@ export default [
          "label": "Cure Parkinson's",
          "image": require("./tcpt.jpg"),
          "banner": require("./banner/tcpt.jpg"),
-         "description": ""
+         "description": "<p>The Cure Parkinson’s Trust (CPT) was set up in 2005 by four people living with the condition. It has one bold aim to cure Parkinson’s. CPT funds innovative projects and inspirational scientists to slow, stop and reverse Parkinson’s. For further information see www.cureparkinsons.org. <a href=\"http://www.cureparkinsons.org\">www.cureparkinsons.org</a>.</p>"
      },
      {
          "id": "16",
-         "category": "media",
-         "title": "The Telegraph",
-         "url": "",
-         "partner": "",
-         "label": "The Telegraph",
-         "image": require("./telegraph.jpg"),
-         "banner": require("./banner/telegraph.jpg"),
-         "description": ""
-     },
-     {
-         "id": "17",
          "category": "media",
          "title": "Sky Sports",
          "url": "",
@@ -184,6 +173,17 @@ export default [
          "label": "Sky Sports",
          "image": require("./skysports.jpg"),
          "banner": require("./banner/skysports.jpg"),
-         "description": ""
-     }
+         "description": "<p>Sky Sports is a group of sports television channels operated by the satellite pay-TV company Sky plc. Sky Sports is the dominant subscription television sports brand in the United Kingdom and Ireland. It has played a major role in the increased commercialisation of British sport since 1991.</p>"
+     },
+     {
+         "id": "17",
+         "category": "media",
+         "title": "The Telegraph",
+         "url": "",
+         "partner": "",
+         "label": "The Telegraph",
+         "image": require("./telegraph.jpg"),
+         "banner": require("./banner/telegraph.jpg"),
+         "description": "<p>Telegraph Media Group (TMG) is a multimedia business with a portfolio covering the world-renowned, agenda-setting titles The Daily Telegraph and The Sunday Telegraph, The Telegraph website and Telegraph Events, one of the leading events companies in the UK.</p><p>TMG publishes The Telegraph seven days a week, in print, online, tablet and mobile, reaching a global audience of over 102 million per month.</p>"
+     }  
 ]
