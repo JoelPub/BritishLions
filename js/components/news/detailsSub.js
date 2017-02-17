@@ -38,6 +38,7 @@ class NewsDetailsSub extends Component {
     goToURL(url) {
     Linking.canOpenURL(url).then(supported => {
             if (supported) {
+                this.webview.stopLoading()
                 Linking.openURL(url)
             } else {
                 console.log('This device doesnt support URI: ' + url)
