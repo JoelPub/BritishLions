@@ -445,7 +445,7 @@ class Landing extends Component {
                                     <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
                                         <Image 
                                             resizeMode='cover'
-                                            source={require('../../../images/content/mylionsBanner.jpg')} style={styles.mainBanner}>
+                                            source={require('../../../images/content/myLionsWelcome.jpg')} style={styles.mainBanner}>
                                         </Image>
                                     </ImagePlaceholder>
                                 </ButtonFeedback>
