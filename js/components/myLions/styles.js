@@ -509,7 +509,7 @@ module.exports = styleSheetCreate({
         flex:1
     },
     onboardingContent:{
-        marginTop: 0
+        marginTop: 71
     },
     btnClose: {
         backgroundColor:'rgba(38, 38, 38, 0.20)',
@@ -528,11 +528,10 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     onboardingTitle: {
-        marginTop: 71,
         textAlign: 'center',
         fontSize: 28,
         lineHeight: 28,
-        marginBottom: 4,
+        marginBottom: 10,
         fontFamily: styleVar.fontCondensed,
         backgroundColor: 'transparent',
     },
@@ -548,6 +547,7 @@ module.exports = styleSheetCreate({
     onboardingPageText: {
         fontFamily: 'Helvetica Neue',
         fontSize: 16,
+        lineHeight:24,
         textAlign: 'center',
         marginBottom: 18
     },

@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
-import { isFirstLogIn } from '../utility/asyncStorageServices'
+import { isFirstLogIn, getUserId } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -26,9 +26,10 @@ import Data from '../../../contents/my-lions/onboarding/data'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
-
 import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
+import { service } from '../utility/services'
+import { strToUpper } from '../utility/helper'
 
 class MyLions extends Component {
 
@@ -40,7 +41,8 @@ class MyLions extends Component {
             modalCreateGroupVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
-            isLoaded:true
+            isLoaded:true,
+            userID:'',
         }
         this.totalPages = 3
         this.pageWindow=[]
@@ -146,11 +148,53 @@ class MyLions extends Component {
             // check if user is first login
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
-                isFirst = isFirst === 'yes'? true : false
-                // isFirst = true
-                this.setState({ modalVisible: isFirst })
+                // isFirst = isFirst === 'yes'? true : false
+                isFirst = true
+                // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
+                if (isFirst) this.getRating()
             }).catch((error) => {})
         }
+    }
+    getRating(){
+        let optionsSquadRating = {
+            url: 'https://api.myjson.com/bins/mtxtx',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {                    
+                        Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
+                            "id": "0",
+                            "highLight":3,
+                            "description": [
+                            "WELL DONE!",
+                            "you picked 30/35 players from the official British & Irish Lions 2017 Squad.",
+                            "you have earned the rank of:",
+                            strToUpper(res.data.title),
+                            "With the announcement of the official squad, we'ave updated My Lions with some exciting new gameplay features.",
+                            "Click next to discover what's new in this version."
+                            ]
+                        })
+                        this.totalPages=Data.length
+                }
+                this.setState({modalVisible:true})
+            },
+            onError: ()=>{
+                this.setState({modalVisible:true})
+            },
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsSquadRating)        
+    }
+
+    componentWillMount() {
+        getUserId().then((userID) => {
+            this.setState({userID})
+        }).catch((error) => {})
     }
 
     componentWillUnmount() {
@@ -207,7 +251,6 @@ class MyLions extends Component {
                             <IosUtilityHeaderBackground />
 
                             <ScrollView style={styles.onboardingContent}>
-                                <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                 <Swiper
                                     height={this.state.swiperWindow}
                                     ref='swiper'
@@ -224,12 +267,12 @@ class MyLions extends Component {
                                                     {
                                                         item.description.map((desc,i)=>{
                                                             return(
-                                                                <Text key={i} style={styles.onboardingPageText}>{desc}</Text>
+                                                                <Text key={i} style={(i===0||item.highLight&&item.highLight===i)?styles.onboardingTitle:styles.onboardingPageText}>{desc}</Text>
                                                             )
                                                         })
                                                     }
                                                     {
-                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button, styles.btnonBoardSquard]}  />
+                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='COMPETITION CENTRE' onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')} style={[styles.button, styles.btnonBoardSquard]}  />
                                                     }
                                                     <View style={styles.onboardingPageBtns}>
                                                         {
