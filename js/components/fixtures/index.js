@@ -17,7 +17,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import data from '../../../contents/fixtures/data.json'
-import images from './images'
+import images from '../../../contents/fixtures/images'
 
 class Fixtures extends Component {
     constructor(props) {

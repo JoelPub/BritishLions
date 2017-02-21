@@ -92,7 +92,6 @@ class Login extends Component {
             this.props.setAccessGranted(false)
         }, 400)
         this._setupGoogleSignin()
-
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -529,7 +528,7 @@ class Login extends Component {
                             </View>
                         </KeyboardAwareScrollView>
                 
-                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('news')}>
+                        <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('landing')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
 

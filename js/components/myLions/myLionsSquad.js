@@ -18,75 +18,33 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImageCircle from '../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
-import styleVar from '../../themes/variable'
 import loader from '../../themes/loader-position'
 import { alertBox } from '../utility/alertBox'
 import refresh from '../../themes/refresh-control'
-import { drillDown } from '../../actions/content'
+import { drillDown ,shareReplace} from '../../actions/content'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken, getUserId } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
-import Swiper from 'react-native-swiper'
 import SquadModal from '../global/squadModal'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
+import { setSquadToShow,setSquadData } from '../../actions/squad'
 import { getAssembledUrl } from '../utility/urlStorage'
 import PlayerScore from '../global/playerScore'
 import SquadPopModel from  'modes/SquadPop'
 import Rating from  'modes/SquadPop/Rating'
 import SquadModel from  'modes/Squad'
-import SquadShowModel from  'modes/Squad/SquadShowModel'
 import SquadRatingModel from 'modes/Squad/Rating'
-import Immutable, { Map, List } from 'immutable'
+import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
+import SquadList from '../global/squadList'
+import {convertSquadToShow,compareShowSquad} from '../global/squadToShow'
+import SquadShowModel from  'modes/Squad/SquadShowModel'
 
-const AddPlayerCell = ({pos,onPress})=>(
-    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
-        <View style={styles.posAddWrapper}>
-            <Icon name='md-person-add' style={styles.addPlayerIcon} />
-        </View>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText}>ADD</Text>
-                <Text style={styles.playerNameText}>
-                    { pos.toUpperCase() === 'WILDCARD'? 'STAR' : pos.toUpperCase() }
-                </Text>
-                </View>
-        </View>
-    </ButtonFeedback>
-    )
-const PlayerImgCell =({data,onPress}) =>(
-    <ButtonFeedback onPress={onPress} style={styles.posBtn}>
-        <ImagePlaceholder 
-            width = {styleVar.deviceWidth / 3}
-            height = {styleVar.deviceWidth / 3}>
-            <Image transparent
-                resizeMode='contain'
-                source={data.image}
-                style={styles.playerImage} />
-        </ImagePlaceholder>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
-                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
-            </View>
-        </View>
-    </ButtonFeedback>
-    )
-const PositionTitle =({pos,data}) =>(
-    <View style={styles.posTitle}>
-      <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
-      <Text style={styles.posTitleRight}>
-       {data.filter((value)=>value!==null).length} / {data.length}
-      </Text>
-    </View>
-)
 class MyLionsSquad extends Component {
 
     constructor(props){
@@ -100,14 +58,15 @@ class MyLionsSquad extends Component {
             modalPopulate:false,
             showScoreCard:'semi',
             isSubmitting: false,
-            squadDatafeed:SquadShowModel().toJS(),            
             modalContent:this.getModalContent(),
             rating:Rating().toJS(),
             userID:'',
+            isNetwork: true
         }
         this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
+        this.catchedSquad={}
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
         this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
@@ -141,19 +100,17 @@ class MyLionsSquad extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                        <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>To provide an overall rating for the players EYC3 took the results of 720 games played in 2015/2016 looking at Internationals and top tier club rugby. In addition, as new games are played including the 6 Nations Tournament, player performance will actively update their rating.</Text>
-                            
-                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each of these games there are over 150 features collected on player performance. Using advanced analytic techniques EYC3 identified the 30 most influential factors in a team winning a game. These factors were split into Defensive and Attacking attributes and weighted by position. i.e. A fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
-                        
-                        <Text style={styles.modalTitleText}>Your Squad Ranking</Text>
-                        <Text style={styles.modalTextRN}>Your squad score will take into account all the ratings of your individual players and allows you to choose which players ratings you want to boost by nominating a Captain, Kicker and a Star player (the player you nominate as your best performer).</Text>
-                
-                        <Text style={styles.modalTitleText}>Cohesion</Text>
-                        <Text style={styles.modalTextRN}>Rugby is a team sport, the more familiar your player’s are with each other the better they will perform in a game. EYC3 has developed an algorithim to rate the cohesion of your squad based on international and top tier club rugby games over the last two years.</Text>
-                
-                        <Text style={styles.modalTitleText}>Attack / Defence</Text>
-                        <Text style={styles.modalTextRN}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see if it’s strength lies in attack or defense or you have created a more balanced team.</Text>
+                        <Text style={styles.modalTitleText}>Squad rating</Text>
+                            <Text style={styles.modalText}>A score out of 500 based on your selected players, cohesion rating, individual player performances over the last two years and their most recent five games. Your squad rating will take into account all the ratings of your individual players and allows you to choose which players’ ratings you want to boost by nominating a Captain, Kicker and a Star player i.e the player you nominate as your best performer.</Text>
+
+                            <Text style={styles.modalTitleText}>Squad rating percentage</Text>
+                            <Text style={styles.modalText}>Whether your squad is in the top five, 10, 25, 50 per cent of squads submitted.</Text>
+
+                            <Text style={styles.modalTitleText}>Cohesion</Text>
+                            <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EY has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 100 means all of your squad have started at least one game with every other player in your squad. There is an assumption that professional players will gel together in training camp so a baseline score of 50 is given.</Text>
+
+                            <Text style={styles.modalTitleText}>Attack & Defence</Text>
+                            <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities. Your team will be analysed to see its balance and if it is weighted towards attack or defence.</Text>
                     </ScrollView>
                 )
                 break
@@ -166,29 +123,14 @@ class MyLionsSquad extends Component {
     }
 
     _setModalVisible=(visible,mode) => {
+        if(this.props.netWork.connectionInfo==='NONE'){
+            this.showNetError()
+            return
+        }
         this.setState({
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode):this.getModalContent()
         })
-    }
-
-    _mapJSON(data, colMax = 2) {
-        let i = 0
-        let k = 0
-        let newData = []
-        let items = []
-        let length = data.length
-
-        for( i = 0; i <data.length; (i += colMax)) {
-            for( k = 0; k < colMax; k++ ) {
-                if(data[i + k]!==undefined)
-                    items.push(data[i + k])
-            }
-
-            newData.push(items)
-            items = []
-        }
-        return newData
     }
 
     componentWillUnmount() {
@@ -202,20 +144,35 @@ class MyLionsSquad extends Component {
     }
 
     _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
+    }
+    showNetError  = ()=> {
         Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
+          'An error occured',
+          'Please make sure that you\'re connected to the network.',
+          [{text: 'Dismiss'}]
         )
     }
-
-    _showDetail(item, route,playerPos) {
+    _showDetail(item, route,playerPos,max,seq) {
         this.props.setPositionToAdd('')
         this.props.setPositionToRemove(playerPos)
         this.props.drillDown(item, route)
     }
 
-    _addPlayer(playerPos) {
+    _addPlayer(type,playerPos,max) {
         this.props.setPositionToAdd(playerPos)
         this.props.setPositionToRemove('')
         this.props.pushNewRoute('myLionsUnionsList')
@@ -228,14 +185,25 @@ class MyLionsSquad extends Component {
     isPlainObj (value) {
       return value && (value.constructor === Object || value.constructor === undefined)
     }
-
-
+    goShare = () => {
+        //console.log(this.state.rating)
+        let data = {
+            rating: this.state.rating,
+            showScoreCard: this.state.showScoreCard,
+            squadDatafeed: this.props.squadToShow
+        }
+        this.props.drillDownItemShare(data, 'myLionsShareView', false, true)
+    }
     render() {
+        let { drillDownItem } = this.props
+        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
+                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -243,7 +211,13 @@ class MyLionsSquad extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
-                                <PlayerScore isLoaded={this.state.isScoreLoaded} rating={this.state.rating} showScoreCard={this.state.showScoreCard} pressInfo={this._setModalVisible.bind(this)} pressExpert={this._myExpertsPick.bind(this)}/>
+                                <PlayerScore isLoaded={this.state.isScoreLoaded}
+                                             rating={this.state.rating}
+                                             showScoreCard={this.state.showScoreCard}
+                                             pressInfo={this._setModalVisible.bind(this)}
+                                             pressExpert={this._myExpertsPick.bind(this)}
+                                             shareClick={this.goShare}
+                                />
                                 {
                                     this.state.showScoreCard==='empty'?
                                     <ButtonFeedback rounded label='AUTO POPULATE' style={styles.button} onPress={()=>this._setModalVisible(true,'populate')} />
@@ -251,95 +225,7 @@ class MyLionsSquad extends Component {
                                     <ButtonFeedback rounded label='CLEAR ALL SELECTIONS' style={styles.button} onPress={()=>this._setModalVisible(true,'clear')} />
                                 }
                                 <View>
-                                    <View style={styles.individaulPositionRow}>
-                                    {
-                                        this.state.squadDatafeed.indivPos.map((item,index)=>{
-                                            let position = item.position.toUpperCase()
-                                            return (
-                                                <View style={styles.indivPosition} key={index}>
-                                                    <View style={styles.indivPosTitle}>
-                                                        <Text style={styles.indivPosTitleText}>
-                                                            { position === 'WILDCARD'? 'STAR' : position }
-                                                        </Text>
-                                                    </View>
-                                                    {
-                                                    item.info===null?
-                                                    <AddPlayerCell pos={item.position} onPress = {() => this._addPlayer(item.position)}/>
-                                                    :
-                                                    <PlayerImgCell data={item.info} onPress = {() => this._showDetail(item.info,'myLionsPlayerDetails',item.position)}/>
-                                                    }
-                                                </View>
-                                            )
-                                        },this) 
-                                    }                                
-                                    </View>
-
-                                    <PositionTitle pos='FORWARDS' data={this.state.squadDatafeed.forwards}/>
-                                    <Swiper
-                                    ref='swiper'
-                                    height={styleVar.deviceWidth*0.63}
-                                    loop={false}
-                                    dotColor='rgba(255,255,255,0.3)'
-                                    activeDotColor='rgb(239,239,244)'
-                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                                        {
-                                            this._mapJSON(this.state.squadDatafeed.forwards,3).map((rowData,i)=>{
-                                                return(
-                                                    <View style={styles.posSwiperRow} key={i}>
-                                                        {
-                                                            rowData.map((item,index)=>{
-                                                                return(
-                                                                        <View style={styles.posWrapper} key={index}>
-                                                                            {   
-                                                                                item===null?
-                                                                                <AddPlayerCell pos='FORWARDS' onPress = {() => this._addPlayer('forwards')}/>
-                                                                                :
-                                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','forwards')}/>
-                                                                            }
-                                                                        </View>
-                                                                    )
-                                                            }, this)
-                                                        }
-                                                    </View>
-                                                )
-
-                                            },this)
-                                        }
-
-                                    </Swiper>
-                                    
-                                    <PositionTitle pos='BACKS' data={this.state.squadDatafeed.backs}/>
-                                    <Swiper
-                                    ref='swiper'
-                                    height={styleVar.deviceWidth*0.63}
-                                    loop={false}
-                                    dotColor='rgba(255,255,255,0.3)'
-                                    activeDotColor='rgb(239,239,244)'
-                                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
-                                        {
-                                            this._mapJSON(this.state.squadDatafeed.backs,3).map((rowData,i)=>{
-                                                return(
-                                                    <View style={styles.posSwiperRow} key={i}>
-                                                        {
-                                                            rowData.map((item,index)=>{
-                                                                return(
-                                                                    <View style={styles.posWrapper} key={index}>
-                                                                    {
-                                                                        item===null?                                                        
-                                                                           <AddPlayerCell pos='BACKS' onPress = {() => this._addPlayer('backs')}/>
-                                                                        :
-                                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item,'myLionsPlayerDetails','backs')}/>
-                                                                    }
-                                                                    </View>
-                                                                    )
-                                                            }, this)
-                                                        }
-                                                    </View>
-                                                )
-
-                                            },this)
-                                        }
-                                    </Swiper>
+                                    <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                     <LionsFooter isLoaded={true} />
                                 </View>
                             </ScrollView>
@@ -359,27 +245,65 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
+        //console.log('!!!mySquad componentDidMount')
         setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
-        let routes = globalNav.navigator.getCurrentRoutes()
+        //console.log('!!!mySquad componentWillReceiveProps')
+        // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
+        // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
+        // console.log('!!!this.props.squadData',this.props.squadData)
+        //console.log('!!!nextProps.squadData',nextProps.squadData)
+        // console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
+        // let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed
-            if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
-            this.setState({
-                isLoaded: false,
-            }, () => {
-                setTimeout(()=>{this._getSquad()},600)
-            })
-        }
+            // if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
+            // console.log('!!!!!',nextProps.route.routes)
+                // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
+                if(nextProps.squadData!==null) {
+                    // console.log('pass')
+                    this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))  
+                }                
+            // }
+            // else {
+            //     this.setState({
+            //         isLoaded: false,
+            //     }, () => {
+            //         setTimeout(()=>{this._getSquad()},600)
+            //     })
+            // }
+        // }
+    }
+    
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'Your session has expired',
+            'Please sign into your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
     }
 
     _getSquad(){
-        if (this.isUnMounted) return // return nothing if the component is already unmounted
-            
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true }, () => {
@@ -392,13 +316,16 @@ class MyLionsSquad extends Component {
                 })
             }else{
                 getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                    if (this.isUnMounted) return // return nothing if the component is already unmounted
+                        
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
-                                this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
+                        // this.catchedSquad=catchedSquad.data
+                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
-                        this._showError(error) // prompt error
+                            this._showError(error) // prompt error
                     })
                 })
             }
@@ -406,26 +333,15 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        let tempFeed=new SquadShowModel()
+        //console.log('!!!setSquadData')
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
-        tempFeed.forEach((value,index)=>{
+        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,isPop,this.uniondata)
+        showSquadFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    if(squad.get(index).get(i)!==undefined) {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=this.searchPlayer(this.fullPlayerList,squad.get(index).get(i))
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=null
-                            return val
-                        })
-                    }
-                    if(tempFeed.get(index)[i]===null) {
+                    if(showSquadFeed.get(index)[i]===null) {
                         squad=squad.update(index,val=>{
                             val[i]=null
                             return val
@@ -440,19 +356,7 @@ class MyLionsSquad extends Component {
             else {
                 value.map((v,i)=>{
                     let p=isPop?v.position:v.position==='wildcard'?'widecard':v.position
-                    if(squad.get(p)&&squad.get(p).trim()!=='') {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=this.searchPlayer(this.fullPlayerList,squad.get(p))
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=null
-                            return val
-                        })
-                    }
-                    if(tempFeed.get(index)[i].info===null) {
+                    if(showSquadFeed.get(index)[i].info===null) {
                         squad=squad.set(p,'')
                         if(!isPop) fullFeed=false
                     }
@@ -462,6 +366,7 @@ class MyLionsSquad extends Component {
                 })
             }
         })
+        // console.log('2')
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -469,6 +374,7 @@ class MyLionsSquad extends Component {
             }
             else tmpSquad=tmpSquad.set(index,squad.get(isPop?index==='widecard'?'wildcard':index:index))
         })
+        // console.log('3')
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
                         rating=rating.set(index,squad.get(index))
@@ -482,20 +388,17 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
-                //console.warn("fedd1: ", JSON.stringify(fullFeed))
                 this.setState({
-                    isLoaded: true,
+                    isLoaded:true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
-                    squadDatafeed:tempFeed.toJS(),
                     showScoreCard:emptyFeed?'empty':fullFeed?'full':'semi',
                     rating:isPop?rating.toJS():this.state.rating
                 },()=>{
+                    this._setModalVisible(false)
                     if(fullFeed&&!isPop) {
-                        this._setModalVisible(false)
                         this.getRating(squad)
                     }
                     else {
-                        this._setModalVisible(false)
                         removeUserCustomizedSquad()
                     }
                 })
@@ -512,8 +415,29 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-
-        service(optionsSaveList)
+        // console.log('!!!compare')
+        // console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
+        // console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
+        //     console.log('!!!show equal')
+        //     service(optionsSaveList)
+        // } else {
+        //     console.log('!!!show not equal')
+        //     if (JSON.stringify(this.props.squadToShow)!=='{}'&&this.props.squadData!==null) this.setState({isLoaded:true})
+        //     this.props.setSquadToShow(showSquadFeed.toJS())
+        // }
+        //console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
+        //console.log('!!!this.props.squadData',this.props.squadData)
+        if(JSON.stringify(tmpSquad)!==this.props.squadData) {
+            console.log('!!!squad not equal')
+            this.props.setSquadData(JSON.stringify(tmpSquad))
+            this.props.setSquadToShow(showSquadFeed.toJS())
+        }
+        else {
+            //console.log('!!!squad equal')
+            service(optionsSaveList)
+        }
+        
 
     }
 
@@ -579,7 +503,8 @@ class MyLionsSquad extends Component {
         })
         let optionsSquadRating = {
             url: this.getMySquadRatingUrl,
-            data: {id:this.state.userID,squad:JSON.stringify(tempSquad)},
+            data: {id:this.state.userID,squad:tempSquad.toJS()},
+            isQsStringify:false,
             onAxiosStart: () => {
                 },
             onAxiosEnd: () => {
@@ -608,38 +533,6 @@ class MyLionsSquad extends Component {
         }
         service(optionsSquadRating)        
     }
-
-    searchPlayer(player,id) {
-        let result=null
-        for(let union in player) {
-            result=player[union].find((item)=>item.id===id.toString())
-            if(result !== undefined) {
-                let unionInfo = this.uniondata.find((n)=> n.id===union)
-                Object.assign(result, {
-                    logo: unionInfo.image, 
-                    country: unionInfo.displayname.toUpperCase(),
-                    countryid: unionInfo.id
-                })
-
-                if(typeof result.image==='string') {
-                   if (result.image.indexOf('125.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/125.png`)
-                    } else if (result.image.indexOf('126.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/126.png`)
-                    } else if (result.image.indexOf('127.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/127.png`)
-                    } else if (result.image.indexOf('128.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/128.png`)
-                    } else {
-                        result.image = {uri:result.image}
-                    } 
-                }
-                return result
-            }
-        }
-        return result===undefined?null:result
-    }
-
 }
 
 function bindAction(dispatch) {
@@ -650,12 +543,18 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
+        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }
 
 export default connect((state) => {
     return {
-        route: state.route,
+        drillDownItem: state.content.drillDownItem,
+        squadToShow: state.squad.squadToShow,
+        squadData: state.squad.squadData,
+        netWork: state.network
     }
 }, bindAction)(MyLionsSquad)
 

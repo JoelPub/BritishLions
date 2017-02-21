@@ -16,6 +16,7 @@ import {configure,schedule} from './components/utility/notification'
 
 // Templates/pages
 import SplashPage from './components/splashscreen/'
+import Landing from './components/landing/'
 import Login from './components/login/'
 import SignUp from './components/signUp/'
 import ForgotPassword from './components/forgotPassword'
@@ -32,6 +33,7 @@ import MyLionsExpertsList from './components/myLions/myLionsExpertsList'
 import MylionsExpertProfile from './components/myLions/mylionsExpertProfile'
 import MyLionsFavoriteList from './components/myLions/myLionsFavoriteList'
 import MyLionsPlayerDetails from './components/myLions/myLionsPlayerDetails'
+import MyLionsShareView from './components/myLions/myLionsShareView'
 import MyLionsUnionsList from './components/myLions/myLionsUnionsList'
 import MyLionsSquad from './components/myLions/myLionsSquad'
 
@@ -184,7 +186,7 @@ class AppNavigator extends Component {
         BackAndroid.addEventListener('hardwareBackPress', () => {
             var routes = this._navigator.getCurrentRoutes()
 
-            if(routes[routes.length - 1].id == 'news' || routes[routes.length - 1].id == 'login') {
+            if(routes[routes.length - 1].id == 'landing' || routes[routes.length - 1].id == 'login') {
                 return false
             }
             else {
@@ -256,7 +258,7 @@ class AppNavigator extends Component {
                                 }
                             }
                         }}
-                        initialRoute={{id: (Platform.OS === 'android') ? 'splashscreen' : 'news', statusBarHidden: true}}
+                        initialRoute={{id: (Platform.OS === 'android') ? 'splashscreen' : 'landing', statusBarHidden: true}}
                         renderScene={this.renderScene} />
                 </Drawer>
             </View>
@@ -275,6 +277,8 @@ class AppNavigator extends Component {
         switch (route.id) {
             case 'splashscreen':
                 return <SplashPage navigator={navigator} />
+            case 'landing':
+                return <Landing navigator={navigator} />
             case 'login':
                 return <Login navigator={navigator} />
             case 'forgotPassword':
@@ -323,6 +327,8 @@ class AppNavigator extends Component {
                 return <MyLionsManageGame navigator={navigator} />
             case 'myLionsCompetitionGameResults':
                 return <MyLionsCompetitionGameResults navigator={navigator} />
+            case 'myLionsShareView' :
+                return <MyLionsShareView navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
             case 'tours':
@@ -354,7 +360,7 @@ class AppNavigator extends Component {
             case 'contact':
                 return <Contact navigator={navigator} />
             default :
-                return <News navigator={navigator}  />
+                return <Landing navigator={navigator}  />
         }
     }
 }

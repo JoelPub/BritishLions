@@ -16,11 +16,7 @@ import styles from './styles'
 import styleVar from '../../themes/variable'
 import StickyFooter from '../utility/stickyFooter'
 
-import {
-  GoogleAnalyticsTracker,
-  GoogleTagManager,
-  GoogleAnalyticsSettings
-} from 'react-native-google-analytics-bridge';
+
 
 class News extends Component {
     constructor(props) {
@@ -31,13 +27,69 @@ class News extends Component {
               isRefreshing: false,
               newsFeed: [], 
               isFetchContent: false,
-              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
-              tracker: new GoogleAnalyticsTracker('UA-88700702-2'),
+              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
          }
     }
 
     _drillDown(item) {
-        this.props.drillDown(item, 'newsDetails')
+                this.props.drillDown(item, 'newsDetails')
+    }
+    processArticle(dataFeed){
+        dataFeed.map((item,index)=>{
+            item.article=item.article.replace(/\n/ig,'')
+            handleImg(item)
+            handleImgStyle(item)
+            handleInlineScript(item)
+            handleVideo(item)
+
+        })
+            
+        function handleImg(item) {
+            let imgPathArr=item.image.split('/')
+            imgPathArr.pop()
+            let imgPath=imgPathArr.join('/')
+            item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
+            item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)                
+        }
+        function handleImgStyle(item) {
+            let imgStylePos=0
+            if(item.article.match(/width:/ig)!==null) {
+                 item.article.match(/width:/ig).map((value,index)=>{
+                    imgStylePos=item.article.toLowerCase().indexOf('width:',imgStylePos)
+                    let styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos)-imgStylePos
+                    let strStyle=item.article.toLowerCase().substr(imgStylePos,styleLen)
+                    let orgWidth=strStyle.substring(6,strStyle.indexOf('px'))
+                    let orgHeight=strStyle.indexOf('height:')===-1?'210':strStyle.substring(strStyle.indexOf('height:')+7,strStyle.indexOf('px',strStyle.indexOf('height')))
+                    item.article=item.article.substring(0,imgStylePos)+`width: ${parseInt(styleVar.deviceWidth)-50}px; height: ${(parseInt(styleVar.deviceWidth)-50)*parseInt(orgHeight)/parseInt(orgWidth)}px;`+item.article.substring(item.article.indexOf('\"',imgStylePos))
+                    imgStylePos=item.article.indexOf('\"',imgStylePos)
+                })           
+            }               
+        }
+        function handleInlineScript(item) {
+            let scriptPos=0
+            if(item.article.match(/<script/ig)!==null) {
+                 item.article.match(/<script/ig).map((value,index)=>{
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
+                    let styleLen=item.article.toLowerCase().indexOf('script>',scriptPos)-scriptPos
+                    item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('script>',scriptPos)+7)
+                    scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
+                })           
+            }
+
+        }
+        function handleVideo(item) {
+            let videoPos=0
+            if(item.article.match(/<iframe/ig)!==null) {
+                 item.article.match(/<iframe/ig).map((value,index)=>{
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
+                    let styleLen=item.article.toLowerCase().indexOf('iframe>',videoPos)-videoPos
+                    item.article=item.article.substring(0,videoPos)+item.article.substring(item.article.toLowerCase().indexOf('iframe>',videoPos)+7)
+                    videoPos=item.article.toLowerCase().indexOf('<iframe',videoPos)
+                })
+            }
+
+        }
+        return dataFeed
     }
 
     _fetchContent(){
@@ -46,7 +98,6 @@ class News extends Component {
     }
 
     _onRefresh() {
-        this.state.tracker.trackEvent('testcategory', 'onRefresh');
         this.setState({isRefreshing: true})
         this._fetchContent()
     }
@@ -62,7 +113,7 @@ class News extends Component {
             this.setState({
                 isLoaded: nextProps.isLoaded,
                 isRefreshing: nextProps.isRefreshing,
-                newsFeed: nextProps.newsFeed,
+                newsFeed: this.processArticle(nextProps.newsFeed),
                 isFetchContent: false
             })
         }

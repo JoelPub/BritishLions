@@ -9,6 +9,7 @@ import timer from './timer'
 import token from './token'
 import network from './network'
 import position from './position'
+import squad from './squad'
 
 export default combineReducers({
 	drawer,
@@ -17,5 +18,6 @@ export default combineReducers({
 	timer,
 	token,
 	network,
-	position
+	position,
+	squad
 })
