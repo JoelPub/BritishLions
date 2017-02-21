@@ -21,6 +21,7 @@ import LionsHeader from '../../global/lionsHeader'
 import LionsFooter from '../../global/lionsFooter'
 import GrayContainer from '../../global/GrayContainer'
 import ExpertRank from  '../../global/ExpertRank'
+import RankList from  '../../global/RankingList'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
@@ -33,6 +34,7 @@ import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import PlayerScore from '../../global/playerScore'
+
 
 class CompetitionLadder extends Component {
 
@@ -74,7 +76,7 @@ class CompetitionLadder extends Component {
             <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
             <GrayContainer >
               <ExpertRank />
-
+              <RankList />
             </GrayContainer>
             <LionsFooter isLoaded={true} />
           </ScrollView>
