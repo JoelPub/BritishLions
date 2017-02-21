@@ -42,7 +42,12 @@ const styles = styleSheetCreate({
   },
   subContentView:{
     flexDirection:'row',
+    marginTop: 7,
   },
+  whiteColor:{
+    color:'rgb(255,255,255)',
+  },
+
   subTitleText:{
     color:'rgb(255,255,255)',
     fontFamily: styleVar.fontCondensed,
@@ -50,24 +55,81 @@ const styles = styleSheetCreate({
     lineHeight:18,
     backgroundColor:'transparent',
   },
+  subContentText:{
+    color:'rgb(255,230,0)',
+    fontFamily: styleVar.fontCondensed,
+    fontSize:18,
+    lineHeight:18,
+    backgroundColor:'transparent',
+  },
   IDText:{
-    marginLeft:0
+    marginLeft:0,
+    width:30,
+    alignItems:'center',
+  },
+  IdTextView:{
+    marginLeft:0,
+    marginTop:0,
+    width:30,
+    height:30,
+    borderRadius: 15,
+    borderWidth:2,
+    borderColor: 'rgb(255,255,255)',
+    justifyContent:'center',
+    alignItems:'center',
+    paddingTop: 8,
+    android: {
+      paddingTop: 3
+    }
   },
   LText:{
-    width:25
+    width:25,
+    height:30,
+    justifyContent:'center',
+    paddingTop: 8,
+    android: {
+      paddingTop: 3
+    }
+  },
+  LTextTop:{
+    width:25,
+    height:30,
   },
   rankTextView:{
-    marginLeft:18,
+    marginLeft:5,
     width:34
+  },
+  rankContentTextView:{
+    marginTop:0,
+    marginLeft:9,
+    width:30,
+    height:30,
+    borderRadius: 15,
+    justifyContent:'center',
+    alignItems:'center',
+    paddingTop: 8,
+    android: {
+      paddingTop: 3
+    },
+    backgroundColor: 'rgb(71,72,73)'
   },
   WText:{
     marginLeft:30,
-    width:25
+    width:25,
+    height:30,
+    justifyContent:'center',
+    paddingTop: 8,
+    android: {
+      paddingTop: 3
+    }
+  },
+  WTextTop:{
+    marginLeft:30,
+    width:25,
   },
 })
 const  Header = () => {
   return (
-
       <View style={styles.subTitleView}>
         <View style={styles.IDText}>
           <Text style={[styles.subTitleText]}>ID</Text>
@@ -75,60 +137,60 @@ const  Header = () => {
         <View style={styles.rankTextView}>
           <Text style={[styles.subTitleText]}>RANK</Text>
         </View>
-        <View style={styles.WText}>
+        <View style={styles.WTextTop}>
           <Text style={[styles.subTitleText]}>W</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>L</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>D</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>F</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>A</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>BP</Text>
         </View>
-        <View style={styles.LText}>
+        <View style={styles.LTextTop}>
           <Text style={styles.subTitleText}>PTS</Text>
         </View>
       </View>
 
   )
 }
-const  Content = () => {
+const  Content = ({data,index}) => {
   return (
     <View style={styles.subContentView}>
-      <View style={styles.IDText}>
-        <Text style={[styles.subTitleText]}>JP</Text>
+      <View style={styles.IdTextView}>
+        <Text style={[styles.subContentText,styles.whiteColor]}>JP</Text>
       </View>
-      <View style={styles.rankTextView}>
-        <Text style={[styles.subTitleText]}>1</Text>
+      <View style={styles.rankContentTextView}>
+        <Text style={[styles.subContentText]}>{index+1}</Text>
       </View>
       <View style={styles.WText}>
-        <Text style={[styles.subTitleText]}>22</Text>
+        <Text style={[styles.subContentText]}>22</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>12</Text>
+        <Text style={styles.subContentText}>12</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>45</Text>
+        <Text style={styles.subContentText}>45</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>18</Text>
+        <Text style={styles.subContentText}>18</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>62</Text>
+        <Text style={styles.subContentText}>62</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>78</Text>
+        <Text style={styles.subContentText}>78</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subTitleText}>1235</Text>
+        <Text style={styles.subContentText}>12</Text>
       </View>
     </View>
   )
@@ -142,6 +204,7 @@ class RankingList extends Component {
   }
 
   render() {
+    let arr = ['1','2','3','4','5']
     return (
       <View style={[styles.scoreCard]} >
           <View style={styles.titleView}>
@@ -149,7 +212,14 @@ class RankingList extends Component {
           </View>
         <View style={styles.contentView}>
             <Header />
-            <Content />
+
+          {
+            arr.map((data,index)=>{
+              return(
+                <Content  key={index} data={data} index={index}/>
+              )
+            })
+          }
         </View>
       </View>
     )
