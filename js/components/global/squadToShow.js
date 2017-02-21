@@ -142,11 +142,6 @@ export function addPlayer(squadToShow,position,detail,playerid) {
     return squadToShow
 }
 export function replacePlayer(squadToShow,position,detail,playerid,sequence) {
-    console.log('squadToShow',squadToShow)
-    console.log('position',position)
-    console.log('detail',detail)
-    console.log('playerid',playerid)
-    console.log('sequence',sequence)
     if(playerid) {
         squadToShow[position][sequence]=detail
     }
