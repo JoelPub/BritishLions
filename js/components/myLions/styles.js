@@ -1305,12 +1305,6 @@ module.exports = styleSheetCreate({
         left: 0,
         position: 'absolute',
     },
-
-
-    // R3 
-    guther: {
-        paddingHorizontal: 20
-    },
     pageTitle: {
         backgroundColor: 'transparent',
         paddingTop: 20,
