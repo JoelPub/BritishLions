@@ -48,5 +48,122 @@ module.exports = styleSheetCreate({
     width: 28,
     height: 28,
     fontSize:28
+  },
+  button: {
+    height: 50,
+    backgroundColor: styleVar.brandLightColor,
+    marginTop: 35,
+    marginBottom: 35,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  scoreCardShare:{
+    backgroundColor:'rgb(255,230,0)',
+    flexDirection:'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 24
+  },
+  scoreCardShareText:{
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 24,
+    lineHeight: 24,
+    color: 'rgb(95,96,98)',
+    paddingTop:5
+  },
+  scoreCardShareIcon:{
+    marginLeft: 5,
+    width: 34,
+    color: 'rgb(95,96,98)',
+    fontSize: 26,
+    marginTop: -3
+  },
+  prideContainer:{
+    backgroundColor: 'rgb(239,239,240)'
+  },
+  prideTitleView:{
+    flex: 1,
+    width: null,
+    height: null,
+  },
+  prideTitleText:{
+    color:'rgb(175,0,30)',
+    fontFamily: styleVar.fontCondensed,
+    backgroundColor: 'transparent',
+    fontSize:28,
+    height: 59,
+    textAlign:'center',
+    paddingTop: 25,
+  },
+  groupActionView:{
+    backgroundColor: 'rgb(255,255,255)',
+    height: 190
+  },
+  btnFavourites: {
+    backgroundColor:'rgb(175,0,30)',
+    flexDirection:'row',
+    marginTop: 0,
+    marginBottom: 0,
+    paddingTop:5,
+    android:{
+      paddingTop: 0,
+    }
+  },
+  btnFavouritesIcon: {
+    marginBottom: 5,
+    color: 'rgb(255,204,40)',
+    fontSize:24,
+    android:{
+      marginBottom: 1,
+    }
+  },
+  btnFavouritesLabel: {
+    textAlign:'left',
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 24,
+    lineHeight: 24,
+    paddingTop:5,
+    marginLeft: 5
+  },
+  grayBackgroundColor:{
+    backgroundColor: 'rgb(71,72,73)',
+    marginTop: 30
+  },
+  groupList:{
+    backgroundColor: 'rgb(239,239,240)',
+    paddingBottom:35
+  },
+  groupName:{
+    height: 60,
+    backgroundColor: 'rgb(255,255,255)',
+    marginTop: 35,
+    marginLeft: 30,
+    marginRight: 30,
+    justifyContent:'center',
+  },
+  groupNameText:{
+    marginLeft: 30,
+    fontFamily: styleVar.fontGeorgia,
+    color:'black',
+    fontSize: 18,
+    lineHeight: 18,
+  },
+  playIcon:{
+    color: 'rgb(208,7,42)',
+    android: {
+      marginTop: 13
+    },
+    position: 'absolute',
+    right: 8,
+    top: 16,
+    width: 24,
+    height: 24,
+    fontSize:24
+  },
+  CompetitionCenterView:{
+    height: 150,
+    backgroundColor: 'rgb(255,255,255)',
+    paddingTop: 50
   }
+
 })

@@ -21,6 +21,7 @@ import LionsHeader from '../../global/lionsHeader'
 import LionsFooter from '../../global/lionsFooter'
 import GrayContainer from '../../global/GrayContainer'
 import ExpertRank from  '../../global/ExpertRank'
+import RankList from  '../../global/RankingList'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
@@ -33,9 +34,74 @@ import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import PlayerScore from '../../global/playerScore'
+const ButtonWithIcon = (props) => {
+  let {iconName,title,style,onPress} = props
+  let styleMore = style ? style : null
+  return (
+    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} >
+      <Icon name={iconName} style={styles.btnFavouritesIcon} />
+      <Text style={styles.btnFavouritesLabel}>
+        {title}
+      </Text>
+    </ButtonFeedback>
+  )
+}
 
+const  ShareButton = () => {
+  return (
+    <ButtonFeedback
+      rounded label='Share'
+      disabled = {true}
+      style={[styles.button,styles.scoreCardShare]}>
+      <Text  style={styles.scoreCardShareText}>SHARE</Text>
+      <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
+    </ButtonFeedback>
+  )
+}
+const MyPride = () => {
+  return (
+    <View style={styles.prideContainer}>
+      <View style={styles.prideTitleView}>
+        <Text style={styles.prideTitleText}>MY PRIDE</Text>
+      </View>
+      <GroupAction />
+      <GroupNameList />
+    </View>
+  )
+}
+const GroupAction = () => {
+  return (
+    <View style={styles.groupActionView}>
+      <ButtonWithIcon  iconName  = {'md-star'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-star'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
+    </View>
+  )
+}
+const GroupName = () => {
+  return (
+    <ButtonFeedback style={styles.groupName}>
+      <Text style={styles.groupNameText}>Group Name</Text>
+      <Icon name='md-star' style={styles.playIcon} />
+    </ButtonFeedback>
+  )
+}
+const GroupNameList = () => {
+  return (
+    <View style={styles.groupList}>
+      <GroupName />
+      <GroupName />
+      <GroupName />
+    </View>
+  )
+}
+const CompetitionCenter = () => {
+  return (
+    <View style={styles.CompetitionCenterView}>
+      <ButtonWithIcon  iconName  = {'md-star'} title = {'COMPETITION CENTRE'} />
+    </View>
+  )
+}
 class CompetitionLadder extends Component {
-
   constructor (props) {
     super(props)
     this._scrollView = ScrollView
@@ -44,16 +110,6 @@ class CompetitionLadder extends Component {
 
     }
   }
-
-  _showError(error) {
-    Alert.alert(
-      'An error occured',
-      error,
-      [{text: 'Dismiss'}]
-    )
-  }
-
-
   componentDidMount() {
   }
 
@@ -74,9 +130,12 @@ class CompetitionLadder extends Component {
             <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
             <GrayContainer >
               <ExpertRank />
-
+              <RankList />
+              <ShareButton />
             </GrayContainer>
-            <LionsFooter isLoaded={true} />
+            <MyPride />
+            <CompetitionCenter />
+          <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
@@ -92,7 +151,6 @@ function bindAction(dispatch) {
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
   }
 }
-
 export default connect((state) => {
   return {
     route: state.route,
