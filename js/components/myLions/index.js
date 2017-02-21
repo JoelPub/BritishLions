@@ -160,7 +160,7 @@ class MyLions extends Component {
     }
     getRating(){
         let optionsSquadRating = {
-            url: 'https://api.myjson.com/bins/mtxtx',
+            url: 'https://api.myjson.com/bins/16284p',
             data: {id:this.state.userID},
             onAxiosStart: null,
             onAxiosEnd: null,
@@ -172,7 +172,7 @@ class MyLions extends Component {
                             "highLight":3,
                             "description": [
                             "WELL DONE!",
-                            "you picked 30/35 players from the official British & Irish Lions 2017 Squad.",
+                            `you picked ${res.data.percentage} players from the official British & Irish Lions 2017 Squad.`,
                             "you have earned the rank of:",
                             strToUpper(res.data.title),
                             "With the announcement of the official squad, we'ave updated My Lions with some exciting new gameplay features.",
