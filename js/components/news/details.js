@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView } from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -16,14 +16,44 @@ import htmlStyles from '../../themes/html-styles'
 import { shareTextWithTitle } from '../utility/socialShare'
 import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
+import loader from '../../themes/loader-position'
 
 
 class NewsDetails extends Component {
     constructor(props) {
-         super(props)
-         this._scrollView = ScrollView
+        super(props)
+        this.state={
+          height:0,
+          isLoaded:false
+        }
+        this._scrollView = ScrollView
+        this.webview = WebView
+        this.stopPost=false
     }
-    
+    onLoadRequest(e){
+        if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
+            this.goToURL(e.url)
+        }
+    }
+    goToURL(url) {
+    Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                this.webview.stopLoading()
+                Linking.openURL(url)
+            } else {
+                console.log('This device doesnt support URI: ' + url)
+            }
+        })
+    }
+    postMessage = () => {
+        if (this.webview) {
+          this.webview.postMessage('window.postMessage(document.body.clientHeight)')
+        }
+      }
+    onMessage = e => {
+        this.stopPost=true
+        this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
+      }
     render() {
         return (
             <Container theme={theme}>
@@ -69,14 +99,28 @@ class NewsDetails extends Component {
                             </ButtonFeedback>
                         </View>
 
-                        <View style={styles.content}>
-                            <HTMLView
-                               value={this.props.article.article}
-                               stylesheet={htmlStyles}
-                             />
-                            <PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
-                        </View>
 
+                            <View style={[styles.description,{height:this.state.height}]}>
+                                <WebView
+                                    style={{height:this.state.height}}
+                                    bounces={false}
+                                    ref={(webview) => { this.webview = webview }}
+                                    scrollEnabled={false}
+                                    source={{html:`<!DOCTYPE html><html><head><title>XHTML Tag Reference</title><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}p{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);margin-bottom: 20px;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.article.article}</body></html>`}}
+                                    onNavigationStateChange={(e)=>{
+                                            if (!this.stopPost) this.postMessage()
+                                            this.onLoadRequest(e)
+                                    }}
+                                    injectedJavaScript="document.addEventListener('message', function(e) {eval(e.data);});"
+                                    onMessage={this.onMessage}
+                                />
+                                {
+                                this.state.isLoaded&&<PaginationButton style={styles.paginateButton} label='NEXT STORY' next={true} data={[this.props.article.id, 'newsDetails', false]} />
+                                }
+                            </View>
+                            {
+                                !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='large' />
+                            }
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter/>

@@ -31,6 +31,7 @@ import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAs
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
+import { strToUpper } from '../utility/helper'
 
 class MyLionsPlayerList extends Component {
 
@@ -149,11 +150,13 @@ class MyLionsPlayerList extends Component {
     }
 
     _showError(error) {
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
 
     _getFilteredPosition=(value)=>{
@@ -214,6 +217,9 @@ class MyLionsPlayerList extends Component {
                     players[index].image = {uri:image}
                 } 
             }
+            if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8') players[index].position='Back Row'
+            if(strToUpper(item.position)==='Utility Back') players[index].position='Full Back'
+
             
         })
         return players

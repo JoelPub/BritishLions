@@ -9,6 +9,8 @@ const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
 const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=408'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
+const SOTIC_GET_SUPPLIED_IMAGE_URL = '/feeds/app/graphics_json.php'
+const SOTIC_GET_SUPPLIED_IMAGE_URL_NAME = 'SoticSuppliedImage'
 
 const EYC3_AUTO_POPULATED_SQUAD_URL = '/getAutoPopulatedSquad'
 const EYC3_AUTO_POPULATED_SQUAD_URL_NAME = 'EYC3AutoPopulatedSquad'
@@ -38,6 +40,8 @@ export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
             return SOTIC_BASE_URL + SOTIC_GET_PLAYER_URL
+        case SOTIC_GET_SUPPLIED_IMAGE_URL_NAME:
+            return SOTIC_BASE_URL + SOTIC_GET_SUPPLIED_IMAGE_URL
         case EYC3_AUTO_POPULATED_SQUAD_URL_NAME:
             return EYC3_BASE_URL + EYC3_AUTO_POPULATED_SQUAD_URL
         case EYC3_GET_MY_SQUAD_RATING_URL_NAME:
@@ -66,6 +70,7 @@ export function getAssembledUrl(urlName) {
 }
 export const actionsApi = {
     soticGetPlayer: getAssembledUrl(SOTIC_GET_PLAYER_URL_NAME),
+    soticGetSuppliedImage: getAssembledUrl(SOTIC_GET_SUPPLIED_IMAGE_URL_NAME),
     eyc3AutoPopulatedSquad: getAssembledUrl(EYC3_AUTO_POPULATED_SQUAD_URL_NAME),
     eyc3GetMySquadRating: getAssembledUrl(EYC3_GET_MY_SQUAD_RATING_URL_NAME),
     eyc3GetPlayersProfile: getAssembledUrl(EYC3_GET_PLAYER_PROFILE_URL_NAME),

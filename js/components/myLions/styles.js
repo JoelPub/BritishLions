@@ -12,6 +12,9 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
+    guther: {
+        paddingHorizontal: 20
+    },
     header: {
         backgroundColor: styleVar.brandPrimary,
         height: null,
@@ -509,7 +512,7 @@ module.exports = styleSheetCreate({
         flex:1
     },
     onboardingContent:{
-        marginTop: 0
+        marginTop: 71
     },
     btnClose: {
         backgroundColor:'rgba(38, 38, 38, 0.20)',
@@ -528,11 +531,10 @@ module.exports = styleSheetCreate({
         textAlign:'center'
     },
     onboardingTitle: {
-        marginTop: 71,
         textAlign: 'center',
         fontSize: 28,
         lineHeight: 28,
-        marginBottom: 4,
+        marginBottom: 10,
         fontFamily: styleVar.fontCondensed,
         backgroundColor: 'transparent',
     },
@@ -548,6 +550,7 @@ module.exports = styleSheetCreate({
     onboardingPageText: {
         fontFamily: 'Helvetica Neue',
         fontSize: 16,
+        lineHeight:24,
         textAlign: 'center',
         marginBottom: 18
     },
@@ -929,6 +932,9 @@ module.exports = styleSheetCreate({
         marginVertical:54,
         backgroundColor:'transparent',
     },
+    modalSquadView:{
+        marginTop:49
+    },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
         fontSize: 28,
@@ -959,7 +965,15 @@ module.exports = styleSheetCreate({
         fontSize:28,
         lineHeight:28,
         marginTop:28,
-        textAlign:'center'
+        textAlign:'center',
+        android: {
+            marginBottom: 10
+        }
+    },
+    modalTitleTextCenterReplacePlayer: {
+        android: {
+            marginBottom: 10
+        }
     },
     modalCreateGroupTitle:{
         fontFamily: styleVar.fontCondensed,
@@ -1085,6 +1099,12 @@ module.exports = styleSheetCreate({
         fontSize:16,
         textAlign:'center'
     },
+    modalTextCenterUppCase: {
+        lineHeight: 20,
+        android: {
+            lineHeight: 23
+        }
+    },
     modalBtnWrapper:{
         marginTop:15,
         flexDirection:'row',
@@ -1102,6 +1122,9 @@ module.exports = styleSheetCreate({
     },
     btnConfirmGreen:{
         backgroundColor: 'rgb(9,127,64)',
+    },
+    btnCancelBlack:{
+        backgroundColor: 'rgb(0,0,0)',
     },
     imgExpertHeader: {
         width: (styleVar.deviceWidth / 3),
@@ -1167,15 +1190,15 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         textAlign:'center',
         paddingTop: 15,
-        width: 121,
+        paddingHorizontal: 20,
         android: {
             paddingTop: 14
         }
     },
     viewExpertProfileDescription: {
         fontFamily: styleVar.fontGeorgia,
+        paddingHorizontal: 20,
         fontSize: 18,
-        width: 226,
         lineHeight:20,
         textAlign:'center',
         android: {
@@ -1227,6 +1250,9 @@ module.exports = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20
+    },
+    modalConfirmBtnBlack: {
+         backgroundColor: 'rgb(0,0,0)'
     },
     btnFavIcon:{
         color:'rgb(255,204,40)'

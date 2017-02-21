@@ -33,8 +33,11 @@ function errorHandler(error, opt) {
 
         switch(statusCode) {
             case 500: // Internal Server Error (server error)
+                errorDescription = ''
+                break
             case 403: // Forbidden (SSL required)
-                errorDescription = 'Something went wrong with your request. Please try again later.'
+                //errorDescription = 'Something went wrong with your request. Please try again later.' + error.response.data.error
+                errorDescription = ''
                 break
             case 401:
                 errorDescription = 'Authorization failed. Please try again later.'
@@ -57,11 +60,11 @@ function errorHandler(error, opt) {
 	                    errorDescription = errorSlice(modelState)
 	                }
 	            }
-							case 404:
-								if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
-									errorDescription = 'You have not yet registered as a user, please join the pride first.'
-								}
-								break
+            case 404:
+                if (opt.url=='https://www.api-ukchanges2.co.uk/api/password/reset'){
+                    errorDescription = 'You have not yet registered as a user, please join the pride first.'
+                }
+                break
         }
 
         if(statusCode === 401) {
@@ -75,25 +78,22 @@ function errorHandler(error, opt) {
             }
         }
 	}else{
-	    opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    //opt.onError('Something went wrong with your request. Please check your internet and try again later.')
+	    console.log('!!!Something went wrong with the request...........', opt)
 	}
 }
 
 
-export function callApi(opt, axiosInstance) {
+export function callApi(opt, axiosInstance, tryTimes = 0) {
 	let isInternetConnected = false
-
+    tryTimes += 1
 	// use for loading, initial state
 	if (opt.onAxiosStart) {
 		opt.onAxiosStart()
 	}
 
-    //console.log('getting connectionInfo... ')
-
 	NetInfo.fetch().done((connectionInfo) => {
-		//console.log('connectionInfo service: ', connectionInfo)
 		let netInfos = connectionInfo.toLowerCase()
-        console.log('netInfos: ', netInfos)
 		if(netInfos === 'unknown' || netInfos === 'none') {
 			// No internet connection
 
@@ -102,21 +102,26 @@ export function callApi(opt, axiosInstance) {
 			}
 
 			if (opt.onError) {
-				opt.onError('Please make sure that you\'re connected to the network.')
+				//
+				if(tryTimes < 5){
+				    setTimeout(() => callApi(opt, axiosInstance, tryTimes), 5000)
+				}
+				else
+				{
+				    opt.onError('Please make sure that you\'re connected to the network.')
+				}
 			}
 		} else {
 			// There's an internet connection
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-				 //console.log('%%%post,',opt.url )
-				 //console.log('%%%postData,',JSON.stringify(opt.data) )
+                console.log("qs.stringify(opt.data)", opt.data)
+                console.log("opt.isQsStringify", opt.isQsStringify)
 				axiosInstance.post(
 				    opt.url,
-				    qs.stringify(opt.data)
+				    opt.isQsStringify ? qs.stringify(opt.data) : opt.data
 				).then(function(res) {
-					// console.log('%%%success',res)
-					// console.log('%%%success')
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -128,7 +133,6 @@ export function callApi(opt, axiosInstance) {
 						opt.onSuccess(res)
 					}
 				}).catch(function(error) {
-					console.log('%%%error',error)
 					isInternetConnected = true
 
 					// use for loading, after state
@@ -148,7 +152,7 @@ export function callApi(opt, axiosInstance) {
 			} else {
 				axiosInstance.get(
 				    opt.url,
-				    qs.stringify(opt.data)
+				    opt.isQsStringify ? qs.stringify(opt.data) : opt.data
 				).then(function(res) {
 					isInternetConnected = true
 
@@ -216,7 +220,8 @@ export function service(options) {
 		onAxiosEnd: null,
 		isRequiredToken: false,
 		isRefreshToken: false,
-		channel: ''
+		channel: '',
+		isQsStringify:true
 	}
 
 	let opt = Object.assign(defaults, options)
@@ -240,7 +245,6 @@ export function service(options) {
 				})
 
 				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
-				console.log('getting here 111')
 				callApi(opt, axiosInstance)
 			} else {
 				// Sign In is Required
@@ -259,7 +263,6 @@ export function service(options) {
 		axios.interceptors.request.use((config) => {
 			return config
 		})
-        console.log('getting here 222')
 		callApi(opt, axios)
 	}
 }

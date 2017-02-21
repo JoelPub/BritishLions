@@ -146,7 +146,7 @@ class LionsSidebar extends Component {
                     removeToken()
                     removeGoodFormFavoritePlayerList()
                     removeUserCustomizedSquad()
-                    this.navigateTo('news')
+                    this.navigateTo('landing')
                 }},
                 {text: 'No'}
             ]

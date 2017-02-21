@@ -36,13 +36,7 @@ export default class MyLionsPlayerListFilter extends Component {
                                <ButtonFeedback onPress={()=>this.props.getFilteredPosition('lock')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'lock')]}>
                                    <Text style={styles.btnFilterTxt}>LOCK</Text>
                                </ButtonFeedback>
-                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('flanker')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'flanker')]}>
-                                    <Text style={styles.btnFilterTxt}>FLANKER</Text>
-                               </ButtonFeedback>
-                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('no. 8')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'no. 8')]}>
-                                    <Text style={styles.btnFilterTxt}>NUMBER 8</Text>
-                               </ButtonFeedback>
-                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('back row')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'back row')]}>
+                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('Back Row')}  style={[styles.btnFilterLeft, this._setStyle(this.props.filterBy === 'Back Row')]}>
                                    <Text style={styles.btnFilterTxt}>BACK ROW</Text>
                               </ButtonFeedback>
                            </View>
@@ -62,11 +56,8 @@ export default class MyLionsPlayerListFilter extends Component {
                               <ButtonFeedback onPress={()=>this.props.getFilteredPosition('centre')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'centre')]}>
                                    <Text style={styles.btnFilterTxt}>CENTRE</Text>
                               </ButtonFeedback>
-                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('full back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'full back')]}>
+                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('Full Back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'Full Back')]}>
                                    <Text style={styles.btnFilterTxt}>FULL-BACK</Text>
-                              </ButtonFeedback>
-                              <ButtonFeedback onPress={()=>this.props.getFilteredPosition('utility back')}  style={[styles.btnFilterRight, this._setStyle(this.props.filterBy === 'utility back')]}>
-                                   <Text style={styles.btnFilterTxt}>UTILITY BACK</Text>
                               </ButtonFeedback>
                            </View>
                        </View>

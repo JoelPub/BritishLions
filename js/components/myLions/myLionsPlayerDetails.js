@@ -34,8 +34,58 @@ import ProfileModel from 'modes/Players/Profile'
 import FigureListModel from  'modes/Players/Profile/SeasonList/Season/FigureList'
 import FigureModel from 'modes/Players/Profile/SeasonList/Season/FigureList/Figure'
 import SquadModel from  'modes/Squad'
+import SquadShowModel from  'modes/Squad/SquadShowModel'
 import Immutable, { Map, List } from 'immutable'
 import { strToUpper } from '../utility/helper'
+import ImagePlaceholder from '../utility/imagePlaceholder'
+import Swiper from 'react-native-swiper'
+import SquadList from '../global/squadList'
+import { setSquadToShow,setSquadData } from '../../actions/squad'
+import {removePlayer,addPlayer,replacePlayer,checkFullSquad} from '../global/squadToShow'
+
+const AddPlayerCell = ({pos,onPress})=>(
+    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
+        <View style={styles.posAddWrapper}>
+            <Icon name='md-person-add' style={styles.addPlayerIcon} />
+        </View>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText}>ADD</Text>
+                <Text style={styles.playerNameText}>
+                    { pos.toUpperCase() === 'WILDCARD'? 'STAR' : pos.toUpperCase() }
+                </Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
+const PlayerImgCell =({data,onPress}) =>(
+    <ButtonFeedback onPress={onPress} style={styles.posBtn}>
+        <ImagePlaceholder 
+            width = {styleVar.deviceWidth / 3}
+            height = {styleVar.deviceWidth / 3}>
+            <Image transparent
+                resizeMode='contain'
+                source={data.image}
+                style={styles.playerImage} />
+        </ImagePlaceholder>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
+            </View>
+        </View>
+    </ButtonFeedback>
+    )
+const PositionTitle =({pos,data}) =>(
+    <View style={styles.posTitle}>
+      <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
+      <Text style={styles.posTitleRight}>
+       {data.filter((value)=>value!==null).length} / {data.length}
+      </Text>
+    </View>
+)
 
 const PositionButton=({position,posToAdd,onPress,subject,data,total})=>(
     <ButtonFeedback rounded onPress={onPress}  style={styles.modalBtnPosition}>
@@ -58,6 +108,8 @@ class MyLionsPlayerDetails extends Component {
         this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.playerPos=null,
+        this.seq=0,
         this.state = {
             modalVisible: false,
             isFav : this.props.detail.isFav,
@@ -67,10 +119,10 @@ class MyLionsPlayerDetails extends Component {
             btnSubmit:'',
             modalContent:this.getModalContent(),
             squadDataFeed: SquadModel().toJS(),
-
             isFavPlayerUpdating: false,
             isMySquadPlayerUpdating: false,
-            isMySquadPlayerSubmitting: false
+            isMySquadPlayerSubmitting: false,
+            fullSquad:true
         }
     }
 
@@ -100,6 +152,41 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
                 break
+            case 'replace' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={[styles.modalTextCenter, styles.modalTextCenterUppCase]}>{subtitle}</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modlaBtnConfirm,styles.btnCancelBlack]} />
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(true,'squad','REPLACE PLAYER')}  label='PROCEED' style={styles.modlaBtnConfirm}  />
+                        </View>
+                    </View>
+                )
+                break
+            case 'squad' :
+                return(
+                    <ScrollView style={styles.modalSquadView}>
+                        <Text style={[styles.modalTitleTextCenter, styles.modalTitleTextCenterReplacePlayer]}>{title}</Text>
+                        <SquadList squadDatafeed={this.props.squadToShow} pressImg={this._replacePlayer.bind(this)} pressAdd={this._updateSquad.bind(this)}/>
+                        <View style={styles.guther}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={[styles.modalConfirmBtn, styles.modalConfirmBtnBlack]} />
+                        </View>
+                    </ScrollView>
+                )
+                break
+            case 'confirm' :
+                return(
+                    <View style={styles.modalViewWrapper}>
+                        <Text style={styles.modalTitleTextCenter}>{title}</Text>
+                        <Text style={[styles.modalTextCenter, styles.modalTextCenterUppCase]}>{subtitle}</Text>
+                        <View style={styles.modalBtnWrapper}>
+                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='CANCEL' style={styles.modlaBtnConfirm} />
+                            <ButtonFeedback rounded onPress={()=>this._updateSquad('replace',this.playerPos,0,this.seq)}  label='CONFIRM' style={[styles.modlaBtnConfirm,styles.btnConfirmGreen]}  />
+                        </View>
+                    </View>
+                    )
+                break
             case 'message' :
                 title = title === 'WIDECARD'? 'STAR' : title
 
@@ -115,24 +202,24 @@ class MyLionsPlayerDetails extends Component {
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>To provide an overall player rating EYC3 took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
-                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
+                        <Text style={styles.modalTextRN}>To provide an overall player rating EY took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
+                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
                 
                         <Text style={styles.modalTitleText}>Recent Performance</Text>
                         <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
                 
                         <Text style={styles.modalTitleText}>Attack</Text>
-                        <Text style={styles.modalTextRN}>Metres – the average number of metres gained from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Lineouts won – the average number of lineouts won from overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Scrums won – the average number of scrums won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Clean breaks – the average number of clean breaks in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Offloads – the average number of offloads in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Tries – the average number of tries scored in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Metres – the average number of metres gained from overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Lineouts won – the average number of lineouts won from overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Scrums won – the average number of scrums won in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Clean breaks – the average number of clean breaks in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Offloads – the average number of offloads in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Tries – the average number of tries scored in overall games started in the last two seasons.</Text>
                 
                         <Text style={styles.modalTitleText}>Defence</Text>
-                        <Text style={styles.modalTextRN}>Missed tackles – the average number of tackles missed in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Turnovers won – the average number of turnovers won in overall games started in the last two seasons</Text>
-                        <Text style={styles.modalTextRN}>Collection success – the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons</Text>
+                        <Text style={styles.modalTextRN}>Tackles – The average number of successful tackles made in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Turnovers won – the average number of turnovers won in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTextRN}>Collection success – the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons.</Text>
                     </ScrollView>
                 )
                 break
@@ -142,6 +229,31 @@ class MyLionsPlayerDetails extends Component {
                     </View>
                 )
         }
+    }
+    _replacePlayer(item, route,playerPos,max,seq) {
+        this.playerPos=playerPos
+        this.seq=seq
+        this._setModalVisible(true,'confirm','REPLACE PLAYER WITH',this.playerName)
+        // this._updateSquad('replace',playerPos,max,seq)
+    }
+
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k]!==undefined)
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
     }
 
     _replaceRoute(route) {
@@ -167,12 +279,15 @@ class MyLionsPlayerDetails extends Component {
         )
     }
 
+
     _showError(error) {
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+         if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
 
     _myLions(route) {
@@ -184,6 +299,8 @@ class MyLionsPlayerDetails extends Component {
     }
     
     componentDidMount() {
+        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        console.log('!!!Details componentDidMount')
         // Let's have a parallel request
 
         setTimeout(()=>{
@@ -197,6 +314,12 @@ class MyLionsPlayerDetails extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+
+    componentWillReceiveProps(nextProps,nextState) {
+        console.log('!!!details componentWillReceiveProps')
+        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+        // console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
     }
 
     _updateFavStatus() {
@@ -422,39 +545,53 @@ class MyLionsPlayerDetails extends Component {
     }
 
     updateSquad(){
-        this.state.inSquad&&this.props.positionToRemove!==''?this._setModalVisible(true,'remove'):this._setModalVisible(true,'add')
+        if(this.state.inSquad&&this.props.positionToRemove!=='') {
+            this._setModalVisible(true,'remove')
+        }
+        else {
+            this.fullSquad=checkFullSquad(this.props.squadToShow)
+            console.log('this.fullSquad',this.fullSquad)
+            this.fullSquad?this._setModalVisible(true,'replace','SQUAD FULL','CANNOT ADD NEW PLAYER AS YOUR SQUAD IS FULL. \n\n PLEASE SELECT A PLAYER TO REPLACE.'):this._setModalVisible(true,'add')
+        }
     }
 
-    _updateSquad(type,position,max){
-
+    _updateSquad(type,position,max,seq){
         let update=true
-        getUserCustomizedSquad().then((catchedSquad)=>{
-            if(catchedSquad.auth){
-                if(catchedSquad.auth === 'Sign In is Required'){
-                    this.setState({ isMySquadPlayerSubmitting: false }, () => {
-                        this._signInRequired.bind(this)
-                    })
-                }
-            }else if(catchedSquad.error){
-                this.setState({ isMySquadPlayerSubmitting: false }, () => {
-                    this._showError(catchedSquad.error) // prompt error
-                })
-            }else{                
-                    let tmpFeed=SquadModel.format(eval(`(${catchedSquad.data})`))
+        // getUserCustomizedSquad().then((catchedSquad)=>{
+        //     if(catchedSquad.auth){
+        //         if(catchedSquad.auth === 'Sign In is Required'){
+        //             this.setState({ isMySquadPlayerSubmitting: false }, () => {
+        //                 this._signInRequired.bind(this)
+        //             })
+        //         }
+        //     }else if(catchedSquad.error){
+        //         this.setState({ isMySquadPlayerSubmitting: false }, () => {
+        //             this._showError(catchedSquad.error) // prompt error
+        //         })
+        //     }else{ 
+                    // console.log('details this.props.squadData',this.props.squadData)               
+                    let tmpFeed=SquadModel.format(eval(`(${this.props.squadData})`))
                     let inSquad = false
                     if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
                         if(List.isList(value)) {
                             if(value.indexOf(this.playerid)>-1){
                                 inSquad=true
-                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove))  tmpFeed=tmpFeed.update(index,val=>{
-                                                                                                                        return value.splice(value.indexOf(this.playerid),1)
-                                                                                                                    })
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {  
+                                    tmpFeed=tmpFeed.update(index,val=>{
+                                        return value.splice(value.indexOf(this.playerid),1)
+                                    })
+                                    this.props.setSquadToShow(removePlayer(this.props.squadToShow,index,this.playerid))
+                                }
                             }
                         }
                         else {
                             if(value===this.playerid) {
                                 inSquad=true
-                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove))  tmpFeed=tmpFeed.set(index,'')
+                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove)) {
+                                    console.log('!!!tmpFeed',tmpFeed.toJS())
+                                    tmpFeed=tmpFeed.set(index,'')
+                                    this.props.setSquadToShow(removePlayer(this.props.squadToShow,index))
+                                } 
                             }
                         }
                     })
@@ -463,42 +600,72 @@ class MyLionsPlayerDetails extends Component {
                         if(List.isList(tmpFeed.get(position))) {
                             if(tmpFeed.get(position).count()<max) {
                                 tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.playerid))
+                                this.props.setSquadToShow(addPlayer(this.props.squadToShow,position,this.props.detail,this.playerid))
                             }
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                Alert.alert(
-                                 'MySquad List Update',
-                                 'Position Is Full',
-                                 [{ text: 'OK' }]
-                                )
+                                this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             }
                         }
                         else{
                             if(tmpFeed.get(position).trim()==='') {
                                 tmpFeed=tmpFeed.set(position,this.playerid)
+                                this.props.setSquadToShow(addPlayer(this.props.squadToShow,position,this.props.detail))
                             }
                             else {
                                 update=false
                                 this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
-                                Alert.alert(
-                                   'MySquad List Update',
-                                   'Position Is Full',
-                                   [{ text: 'OK' }]
-                                )
+                                let star = ''
+                                star = position ==='widecard'?'STAR':position.toUpperCase()
+                                this._setModalVisible(true,'replace',`${star} POSITION FULL`,`THE ${star} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
                             }
                         }
                         
                     }
+                    
+
+                    if(type==='replace') {
+                        if(List.isList(tmpFeed.get(position))) {
+                            // if(tmpFeed.get(position).count()<max) {
+                                //console.log('tmpFeed',tmpFeed.toJS())
+                                //console.log('position',position)
+                                //console.log('seq',seq)
+                                tmpFeed=tmpFeed.update(position,val=>{
+                                    val=val.set(seq,this.playerid)
+                                    return val
+                                })
+                                //console.log('tmpFeed',tmpFeed.toJS())
+                                this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,this.playerid,seq))
+                            // }
+                            // else {
+                            //     update=false
+                            //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
+                            // }
+                        }
+                        else{
+                            // if(tmpFeed.get(position).trim()==='') {
+                                tmpFeed=tmpFeed.set(position==='wildcard'?'widecard':position,this.playerid)
+                                this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,null,seq))
+                            // }
+                            // else {
+                            //     update=false
+                            //     this.setState({ squadDataFeed:tmpFeed.toJS(), isMySquadPlayerSubmitting: false })
+                            //     this._setModalVisible(true,'replace',`${position?position.toUpperCase():''} POSITION FULL`,`THE  ${position?position.toUpperCase():''} POSITION IS CURRENTLY FULLY ALLOCATED. \n\n PLEASE SELECT A PLAYER TO REPLACE.`)
+                            // }
+                        }
+                        
+                    }
                     if(update){
-                        this._updateSquadPlayer(tmpFeed,position)
+                        this._updateSquadPlayer(tmpFeed,position, type)
                     }
 
-            }
-        })
+            // }
+        // })
     }
 
-    _updateSquadPlayer(squadData,position) {
+    _updateSquadPlayer(squadData,position, type='') {
         this.setState({ isMySquadPlayerSubmitting: true, btnSubmit:'SQUAD' },()=>{
             this._setModalVisible(false)
         })
@@ -516,8 +683,17 @@ class MyLionsPlayerDetails extends Component {
             },
             onSuccess: (res) => {
                 let successDesc = this.state.inSquad&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+                position = position?position.toUpperCase() : ''
+
+                if (type === 'replace') {
+                    successDesc = 'PLAYER SUCCESSFULLY REPLACED '
+                    position = ''
+                }
+
                 this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
-                    this._setModalVisible(true,'message',position?position.toUpperCase():'',successDesc,'OK')
+                    this._setModalVisible(true, 'message', position, successDesc, 'OK')
+                    //console.log('!!!squadData',squadData)
+                    this.props.setSquadData(JSON.stringify(squadData))
                     removeUserCustomizedSquad()                    
                     this.props.setPositionToAdd('')
                     this.props.setPositionToRemove('')
@@ -543,7 +719,7 @@ class MyLionsPlayerDetails extends Component {
         let buttonText = ''
         
         if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
-            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'ADDING..'
+            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'UPDATING..'
         } else {
             buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
         }
@@ -684,7 +860,9 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position))
+        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 
@@ -693,6 +871,8 @@ export default connect((state) => {
         detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
         positionToAdd: state.position.positionToAdd,
-        positionToRemove: state.position.positionToRemove
+        positionToRemove: state.position.positionToRemove,
+        squadToShow: state.squad.squadToShow,
+        squadData: state.squad.squadData,
     }
 }, bindAction)(MyLionsPlayerDetails)

@@ -204,5 +204,8 @@ module.exports = styleSheetCreate({
     },
     paginateButton: {
         marginTop: 40
-    }
+    },
+    description: {
+        padding: 20
+    },
 })

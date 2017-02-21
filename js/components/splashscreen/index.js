@@ -8,7 +8,7 @@ export default class SplashPage extends Component {
         var navigator = this.props.navigator
         setTimeout (() => {
             navigator.replace({
-                id: 'news',
+                id: 'landing',
             })
         }, 3500)
     }

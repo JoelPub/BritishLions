@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
-import { isFirstLogIn } from '../utility/asyncStorageServices'
+import { isFirstLogIn, getUserId } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -26,9 +26,10 @@ import Data from '../../../contents/my-lions/onboarding/data'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
-
 import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
+import { service } from '../utility/services'
+import { strToUpper } from '../utility/helper'
 
 class MyLions extends Component {
 
@@ -40,7 +41,8 @@ class MyLions extends Component {
             modalCreateGroupVisible: false,
             swiperWindow: styleVar.deviceHeight,
             currentPage: 0,
-            isLoaded:true
+            isLoaded:true,
+            userID:'',
         }
         this.totalPages = 3
         this.pageWindow=[]
@@ -60,7 +62,10 @@ class MyLions extends Component {
         this._setModalVisible(false)
         this.props.drillDown({}, 'myLionsSquad')
     }
-   //  R2
+    // R2
+    _myBrowse = () => {
+        this.props.drillDown({}, 'myLionsUnionsList')
+    }
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
@@ -146,11 +151,53 @@ class MyLions extends Component {
             // check if user is first login
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
-                isFirst = isFirst === 'yes'? true : false
-                // isFirst = true
-                this.setState({ modalVisible: isFirst })
+                // isFirst = isFirst === 'yes'? true : false
+                isFirst = true
+                // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
+                if (isFirst) this.getRating()
             }).catch((error) => {})
         }
+    }
+    getRating(){
+        let optionsSquadRating = {
+            url: 'https://api.myjson.com/bins/mtxtx',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {                    
+                        Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
+                            "id": "0",
+                            "highLight":3,
+                            "description": [
+                            "WELL DONE!",
+                            "you picked 30/35 players from the official British & Irish Lions 2017 Squad.",
+                            "you have earned the rank of:",
+                            strToUpper(res.data.title),
+                            "With the announcement of the official squad, we'ave updated My Lions with some exciting new gameplay features.",
+                            "Click next to discover what's new in this version."
+                            ]
+                        })
+                        this.totalPages=Data.length
+                }
+                this.setState({modalVisible:true})
+            },
+            onError: ()=>{
+                this.setState({modalVisible:true})
+            },
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsSquadRating)        
+    }
+
+    componentWillMount() {
+        getUserId().then((userID) => {
+            this.setState({userID})
+        }).catch((error) => {})
     }
 
     componentWillUnmount() {
@@ -207,7 +254,6 @@ class MyLions extends Component {
                             <IosUtilityHeaderBackground />
 
                             <ScrollView style={styles.onboardingContent}>
-                                <Text style={styles.onboardingTitle}> WELCOME TO MY LIONS</Text>
                                 <Swiper
                                     height={this.state.swiperWindow}
                                     ref='swiper'
@@ -224,12 +270,12 @@ class MyLions extends Component {
                                                     {
                                                         item.description.map((desc,i)=>{
                                                             return(
-                                                                <Text key={i} style={styles.onboardingPageText}>{desc}</Text>
+                                                                <Text key={i} style={(i===0||item.highLight&&item.highLight===i)?styles.onboardingTitle:styles.onboardingPageText}>{desc}</Text>
                                                             )
                                                         })
                                                     }
                                                     {
-                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='BUILD MY SQUAD' onPress={() => this._mySquad()} style={[styles.button, styles.btnonBoardSquard]}  />
+                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='COMPETITION CENTRE' onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')} style={[styles.button, styles.btnonBoardSquard]}  />
                                                     }
                                                     <View style={styles.onboardingPageBtns}>
                                                         {
@@ -265,10 +311,9 @@ class MyLions extends Component {
                         callbackParent={() => this._setModalVisible(false)}>
                             <ScrollView style={styles.modalViewWrapper}>
                                 <Text style={styles.modalTitleText}>Overall Rating</Text>
-                                <Text style={styles.modalText}>To provide an overall player rating EYC3 have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
+                                <Text style={styles.modalText}>To provide an overall player rating EY have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
                                 
-                                <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EYC3 identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
-
+                                <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
 
                                 <Text style={styles.modalTitleText}>Recent Performance</Text>
                                 <Text style={styles.modalText}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
@@ -278,7 +323,7 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>A score out of 500 based on your selected players cohesion rating and individual player performances over the last two years and their most recent five games. Your squad rating will take into account all the ratings of your selected players and allows you to choose which players’ ratings you want to boost by nominating a Captain, Kicker and a Star player i.e the player you nominate as your best performer.</Text>
 
                                 <Text style={styles.modalTitleText}>Cohesion</Text>
-                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EYC3 has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 0 means that your players have played no games together and 100 means that your squad has played all their games together over the last two seasons.</Text>
+                                <Text style={styles.modalText}>Rugby is a team sport, the more familiar your players are with each other the better they will perform in a game. EY has developed an algorithm to decide the cohesion of your squad based on international and top tier club rugby games in the last two years. A rating out of 100 where 100 means all of your squad have started at least one game with every other player in your squad. There is an assumption that professional players will gel together in training camp so a baseline score of 50 is given.</Text>
 
                                 <Text style={styles.modalTitleText}>Attack and Defence</Text>
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>

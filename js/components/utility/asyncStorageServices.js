@@ -89,8 +89,8 @@ function generateLoginExpiration() {
     let dateExpired = getDateNow()
 
     // add 3hours and 50minutes, it will return date parse, no need to parse again
-    dateExpired = dateExpired.setHours(dateExpired.getHours() + 3, dateExpired.getMinutes() + 50)
-    //console.log('dateExpired: ', new Date(dateExpired))
+    dateExpired = dateExpired.setHours(dateExpired.getHours() +6*24+ 23, dateExpired.getMinutes() + 50)
+    // console.log('dateExpired: ', new Date(dateExpired))
     return dateExpired 
 }
 
