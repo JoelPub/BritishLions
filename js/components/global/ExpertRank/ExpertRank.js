@@ -57,7 +57,7 @@ const styles = styleSheetCreate({
     alignItems:'center',
     paddingTop: 15,
     android: {
-      paddingTop: 6
+      paddingTop: 18
     }
   },
   profileRankTextTitle: {
