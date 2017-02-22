@@ -3,21 +3,24 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { drillDown } from '../../actions/content'
-import { Image, Text, View, ScrollView, ListView } from 'react-native'
+import { drillDown } from '../../../actions/content'
+import { Image, Text, View, ScrollView, ListView,ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
-import theme from '../../themes/base-theme'
+import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
-import LoginRequire from '../global/loginRequire'
-import LionsHeader from '../global/lionsHeader'
-import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
-import ButtonFeedback from '../utility/buttonFeedback'
-import ImagePlaceholder from '../utility/imagePlaceholder'
-import shapes from '../../themes/shapes'
+import LoginRequire from '../../global/loginRequire'
+import LionsHeader from '../../global/lionsHeader'
+import EYSFooter from '../../global/eySponsoredFooter'
+import LionsFooter from '../../global/lionsFooter'
+import ButtonFeedback from '../../utility/buttonFeedback'
+import ImagePlaceholder from '../../utility/imagePlaceholder'
+import shapes from '../../../themes/shapes'
 import styles from './styles'
-import { styleSheetCreate } from '../../themes/lions-stylesheet'
-import styleVar from '../../themes/variable'
+import { styleSheetCreate } from '../../../themes/lions-stylesheet'
+import styleVar from '../../../themes/variable'
+import { service } from '../../utility/services'
+import {  getUserId } from '../../utility/asyncStorageServices'
+import loader from '../../../themes/loader-position'
 
 const locStyle = styleSheetCreate({
     gridBoxWrapper: {
@@ -92,26 +95,6 @@ const locStyle = styleSheetCreate({
     }
 })
 
-const dummyData = [
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/114146.jpg',  
-        isGameEnd: true,
-        desc: 'Lorem Ipsum dolor.'      
-    },
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/19930.jpg',
-        desc: 'Lorem I dolor sit am, consectetur pero kita maru.'    
-    },
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/19930.jpg',
-        desc: 'Lorem Ipsum dolor sit am, consectetur.'    
-    },
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/114146.jpg',
-        desc: 'Consectetur te.'     
-    }
-]
-
 
 class MyLionsCompetitionGameListing extends Component {
 
@@ -120,8 +103,17 @@ class MyLionsCompetitionGameListing extends Component {
         this.isUnMounted = false
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.state = {
-            gameList: this.ds.cloneWithRows(this._mapJSON(dummyData))
+            isLoaded: false,
+            userID:'',
+            gameList: this.ds.cloneWithRows([]),
+            isNetwork: true
         }
+    }
+
+    componentWillMount() {
+        getUserId().then((userID) => {
+            this.setState({userID})
+        }).catch((error) => {})
     }
 
     componentWillUnmount() {
@@ -130,6 +122,23 @@ class MyLionsCompetitionGameListing extends Component {
 
     _drillDown = (data, route) => {
         this.props.drillDown(data, route)
+    }
+
+    _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
 
     _mapJSON(data, colMax = 2) {
@@ -158,11 +167,11 @@ class MyLionsCompetitionGameListing extends Component {
                     {
                         rowData.map((item, key) => {
                             let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                            let triangleShape = item.isGameEnd? [shapes.triangle] : [shapes.triangle, locStyle.shapeGreen]
-                            let statusBoxText = item.isGameEnd? 'VIEW RESULTS' : 'PLAY'
+                            let triangleShape = item.IsPlayed? [shapes.triangle] : [shapes.triangle, locStyle.shapeGreen]
+                            let statusBoxText = item.IsPlayed? 'VIEW RESULTS' : 'PLAY'
                             let statusBox = [locStyle.statusBox, ]
-                            let statusBoxRoute = item.isGameEnd? 'myLionsCompetitionGameResults' : 'myLionsManageGame'
-                            if (!item.isGameEnd) {
+                            let statusBoxRoute = item.IsPlayed? 'myLionsCompetitionGameResults' : 'myLionsManageGame'
+                            if (!item.IsPlayed) {
                                 statusBox.push(locStyle.greenBg)
                             }
 
@@ -183,13 +192,13 @@ class MyLionsCompetitionGameListing extends Component {
                                             </View>
                                             <View style={locStyle.gridBoxTitle}>
                                                 <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
-                                                    GAME TITLE
+                                                    { item.title }
                                                 </Text>
                                                 <Text style={locStyle.gridBoxTitleSupportText} numberOfLines={3}>
-                                                    { item.desc }
+                                                    { item.description }
                                                 </Text>
 
-                                                <ButtonFeedback rounded style={[styles.roundButton, styles.roundButtonAlt, locStyle.roundButton]}>
+                                                <ButtonFeedback rounded style={[styles.roundButton, styles.roundButtonAlt, locStyle.roundButton]} onPress={()=> { this._drillDown(item, 'myLionsOppositionSquad') }}>
                                                     <Text style={[styles.roundButtonLabel, styles.roundButtonLabelAlt]}>
                                                         VIEW TEAM
                                                     </Text>
@@ -228,18 +237,54 @@ class MyLionsCompetitionGameListing extends Component {
                         <Text style={styles.pageTitleText}>ROUND 1 COMPETITION</Text>
                     </View>
 
-                    <ListView
+                    {
+                        this.state.isLoaded?
+                        <ListView
                         ref={(scrollView) => { this._scrollView = scrollView }}
                         dataSource={this.state.gameList}
                         renderRow={this._renderRow.bind(this)}
                         enableEmptySections = {true}
                         renderFooter={() => <LionsFooter isLoaded={true} /> } />
+                        :
+                        <ActivityIndicator style={loader.centered} size='large' />
+                    }
                         
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
                 </View>
             </Container>
         )
+    }
+
+    componentDidMount() {
+        setTimeout(() => this._getList(), 600)        
+    }
+
+    _getList(){
+      console.log('_getList')
+      this.setState({ isLoaded: false },()=>{
+            let optionsGameList = {
+              url: 'https://api.myjson.com/bins/bm0h1',
+              data: {id:this.state.userID},
+              onAxiosStart: null,
+              onAxiosEnd: null,
+              method: 'get',
+              onSuccess: (res) => {
+                  if(res.data) {
+                          console.log('res.data',res.data)                    
+                          this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
+                  }
+              },
+              onError: () => {this.setState({isLoaded:true}), () => {
+                      this._showError(error) // prompt error
+              }},
+              onAuthorization: () => {
+                      this._signInRequired()
+              },
+              isRequiredToken: true
+            }
+            service(optionsGameList)
+      })
     }
 }
 
