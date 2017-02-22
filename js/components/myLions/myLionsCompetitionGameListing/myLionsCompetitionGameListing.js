@@ -59,6 +59,7 @@ const locStyle = styleSheetCreate({
         color: styleVar.colorText,
         paddingHorizontal: 10,
         paddingBottom: 10,
+        height: 70,
         android: {
             marginTop: 4
         }
