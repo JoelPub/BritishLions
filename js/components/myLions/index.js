@@ -66,6 +66,10 @@ class MyLions extends Component {
     _myBrowse = () => {
         this.props.drillDown({}, 'myLionsUnionsList')
     }
+    _officialSquad(){
+        this._setModalVisible(false)
+        this.props.drillDown({},'myLionsOfficialSquad')
+    }
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
@@ -151,8 +155,8 @@ class MyLions extends Component {
             // check if user is first login
             isFirstLogIn().then((isFirst) => {
                 // when first login, it will show the onboarding
-                // isFirst = isFirst === 'yes'? true : false
-                isFirst = true
+                isFirst = isFirst === 'yes'? true : false
+                // isFirst = true
                 // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
                 if (isFirst) this.getRating()
             }).catch((error) => {})
@@ -221,7 +225,7 @@ class MyLions extends Component {
                             </ImagePlaceholder>
 
                             <View style={styles.btnsLanding}>
-                                <ButtonFeedback rounded style={[styles.button, styles.btnMysquad]} onPress={() => this._mySquad()}>
+                                <ButtonFeedback rounded style={[styles.button, styles.btnMysquad]} onPress={() => this._officialSquad()}>
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={styles.btnMysquadIcon}>
                                     </Image>

@@ -12,6 +12,7 @@ export type Action =
     | { type: 'SET_CONTENT' }
     | { type: 'SET_SQUAD_TOSHOW' }
     | { type: 'SET_SQUAD_DATA' }
+    | { type: 'SET_OFFICIAL_SQUAD_TOSHOW' }
     | { type: 'PUSH_CONTENT_ITEM'}
     | { type: 'PUSH_CONTENT_ITEM_SUB'}
     | { type: 'REPLACE_CONTENT_ITEM'}
