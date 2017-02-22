@@ -8,23 +8,22 @@ module.exports = styleSheetCreate({
   container: {
     flex: 1,
     width: null,
-    height: null,
-    backgroundColor: '#fff'
+    height: 60,
+    backgroundColor: '#fff',
   },
   groupTitle:{
     color:'rgb(175,0,30)',
     fontFamily: styleVar.fontCondensed,
     backgroundColor: 'transparent',
     fontSize:28,
-    height: 59,
     textAlign:'center',
     paddingTop: 25,
+    android:{
+      paddingTop: 20,
+    }
   },
   headerIcon: {
     color: styleVar.colorIcon,
-    android: {
-      marginTop: 13
-    },
     position: 'absolute',
     right: 8,
     top: 16,

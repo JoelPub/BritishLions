@@ -52,7 +52,7 @@ module.exports = styleSheetCreate({
   button: {
     height: 50,
     backgroundColor: styleVar.brandLightColor,
-    marginTop: 35,
+    marginTop: 15,
     marginBottom: 35,
     marginLeft: 30,
     marginRight: 30,
@@ -84,16 +84,20 @@ module.exports = styleSheetCreate({
   prideTitleView:{
     flex: 1,
     width: null,
-    height: null,
+    height: 60,
+    paddingTop: 20,
+    android:{
+      paddingTop: 20,
+    },
   },
   prideTitleText:{
     color:'rgb(175,0,30)',
     fontFamily: styleVar.fontCondensed,
     backgroundColor: 'transparent',
     fontSize:28,
-    height: 59,
     textAlign:'center',
-    paddingTop: 25,
+    lineHeight:28,
+
   },
   groupActionView:{
     backgroundColor: 'rgb(255,255,255)',
@@ -150,9 +154,6 @@ module.exports = styleSheetCreate({
   },
   playIcon:{
     color: 'rgb(208,7,42)',
-    android: {
-      marginTop: 13
-    },
     position: 'absolute',
     right: 8,
     top: 16,

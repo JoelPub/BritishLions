@@ -25,10 +25,25 @@ import ImageCircle from '../../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 
+import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import GrayContainer from '../../global/GrayContainer'
+import ExpertRank from  '../../global/ExpertRank'
+import RankList from  '../../global/RankingList'
 
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
-
+const ButtonWithIcon = (props) => {
+  let {iconName,title,style,onPress} = props
+  let styleMore = style ? style : null
+  return (
+    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} >
+      <Icon name={iconName} style={styles.btnFavouritesIcon} />
+      <Text style={styles.btnFavouritesLabel}>
+        {title}
+      </Text>
+    </ButtonFeedback>
+  )
+}
 const TitleView = ({title}) => (
   <View>
     <Text style={styles.groupTitle}>{title}</Text>
@@ -53,15 +68,6 @@ class MyLionsGroupView extends Component {
       [{text: 'Dismiss'}]
     )
   }
-
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-    this.isUnMounted = true
-  }
-
   render() {
     return (
       <Container theme={theme}>
@@ -72,7 +78,15 @@ class MyLionsGroupView extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <TitleView title={'MY SQUAD'} />
+            <HeaderTitleWithModal title={'GROUP NAME'}/>
+            <GrayContainer >
+              <ExpertRank />
+              <RankList />
+            </GrayContainer>
+            <View style={styles.groupAction}>
+              <ButtonWithIcon  iconName  = {'md-star'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}/>
+              <ButtonWithIcon  iconName  = {'md-star'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor}/>
+            </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
@@ -80,6 +94,12 @@ class MyLionsGroupView extends Component {
         </View>
       </Container>
     )
+  }
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+    this.isUnMounted = true
   }
 }
 

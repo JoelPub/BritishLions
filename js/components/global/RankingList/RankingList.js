@@ -35,7 +35,8 @@ const styles = styleSheetCreate({
   },
   contentView:{
     marginTop: 25,
-    marginLeft:25
+    marginLeft:25,
+    marginBottom: 20,
   },
   subTitleView:{
     flexDirection:'row',

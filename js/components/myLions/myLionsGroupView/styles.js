@@ -47,5 +47,49 @@ module.exports = styleSheetCreate({
     width: 28,
     height: 28,
     fontSize:28
-  }
+  },
+  groupAction:{
+    paddingBottom:30,
+    backgroundColor:'rgb(255,255,255)',
+    borderTopWidth:1,
+    borderTopColor:'rgb(216,217,218)'
+  },
+  button: {
+    height: 50,
+    backgroundColor: styleVar.brandLightColor,
+    marginTop: 15,
+    marginBottom: 35,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  btnFavourites: {
+    backgroundColor:'rgb(175,0,30)',
+    flexDirection:'row',
+    marginTop: 0,
+    marginBottom: 0,
+    paddingTop:5,
+    android:{
+      paddingTop: 0,
+    }
+  },
+  btnFavouritesLabel: {
+    textAlign:'left',
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 24,
+    lineHeight: 24,
+    paddingTop:5,
+    marginLeft: 5
+  },
+  grayBackgroundColor:{
+    backgroundColor: 'rgb(71,72,73)',
+    marginTop: 30
+  },
+  btnFavouritesIcon: {
+    marginBottom: 5,
+    color: 'rgb(255,204,40)',
+    fontSize:24,
+    android:{
+      marginBottom: 1,
+    }
+  },
 })
