@@ -52,7 +52,7 @@ module.exports = styleSheetCreate({
   button: {
     height: 50,
     backgroundColor: styleVar.brandLightColor,
-    marginTop: 35,
+    marginTop: 15,
     marginBottom: 35,
     marginLeft: 30,
     marginRight: 30,

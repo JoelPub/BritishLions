@@ -46,7 +46,6 @@ const ButtonWithIcon = (props) => {
     </ButtonFeedback>
   )
 }
-
 const  ShareButton = () => {
   return (
     <ButtonFeedback
@@ -58,14 +57,15 @@ const  ShareButton = () => {
     </ButtonFeedback>
   )
 }
-const MyPride = () => {
+const MyPride = (props) => {
+  let { groupNameOnPress,createGroupOnPress,JoinGroupOnPress} =props
   return (
     <View style={styles.prideContainer}>
       <View style={styles.prideTitleView}>
         <Text style={styles.prideTitleText}>MY PRIDE</Text>
       </View>
       <GroupAction />
-      <GroupNameList />
+      <GroupNameList onPress={groupNameOnPress} />
     </View>
   )
 }
@@ -77,18 +77,19 @@ const GroupAction = () => {
     </View>
   )
 }
-const GroupName = () => {
+const GroupName = (props) => {
+  let {data,onPress} = props
   return (
-    <ButtonFeedback style={styles.groupName}>
+    <ButtonFeedback style={styles.groupName} onPress={onPress}>
       <Text style={styles.groupNameText}>Group Name</Text>
       <Icon name='md-star' style={styles.playIcon} />
     </ButtonFeedback>
   )
 }
-const GroupNameList = () => {
+const GroupNameList = ({onPress}) => {
   return (
     <View style={styles.groupList}>
-      <GroupName />
+      <GroupName onPress ={onPress} />
       <GroupName />
       <GroupName />
     </View>
@@ -110,11 +111,10 @@ class CompetitionLadder extends Component {
 
     }
   }
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-    this.isUnMounted = true
+  /*router logic*/
+  groupNameOnPress = () => {
+    console.log('**********')
+   this.props.drillDown('data','myLionsGroupView')
   }
 
   render() {
@@ -133,7 +133,7 @@ class CompetitionLadder extends Component {
               <RankList />
               <ShareButton />
             </GrayContainer>
-            <MyPride />
+            <MyPride  groupNameOnPress={this.groupNameOnPress}/>
             <CompetitionCenter />
           <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -142,6 +142,12 @@ class CompetitionLadder extends Component {
         </View>
       </Container>
     )
+  }
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+    this.isUnMounted = true
   }
 }
 
