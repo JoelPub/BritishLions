@@ -63,13 +63,13 @@ function  searchPlayer(player,id,uniondata) {
 
                 if(typeof result.image==='string') {
                    if (result.image.indexOf('125.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/125.png`)
+                        result.image = require(`../../../../contents/unions/nations/125.png`)
                     } else if (result.image.indexOf('126.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/126.png`)
+                        result.image = require(`../../../../contents/unions/nations/126.png`)
                     } else if (result.image.indexOf('127.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/127.png`)
+                        result.image = require(`../../../../contents/unions/nations/127.png`)
                     } else if (result.image.indexOf('128.gif') > 0) {
-                        result.image = require(`../../../contents/unions/nations/128.png`)
+                        result.image = require(`../../../../contents/unions/nations/128.png`)
                     } else {
                         result.image = {uri:result.image}
                     } 
