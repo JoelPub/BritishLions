@@ -7,7 +7,7 @@ export default { 	id: '17327',
 					weighti: '12 st 8 lb',
 					birthplace: 'Edinburgh, Scotland',
 					birthcountry: '',
-					position: 'Scrum Half',
+					position: 'Coach',
 					honours: 'Scotland (58 caps)',
 					image: { uri: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/127/250x250/17327.jpg' },
 					thumb: 'https://cdn.soticservers.net/tools/images/teams/logos/70x70-ffffff/127.gif',
@@ -25,5 +25,7 @@ export default { 	id: '17327',
 					points: 651,
 					logo: 'https://cdn.soticservers.net/tools/images/teams/logos/250x250/127.png',
 					country: 'SCOTLAND',
-					countryid: '127' 
+					countryid: '127',
+					education: 'Hamilton Boys\' High School and Waitako University',
+					biog:'Playing Career \n At the official Shop'
 				}

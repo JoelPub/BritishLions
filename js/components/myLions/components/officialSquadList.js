@@ -223,7 +223,7 @@ export default class OfficialSquadList extends Component {
                                 item.info===null?
                                 <AddPlayerCell pos={item.position}/>
                                 :
-                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerDetails',item.position,1,0)}/>
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,item.position==='coach'?'myLionsCoachProfile':'myLionsPlayerDetails',item.position,1,0)}/>
                                 }
                             </View>
                         )
