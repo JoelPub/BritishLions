@@ -70,9 +70,11 @@ const styles = styleSheetCreate({
         borderWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
-        paddingHorizontal:12,
         paddingTop:15,
         backgroundColor:'rgb(239,239,240)',
+        android:{
+            paddingHorizontal:12,
+        }
     },
     posTitleCenter:{
         color:'rgb(175,0,30)',
