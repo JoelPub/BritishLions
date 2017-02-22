@@ -193,7 +193,7 @@ class MyLionsCompetitionGameListing extends Component {
                                             </View>
                                             <View style={locStyle.gridBoxTitle}>
                                                 <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
-                                                    { item.title }
+                                                    { item.title.toUpperCase() }
                                                 </Text>
                                                 <Text style={locStyle.gridBoxTitleSupportText} numberOfLines={3}>
                                                     { item.description }
