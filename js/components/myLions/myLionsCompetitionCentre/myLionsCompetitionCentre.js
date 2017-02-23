@@ -223,7 +223,7 @@ class MyLionsCompetitionCentre extends Component {
                 if(res.data) {
                     console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
-                        this.props.setUserProfile(Object.assign(res.data,{userName:this.props.userProfile.userName,userID:this.props.userProfile.userID}))
+                        this.props.setUserProfile(Object.assign(res.data,{userName:this.props.userProfile.userName,initName:this.props.userProfile.initName,userID:this.props.userProfile.userID}))
                     })
                 }
             },

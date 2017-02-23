@@ -228,8 +228,12 @@ class MyLions extends Component {
             onSuccess: (res) => {
                 if(res.data) {
                     console.log('res.data',res.data)
-                        getUserFullName().then((userName) => {
-                            this.props.setUserProfile(Object.assign(res.data,{userName:userName,userID:this.state.userID}))
+                        getUserFullName().then((userName) => {                            
+                            let initName=''
+                            userName.split(' ').map((value,index)=>{
+                                initName=initName+value[0]
+                            })
+                            this.props.setUserProfile(Object.assign(res.data,{userName:userName,initName:initName,userID:this.state.userID}))
                         }).catch((error) => {})
 
                 }

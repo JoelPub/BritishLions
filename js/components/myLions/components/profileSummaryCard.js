@@ -137,10 +137,6 @@ export default class ProfileSummaryCard extends Component {
                 </View>
             </View>
         )
-        let initName=''
-        this.props.profile.userName.split(' ').map((value,index)=>{
-            initName=initName+value[0]
-        })
 		return (
             <SummaryCardWrapper>
                 <View style={styles.cardContent}>
@@ -148,7 +144,7 @@ export default class ProfileSummaryCard extends Component {
                         <Col style={{width: Platform.OS === 'android'? 95 : 98}}>
                             <View style={styles.cardFigure}>
                                 <View style={styles.cardCircle}>
-                                    <Text style={styles.cardCircleText}>{strToUpper(initName)}</Text>
+                                    <Text style={styles.cardCircleText}>{strToUpper(this.props.profile.initName)}</Text>
                                 </View>
                             </View>
                         </Col>

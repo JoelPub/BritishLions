@@ -3,24 +3,26 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { pushNewRoute } from '../../actions/route'
-import { Image, Text, View, ScrollView, ListView } from 'react-native'
+import { pushNewRoute } from '../../../actions/route'
+import { Image, Text, View, ScrollView, ListView,ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
-import theme from '../../themes/base-theme'
+import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
-import LoginRequire from '../global/loginRequire'
-import LionsHeader from '../global/lionsHeader'
-import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
-import ImagePlaceholder from '../utility/imagePlaceholder'
-import ButtonFeedback from '../utility/buttonFeedback'
-import Versus from './components/versus'
+import LoginRequire from '../../global/loginRequire'
+import LionsHeader from '../../global/lionsHeader'
+import EYSFooter from '../../global/eySponsoredFooter'
+import LionsFooter from '../../global/lionsFooter'
+import ImagePlaceholder from '../../utility/imagePlaceholder'
+import ButtonFeedback from '../../utility/buttonFeedback'
+import Versus from '../components/versus'
 import LinearGradient from 'react-native-linear-gradient'
-import SquadModal from '../global/squadModal'
-import shapes from '../../themes/shapes'
+import SquadModal from '../../global/squadModal'
+import shapes from '../../../themes/shapes'
 import styles from './styles'
-import { styleSheetCreate } from '../../themes/lions-stylesheet'
-import styleVar from '../../themes/variable'
+import { styleSheetCreate } from '../../../themes/lions-stylesheet'
+import styleVar from '../../../themes/variable'
+import loader from '../../../themes/loader-position'
+import { service } from '../../utility/services'
 
 const locStyle = styleSheetCreate({
     header: {
@@ -98,7 +100,9 @@ class MyLionsCompetitionGameResults extends Component {
         super(props)
         this.isUnMounted = false
         this.state = {
-            modalResults: false
+            modalResults: false,
+            isLoaded:false,
+            gameInfo:{}
         }
     }
 
@@ -124,10 +128,11 @@ class MyLionsCompetitionGameResults extends Component {
                             <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                         </ButtonFeedback>
                     </View>
-
+                    {
+                    this.state.isLoaded?
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={[locStyle.header]}>
-                            <Text style={locStyle.headerText}>Rotura International Stadium, Roturaa.</Text>
+                            <Text style={locStyle.headerText}>{this.state.gameInfo.grounds[0].name}</Text>
                         </View>
 
                         <Versus data={[]} />
@@ -190,7 +195,9 @@ class MyLionsCompetitionGameResults extends Component {
                         </View>
 
                     </ScrollView>
-
+                    :
+                    <ActivityIndicator style={loader.centered} size='large' />
+                    }
                     <SquadModal 
                         modalVisible={this.state.modalResults}
                         callbackParent={() => {}}>
@@ -206,6 +213,37 @@ class MyLionsCompetitionGameResults extends Component {
             </Container>
         )
     }
+
+
+    componentWillMount() {
+        this.setState({isLoaded:false},()=>{
+            this.getInfo()
+        })
+    }
+    getInfo(){
+        console.log('getInfo')
+        let optionsInfo = {
+            url: 'https://api.myjson.com/bins/z5bk5',
+            data: {},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    console.log('res.data',res.data)
+                    this.setState({isLoaded:true,gameInfo:res.data})
+                }
+            },
+            onError: ()=>{
+                this.setState({isLoaded:true})
+            },
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsInfo)        
+    }
 }
 
 function bindAction(dispatch) {
@@ -214,4 +252,10 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null,  bindAction)(MyLionsCompetitionGameResults)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile: state.squad.userProfile,
+        netWork: state.network
+    }
+},  bindAction)(MyLionsCompetitionGameResults)
