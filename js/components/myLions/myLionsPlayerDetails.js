@@ -108,6 +108,7 @@ class MyLionsPlayerDetails extends Component {
         this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
+        this.isShowAddBtn = this.props.isShowAddBtn,
         this.playerPos=null,
         this.seq=0,
         this.state = {

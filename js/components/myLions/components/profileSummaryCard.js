@@ -6,13 +6,14 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import SummaryCardWrapper from './summaryCardWrapper'
 import styleVar from '../../../themes/variable'
+import { strToUpper } from '../../utility/helper'
 
 const styles = styleSheetCreate({
     cardContent: {
         paddingVertical: 20
     },
-    cardRow1: {
-        marginBottom: 15
+    cardRow: {
+        marginBottom: 10
     },
     cardCol: {
         flex: 1,
@@ -108,51 +109,54 @@ export default class ProfileSummaryCard extends Component {
             <View style={styles.cardTable}>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>W</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>22</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.w}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>L</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>12</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.l}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>D</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>45</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.d}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>F</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>18</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.f}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>A</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>62</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.a}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>BP</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>78</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.bp}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>PTS</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>1235</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.pts}</Text>
                 </View>
             </View>
         )
-
+        let initName=''
+        this.props.profile.userName.split(' ').map((value,index)=>{
+            initName=initName+value[0]
+        })
 		return (
             <SummaryCardWrapper>
                 <View style={styles.cardContent}>
-                    <Grid style={[styles.cardRow, styles.cardRow1]}>
+                    <Grid style={styles.cardRow}>
                         <Col style={{width: Platform.OS === 'android'? 95 : 98}}>
                             <View style={styles.cardFigure}>
                                 <View style={styles.cardCircle}>
-                                    <Text style={styles.cardCircleText}>KE</Text>
+                                    <Text style={styles.cardCircleText}>{strToUpper(initName)}</Text>
                                 </View>
                             </View>
                         </Col>
-                        <Col style={styles.cardCol}>
+                        <Col style={styles.cardCol} >
                             <View style={styles.cardName}>
-                                <Text style={styles.cardNameText}>KENNETH ERICKSON</Text>
+                                <Text style={styles.cardNameText}>{strToUpper(this.props.profile.userName)}</Text>
                             </View>
-                            <Text style={[styles.cardNameText, styles.yellowText]}>EXPERT SELECTOR</Text>
+                            <Text style={[styles.cardNameText, styles.yellowText]}>{strToUpper(this.props.profile.selector_rating)}</Text>
                         </Col>
                     </Grid>
                     <Grid style={styles.cardRow}>
@@ -162,7 +166,7 @@ export default class ProfileSummaryCard extends Component {
                                     <View style={styles.cardCircleRankText}>
                                         <Text style={[styles.cardCircleText, styles.cardCircleSmallText]}>RANK</Text>
                                     </View>    
-                                    <Text style={[styles.cardCircleText, styles.cardCircleSmallText, styles.yellowText]}>234</Text>
+                                    <Text style={[styles.cardCircleText, styles.cardCircleSmallText, styles.yellowText]}>{this.props.profile.rank}</Text>
                                 </View>
                             </View>
                         </Col>

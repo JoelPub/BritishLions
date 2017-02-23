@@ -118,8 +118,8 @@ class MyLionsCoachProfile extends Component {
                                 <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
                             </Col>
                         </Grid>
-                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Col style={styles.detailsGridCol} size={1}>
+                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull]}>
+                            <Col style={[styles.detailsGridGreyBackground, styles.detailsGridCol]} size={1}>
                                 <Text style={styles.detailsLabel}>EDUCATION</Text>
                                 <Text style={styles.detail}>{this.props.detail.education} </Text>
                             </Col>

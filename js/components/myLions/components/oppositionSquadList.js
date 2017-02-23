@@ -10,6 +10,7 @@ import shapes from '../../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
+import { strToUpper } from '../../utility/helper'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -22,6 +23,9 @@ const styles = styleSheetCreate({
     addPlayerIcon:{
         fontSize:60,
         color:'rgb(255,255,255)'
+    },
+    playerPositionTextWrapper:{
+        paddingVertical:10,
     },
     playerNameTextWrapper:{
         marginTop:-12,
@@ -70,11 +74,9 @@ const styles = styleSheetCreate({
         borderWidth:1,
         borderColor:'rgb(216,217,218)',
         height:50,
+        paddingHorizontal:12,
         paddingTop:15,
         backgroundColor:'rgb(239,239,240)',
-        android:{
-            paddingHorizontal:12,
-        }
     },
     posTitleCenter:{
         color:'rgb(175,0,30)',
@@ -124,7 +126,7 @@ const styles = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.63
+        height:styleVar.deviceWidth*0.73
     },
     posWrapper:{
         width:styleVar.deviceWidth/3+1,
@@ -157,6 +159,9 @@ const AddPlayerCell = ({pos,onPress})=>(
     )
 const PlayerImgCell =({data,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
+        <View style={styles.playerPositionTextWrapper}>
+            <Text style={styles.playerNameText} numberOfLines={1}>{strToUpper(data.position)}</Text>
+        </View>
         <ImagePlaceholder 
             width = {styleVar.deviceWidth / 3}
             height = {styleVar.deviceWidth / 3}>
@@ -200,7 +205,7 @@ const PositionTitle =({pos,data}) =>(
 )
 
 
-export default class OfficialSquadList extends Component {
+export default class OppositionSquadList extends Component {
 	constructor(props){
         super(props)
     }
@@ -225,7 +230,7 @@ export default class OfficialSquadList extends Component {
                                 item.info===null?
                                 <AddPlayerCell pos={item.position}/>
                                 :
-                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,item.position==='coach'?'myLionsCoachProfile':'myLionsPlayerDetails',item.position,1,0)}/>
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerDetails',item.position,1,0)}/>
                                 }
                             </View>
                         )
@@ -235,7 +240,7 @@ export default class OfficialSquadList extends Component {
 
                 <PositionTitle pos='FORWARDS' data={this.props.squadDatafeed.forwards}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.63}
+                height={styleVar.deviceWidth*0.73}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -268,7 +273,7 @@ export default class OfficialSquadList extends Component {
                 
                 <PositionTitle pos='BACKS' data={this.props.squadDatafeed.backs}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.63}
+                height={styleVar.deviceWidth*0.73}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'

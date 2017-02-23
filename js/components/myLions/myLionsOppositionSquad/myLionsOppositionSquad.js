@@ -31,20 +31,21 @@ import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { setOfficialSquadToShow } from '../../../actions/squad'
+import { setOppositionSquadToShow } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import PlayerScore from '../../global/playerScore'
 import SquadPopModel from  '../../../modes/SquadPop'
 import Rating from  '../../../modes/SquadPop/Rating'
-import OfficialSquadModel from  '../../../modes/Squad/OfficialSquadModel'
+import OppositionSquadModel from  '../../../modes/Squad/OppositionSquadModel'
 import SquadRatingModel from '../../../modes/Squad/Rating'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
-import OfficialSquadList from '../components/officialSquadList'
-import {convertSquadToShow} from '../components/officialSquadToShow'
+import OppositionSquadList from '../components/oppositionSquadList'
+import {convertSquadToShow} from '../components/oppositionSquadToShow'
 import SquadShowModel from  '../../../modes/Squad/SquadShowModel'
+import { strToUpper } from '../../utility/helper'
 
-class MyLionsOfficialSquad extends Component {
+class MyLionsOppositionSquad extends Component {
 
     constructor(props){
         super(props)
@@ -52,7 +53,10 @@ class MyLionsOfficialSquad extends Component {
         this.state={
             isLoaded: false,
             userID:'',
-            isNetwork: true
+            isNetwork: true,
+            image:'',
+            title:'',
+            description:'',
         }
         this.uniondata = Data
     }
@@ -87,7 +91,8 @@ class MyLionsOfficialSquad extends Component {
         )
     }
     _showDetail(item, route,playerPos,max,seq) {
-        item.isShowAddBtn = false
+      console.log('item',item)
+      console.log('route',route)
         this.props.drillDown(item, route)
     }
     render() {
@@ -106,14 +111,22 @@ class MyLionsOfficialSquad extends Component {
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <Text style={[styles.headerTitle,styles.squadTitle]}>2017 OFFICIAL SQUAD</Text>
-                                <OfficialSquadList squadDatafeed={this.props.officialSquadToShow} pressImg={this._showDetail.bind(this)}/>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
-                                    <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
-                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
-                                        COMPETITION CENTRE
-                                    </Text>
-                                </ButtonFeedback>
+                                <View style={styles.header}>
+                                    <View style={styles.playerPic}>
+                                        <Image resizeMode='cover' source={{uri: this.state.image}} style={styles.playerPicImg}/>
+                                        <Image source={require('../../../../images/redCircle.png')} style={styles.playerPicCover}/>
+                                    </View>
+                                    
+                                    <View style={styles.headerPlayerDetails}>
+                                        <Text style={styles.headerPlayerName}>{strToUpper(this.state.title)}</Text>
+                                        <Text style={styles.headerPlayerPosition}>{this.state.description}</Text>
+                                        <ButtonFeedback rounded onPress={()=> { this.props.pushNewRoute('myLionsManageGame') }}
+                                            style={[styles.btn, styles.btnGreen ]}>
+                                            <Text style={styles.btnText}>PLAY</Text>
+                                        </ButtonFeedback>
+                                    </View>
+                                </View>
+                                <OppositionSquadList squadDatafeed={this.props.oppositionSquadToShow} pressImg={this._showDetail.bind(this)}/>
                                 <LionsFooter isLoaded={true} />
                             </ScrollView>
                         :
@@ -157,25 +170,8 @@ class MyLionsOfficialSquad extends Component {
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   this.fullPlayerList=catchedFullPlayerList
-                  let optionsOfficialSquad = {
-                      url: 'https://api.myjson.com/bins/14iqg1',
-                      data: {id:this.state.userID},
-                      onAxiosStart: null,
-                      onAxiosEnd: null,
-                      method: 'get',
-                      onSuccess: (res) => {
-                          if(res.data) {
-                                  console.log('res.data',res.data)                    
-                                  this.setSquadData(OfficialSquadModel(res.data))
-                          }
-                      },
-                      onError: null,
-                      onAuthorization: () => {
-                              this._signInRequired()
-                      },
-                      isRequiredToken: true
-                  }
-                  service(optionsOfficialSquad)
+                  this.setState({image:this.props.drillDownItem.image,title:this.props.drillDownItem.title,description:this.props.drillDownItem.description})
+                  this.setSquadData(OppositionSquadModel(this.props.drillDownItem.team))
 
                 
               }
@@ -189,9 +185,11 @@ class MyLionsOfficialSquad extends Component {
 
     setSquadData(squad){
       console.log('setSquadData')
-        let tmpSquad=new OfficialSquadModel()
+        let tmpSquad=new OppositionSquadModel()
         let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,this.uniondata)
-        this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+        console.log('1')
+        this.props.setOppositionSquadToShow(showSquadFeed.toJS())
+        console.log('2')
         this.setState({isLoaded:true})
         
     }
@@ -203,16 +201,15 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        setOfficialSquadToShow:(squad)=>dispatch(setOfficialSquadToShow(squad)),
-        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
+        setOppositionSquadToShow:(squad)=>dispatch(setOppositionSquadToShow(squad)),
     }
 }
 
 export default connect((state) => {
     return {
         drillDownItem: state.content.drillDownItem,
-        officialSquadToShow: state.squad.officialSquadToShow,
+        oppositionSquadToShow: state.squad.oppositionSquadToShow,
         netWork: state.network
     }
-}, bindAction)(MyLionsOfficialSquad)
+}, bindAction)(MyLionsOppositionSquad)
 
