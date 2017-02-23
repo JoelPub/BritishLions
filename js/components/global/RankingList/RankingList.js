@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component, Children } from 'react'
+import React, { Component, Children, PropTypes } from 'react'
 import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -170,28 +170,28 @@ const  Content = ({data,index}) => {
         <Text style={[styles.subContentText,styles.whiteColor]}>JP</Text>
       </View>
       <View style={styles.rankContentTextView}>
-        <Text style={[styles.subContentText]}>{index+1}</Text>
+        <Text style={[styles.subContentText]}>{data.rank}</Text>
       </View>
       <View style={styles.WText}>
-        <Text style={[styles.subContentText]}>22</Text>
+        <Text style={[styles.subContentText]}>{data.w}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>12</Text>
+        <Text style={styles.subContentText}>{data.l}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>45</Text>
+        <Text style={styles.subContentText}>{data.d}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>18</Text>
+        <Text style={styles.subContentText}>{data.f}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>62</Text>
+        <Text style={styles.subContentText}>{data.a}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>78</Text>
+        <Text style={styles.subContentText}>{data.bp}</Text>
       </View>
       <View style={styles.LText}>
-        <Text style={styles.subContentText}>12</Text>
+        <Text style={styles.subContentText}>{data.pts}</Text>
       </View>
     </View>
   )
@@ -205,6 +205,7 @@ class RankingList extends Component {
   }
 
   render() {
+    let { data } = this.props
     let arr = ['1','2','3','4','5']
     return (
       <View style={[styles.scoreCard]} >
@@ -215,9 +216,9 @@ class RankingList extends Component {
             <Header />
 
           {
-            arr.map((data,index)=>{
+            data.top_five.map((item,index)=>{
               return(
-                <Content  key={index} data={data} index={index}/>
+                <Content  key={index} data={item} index={index}/>
               )
             })
           }
@@ -227,3 +228,6 @@ class RankingList extends Component {
   }
 }
 export default RankingList
+RankingList.propTypes = {
+  data: PropTypes.object
+}
