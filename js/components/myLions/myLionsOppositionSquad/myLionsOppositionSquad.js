@@ -119,7 +119,7 @@ class MyLionsOppositionSquad extends Component {
                                     
                                     <View style={styles.headerPlayerDetails}>
                                         <Text style={styles.headerPlayerName}>{strToUpper(this.state.title)}</Text>
-                                        <Text style={styles.headerPlayerPosition}>{this.state.description}</Text>
+                                        <Text style={[styles.headerPlayerPosition,{textAlign:'center',paddingHorizontal:25}]}>{this.state.description}</Text>
                                         <ButtonFeedback rounded onPress={()=> { this.props.pushNewRoute('myLionsManageGame') }}
                                             style={[styles.btn, styles.btnGreen ]}>
                                             <Text style={styles.btnText}>PLAY</Text>
