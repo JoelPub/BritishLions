@@ -4,6 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { pushNewRoute } from '../../../actions/route'
+import { drillDown } from '../../../actions/content'
 import { Image, Text, View, ScrollView, ListView,ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
@@ -23,6 +24,13 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
+import { strToUpper } from '../../utility/helper'
+import SquadModel from  '../../../modes/Squad'
+import {convertSquadToShow} from '../../global/squadToShow'
+import Data from '../../../../contents/unions/data'
+import Immutable, { Map, List,Iterable } from 'immutable'
+import { setSquadToShow,setSquadData } from '../../../actions/squad'
+import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 
 const locStyle = styleSheetCreate({
     header: {
@@ -84,12 +92,12 @@ const locStyle = styleSheetCreate({
 const dummyData = [
     {
         image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/114146.jpg',
-        headerLabel: 'WEATHER'     
+        headerLabel: 'weather'     
 
     },
     {
         image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/19930.jpg',
-        headerLabel: 'REFEREE'    
+        headerLabel: 'referees'    
     }
 ]
 
@@ -99,10 +107,14 @@ class MyLionsCompetitionGameResults extends Component {
     constructor(props) {
         super(props)
         this.isUnMounted = false
+        this.uniondata = Data
         this.state = {
             modalResults: false,
             isLoaded:false,
-            gameInfo:{}
+            gameInfo:{},
+            drillDownItem:this.props.drillDownItem,
+            isNetwork: true
+
         }
     }
 
@@ -132,10 +144,10 @@ class MyLionsCompetitionGameResults extends Component {
                     this.state.isLoaded?
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={[locStyle.header]}>
-                            <Text style={locStyle.headerText}>{this.state.gameInfo.grounds[0].name}</Text>
+                            <Text style={locStyle.headerText}>{this.state.gameInfo.grounds[Math.trunc(Math.random()*this.state.gameInfo.grounds.length)].name}</Text>
                         </View>
 
-                        <Versus data={[]} />
+                        <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
                         
                         <Grid>
                             <Row>
@@ -143,13 +155,13 @@ class MyLionsCompetitionGameResults extends Component {
                                     dummyData.map((item, key) => {
                                         let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
                                         let gridBoxTouchable = (key ===  0)?[styles.gridBoxTouchable, styles.gridBoxTitleRight, locStyle.gridBoxWrapper] : [styles.gridBoxTouchable, locStyle.gridBoxWrapper]
-
+                                        let randomNumber=Math.trunc(Math.random()*this.state.gameInfo[item.headerLabel].length)
                                         return (
                                             <Col key={key}>
                                                 <View style={gridBoxTouchable}>
                                                     <View style={[locStyle.header]}>
                                                         <Text style={[locStyle.headerText, locStyle.headerText2]}>
-                                                            {item.headerLabel}
+                                                            {strToUpper(item.headerLabel)}
                                                         </Text>
                                                     </View>
                                                     <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
@@ -159,16 +171,16 @@ class MyLionsCompetitionGameResults extends Component {
                                                                 height = {styleVar.deviceWidth / 2}>
                                                                 <Image transparent
                                                                     resizeMode='contain'
-                                                                    source={{uri: item.image}}
+                                                                    source={{uri: this.state.gameInfo[item.headerLabel][randomNumber].image}}
                                                                     style={styles.gridBoxImg} />
                                                             </ImagePlaceholder>
                                                         </View>
                                                         <View style={locStyle.gridBoxTitle}>
                                                             <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
-                                                                FIRSTNAME
+                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name.split(' ')[0])}
                                                             </Text>
                                                             <Text style={[locStyle.gridBoxTitleText, {marginTop: -5}]} numberOfLines={1}>
-                                                                LASTNAME
+                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name.split(' ')[1])}
                                                             </Text>
                                                         </View>
                                                     </View>
@@ -182,7 +194,7 @@ class MyLionsCompetitionGameResults extends Component {
 
                         <View style={[locStyle.btns]}>
                             <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
-                                 <ButtonFeedback style={locStyle.btn}>
+                                 <ButtonFeedback style={locStyle.btn} onPress={()=> {  this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam') }}>
                                     <Text style={locStyle.btnText}>
                                         TEAM
                                     </Text>
@@ -218,7 +230,24 @@ class MyLionsCompetitionGameResults extends Component {
     componentWillMount() {
         this.setState({isLoaded:false},()=>{
             this.getInfo()
+            this._getSquad()
         })
+    }
+    _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
     getInfo(){
         console.log('getInfo')
@@ -244,18 +273,105 @@ class MyLionsCompetitionGameResults extends Component {
         }
         service(optionsInfo)        
     }
+    _getSquad(){
+                getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+                    if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                        this.fullPlayerList=catchedFullPlayerList
+                        let optionsSquad = {
+                            url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
+                            method: 'get',
+                            onSuccess: (res) => {
+                                if(res.data) {
+                                    this.setSquadData(SquadModel.format(eval(`(${res.data})`)))
+                                }
+                                
+                            },
+                            isRequiredToken: true
+                        }
+                        service(optionsSquad)
+                    }
+                }).catch((error) => {
+                            this._showError(error) 
+                })
+    }
+    setSquadData(squad){
+        console.log('!!!setSquadData')
+        let tmpSquad=new SquadModel()
+        let fullFeed=true
+        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,false,this.uniondata)
+        console.log('showSquadFeed',showSquadFeed.toJS())
+        showSquadFeed.forEach((value,index)=>{
+            if(index==='backs'||index==='forwards') {
+                value.map((v,i)=>{
+                    if(showSquadFeed.get(index)[i]===null) {
+                        squad=squad.update(index,val=>{
+                            val[i]=null
+                            return val
+                        })
+                        fullFeed=false
+                    }
+                })
+            }
+            else {
+                value.map((v,i)=>{
+                    let p=v.position==='wildcard'?'widecard':v.position
+                    if(showSquadFeed.get(index)[i].info===null) {
+                        squad=squad.set(p,'')
+                        fullFeed=false
+                    }
+                })
+            }
+        })
+        // console.log('2')
+        tmpSquad.forEach((value,index)=>{
+            if(List.isList(squad.get(index))) {
+                if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
+                else tmpSquad=tmpSquad.set(index,'')
+            }
+            else tmpSquad=tmpSquad.set(index,squad.get(index))
+        })
+        let optionsSaveList = {
+            url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/save',
+            data:tmpSquad.toJS(),
+            onAxiosStart: () => {
+            },
+            onAxiosEnd: () => {
+            },
+            onSuccess: (res) => {
+                        
+            },
+            onError: (res) => {
+                    this._showError(res)
+            },
+            onAuthorization: () => {
+            },
+            isRequiredToken: true
+        }
+        console.log('this.props.squadData',this.props.squadData)
+            this.props.setSquadData(JSON.stringify(tmpSquad))
+            this.props.setSquadToShow(showSquadFeed.toJS())
+            service(optionsSaveList)
+        
+
+    }
 }
 
 function bindAction(dispatch) {
     return {
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
+        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 
 export default connect((state) => {
     return {
+        drillDownItem: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
-        netWork: state.network
+        netWork: state.network,
+        squadToShow: state.squad.squadToShow,
+        squadData: state.squad.squadData,
     }
 },  bindAction)(MyLionsCompetitionGameResults)

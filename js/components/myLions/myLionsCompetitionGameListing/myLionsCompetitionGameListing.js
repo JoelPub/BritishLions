@@ -206,7 +206,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                 </ButtonFeedback>
                                             </View>
                                         </View>
-                                        <ButtonFeedback onPress={()=> { this._drillDown([], statusBoxRoute) }}>
+                                        <ButtonFeedback onPress={()=> { this._drillDown(item, statusBoxRoute) }}>
                                             <View style={triangleShape} />
                                             <View style={statusBox}>
                                                 <Text style={locStyle.statusBoxText}>
