@@ -132,6 +132,7 @@ class CompetitionLadder extends Component {
 
   render() {
    let { data } = this.state
+   let {userProfile} = this.props
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -143,7 +144,7 @@ class CompetitionLadder extends Component {
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
             <GrayContainer >
-              <ExpertRank data={data}/>
+              <ExpertRank data={userProfile}/>
               <RankList data={data} />
               <ShareButton />
             </GrayContainer>
@@ -159,7 +160,6 @@ class CompetitionLadder extends Component {
   }
   componentDidMount() {
     console.log(DataModel)
-    getUserFullName
   }
 
   componentWillUnmount() {
@@ -177,6 +177,7 @@ export default connect((state) => {
   console.log(state)
   return {
     route: state.route,
+    userProfile:state.squad.userProfile
   }
 }, bindAction)(CompetitionLadder)
 CompetitionLadder.defaultProps = {

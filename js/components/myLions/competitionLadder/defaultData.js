@@ -8,6 +8,8 @@ var data = {
   a: 0,
   bp: 0,
   pts: 0,
+  initName:'',
+  userName:'',
   top_five: [
     {
       id: null,

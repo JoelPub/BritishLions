@@ -110,7 +110,7 @@ const styles = styleSheetCreate({
 const  Circle = ({data}) => {
   return (
     <View style={styles.profileNameView}>
-      <Text style={styles.profileNameText}>{data.selector_rating}</Text>
+      <Text style={styles.profileNameText}>{data.initName}</Text>
     </View>
   )
 }
@@ -122,11 +122,11 @@ const  CircleRank = ({data}) => {
     </View>
   )
 }
-const  TitleSubTitle = () => {
+const  TitleSubTitle = ({data}) => {
   return (
     <View style={styles.profileTitleView}>
-      <Text style={styles.profileTitleText}>KENNETH ERICKSON</Text>
-      <Text style={styles.profileSubTitleText}>EXPERT SELECTOR</Text>
+      <Text style={styles.profileTitleText}>{data.userName}</Text>
+      <Text style={styles.profileSubTitleText}>{data.selector_rating}</Text>
     </View>
   )
 }
