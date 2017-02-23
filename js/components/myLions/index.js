@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
-import { isFirstLogIn, getUserId } from '../utility/asyncStorageServices'
+import { isFirstLogIn, getUserId,getUserFullName } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -30,6 +30,7 @@ import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
 import { strToUpper } from '../utility/helper'
+import { setUserProfile } from '../../actions/squad'
 
 class MyLions extends Component {
 
@@ -43,6 +44,7 @@ class MyLions extends Component {
             currentPage: 0,
             isLoaded:true,
             userID:'',
+            isNetwork: true
         }
         this.totalPages = 3
         this.pageWindow=[]
@@ -72,6 +74,23 @@ class MyLions extends Component {
     }
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
+    }
+
+    _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
     }
 
     prev(){
@@ -160,6 +179,7 @@ class MyLions extends Component {
                 // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
                 if (isFirst) this.getRating()
             }).catch((error) => {})
+            this.getProfile()
         }
     }
     getRating(){
@@ -196,6 +216,31 @@ class MyLions extends Component {
             isRequiredToken: true
         }
         service(optionsSquadRating)        
+    }
+    getProfile(){
+        console.log('getProfile')
+        let optionsUserProfile = {
+            url: 'https://api.myjson.com/bins/18w6qd',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    console.log('res.data',res.data)
+                        getUserFullName().then((userName) => {
+                            this.props.setUserProfile(Object.assign(res.data,{userName:userName,userID:this.state.userID}))
+                        }).catch((error) => {})
+
+                }
+            },
+            onError: null,
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsUserProfile)        
     }
 
     componentWillMount() {
@@ -344,12 +389,15 @@ class MyLions extends Component {
 function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        drillDown: (data, route)=>dispatch(drillDown(data, route))
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
     }
 }
 
 export default connect((state) => {
     return {
-        isAccessGranted: state.token.isAccessGranted
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile: state.squad.userProfile,
+        netWork: state.network
     }
 },  bindAction)(MyLions)

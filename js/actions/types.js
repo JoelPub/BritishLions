@@ -10,6 +10,7 @@ export type Action =
     | { type: 'OPEN_DRAWER' }
     | { type: 'CLOSE_DRAWER' }
     | { type: 'SET_CONTENT' }
+    | { type: 'SET_USER_PROFILE' }
     | { type: 'SET_SQUAD_TOSHOW' }
     | { type: 'SET_SQUAD_DATA' }
     | { type: 'SET_OFFICIAL_SQUAD_TOSHOW' }

@@ -2,20 +2,23 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { drillDown } from '../../actions/content'
-import { Image, Text, View, ScrollView } from 'react-native'
+import { drillDown } from '../../../actions/content'
+import { Image, Text, View, ScrollView,ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
-import theme from '../../themes/base-theme'
+import theme from '../../../themes/base-theme'
 import styles from './styles'
-import LoginRequire from '../global/loginRequire'
-import LionsHeader from '../global/lionsHeader'
-import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
-import ButtonFeedback from '../utility/buttonFeedback'
-import styleVar from '../../themes/variable'
+import LoginRequire from '../../global/loginRequire'
+import LionsHeader from '../../global/lionsHeader'
+import EYSFooter from '../../global/eySponsoredFooter'
+import LionsFooter from '../../global/lionsFooter'
+import ButtonFeedback from '../../utility/buttonFeedback'
+import styleVar from '../../../themes/variable'
 import LinearGradient from 'react-native-linear-gradient'
-import ProfileSummaryCard from './components/profileSummaryCard'
-import { styleSheetCreate } from '../../themes/lions-stylesheet'
+import ProfileSummaryCard from '../components/profileSummaryCard'
+import { styleSheetCreate } from '../../../themes/lions-stylesheet'
+import loader from '../../../themes/loader-position'
+import { service } from '../../utility/services'
+import { setUserProfile } from '../../../actions/squad'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -89,7 +92,7 @@ const locStyle = styleSheetCreate({
     }
 })
 
-const Round = ({title, lock}) => {
+const Round = ({title, lock, detail}) => {
     let bgColor = lock? ['#bfbfbf', '#bfbfbf'] : ['#af001e', '#820417']
 
     return (
@@ -110,14 +113,14 @@ const Round = ({title, lock}) => {
                 <View style={locStyle.roundHeaderImage}>
                     <Image 
                         style={locStyle.roundHeaderImg} 
-                        source={require('../../../images/logo.png')}></Image>
+                        source={require('../../../../images/logo.png')}></Image>
                 </View>
                 <View style={locStyle.roundHeaderTitle}>
                     <Text style={locStyle.roundHeaderTitleText}>{ title }</Text>
                 </View>
             </View>
             <View style={locStyle.roundContent}>
-                <Text style={locStyle.roundContentText}>Donee accumsan nisi non libero faucibus, nee pharetra odio suscipit.</Text>
+                <Text style={locStyle.roundContentText}>{detail.description}</Text>
             </View>
         </LinearGradient>
     )
@@ -128,6 +131,10 @@ class MyLionsCompetitionCentre extends Component {
     constructor(props) {
         super(props)
         this.isUnMounted = false
+        this.state={
+            isLoaded: false,
+            competitionInfo:[]
+        }
     }
 
     componentWillUnmount() {
@@ -155,7 +162,7 @@ class MyLionsCompetitionCentre extends Component {
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                             
                             <View style={styles.guther}>
-                                <ProfileSummaryCard />
+                                <ProfileSummaryCard profile={this.props.userProfile}/>
 
                                 <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]}>
                                     <Icon name='ios-trophy' style={styles.roundButtonIcon} />
@@ -164,7 +171,8 @@ class MyLionsCompetitionCentre extends Component {
                                     </Text>
                                 </ButtonFeedback>
                             </View>
-
+                            {
+                            this.state.isLoaded?
                             <View style={{
                                 backgroundColor: styleVar.colorGrey,
                                 borderColor: styleVar.colorGrey2,
@@ -173,20 +181,21 @@ class MyLionsCompetitionCentre extends Component {
                             }}>
                                 <View style={styles.guther}>
                                     <View style={styles.rounds}>
-                                        <ButtonFeedback onPress={()=> { this._drillDown([]) }}>
-                                            <Round title='ROUND 1 COMPETITION'/>
-                                        </ButtonFeedback>
-
-                                        <ButtonFeedback onPress={()=> { this._drillDown([]) }}>
-                                            <Round title='ROUND 2 COMPETITION'/>
-                                        </ButtonFeedback>
-
-                                        <Round title='ROUND 3 COMPETITION' lock={true} />
-
-                                        <Round title='ROUND 4 COMPETITION' lock={true} />
+                                    {
+                                        this.state.competitionInfo.map((value,index)=>{
+                                            return (
+                                                <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown([])}} key={index} style={{backgroundColor:'transparent'}}>
+                                                    <Round title={`ROUND ${value.round_id} COMPETITION`} lock={!value.is_available} detail={value}/>
+                                                </ButtonFeedback>
+                                            )
+                                        })
+                                    }
                                     </View>
                                 </View>
                             </View>
+                            :
+                            <ActivityIndicator style={loader.centered} size='large' />
+                            }
                             <LionsFooter isLoaded={true} />
                         </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
@@ -195,13 +204,53 @@ class MyLionsCompetitionCentre extends Component {
             </Container>
         )
     }
+
+
+    componentWillMount() {
+        this.setState({isLoaded:false},()=>{
+            this.getInfo()
+        })
+    }
+    getInfo(){
+        console.log('getInfo')
+        let optionsInfo = {
+            url: 'https://api.myjson.com/bins/thhlh',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    console.log('res.data',res.data)
+                    this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
+                        this.props.setUserProfile(Object.assign(res.data,{userName:this.props.userProfile.userName,userID:this.props.userProfile.userID}))
+                    })
+                }
+            },
+            onError: ()=>{
+                this.setState({isLoaded:true})
+            },
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsInfo)        
+    }
 }
 
 
 function bindAction(dispatch) {
     return {
-            drillDown: (data, route)=>dispatch(drillDown(data, route))
+            drillDown: (data, route)=>dispatch(drillDown(data, route)),
+            setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
     }
 }
 
-export default connect(null,  bindAction)(MyLionsCompetitionCentre)
+export default connect((state) => {
+    return {
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile: state.squad.userProfile,
+        netWork: state.network
+    }
+},  bindAction)(MyLionsCompetitionCentre)

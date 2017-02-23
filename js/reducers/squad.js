@@ -1,9 +1,10 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW } from '../actions/squad'
+import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW } from '../actions/squad'
 
 export type State = {
+    userProfile: Object,
     squadToShow: Object,
     squadData: string,
     officialSquadToShow: Object,
@@ -11,6 +12,7 @@ export type State = {
 }
 
 const initialState = {
+    userProfile: {},
     squadToShow: {},
     squadData: null,
     officialSquadToShow: {},
@@ -19,6 +21,12 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
     
+    if (action.type === SET_USER_PROFILE) {
+        return {
+            ...state,
+            userProfile: action.userProfile
+        }
+    }
     if (action.type === SET_SQUAD_TOSHOW) {
         return {
             ...state,

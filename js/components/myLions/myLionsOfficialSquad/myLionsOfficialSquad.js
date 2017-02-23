@@ -31,8 +31,7 @@ import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
-import { setOfficialSquadToShow,setSquadData } from '../../../actions/squad'
+import { setOfficialSquadToShow } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import PlayerScore from '../../global/playerScore'
 import SquadPopModel from  '../../../modes/SquadPop'
@@ -204,8 +203,6 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setOfficialSquadToShow:(squad)=>dispatch(setOfficialSquadToShow(squad)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
