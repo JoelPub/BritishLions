@@ -110,7 +110,7 @@ const styles = styleSheetCreate({
 const  Circle = ({data}) => {
   return (
     <View style={styles.profileNameView}>
-      <Text style={styles.profileNameText}>{data.initName}</Text>
+      <Text style={styles.profileNameText}>{data.initName.toUpperCase()}</Text>
     </View>
   )
 }
@@ -125,8 +125,8 @@ const  CircleRank = ({data}) => {
 const  TitleSubTitle = ({data}) => {
   return (
     <View style={styles.profileTitleView}>
-      <Text style={styles.profileTitleText}>{data.userName}</Text>
-      <Text style={styles.profileSubTitleText}>{data.selector_rating}</Text>
+      <Text style={styles.profileTitleText}>{data.userName.toUpperCase()}</Text>
+      <Text style={styles.profileSubTitleText}>{data.selector_rating.toUpperCase()}</Text>
     </View>
   )
 }

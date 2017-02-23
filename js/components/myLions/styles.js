@@ -497,7 +497,7 @@ module.exports = styleSheetCreate({
         color: 'rgb(255,204,40)',
         fontSize:24,
         android:{
-            marginBottom: 1,
+            marginBottom: 2,
         }
     },
     btnFavouritesLabel: {

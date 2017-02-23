@@ -34,6 +34,7 @@ import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import PlayerScore from '../../global/playerScore'
+import fetch from '../../utility/fetch'
 
 import DataModel from './defaultData'
 const ButtonWithIcon = (props) => {
@@ -74,8 +75,8 @@ const MyPride = (props) => {
 const GroupAction = () => {
   return (
     <View style={styles.groupActionView}>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
     </View>
   )
 }
@@ -109,7 +110,7 @@ const GroupNameList = ({data,onPress}) => {
 const CompetitionCenter = () => {
   return (
     <View style={styles.CompetitionCenterView}>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'COMPETITION CENTRE'} />
+      <ButtonWithIcon  iconName  = {'md-analytics'} title = {'COMPETITION CENTRE'} />
     </View>
   )
 }
@@ -120,8 +121,33 @@ class CompetitionLadder extends Component {
     this._scrollView = ScrollView
     this.isUnMounted = false
     this.state = {
+      isLoaded: false,
       data: DataModel
     }
+  }
+  /*get Data*/
+  fetchData = () => {
+    let opt = {
+      url:'',
+      query: {
+        aceess_token: '',
+        id: '',
+        group_id: ''
+      }
+    }
+    this.setState({
+      isLoaded: true,
+    })
+    fetch(opt).then((json)=>{
+      this.setState({
+        isLoaded: false,
+        data:json
+      })
+    }).catch(
+      this.setState({
+        isLoaded: false,
+      })
+    )
   }
   /*router logic*/
   groupNameOnPress = (data) => {
@@ -159,7 +185,6 @@ class CompetitionLadder extends Component {
     )
   }
   componentDidMount() {
-    console.log(DataModel)
   }
 
   componentWillUnmount() {

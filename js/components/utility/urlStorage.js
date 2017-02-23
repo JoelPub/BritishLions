@@ -22,6 +22,8 @@ const EYC3_GET_PLAYER_URL = '/getPlayersList'
 const EYC3_GET_PLAYER_URL_NAME = 'EYC3FullPlayers'
 const EYC3_GET_EXPERTS_URL = '/getExpertList'
 const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
+const EYC3_GET_COMPETTITION_LADDER = 'EYC3ExpertsSquads'
+
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'
 const GOODFORM_GET_FAVORITE_PLAYER_URL_NAME = 'GoodFormFavoritePlayers'
@@ -35,6 +37,7 @@ const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/save'
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME = 'SaveGoodFormUserCustomizedSquad'
 const GOODFORM_REFRESH_TOKEN_URL = '/sessions/create'
 const GOODFORM_USERS_URL = '/users'
+
 
 export function getAssembledUrl(urlName) {
     switch (urlName) {
