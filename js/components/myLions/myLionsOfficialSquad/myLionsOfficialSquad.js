@@ -88,6 +88,7 @@ class MyLionsOfficialSquad extends Component {
         )
     }
     _showDetail(item, route,playerPos,max,seq) {
+        item.isShowAddBtn = false
         this.props.drillDown(item, route)
     }
     render() {

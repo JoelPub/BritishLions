@@ -279,7 +279,7 @@ class MyLions extends Component {
                                                         })
                                                     }
                                                     {
-                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='COMPETITION CENTRE' onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')} style={[styles.button, styles.btnonBoardSquard]}  />
+                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='COMPETITION CENTRE' onPress={() => [this.props.pushNewRoute('myLionsCompetitionCentre'),this._setModalVisible(false)]} style={[styles.button, styles.btnonBoardSquard]}  />
                                                     }
                                                     <View style={styles.onboardingPageBtns}>
                                                         {
