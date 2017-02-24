@@ -33,6 +33,7 @@ import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import CreateWithModal from '../createGroup'
 import PlayerScore from '../../global/playerScore'
 import fetch from '../../utility/fetch'
 
@@ -41,7 +42,7 @@ const ButtonWithIcon = (props) => {
   let {iconName,title,style,onPress} = props
   let styleMore = style ? style : null
   return (
-    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} >
+    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} onPress={onPress} >
       <Icon name={iconName} style={styles.btnFavouritesIcon} />
       <Text style={styles.btnFavouritesLabel}>
         {title}
@@ -61,22 +62,24 @@ const  ShareButton = () => {
   )
 }
 const MyPride = (props) => {
-  let { groupNameOnPress,createGroupOnPress,JoinGroupOnPress,data} =props
+  let { groupNameOnPress,createGroupOnPress,joinGroupOnPress,data} =props
   return (
     <View style={styles.prideContainer}>
       <View style={styles.prideTitleView}>
         <Text style={styles.prideTitleText}>MY PRIDE</Text>
       </View>
-      <GroupAction />
+      <GroupAction createGroupOnPress={createGroupOnPress} joinGroupOnPress={joinGroupOnPress} />
       <GroupNameList onPress={groupNameOnPress} data={data} />
     </View>
   )
 }
-const GroupAction = () => {
+const GroupAction = ({createGroupOnPress,joinGroupOnPress}) => {
   return (
     <View style={styles.groupActionView}>
-      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
-      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}
+                       onPress={createGroupOnPress}/>
+      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}
+                       onPress={joinGroupOnPress}/>
     </View>
   )
 }
@@ -122,7 +125,9 @@ class CompetitionLadder extends Component {
     this.isUnMounted = false
     this.state = {
       isLoaded: false,
-      data: DataModel
+      data: DataModel,
+      isCreating:false,
+      createType:'create'
     }
   }
   /*get Data*/
@@ -149,6 +154,7 @@ class CompetitionLadder extends Component {
       })
     )
   }
+
   /*router logic*/
   groupNameOnPress = (data) => {
     console.log('**********')
@@ -156,8 +162,33 @@ class CompetitionLadder extends Component {
    this.props.drillDown('data','myLionsGroupView')
   }
 
+  /*groupAction*/
+  createGroupOnPress = () => {
+    console.log('createGroupOnPress')
+
+    this.setState({
+      isCreating: true,
+    })
+  }
+  joinGroupOnPress = () => {
+
+  }
+  dissMissModel = () =>{
+    this.setState({
+      isCreating: false,
+      createType: 'create',
+    })
+  }
+  /*modelInActions*/
+  createButtonClick = () => {
+    this.setState({
+      createType: 'success',
+    })
+  }
+
+
   render() {
-   let { data } = this.state
+   let { data ,isCreating, createType } = this.state
    let {userProfile} = this.props
     return (
       <Container theme={theme}>
@@ -174,12 +205,17 @@ class CompetitionLadder extends Component {
               <RankList data={data} />
               <ShareButton />
             </GrayContainer>
-            <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}/>
+            <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}
+                      createGroupOnPress={this.createGroupOnPress}
+                      joinGroupOnPress={this.joinGroupOnPress}/>
             <CompetitionCenter />
           <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
+          <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
+          createButtonClick = {this.createButtonClick}
+          />
         </View>
       </Container>
     )

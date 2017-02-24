@@ -86,7 +86,7 @@ class GreateGroupModal extends Component {
     return PageData
   }
   createGroupClick = () => {
-
+   this.props.createButtonClick()
   }
   goBackClick = () => {
 
@@ -95,7 +95,7 @@ class GreateGroupModal extends Component {
 
   }
   render() {
-    let { modalType } = this.state
+    let { modalType } = this.props
     let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
     if(modalType !== 'create'){
@@ -123,5 +123,6 @@ GreateGroupModal.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
+  createButtonClick: PropTypes.func.isRequired,
 }
 export default GreateGroupModal
