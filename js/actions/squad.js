@@ -5,6 +5,8 @@ import type { Action } from './types'
 export const SET_USER_PROFILE = 'SET_USER_PROFILE'
 export const SET_SQUAD_TOSHOW = 'SET_SQUAD_TOSHOW'
 export const SET_SQUAD_DATA = 'SET_SQUAD_DATA'
+export const SET_TEAM_TOSHOW = 'SET_TEAM_TOSHOW'
+export const SET_TEAM_DATA = 'SET_TEAM_DATA'
 export const SET_OFFICIAL_SQUAD_TOSHOW = 'SET_OFFICIAL_SQUAD_TOSHOW'
 export const SET_OPPOSITION_SQUAD_TOSHOW = 'SET_OPPOSITION_SQUAD_TOSHOW'
 
@@ -24,6 +26,18 @@ export function setSquadData(squadData):Action {
     return {
         type: SET_SQUAD_DATA,
         squadData
+    }
+}
+export function setTeamToShow(teamToShow):Action {
+    return {
+        type: SET_TEAM_TOSHOW,
+        teamToShow
+    }
+}
+export function setTeamData(teamData):Action {
+    return {
+        type: SET_TEAM_DATA,
+        teamData
     }
 }
 export function setOfficialSquadToShow(officialSquadToShow):Action {

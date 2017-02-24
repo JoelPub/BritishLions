@@ -7,6 +7,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styles from '../styles'
 import styleVar from '../../../themes/variable'
+import { strToUpper } from '../../utility/helper'
 
 const locStyle = styleSheetCreate({
     wrapper: {
@@ -92,10 +93,10 @@ export default class Versus extends Component {
                 <View style={locStyle.circleWrapper}>
                     <Image 
                         resizeMode='cover' 
-                        source={{uri: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/114146.jpg'}} 
+                        source={{uri: this.props.gameData.image}} 
                         style={[styles.imageCircle, locStyle.imageCircle]} />
                     
-                    <Text style={locStyle.name}>GAME TITLE</Text>
+                    <Text style={locStyle.name}>{strToUpper(this.props.gameData.title)}</Text>
                 </View>   
 
                 <View style={locStyle.versusWrapper}>
@@ -106,11 +107,10 @@ export default class Versus extends Component {
                 
                 <View style={locStyle.circleWrapper}>
                     <View style={locStyle.circle}>
-                        <Text style={locStyle.circleText}>KE</Text>
+                        <Text style={locStyle.circleText}>{strToUpper(this.props.userData.initName)}</Text>
                     </View> 
 
-                    <Text style={locStyle.name}>KENNETH</Text>
-                    <Text style={locStyle.name}>ERICKSON</Text>
+                    <Text style={locStyle.name}>{strToUpper(this.props.userData.userName)}</Text>
                 </View>  
             </LinearGradient>          
 		)
