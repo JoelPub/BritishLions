@@ -54,9 +54,9 @@ class MyLionsOppositionSquad extends Component {
             isLoaded: false,
             userID:'',
             isNetwork: true,
-            image:'',
-            title:'',
-            description:'',
+            image:this.props.drillDownItem.image,
+            title:this.props.drillDownItem.title,
+            description:this.props.drillDownItem.description,
         }
         this.uniondata = Data
     }
@@ -169,11 +169,10 @@ class MyLionsOppositionSquad extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  this.fullPlayerList=catchedFullPlayerList
-                  this.setState({image:this.props.drillDownItem.image,title:this.props.drillDownItem.title,description:this.props.drillDownItem.description})
-                  this.setSquadData(OppositionSquadModel(this.props.drillDownItem.team))
-
-                
+                this.fullPlayerList=catchedFullPlayerList
+                let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.props.drillDownItem.team),catchedFullPlayerList,this.uniondata)
+                this.props.setOppositionSquadToShow(showSquadFeed.toJS())
+                this.setState({isLoaded:true})
               }
           }).catch((error) => {
               this.setState({ isLoaded: true }, () => {
@@ -181,17 +180,6 @@ class MyLionsOppositionSquad extends Component {
               })
           })
       })
-    }
-
-    setSquadData(squad){
-      console.log('setSquadData')
-        let tmpSquad=new OppositionSquadModel()
-        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,this.uniondata)
-        console.log('1')
-        this.props.setOppositionSquadToShow(showSquadFeed.toJS())
-        console.log('2')
-        this.setState({isLoaded:true})
-        
     }
 }
 

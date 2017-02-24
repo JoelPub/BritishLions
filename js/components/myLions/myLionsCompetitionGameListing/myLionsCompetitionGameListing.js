@@ -265,7 +265,7 @@ class MyLionsCompetitionGameListing extends Component {
       console.log('_getList')
       this.setState({ isLoaded: false },()=>{
             let optionsGameList = {
-              url: 'https://api.myjson.com/bins/bm0h1',
+              url: 'https://api.myjson.com/bins/en699',
               data: {id:this.state.userID},
               onAxiosStart: null,
               onAxiosEnd: null,

@@ -5,7 +5,7 @@ const OppositionSquadShowModel = Record({
     {'position':'captain',info:null},
     {'position':'kicker',info:null},
   ], 
-  'forwards':[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], 
-  'backs':[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
-})
+  'forwards':[{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null}], 
+  'backs':[{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null}]
+  })
 export default OppositionSquadShowModel
