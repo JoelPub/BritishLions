@@ -205,18 +205,20 @@ class RankingList extends Component {
   }
 
   render() {
-    let { data } = this.props
-    let arr = ['1','2','3','4','5']
+    let { data , title} = this.props
+    let arr = []
+    if(data.top_five) arr = data.top_five
+    if(data.top_twenty) arr = data.top_twenty
     return (
       <View style={[styles.scoreCard]} >
           <View style={styles.titleView}>
-            <Text style={styles.titleText} >GLOBAL TOP5</Text>
+            <Text style={styles.titleText} >{title}</Text>
           </View>
         <View style={styles.contentView}>
             <Header />
 
           {
-            data.top_five.map((item,index)=>{
+            arr.map((item,index)=>{
               return(
                 <Content  key={index} data={item} index={index}/>
               )
@@ -229,5 +231,9 @@ class RankingList extends Component {
 }
 export default RankingList
 RankingList.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  title:PropTypes.string,
+}
+RankingList.defaultProps = {
+  title:'GLOBAL TOP5',
 }
