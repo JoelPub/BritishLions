@@ -25,11 +25,11 @@ import styleVar from '../../../themes/variable'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { strToUpper } from '../../utility/helper'
-import SquadModel from  '../../../modes/Squad'
-import {convertSquadToShow} from '../../global/squadToShow'
+import TeamModel from  '../../../modes/Team'
+import {convertTeamToShow} from '../components/teamToShow'
 import Data from '../../../../contents/unions/data'
 import Immutable, { Map, List,Iterable } from 'immutable'
-import { setSquadToShow,setSquadData } from '../../../actions/squad'
+import { setTeamToShow,setTeamData } from '../../../actions/squad'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 
 const locStyle = styleSheetCreate({
@@ -113,7 +113,8 @@ class MyLionsCompetitionGameResults extends Component {
             isLoaded:false,
             gameInfo:{},
             drillDownItem:this.props.drillDownItem,
-            isNetwork: true
+            isNetwork: true,
+            fullTeam:false
 
         }
     }
@@ -196,7 +197,7 @@ class MyLionsCompetitionGameResults extends Component {
                             <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
                                  <ButtonFeedback style={locStyle.btn} onPress={()=> {  this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam') }}>
                                     <Text style={locStyle.btnText}>
-                                        TEAM
+                                        {this.state.fullTeam?'FULL TEAM':'TEAM'}
                                     </Text>
                                 </ButtonFeedback>
                             </LinearGradient>
@@ -230,7 +231,7 @@ class MyLionsCompetitionGameResults extends Component {
     componentWillMount() {
         this.setState({isLoaded:false},()=>{
             this.getInfo()
-            this._getSquad()
+            this._getTeam()
         })
     }
     _showError(error) {
@@ -273,38 +274,38 @@ class MyLionsCompetitionGameResults extends Component {
         }
         service(optionsInfo)        
     }
-    _getSquad(){
-                getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
-                    if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                        this.fullPlayerList=catchedFullPlayerList
-                        let optionsSquad = {
-                            url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
-                            method: 'get',
-                            onSuccess: (res) => {
-                                if(res.data) {
-                                    this.setSquadData(SquadModel.format(eval(`(${res.data})`)))
-                                }
-                                
-                            },
-                            isRequiredToken: true
+    _getTeam(){
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                this.fullPlayerList=catchedFullPlayerList
+                let optionsTeam = {
+                    url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
+                    method: 'get',
+                    onSuccess: (res) => {
+                        if(res.data) {
+                            this.setTeam(TeamModel.format(eval(`(${res.data})`)))
                         }
-                        service(optionsSquad)
-                    }
-                }).catch((error) => {
-                            this._showError(error) 
-                })
+                        
+                    },
+                    isRequiredToken: true
+                }
+                service(optionsTeam)
+            }
+        }).catch((error) => {
+                    this._showError(error) 
+        })
     }
-    setSquadData(squad){
-        console.log('!!!setSquadData')
-        let tmpSquad=new SquadModel()
+    setTeam(team){
+        console.log('!!!setTeam',team.toJS())
+        let tmpTeam=new TeamModel()
         let fullFeed=true
-        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,false,this.uniondata)
-        console.log('showSquadFeed',showSquadFeed.toJS())
-        showSquadFeed.forEach((value,index)=>{
+        let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        console.log('showTeamFeed',showTeamFeed.toJS())
+        showTeamFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    if(showSquadFeed.get(index)[i]===null) {
-                        squad=squad.update(index,val=>{
+                    if(showTeamFeed.get(index)[i]===null) {
+                        team=team.update(index,val=>{
                             val[i]=null
                             return val
                         })
@@ -315,24 +316,24 @@ class MyLionsCompetitionGameResults extends Component {
             else {
                 value.map((v,i)=>{
                     let p=v.position==='wildcard'?'widecard':v.position
-                    if(showSquadFeed.get(index)[i].info===null) {
-                        squad=squad.set(p,'')
+                    if(showTeamFeed.get(index)[i].info===null) {
+                        team=team.set(p,'')
                         fullFeed=false
                     }
                 })
             }
         })
         // console.log('2')
-        tmpSquad.forEach((value,index)=>{
-            if(List.isList(squad.get(index))) {
-                if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
-                else tmpSquad=tmpSquad.set(index,'')
+        tmpTeam.forEach((value,index)=>{
+            if(List.isList(team.get(index))) {
+                if(team.get(index).count()>0)   tmpTeam=tmpTeam.set(index,team.get(index).join('|'))
+                else tmpTeam=tmpTeam.set(index,'')
             }
-            else tmpSquad=tmpSquad.set(index,squad.get(index))
+            else tmpTeam=tmpTeam.set(index,team.get(index))
         })
         let optionsSaveList = {
             url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/save',
-            data:tmpSquad.toJS(),
+            data:tmpTeam.toJS(),
             onAxiosStart: () => {
             },
             onAxiosEnd: () => {
@@ -347,9 +348,10 @@ class MyLionsCompetitionGameResults extends Component {
             },
             isRequiredToken: true
         }
-        console.log('this.props.squadData',this.props.squadData)
-            this.props.setSquadData(JSON.stringify(tmpSquad))
-            this.props.setSquadToShow(showSquadFeed.toJS())
+        console.log('this.props.teamData',this.props.teamData)
+            this.props.setTeamData(JSON.stringify(tmpTeam))
+            this.props.setTeamToShow(showTeamFeed.toJS())
+            this.setState({fullTeam:fullFeed})
             service(optionsSaveList)
         
 
@@ -360,8 +362,8 @@ function bindAction(dispatch) {
     return {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
-        setSquadData:(squad)=>dispatch(setSquadData(squad)),
+        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
+        setTeamData:(team)=>dispatch(setTeamData(team)),
     }
 }
 
@@ -371,7 +373,7 @@ export default connect((state) => {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
         netWork: state.network,
-        squadToShow: state.squad.squadToShow,
-        squadData: state.squad.squadData,
+        teamToShow: state.squad.teamToShow,
+        teamData: state.squad.teamData,
     }
 },  bindAction)(MyLionsCompetitionGameResults)
