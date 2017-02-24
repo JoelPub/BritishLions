@@ -41,7 +41,7 @@ import TeamModel from  '../../../modes/Team'
 import SquadRatingModel from '../../../modes/Squad/Rating'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
-import SquadList from '../../global/squadList'
+import TeamList from '../components/teamList'
 import {convertTeamToShow} from '../components/teamToShow'
 import SquadShowModel from  '../../../modes/Squad/SquadShowModel'
 
@@ -128,9 +128,9 @@ class MyLionsManageTeam extends Component {
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <Text style={[styles.headerTitle,styles.squadTitle]}>MY SQUAD</Text>
+                                <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
                                 <View>
-                                    <SquadList squadDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
+                                    <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                     <LionsFooter isLoaded={true} />
                                 </View>
                             </ScrollView>
@@ -158,32 +158,9 @@ class MyLionsManageTeam extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        //console.log('!!!mySquad componentWillReceiveProps')
-        // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
-        // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
-        // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
-        // console.log('!!!this.props.squadData',this.props.squadData)
-        //console.log('!!!nextProps.squadData',nextProps.squadData)
-        // console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
-        // let routes = globalNav.navigator.getCurrentRoutes()
-        
-        // re render after 'back nav' pressed
-            // if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
-            // console.log('!!!!!',nextProps.route.routes)
-                // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
-                if(nextProps.teamData!==null) {
-                    // console.log('pass')
-                    this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
-                }                
-            // }
-            // else {
-            //     this.setState({
-            //         isLoaded: false,
-            //     }, () => {
-            //         setTimeout(()=>{this._getSquad()},600)
-            //     })
-            // }
-        // }
+        if(nextProps.teamData!==null) {
+            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+        }
     }
     
     _replaceRoute(route) {
