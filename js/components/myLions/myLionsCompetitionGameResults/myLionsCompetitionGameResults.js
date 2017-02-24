@@ -3,24 +3,24 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { pushNewRoute } from '../../actions/route'
+import { pushNewRoute } from '../../../actions/route'
 import { Image, Text, View, ScrollView, ListView } from 'react-native'
 import { Container, Icon } from 'native-base'
-import theme from '../../themes/base-theme'
+import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
-import LoginRequire from '../global/loginRequire'
-import LionsHeader from '../global/lionsHeader'
-import EYSFooter from '../global/eySponsoredFooter'
-import LionsFooter from '../global/lionsFooter'
-import ButtonFeedback from '../utility/buttonFeedback'
-import ImagePlaceholder from '../utility/imagePlaceholder'
-import Versus from './components/versus'
-import SummaryCardWrapper from './components/summaryCardWrapper'
-import SquadModal from '../global/squadModal'
-import shapes from '../../themes/shapes'
+import LoginRequire from '../../global/loginRequire'
+import LionsHeader from '../../global/lionsHeader'
+import EYSFooter from '../../global/eySponsoredFooter'
+import LionsFooter from '../../global/lionsFooter'
+import ButtonFeedback from '../../utility/buttonFeedback'
+import ImagePlaceholder from '../../utility/imagePlaceholder'
+import Versus from '../components/versus'
+import SummaryCardWrapper from '../components/summaryCardWrapper'
+import SquadModal from '../../global/squadModal'
+import shapes from '../../../themes/shapes'
 import styles from './styles'
-import { styleSheetCreate } from '../../themes/lions-stylesheet'
-import styleVar from '../../themes/variable'
+import { styleSheetCreate } from '../../../themes/lions-stylesheet'
+import styleVar from '../../../themes/variable'
 
 const locStyle = styleSheetCreate({
     result: {
@@ -252,7 +252,8 @@ class MyLionsCompetitionGameResults extends Component {
         super(props)
         this.isUnMounted = false
         this.state = {
-            modalResults: false
+            modalResults: false,
+            drillDownItem:this.props.drillDownItem,
         }
     }
 
@@ -289,7 +290,7 @@ class MyLionsCompetitionGameResults extends Component {
                             <Text style={locStyle.resultText}>YOU WON</Text>
                         </View>
 
-                        <Versus data={[]} />
+                        <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
                         
                         <View style={styles.guther}>
                             <SummaryCardWrapper>
@@ -333,4 +334,11 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null,  bindAction)(MyLionsCompetitionGameResults)
+export default connect((state) => {
+    return {
+        drillDownItem: state.content.drillDownItem,
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile: state.squad.userProfile,
+        netWork: state.network,
+    }
+},  bindAction)(MyLionsCompetitionGameResults)

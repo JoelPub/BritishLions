@@ -21,28 +21,20 @@ import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import loader from '../../../themes/loader-position'
 import { alertBox } from '../../utility/alertBox'
 import refresh from '../../../themes/refresh-control'
-import { drillDown ,shareReplace} from '../../../actions/content'
+import { drillDown} from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
 import { removeToken, getUserId } from '../../utility/asyncStorageServices'
 import { service } from '../../utility/services'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
-import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setOfficialSquadToShow } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
-import PlayerScore from '../../global/playerScore'
-import SquadPopModel from  '../../../modes/SquadPop'
-import Rating from  '../../../modes/SquadPop/Rating'
 import OfficialSquadModel from  '../../../modes/Squad/OfficialSquadModel'
-import SquadRatingModel from '../../../modes/Squad/Rating'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
 import OfficialSquadList from '../components/officialSquadList'
 import {convertSquadToShow} from '../components/officialSquadToShow'
-import SquadShowModel from  '../../../modes/Squad/SquadShowModel'
 
 class MyLionsOfficialSquad extends Component {
 
@@ -156,7 +148,6 @@ class MyLionsOfficialSquad extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  this.fullPlayerList=catchedFullPlayerList
                   let optionsOfficialSquad = {
                       url: 'https://api.myjson.com/bins/14iqg1',
                       data: {id:this.state.userID},
@@ -165,8 +156,10 @@ class MyLionsOfficialSquad extends Component {
                       method: 'get',
                       onSuccess: (res) => {
                           if(res.data) {
-                                  console.log('res.data',res.data)                    
-                                  this.setSquadData(OfficialSquadModel(res.data))
+                                  console.log('res.data',res.data)
+                                  let showSquadFeed=convertSquadToShow(OfficialSquadModel(res.data),catchedFullPlayerList,this.uniondata)
+                                  this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                  this.setState({isLoaded:true})
                           }
                       },
                       onError: null,
@@ -186,15 +179,6 @@ class MyLionsOfficialSquad extends Component {
           })
       })
     }
-
-    setSquadData(squad){
-      console.log('setSquadData')
-        let tmpSquad=new OfficialSquadModel()
-        let showSquadFeed=convertSquadToShow(squad,this.fullPlayerList,this.uniondata)
-        this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-        this.setState({isLoaded:true})
-        
-    }
 }
 
 function bindAction(dispatch) {
@@ -204,7 +188,6 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setOfficialSquadToShow:(squad)=>dispatch(setOfficialSquadToShow(squad)),
-        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }
 
