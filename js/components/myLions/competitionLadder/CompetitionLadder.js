@@ -27,13 +27,16 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
-
+import {getUserFullName} from  '../../utility/asyncStorageServices'
 
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import PlayerScore from '../../global/playerScore'
+import fetch from '../../utility/fetch'
+
+import DataModel from './defaultData'
 const ButtonWithIcon = (props) => {
   let {iconName,title,style,onPress} = props
   let styleMore = style ? style : null
@@ -58,66 +61,104 @@ const  ShareButton = () => {
   )
 }
 const MyPride = (props) => {
-  let { groupNameOnPress,createGroupOnPress,JoinGroupOnPress} =props
+  let { groupNameOnPress,createGroupOnPress,JoinGroupOnPress,data} =props
   return (
     <View style={styles.prideContainer}>
       <View style={styles.prideTitleView}>
         <Text style={styles.prideTitleText}>MY PRIDE</Text>
       </View>
       <GroupAction />
-      <GroupNameList onPress={groupNameOnPress} />
+      <GroupNameList onPress={groupNameOnPress} data={data} />
     </View>
   )
 }
 const GroupAction = () => {
   return (
     <View style={styles.groupActionView}>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}/>
+      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}/>
     </View>
   )
 }
-const GroupName = (props) => {
-  let {data,onPress} = props
-  return (
-    <ButtonFeedback style={styles.groupName} onPress={onPress}>
-      <Text style={styles.groupNameText}>Group Name</Text>
-      <Icon name='md-star' style={styles.playIcon} />
-    </ButtonFeedback>
-  )
+class GroupName extends Component {
+  btnClick = () => {
+    this.props.onPress(this.props.data)
+  }
+  render() {
+    let {data} = this.props
+    return (
+      <ButtonFeedback style={styles.groupName} onPress={this.btnClick}>
+        <Text style={styles.groupNameText}>{data.name}</Text>
+        <Icon name='md-star' style={styles.playIcon} />
+      </ButtonFeedback>
+    )
+  }
 }
-const GroupNameList = ({onPress}) => {
+const GroupNameList = ({data,onPress}) => {
   return (
     <View style={styles.groupList}>
-      <GroupName onPress ={onPress} />
-      <GroupName />
-      <GroupName />
+      {
+        data.my_groups.map((item,index)=>{
+          return(
+            <GroupName onPress ={onPress} key={index} data={item} />
+          )
+        })
+      }
     </View>
   )
 }
 const CompetitionCenter = () => {
   return (
     <View style={styles.CompetitionCenterView}>
-      <ButtonWithIcon  iconName  = {'md-star'} title = {'COMPETITION CENTRE'} />
+      <ButtonWithIcon  iconName  = {'md-analytics'} title = {'COMPETITION CENTRE'} />
     </View>
   )
 }
+
 class CompetitionLadder extends Component {
   constructor (props) {
     super(props)
     this._scrollView = ScrollView
     this.isUnMounted = false
     this.state = {
-
+      isLoaded: false,
+      data: DataModel
     }
   }
+  /*get Data*/
+  fetchData = () => {
+    let opt = {
+      url:'',
+      query: {
+        aceess_token: '',
+        id: '',
+        group_id: ''
+      }
+    }
+    this.setState({
+      isLoaded: true,
+    })
+    fetch(opt).then((json)=>{
+      this.setState({
+        isLoaded: false,
+        data:json
+      })
+    }).catch(
+      this.setState({
+        isLoaded: false,
+      })
+    )
+  }
   /*router logic*/
-  groupNameOnPress = () => {
+  groupNameOnPress = (data) => {
     console.log('**********')
+    console.log(data)
    this.props.drillDown('data','myLionsGroupView')
   }
 
   render() {
+   let { data } = this.state
+   let {userProfile} = this.props
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -129,11 +170,11 @@ class CompetitionLadder extends Component {
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <HeaderTitleWithModal title={'COMPETITION LADDER'}/>
             <GrayContainer >
-              <ExpertRank />
-              <RankList />
+              <ExpertRank data={userProfile}/>
+              <RankList data={data} />
               <ShareButton />
             </GrayContainer>
-            <MyPride  groupNameOnPress={this.groupNameOnPress}/>
+            <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}/>
             <CompetitionCenter />
           <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -158,7 +199,12 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
+  console.log(state)
   return {
     route: state.route,
+    userProfile:state.squad.userProfile
   }
 }, bindAction)(CompetitionLadder)
+CompetitionLadder.defaultProps = {
+
+}
