@@ -230,7 +230,7 @@ export default class OppositionSquadList extends Component {
                                 item.info===null?
                                 <AddPlayerCell pos={item.position}/>
                                 :
-                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerDetails',item.position,1,0)}/>
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'MyLionsPlayerProfile',item.position,1,0)}/>
                                 }
                             </View>
                         )
@@ -257,7 +257,7 @@ export default class OppositionSquadList extends Component {
                                                             item===null?
                                                             <AddPlayerCell pos='FORWARDS'/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerDetails','forwards',16,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','forwards',16,index)}/>
                                                         }
                                                     </View>
                                                 )
@@ -290,7 +290,7 @@ export default class OppositionSquadList extends Component {
                                                     item===null?                                                        
                                                        <AddPlayerCell pos='BACKS'/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerDetails','backs',16,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','backs',16,index)}/>
                                                 }
                                                 </View>
                                                 )

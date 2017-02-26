@@ -72,7 +72,7 @@ function  searchPlayer(player,id,uniondata) {
                         result.image = require(`../../../../contents/unions/nations/128.png`)
                     } else {
                         result.image = {uri:result.image}
-                    } 
+                    }
                 }
                 if(strToUpper(result.position)==='FLANKER'||strToUpper(result.position)==='NO. 8') result.position='Back Row'
                 if(strToUpper(result.position)==='UTILITY BACK') result.position='Full Back'
