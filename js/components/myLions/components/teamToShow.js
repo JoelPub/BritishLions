@@ -2,6 +2,7 @@
 
 import TeamShowModel from  '../../../modes/Team/TeamShowModel'
 import { strToUpper } from '../../utility/helper'
+import { searchPlayer } from './searchPlayer'
 export function compareShowSquad(rSquad,jSquad){
     if (JSON.stringify(jSquad)==='{}') return false
     let result=true

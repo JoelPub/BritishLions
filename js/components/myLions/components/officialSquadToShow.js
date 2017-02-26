@@ -3,6 +3,7 @@
 import OfficialSquadShowModel from  '../../../modes/Squad/OfficialSquadShowModel'
 import { strToUpper } from '../../utility/helper'
 import Coach from '../../../../contents/my-lions/official/coach'
+import { searchPlayer } from './searchPlayer'
 export function convertSquadToShow(squad,fullPlayerList,uniondata) {
     console.log('squad',squad.toJS())
     let tempFeed=new OfficialSquadShowModel()
@@ -45,7 +46,7 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
                 })
             }
         })
-        return tempFeed    
+        return tempFeed
 }
 
 function  searchPlayer(player,id,uniondata) {
@@ -81,3 +82,4 @@ function  searchPlayer(player,id,uniondata) {
         }
         return result===undefined?null:result
     }
+}

@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component, Children } from 'react'
+import React, { Component, Children, PropTypes } from 'react'
 import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -65,7 +65,7 @@ const styles = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     fontSize:18,
     lineHeight:18,
-    backgroundColor:'transparent'
+    backgroundColor:'transparent',
   },
   profileSubTextTitle: {
     color:'rgb(255,230,0)',
@@ -103,80 +103,80 @@ const styles = styleSheetCreate({
     marginTop: 18,
   },
   rolesTextBox: {
-    marginLeft: 10,
+    width:25,
   }
 
 })
-const  Circle = () => {
+const  Circle = ({data}) => {
   return (
     <View style={styles.profileNameView}>
-      <Text style={styles.profileNameText}>KE</Text>
+      <Text style={styles.profileNameText}>{data.initName.toUpperCase()}</Text>
     </View>
   )
 }
-const  CircleRank = () => {
+const  CircleRank = ({data}) => {
   return (
     <View style={styles.profileRankCircleView}>
       <Text style={styles.profileRankTextTitle}>RANK</Text>
-      <Text style={styles.profileSubTextTitle}>2134</Text>
+      <Text style={styles.profileSubTextTitle}>{data.rank}</Text>
     </View>
   )
 }
-const  TitleSubTitle = () => {
+const  TitleSubTitle = ({data}) => {
   return (
     <View style={styles.profileTitleView}>
-      <Text style={styles.profileTitleText}>KENNETH ERICKSON</Text>
-      <Text style={styles.profileSubTitleText}>EXPERT SELECTOR</Text>
+      <Text style={styles.profileTitleText}>{data.userName.toUpperCase()}</Text>
+      <Text style={styles.profileSubTitleText}>{data.selector_rating.toUpperCase()}</Text>
     </View>
   )
 }
-const  Roles = () => {
+const  Roles = ({data}) => {
   return (
     <View style={styles.rolesContainer}>
-      <View>
+      <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>W</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.w}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>L</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.l}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>D</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.d}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>F</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.f}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>A</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.a}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>BP</Text>
-        <Text style={styles.profileSubTextTitle}>22</Text>
+        <Text style={styles.profileSubTextTitle}>{data.bp}</Text>
       </View>
       <View style={styles.rolesTextBox}>
         <Text style={styles.profileRankTextTitle}>PTS</Text>
-        <Text style={styles.profileSubTextTitle}>1235</Text>
+        <Text style={styles.profileSubTextTitle}>{data.pts}</Text>
       </View>
     </View>
   )
 }
-const Profile = () => {
+const Profile = ({data}) => {
   return (
     <View style={styles.profileContainer}>
-      <Circle />
-      <TitleSubTitle />
+      <Circle data={data} />
+      <TitleSubTitle data={data} />
     </View>
   )
 }
-const RankView = () => {
+const RankView = ({data}) => {
   return (
     <View style={styles.profileContainer}>
-      <CircleRank />
-      <Roles />
+      <CircleRank data={data}/>
+      <Roles data={data} />
     </View>
   )
 }
@@ -187,13 +187,17 @@ class ExpertRank extends Component {
     }
   }
   render() {
+    let {data} =this.props
     return (
       <View style={[styles.container]} >
-        <Profile />
-        <RankView />
+        <Profile data={data}/>
+        <RankView data={data}/>
       </View>
     )
   }
 }
 export default ExpertRank
 
+ExpertRank.propTypes = {
+  data: PropTypes.object
+}

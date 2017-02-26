@@ -22,6 +22,7 @@ import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
+import { getGroupInfo } from '../../utility/apiasyncstorageservice/eyc3GroupsActions'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 
@@ -29,6 +30,8 @@ import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import GrayContainer from '../../global/GrayContainer'
 import ExpertRank from  '../../global/ExpertRank'
 import RankList from  '../../global/RankingList'
+
+import defaultData from './defaultData'
 
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
@@ -44,12 +47,6 @@ const ButtonWithIcon = (props) => {
     </ButtonFeedback>
   )
 }
-const TitleView = ({title}) => (
-  <View>
-    <Text style={styles.groupTitle}>{title}</Text>
-    <Icon name='ios-alert-outline' style={styles.headerIcon} />
-  </View>
-)
 class MyLionsGroupView extends Component {
 
   constructor (props) {
@@ -57,7 +54,7 @@ class MyLionsGroupView extends Component {
     this._scrollView = ScrollView
     this.isUnMounted = false
     this.state = {
-
+      data:defaultData
     }
   }
 
@@ -68,7 +65,31 @@ class MyLionsGroupView extends Component {
       [{text: 'Dismiss'}]
     )
   }
+  /*get Data*/
+  fetchData = () => {
+    let opt = {
+      url:'',
+      query: {
+        aceess_token: '',
+        id: '',
+        group_id: ''
+      }
+    }
+    this.setState({
+      isLoaded: true,
+    })
+    getGroupInfo().then((json)=>{
+      if (this.isUnMounted) return // return nothing if the component is already unmounted
+      this.setState({
+        data:json,
+        isLoaded: false,
+      })
+    }).catch(
+    )
+  }
   render() {
+    let {data} = this.state
+    let {userProfile} = this.props
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -80,8 +101,8 @@ class MyLionsGroupView extends Component {
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <HeaderTitleWithModal title={'GROUP NAME'}/>
             <GrayContainer >
-              <ExpertRank />
-              <RankList />
+              <ExpertRank data={userProfile}  />
+              <RankList data={data} title={'GROUP LADDER'} />
             </GrayContainer>
             <View style={styles.groupAction}>
               <ButtonWithIcon  iconName  = {'md-star'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}/>
@@ -113,5 +134,6 @@ function bindAction(dispatch) {
 export default connect((state) => {
   return {
     route: state.route,
+    userProfile:state.squad.userProfile
   }
 }, bindAction)(MyLionsGroupView)

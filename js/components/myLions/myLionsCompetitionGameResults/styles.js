@@ -12,34 +12,16 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
-    gridBoxTouchable: {
-        alignSelf: 'stretch',
-        backgroundColor: '#fff'
+    guther: {
+        paddingHorizontal: 20
     },
-    gridBoxTouchableView: {
-        alignSelf: 'stretch',
-        backgroundColor: '#FFF'
-    },
-    gridBoxImg: {
-        backgroundColor: '#FFF',
-        width: styleVar.deviceWidth / 2,
-        height: styleVar.deviceWidth / 2
-    },
-    gridBoxImgWrapper: {
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: -12,
-        width: styleVar.deviceWidth / 2,
-        height: styleVar.deviceWidth / 2,
-    },
-    gridBoxImgWrapperRight: {
-        borderRightWidth: 2,
-        borderRightColor: gridBorderColor
-    },
-    gridBoxTitleRight: {
-        borderRightWidth: 1,
-        borderRightColor: gridBorderColor,
+    button: {
+        height: 50,
+        backgroundColor: styleVar.brandLightColor,
+        marginTop: 19,
+        marginBottom: 20,
+        marginLeft: 30,
+        marginRight: 30,
     },
     pageTitle: {
         backgroundColor: 'transparent',
@@ -66,6 +48,35 @@ module.exports = styleSheetCreate({
         color: styleVar.colorScarlet,
         fontSize: 28,
         lineHeight: 28
+    },
+    roundButton: {
+        height: 50,
+        backgroundColor: styleVar.colorScarlet,
+        flexDirection:'row',
+        marginTop: 0,
+        marginBottom: 0,
+        paddingTop:5,
+        android:{
+            paddingTop: 0,
+        }
+    },
+    roundButtonIcon: {
+        marginBottom: 5,
+        color: 'rgb(255,204,40)',
+        fontSize:24,
+        android:{
+            marginBottom: 1,
+        }
+    },
+    roundButtonLabel: {
+        backgroundColor: 'transparent',
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+        paddingTop:5,
+        marginLeft: 5,
+        color: '#FFF'
     },
     modalContent: {
         paddingHorizontal: 28,

@@ -1,0 +1,2 @@
+import myLionsCompetitionGameResults from  './myLionsCompetitionGameResults'
+export default myLionsCompetitionGameResults
