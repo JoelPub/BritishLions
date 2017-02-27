@@ -107,6 +107,7 @@ class MyLionsPlayerProfile extends Component {
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.isShowAddBtn = this.props.isShowAddBtn,
+        console.log("this.isShowAddBtn", this.isShowAddBtn)
         this.playerPos=null,
         this.seq=0,
         this.state = {
@@ -303,8 +304,6 @@ class MyLionsPlayerProfile extends Component {
 
     componentWillReceiveProps(nextProps,nextState) {
         console.log('!!!details componentWillReceiveProps')
-        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
-        // console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
     }
 
     _updateMySquadStatus() {
@@ -507,10 +506,12 @@ class MyLionsPlayerProfile extends Component {
     render() {
         let buttonText = ''
 
-        if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
-            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'UPDATING..'
-        } else {
-            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
+        if(this.isShowAddBtn){
+            if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
+                buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'UPDATING..'
+            } else {
+                buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
+            }
         }
 
         let logo = ''
