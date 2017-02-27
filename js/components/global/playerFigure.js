@@ -323,12 +323,12 @@ export default class PlayerFigure extends Component {
                     <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
                         <View style={styles.fullCard}>
                             <View style={styles.playerOverallRating}>
-                                <Text style={styles.ratingTitle}>OVERALL RATING</Text>
+                                {/*<Text style={styles.ratingTitle}>OVERALL RATING</Text>
                                 <View style={styles.ratingScore}>
                                     <Text style={styles.ratingScorePoint}>
                                         { this.state.profile.overall_score || 'NA' }
                                     </Text>
-                                </View>
+                                </View>*/}
                                 <ButtonFeedback 
                                     onPress={()=>this.props.pressInfo(true,'info')}
                                         style={styles.btnCardInfoWrapper}> 
@@ -338,15 +338,15 @@ export default class PlayerFigure extends Component {
                                 </ButtonFeedback>
                             </View>
 
-                            <View style={styles.playerPerfromanceWrapper}>
+                           {/* <View style={styles.playerPerfromanceWrapper}>
                                 <View style={styles.playerPerfromance} >
                                     <Text style={styles.performanceText}>RECENT PERFORMANCE</Text>
-                                    {/*<Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>*/}
+                                    <Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>
                                     <Text style={styles.summaryTextHighLight}>
                                         { this.state.profile.performance_score || 'N/A' }
                                     </Text>
                                 </View>
-                                {/*<View style={styles.playerPerfromance}>
+                                <View style={styles.playerPerfromance}>
                                     <Text style={[styles.performanceText, styles.consitencyText]}>TREND</Text>
                                     {
                                         this.state.profile.player_consistency == 1&&
@@ -365,8 +365,8 @@ export default class PlayerFigure extends Component {
                                         this.state.profile.player_consistency === ''&& 
                                         <Text style={[styles.summaryTextHighLight, styles.summaryTextHighLight2]}>N/A</Text>
                                     }
-                                </View>*/}
-                            </View>
+                                </View>
+                            </View>*/}
                             <View style={styles.playerFigureWrapper}>
                                 <View style={styles.playerFigureView}>
                                     <View style={styles.playerFigureTypeView}>

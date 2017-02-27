@@ -539,7 +539,7 @@ class MyLionsPlayerProfile extends Component {
                                 <Text style={styles.headerPlayerName}>{name}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
-
+                            {   this.isShowAddBtn &&
                             <View style={styles.buttons}>
                                 {
                                     this.state.isMySquadPlayerUpdating?
@@ -564,6 +564,7 @@ class MyLionsPlayerProfile extends Component {
                                     <Text style={styles.btnText}>MY SQUAD</Text>
                                 </ButtonFeedback>
                             </View>
+                            }
                         </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>
