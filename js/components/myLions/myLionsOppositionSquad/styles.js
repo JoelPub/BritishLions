@@ -48,8 +48,9 @@ module.exports = styleSheetCreate({
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
         height: 50,
-        width:100,
-        justifyContent: 'center'
+        width: 135,
+        justifyContent: 'center',
+        marginBottom:20,
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',

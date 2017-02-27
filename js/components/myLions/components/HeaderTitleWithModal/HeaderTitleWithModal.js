@@ -19,7 +19,7 @@ class HeaderTitleWithModal extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.groupTitle}>{title}</Text>
-        <Icon name='ios-alert-outline' style={styles.headerIcon} />
+        <Icon name='ios-information-circle-outline' style={styles.headerIcon} />
       </View>
     )
   }
