@@ -34,9 +34,9 @@ const ShareButton = ({onPress}) => (
 class JoinGroupModal extends Component {
   constructor(props){
     super(props)
-    this.state({
+    this.state = {
         invitation_code: ''
-    })
+    }
 
   }
   callbackParent = ()=> {

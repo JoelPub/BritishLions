@@ -5,6 +5,8 @@ import { Container, Text, Button, Icon, Input } from 'native-base'
 import SquadModal from '../../global/squadModal'
 import ButtonFeedback from '../../utility/buttonFeedback'
 
+import { shareTextWithTitle } from '../../utility/socialShare'
+
 import styles from '../styles'
 
 const CreateButton = ({onPress}) => (
@@ -93,7 +95,7 @@ class GreateGroupModal extends Component {
     this.props.errorBackButtonClick()
   }
   shareClick = () => {
-
+    shareTextWithTitle('INVITE CODE','')
   }
   render() {
     let { modalType } = this.props

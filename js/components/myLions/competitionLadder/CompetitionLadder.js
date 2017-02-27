@@ -38,6 +38,7 @@ import CreateWithModal from '../createGroup'
 import JoinModal from '../joinGroup'
 import PlayerScore from '../../global/playerScore'
 import fetch from '../../utility/fetch'
+import { shareTextWithTitle } from '../../utility/socialShare'
 
 import DataModel from './defaultData'
 const ButtonWithIcon = (props) => {
