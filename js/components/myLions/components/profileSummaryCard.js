@@ -109,31 +109,31 @@ export default class ProfileSummaryCard extends Component {
             <View style={styles.cardTable}>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>W</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.w}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.w || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>L</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.l}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.l || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>D</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.d}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.d || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>F</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.f}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.f || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>A</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.a}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.a || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>BP</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.bp}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.bp || 0}</Text>
                 </View>
                 <View style={styles.cardTableCol}>
                     <Text style={styles.cardTableText}>PTS</Text>
-                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.pts}</Text>
+                    <Text style={[styles.cardTableText, styles.yellowText]}>{this.props.profile.pts || 0}</Text>
                 </View>
             </View>
         )
@@ -162,7 +162,7 @@ export default class ProfileSummaryCard extends Component {
                                     <View style={styles.cardCircleRankText}>
                                         <Text style={[styles.cardCircleText, styles.cardCircleSmallText]}>RANK</Text>
                                     </View>    
-                                    <Text style={[styles.cardCircleText, styles.cardCircleSmallText, styles.yellowText]}>{this.props.profile.rank}</Text>
+                                    <Text style={[styles.cardCircleText, styles.cardCircleSmallText, styles.yellowText]}>{this.props.profile.rank || 'N/A'}</Text>
                                 </View>
                             </View>
                         </Col>

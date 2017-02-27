@@ -7,6 +7,7 @@ import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert } fro
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { setUserProfile } from '../../actions/squad'
 import { setAccessGranted } from '../../actions/token'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -20,11 +21,12 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import shapes from '../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import SummaryCardWrapper from '../global/summaryCardWrapper'
+import ProfileSummaryCard from '../myLions/components/profileSummaryCard'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import SquadModel from  'modes/Squad'
 import Rating from  'modes/SquadPop/Rating'
 import { getAssembledUrl } from '../utility/urlStorage'
-import { getUserId, removeToken } from '../utility/asyncStorageServices'
+import { getUserId, removeToken, getUserFullName } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 
@@ -49,6 +51,7 @@ class Landing extends Component {
             apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY',
             isLoaded: false,
             isFetchContent: false,
+            isProfileSummaryLoaded: false,
             latestUpdatesFeeds: [], 
             fixturesList: [],
             isFullPlayer: true,
@@ -60,9 +63,9 @@ class Landing extends Component {
         }
     }
 
-    _myLions(data, route) {
+    _isSignIn(route) {
         if (this.props.isAccessGranted)
-            this.props.drillDown(data, route)
+            this._navigateTo(route)
         else
             this._reLogin()
     }
@@ -243,6 +246,42 @@ class Landing extends Component {
         })   
     }
 
+    _getProfileSummary(){
+        let optionsUserProfile = {
+            url: 'https://api.myjson.com/bins/18w6qd',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    getUserFullName().then((userName) => {                            
+                        let initName = ''
+                        userName.split(' ').map((value, index)=>{
+                            initName = initName + value[0]
+                        })
+
+                        let userProfile = Object.assign(res.data, {
+                            userName: userName, 
+                            initName: initName, 
+                            userID: this.state.userID
+                        })
+
+                        this.setState({ isProfileSummaryLoaded: true }, () => {
+                            this.props.setUserProfile(userProfile)
+                        })
+                    }).catch((error) => {})
+                }
+            },
+            onError: null,
+            onAuthorization: () => {
+                    this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsUserProfile)        
+    }
+
     _countPlayerSelected(data) {
         let isFullPlayer = false
         let backs = this._convertToArr(data.backs)
@@ -346,22 +385,20 @@ class Landing extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
         setTimeout(() => {
             this._fetchContent()
-
             if (this.props.isAccessGranted) {
-                this._getSquad()
+                //this._getSquad()
+                this._getProfileSummary()
             }
         }, 600)
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps')
         if (nextProps.isAccessGranted) {
-            this._getSquad()
+            //this._getSquad()
+            this._getProfileSummary()
         }
-
     }
 
     componentWillUnmount() {
@@ -441,7 +478,7 @@ class Landing extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         {
                             !this.props.isAccessGranted?
-                                <ButtonFeedback onPress={() => this._myLions('myLions')}>
+                                <ButtonFeedback onPress={() => this._isSignIn('myLions')}>
                                     <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
                                         <Image 
                                             resizeMode='cover'
@@ -456,13 +493,14 @@ class Landing extends Component {
                         <View style={styles.guther}>
                             {
                                 this.props.isAccessGranted?
-                                    !this.state.isLoadedSquad?
+                                    !this.state.isProfileSummaryLoaded?
                                         <View style={styles.squadIndicator}>
                                             <ActivityIndicator style={styles.scoreCard} size='small' /> 
                                         </View>
                                     :
                                         <View style={styles.squad}>
-                                            <SummaryCardWrapper>
+                                            <ProfileSummaryCard profile={this.props.userProfile}/>
+                                            {/*<SummaryCardWrapper>
                                                 {
                                                     this.state.isFullPlayer? 
                                                         <View>
@@ -504,19 +542,22 @@ class Landing extends Component {
                                                             <Text style={styles.squadText}>Complete your full squad of {this.totalPlayer} players to receive a real-time squad rating from EY</Text>
                                                         </View>
                                                 }
-                                            </SummaryCardWrapper>
+                                            </SummaryCardWrapper>*/}
                                         </View>
                                 : 
                                     null
                             }
                             <View style={styles.btnWrapper}>
-                                {/*<ButtonFeedback rounded style={[styles.roundButton]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                <ButtonFeedback 
+                                    rounded 
+                                    style={[styles.roundButton]} 
+                                    onPress={() => this._isSignIn('myLionsCompetitionCentre')}>
                                     <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
                                         COMPETITION CENTRE
                                     </Text>
-                                </ButtonFeedback>*/}
-                                <ButtonFeedback 
+                                </ButtonFeedback>
+                                {/*<ButtonFeedback 
                                     rounded 
                                     style={[styles.button, styles.btnMysquad]} 
                                     onPress={() => this._myLions([{backRoute: 'landing'}], 'myLionsSquad')}
@@ -527,8 +568,27 @@ class Landing extends Component {
                                     <Text style={styles.btnMysquadLabel}>
                                         MY SQUAD
                                     </Text>
-                                </ButtonFeedback>
+                                </ButtonFeedback>*/}
                             </View>
+                        </View>
+                        
+                        <View>
+                            <View style={styles.pageTitle}>
+                                <Text style={styles.pageTitleText}>
+                                    OFFICIAL 2017 SQUAD
+                                </Text>
+                            </View>
+                            <ButtonFeedback
+                                style={styles.banner}
+                                onPress={() => this._isSignIn('myLionsOfficialSquad')}>
+                                <ImagePlaceholder height={200}></ImagePlaceholder>
+                                <View style={[shapes.triangle, {marginTop: -12}]} />
+                                <View style={styles.bannerDetails}>
+                                    <Text style={styles.bannerTitle} numberOfLines={1}>
+                                        VIEW SQUAD
+                                    </Text>
+                                </View>  
+                            </ButtonFeedback>
                         </View>
 
                         <View>
@@ -598,13 +658,15 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
     }
 }
 
 export default connect((state) => {
     return {
         newsFeed: state.content.contentState,
+        userProfile: state.squad.userProfile,
         isAccessGranted: state.token.isAccessGranted,
         routeCount: state.route.routes.length
     }

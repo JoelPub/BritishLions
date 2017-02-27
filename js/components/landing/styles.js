@@ -160,7 +160,9 @@ module.exports = styleSheetCreate({
         padding: 20
     },
     squad: {
-        marginTop: 20
+        paddingBottom: 0,
+        marginBottom: -30,
+        marginTop: 0,
     },
     squadCompleted: {
         padding: 20,

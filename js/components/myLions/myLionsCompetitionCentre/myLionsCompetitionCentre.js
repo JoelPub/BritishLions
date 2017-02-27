@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { drillDown } from '../../../actions/content'
-import { Image, Text, View, ScrollView,ActivityIndicator } from 'react-native'
+import { setAccessGranted } from '../../../actions/token'
+import { Image, Text, View, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import styles from './styles'
@@ -19,6 +20,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { setUserProfile } from '../../../actions/squad'
+import { getUserId, removeToken } from '../../utility/asyncStorageServices'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -199,18 +201,27 @@ class MyLionsCompetitionCentre extends Component {
                             <LionsFooter isLoaded={true} />
                         </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
-                    <LoginRequire/>
+                    <LoginRequire onFinish={this._renderLogic.bind(this)} />
                 </View>
             </Container>
         )
     }
 
+    _renderLogic(isLogin) {
+        if (isLogin) { // user is logged in
+            this.setState({isLoaded:false},()=>{
+                this.getInfo()
+            })
+        }
+    }
+
 
     componentWillMount() {
-        this.setState({isLoaded:false},()=>{
-            this.getInfo()
-        })
+        // this.setState({isLoaded:false},()=>{
+        //     this.getInfo()
+        // })
     }
+
     getInfo(){
         console.log('getInfo')
         let optionsInfo = {
@@ -237,13 +248,36 @@ class MyLionsCompetitionCentre extends Component {
         }
         service(optionsInfo)        
     }
+
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'Your session has expired',
+            'Please sign into your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
 }
 
 
 function bindAction(dispatch) {
     return {
-            drillDown: (data, route)=>dispatch(drillDown(data, route)),
-            setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
+        setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
 
