@@ -90,7 +90,7 @@ class GreateGroupModal extends Component {
    this.props.createButtonClick(this.state.text)
   }
   goBackClick = () => {
-
+    this.props.errorBackButtonClick()
   }
   shareClick = () => {
 
@@ -125,5 +125,6 @@ GreateGroupModal.propTypes = {
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
   createButtonClick: PropTypes.func.isRequired,
+  errorBackButtonClick: PropTypes.func.isRequired,
 }
 export default GreateGroupModal

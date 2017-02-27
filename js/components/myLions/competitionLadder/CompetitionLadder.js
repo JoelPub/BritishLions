@@ -232,7 +232,7 @@ class CompetitionLadder extends Component {
           <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
-          createButtonClick = {this.createButtonClick}
+          createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
           />
           <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}
                      joinButtonClick = {this.joinButtonClick} okButtonClick ={this.dissMissModel} />
