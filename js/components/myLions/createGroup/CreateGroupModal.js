@@ -5,6 +5,8 @@ import { Container, Text, Button, Icon, Input } from 'native-base'
 import SquadModal from '../../global/squadModal'
 import ButtonFeedback from '../../utility/buttonFeedback'
 
+import { shareTextWithTitle } from '../../utility/socialShare'
+
 import styles from '../styles'
 
 const CreateButton = ({onPress}) => (
@@ -51,7 +53,8 @@ class GreateGroupModal extends Component {
       title: '' ,
       contentText: '',
       subTitle: '',
-      subContentText: ''
+      subContentText: '',
+      text: ''
     }
     switch(description)
     {
@@ -86,16 +89,16 @@ class GreateGroupModal extends Component {
     return PageData
   }
   createGroupClick = () => {
-
+   this.props.createButtonClick(this.state.text)
   }
   goBackClick = () => {
-
+    this.props.errorBackButtonClick()
   }
   shareClick = () => {
-
+    shareTextWithTitle('INVITE CODE','')
   }
   render() {
-    let { modalType } = this.state
+    let { modalType } = this.props
     let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
     if(modalType !== 'create'){
@@ -108,7 +111,7 @@ class GreateGroupModal extends Component {
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
           <Text style={subTitleStyle}>{subTitle}</Text>
-          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
+          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}   onChangeText={ (text) => this.setState({text})}/> : null}
           {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
           {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
           {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
@@ -123,5 +126,7 @@ GreateGroupModal.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
+  createButtonClick: PropTypes.func.isRequired,
+  errorBackButtonClick: PropTypes.func.isRequired,
 }
 export default GreateGroupModal
