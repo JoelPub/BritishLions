@@ -51,7 +51,8 @@ class GreateGroupModal extends Component {
       title: '' ,
       contentText: '',
       subTitle: '',
-      subContentText: ''
+      subContentText: '',
+      text: ''
     }
     switch(description)
     {
@@ -86,7 +87,7 @@ class GreateGroupModal extends Component {
     return PageData
   }
   createGroupClick = () => {
-   this.props.createButtonClick()
+   this.props.createButtonClick(this.state.text)
   }
   goBackClick = () => {
 
@@ -108,7 +109,7 @@ class GreateGroupModal extends Component {
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
           <Text style={subTitleStyle}>{subTitle}</Text>
-          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
+          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}   onChangeText={ (text) => this.setState({text})}/> : null}
           {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
           {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
           {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}

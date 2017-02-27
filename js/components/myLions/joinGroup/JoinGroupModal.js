@@ -34,6 +34,9 @@ const ShareButton = ({onPress}) => (
 class JoinGroupModal extends Component {
   constructor(props){
     super(props)
+    this.state({
+        invitation_code: ''
+    })
 
   }
   callbackParent = ()=> {
@@ -44,7 +47,7 @@ class JoinGroupModal extends Component {
       title: '' ,
       contentText: '',
       subTitle: '',
-      subContentText: ''
+      subContentText: '',
     }
     switch(description)
     {
@@ -87,7 +90,7 @@ class JoinGroupModal extends Component {
   }
   okClick = () => {
    if(this.props.okButtonClick){
-     this.props.okButtonClick()
+     this.props.okButtonClick(this.state.invitation_code)
    }
   }
   render() {
@@ -103,7 +106,8 @@ class JoinGroupModal extends Component {
         <View style={[styles.modalViewWrapper,styles.modalGropp]}>
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-          {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
+          {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}
+           onChangeText={ (invitation_code) => this.setState({invitation_code}) }/> : null}
           {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
           {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
           {modalType==='success' ? <ShareButton onPress={this.okClick } close = {this.callbackParent} /> : null}
