@@ -96,6 +96,13 @@ module.exports = styleSheetCreate({
             lineHeight: 23,
         }
     },
+    titleBarText2: {
+        marginTop: 3,
+        paddingBottom: 2,
+        android: {
+            marginTop: -1
+        }
+    },
     titleBarLink: {
         backgroundColor: styleVar.colorGrey,
         height: 45,
