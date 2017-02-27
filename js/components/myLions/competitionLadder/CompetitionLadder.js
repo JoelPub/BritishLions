@@ -34,6 +34,7 @@ import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import CreateWithModal from '../createGroup'
+import JoinModal from '../joinGroup'
 import PlayerScore from '../../global/playerScore'
 import fetch from '../../utility/fetch'
 
@@ -127,7 +128,9 @@ class CompetitionLadder extends Component {
       isLoaded: false,
       data: DataModel,
       isCreating:false,
-      createType:'create'
+      isJoining: false,
+      createType:'ladder',
+      joinType: 'ladder'
     }
   }
   /*get Data*/
@@ -154,6 +157,11 @@ class CompetitionLadder extends Component {
       })
     )
   }
+  /*call  api */
+
+
+
+
 
   /*router logic*/
   groupNameOnPress = (data) => {
@@ -165,18 +173,23 @@ class CompetitionLadder extends Component {
   /*groupAction*/
   createGroupOnPress = () => {
     console.log('createGroupOnPress')
-
     this.setState({
       isCreating: true,
+      createType: 'create',
     })
   }
   joinGroupOnPress = () => {
-
+    this.setState({
+      isJoining: true,
+      joinType: 'join',
+    })
   }
   dissMissModel = () =>{
     this.setState({
       isCreating: false,
-      createType: 'create',
+      isJoining: false,
+      createType: 'ladder',
+      joinType: 'ladder'
     })
   }
   /*modelInActions*/
@@ -185,10 +198,14 @@ class CompetitionLadder extends Component {
       createType: 'success',
     })
   }
-
+  joinButtonClick = () => {
+    this.setState({
+      joinType: 'success',
+    })
+  }
 
   render() {
-   let { data ,isCreating, createType } = this.state
+   let { data ,isCreating, createType, isJoining, joinType } = this.state
    let {userProfile} = this.props
     return (
       <Container theme={theme}>
@@ -216,6 +233,8 @@ class CompetitionLadder extends Component {
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
           createButtonClick = {this.createButtonClick}
           />
+          <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}
+                     joinButtonClick = {this.joinButtonClick} okButtonClick ={this.dissMissModel} />
         </View>
       </Container>
     )
@@ -227,6 +246,7 @@ class CompetitionLadder extends Component {
     this.isUnMounted = true
   }
 }
+
 
 function bindAction(dispatch) {
   return {

@@ -382,8 +382,6 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
-                    <CreateGroupModal modalVisible = {this.state.modalCreateGroupVisible } callbackParent ={this._setModalCreateGroupVisible}/>
-                    <JoinGroupModal modalVisible = {false} callbackParent ={this._setModalCreateGroupVisible}/>
                 </View>
             </Container>
         )

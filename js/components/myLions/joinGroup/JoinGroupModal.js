@@ -34,9 +34,7 @@ const ShareButton = ({onPress}) => (
 class JoinGroupModal extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      modalType: 'success'
-    };
+
   }
   callbackParent = ()=> {
     this.props.callbackParent()
@@ -79,20 +77,24 @@ class JoinGroupModal extends Component {
     }
     return PageData
   }
-  createGroupClick = () => {
-
+  joinGroupClick = () => {
+    if(this.props.joinButtonClick){
+      this.props.joinButtonClick()
+    }
   }
   goBackClick = () => {
 
   }
-  shareClick = () => {
-
+  okClick = () => {
+   if(this.props.okButtonClick){
+     this.props.okButtonClick()
+   }
   }
   render() {
-    let { modalType } = this.state
+    let { modalType } = this.props
     let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
-    if(modalType !== 'create'){
+    if(modalType !== 'join'){
       subTitleStyle = styles.modalErrorGroupSubTitle
     }
 
@@ -102,9 +104,9 @@ class JoinGroupModal extends Component {
           <Text style={styles.modalCreateGroupTitle}>{title}</Text>
           <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
           {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}/> : null}
-          {modalType==='join' ? <CreateButton onPress={this.createGroupClick} /> : null}
+          {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
           {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
-          {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
+          {modalType==='success' ? <ShareButton onPress={this.okClick } close = {this.callbackParent} /> : null}
         </View>
       </SquadModal>
     )
@@ -114,5 +116,8 @@ JoinGroupModal.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
+  joinButtonClick: PropTypes.func.isRequired,
+  okButtonClick: PropTypes.func
+
 }
 export default JoinGroupModal
