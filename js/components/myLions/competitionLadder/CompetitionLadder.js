@@ -89,7 +89,7 @@ class GroupName extends Component {
     return (
       <ButtonFeedback style={styles.groupName} onPress={this.btnClick}>
         <Text style={styles.groupNameText}>{data.name}</Text>
-        <Icon name='md-star' style={styles.playIcon} />
+        <Icon name='md-arrow-dropright-circle' style={styles.playIcon} />
       </ButtonFeedback>
     )
   }

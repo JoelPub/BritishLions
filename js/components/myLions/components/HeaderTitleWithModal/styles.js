@@ -26,9 +26,12 @@ module.exports = styleSheetCreate({
     color: styleVar.colorIcon,
     position: 'absolute',
     right: 8,
-    top: 16,
-    width: 28,
-    height: 28,
-    fontSize:28
+    top: 13,
+    width: 30,
+    height: 30,
+    fontSize:30,
+    android:{
+    top: 14,
+    }
   }
 })
