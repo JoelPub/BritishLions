@@ -68,7 +68,7 @@ class MyLionsPlayerList extends Component {
             <View style={styles.gridBoxCol} key={rowID}>
                 <ButtonFeedback 
                     style={styles.gridBoxTouchable}
-                    onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
+                    onPress={() => this._showDetail(rowData,'MyLionsPlayerProfile')}>
                     <View style={styles.gridBoxTouchableView}>
                         <View style={styleGridBoxImgWrapper}>
                             <ImagePlaceholder 
@@ -104,7 +104,7 @@ class MyLionsPlayerList extends Component {
     _renderSearch(rowData, sectionID, rowID, highlightRow) {
         return (
             <View style={styles.resultRow}>
-                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setSearchModalVisible(false),this._showDetail(rowData,'myLionsPlayerDetails')}}>
+                <ButtonFeedback style={styles.resultRowBtn} onPress={() => {this._setSearchModalVisible(false),this._showDetail(rowData,'MyLionsPlayerProfile')}}>
                     <View style={styles.searchImg}>
                         <Image transparent
                             resizeMode='stretch'

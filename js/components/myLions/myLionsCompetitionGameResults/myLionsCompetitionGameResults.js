@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { pushNewRoute } from '../../../actions/route'
-import { Image, Text, View, ScrollView, ListView } from 'react-native'
+import { Image, Text, View, ScrollView, ListView, ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -14,13 +14,17 @@ import EYSFooter from '../../global/eySponsoredFooter'
 import LionsFooter from '../../global/lionsFooter'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
+import { strToUpper } from '../../utility/helper'
 import Versus from '../components/versus'
 import SummaryCardWrapper from '../components/summaryCardWrapper'
 import SquadModal from '../../global/squadModal'
 import shapes from '../../../themes/shapes'
+import loader from '../../../themes/loader-position'
 import styles from './styles'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
+import { service } from '../../utility/services'
+
 
 const locStyle = styleSheetCreate({
     result: {
@@ -186,49 +190,49 @@ const Summary = ({data}) => (
         <View style={locStyle.summaryGuther}>
             <View style={[locStyle.summaryRow, {marginBottom: 20}]}>
                 <View style={locStyle.summaryCircle}>
-                    <Text style={locStyle.summaryCircleText}>15</Text>
+                    <Text style={locStyle.summaryCircleText}>{ data.ai.score || 'N/A' }</Text>
                 </View> 
                 <View>
                     <Text style={locStyle.summaryTitle}>SCORE</Text>
                 </View> 
                 <View style={locStyle.summaryCircle}>
-                    <Text style={locStyle.summaryCircleText}>12</Text>
+                    <Text style={locStyle.summaryCircleText}>{ data.me.score || 'N/A' }</Text>
                 </View> 
             </View>
             
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>3</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.tries || 'N/A' }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>TRIES</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>2</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.tries || 'N/A' }</Text>
             </View>
 
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>2</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.conversions || 'N/A' }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>CONVERSIONS</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>1</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.conversions || 'N/A' }</Text>
             </View>
 
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>1</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.penalties || 'N/A' }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>PENALTIES</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>1</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.penalties || 'N/A' }</Text>
             </View>
         </View>
 
         <View style={[locStyle.summaryRow, locStyle.summaryRowBorder]}>
             <View style={[locStyle.summaryCol, locStyle.summaryColRight]}>
                 <Text style={locStyle.summaryTextSmall}>COMPETITION POINTS</Text>
-                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>6</Text>
+                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.competition_points || 'N/A' }</Text>
             </View>
             <View style={locStyle.summaryCol}>
                 <Text style={locStyle.summaryTextSmall}>BONUS POINTS</Text>
-                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>3</Text>
+                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.bonus_points || 'N/A' }</Text>
             </View>
         </View>
 
@@ -252,8 +256,10 @@ class MyLionsCompetitionGameResults extends Component {
         super(props)
         this.isUnMounted = false
         this.state = {
+            isLoaded: false,
+            resultInfo: [],
             modalResults: false,
-            drillDownItem:this.props.drillDownItem,
+            drillDownItem: this.props.drillDownItem,
         }
     }
 
@@ -281,34 +287,47 @@ class MyLionsCompetitionGameResults extends Component {
                     </View>
 
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                        <View style={[locStyle.result]}>
-                            <Text style={locStyle.resultText}>GAME TITLE WON.</Text>
-                            <Text style={locStyle.resultText}>BETTER LUCK NEXT TIME.</Text>
-                        </View>
-                        <View style={[locStyle.result, locStyle.resultWonBg]}>
-                            <Text style={locStyle.resultText}>CONGRATULATIONS!</Text>
-                            <Text style={locStyle.resultText}>YOU WON</Text>
-                        </View>
+                    {
+                        this.state.isLoaded?
+                            <View>
+                                {
+                                    this.state.resultInfo.is_won?
+                                        <View style={[locStyle.result, locStyle.resultWonBg]}>
+                                            <Text style={locStyle.resultText}>
+                                                {strToUpper(this.state.resultInfo.message)}
+                                            </Text>
+                                        </View>
+                                    :
+                                        <View style={[locStyle.result]}>
+                                            <Text style={locStyle.resultText}>
+                                                {strToUpper(this.state.resultInfo.message)}
+                                            </Text>
+                                        </View>
+                                }
 
-                        <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
-                        
-                        <View style={styles.guther}>
-                            <SummaryCardWrapper>
-                                <Summary data={[]} />
-                            </SummaryCardWrapper>
-                        </View>
+                                <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
+                                
+                                <View style={styles.guther}>
+                                    <SummaryCardWrapper>
+                                        <Summary data={this.state.resultInfo} />
+                                    </SummaryCardWrapper>
+                                </View>
 
-                        <View style={[styles.guther, locStyle.borderTop]}>
-                            <ButtonFeedback 
-                                rounded 
-                                style={[styles.roundButton, {marginBottom: 30}]}
-                                onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
-                                <Icon name='md-analytics' style={styles.roundButtonIcon} />
-                                <Text style={styles.roundButtonLabel}>
-                                    COMPETITION CENTRE
-                                </Text>
-                            </ButtonFeedback>
-                        </View>
+                                <View style={[styles.guther, locStyle.borderTop]}>
+                                    <ButtonFeedback 
+                                        rounded 
+                                        style={[styles.roundButton, {marginBottom: 30}]}
+                                        onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                        <Icon name='md-analytics' style={styles.roundButtonIcon} />
+                                        <Text style={styles.roundButtonLabel}>
+                                            COMPETITION CENTRE
+                                        </Text>
+                                    </ButtonFeedback>
+                                </View>
+                            </View>
+                        :
+                            <ActivityIndicator style={loader.centered} size='large' />
+                    }
                     </ScrollView>
 
                     <SquadModal 
@@ -325,6 +344,39 @@ class MyLionsCompetitionGameResults extends Component {
                 </View>
             </Container>
         )
+    }
+
+    componentWillMount() {
+        this.setState({isLoaded:false},()=>{
+            this.getInfo()
+        })
+    }
+
+    getInfo(){
+        console.log('getInfo')
+        let optionsInfo = {
+            url: 'https://api.myjson.com/bins/xlvvp',
+            data: {id:this.state.userID},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'get',
+            onSuccess: (res) => {
+                if(res.data) {
+                    console.log('res.data',res.data)
+                    this.setState({isLoaded: true, resultInfo: res.data})
+                }
+
+                console.log(this.state.resultInfo)
+            },
+            onError: ()=>{
+                this.setState({isLoaded:true})
+            },
+            onAuthorization: () => {
+                this._signInRequired()
+            },
+            isRequiredToken: true
+        }
+        service(optionsInfo)        
     }
 }
 

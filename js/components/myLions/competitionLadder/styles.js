@@ -56,6 +56,7 @@ module.exports = styleSheetCreate({
     marginBottom: 35,
     marginLeft: 30,
     marginRight: 30,
+    borderRadius:30
   },
   scoreCardShare:{
     backgroundColor:'rgb(255,230,0)',
@@ -79,7 +80,9 @@ module.exports = styleSheetCreate({
     marginTop: -3
   },
   prideContainer:{
-    backgroundColor: 'rgb(239,239,240)'
+    backgroundColor: 'rgb(239,239,240)',
+    borderBottomWidth: 1,
+    borderColor: 'rgb(216, 217, 218)',
   },
   prideTitleView:{
     flex: 1,
@@ -144,6 +147,9 @@ module.exports = styleSheetCreate({
     marginLeft: 30,
     marginRight: 30,
     justifyContent:'center',
+    borderRadius:5,
+    borderWidth: 1,
+    borderColor: 'rgb(216, 217, 218)',
   },
   groupNameText:{
     marginLeft: 30,

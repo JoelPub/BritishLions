@@ -46,5 +46,6 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
                 })
             }
         })
-        return tempFeed    
+        return tempFeed
 }
+
