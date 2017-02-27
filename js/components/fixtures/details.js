@@ -98,7 +98,8 @@ class FixtureDetails extends Component {
                                     source={images[this.props.details.id]} />
                             </ImagePlaceholder>
                             <View style={styles.titleBar}>
-                                <Text style={styles.titleBarText}>{this.props.details.stadium}</Text>
+                                <Text style={styles.titleBarText}>{this.props.details.stadiumlocation}</Text>
+                                <Text style={[styles.titleBarText, styles.titleBarText2]}>{this.props.details.stadiumtime}</Text>
                             </View>
                             <Countdown endDate={`${this.props.details.date} ${this.props.details.time}`}/> 
                             <View style={styles.titleBarLink}>

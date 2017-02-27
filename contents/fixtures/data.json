@@ -6,6 +6,8 @@
         "title": "Provincial Union XV vs British & Irish Lions",
         "image": "provincial.jpg",
         "stadium": "Toll Stadium, Whangarei 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Toll Stadium, Whangarei",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The opening match of the 2017 British & Irish Lions Tour to New Zealand sees a Provincial Union XV host the tourists at the Toll Stadium, Whangarei."
     },
     {
@@ -15,6 +17,8 @@
         "title": "Blues vs British & Irish Lions ",
         "image": "blues.jpg",
         "stadium": "Eden Park, Aukland 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Eden Park, Aukland",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The second match of the 2017 British & Irish Lions Tour to New Zealand sees the Blues host the tourists at Eden Park."
     },
     {
@@ -24,6 +28,8 @@
         "title": "Crusaders vs British & Irish Lions",
         "image": "crusaders.jpg",
         "stadium": "AMI Stadium, Christchurch 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "AMI Stadium, Christchurch",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The third match of the 2017 British & Irish Lions Tour to New Zealand sees the Crusaders host the tourists at the AMI Stadium, Christchurch."
     },
     {
@@ -33,6 +39,8 @@
         "title": "Highlanders vs British & Irish Lions",
         "image": "highlanders.jpg",
         "stadium": "Forsyth Barr Stadium, Dunedin 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Forsyth Barr Stadium, Dunedin",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The fourth match of the 2017 British & Irish Lions Tour to New Zealand sees the Highlanders host the tourists at the Forsyth Barr Stadium, Dunedin."
     },
     {
@@ -42,6 +50,8 @@
         "title": "Maori All Blacks vs British & Irish Lions",
         "image": "maoriallblacks.jpg",
         "stadium": "Rotorua International Stadium, Rotorua 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Rotorua International Stadium, Rotorua",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The fifth match of the 2017 British & Irish Lions Tour to New Zealand sees the Maori All Blacks host the tourists at the Rotorua International Stadium, Rotorua."
     },
     {
@@ -51,6 +61,8 @@
         "title": "Chiefs vs British & Irish Lions",
         "image": "chiefs.jpg",
         "stadium": "FMG Stadium Waikato, Hamilton 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "FMG Stadium Waikato, Hamilton",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The sixth match of the 2017 British & Irish Lions Tour to New Zealand sees the Chiefs host the tourists at the FMG Stadium Waikato, Hamilton."
     },
     {
@@ -60,6 +72,8 @@
         "title": "New Zealand vs British & Irish Lions",
         "image": "all-blacks.jpg",
         "stadium": "Eden Park, Auckland 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Eden Park, Auckland",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The first test of the 2017 British & Irish Lions Tour of New Zealand takes place on 24th June at Eden Park, Auckland."
     },
     {
@@ -69,6 +83,8 @@
         "title": "Hurricanes vs British & Irish Lions",
         "image": "hurricanes.jpg",
         "stadium": "Westpac Stadium, Wellington 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Westpac Stadium, Wellington",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The eighth match of the 2017 British & Irish Lions Tour to New Zealand sees the Hurricanes host the tourists at the Westpac Stadium, Wellington."
     },
     {
@@ -78,6 +94,8 @@
         "title": "New Zealand vs British & Irish Lions",
         "image": "all-blacks.jpg",
         "stadium": "Westpac Stadium, Wellington 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Westpac Stadium, Wellington",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The second test of the 2017 British & Irish Lions Tour of New Zealand takes place on Saturday 1st July at the Westpac Stadium, Wellington."
     },
     {
@@ -87,6 +105,8 @@
         "title": "New Zealand vs British & Irish Lions",
         "image": "all-blacks.jpg",
         "stadium": "Eden Park, Auckland 8.35am (UK&I) | 7.35pm NZT",
+        "stadiumlocation": "Eden Park, Auckland",
+        "stadiumtime": "8.35am (UK&I) | 7.35pm NZT",
         "description": "The third test of the 2017 British & Irish Lions Tour of New Zealand takes place on 8th July at Eden Park, Auckland."
     }
 ]
