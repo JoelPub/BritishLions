@@ -83,8 +83,8 @@ export default [
         "url": "https://www.thomaspink.com/british_and_irish_lions/content/fcp-content",
         "partner": "",
         "label": "Visit the Thomas Pink website",
-        "image": require("./pink.jpg"),
-        "banner": require("./banner/pink.jpg"),
+        "image": require("./pink.png"),
+        "banner": require("./banner/pink.png"),
         "description": "<p>Modern British shirt maker, Thomas Pink will provide the best rugby players from the home nations with official, formal outfits, for the tour including the iconic blazer and tie and the brand's game changing Athletic Fit shirt.</p><p>For the 2017 Lions tour retail collection, Thomas Pink will design a full range of formal and casual outfits. The range will ensure fans are as stylish as the British & Irish Lions themselves offering a collection delivered with style and verve.</p><p>The Thomas Pink Lions collection will retail from October 2016. To mark this, the brand will launch its very own tongue-in-cheek rugby club, captained by one of the all-time Lions' greats and incorporating consumer events, an online content hub and monthly newsletters.</p><p>The 2017 British & Irish Lions wardrobe features an official Tour blazer and evening jacket - \"No. 1s and No.2s\" in Lions' speak - as well as selection of casualwear for downtime between matches, training, travel and official functions.</p><p>The collection will be available in Thomas Pink stores globally from October 2016.</p>"
     },
     {
