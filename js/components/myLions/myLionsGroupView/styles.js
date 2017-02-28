@@ -61,6 +61,7 @@ module.exports = styleSheetCreate({
     marginBottom: 35,
     marginLeft: 30,
     marginRight: 30,
+    borderRadius:30
   },
   btnFavourites: {
     backgroundColor:'rgb(175,0,30)',

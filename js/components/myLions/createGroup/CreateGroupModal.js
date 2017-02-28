@@ -60,9 +60,9 @@ class GreateGroupModal extends Component {
     {
       case 'create':
       {
-        PageData.title = 'MY PRIDE'
-        PageData.contentText =  'Create a private group and invite friends.Names must be .<insert EYC3 naming requirements/rules>'
-        PageData.subTitle = 'GROUP NAME'
+        PageData.title = 'CREATE PRIVATE LEAGUE'
+        PageData.contentText =  'Create a private group and invite friends. Names must be . <insert EYC3 naming requirements/rules>'
+        PageData.subTitle = 'LEAGUE NAME'
         PageData.subContentText = ''
       }
         break;
