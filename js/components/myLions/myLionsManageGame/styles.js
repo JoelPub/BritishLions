@@ -86,4 +86,8 @@ module.exports = styleSheetCreate({
             lineHeight: 26
         }
     },
+    btns: {
+        padding: 30,
+        backgroundColor: 'rgb(103, 3, 20)',
+    },
 })
