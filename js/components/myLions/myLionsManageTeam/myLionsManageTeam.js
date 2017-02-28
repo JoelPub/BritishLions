@@ -17,11 +17,11 @@ import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
-import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { popRoute,replaceRoute, pushNewRoute } from '../../../actions/route'
 import loader from '../../../themes/loader-position'
 import { alertBox } from '../../utility/alertBox'
 import refresh from '../../../themes/refresh-control'
-import { drillDown ,shareReplace} from '../../../actions/content'
+import { drillDown } from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
 import { removeToken, getUserId } from '../../utility/asyncStorageServices'
 import { service } from '../../utility/services'
@@ -44,6 +44,7 @@ import Cursor from 'immutable/contrib/cursor'
 import TeamList from '../components/teamList'
 import {convertTeamToShow} from '../components/teamToShow'
 import SquadShowModel from  '../../../modes/Squad/SquadShowModel'
+import Versus from '../components/versus'
 
 class MyLionsManageTeam extends Component {
 
@@ -60,7 +61,8 @@ class MyLionsManageTeam extends Component {
             isSubmitting: false,
             rating:Rating().toJS(),
             userID:'',
-            isNetwork: true
+            isNetwork: true,
+            drillDownItem:this.props.drillDownItem,
         }
         this.isUnMounted = false
         this.uniondata = Data
@@ -129,8 +131,16 @@ class MyLionsManageTeam extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
+                                <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
                                 <View>
                                     <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
+                                    
+                                    <View style={{backgroundColor: 'rgb(4, 79, 38)',paddingVertical:30,paddingHorizontal:100}}>
+                                        <ButtonFeedback rounded onPress={() => this.props.popRoute()}
+                                            style={[styles.btn, styles.btnGreen ]}>
+                                            <Text style={styles.btnText}>SAVE</Text>
+                                        </ButtonFeedback>
+                                    </View>
                                     <LionsFooter isLoaded={true} />
                                 </View>
                             </ScrollView>
@@ -157,11 +167,11 @@ class MyLionsManageTeam extends Component {
                     this._showError(error) 
         })
     }
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.teamData!==null) {
-            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.teamData!==null) {
+    //         this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+    //     }
+    // }
     
     _replaceRoute(route) {
         this.props.replaceRoute(route)
@@ -274,7 +284,7 @@ function bindAction(dispatch) {
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
-        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
+        popRoute: ()=>dispatch(popRoute())
     }
 }
 
@@ -283,7 +293,8 @@ export default connect((state) => {
         drillDownItem: state.content.drillDownItem,
         teamToShow: state.squad.teamToShow,
         teamData: state.squad.teamData,
-        netWork: state.network
+        netWork: state.network,
+        userProfile: state.squad.userProfile,
     }
 }, bindAction)(MyLionsManageTeam)
 

@@ -8,6 +8,7 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import styles from '../styles'
 import styleVar from '../../../themes/variable'
 import { strToUpper } from '../../utility/helper'
+import ButtonFeedback from '../../utility/buttonFeedback'
 
 const locStyle = styleSheetCreate({
     wrapper: {
@@ -77,7 +78,28 @@ const locStyle = styleSheetCreate({
         android: {
             marginBottom: 2
         }
-    }
+    },
+    roundButton: {
+        height: 50,
+        backgroundColor: styleVar.colorScarlet,
+        flexDirection:'row',
+        marginTop: 0,
+        marginBottom: 0,
+        paddingTop:5,
+        android:{
+            paddingTop: 0,
+        }
+    },
+    roundButtonLabel: {
+        backgroundColor: 'transparent',
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+        paddingTop:5,
+        marginLeft: 5,
+        color: '#FFF'
+    },
 })
 
 export default class Versus extends Component {
@@ -89,29 +111,41 @@ export default class Versus extends Component {
 
 	render() {
 		return (
-            <LinearGradient style={locStyle.wrapper} colors={['#af001e', '#820417']}>
-                <View style={locStyle.circleWrapper}>
-                    <Image 
-                        resizeMode='cover' 
-                        source={{uri: this.props.gameData.image}} 
-                        style={[styles.imageCircle, locStyle.imageCircle]} />
+            <LinearGradient  colors={['#af001e', '#820417']}>
+                <View style={locStyle.wrapper}>
+                    <View style={locStyle.circleWrapper}>
+                        <Image 
+                            resizeMode='cover' 
+                            source={{uri: this.props.gameData.image}} 
+                            style={[styles.imageCircle, locStyle.imageCircle]} />
+                        
+                        <Text style={locStyle.name}>{strToUpper(this.props.gameData.title)}</Text>
+                    </View>   
+
+                    <View style={locStyle.versusWrapper}>
+                        <View style={locStyle.versus}>
+                            <Text style={locStyle.versusText}>VS</Text>
+                        </View> 
+                    </View>
                     
-                    <Text style={locStyle.name}>{strToUpper(this.props.gameData.title)}</Text>
-                </View>   
+                    <View style={locStyle.circleWrapper}>
+                        <View style={locStyle.circle}>
+                            <Text style={locStyle.circleText}>{strToUpper(this.props.userData.initName)}</Text>
+                        </View> 
 
-                <View style={locStyle.versusWrapper}>
-                    <View style={locStyle.versus}>
-                        <Text style={locStyle.versusText}>VS</Text>
-                    </View> 
+                        <Text style={locStyle.name}>{strToUpper(this.props.userData.userName)}</Text>
+                    </View>
                 </View>
-                
-                <View style={locStyle.circleWrapper}>
-                    <View style={locStyle.circle}>
-                        <Text style={locStyle.circleText}>{strToUpper(this.props.userData.initName)}</Text>
-                    </View> 
-
-                    <Text style={locStyle.name}>{strToUpper(this.props.userData.userName)}</Text>
-                </View>  
+                <View>
+                {
+                    this.props.pressBtn!==undefined&&
+                        <ButtonFeedback rounded style={[styles.roundButton, {marginBottom:30,marginHorizontal:30}]} onPress={this.props.pressBtn}>
+                            <Text style={styles.roundButtonLabel}>
+                                REVIEW OPPOSITION
+                            </Text>
+                        </ButtonFeedback>
+                }
+                </View>
             </LinearGradient>          
 		)
 	}
