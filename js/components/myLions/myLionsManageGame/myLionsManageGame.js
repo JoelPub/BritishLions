@@ -201,10 +201,16 @@ class MyLionsCompetitionGameResults extends Component {
                                     </Text>
                                 </ButtonFeedback>
                             </LinearGradient>
-                            
+                        </View>
 
-                                
-                            
+                        <View style={[locStyle.btns]}>
+                            <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
+                                 <ButtonFeedback style={locStyle.btn} onPress={()=> {  this.props.drillDown(this.state.drillDownItem, 'myLionsTactics') }}>
+                                    <Text style={locStyle.btnText}>
+                                        Tactics
+                                    </Text>
+                                </ButtonFeedback>
+                            </LinearGradient>
                         </View>
 
                     </ScrollView>
