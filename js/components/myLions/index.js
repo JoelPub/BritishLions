@@ -9,6 +9,8 @@ import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../themes/base-theme'
 import styles from './styles'
+import { styleSheetCreate } from '../../themes/lions-stylesheet'
+import styleVar from '../../themes/variable'
 import shapes from '../../themes/shapes'
 import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
@@ -17,7 +19,6 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { pushNewRoute } from '../../actions/route'
-import styleVar from '../../themes/variable'
 import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
@@ -31,6 +32,59 @@ import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
 import { strToUpper } from '../utility/helper'
 import { setUserProfile } from '../../actions/squad'
+
+
+const locStyle = styleSheetCreate({
+    button: {
+        backgroundColor: styleVar.brandSecondary
+    },
+    buttonBlack: {
+        backgroundColor: styleVar.colorText
+    },
+    buttonBig: {
+        marginBottom: 20,
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    buttonBigGradient: {
+        height: 90,
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 0,
+        borderRadius: 45/2
+    },
+    buttonBigIcon: {
+        width: 36,
+        height: 54,
+        backgroundColor: 'transparent'
+    },
+    buttonBigLabel: {
+        backgroundColor: 'transparent',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        lineHeight: 28,
+        marginTop: 12,
+        marginLeft: 14,
+        android: {
+            marginTop: 11,
+        }
+    },
+    logoIcon: {
+        width: 21,
+        height: 32,
+        backgroundColor: 'transparent',
+        marginTop: -5,
+        android: {
+            marginTop: 0
+        }
+    },
+    btnPrivateLeagesLabel: {
+        android: {
+            marginTop: 5
+        }
+    }
+})
 
 class MyLions extends Component {
 
@@ -68,10 +122,12 @@ class MyLions extends Component {
     _myBrowse = () => {
         this.props.drillDown({}, 'myLionsUnionsList')
     }
+
     _officialSquad(){
         this._setModalVisible(false)
         this.props.drillDown({},'myLionsOfficialSquad')
     }
+
     _myExpertsPick = () => {
         this.props.drillDown({}, 'myLionsExpertsList')
     }
@@ -117,6 +173,7 @@ class MyLions extends Component {
             modalInfoVisible: visible
         })
     }
+
     _setModalCreateGroupVisible = () => {
         let visible  = !this.state.modalCreateGroupVisible
         this.setState({
@@ -124,6 +181,7 @@ class MyLions extends Component {
             modalCreateGroupVisible: visible
         })
     }
+
     measurePage(page,event) {
         // console.log('measurePage')
         if(this.pageWindow.length===this.totalPages) return
@@ -143,7 +201,6 @@ class MyLions extends Component {
             })
         }
         // console.log('this.pageWindow',this.pageWindow)
-
     }
 
     scrollEnd(e, state, context){
@@ -152,8 +209,7 @@ class MyLions extends Component {
             this.setState({
                 currentPage:state.index,
                 swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size
-            })
-        
+            })   
     }
 
     _updateFavPlayers() {
@@ -182,6 +238,7 @@ class MyLions extends Component {
             this.getProfile()
         }
     }
+
     getRating(){
         let optionsSquadRating = {
             url: 'https://api.myjson.com/bins/16284p',
@@ -217,6 +274,7 @@ class MyLions extends Component {
         }
         service(optionsSquadRating)        
     }
+
     getProfile(){
         console.log('getProfile')
         let optionsUserProfile = {
@@ -274,24 +332,36 @@ class MyLions extends Component {
                             </ImagePlaceholder>
 
                             <View style={styles.btnsLanding}>
-                                <ButtonFeedback rounded style={[styles.button, styles.btnMysquad]} onPress={() => this._officialSquad()}>
-                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                        style={styles.btnMysquadIcon}>
-                                    </Image>
-                                    <Text style={styles.btnMysquadLabel}>
-                                        OFFICIAL SQUAD
-                                    </Text>
+                                <ButtonFeedback style={locStyle.buttonBig} onPress={() => this._officialSquad()}>
+                                    <LinearGradient style={locStyle.buttonBigGradient} colors={['#af001e', '#820417']}>    
+                                        <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                            style={locStyle.buttonBigIcon}>
+                                        </Image>
+                                        <Text style={locStyle.buttonBigLabel}>
+                                            2017 LIONS SQUAD
+                                        </Text>
+                                    </LinearGradient>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+
+
+                                <ButtonFeedback rounded style={[styles.button, styles.btnExpert, locStyle.button]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
                                     <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
                                         COMPETITION CENTRE
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites]} onPress={() => this.props.pushNewRoute('competitionLadder')} >
-                                    <Icon name='md-star' style={styles.btnFavouritesIcon} />
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert, locStyle.button]} onPress={() => this.props.pushNewRoute('competitionLadder')}>
+                                    <Icon name='md-trophy' style={styles.btnFavouritesIcon} />
                                     <Text style={styles.btnFavouritesLabel}>
-                                        COMPETITION LADDER
+                                        LEADERBOARD
+                                    </Text>
+                                </ButtonFeedback>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.props.pushNewRoute('')} >
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                        style={locStyle.logoIcon}>
+                                    </Image>
+                                    <Text style={[styles.btnFavouritesLabel, locStyle.btnPrivateLeagesLabel]}>
+                                        PRIVATE LEAGUES
                                     </Text>
                                 </ButtonFeedback>
                             </View>
