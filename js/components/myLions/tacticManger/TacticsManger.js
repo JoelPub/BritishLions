@@ -2,7 +2,7 @@
 
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, ScrollView, ActivityIndicator} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
@@ -32,10 +32,33 @@ import { globalNav } from '../../../appNavigator'
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import Versus from '../components/versus'
 
-
-
-
-
+class SmallBox extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {}
+  }
+    render (){
+      return(
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>{this.props.title}</Text>
+          </View>
+          <View>
+            {this.props.children}
+          </View>
+        </View>
+      )
+    }
+}
+SmallBox.propTypes = {
+  title: PropTypes.string.isRequired
+}
+const StarPlayer = () => {
+    return (
+      <View>
+      </View>
+    )
+}
 class TacticsManger extends Component {
   constructor (props) {
     super(props)
@@ -47,9 +70,6 @@ class TacticsManger extends Component {
     }
   }
   /*get Data*/
-
-
-
 
   /*router logic*/
 
@@ -69,7 +89,7 @@ class TacticsManger extends Component {
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <HeaderTitleWithModal title={'SELECT TACTICS'}/>
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
-
+            <SmallBox title={'STAR PLAYER'} />
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
