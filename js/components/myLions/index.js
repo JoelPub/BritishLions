@@ -64,10 +64,10 @@ const locStyle = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 28,
         lineHeight: 28,
-        marginTop: 12,
+        marginTop: 14,
         marginLeft: 14,
         android: {
-            marginTop: 11,
+            marginTop: 3,
         }
     },
     logoIcon: {
