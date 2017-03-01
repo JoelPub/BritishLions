@@ -131,6 +131,11 @@ class MyLionsManageTeam extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
+                                <ButtonFeedback 
+                                    style={styles.pageTitleBtnIconRight} 
+                                    onPress={() => { this.setState({modalVisible: true}) }}>
+                                    <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
+                                </ButtonFeedback>
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
                                 <View>
                                     <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
@@ -147,6 +152,14 @@ class MyLionsManageTeam extends Component {
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
+                    <SquadModal 
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={() => {}}>
+                            <View style={[styles.modalContent]}>
+                                <Text style={styles.modalContentTitleText}>SELECT TEAM</Text>
+                                <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                            </View>
+                    </SquadModal>
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
                 </View>
@@ -167,11 +180,11 @@ class MyLionsManageTeam extends Component {
                     this._showError(error) 
         })
     }
-    // componentWillReceiveProps(nextProps) {
-    //     if(nextProps.teamData!==null) {
-    //         this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.teamData!==null) {
+            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+        }
+    }
     
     _replaceRoute(route) {
         this.props.replaceRoute(route)

@@ -398,12 +398,12 @@ class Landing extends Component {
         }, 600)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.isAccessGranted) {
-            //this._getSquad()
-            this._getProfileSummary()
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.isAccessGranted) {
+    //         //this._getSquad()
+    //         this._getProfileSummary()
+    //     }
+    // }
 
     componentWillUnmount() {
         this.isUnMounted = true
