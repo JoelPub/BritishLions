@@ -173,6 +173,9 @@ class MyLionsCompetitionGameResults extends Component {
                         <View style={[styles.btns]}>
                             <TeamWidget onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}/>
                         </View>
+                        <View style={[styles.btns]}>
+                            <TeamWidget onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}/>
+                        </View>
 
                     </ScrollView>
                     :

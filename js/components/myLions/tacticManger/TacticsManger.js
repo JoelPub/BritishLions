@@ -71,17 +71,21 @@ class TacticsManger extends Component {
     this.isUnMounted = false
     this.state = {
       isLoaded: false,
-      drillDownItem: this.props.drillDownItem
+      drillDownItem: this.props.drillDownItem,
+      dropDownValue: 'Select Player'
     }
   }
   /*get Data*/
 
   /*router logic*/
 
-
-
+  dropDownOnSelect = (index,value) => {
+    this.setState({
+      dropDownValue: value,
+    })
+  }
   render() {
-    let { isLoaded } = this.state
+    let { isLoaded ,dropDownValue} = this.state
     let {userProfile} = this.props
     return (
       <Container theme={theme}>
@@ -96,8 +100,16 @@ class TacticsManger extends Component {
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
-                             defaultValue={'Select Player'}
-                             options={DEMO_OPTIONS_1} />
+                             options={DEMO_OPTIONS_1}
+                             onSelect={this.dropDownOnSelect}>
+                <View style={styles.dropDownSub}>
+                  <Text style={styles.dropDownText}>{dropDownValue}</Text>
+                  <Icon name='md-arrow-dropdown' style={styles.dropDownIcon} />
+                </View>
+              </ModalDropdown>
+            </SmallBox>
+            <SmallBox title={'REPLACEMENTS'}>
+
             </SmallBox>
             <LionsFooter isLoaded={true} />
           </ScrollView>
