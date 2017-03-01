@@ -236,6 +236,7 @@ class MyLions extends Component {
                 if (isFirst) this.getRating()
             }).catch((error) => {})
             this.getProfile()
+            this.getRating()
         }
     }
 
@@ -253,14 +254,14 @@ class MyLions extends Component {
                             "highLight":3,
                             "description": [
                             "WELL DONE!",
-                            `you picked ${res.data.percentage} players from the official British & Irish Lions 2017 Squad.`,
-                            "you have earned the rank of:",
+                            `You picked ${res.data.percentage} players from the official British & Irish Lions 2017 Squad.`,
+                            "You have earned the rank of:",
                             strToUpper(res.data.title),
-                            "With the announcement of the official squad, we'ave updated My Lions with some exciting new gameplay features.",
+                            "With the announcement of the official squad, we've updated My Lions with some exciting new gameplay features.",
                             "Click next to discover what's new in this version."
                             ]
                         })
-                        this.totalPages=Data.length
+                        this.totalPages = Data.length
                 }
                 this.setState({modalVisible:true})
             },
