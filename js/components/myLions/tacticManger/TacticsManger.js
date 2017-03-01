@@ -20,6 +20,7 @@ import LoginRequire from '../../global/loginRequire'
 import LionsHeader from '../../global/lionsHeader'
 import LionsFooter from '../../global/lionsFooter'
 
+import ModalDropdown from 'react-native-modal-dropdown';
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
@@ -32,18 +33,23 @@ import { globalNav } from '../../../appNavigator'
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import Versus from '../components/versus'
 
+
+const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5'];
+
 class SmallBox extends Component {
   constructor (props) {
     super(props)
     this.state = {}
   }
     render (){
+      let{height}=this.props
+      const dimensions = { height };
       return(
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerText}>{this.props.title}</Text>
           </View>
-          <View>
+          <View style={[styles.smallBoxContent,dimensions]}>
             {this.props.children}
           </View>
         </View>
@@ -51,14 +57,13 @@ class SmallBox extends Component {
     }
 }
 SmallBox.propTypes = {
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  height: React.PropTypes.number,
 }
-const StarPlayer = () => {
-    return (
-      <View>
-      </View>
-    )
-}
+
+SmallBox.defaultProps = {
+  height: 120,
+};
 class TacticsManger extends Component {
   constructor (props) {
     super(props)
@@ -89,7 +94,11 @@ class TacticsManger extends Component {
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
             <HeaderTitleWithModal title={'SELECT TACTICS'}/>
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
-            <SmallBox title={'STAR PLAYER'} />
+            <SmallBox title={'STAR PLAYER'} >
+              <ModalDropdown style={styles.dropDown}
+                             defaultValue={'Select Player'}
+                             options={DEMO_OPTIONS_1} />
+            </SmallBox>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
