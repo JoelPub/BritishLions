@@ -428,8 +428,8 @@ module.exports = styleSheetCreate({
         backgroundColor:'white'
     },
     btnsLanding: {
-        paddingBottom: 45,
-        paddingTop: 45
+        paddingBottom: 31,
+        paddingTop: 31
     },
     btnMysquad: {
         height:100,
@@ -440,9 +440,11 @@ module.exports = styleSheetCreate({
     },
     btnMysquadIcon: {
         width:34,
-        height:52
+        height:52,
+        backgroundColor: 'transparent'
     },
     btnMysquadLabel: {
+        backgroundColor: 'transparent',
         fontFamily: styleVar.fontCondensed,
         fontSize: 36,
         lineHeight: 36,
@@ -474,7 +476,7 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         paddingTop: 5,
         backgroundColor:'transparent',
-        marginLeft: 6,
+        marginLeft: 8,
         android:{
             marginTop: -7,
         }
@@ -495,7 +497,7 @@ module.exports = styleSheetCreate({
     btnFavouritesIcon: {
         marginBottom: 5,
         color: 'rgb(255,204,40)',
-        fontSize:24,
+        fontSize: 25,
         android:{
             marginBottom: 5,
         }
@@ -505,8 +507,11 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 24,
         lineHeight: 24,
-        paddingTop:5,
-        marginLeft: 5
+        paddingTop: 6,
+        marginLeft: 7,
+        android: {
+            paddingTop: 0
+        }
     },
     onboarding: {
         flex:1

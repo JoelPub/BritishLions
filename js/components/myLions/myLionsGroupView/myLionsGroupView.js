@@ -105,8 +105,8 @@ class MyLionsGroupView extends Component {
               <RankList data={data} title={'GROUP LADDER'} />
             </GrayContainer>
             <View style={styles.groupAction}>
-              <ButtonWithIcon  iconName  = {'md-star'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}/>
-              <ButtonWithIcon  iconName  = {'md-star'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor}/>
+              <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}/>
+              <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor}/>
             </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>

@@ -254,6 +254,8 @@ class Landing extends Component {
             onAxiosEnd: null,
             method: 'get',
             onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+
                 if(res.data) {
                     getUserFullName().then((userName) => {                            
                         let initName = ''
@@ -275,7 +277,9 @@ class Landing extends Component {
             },
             onError: null,
             onAuthorization: () => {
-                    this._signInRequired()
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                
+                this._signInRequired()
             },
             isRequiredToken: true
         }

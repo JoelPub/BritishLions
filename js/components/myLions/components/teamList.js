@@ -10,6 +10,8 @@ import shapes from '../../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
+import { strToUpper } from '../../utility/helper'
+
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -22,6 +24,10 @@ const styles = styleSheetCreate({
     addPlayerIcon:{
         fontSize:60,
         color:'rgb(255,255,255)'
+    },
+    playerPositionTextWrapper:{
+        paddingVertical:10,
+        justifyContent: 'center',
     },
     playerNameTextWrapper:{
         marginTop:-12,
@@ -38,6 +44,20 @@ const styles = styleSheetCreate({
         android: {
             paddingTop: 12,
             paddingBottom: 6
+        }
+    },
+    playerPositionText: {
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 18,
+        lineHeight: 18,
+        paddingBottom: 2,
+        marginTop:5,
+        backgroundColor: 'transparent',
+        android: {
+            paddingBottom: 3,
         }
     },
     playerNameText: {
@@ -57,6 +77,11 @@ const styles = styleSheetCreate({
         backgroundColor: '#FFF',
         width: styleVar.deviceWidth / 3,
         height: styleVar.deviceWidth / 3
+    },
+    indivPlayerImage:{
+        backgroundColor: '#FFF',
+        width: styleVar.deviceWidth / 2,
+        height: styleVar.deviceWidth / 2
     },
     posTitle:{
         flexDirection:'row',
@@ -84,7 +109,7 @@ const styles = styleSheetCreate({
         lineHeight:24,
     },
     indivPosition:{
-        width:styleVar.deviceWidth/3+1,
+        width:styleVar.deviceWidth/2+1,
         backgroundColor:'rgb(255,255,255)',
         marginLeft:-1
     },
@@ -108,7 +133,7 @@ const styles = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.63
+        height:styleVar.deviceWidth*0.73
     },
     posWrapper:{
         width:styleVar.deviceWidth/3+1,
@@ -141,6 +166,9 @@ const AddPlayerCell = ({pos,onPress})=>(
     )
 const PlayerImgCell =({data,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
+        <View style={styles.playerPositionTextWrapper}>
+            <Text style={styles.playerPositionText} numberOfLines={1}>{strToUpper(data.position)}</Text>
+        </View>
         <ImagePlaceholder 
             width = {styleVar.deviceWidth / 3}
             height = {styleVar.deviceWidth / 3}>
@@ -148,6 +176,25 @@ const PlayerImgCell =({data,onPress}) =>(
                 resizeMode='contain'
                 source={data.image}
                 style={styles.playerImage} />
+        </ImagePlaceholder>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}</Text>
+                <Text style={styles.playerNameText} numberOfLines={1}>{data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}</Text>
+            </View>
+        </View>
+    </ButtonFeedback>
+    )
+const IndivPlayerImgCell =({data,onPress}) =>(
+    <ButtonFeedback onPress={onPress} style={styles.posBtn}>
+        <ImagePlaceholder 
+            width = {styleVar.deviceWidth / 2}
+            height = {styleVar.deviceWidth / 2}>
+            <Image transparent
+                resizeMode='contain'
+                source={data.image}
+                style={styles.indivPlayerImage} />
         </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>
             <View style={[shapes.triangle]} />
@@ -178,32 +225,9 @@ export default class TeamList extends Component {
 
             <View>
 
-                <View style={styles.individaulPositionRow}>
-                {
-                    this.props.teamDatafeed.indivPos.map((item,index)=>{
-                        let position = item.position.toUpperCase()
-                        return (
-                            <View style={styles.indivPosition} key={index}>
-                                <View style={styles.indivPosTitle}>
-                                    <Text style={styles.indivPosTitleText}>
-                                        { position === 'WILDCARD'? 'STAR' : position }
-                                    </Text>
-                                </View>
-                                {
-                                item.info===null?
-                                <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
-                                :
-                                <PlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerDetails',item.position,1,0)}/>
-                                }
-                            </View>
-                        )
-                    },this) 
-                }                                
-                </View>
-
                 <PositionTitle pos='FORWARDS' data={this.props.teamDatafeed.forwards}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.63}
+                height={styleVar.deviceWidth*0.73}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -220,7 +244,7 @@ export default class TeamList extends Component {
                                                             item===null?
                                                             <AddPlayerCell pos='FORWARDS' onPress = {() => this.props.pressAdd('add','forwards',16)}/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerDetails','forwards',16,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','forwards',16,index)}/>
                                                         }
                                                     </View>
                                                 )
@@ -236,7 +260,7 @@ export default class TeamList extends Component {
                 
                 <PositionTitle pos='BACKS' data={this.props.teamDatafeed.backs}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.63}
+                height={styleVar.deviceWidth*0.73}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -253,7 +277,7 @@ export default class TeamList extends Component {
                                                     item===null?                                                        
                                                        <AddPlayerCell pos='BACKS' onPress = {() => this.props.pressAdd('add','backs',16)}/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerDetails','backs',16,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','backs',16,index)}/>
                                                 }
                                                 </View>
                                                 )
@@ -265,6 +289,29 @@ export default class TeamList extends Component {
                         },this)
                     }
                 </Swiper>
+
+                <View style={styles.individaulPositionRow}>
+                {
+                    this.props.teamDatafeed.indivPos.map((item,index)=>{
+                        let position = item.position.toUpperCase()
+                        return (
+                            <View style={styles.indivPosition} key={index}>
+                                <View style={styles.indivPosTitle}>
+                                    <Text style={styles.indivPosTitleText}>
+                                        { position === 'WILDCARD'? 'STAR' : position }
+                                    </Text>
+                                </View>
+                                {
+                                item.info===null?
+                                <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
+                                :
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'MyLionsPlayerProfile',item.position,1,0)}/>
+                                }
+                            </View>
+                        )
+                    },this) 
+                }                                
+                </View>
 
             </View>
 			
