@@ -146,11 +146,34 @@ const styles = styleSheetCreate({
         justifyContent:'center',
         alignItems:'center',
     },
+    posIndivAddWrapper:{
+        width:styleVar.deviceWidth / 2,
+        height:styleVar.deviceWidth / 2,
+        backgroundColor:'rgb(175,0,30)',
+        justifyContent:'center',
+        alignItems:'center',
+    },
 })
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
         <View style={styles.posAddWrapper}>
+            <Icon name='md-person-add' style={styles.addPlayerIcon} />
+        </View>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText}>ADD</Text>
+                <Text style={styles.playerNameText}>
+                    { pos.toUpperCase() === 'WILDCARD'? 'STAR' : pos.toUpperCase() }
+                </Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
+const AddIndivPlayerCell = ({pos,onPress})=>(
+    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
+        <View style={styles.posIndivAddWrapper}>
             <Icon name='md-person-add' style={styles.addPlayerIcon} />
         </View>
         <View style={styles.playerNameTextWrapper}>
@@ -303,7 +326,7 @@ export default class TeamList extends Component {
                                 </View>
                                 {
                                 item.info===null?
-                                <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
+                                <AddIndivPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
                                 :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'MyLionsPlayerProfile',item.position,1,0)}/>
                                 }

@@ -169,7 +169,7 @@ class CompetitionLadder extends Component {
   groupNameOnPress = (data) => {
     console.log('**********')
     console.log(data)
-   this.props.drillDown('data','myLionsGroupView')
+    this.props.drillDown('data','myLionsGroupView')
   }
 
   /*groupAction*/
@@ -207,8 +207,8 @@ class CompetitionLadder extends Component {
   }
 
   render() {
-   let { data ,isCreating, createType, isJoining, joinType } = this.state
-   let {userProfile} = this.props
+    let { data ,isCreating, createType, isJoining, joinType } = this.state
+    let {userProfile} = this.props
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -228,12 +228,12 @@ class CompetitionLadder extends Component {
                       createGroupOnPress={this.createGroupOnPress}
                       joinGroupOnPress={this.joinGroupOnPress}/>
             <CompetitionCenter />
-          <LionsFooter isLoaded={true} />
+            <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
-          createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
+                           createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
           />
           <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}
                      joinButtonClick = {this.joinButtonClick} okButtonClick ={this.dissMissModel} />
