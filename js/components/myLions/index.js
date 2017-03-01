@@ -236,7 +236,6 @@ class MyLions extends Component {
                 if (isFirst) this.getRating()
             }).catch((error) => {})
             this.getProfile()
-            this.getRating()
         }
     }
 
