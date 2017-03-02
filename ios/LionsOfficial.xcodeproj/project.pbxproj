@@ -35,6 +35,7 @@
 		763C81461DD9B76300DC473C /* CalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 763C81451DD9B76300DC473C /* CalendarManager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		86E533159A2B479E9EE7F234 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 830F4833B6F44183AB9456C4 /* libRNVectorIcons.a */; };
+		99C62902192C42389B95CD06 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DE6E8FD0694D0A86AA5CBD /* libCodePush.a */; };
 		9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21B805EA2B9E47908439C1DE /* MaterialIcons.ttf */; };
 		BD5A6B798D394A0F8D7C27A4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */; };
 		C22013271E2DC6C700BA63D9 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C220130E1E2DC66100BA63D9 /* libRCTFBLogin.a */; };
@@ -241,6 +242,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		B13541191E67C10C00ACAB68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 09E7B1A31DCF4757BF3E0B1F /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
 		C220130D1E2DC66100BA63D9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C22013071E2DC66100BA63D9 /* RCTFBLogin.xcodeproj */;
@@ -281,7 +289,9 @@
 		00E356EE1AD99517003FC87E /* LionsOfficialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LionsOfficialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LionsOfficialTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LionsOfficialTests.m; sourceTree = "<group>"; };
+		01DE6E8FD0694D0A86AA5CBD /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		04267D711E36C1F5007F7C41 /* LionsOfficial.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LionsOfficial.entitlements; path = LionsOfficial/LionsOfficial.entitlements; sourceTree = "<group>"; };
+		09E7B1A31DCF4757BF3E0B1F /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LionsOfficial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LionsOfficial.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -394,6 +404,7 @@
 				C243C1B01E24E18C0052394C /* GoogleAppUtilities.framework in Frameworks */,
 				C22013271E2DC6C700BA63D9 /* libRCTFBLogin.a in Frameworks */,
 				BD5A6B798D394A0F8D7C27A4 /* libRNFetchBlob.a in Frameworks */,
+				99C62902192C42389B95CD06 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +593,7 @@
 				7E77C8059B8B436EA392720F /* RNShare.xcodeproj */,
 				72A7C4463140460EA53DD1EC /* RNViewShot.xcodeproj */,
 				1850F3EEC6F84DF392F232D1 /* RNFetchBlob.xcodeproj */,
+				09E7B1A31DCF4757BF3E0B1F /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -617,6 +629,14 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* LionsOfficial.app */,
 				00E356EE1AD99517003FC87E /* LionsOfficialTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B13541151E67C10C00ACAB68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B135411A1E67C10C00ACAB68 /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -788,6 +808,10 @@
 				{
 					ProductGroup = 043715971DF9130000247FE3 /* Products */;
 					ProjectRef = 2423F8124BFA4896A80B8F5D /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = B13541151E67C10C00ACAB68 /* Products */;
+					ProjectRef = 09E7B1A31DCF4757BF3E0B1F /* CodePush.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1043,6 +1067,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B135411A1E67C10C00ACAB68 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = B13541191E67C10C00ACAB68 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C220130E1E2DC66100BA63D9 /* libRCTFBLogin.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1168,6 +1199,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1185,6 +1217,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1224,6 +1257,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
@@ -1267,6 +1301,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
@@ -1331,6 +1366,7 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1380,6 +1416,7 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

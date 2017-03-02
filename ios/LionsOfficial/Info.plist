@@ -50,7 +50,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
+	<key>CodePushDeploymentKey</key>
+	<string>P7FV3MtKy-PsbDJEdyBpoimOMEujEy_kN_e5z</string>
 	<key>FacebookAppID</key>
 	<string>251610908595186</string>
 	<key>FacebookDisplayName</key>
