@@ -7,6 +7,7 @@ export const SET_SQUAD_TOSHOW = 'SET_SQUAD_TOSHOW'
 export const SET_SQUAD_DATA = 'SET_SQUAD_DATA'
 export const SET_TEAM_TOSHOW = 'SET_TEAM_TOSHOW'
 export const SET_TEAM_DATA = 'SET_TEAM_DATA'
+export const SET_TEAM_DATA_TEMP = 'SET_TEAM_DATA_TEMP'
 export const SET_OFFICIAL_SQUAD_TOSHOW = 'SET_OFFICIAL_SQUAD_TOSHOW'
 export const SET_OPPOSITION_SQUAD_TOSHOW = 'SET_OPPOSITION_SQUAD_TOSHOW'
 
@@ -38,6 +39,12 @@ export function setTeamData(teamData):Action {
     return {
         type: SET_TEAM_DATA,
         teamData
+    }
+}
+export function setTeamDataTemp(teamDataTemp):Action {
+    return {
+        type: SET_TEAM_DATA_TEMP,
+        teamDataTemp
     }
 }
 export function setOfficialSquadToShow(officialSquadToShow):Action {

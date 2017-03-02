@@ -15,6 +15,7 @@ export type Action =
     | { type: 'SET_SQUAD_DATA' }
     | { type: 'SET_TEAM_TOSHOW' }
     | { type: 'SET_TEAM_DATA' }
+    | { type: 'SET_TEAM_DATA_TEMP' }
     | { type: 'SET_OFFICIAL_SQUAD_TOSHOW' }
     | { type: 'SET_OPPOSITION_SQUAD_TOSHOW' }
     | { type: 'PUSH_CONTENT_ITEM'}

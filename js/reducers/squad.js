@@ -1,7 +1,7 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW } from '../actions/squad'
+import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_TEAM_DATA_TEMP,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW } from '../actions/squad'
 
 export type State = {
     userProfile: Object,
@@ -9,6 +9,7 @@ export type State = {
     squadData: string,
     teamToShow: Object,
     teamData: string,
+    teamDataTemp: string,
     officialSquadToShow: Object,
     oppositionSquadToShow: Object,
 }
@@ -19,6 +20,7 @@ const initialState = {
     squadData: null,
     teamToShow: {},
     teamData: null,
+    teamDataTemp: null,
     officialSquadToShow: {},
     oppositionSquadToShow: {},
 }
@@ -53,6 +55,12 @@ export default function (state:State = initialState, action:Action): State {
         return {
             ...state,
             teamData: action.teamData
+        }
+    }
+    if (action.type === SET_TEAM_DATA_TEMP) {
+        return {
+            ...state,
+            teamDataTemp: action.teamDataTemp
         }
     }
     if (action.type === SET_OFFICIAL_SQUAD_TOSHOW) {
