@@ -29,14 +29,8 @@ import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import LionsFooter from '../../global/lionsFooter'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getUserCustomizedSquad, removeUserCustomizedSquad,getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
-import { getEYC3FullPlayerList,removeEYC3FullPlayerList } from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import Storage from 'react-native-storage'
-import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
+import { setPositionToAdd } from '../../../actions/position'
 import { strToUpper } from '../../utility/helper'
-import SquadModel from  '../../../modes/Squad'
-import {convertSquadToShow,compareShowSquad} from '../../global/squadToShow'
-import { setSquadToShow,setSquadData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import {searchPlayer} from '../components/searchPlayer'
 
@@ -45,15 +39,10 @@ class MyLionsSelectPlayerListing extends Component {
     constructor(props){
         super(props)
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-        this.isUnMounted = false
-        this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
-        this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
-        this.squadUrl = getAssembledUrl('GoodFormUserCustomizedSquad')
         this.uniondata = Data
         this._scrollView = ScrollView
 
         this.state = {
-            isRefreshing: false,
             isLoaded: false,
             selectPlayers: this.ds.cloneWithRows([])
         }
@@ -107,9 +96,6 @@ class MyLionsSelectPlayerListing extends Component {
             'Dismiss'
         )
     }
-    componentWillUnmount() {
-        this.isUnMounted = true
-    }
 
     _replaceRoute(route) {
         this.props.replaceRoute(route)
@@ -133,7 +119,6 @@ class MyLionsSelectPlayerListing extends Component {
     }
 
     _showDetail(item, route) {
-        console.log('route',route)
         this.props.drillDown(item, route)
     }
 
@@ -205,9 +190,7 @@ class MyLionsSelectPlayerListing extends Component {
         )
     }
     componentWillUnmount() {
-        console.log('Unmount')
             this.props.setPositionToAdd('')
-
     }
 
     componentDidMount() {
@@ -256,7 +239,6 @@ class MyLionsSelectPlayerListing extends Component {
         })
         this.setState({
             isLoaded: true,
-            isRefreshing: false,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)
         })
     }
@@ -269,9 +251,6 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
-        setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
-        setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
 }
 

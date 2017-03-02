@@ -31,8 +31,6 @@ module.exports = styleSheetCreate({
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
-        //paddingLeft: 40,
-        //paddingRight: 30
     },
     btnText: {
         alignSelf: 'center',

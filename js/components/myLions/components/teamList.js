@@ -133,7 +133,7 @@ const styles = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.73
+        height:styleVar.deviceWidth*0.78
     },
     posWrapper:{
         width:styleVar.deviceWidth/3+1,
@@ -253,7 +253,7 @@ export default class TeamList extends Component {
 
                 <PositionTitle pos='FORWARDS' data={this.props.teamDatafeed.forwards}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -286,7 +286,7 @@ export default class TeamList extends Component {
                 
                 <PositionTitle pos='BACKS' data={this.props.teamDatafeed.backs}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -324,7 +324,7 @@ export default class TeamList extends Component {
                             <View style={styles.indivPosition} key={index}>
                                 <View style={styles.indivPosTitle}>
                                     <Text style={styles.indivPosTitleText}>
-                                        { position === 'WILDCARD'? 'STAR' : position }
+                                        { position === 'CAPTAIN'? 'MATCH CAPTAIN' : position }
                                     </Text>
                                 </View>
                                 {

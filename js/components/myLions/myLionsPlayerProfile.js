@@ -23,30 +23,23 @@ import { service } from '../utility/services'
 import HTMLView from 'react-native-htmlview'
 import htmlStyles from '../../themes/html-styles'
 import styleVar from '../../themes/variable'
-import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import SquadModal from '../global/squadModal'
 import PlayerFigure from '../global/playerFigure'
-import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../utility/urlStorage'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
 import FigureListModel from  'modes/Players/Profile/SeasonList/Season/FigureList'
 import FigureModel from 'modes/Players/Profile/SeasonList/Season/FigureList/Figure'
-import SquadModel from  'modes/Squad'
-import SquadShowModel from  'modes/Squad/SquadShowModel'
 import Immutable, { Map, List } from 'immutable'
 import { strToUpper } from '../utility/helper'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import Swiper from 'react-native-swiper'
-import SquadList from '../global/squadList'
 import TeamPlayerEditor from './components/teamPlayerEditor'
 
 class MyLionsPlayerProfile extends Component {
     constructor(props){
         super(props)
         this._scrollView = ScrollView
-        this.isUnMounted = false
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
@@ -179,16 +172,7 @@ class MyLionsPlayerProfile extends Component {
 
     componentDidMount() {
         console.log('!!!Details componentDidMount')
-        // Let's have a parallel request
         this.getPlayerProfile()
-    }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
-    }
-
-    componentWillReceiveProps(nextProps,nextState) {
-        console.log('!!!details componentWillReceiveProps')
     }
 
     _setModalVisible=(visible,mode,title,subtitle,btn) => {

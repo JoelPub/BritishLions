@@ -14,22 +14,25 @@ import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soti
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
 import {convertTeamToShow,removePlayer,addPlayer} from '../components/teamToShow'
-import { setTeamToShow,setTeamData } from '../../../actions/squad'
+import { setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
-import { setPositionToAdd , setPositionToRemove} from '../../../actions/position'
-import { popRoute,replaceOrPushRoute } from '../../../actions/route'
+import { popRoute } from '../../../actions/route'
 const styles = styleSheetCreate({
+    wrapper:{
+        backgroundColor: 'rgb(4, 79, 38)',
+        paddingVertical:styleVar.deviceWidth*0.06,
+    }, 
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
-        height: 50,
+        height: styleVar.deviceWidth*0.13,
+        width: styleVar.deviceWidth*0.5,
+        marginHorizontal: styleVar.deviceWidth*0.25,
         justifyContent: 'center'
     },
     btnGreen: {
         backgroundColor: 'rgb(10, 127, 64)',
-        //paddingLeft: 40,
-        //paddingRight: 30
     },
     btnText: {
         alignSelf: 'center',
@@ -60,7 +63,7 @@ class TeamSaveBtn extends Component {
 
 	render() {
         return (
-        <View style={{backgroundColor: 'rgb(4, 79, 38)',paddingVertical:30,paddingHorizontal:100}}>
+        <View style={styles.wrapper}>
             <ButtonFeedback rounded onPress={() => this._saveTeam()}
                 style={[styles.btn, styles.btnGreen ]}>
                 <Text style={styles.btnText}>SAVE</Text>
@@ -93,21 +96,13 @@ class TeamSaveBtn extends Component {
 
 function bindAction(dispatch) {
     return {
-        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
-        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
-        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
         popRoute: ()=>dispatch(popRoute())
     }
 }
 
 export default connect((state) => {
     return {
-        teamToShow: state.squad.teamToShow,
-        teamData: state.squad.teamData,
         teamDataTemp: state.squad.teamDataTemp,
-        positionToAdd: state.position.positionToAdd,
-        positionToRemove: state.position.positionToRemove,
     }
 },  bindAction)(TeamSaveBtn)
