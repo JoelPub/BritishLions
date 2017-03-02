@@ -32,6 +32,7 @@ import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import Versus from '../components/versus'
+import Slider from '../../global/ZxSlider'
 
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5'];
@@ -72,7 +73,9 @@ class TacticsManger extends Component {
     this.state = {
       isLoaded: false,
       drillDownItem: this.props.drillDownItem,
-      dropDownValue: 'Select Player'
+      dropDownValue: 'Select Player',
+      replacementsSliderValue: '0',
+      playStyleSliderValue: '0'
     }
   }
   /*get Data*/
@@ -84,8 +87,21 @@ class TacticsManger extends Component {
       dropDownValue: value,
     })
   }
+  onValuesChange = (value) => {
+    this.setState({
+      replacementsSliderValue: value,
+    })
+  }
+  onValuesChangeOther = (value) => {
+    this.setState({
+      playStyleSliderValue: value,
+    })
+  }
+  saveOnPress = () =>{
+
+  }
   render() {
-    let { isLoaded ,dropDownValue} = this.state
+    let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile} = this.props
     return (
       <Container theme={theme}>
@@ -108,9 +124,19 @@ class TacticsManger extends Component {
                 </View>
               </ModalDropdown>
             </SmallBox>
-            <SmallBox title={'REPLACEMENTS'}>
-
+            <SmallBox title={'REPLACEMENTS'} height={185}>
+              <Slider onValuesChange={this.onValuesChange} value={0.5}/>
+              <Text style={styles.ValueText}>{replacementsSliderValue}</Text>
             </SmallBox>
+            <SmallBox title={'REPLACEMENTS'} height={185}>
+              <Slider onValuesChange={this.onValuesChangeOther} value={0.5}/>
+              <Text style={styles.ValueText}>{playStyleSliderValue}</Text>
+            </SmallBox>
+            <View style={styles.saveContainer}>
+              <ButtonFeedback style={styles.saveBtn} onPress={this.saveOnPress}>
+                <Text style={styles.saveText}>SAVE</Text>
+              </ButtonFeedback>
+            </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
