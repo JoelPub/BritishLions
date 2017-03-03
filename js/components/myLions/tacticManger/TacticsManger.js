@@ -24,14 +24,19 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
+import {getEYC3FullPlayerList} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
+
+
 import EYSFooter from '../../global/eySponsoredFooter'
 
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import SquadModal from '../../global/squadModal'
 import Versus from '../components/versus'
+import Slider from '../../global/ZxSlider'
 
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5'];
@@ -71,8 +76,11 @@ class TacticsManger extends Component {
     this.isUnMounted = false
     this.state = {
       isLoaded: false,
+      modalResults:false,
       drillDownItem: this.props.drillDownItem,
-      dropDownValue: 'Select Player'
+      dropDownValue: 'Select Player',
+      replacementsSliderValue: '0',
+      playStyleSliderValue: '0'
     }
   }
   /*get Data*/
@@ -84,9 +92,45 @@ class TacticsManger extends Component {
       dropDownValue: value,
     })
   }
+  onValuesChange = (value) => {
+    this.setState({
+      replacementsSliderValue: value,
+    })
+  }
+  onValuesChangeOther = (value) => {
+    this.setState({
+      playStyleSliderValue: value,
+    })
+  }
+  saveOnPress = () =>{
+
+  }
+  iconPress =() => {
+    this.setState({
+      modalResults: true,
+    })
+  }
+  handleDropDownData = (teamToShow) => {
+    console.log('***************************8')
+    console.log(teamToShow)
+
+    let result = []
+    if(!teamToShow.backs) return result
+    teamToShow.backs.map(
+      (item)=>{
+        result.push(item.name)
+      }
+    )
+    teamToShow.forwards.map((item)=>{
+       result.push(item.name)
+     })
+     return result
+
+  }
   render() {
-    let { isLoaded ,dropDownValue} = this.state
-    let {userProfile} = this.props
+    let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
+    let {userProfile,teamToShow} = this.props
+    let dropDownData = this.handleDropDownData(teamToShow)
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -96,11 +140,11 @@ class TacticsManger extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'SELECT TACTICS'}/>
+            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress}/>
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
-                             options={DEMO_OPTIONS_1}
+                             options={dropDownData}
                              onSelect={this.dropDownOnSelect}>
                 <View style={styles.dropDownSub}>
                   <Text style={styles.dropDownText}>{dropDownValue}</Text>
@@ -108,18 +152,39 @@ class TacticsManger extends Component {
                 </View>
               </ModalDropdown>
             </SmallBox>
-            <SmallBox title={'REPLACEMENTS'}>
-
+            <SmallBox title={'REPLACEMENTS'} height={185}>
+              <Slider onValuesChange={this.onValuesChange} value={0.5}/>
+              <Text style={styles.ValueText}>{replacementsSliderValue}</Text>
             </SmallBox>
+            <SmallBox title={'REPLACEMENTS'} height={185}>
+              <Slider onValuesChange={this.onValuesChangeOther} value={0.5}/>
+              <Text style={styles.ValueText}>{playStyleSliderValue}</Text>
+            </SmallBox>
+            <View style={styles.saveContainer}>
+              <ButtonFeedback style={styles.saveBtn} onPress={this.saveOnPress}>
+                <Text style={styles.saveText}>SAVE</Text>
+              </ButtonFeedback>
+            </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
+          <SquadModal
+            modalVisible={this.state.modalResults}
+            callbackParent={() => {}}>
+            <View style={[styles.modalContent]}>
+              <Text style={styles.modalContentTitleText}>RESULTS</Text>
+              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
+            </View>
+          </SquadModal>
           <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>
     )
   }
   componentDidMount() {
+    getEYC3FullPlayerList().then((data)=>{
+
+    })
   }
 
   componentWillUnmount() {
@@ -135,11 +200,12 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  console.log(state)
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,
-    userProfile:state.squad.userProfile
+    userProfile:state.squad.userProfile,
+    dropDownData: state.squad.teamData,
+    teamToShow: state.squad.teamToShow,
   }
 }, bindAction)(TacticsManger)
 TacticsManger.defaultProps = {
