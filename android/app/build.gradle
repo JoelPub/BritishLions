@@ -89,6 +89,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    repositories{ flatDir{
+        dirs 'libs'
+        }
+    }
+
     defaultConfig {
         applicationId "com.lionsofficial"
         minSdkVersion 16
@@ -161,6 +166,7 @@ dependencies {
     }
     compile project(':react-native-facebook-login')
     compile 'com.google.android.gms:play-services-auth:9.0.0'
+    compile 'com.clarisite.mobile:climobile@aar'
 
 }
 
