@@ -31,6 +31,7 @@ import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import SquadModal from '../../global/squadModal'
 import Versus from '../components/versus'
 import Slider from '../../global/ZxSlider'
 
@@ -72,6 +73,7 @@ class TacticsManger extends Component {
     this.isUnMounted = false
     this.state = {
       isLoaded: false,
+      modalResults:false,
       drillDownItem: this.props.drillDownItem,
       dropDownValue: 'Select Player',
       replacementsSliderValue: '0',
@@ -100,6 +102,11 @@ class TacticsManger extends Component {
   saveOnPress = () =>{
 
   }
+  iconPress =() => {
+    this.setState({
+      modalResults: true,
+    })
+  }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile} = this.props
@@ -112,7 +119,7 @@ class TacticsManger extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'SELECT TACTICS'}/>
+            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress}/>
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
@@ -140,6 +147,14 @@ class TacticsManger extends Component {
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <LoginRequire/>
+          <SquadModal
+            modalVisible={this.state.modalResults}
+            callbackParent={() => {}}>
+            <View style={[styles.modalContent]}>
+              <Text style={styles.modalContentTitleText}>RESULTS</Text>
+              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+            </View>
+          </SquadModal>
           <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>
@@ -165,7 +180,8 @@ export default connect((state) => {
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,
-    userProfile:state.squad.userProfile
+    userProfile:state.squad.userProfile,
+    dropDownData: state.squad.teamData
   }
 }, bindAction)(TacticsManger)
 TacticsManger.defaultProps = {
