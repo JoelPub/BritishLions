@@ -63,6 +63,10 @@
               <action android:name="com.google.android.c2dm.intent.RECEIVE" />
           </intent-filter>
       </service>
+      <service android:exported="false" android:name="com.clarisite.mobile.ClarisiteService">
+          <meta-data android:name="url" android:value="https://mobile.clarisite.com:8443"/>
+          <meta-data android:name="appid" android:value="AAAAAAAA-BBBB-BBBB-BBBB-AAAAAAAAAAAA"/>
+      </service>
         <!--add FacebookActivity-->
         <activity tools:replace="android:theme"
             android:name="com.facebook.FacebookActivity"
