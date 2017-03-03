@@ -17,7 +17,7 @@ import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
-import { popRoute,replaceRoute, pushNewRoute } from '../../../actions/route'
+import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import loader from '../../../themes/loader-position'
 import { alertBox } from '../../utility/alertBox'
 import refresh from '../../../themes/refresh-control'
@@ -29,21 +29,14 @@ import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
-import { setTeamToShow,setTeamData } from '../../../actions/squad'
+import { setTeamToShow,setTeamDataTemp } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
-import PlayerScore from '../../global/playerScore'
-import SquadPopModel from  '../../../modes/SquadPop'
-import Rating from  '../../../modes/SquadPop/Rating'
 import TeamModel from  '../../../modes/Team'
-import SquadRatingModel from '../../../modes/Squad/Rating'
 import Immutable, { Map, List,Iterable } from 'immutable'
-import Cursor from 'immutable/contrib/cursor'
 import TeamList from '../components/teamList'
+import TeamSaveBtn from '../components/teamSaveBtn'
 import {convertTeamToShow} from '../components/teamToShow'
-import SquadShowModel from  '../../../modes/Squad/SquadShowModel'
 import Versus from '../components/versus'
 
 class MyLionsManageTeam extends Component {
@@ -53,30 +46,13 @@ class MyLionsManageTeam extends Component {
         this._scrollView = ScrollView
         this.state={
             isLoaded: false,
-            isScoreLoaded: false,
             modalVisible: false,
-            modalClear:false,
-            modalPopulate:false,
-            showScoreCard:'semi',
-            isSubmitting: false,
-            rating:Rating().toJS(),
             userID:'',
             isNetwork: true,
             drillDownItem:this.props.drillDownItem,
         }
-        this.isUnMounted = false
         this.uniondata = Data
         this.fullPlayerList={}
-        this.catchedSquad={}
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
-        this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
-        this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
-    }
-
-    componentWillMount() {
-        getUserId().then((userID) => {
-            this.setState({userID})
-        }).catch((error) => {})
     }
 
     _showError(error) {
@@ -95,13 +71,6 @@ class MyLionsManageTeam extends Component {
             )
         }
     }
-    showNetError  = ()=> {
-        Alert.alert(
-          'An error occured',
-          'Please make sure that you\'re connected to the network.',
-          [{text: 'Dismiss'}]
-        )
-    }
     _showDetail(item, route,playerPos,max,seq) {
         this.props.setPositionToAdd('')
         this.props.setPositionToRemove(playerPos)
@@ -111,13 +80,12 @@ class MyLionsManageTeam extends Component {
     _addPlayer(type,playerPos,max) {
         this.props.setPositionToAdd(playerPos)
         this.props.setPositionToRemove('')
-        this.props.pushNewRoute('myLionsUnionsList')
+        this.props.pushNewRoute('myLionsSelectPlayerListing')
     }
 
     render() {
         let { drillDownItem } = this.props
         let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
-
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -137,17 +105,9 @@ class MyLionsManageTeam extends Component {
                                     <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                                 </ButtonFeedback>
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
-                                <View>
-                                    <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
-                                    
-                                    <View style={{backgroundColor: 'rgb(4, 79, 38)',paddingVertical:30,paddingHorizontal:100}}>
-                                        <ButtonFeedback rounded onPress={() => this.props.popRoute()}
-                                            style={[styles.btn, styles.btnGreen ]}>
-                                            <Text style={styles.btnText}>SAVE</Text>
-                                        </ButtonFeedback>
-                                    </View>
-                                    <LionsFooter isLoaded={true} />
-                                </View>
+                                <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
+                                <TeamSaveBtn />
+                                <LionsFooter isLoaded={true} />
                             </ScrollView>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
@@ -171,9 +131,12 @@ class MyLionsManageTeam extends Component {
         this._getTeam()
     }
     _getTeam(){
+        console.log('_getTeam',this.props.teamData)
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
+                this.props.setTeamDataTemp(this.props.teamData)
                 this.setTeam(TeamModel.format(eval(`(${this.props.teamData})`)))
             }
         }).catch((error) => {
@@ -181,8 +144,9 @@ class MyLionsManageTeam extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.teamData!==null) {
-            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+        console.log('componentWillReceiveProps',nextProps.teamDataTemp)
+        if(nextProps.teamDataTemp!==null) {
+            this.setTeam(TeamModel.format(eval(`(${nextProps.teamDataTemp})`)))  
         }
     }
     
@@ -208,7 +172,7 @@ class MyLionsManageTeam extends Component {
     }
 
     setTeam(team){
-        //console.log('!!!setTeam')
+        console.log('!!!setTeam',team.toJS())
         let tmpTeam=new TeamModel()
         let emptyFeed=true
         let fullFeed=true
@@ -249,38 +213,13 @@ class MyLionsManageTeam extends Component {
             }
             else tmpTeam=tmpTeam.set(index,team.get(index))
         })
-        let optionsSaveList = {
-            url: this.saveSquadUrl,
-            data:tmpTeam.toJS(),
-            onAxiosStart: () => {
-            },
-            onAxiosEnd: () => {
-                this.setState({ isLoaded: true })
-            },
-            onSuccess: (res) => {
-                this.setState({
-                    isLoaded:true
-                })
-            },
-            onError: (res) => {
-                this.setState({isLoaded: true }, () => {
-                    this._showError(res)
-                })
-            },
-            onAuthorization: () => {
-                this.setState({isLoaded: true }, () => {
-                    this._signInRequired()
-                })
-            },
-            isRequiredToken: true
-        }
-        if(JSON.stringify(tmpTeam)!==this.props.teamData) {
+        if(JSON.stringify(tmpTeam)!==this.props.teamDataTemp) {
             console.log('!!!team not equal')
-            this.props.setTeamData(JSON.stringify(tmpTeam))
+            this.props.setTeamDataTemp(JSON.stringify(tmpTeam))
             this.props.setTeamToShow(showTeamFeed.toJS())
         }
-        else {
-            service(optionsSaveList)
+        else {            
+            this.setState({ isLoaded: true })
         }
         
 
@@ -296,8 +235,7 @@ function bindAction(dispatch) {
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
-        setTeamData:(team)=>dispatch(setTeamData(team)),
-        popRoute: ()=>dispatch(popRoute())
+        setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
     }
 }
 
@@ -306,6 +244,7 @@ export default connect((state) => {
         drillDownItem: state.content.drillDownItem,
         teamToShow: state.squad.teamToShow,
         teamData: state.squad.teamData,
+        teamDataTemp: state.squad.teamDataTemp,
         netWork: state.network,
         userProfile: state.squad.userProfile,
     }

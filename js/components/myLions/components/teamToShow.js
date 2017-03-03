@@ -89,34 +89,34 @@ export function checkFullTeam(teamShow) {
     return result    
 }
 
-export function removePlayer(squadToShow,position,playerid) {
+export function removePlayer(teamToShow,position,playerid) {
     if(playerid) {
-        squadToShow[position].splice([squadToShow[position].findIndex((value)=>value&&value.id===playerid)],1)
-        squadToShow[position].push(null)
+        teamToShow[position].splice([teamToShow[position].findIndex((value)=>value&&value.id===playerid)],1)
+        teamToShow[position].push(null)
     }
     else {
-        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=null
+        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=null
     }
-    return squadToShow
+    return teamToShow
 }
-export function addPlayer(squadToShow,position,detail,playerid) {
+export function addPlayer(teamToShow,position,detail,playerid) {
     if(playerid) {
-        squadToShow[position][squadToShow[position].findIndex((value)=>value===null)]=detail
+        teamToShow[position][teamToShow[position].findIndex((value)=>value===null)]=detail
     }
     else {
-        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
+        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
     }
     
-    return squadToShow
+    return teamToShow
 }
-export function replacePlayer(squadToShow,position,detail,playerid,sequence) {
+export function replacePlayer(teamToShow,position,detail,playerid,sequence) {
     if(playerid) {
-        squadToShow[position][sequence]=detail
+        teamToShow[position][sequence]=detail
     }
     else {
-        squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
+        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
     }
     
-    console.log('squadToShow',squadToShow)
-    return squadToShow
+    console.log('teamToShow',teamToShow)
+    return teamToShow
 }

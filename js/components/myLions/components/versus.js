@@ -81,10 +81,12 @@ const locStyle = styleSheetCreate({
     },
     roundButton: {
         height: 50,
-        backgroundColor: styleVar.colorScarlet,
+        width:styleVar.deviceWidth*0.6,
+        marginHorizontal:styleVar.deviceWidth*0.2,
+        backgroundColor: '#FFF',
         flexDirection:'row',
         marginTop: 0,
-        marginBottom: 0,
+        marginBottom: 30,
         paddingTop:5,
         android:{
             paddingTop: 0,
@@ -98,7 +100,7 @@ const locStyle = styleSheetCreate({
         lineHeight: 24,
         paddingTop:5,
         marginLeft: 5,
-        color: '#FFF'
+        color: 'rgb(175,0,30)'
     },
 })
 
@@ -139,8 +141,8 @@ export default class Versus extends Component {
                 <View>
                 {
                     this.props.pressBtn!==undefined&&
-                        <ButtonFeedback rounded style={[styles.roundButton, {marginBottom:30,marginHorizontal:30}]} onPress={this.props.pressBtn}>
-                            <Text style={styles.roundButtonLabel}>
+                        <ButtonFeedback rounded style={[locStyle.roundButton]} onPress={this.props.pressBtn}>
+                            <Text style={locStyle.roundButtonLabel}>
                                 REVIEW OPPOSITION
                             </Text>
                         </ButtonFeedback>

@@ -133,7 +133,7 @@ const styles = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.73
+        height:styleVar.deviceWidth*0.78
     },
     posWrapper:{
         width:styleVar.deviceWidth/3+1,
@@ -157,6 +157,9 @@ const styles = styleSheetCreate({
 
 const AddPlayerCell = ({pos,onPress})=>(
     <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
+        <View style={styles.playerPositionTextWrapper}>
+            <Text style={styles.playerPositionText} numberOfLines={1}>{strToUpper(pos)}</Text>
+        </View>
         <View style={styles.posAddWrapper}>
             <Icon name='md-person-add' style={styles.addPlayerIcon} />
         </View>
@@ -250,7 +253,7 @@ export default class TeamList extends Component {
 
                 <PositionTitle pos='FORWARDS' data={this.props.teamDatafeed.forwards}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -267,7 +270,7 @@ export default class TeamList extends Component {
                                                             item===null?
                                                             <AddPlayerCell pos='FORWARDS' onPress = {() => this.props.pressAdd('add','forwards',16)}/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','forwards',16,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','forwards',16,index)}/>
                                                         }
                                                     </View>
                                                 )
@@ -283,7 +286,7 @@ export default class TeamList extends Component {
                 
                 <PositionTitle pos='BACKS' data={this.props.teamDatafeed.backs}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -300,7 +303,7 @@ export default class TeamList extends Component {
                                                     item===null?                                                        
                                                        <AddPlayerCell pos='BACKS' onPress = {() => this.props.pressAdd('add','backs',16)}/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'MyLionsPlayerProfile','backs',16,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','backs',16,index)}/>
                                                 }
                                                 </View>
                                                 )
@@ -321,14 +324,14 @@ export default class TeamList extends Component {
                             <View style={styles.indivPosition} key={index}>
                                 <View style={styles.indivPosTitle}>
                                     <Text style={styles.indivPosTitleText}>
-                                        { position === 'WILDCARD'? 'STAR' : position }
+                                        { position === 'CAPTAIN'? 'MATCH CAPTAIN' : position }
                                     </Text>
                                 </View>
                                 {
                                 item.info===null?
                                 <AddIndivPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
                                 :
-                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'MyLionsPlayerProfile',item.position,1,0)}/>
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position,1,0)}/>
                                 }
                             </View>
                         )

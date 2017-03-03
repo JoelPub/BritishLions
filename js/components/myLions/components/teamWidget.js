@@ -112,6 +112,12 @@ class TeamWidget extends Component {
                 this._showError(error) 
         })
     }
+    componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps',nextProps.teamData)
+        if(nextProps.teamData!==null) {
+            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+        }
+    }
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let tmpTeam=new TeamModel()
@@ -148,28 +154,12 @@ class TeamWidget extends Component {
             }
             else tmpTeam=tmpTeam.set(index,team.get(index))
         })
-        let optionsSaveList = {
-            url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/save',
-            data:tmpTeam.toJS(),
-            onAxiosStart: () => {
-            },
-            onAxiosEnd: () => {
-            },
-            onSuccess: (res) => {
-                        
-            },
-            onError: (res) => {
-                    this._showError(res)
-            },
-            onAuthorization: () => {
-            },
-            isRequiredToken: true
-        }
         console.log('this.props.teamData',this.props.teamData)
+         if(JSON.stringify(tmpTeam)!==this.props.teamData) {
             this.props.setTeamData(JSON.stringify(tmpTeam))
             this.props.setTeamToShow(showTeamFeed.toJS())
+         }
             this.setState({fullTeam:fullFeed})
-            service(optionsSaveList)
         
 
     }
