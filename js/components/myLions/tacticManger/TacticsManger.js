@@ -24,7 +24,10 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
+import {getEYC3FullPlayerList} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
+
+
 import EYSFooter from '../../global/eySponsoredFooter'
 
 import { drillDown } from '../../../actions/content'
@@ -107,9 +110,27 @@ class TacticsManger extends Component {
       modalResults: true,
     })
   }
+  handleDropDownData = (teamToShow) => {
+    console.log('***************************8')
+    console.log(teamToShow)
+
+    let result = []
+    if(!teamToShow.backs) return result
+    teamToShow.backs.map(
+      (item)=>{
+        result.push(item.name)
+      }
+    )
+    teamToShow.forwards.map((item)=>{
+       result.push(item.name)
+     })
+     return result
+
+  }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
-    let {userProfile} = this.props
+    let {userProfile,teamToShow} = this.props
+    let dropDownData = this.handleDropDownData(teamToShow)
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -123,7 +144,7 @@ class TacticsManger extends Component {
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
-                             options={DEMO_OPTIONS_1}
+                             options={dropDownData}
                              onSelect={this.dropDownOnSelect}>
                 <View style={styles.dropDownSub}>
                   <Text style={styles.dropDownText}>{dropDownValue}</Text>
@@ -152,7 +173,7 @@ class TacticsManger extends Component {
             callbackParent={() => {}}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>RESULTS</Text>
-              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
             </View>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
@@ -161,6 +182,9 @@ class TacticsManger extends Component {
     )
   }
   componentDidMount() {
+    getEYC3FullPlayerList().then((data)=>{
+
+    })
   }
 
   componentWillUnmount() {
@@ -176,12 +200,12 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  console.log(state)
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,
     userProfile:state.squad.userProfile,
-    dropDownData: state.squad.teamData
+    dropDownData: state.squad.teamData,
+    teamToShow: state.squad.teamToShow,
   }
 }, bindAction)(TacticsManger)
 TacticsManger.defaultProps = {
