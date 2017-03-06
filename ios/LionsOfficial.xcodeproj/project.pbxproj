@@ -38,11 +38,21 @@
 		99C62902192C42389B95CD06 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DE6E8FD0694D0A86AA5CBD /* libCodePush.a */; };
 		9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21B805EA2B9E47908439C1DE /* MaterialIcons.ttf */; };
 		BD5A6B798D394A0F8D7C27A4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */; };
+		C21FF0641E6D00A40075E608 /* ClarisiteAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */; };
 		C22013271E2DC6C700BA63D9 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C220130E1E2DC66100BA63D9 /* libRCTFBLogin.a */; };
 		C220132A1E2DCA6000BA63D9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22013291E2DCA6000BA63D9 /* Bolts.framework */; };
 		C220132C1E2DCA8500BA63D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C220132B1E2DCA8500BA63D9 /* FBSDKCoreKit.framework */; };
 		C220132E1E2DCA9200BA63D9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C220132D1E2DCA9200BA63D9 /* FBSDKLoginKit.framework */; };
 		C22013301E2DCB0100BA63D9 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C220132F1E2DCB0100BA63D9 /* FBSDKShareKit.framework */; };
+		C22238A51E694C4A004608C5 /* Climobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C22238A41E694C4A004608C5 /* Climobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C22238A71E694F6A004608C5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238A61E694F6A004608C5 /* CoreVideo.framework */; };
+		C22238A91E694F7A004608C5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238A81E694F7A004608C5 /* CoreGraphics.framework */; };
+		C22238AB1E694F85004608C5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AA1E694F85004608C5 /* UIKit.framework */; };
+		C22238AD1E694F90004608C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AC1E694F90004608C5 /* QuartzCore.framework */; };
+		C22238AF1E694FAF004608C5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AE1E694FAF004608C5 /* libsqlite3.tbd */; };
+		C22238B11E694FB8004608C5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238B01E694FB8004608C5 /* Security.framework */; };
+		C22238B31E694FEA004608C5 /* eyeviewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C22238B21E694FEA004608C5 /* eyeviewResources.bundle */; };
+		C22238BE1E69636B004608C5 /* libClimobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238BD1E69636B004608C5 /* libClimobile.a */; };
 		C23DA0AA1E34BEEA005E1727 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0921E34BEC6005E1727 /* libRCTGoogleAnalyticsBridge.a */; };
 		C23DA0AC1E34BFC0005E1727 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0AB1E34BFC0005E1727 /* CoreData.framework */; };
 		C23DA0AE1E34BFE2005E1727 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0AD1E34BFE2005E1727 /* libsqlite3.0.tbd */; };
@@ -279,6 +289,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C22238861E694C06004608C5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C22238A51E694C4A004608C5 /* Climobile.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -326,11 +350,25 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		BA5A96CBE7724FBA98C6159B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		C21FF0621E6D00A40075E608 /* ClarisiteAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClarisiteAgent.h; sourceTree = "<group>"; };
+		C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClarisiteAgent.m; sourceTree = "<group>"; };
 		C22013071E2DC66100BA63D9 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		C22013291E2DCA6000BA63D9 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		C220132B1E2DCA8500BA63D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		C220132D1E2DCA9200BA63D9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		C220132F1E2DCB0100BA63D9 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		C22238A41E694C4A004608C5 /* Climobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Climobile.framework; sourceTree = "<group>"; };
+		C22238A61E694F6A004608C5 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C22238A81E694F7A004608C5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C22238AA1E694F85004608C5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C22238AC1E694F90004608C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C22238AE1E694FAF004608C5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		C22238B01E694FB8004608C5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C22238B21E694FEA004608C5 /* eyeviewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = eyeviewResources.bundle; sourceTree = "<group>"; };
+		C22238BA1E696171004608C5 /* ClarisiteAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClarisiteAgent.h; sourceTree = "<group>"; };
+		C22238BB1E696171004608C5 /* Climobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Climobile.h; sourceTree = "<group>"; };
+		C22238BC1E696171004608C5 /* UIView+Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Tags.h"; sourceTree = "<group>"; };
+		C22238BD1E69636B004608C5 /* libClimobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libClimobile.a; sourceTree = "<group>"; };
 		C23DA0891E34BEC6005E1727 /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		C23DA0AB1E34BFC0005E1727 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C23DA0AD1E34BFE2005E1727 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -366,10 +404,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22238BE1E69636B004608C5 /* libClimobile.a in Frameworks */,
+				C22238B11E694FB8004608C5 /* Security.framework in Frameworks */,
+				C22238AF1E694FAF004608C5 /* libsqlite3.tbd in Frameworks */,
+				C243C17C1E24D99F0052394C /* SystemConfiguration.framework in Frameworks */,
+				C22238AD1E694F90004608C5 /* QuartzCore.framework in Frameworks */,
+				C22238AB1E694F85004608C5 /* UIKit.framework in Frameworks */,
+				C22238A91E694F7A004608C5 /* CoreGraphics.framework in Frameworks */,
+				C22238A71E694F6A004608C5 /* CoreVideo.framework in Frameworks */,
 				C26AAB441E481F7600ADA708 /* AdSupport.framework in Frameworks */,
 				C23DA0AE1E34BFE2005E1727 /* libsqlite3.0.tbd in Frameworks */,
 				C243C17E1E24D9A80052394C /* libz.tbd in Frameworks */,
-				C243C17C1E24D99F0052394C /* SystemConfiguration.framework in Frameworks */,
 				C23DA0AC1E34BFC0005E1727 /* CoreData.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				C23DA0AA1E34BEEA005E1727 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
@@ -507,6 +552,7 @@
 		13B07FAE1A68108700A75B9A /* LionsOfficial */ = {
 			isa = PBXGroup;
 			children = (
+				C22238B91E696171004608C5 /* Climobile */,
 				04267D711E36C1F5007F7C41 /* LionsOfficial.entitlements */,
 				C243C18D1E24DA190052394C /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -515,6 +561,8 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				C21FF0621E6D00A40075E608 /* ClarisiteAgent.h */,
+				C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */,
 			);
 			name = LionsOfficial;
 			sourceTree = "<group>";
@@ -660,6 +708,16 @@
 			name = FBSdk;
 			sourceTree = "<group>";
 		};
+		C22238B91E696171004608C5 /* Climobile */ = {
+			isa = PBXGroup;
+			children = (
+				C22238BA1E696171004608C5 /* ClarisiteAgent.h */,
+				C22238BB1E696171004608C5 /* Climobile.h */,
+				C22238BC1E696171004608C5 /* UIView+Tags.h */,
+			);
+			path = Climobile;
+			sourceTree = "<group>";
+		};
 		C23DA08A1E34BEC6005E1727 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -679,6 +737,15 @@
 		C243C1761E24D98D0052394C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C22238BD1E69636B004608C5 /* libClimobile.a */,
+				C22238B21E694FEA004608C5 /* eyeviewResources.bundle */,
+				C22238B01E694FB8004608C5 /* Security.framework */,
+				C22238AE1E694FAF004608C5 /* libsqlite3.tbd */,
+				C22238AC1E694F90004608C5 /* QuartzCore.framework */,
+				C22238AA1E694F85004608C5 /* UIKit.framework */,
+				C22238A81E694F7A004608C5 /* CoreGraphics.framework */,
+				C22238A61E694F6A004608C5 /* CoreVideo.framework */,
+				C22238A41E694C4A004608C5 /* Climobile.framework */,
 				C26AAB431E481F7600ADA708 /* AdSupport.framework */,
 				C23DA0AD1E34BFE2005E1727 /* libsqlite3.0.tbd */,
 				C23DA0AB1E34BFC0005E1727 /* CoreData.framework */,
@@ -760,6 +827,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				C22238861E694C06004608C5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1126,6 +1194,7 @@
 				F7E67D08BFB744D3A3F34D02 /* Foundation.ttf in Resources */,
 				54837F46F84549F393AA286B /* Ionicons.ttf in Resources */,
 				9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */,
+				C22238B31E694FEA004608C5 /* eyeviewResources.bundle in Resources */,
 				035BF556FEF44158A39B5105 /* Octicons.ttf in Resources */,
 				4FE0B1F108364FF99A9601FE /* Zocial.ttf in Resources */,
 				C243C1B31E24E18C0052394C /* GoogleSignIn.bundle in Resources */,
@@ -1166,6 +1235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				C21FF0641E6D00A40075E608 /* ClarisiteAgent.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				763C81461DD9B76300DC473C /* CalendarManager.m in Sources */,
 			);
@@ -1262,10 +1332,15 @@
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.official.LionsOfficial;
 				PRODUCT_NAME = LionsOfficial;
@@ -1306,10 +1381,15 @@
 				INFOPLIST_FILE = LionsOfficial/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.official.LionsOfficial;
 				PRODUCT_NAME = LionsOfficial;

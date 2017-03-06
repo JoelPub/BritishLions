@@ -1,0 +1,6 @@
+framework module Climobile {
+  umbrella header "Climobile.h"
+
+  export *
+  module * { export * }
+}
