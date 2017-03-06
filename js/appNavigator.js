@@ -206,8 +206,9 @@ class AppNavigator extends Component {
         configure.then(
             schedule()
         )
-        console.log('!!! System.out start')
-        NativeModules.ClarisiteAgent.start((msg)=>{console.log('System.out ' , msg)}, (error)=>{console.log('System.out ' , error)})
+        // console.log('!!! System.out start')
+        // NativeModules.ClarisiteAgent.start("http://report-bl.clarisite.com","A2BA2975-8DDB-9C8F-C629-FA45318BE325",(msg)=>{console.log('System.out ' , msg)}, (error)=>{console.log('System.out ' , error)})
+        NativeModules.ClarisiteAgent.start("http://report-bl.clarisite.com","A2BA2975-8DDB-9C8F-C629-FA45318BE325")
     }
 
     popRoute() {
