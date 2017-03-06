@@ -21,6 +21,7 @@ import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { setUserProfile } from '../../../actions/squad'
 import { getUserId, removeToken } from '../../utility/asyncStorageServices'
+import { pushNewRoute } from '../../../actions/route'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -166,7 +167,7 @@ class MyLionsCompetitionCentre extends Component {
                             <View style={styles.guther}>
                                 <ProfileSummaryCard profile={this.props.userProfile}/>
 
-                                <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]}>
+                                <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]} onPress={() => this.props.pushNewRoute('competitionLadder')}>
                                     <Icon name='ios-trophy' style={styles.roundButtonIcon} />
                                     <Text style={styles.roundButtonLabel}>
                                         COMPETITION LADDER
@@ -274,6 +275,7 @@ class MyLionsCompetitionCentre extends Component {
 
 function bindAction(dispatch) {
     return {
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
