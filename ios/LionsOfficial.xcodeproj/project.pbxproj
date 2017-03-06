@@ -38,6 +38,7 @@
 		99C62902192C42389B95CD06 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DE6E8FD0694D0A86AA5CBD /* libCodePush.a */; };
 		9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21B805EA2B9E47908439C1DE /* MaterialIcons.ttf */; };
 		BD5A6B798D394A0F8D7C27A4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */; };
+		C21FF0641E6D00A40075E608 /* ClarisiteAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */; };
 		C22013271E2DC6C700BA63D9 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C220130E1E2DC66100BA63D9 /* libRCTFBLogin.a */; };
 		C220132A1E2DCA6000BA63D9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22013291E2DCA6000BA63D9 /* Bolts.framework */; };
 		C220132C1E2DCA8500BA63D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C220132B1E2DCA8500BA63D9 /* FBSDKCoreKit.framework */; };
@@ -51,7 +52,6 @@
 		C22238AF1E694FAF004608C5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AE1E694FAF004608C5 /* libsqlite3.tbd */; };
 		C22238B11E694FB8004608C5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238B01E694FB8004608C5 /* Security.framework */; };
 		C22238B31E694FEA004608C5 /* eyeviewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C22238B21E694FEA004608C5 /* eyeviewResources.bundle */; };
-		C22238B61E695E12004608C5 /* ClarisiteAgentManagerIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = C22238B51E695E12004608C5 /* ClarisiteAgentManagerIOS.m */; };
 		C22238BE1E69636B004608C5 /* libClimobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238BD1E69636B004608C5 /* libClimobile.a */; };
 		C23DA0AA1E34BEEA005E1727 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0921E34BEC6005E1727 /* libRCTGoogleAnalyticsBridge.a */; };
 		C23DA0AC1E34BFC0005E1727 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0AB1E34BFC0005E1727 /* CoreData.framework */; };
@@ -350,6 +350,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		BA5A96CBE7724FBA98C6159B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		C21FF0621E6D00A40075E608 /* ClarisiteAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClarisiteAgent.h; sourceTree = "<group>"; };
+		C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClarisiteAgent.m; sourceTree = "<group>"; };
 		C22013071E2DC66100BA63D9 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		C22013291E2DCA6000BA63D9 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		C220132B1E2DCA8500BA63D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -363,8 +365,6 @@
 		C22238AE1E694FAF004608C5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C22238B01E694FB8004608C5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C22238B21E694FEA004608C5 /* eyeviewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = eyeviewResources.bundle; sourceTree = "<group>"; };
-		C22238B41E695E12004608C5 /* ClarisiteAgentManagerIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClarisiteAgentManagerIOS.h; sourceTree = "<group>"; };
-		C22238B51E695E12004608C5 /* ClarisiteAgentManagerIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClarisiteAgentManagerIOS.m; sourceTree = "<group>"; };
 		C22238BA1E696171004608C5 /* ClarisiteAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClarisiteAgent.h; sourceTree = "<group>"; };
 		C22238BB1E696171004608C5 /* Climobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Climobile.h; sourceTree = "<group>"; };
 		C22238BC1E696171004608C5 /* UIView+Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Tags.h"; sourceTree = "<group>"; };
@@ -561,8 +561,8 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				C22238B41E695E12004608C5 /* ClarisiteAgentManagerIOS.h */,
-				C22238B51E695E12004608C5 /* ClarisiteAgentManagerIOS.m */,
+				C21FF0621E6D00A40075E608 /* ClarisiteAgent.h */,
+				C21FF0631E6D00A40075E608 /* ClarisiteAgent.m */,
 			);
 			name = LionsOfficial;
 			sourceTree = "<group>";
@@ -1235,8 +1235,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				C21FF0641E6D00A40075E608 /* ClarisiteAgent.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				C22238B61E695E12004608C5 /* ClarisiteAgentManagerIOS.m in Sources */,
 				763C81461DD9B76300DC473C /* CalendarManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
