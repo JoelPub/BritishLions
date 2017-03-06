@@ -11,6 +11,6 @@
 #import "RCTBridgeModule.h"
 #import "RCTLog.h"
 
-@interface ClarisiteAgent : NSObject
+@interface ClarisiteAgentBridge : NSObject <RCTBridgeModule>
 
 @end

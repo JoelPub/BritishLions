@@ -5,9 +5,9 @@
 	<key>Root</key>
 	<dict>
 		<key>url</key>
-		<string>http://clarisite.dyndns.org:3001</string>
+		<string>http://report-bl.clarisite.com</string>
 		<key>appid</key>
-		<string>org.reactjs.native.official.LionsOfficial</string>
+		<string>A2BA2975-8DDB-9C8F-C629-FA45318BE325</string>
 	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
