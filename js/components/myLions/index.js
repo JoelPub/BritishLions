@@ -31,7 +31,7 @@ import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
 import { strToUpper } from '../utility/helper'
-import { setUserProfile } from '../../actions/squad'
+import { setUserProfile , setPrivateLeagues} from '../../actions/squad'
 
 
 const locStyle = styleSheetCreate({
@@ -304,6 +304,10 @@ class MyLions extends Component {
         }
         service(optionsUserProfile)        
     }
+    privateLeagues(){
+        this.props.setPrivateLeagues(true)
+        this.props.pushNewRoute('competitionLadder')
+    }
 
     componentWillMount() {
         getUserId().then((userID) => {
@@ -356,7 +360,7 @@ class MyLions extends Component {
                                         LEADERBOARD
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.props.pushNewRoute('')} >
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.privateLeagues()} >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={locStyle.logoIcon}>
                                     </Image>
@@ -463,6 +467,7 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
+        setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
     }
 }
 
@@ -470,6 +475,7 @@ export default connect((state) => {
     return {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
+        privateLeagues: state.squad.privateLeagues,
         netWork: state.network
     }
 },  bindAction)(MyLions)

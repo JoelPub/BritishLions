@@ -39,6 +39,7 @@ import JoinModal from '../joinGroup'
 import PlayerScore from '../../global/playerScore'
 import fetch from '../../utility/fetch'
 import { shareTextWithTitle } from '../../utility/socialShare'
+import { setPrivateLeagues} from '../../../actions/squad'
 
 import DataModel from './defaultData'
 const ButtonWithIcon = (props) => {
@@ -67,7 +68,7 @@ const  ShareButton = () => {
 const MyPride = (props) => {
   let { groupNameOnPress,createGroupOnPress,joinGroupOnPress,data} =props
   return (
-    <View style={styles.prideContainer}>
+    <View style={styles.prideContainer} >
       <View style={styles.prideTitleView}>
         <Text style={styles.prideTitleText}>MY PRIDE</Text>
       </View>
@@ -206,12 +207,28 @@ class CompetitionLadder extends Component {
     })
   }
 
+    measurePage(event) {
+        console.log('measurePage')
+        // console.log('event',event)
+        const { x, y, width, height, } = event.nativeEvent.layout
+        // console.log('x',x)
+        // console.log('y',y)
+        // console.log('width',width)
+        // console.log('height',height)
+        if(this.props.privateLeagues) {
+          this._scrollView.scrollTo({ y: y, animated: true })
+          this.props.setPrivateLeagues(false)
+        }
+
+
+    }
+
   render() {
     let { data ,isCreating, createType, isJoining, joinType } = this.state
     let {userProfile} = this.props
     return (
       <Container theme={theme}>
-        <View style={styles.container}>
+        <View style={styles.container} >
           <LionsHeader
             back={true}
             title='MY LIONS'
@@ -224,9 +241,11 @@ class CompetitionLadder extends Component {
               <RankList data={data} />
               <ShareButton />
             </GrayContainer>
-            <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}
-                      createGroupOnPress={this.createGroupOnPress}
-                      joinGroupOnPress={this.joinGroupOnPress}/>
+            <View onLayout={this.measurePage.bind(this)}>
+              <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}
+                        createGroupOnPress={this.createGroupOnPress}
+                        joinGroupOnPress={this.joinGroupOnPress}/>
+            </View>
             <CompetitionCenter />
             <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -242,6 +261,7 @@ class CompetitionLadder extends Component {
     )
   }
   componentDidMount() {
+    // setTimeout(()=>this._scrollView.scrollTo({ y: 600, animated: true }),2000)
   }
 
   componentWillUnmount() {
@@ -254,12 +274,14 @@ function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
+    setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
   }
 }
 export default connect((state) => {
   console.log(state)
   return {
     route: state.route,
+    privateLeagues: state.squad.privateLeagues,
     userProfile:state.squad.userProfile
   }
 }, bindAction)(CompetitionLadder)
