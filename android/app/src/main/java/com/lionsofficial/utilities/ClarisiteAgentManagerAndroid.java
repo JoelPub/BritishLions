@@ -19,16 +19,16 @@ public class ClarisiteAgentManagerAndroid extends ReactContextBaseJavaModule {
 
     @Override
     public String getName() {
-        return "ClarisiteAgent";
+        return "ClarisiteAgentBridge";
     }
 
     @ReactMethod
-    public void start(  String url,
-                        String appid/*,
+    public void start(  /*String url,
+                        String appid,
                         Callback errorCallback,
                         Callback successCallback*/){
         try {
-            ClarisiteAgent.start(url,appid,null);
+            ClarisiteAgent.start();
 //            successCallback.invoke("ClarisiteAgent start success");
         } catch  (EyeViewException e) {
 //            errorCallback.invoke(e);
