@@ -15,7 +15,7 @@
 RCT_EXPORT_MODULE();
 
 
-RCT_EXPORT_METHOD( start:(NSString *) serverUrl appId:(NSString *)appId )
+RCT_EXPORT_METHOD( start )
 {
   RCTLogInfo(@"start:(NSString *) serverUrl ");
   @try
