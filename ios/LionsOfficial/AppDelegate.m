@@ -20,7 +20,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-#import <Climobile/ClarisiteAgent.h>
 
 @implementation AppDelegate
 
@@ -36,8 +35,7 @@
     UIUserNotificationSettings * setting=[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
     [application registerUserNotificationSettings:setting];
   }
-   NSError * error = nil;
-   [ClarisiteAgent start:&error];
+  
   
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
