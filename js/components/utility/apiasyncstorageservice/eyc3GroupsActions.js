@@ -2,7 +2,7 @@
 
 import { Alert, AsyncStorage } from 'react-native'
 import Storage from 'react-native-storage'
-import { getAssembledUrl } from '../urlStorage'
+import { getAssembledUrl ,actionsApi} from '../urlStorage'
 
 
 
@@ -22,7 +22,7 @@ export async function getGroupInfo (accessToken,group_id,userID) {
   // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
   storage.sync = {
     EYC3GetGroupInfo(){
-          fetch(getAssembledUrl(EYC3_GET_GROUP_INFO), {
+          fetch((actionsApi.eyc3GroupInfo), {
             method: 'POST',
             headers: {
               "Content-Type": "application/json; charset=utf-8"

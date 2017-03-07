@@ -22,6 +22,10 @@ import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
+import { getAccessToken} from '../../utility/asyncStorageServices'
+import {actionsApi} from  '../../utility/urlStorage'
+import { service } from '../../utility/services'
+
 import { getGroupInfo } from '../../utility/apiasyncstorageservice/eyc3GroupsActions'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
@@ -66,30 +70,50 @@ class MyLionsGroupView extends Component {
     )
   }
   /*get Data*/
-  fetchData = () => {
-    let opt = {
-      url:'',
-      query: {
-        aceess_token: '',
-        id: '',
-        group_id: ''
-      }
-    }
+  fetchData = (access_token,userId,group_id) => {
     this.setState({
       isLoaded: true,
     })
-    getGroupInfo().then((json)=>{
-      if (this.isUnMounted) return // return nothing if the component is already unmounted
-      this.setState({
-        data:json,
-        isLoaded: false,
-      })
-    }).catch(
-    )
+    let query = {
+      aceess_token: access_token,
+      id: userId,
+      group_id:group_id
+    }
+    console.log(JSON.stringify(query))
+    let optionsInfo = {
+      url: actionsApi.eyc3GroupInfo,
+      data: query,
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        console.log(res)
+        if(res.data){
+          this.setState({
+            isLoaded:false,
+            data:res.data
+          })
+        }
+      },
+      onError: ()=>{
+        this.setState({isLoaded:false})
+
+      },
+      onAuthorization: () => {
+
+      },
+      isRequiredToken: true
+    }
+    this.setState({
+      isLoaded:true,
+    })
+    service(optionsInfo)
   }
   render() {
     let {data} = this.state
-    let {userProfile} = this.props
+    let {userProfile,drillDownItem} = this.props
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -117,8 +141,11 @@ class MyLionsGroupView extends Component {
     )
   }
   componentDidMount() {
+    let {userProfile,drillDownItem} = this.props
+    getAccessToken().then(token=>{
+      this.fetchData(token,userProfile.userID,drillDownItem.id)
+    })
   }
-
   componentWillUnmount() {
     this.isUnMounted = true
   }
@@ -132,8 +159,11 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
+  console.log(state)
   return {
     route: state.route,
-    userProfile:state.squad.userProfile
+    userProfile:state.squad.userProfile,
+    drillDownItem: state.content.drillDownItem
+
   }
 }, bindAction)(MyLionsGroupView)

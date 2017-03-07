@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,Alert} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -28,6 +28,9 @@ import ImageCircle from '../../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 import {getUserFullName} from  '../../utility/asyncStorageServices'
+import { getAccessToken} from '../../utility/asyncStorageServices'
+import {actionsApi} from  '../../utility/urlStorage'
+import { service } from '../../utility/services'
 
 import {createGroup,joinGroup,leaveGroup} from  '../../utility/apiasyncstorageservice/eyc3GroupsActions'
 import { drillDown } from '../../../actions/content'
@@ -132,44 +135,73 @@ class CompetitionLadder extends Component {
       isCreating:false,
       isJoining: false,
       createType:'ladder',
-      joinType: 'ladder'
+      joinType: 'ladder',
+      isNetwork: true,
+      modalData: null
+    }
+  }
+  _showError(error) {
+    if(!this.state.isNetwork) return
+
+    if(error === 'Please make sure that you\'re connected to the network.') {
+      this.setState({
+        isNetwork: false
+      })
+    }
+    if(error !== ''){
+      Alert.alert(
+        'An error occured',
+        error,
+        [{text: 'Dismiss'}]
+      )
     }
   }
   /*get Data*/
-  fetchData = () => {
-    let opt = {
-      url:'',
-      query: {
-        aceess_token: '',
-        id: '',
-        group_id: ''
-      }
+  fetchData = (aceess_token,userID) => {
+    let query = {
+      aceess_token: aceess_token,
+      id: userID
+    }
+    console.log(JSON.stringify(query))
+    let optionsInfo = {
+      url: actionsApi.eyc3CompetitionLadder,
+      data: query,
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        console.log(res)
+        if(res.data){
+          this.setState({
+            isLoaded:false,
+            data:res.data
+          })
+        }
+      },
+      onError: (error)=>{
+        this.setState({isLoaded:false})
+        this._showError(error)
+      },
+      onAuthorization: () => {
+
+      },
+      isRequiredToken: true
     }
     this.setState({
-      isLoaded: true,
+      isLoaded:true,
     })
-    fetch(opt).then((json)=>{
-      this.setState({
-        isLoaded: false,
-        data:json
-      })
-    }).catch(
-      this.setState({
-        isLoaded: false,
-      })
-    )
+    service(optionsInfo)
+
   }
   /*call  api */
-
-
-
-
 
   /*router logic*/
   groupNameOnPress = (data) => {
     console.log('**********')
     console.log(data)
-    this.props.drillDown('data','myLionsGroupView')
+    this.props.drillDown(data,'myLionsGroupView')
   }
 
   /*groupAction*/
@@ -195,9 +227,56 @@ class CompetitionLadder extends Component {
     })
   }
   /*modelInActions*/
-  createButtonClick = () => {
+  createGroupApi = (aceess_token,userID,group_name) => {
+    let query = {
+      aceess_token: aceess_token,
+      id: userID,
+      group_name: group_name
+    }
+    if(group_name===''||!group_name) {
+      this._showError("group name Can't be empty")
+      return
+    }
+    console.log(JSON.stringify(query))
+    let optionsInfo = {
+      url: actionsApi.eyc3CreateGroup,
+      data: query,
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        console.log(res)
+        this.setState({
+          isLoaded:false,
+        })
+        if(res.data){
+          this.setState({
+            createType: 'success',
+            modalData: res.data
+          })
+        }
+      },
+      onError: (error)=>{
+        this.setState({isLoaded:false})
+        this._showError(error)
+      },
+      onAuthorization: () => {
+
+      },
+      isRequiredToken: true
+    }
     this.setState({
-      createType: 'success',
+      isLoaded:true,
+    })
+    service(optionsInfo)
+  }
+  createButtonClick = (inputText) => {
+    let {userProfile} = this.props
+    getAccessToken().then(token=>{
+      console.log(token)
+      this.createGroupApi(token,userProfile.userID,inputText)
     })
   }
   joinButtonClick = () => {
@@ -207,7 +286,7 @@ class CompetitionLadder extends Component {
   }
 
   render() {
-    let { data ,isCreating, createType, isJoining, joinType } = this.state
+    let { data ,isCreating, createType, isJoining, joinType ,modalData} = this.state
     let {userProfile} = this.props
     return (
       <Container theme={theme}>
@@ -234,6 +313,7 @@ class CompetitionLadder extends Component {
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
                            createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
+                           data = {modalData}
           />
           <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}
                      joinButtonClick = {this.joinButtonClick} okButtonClick ={this.dissMissModel} />
@@ -242,6 +322,12 @@ class CompetitionLadder extends Component {
     )
   }
   componentDidMount() {
+    let {userProfile} = this.props
+
+    getAccessToken().then(token=>{
+      console.log(token)
+       this.fetchData(token,userProfile.userID)
+    })
   }
 
   componentWillUnmount() {
@@ -257,7 +343,7 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  console.log(state)
+
   return {
     route: state.route,
     userProfile:state.squad.userProfile

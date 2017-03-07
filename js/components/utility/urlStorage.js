@@ -4,6 +4,8 @@
 const APP_VERSION_NO = '2' // release: 2
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
+const EYC3_BASE_URL_DUMMY= 'http://biltestapp.azurewebsites.net'
+
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
@@ -23,6 +25,10 @@ const EYC3_GET_PLAYER_URL_NAME = 'EYC3FullPlayers'
 const EYC3_GET_EXPERTS_URL = '/getExpertList'
 const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 const EYC3_GET_COMPETTITION_LADDER = 'EYC3ExpertsSquads'
+
+
+
+
 
 
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'
@@ -71,6 +77,37 @@ export function getAssembledUrl(urlName) {
             return GODDFORM_BASE_URL + GOODFORM_USERS_URL
     }
 }
+//R3
+const EYC3_POST_COMPETITIONLADDER_NAME = 'GetCompetitionLadder'
+const EYC3_POST_COMPETITIONLADDER = '/GetCompetitionLadder'
+
+const EYC3_POST_GETGROUPINFO_NAME = 'GetGroupInfo'
+const EYC3_POST_GETGROUPINFO = '/GetGroupInfo'
+
+const EYC3_POST_CREATEAGROUP_NAME = 'CreateAGroup'
+const EYC3_POST_CREATEAGROUP = '/CreateAGroup'
+
+const EYC3_POST_LEAVEAGROUP_NAME = 'LeaveAGroup'
+const EYC3_POST_LEAVEAGROUP = '/LeaveAGroup'
+
+const EYC3_POST_JOINAGROUP_NAME = 'JoinAGroup'
+const EYC3_POST_JOINAGROUP = '/JoinAGroup'
+
+export function getGroupUrl (urlName) {
+    switch (urlName) {
+        case EYC3_POST_COMPETITIONLADDER_NAME:
+            return EYC3_BASE_URL_DUMMY  + EYC3_POST_COMPETITIONLADDER
+        case EYC3_POST_GETGROUPINFO_NAME:
+            return EYC3_BASE_URL_DUMMY  + EYC3_POST_GETGROUPINFO
+        case EYC3_POST_CREATEAGROUP_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_POST_CREATEAGROUP
+        case EYC3_POST_LEAVEAGROUP_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_POST_LEAVEAGROUP
+        case EYC3_POST_JOINAGROUP_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_POST_JOINAGROUP
+
+    }
+}
 export const actionsApi = {
     soticGetPlayer: getAssembledUrl(SOTIC_GET_PLAYER_URL_NAME),
     soticGetSuppliedImage: getAssembledUrl(SOTIC_GET_SUPPLIED_IMAGE_URL_NAME),
@@ -85,8 +122,10 @@ export const actionsApi = {
     goodFormGetUserCusromizedSquad: getAssembledUrl(GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormSaveUserCusromizedSquad: getAssembledUrl(GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME),
     goodFormRefreshToken: getAssembledUrl(GOODFORM_REFRESH_TOKEN_URL),
-    goodFormUsers: getAssembledUrl(GOODFORM_USERS_URL)
-
+    goodFormUsers: getAssembledUrl(GOODFORM_USERS_URL),
+    eyc3CompetitionLadder: getGroupUrl(EYC3_POST_COMPETITIONLADDER_NAME),
+    eyc3GroupInfo: getGroupUrl(EYC3_POST_GETGROUPINFO_NAME),
+    eyc3CreateGroup: getGroupUrl(EYC3_POST_CREATEAGROUP_NAME),
 }
 
 
