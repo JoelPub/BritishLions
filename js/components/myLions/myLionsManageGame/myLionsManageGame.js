@@ -28,6 +28,19 @@ import { service } from '../../utility/services'
 import { strToUpper } from '../../utility/helper'
 
 const locStyle = styleSheetCreate({
+    headerStadium: {
+        backgroundColor: '#FFF',
+        paddingHorizontal: 20,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    headerStadiumText: {
+        color: 'rgb(38,38,38)',
+        fontSize: 18,
+        lineHeight: 20,
+        textAlign: 'center',
+        fontFamily: styleVar.fontGeorgia
+    },
     header: {
         backgroundColor: styleVar.colorText,
         paddingHorizontal: 20,
@@ -39,7 +52,7 @@ const locStyle = styleSheetCreate({
         fontSize: 18,
         lineHeight: 20,
         textAlign: 'center',
-        fontFamily: styleVar.fontGeorgia
+        fontFamily: styleVar.fontCondensed
     },
     gridBoxTitle: {
         position: 'relative',
@@ -92,6 +105,7 @@ class MyLionsCompetitionGameResults extends Component {
             gameInfo:{},
             drillDownItem:this.props.drillDownItem,
             isNetwork: true,
+            fullTeam:false
         }
     }
 
@@ -120,11 +134,11 @@ class MyLionsCompetitionGameResults extends Component {
                     {
                     this.state.isLoaded?
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                        <View style={[locStyle.header]}>
-                            <Text style={locStyle.headerText}>{this.state.gameInfo.grounds[Math.trunc(Math.random()*this.state.gameInfo.grounds.length)].name}</Text>
-                        </View>
 
                         <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
+                        <View style={[locStyle.headerStadium]}>
+                            <Text style={locStyle.headerStadiumText}>{this.state.gameInfo.grounds[Math.trunc(Math.random()*this.state.gameInfo.grounds.length)].name}</Text>
+                        </View>
                         
                         <Grid>
                             <Row>
@@ -142,22 +156,10 @@ class MyLionsCompetitionGameResults extends Component {
                                                         </Text>
                                                     </View>
                                                     <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
-                                                        <View style={styleGridBoxImgWrapper}>
-                                                            <ImagePlaceholder 
-                                                                width = {styleVar.deviceWidth / 2}
-                                                                height = {styleVar.deviceWidth / 2}>
-                                                                <Image transparent
-                                                                    resizeMode='contain'
-                                                                    source={{uri: this.state.gameInfo[item.headerLabel][randomNumber].image}}
-                                                                    style={styles.gridBoxImg} />
-                                                            </ImagePlaceholder>
-                                                        </View>
+                                                        
                                                         <View style={locStyle.gridBoxTitle}>
-                                                            <Text style={locStyle.gridBoxTitleText} numberOfLines={1}>
-                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name.split(' ')[0])}
-                                                            </Text>
-                                                            <Text style={[locStyle.gridBoxTitleText, {marginTop: -5}]} numberOfLines={1}>
-                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name.split(' ')[1])}
+                                                            <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
+                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name)}
                                                             </Text>
                                                         </View>
                                                     </View>
@@ -170,13 +172,20 @@ class MyLionsCompetitionGameResults extends Component {
                         </Grid>
 
                         
-                        <View style={[styles.btns]}>
-                            <TeamWidget onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}/>
+                        <View style={[styles.btns,styles.manageTeam,this.state.fullTeam&&styles.greenBackground]}>
+                            <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')} teamStatus={(status)=>this.setState({fullTeam:status})} />
                         </View>
-                        <View style={[styles.btns]}>
-                            <TeamWidget onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}/>
+                        <View style={[styles.btns,this.state.fullTeam&&styles.greenBackground]}>
+                            <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')} teamStatus={(status)=>this.setState({fullTeam:status})} />
                         </View>
-
+                        <View style={[styles.btns,this.state.fullTeam&&styles.greenBackground]}>
+                                 <ButtonFeedback style={[styles.playBtn,this.state.fullTeam&&styles.playBtnActive]}>
+                                        <Text style={[styles.textPlay,this.state.fullTeam&&styles.textPlayActive]}>
+                                            PLAY GAME
+                                        </Text>
+                                </ButtonFeedback>
+                        </View>
+                        <LionsFooter isLoaded={true} />
                     </ScrollView>
                     :
                     <ActivityIndicator style={loader.centered} size='large' />
@@ -220,14 +229,14 @@ class MyLionsCompetitionGameResults extends Component {
         }
     }
     getInfo(){
-        console.log('getInfo')
         let optionsInfo = {
-            url: 'https://api.myjson.com/bins/z5bk5',
-            data: {},
+            url: 'http://biltestapp.azurewebsites.net/GetGameElements',
+            data: {id:this.props.userProfile.userID},
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'get',
+            method: 'post',
             onSuccess: (res) => {
+                console.log('res',res)
                 if(res.data) {
                     console.log('res.data',res.data)
                     this.setState({isLoaded:true,gameInfo:res.data})
@@ -239,9 +248,11 @@ class MyLionsCompetitionGameResults extends Component {
             onAuthorization: () => {
                     this._signInRequired()
             },
-            isRequiredToken: true
+            isRequiredToken: true,
+            channel: 'EYC3',
+            isQsStringify:false
         }
-        service(optionsInfo)        
+        service(optionsInfo)     
     }
 }
 

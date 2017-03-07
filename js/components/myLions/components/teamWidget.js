@@ -27,15 +27,17 @@ const locStyle = styleSheetCreate({
     },
     btn: {
         paddingTop:20,
-        flexDirection:'row'
+        flexDirection:'row',
     },
     btnText: {
         fontFamily: styleVar.fontCondensed,
         fontSize: 36,
         lineHeight: 36,
         color: '#FFF',
+    },
+    icon: {
+        fontSize:36,
         textAlign:'center',
-        marginLeft:20
     },
     iconText: {
         fontFamily: styleVar.fontCondensed,
@@ -43,6 +45,20 @@ const locStyle = styleSheetCreate({
         lineHeight: 36,
         color: '#FFF',
         textAlign:'center',
+    },
+    btnCircle:{
+        height:60,
+        width:60,
+        borderRadius:30,
+        backgroundColor:'rgb(208,7,41)',
+        paddingTop:15,
+        marginTop:-10,
+    },
+    titleText: {
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+        marginLeft:-60
     }
 })
 
@@ -57,28 +73,32 @@ class TeamWidget extends Component {
 
 	render() {
 		return (
-            <View>
+        <View>
         {
             this.state.fullTeam?
                 <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
                      <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
-                        <View style={[{height:60,width:60,borderRadius:30,backgroundColor:'#af001e',paddingTop:10,marginTop:-10},{backgroundColor:'rgb(10, 127, 64)'}]}>
-                            <Icon name='md-checkmark' style={{fontSize:36,textAlign:'center'}} /> 
+                        <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
+                            <Icon name='md-checkmark' style={locStyle.icon} /> 
                         </View>
-                        <Text style={[locStyle.btnText,{color:'rgb(10, 127, 64)'}]}>
-                            TEAM
-                        </Text>
+                        <View style={locStyle.titleText}>
+                            <Text style={[locStyle.btnText,{color:'rgb(10, 127, 64)'}]}>
+                                {this.props.text}
+                            </Text>
+                        </View>
                     </ButtonFeedback>
                 </View>
                 :
                 <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
                      <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
-                        <View style={{height:60,width:60,borderRadius:30,backgroundColor:'#af001e',paddingTop:10,marginTop:-10}}>
-                            <Text style={locStyle.iconText}>1</Text>
+                        <View style={locStyle.btnCircle}>
+                            <Text style={locStyle.iconText}>{this.props.iconText}</Text>
                         </View>
-                        <Text style={locStyle.btnText}>
-                            TEAM
-                        </Text>
+                        <View style={locStyle.titleText}>
+                            <Text style={locStyle.btnText}>
+                                 {this.props.text}
+                            </Text>
+                        </View>
                     </ButtonFeedback>
                 </LinearGradient>
         }
@@ -114,7 +134,8 @@ class TeamWidget extends Component {
     }
     componentWillReceiveProps(nextProps) {
         console.log('componentWillReceiveProps',nextProps.teamData)
-        if(nextProps.teamData!==null) {
+        console.log('componentWillReceiveProps',this.props.teamData)
+        if(nextProps.teamData!==null&&nextProps.teamData!==this.props.teamData) {
             this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
         }
     }
@@ -159,7 +180,7 @@ class TeamWidget extends Component {
             this.props.setTeamData(JSON.stringify(tmpTeam))
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
-            this.setState({fullTeam:fullFeed})
+            this.setState({fullTeam:fullFeed},()=>this.props.teamStatus(fullFeed))
         
 
     }
