@@ -129,7 +129,7 @@ class TeamPlayerEditor extends Component {
         console.log('nextProps.removePlayer',nextProps.removePlayer)
         if(nextProps.removePlayer!==this.props.removePlayer&&nextProps.removePlayer===true) {
         console.log('updateTeam')
-            this._updateTeam('remove')
+            this._updateTeam('remove',this.props.positionToRemove.toLowerCase())
         }
     }
     componentWillUnmount() {
@@ -140,14 +140,16 @@ class TeamPlayerEditor extends Component {
     _updateMyTeamStatus() {
         // show loading in adding and removing button
         this.setState({isMyTeamPlayerUpdating: true})
-        let teamFeed=TeamModel.format(eval(`(${this.props.teamDataTemp})`))
+        let teamFeed=TeamModel(this.props.teamDataTemp)
+        console.log('@@@teamFeed',teamFeed.toJS())
         let inTeam = false
-        if(Map.isMap(teamFeed)) teamFeed.forEach((value,index)=>{
-            if(List.isList(value)) {
-                if(value.indexOf(this.props.playerid)>-1) inTeam=true
+        
+        teamFeed.forEach((value,index)=>{
+            if(index==='backs'||index==='forwards') {
+                if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined) inTeam=true
             }
             else {
-                if(value===this.props.playerid) inTeam=true
+                if(value.toString()===this.props.playerid) inTeam=true
             }
         })
         this.setState({inTeam,teamDataFeed:teamFeed.toJS(), isMyTeamPlayerUpdating: false})
@@ -158,33 +160,34 @@ class TeamPlayerEditor extends Component {
                 this.props._setModalVisible(true,'remove')
             }
             else {
-                this._updateTeam('add',this.props.positionToAdd.toLowerCase(),16)
+                this._updateTeam('add',this.props.positionToAdd.toLowerCase())
             }
     }
 
-    _updateTeam(type,position,max,seq){
+    _updateTeam(type,position){
         console.log('type',type)
         console.log('position',position)
         let update=true
         console.log('this.props.teamDataTemp',this.props.teamDataTemp)
         console.log('this.props.playerid',this.props.playerid)
-        let tmpFeed=TeamModel.format(eval(`(${this.props.teamDataTemp})`))
+        let tmpFeed=TeamModel(this.props.teamDataTemp)
         console.log('tmpFeed',tmpFeed.toJS())
         if(position==='') {
             this.props._setModalVisible(true, 'message', '', 'PLEASE SELECT A POSITION', 'OK')
         }
         else {
-            if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
+            tmpFeed.forEach((value,index)=>{
                 console.log('index',index)
-                if(List.isList(value)) {
-                console.log('value',value.toJS())
-                    if(value.indexOf(this.props.playerid)>-1){
-                        console.log('found')
+                if(index==='backs'||index==='forwards') {
+                console.log('value',value)
+                    if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined){
+                            console.log('found')
                             console.log('this.props.positionToRemove',this.props.positionToRemove)
                         if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {
                             console.log('tmpFeed',tmpFeed.toJS())
                             tmpFeed=tmpFeed.update(index,val=>{
-                                return value.splice(value.indexOf(this.props.playerid),1)
+                                val[val.findIndex(x=>x.id.toString()===this.props.playerid)].id=''
+                                return val
                             })
                             console.log('tmpFeed',tmpFeed.toJS())
                             this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid))
@@ -192,7 +195,7 @@ class TeamPlayerEditor extends Component {
                     }
                 }
                 else {
-                    if(value===this.props.playerid) {
+                    if(value.toString()===this.props.playerid) {
                         if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {
                             console.log('!!!tmpFeed',tmpFeed.toJS())
                             tmpFeed=tmpFeed.set(index,'')
@@ -203,15 +206,16 @@ class TeamPlayerEditor extends Component {
             })
 
             if(type==='add') {
-                if(List.isList(tmpFeed.get(position))) {
-                    if(tmpFeed.get(position).count()<max) {
-                        tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push(this.props.playerid))
-                        this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid))
-                    }
-                    else {
-                        update=false
-                        this.setState({ teamDataFeed:tmpFeed.toJS() })
-                    }
+                if(position==='backs'||position==='forwards') {
+                    console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                    tmpFeed=tmpFeed.update(position,val=>{
+                        val[val.findIndex(x=>x.name==='loosehead_prop')].id=this.props.playerid
+                        return val
+                    })
+                    // tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push({name:'loosehead_prop',id:this.props.playerid}))
+                    console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                    console.log('position',position)
+                    this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid))
                 }
                 else{
                     if(tmpFeed.get(position).trim()==='') {
@@ -232,14 +236,11 @@ class TeamPlayerEditor extends Component {
         
     }
     _updateTeamPlayer(teamData,position, type='') {
-        teamData.forEach((value,index)=>{
-           if(List.isList(value)) teamData=teamData.update(index,val=>{ return val.join('|')  })
-        })
         let successDesc = this.state.inTeam&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
         position = position?position.toUpperCase() : ''
         this.setState({ inTeam: !this.state.inTeam, teamDataFeed:teamData.toJS() }, () => {
             this.props._setModalVisible(true, 'message', position, successDesc, 'OK')
-            this.props.setTeamDataTemp(JSON.stringify(teamData))
+            this.props.setTeamDataTemp(teamData.toJS())
             this.props.setPositionToAdd('')
             this.props.setPositionToRemove('')
         })

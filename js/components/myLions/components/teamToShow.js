@@ -9,11 +9,11 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
                     console.log('v.posotion',v.position)
-                    console.log('team.get(index)',team.get(index).toJS())
-                    console.log('find result',team.get(index).find(x=>x.get('name')===v.position).get('id'))
-                    if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
+                    console.log('team.get(index)',team.get(index))
+                    console.log('find result',team.get(index).find(x=>x.name===v.position))
+                    if(team.get(index).find(x=>x.name===v.position)!==undefined) {
                         tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
+                            val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.name===v.position).id,uniondata)
                             return val
                         })
                     }
@@ -48,32 +48,24 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
 
 export function removePlayer(teamToShow,position,playerid) {
     if(playerid) {
-        teamToShow[position].splice([teamToShow[position].findIndex((value)=>value&&value.id===playerid)],1)
-        teamToShow[position].push(null)
+        teamToShow[position].find(value=>value.info&&value.info.id&&value.info.id.toString()===playerid).info=null
     }
     else {
-        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=null
+        teamToShow['indivPos'].find(value=>strToUpper(position)===strToUpper(value.position)).info=null
     }
+    console.log('removeplayer teamToShow',teamToShow)
     return teamToShow
 }
 export function addPlayer(teamToShow,position,detail,playerid) {
+    console.log('addplayer')
     if(playerid) {
-        teamToShow[position][teamToShow[position].findIndex((value)=>value===null)]=detail
+        console.log('playerid',playerid)
+        console.log('val',teamToShow[position].find(value=>value.position==='loosehead_prop'))
+        teamToShow[position].find(value=>value.position==='loosehead_prop').info=detail
     }
     else {
         teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
     }
-    
-    return teamToShow
-}
-export function replacePlayer(teamToShow,position,detail,playerid,sequence) {
-    if(playerid) {
-        teamToShow[position][sequence]=detail
-    }
-    else {
-        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
-    }
-    
-    console.log('teamToShow',teamToShow)
+    console.log('teamToShow',teamToShow[position])
     return teamToShow
 }

@@ -146,7 +146,7 @@ class TeamWidget extends Component {
                     onSuccess: (res) => {
                         console.log('res.data',res.data)
                         if(res.data) {
-                            this.setTeam(TeamModel.fromJS(res.data))
+                            this.setTeam(TeamModel(res.data))
                         }
                         
                     },
@@ -163,8 +163,8 @@ class TeamWidget extends Component {
     componentWillReceiveProps(nextProps) {
         console.log('componentWillReceiveProps',nextProps.teamData)
         console.log('componentWillReceiveProps',this.props.teamData)
-        if(Immutable.is(TeamModel.fromJS(nextProps.teamData),TeamModel.fromJS(this.props.teamData))===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamData))  
+        if(Immutable.is(TeamModel(nextProps.teamData),TeamModel(this.props.teamData))===false) {
+            this.setTeam(TeamModel(nextProps.teamData))  
         }
     }
     setTeam(team){
@@ -176,7 +176,7 @@ class TeamWidget extends Component {
             if (value.find(x=>x.info===null)!==undefined) fullFeed=false
         })
         console.log('this.props.teamData',this.props.teamData)
-        if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
+        if(Immutable.is(team,TeamModel(this.props.teamData))===false) {
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }

@@ -235,7 +235,7 @@ const PositionTitle =({pos,data}) =>(
     <View style={styles.posTitle}>
       <Text style={styles.posTitleLeft}>{pos.toUpperCase()}</Text>
       <Text style={styles.posTitleRight}>
-       {data.filter((value)=>value!==null).length} / {data.length}
+       {data.filter(value=>value.info!==null).length} / {data.length}
       </Text>
     </View>
 )
@@ -267,10 +267,10 @@ export default class TeamList extends Component {
                                             return(
                                                     <View style={styles.posWrapper} key={index}>
                                                         {   
-                                                            item===null?
-                                                            <AddPlayerCell pos='FORWARDS' onPress = {() => this.props.pressAdd('add','forwards',8)}/>
+                                                            item.info===null?
+                                                            <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add','forwards',8)}/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','forwards',8,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards',8,index)}/>
                                                         }
                                                     </View>
                                                 )
@@ -300,10 +300,10 @@ export default class TeamList extends Component {
                                             return(
                                                 <View style={styles.posWrapper} key={index}>
                                                 {
-                                                    item===null?                                                        
-                                                       <AddPlayerCell pos='BACKS' onPress = {() => this.props.pressAdd('add','backs',7)}/>
+                                                    item.info===null?                                                        
+                                                       <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add','backs',7)}/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','backs',7,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs',7,index)}/>
                                                 }
                                                 </View>
                                                 )

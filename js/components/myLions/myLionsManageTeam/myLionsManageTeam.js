@@ -137,7 +137,7 @@ class MyLionsManageTeam extends Component {
                 console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 this.props.setTeamDataTemp(this.props.teamData)
-                this.setTeam(TeamModel.fromJS(this.props.teamData))
+                this.setTeam(TeamModel(this.props.teamData))
             }
         }).catch((error) => {
                     this._showError(error) 
@@ -145,8 +145,8 @@ class MyLionsManageTeam extends Component {
     }
     componentWillReceiveProps(nextProps) {
         console.log('componentWillReceiveProps',nextProps.teamDataTemp)
-        if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
+        if(Immutable.is(TeamModel(nextProps.teamDataTemp),TeamModel(this.props.teamDataTemp))===false) {
+            this.setTeam(TeamModel(nextProps.teamDataTemp))  
         }
     }
     
@@ -174,7 +174,7 @@ class MyLionsManageTeam extends Component {
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
+        if(Immutable.is(team,TeamModel(this.props.teamDataTemp))===false) {
             console.log('!!!team not equal')
             this.props.setTeamDataTemp(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())

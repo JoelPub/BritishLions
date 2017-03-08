@@ -201,7 +201,7 @@ class MyLionsSelectPlayerListing extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  let optionsOfficialSquad = {
+                  let optionsSelectPlayers = {
                       url: 'https://api.myjson.com/bins/vq1d5',
                       data: {},
                       onAxiosStart: null,
@@ -219,7 +219,7 @@ class MyLionsSelectPlayerListing extends Component {
                       },
                       isRequiredToken: true
                   }
-                  service(optionsOfficialSquad)
+                  service(optionsSelectPlayers)
 
                 
               }
