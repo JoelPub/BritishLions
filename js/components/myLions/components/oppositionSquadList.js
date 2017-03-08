@@ -274,7 +274,7 @@ export default class OppositionSquadList extends Component {
                                                             item===null?
                                                             <AddPlayerCell pos='FORWARDS'/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','forwards',16,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards',16,index)}/>
                                                         }
                                                     </View>
                                                 )
@@ -307,7 +307,7 @@ export default class OppositionSquadList extends Component {
                                                     item===null?                                                        
                                                        <AddPlayerCell pos='BACKS'/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','backs',16,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs',16,index)}/>
                                                 }
                                                 </View>
                                                 )
