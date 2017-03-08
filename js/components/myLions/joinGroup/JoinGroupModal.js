@@ -4,6 +4,8 @@ import { Image, View, TextInput } from 'react-native'
 import { Container, Text, Button, Icon, Input } from 'native-base'
 import SquadModal from '../../global/squadModal'
 import ButtonFeedback from '../../utility/buttonFeedback'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 import styles from '../styles'
 
@@ -35,9 +37,9 @@ class JoinGroupModal extends Component {
   constructor(props){
     super(props)
     this.state = {
-        invitation_code: ''
+        invitation_code: '',
     }
-
+    this._scrollView = KeyboardAwareScrollView
   }
   callbackParent = ()=> {
     this.props.callbackParent()
@@ -82,7 +84,7 @@ class JoinGroupModal extends Component {
   }
   joinGroupClick = () => {
     if(this.props.joinButtonClick){
-      this.props.joinButtonClick()
+      this.props.joinButtonClick(this.state.invitation_code)
     }
   }
   goBackClick = () => {
@@ -102,17 +104,19 @@ class JoinGroupModal extends Component {
     }
 
     return(
-      <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
-        <View style={[styles.modalViewWrapper,styles.modalGropp]}>
-          <Text style={styles.modalCreateGroupTitle}>{title}</Text>
-          <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-          {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}
-           onChangeText={ (invitation_code) => this.setState({invitation_code}) }/> : null}
-          {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
-          {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
-          {modalType==='success' ? <ShareButton onPress={this.okClick } close = {this.callbackParent} /> : null}
-        </View>
-      </SquadModal>
+      <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
+        <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
+          <View style={[styles.modalViewWrapper,styles.modalGropp]}>
+            <Text style={styles.modalCreateGroupTitle}>{title}</Text>
+            <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
+            {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}
+             onChangeText={ (invitation_code) => this.setState({invitation_code}) }/> : null}
+            {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
+            {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
+            {modalType==='success' ? <ShareButton onPress={this.okClick } close = {this.callbackParent} /> : null}
+          </View>
+        </SquadModal>
+      </KeyboardAwareScrollView>
     )
   }
 }
