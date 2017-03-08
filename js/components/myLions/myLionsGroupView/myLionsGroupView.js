@@ -27,7 +27,7 @@ import {actionsApi} from  '../../utility/urlStorage'
 import { service } from '../../utility/services'
 
 import { getGroupInfo } from '../../utility/apiasyncstorageservice/eyc3GroupsActions'
-import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { replaceRoute, pushNewRoute ,popRoute} from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
@@ -43,7 +43,7 @@ const ButtonWithIcon = (props) => {
   let {iconName,title,style,onPress} = props
   let styleMore = style ? style : null
   return (
-    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} >
+    <ButtonFeedback rounded style={[styles.button,styles.btnFavourites,styleMore]} onPress={onPress}>
       <Icon name={iconName} style={styles.btnFavouritesIcon} />
       <Text style={styles.btnFavouritesLabel}>
         {title}
@@ -66,6 +66,13 @@ class MyLionsGroupView extends Component {
     Alert.alert(
       'An error occured',
       error,
+      [{text: 'Dismiss'}]
+    )
+  }
+  _showSuccess(message) {
+    Alert.alert(
+      'success',
+      message,
       [{text: 'Dismiss'}]
     )
   }
@@ -111,6 +118,61 @@ class MyLionsGroupView extends Component {
     })
     service(optionsInfo)
   }
+  /*modelInActions*/
+  leaveGroupApi = (aceess_token,userID,group_id )=> {
+    let query = {
+      aceess_token: aceess_token,
+      id: userID,
+      group_id: group_id
+    }
+    if(group_id===''||!group_id) {
+      this._showError("group_id Can't be empty")
+      return
+    }
+    console.log(JSON.stringify(query))
+    let optionsInfo = {
+      url: actionsApi.eyc3LeaveGroup,
+      data: query,
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        console.log(res)
+        this.setState({
+          isLoaded:false,
+        })
+        if(res.data.success){
+          this.props.popRoute()
+        }else {
+          this.setState({
+            joinType: 'error',
+          })
+        }
+      },
+      onError: (error)=>{
+        console.log(error)
+        this.setState({isLoaded:false})
+        this._showError(error)
+      },
+      onAuthorization: () => {
+
+      },
+      isRequiredToken: true
+    }
+    this.setState({
+      isLoaded:true,
+    })
+    service(optionsInfo)
+  }
+
+  leaveGroup = () => {
+    let {userProfile,drillDownItem} = this.props
+    getAccessToken().then(token=>{
+      this.leaveGroupApi(token,userProfile.userID,drillDownItem.id)
+    })
+  }
   render() {
     let {data} = this.state
     let {userProfile,drillDownItem} = this.props
@@ -129,8 +191,8 @@ class MyLionsGroupView extends Component {
               <RankList data={data} title={'GROUP LADDER'} />
             </GrayContainer>
             <View style={styles.groupAction}>
-              <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}/>
-              <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor}/>
+              <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  />
+              <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor} onPress={this.leaveGroup}/>
             </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -155,6 +217,7 @@ function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
+    popRoute: (route)=>dispatch(popRoute(route)),
   }
 }
 
@@ -164,6 +227,5 @@ export default connect((state) => {
     route: state.route,
     userProfile:state.squad.userProfile,
     drillDownItem: state.content.drillDownItem
-
   }
 }, bindAction)(MyLionsGroupView)

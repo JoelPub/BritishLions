@@ -127,6 +127,7 @@ export const actionsApi = {
     eyc3GroupInfo: getGroupUrl(EYC3_POST_GETGROUPINFO_NAME),
     eyc3CreateGroup: getGroupUrl(EYC3_POST_CREATEAGROUP_NAME),
     eyc3JoinGroup:getGroupUrl(EYC3_POST_JOINAGROUP_NAME),
+    eyc3LeaveGroup: getGroupUrl(EYC3_POST_LEAVEAGROUP_NAME),
 }
 
 
