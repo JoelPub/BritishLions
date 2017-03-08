@@ -51,6 +51,7 @@ class GreateGroupModal extends Component {
     this.props.callbackParent()
   }
   getDetail = (description,data) =>{
+
     let PageData = {
       title: '' ,
       contentText: '',
@@ -58,6 +59,7 @@ class GreateGroupModal extends Component {
       subContentText: '',
       text: ''
     }
+
     switch(description)
     {
       case 'create':
@@ -79,8 +81,8 @@ class GreateGroupModal extends Component {
       case 'success':
       {
         PageData.title = 'SUCCESS'
-        PageData.contentText =  data.message
-        PageData.subTitle = data.invitation_code
+        PageData.contentText =  data ?  data.message : ''
+        PageData.subTitle = data ? data.invitation_code : ''
         PageData.subContentText = 'Invite friends to join your group by sharing this code. You may view the code for later reference at any time within your private group view.'
       }
         break;
@@ -100,16 +102,16 @@ class GreateGroupModal extends Component {
     shareTextWithTitle('INVITE CODE','')
   }
   render() {
-    let { modalType } = this.props
-    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
+    let { modalType ,data} = this.props
+    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType,data)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
     if(modalType !== 'create'){
       subTitleStyle = styles.modalErrorGroupSubTitle
     }
 
     return(
-      <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
-        <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
+      <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
+        <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
            <View style={[styles.modalViewWrapper,styles.modalGropp]}>
               <Text style={styles.modalCreateGroupTitle}>{title}</Text>
               <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
@@ -121,8 +123,8 @@ class GreateGroupModal extends Component {
               {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
               {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
             </View>
-        </KeyboardAwareScrollView>
-      </SquadModal>
+       </SquadModal>
+     </KeyboardAwareScrollView>
     )
   }
 }
