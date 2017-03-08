@@ -7,7 +7,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import styleVar from '../../../themes/variable'
 
-import ruby from './ruby.png'
+import ruby from './toggle.png'
 const styles = styleSheetCreate({
   container:{
     marginTop:40,

@@ -6,6 +6,7 @@ import SquadModal from '../../global/squadModal'
 import ButtonFeedback from '../../utility/buttonFeedback'
 
 import { shareTextWithTitle } from '../../utility/socialShare'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from '../styles'
 
@@ -41,6 +42,7 @@ const ShareButton = ({onPress,close}) => (
 class GreateGroupModal extends Component {
   constructor(props){
     super(props)
+    this._scrollView = KeyboardAwareScrollView
     this.state = {
       modalType: 'success'
     };
@@ -48,7 +50,7 @@ class GreateGroupModal extends Component {
   callbackParent = ()=> {
     this.props.callbackParent()
   }
-  getDetail = (description) =>{
+  getDetail = (description,data) =>{
     let PageData = {
       title: '' ,
       contentText: '',
@@ -77,8 +79,8 @@ class GreateGroupModal extends Component {
       case 'success':
       {
         PageData.title = 'SUCCESS'
-        PageData.contentText =  'Your private group  has been successfully created.'
-        PageData.subTitle = '<INVITE CODE>'
+        PageData.contentText =  data.message
+        PageData.subTitle = data.invitation_code
         PageData.subContentText = 'Invite friends to join your group by sharing this code. You may view the code for later reference at any time within your private group view.'
       }
         break;
@@ -107,17 +109,19 @@ class GreateGroupModal extends Component {
 
     return(
       <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
-        <View style={[styles.modalViewWrapper,styles.modalGropp]}>
-          <Text style={styles.modalCreateGroupTitle}>{title}</Text>
-          <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-          <Text style={subTitleStyle}>{subTitle}</Text>
-          {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}   onChangeText={ (text) => this.setState({text})}/> : null}
-          {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
-          {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
-          {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
-          {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
-          {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
-        </View>
+        <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
+           <View style={[styles.modalViewWrapper,styles.modalGropp]}>
+              <Text style={styles.modalCreateGroupTitle}>{title}</Text>
+              <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
+              <Text style={subTitleStyle}>{subTitle}</Text>
+              {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}   onChangeText={ (text) => this.setState({text})}/> : null}
+              {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
+              {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
+              {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
+              {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
+              {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
+            </View>
+        </KeyboardAwareScrollView>
       </SquadModal>
     )
   }
@@ -128,5 +132,6 @@ GreateGroupModal.propTypes = {
   modalType: PropTypes.string,
   createButtonClick: PropTypes.func.isRequired,
   errorBackButtonClick: PropTypes.func.isRequired,
+  data : PropTypes.object
 }
 export default GreateGroupModal
