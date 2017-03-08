@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, Platform } from 'react-native'
+import { Image, View, Text, Platform, Alert } from 'react-native'
 import { Container, Icon } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -67,7 +67,8 @@ class TeamWidget extends Component {
         super(props)
         this.uniondata = Data
         this.state = {
-            fullTeam:false           
+            fullTeam:false,            
+            isNetwork: true,
     	}
     }
 
@@ -110,21 +111,47 @@ class TeamWidget extends Component {
         console.log('teamWidget componentDidmount')
             this._getTeam()
     }
+    _showError(error) {
+        if(!this.state.isNetwork) return
+
+       if(error === 'Please make sure that you\'re connected to the network.') {
+           this.setState({
+               isNetwork: false
+           })
+       }
+        if(error !== ''){
+            Alert.alert(
+                'An error occured',
+                error,
+                [{text: 'Dismiss'}]
+            )
+        }
+    }
 
     _getTeam(){
+        console.log('teamWidget _getTeam')
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+        console.log('teamWidget catchedFullPlayerList')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
-                    url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
-                    method: 'get',
+                    url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
+                    data: { "id":this.props.userProfile.userID,
+                            "round_id":123, 
+                            "game_id": 1},
+                    onAxiosStart: null,
+                    onAxiosEnd: null,
+                    method: 'post',
                     onSuccess: (res) => {
+                        console.log('res.data',res.data)
                         if(res.data) {
-                            this.setTeam(TeamModel.format(eval(`(${res.data})`)))
+                            this.setTeam(TeamModel.fromJS(res.data))
                         }
                         
                     },
-                    isRequiredToken: true
+                    isRequiredToken: true,
+                    channel: 'EYC3',
+                    isQsStringify:false
                 }
                 service(optionsTeam)
             }
@@ -136,48 +163,20 @@ class TeamWidget extends Component {
         console.log('componentWillReceiveProps',nextProps.teamData)
         console.log('componentWillReceiveProps',this.props.teamData)
         if(nextProps.teamData!==null&&nextProps.teamData!==this.props.teamData) {
-            this.setTeam(TeamModel.format(eval(`(${nextProps.teamData})`)))  
+            this.setTeam(TeamModel.fromJS(nextProps.teamData))  
         }
     }
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
-        let tmpTeam=new TeamModel()
         let fullFeed=true
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
         console.log('showTeamFeed',showTeamFeed.toJS())
         showTeamFeed.forEach((value,index)=>{
-            if(index==='backs'||index==='forwards') {
-                value.map((v,i)=>{
-                    if(showTeamFeed.get(index)[i]===null) {
-                        team=team.update(index,val=>{
-                            val[i]=null
-                            return val
-                        })
-                        fullFeed=false
-                    }
-                })
-            }
-            else {
-                value.map((v,i)=>{
-                    let p=v.position==='wildcard'?'widecard':v.position
-                    if(showTeamFeed.get(index)[i].info===null) {
-                        team=team.set(p,'')
-                        fullFeed=false
-                    }
-                })
-            }
-        })
-        // console.log('2')
-        tmpTeam.forEach((value,index)=>{
-            if(List.isList(team.get(index))) {
-                if(team.get(index).count()>0)   tmpTeam=tmpTeam.set(index,team.get(index).join('|'))
-                else tmpTeam=tmpTeam.set(index,'')
-            }
-            else tmpTeam=tmpTeam.set(index,team.get(index))
+            if (value.find(x=>x.info===null)!==undefined) fullFeed=false
         })
         console.log('this.props.teamData',this.props.teamData)
-         if(JSON.stringify(tmpTeam)!==this.props.teamData) {
-            this.props.setTeamData(JSON.stringify(tmpTeam))
+         if(JSON.stringify(team)!==JSON.stringify(this.props.teamData)) {
+            this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
             this.setState({fullTeam:fullFeed},()=>this.props.teamStatus(fullFeed))
@@ -197,5 +196,6 @@ export default connect((state) => {
     return {
         teamToShow: state.squad.teamToShow,
         teamData: state.squad.teamData,
+        userProfile: state.squad.userProfile,
     }
 },  bindAction)(TeamWidget)
