@@ -280,6 +280,57 @@ class CompetitionLadder extends Component {
     })
     service(optionsInfo)
   }
+  /*modelInActions*/
+  joinGroupApi = (aceess_token,userID,invitation_code) => {
+    let query = {
+      aceess_token: aceess_token,
+      id: userID,
+      invitation_code: invitation_code
+    }
+    if(invitation_code===''||!invitation_code) {
+      this._showError("invitation code Can't be empty")
+      return
+    }
+    console.log(JSON.stringify(query))
+    let optionsInfo = {
+      url: actionsApi.eyc3JoinGroup,
+      data: query,
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        console.log(res)
+        this.setState({
+          isLoaded:false,
+        })
+        if(res.data.success){
+          this.setState({
+              joinType: 'success',
+            modalData: res.data
+          })
+        }else {
+          this.setState({
+            joinType: 'error',
+          })
+        }
+      },
+      onError: (error)=>{
+        console.log(error)
+        this.setState({isLoaded:false})
+        this._showError(error)
+      },
+      onAuthorization: () => {
+
+      },
+      isRequiredToken: true
+    }
+    this.setState({
+      isLoaded:true,
+    })
+    service(optionsInfo)
+  }
   createButtonClick = (inputText) => {
     let {userProfile} = this.props
     getAccessToken().then(token=>{
@@ -287,9 +338,11 @@ class CompetitionLadder extends Component {
       this.createGroupApi(token,userProfile.userID,inputText)
     })
   }
-  joinButtonClick = () => {
-    this.setState({
-      joinType: 'success',
+  joinButtonClick = (inputText) => {
+    let {userProfile} = this.props
+    getAccessToken().then(token=>{
+      console.log(token)
+      this.joinGroupApi(token,userProfile.userID,inputText)
     })
   }
 
