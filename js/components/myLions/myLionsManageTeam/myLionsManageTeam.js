@@ -137,7 +137,7 @@ class MyLionsManageTeam extends Component {
                 console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 this.props.setTeamDataTemp(this.props.teamData)
-                this.setTeam(TeamModel.format(eval(`(${this.props.teamData})`)))
+                this.setTeam(TeamModel.fromJS(this.props.teamData))
             }
         }).catch((error) => {
                     this._showError(error) 
@@ -145,8 +145,8 @@ class MyLionsManageTeam extends Component {
     }
     componentWillReceiveProps(nextProps) {
         console.log('componentWillReceiveProps',nextProps.teamDataTemp)
-        if(nextProps.teamDataTemp!==null) {
-            this.setTeam(TeamModel.format(eval(`(${nextProps.teamDataTemp})`)))  
+        if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
+            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
         }
     }
     
@@ -173,49 +173,10 @@ class MyLionsManageTeam extends Component {
 
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
-        let tmpTeam=new TeamModel()
-        let emptyFeed=true
-        let fullFeed=true
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        showTeamFeed.forEach((value,index)=>{
-            if(index==='backs'||index==='forwards') {
-                value.map((v,i)=>{
-                    if(showTeamFeed.get(index)[i]===null) {
-                        team=team.update(index,val=>{
-                            val[i]=null
-                            return val
-                        })
-                        fullFeed=false
-                    }
-                    else {
-                        emptyFeed=false
-                    }
-                })
-            }
-            else {
-                value.map((v,i)=>{
-                    let p=v.position
-                    if(showTeamFeed.get(index)[i].info===null) {
-                        team=team.set(p,'')
-                        fullFeed=false
-                    }
-                    else {
-                        emptyFeed=false
-                    }
-                })
-            }
-        })
-        // console.log('2')
-        tmpTeam.forEach((value,index)=>{
-            if(List.isList(team.get(index))) {
-                if(team.get(index).count()>0)   tmpTeam=tmpTeam.set(index,team.get(index).join('|'))
-                else tmpTeam=tmpTeam.set(index,'')
-            }
-            else tmpTeam=tmpTeam.set(index,team.get(index))
-        })
-        if(JSON.stringify(tmpTeam)!==this.props.teamDataTemp) {
+        if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
             console.log('!!!team not equal')
-            this.props.setTeamDataTemp(JSON.stringify(tmpTeam))
+            this.props.setTeamDataTemp(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
         }
         else {            
