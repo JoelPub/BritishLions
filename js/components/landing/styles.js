@@ -34,7 +34,7 @@ module.exports = styleSheetCreate({
         }
     },
     mainBanner: {
-        height: styleVar.deviceWidth,
+        height: styleVar.deviceWidth*0.645,
         width: styleVar.deviceWidth,
         justifyContent: 'flex-end',
         backgroundColor: 'white'

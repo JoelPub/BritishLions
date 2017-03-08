@@ -31,7 +31,7 @@ import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
 import { strToUpper } from '../utility/helper'
-import { setUserProfile } from '../../actions/squad'
+import { setUserProfile , setPrivateLeagues} from '../../actions/squad'
 
 
 const locStyle = styleSheetCreate({
@@ -233,21 +233,57 @@ class MyLions extends Component {
                 isFirst = isFirst === 'yes'? true : false
                 // isFirst = true
                 // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
-                if (isFirst) this.getRating()
+                if (isFirst) {
+                    let squadData={ "backs" : [],
+                                    "wildcard" : "",
+                                    "captain" : "",
+                                    "forwards" : [],
+                                    "kicker" : ""
+                                    }                
+                    let optionsTeam = {
+                        url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
+                        method: 'get',
+                        onSuccess: (res) => {
+                            if(res.data) {
+                                // console.log('res.data',res.data)
+                                let squadFeed=eval(`(${res.data})`)
+                                for( let pos in squadData) {
+                                    // console.log('pos',pos)
+                                    // console.log('squadFeed[pos]',squadFeed[pos==='wildcard'?'widecard':pos])
+                                    if(squadFeed[pos==='wildcard'?'widecard':pos]) {
+                                        squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos].split('|'):squadFeed[pos==='wildcard'?'widecard':pos]
+                                    }
+                                }
+                            }
+
+                            this.getRating(squadData)
+                            
+                        },
+                        onError: ()=>{
+                            this.getRating(squadData)
+                        },
+                        isRequiredToken: true
+                    }
+                    service(optionsTeam)
+                }
+                else {
+                    this.getProfile()
+                }
             }).catch((error) => {})
-            this.getProfile()
         }
     }
 
-    getRating(){
+    getRating(squadData){
+        // console.log('getRating',squadData)
         let optionsSquadRating = {
-            url: 'https://api.myjson.com/bins/16284p',
-            data: {id:this.state.userID},
+            url: 'http://biltestapp.azurewebsites.net/GetOnBoardingInfo',
+            data: Object.assign(squadData,{id:this.state.userID}),
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'get',
+            method: 'post',
             onSuccess: (res) => {
-                if(res.data) {                    
+                // console.log('res',res)
+                if(res.data) {
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
                             "highLight":3,
@@ -263,20 +299,24 @@ class MyLions extends Component {
                         this.totalPages = Data.length
                 }
                 this.setState({modalVisible:true})
+                this.getProfile()
             },
             onError: ()=>{
                 this.setState({modalVisible:true})
+                this.getProfile()
             },
             onAuthorization: () => {
                     this._signInRequired()
             },
-            isRequiredToken: true
+            isRequiredToken: true,
+            channel: 'EYC3',
+            isQsStringify:false
         }
         service(optionsSquadRating)        
     }
 
     getProfile(){
-        console.log('getProfile')
+        // console.log('getProfile')
         let optionsUserProfile = {
             url: 'https://api.myjson.com/bins/18w6qd',
             data: {id:this.state.userID},
@@ -303,6 +343,10 @@ class MyLions extends Component {
             isRequiredToken: true
         }
         service(optionsUserProfile)        
+    }
+    privateLeagues(){
+        this.props.setPrivateLeagues(true)
+        this.props.pushNewRoute('competitionLadder')
     }
 
     componentWillMount() {
@@ -356,7 +400,7 @@ class MyLions extends Component {
                                         LEADERBOARD
                                     </Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.props.pushNewRoute('')} >
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.privateLeagues()} >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                         style={locStyle.logoIcon}>
                                     </Image>
@@ -463,6 +507,7 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
+        setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
     }
 }
 
@@ -470,6 +515,7 @@ export default connect((state) => {
     return {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
+        privateLeagues: state.squad.privateLeagues,
         netWork: state.network
     }
 },  bindAction)(MyLions)

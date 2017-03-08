@@ -483,10 +483,10 @@ class Landing extends Component {
                         {
                             !this.props.isAccessGranted?
                                 <ButtonFeedback onPress={() => this._isSignIn('myLions')}>
-                                    <ImagePlaceholder height={styleVar.deviceWidth} width={styleVar.deviceWidth}>
+                                    <ImagePlaceholder height={styleVar.deviceWidth*0.645} width={styleVar.deviceWidth}>
                                         <Image 
                                             resizeMode='cover'
-                                            source={require('../../../images/content/myLionsWelcome.png')} style={styles.mainBanner}>
+                                            source={require('../../../images/content/myLionsSpanner.png')} style={styles.mainBanner}>
                                         </Image>
                                     </ImagePlaceholder>
                                 </ButtonFeedback>

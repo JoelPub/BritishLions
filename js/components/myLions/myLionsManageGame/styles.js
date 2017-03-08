@@ -87,7 +87,34 @@ module.exports = styleSheetCreate({
         }
     },
     btns: {
-        padding: 30,
+        paddingHorizontal: 30,
+        paddingBottom:24,
         backgroundColor: 'rgb(103, 3, 20)',
     },
+    manageTeam: {
+        paddingTop: 30,
+    },
+    greenBackground: {
+        backgroundColor:'rgb(3,79,38)'
+    },
+    playBtn:{
+        height: 80,
+        borderRadius:40,
+        paddingLeft:10,
+        backgroundColor:'rgba(208,7,41,0.14)',
+        alignItems:'center',
+        paddingTop:25
+    },
+    playBtnActive:{
+        backgroundColor:'rgb(9,127,64)'
+    },
+    textPlay:{
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 36,
+        lineHeight: 36,
+        color: 'rgba(255,255,255,0.14)',
+    },
+    textPlayActive:{
+        color: 'rgb(255,255,255)'
+    }
 })
