@@ -38,6 +38,7 @@ const locStyle = styleSheetCreate({
     icon: {
         fontSize:36,
         textAlign:'center',
+        backgroundColor:"transparent"
     },
     iconText: {
         fontFamily: styleVar.fontCondensed,
