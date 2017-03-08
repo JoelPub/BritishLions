@@ -220,6 +220,7 @@ class CompetitionLadder extends Component {
     })
   }
   dissMissModel = () =>{
+    console.log('dissMissModel')
     this.setState({
       isCreating: false,
       isJoining: false,
@@ -253,13 +254,19 @@ class CompetitionLadder extends Component {
           isLoaded:false,
         })
         if(res.data){
+          console.log('为什么不跳转')
           this.setState({
             createType: 'success',
             modalData: res.data
           })
+        }else {
+          this.setState({
+            createType: 'error',
+          })
         }
       },
       onError: (error)=>{
+        console.log(error)
         this.setState({isLoaded:false})
         this._showError(error)
       },
