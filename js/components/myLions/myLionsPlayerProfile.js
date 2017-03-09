@@ -16,7 +16,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImageCircle from '../utility/imageCircle'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { pushNewRoute, replaceRoute,popRoute } from '../../actions/route'
+import { pushNewRoute, replaceRoute,popToRoute } from '../../actions/route'
 import { setAccessGranted } from '../../actions/token'
 import { removeToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
@@ -73,7 +73,7 @@ class MyLionsPlayerProfile extends Component {
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalBtnTitle}>{title}</Text>
                         <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
-                        <ButtonFeedback rounded label={btn} onPress={()=>this.props.popRoute()}  style={styles.modalConfirmBtn} />
+                        <ButtonFeedback rounded label={btn} onPress={()=>this.props.popToRoute('myLionsManageTeam')}  style={styles.modalConfirmBtn} />
                     </View>
                 )
                 break
@@ -324,7 +324,7 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        popRoute: ()=>dispatch(popRoute())
+        popToRoute: (route)=>dispatch(popToRoute(route))
     }
 }
 
