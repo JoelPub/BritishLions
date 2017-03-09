@@ -51,7 +51,7 @@ const styles = styleSheetCreate({
 class TeamSaveBtn extends Component {
 	constructor(props){
         super(props)
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
+        this.saveSquadUrl='http://biltestapp.azurewebsites.net/SaveUserCustomizedSquad'
         this.state = {
             isMyTeamPlayerUpdating: false,
             inTeam: false,
@@ -76,7 +76,10 @@ class TeamSaveBtn extends Component {
 
        let options = {
            url: this.saveSquadUrl,
-           data: eval(`(${this.props.teamDataTemp})`),
+           data: { "id":this.props.userProfile.userID,
+                            "round_id":123, 
+                            "game_id": 1,
+                            "team":this.props.teamDataTemp},
            onAxiosStart: () => {},
            onAxiosEnd: () => {
            },
@@ -104,5 +107,6 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         teamDataTemp: state.squad.teamDataTemp,
+        userProfile: state.squad.userProfile,
     }
 },  bindAction)(TeamSaveBtn)

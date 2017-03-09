@@ -1,16 +1,9 @@
 import Immutable, { Record, List} from 'immutable'
 
 const TeamModel = Record({
-  'backs': new List(),
+  'backs': [],
   'captain': '',
-  'forwards': new List(),
+  'forwards': [],
   'kicker' : ''
 })
-
-TeamModel.prototype.constructor.fromJS = function (values) {
-  let nested = Immutable.fromJS(values, function (key, value) {
-    return value
-  })
-  return this(nested)
-}
 export default TeamModel

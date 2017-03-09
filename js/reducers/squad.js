@@ -1,13 +1,14 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_TEAM_DATA_TEMP,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW,SET_PRIVATE_LEAGUES } from '../actions/squad'
+import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_TEAM_DATA_TEMP,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW,SET_PRIVATE_LEAGUES,SET_TEAM_STATUS } from '../actions/squad'
 
 export type State = {
     userProfile: Object,
     squadToShow: Object,
     squadData: string,
     teamToShow: Object,
+    teamStatus: boolean,
     teamData: Object,
     teamDataTemp: Object,
     officialSquadToShow: Object,
@@ -20,6 +21,7 @@ const initialState = {
     squadToShow: {},
     squadData: null,
     teamToShow: {},
+    teamStatus: false,
     teamData: {},
     teamDataTemp: {},
     officialSquadToShow: {},
@@ -51,6 +53,12 @@ export default function (state:State = initialState, action:Action): State {
         return {
             ...state,
             teamToShow: action.teamToShow
+        }
+    }
+    if (action.type === SET_TEAM_STATUS) {
+        return {
+            ...state,
+            teamStatus: action.teamStatus
         }
     }
     if (action.type === SET_TEAM_DATA) {

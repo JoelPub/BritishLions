@@ -105,7 +105,6 @@ class MyLionsCompetitionGameResults extends Component {
             gameInfo:{},
             drillDownItem:this.props.drillDownItem,
             isNetwork: true,
-            fullTeam:false
         }
     }
 
@@ -172,15 +171,15 @@ class MyLionsCompetitionGameResults extends Component {
                         </Grid>
 
                         
-                        <View style={[styles.btns,styles.manageTeam,this.state.fullTeam&&styles.greenBackground]}>
-                            <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')} teamStatus={(status)=>this.setState({fullTeam:status})} />
+                        <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&styles.greenBackground]}>
+                            <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
                         </View>
-                        <View style={[styles.btns,this.state.fullTeam&&styles.greenBackground]}>
-                            <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')} teamStatus={(status)=>this.setState({fullTeam:status})} />
+                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]}>
+                            <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
-                        <View style={[styles.btns,this.state.fullTeam&&styles.greenBackground]}>
-                                 <ButtonFeedback style={[styles.playBtn,this.state.fullTeam&&styles.playBtnActive]}>
-                                        <Text style={[styles.textPlay,this.state.fullTeam&&styles.textPlayActive]}>
+                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]}>
+                                 <ButtonFeedback style={[styles.playBtn,this.props.teamStatus&&styles.playBtnActive]}>
+                                        <Text style={[styles.textPlay,this.props.teamStatus&&styles.textPlayActive]}>
                                             PLAY GAME
                                         </Text>
                                 </ButtonFeedback>
@@ -268,6 +267,7 @@ export default connect((state) => {
         drillDownItem: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
+        teamStatus: state.squad.teamStatus,
         netWork: state.network,
     }
 },  bindAction)(MyLionsCompetitionGameResults)
