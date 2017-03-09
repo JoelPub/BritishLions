@@ -6,6 +6,7 @@ export const SET_USER_PROFILE = 'SET_USER_PROFILE'
 export const SET_SQUAD_TOSHOW = 'SET_SQUAD_TOSHOW'
 export const SET_SQUAD_DATA = 'SET_SQUAD_DATA'
 export const SET_TEAM_TOSHOW = 'SET_TEAM_TOSHOW'
+export const SET_TEAM_STATUS = 'SET_TEAM_STATUS'
 export const SET_TEAM_DATA = 'SET_TEAM_DATA'
 export const SET_TEAM_DATA_TEMP = 'SET_TEAM_DATA_TEMP'
 export const SET_OFFICIAL_SQUAD_TOSHOW = 'SET_OFFICIAL_SQUAD_TOSHOW'
@@ -34,6 +35,13 @@ export function setTeamToShow(teamToShow):Action {
     return {
         type: SET_TEAM_TOSHOW,
         teamToShow
+    }
+}
+
+export function setTeamStatus(teamStatus):Action {
+    return {
+        type: SET_TEAM_STATUS,
+        teamStatus
     }
 }
 export function setTeamData(teamData):Action {

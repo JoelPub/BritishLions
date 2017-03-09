@@ -15,7 +15,7 @@ import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soti
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
 import {convertTeamToShow} from '../components/teamToShow'
-import { setTeamToShow,setTeamData } from '../../../actions/squad'
+import { setTeamToShow,setTeamStatus,setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 
@@ -161,26 +161,26 @@ class TeamWidget extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps',nextProps.teamData)
-        console.log('componentWillReceiveProps',this.props.teamData)
-        if(Immutable.is(TeamModel(nextProps.teamData),TeamModel(this.props.teamData))===false) {
+        // console.log('teamWidget componentWillReceiveProps nextProps',nextProps)
+        if(Immutable.is(TeamModel(nextProps.teamData),TeamModel())===false) {
             this.setTeam(TeamModel(nextProps.teamData))  
         }
     }
     setTeam(team){
-        console.log('!!!setTeam',team.toJS())
+        // console.log('!!!setTeam',team.toJS())
         let fullFeed=true
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        console.log('showTeamFeed',showTeamFeed.toJS())
+        // console.log('showTeamFeed',showTeamFeed.toJS())
         showTeamFeed.forEach((value,index)=>{
             if (value.find(x=>x.info===null)!==undefined) fullFeed=false
         })
-        console.log('this.props.teamData',this.props.teamData)
         if(Immutable.is(team,TeamModel(this.props.teamData))===false) {
+            // console.log('not equal')
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
-            this.setState({fullTeam:fullFeed},()=>this.props.teamStatus(fullFeed))
+            this.setState({fullTeam:fullFeed})
+            this.props.setTeamStatus(fullFeed)
         
 
     }
@@ -189,13 +189,13 @@ class TeamWidget extends Component {
 function bindAction(dispatch) {
     return {
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
+        setTeamStatus:(teamStatus)=>dispatch(setTeamStatus(teamStatus)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
     }
 }
 
 export default connect((state) => {
     return {
-        teamToShow: state.squad.teamToShow,
         teamData: state.squad.teamData,
         userProfile: state.squad.userProfile,
     }
