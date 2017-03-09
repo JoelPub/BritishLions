@@ -34,6 +34,8 @@ import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
 import GrayContainer from '../../global/GrayContainer'
 import ExpertRank from  '../../global/ExpertRank'
 import RankList from  '../../global/RankingList'
+import SquadModal from '../../global/squadModal'
+
 
 import defaultData from './defaultData'
 
@@ -51,6 +53,8 @@ const ButtonWithIcon = (props) => {
     </ButtonFeedback>
   )
 }
+
+
 class MyLionsGroupView extends Component {
 
   constructor (props) {
@@ -58,7 +62,8 @@ class MyLionsGroupView extends Component {
     this._scrollView = ScrollView
     this.isUnMounted = false
     this.state = {
-      data:defaultData
+      data:defaultData,
+      modalInfo: false
     }
   }
 
@@ -173,9 +178,13 @@ class MyLionsGroupView extends Component {
       this.leaveGroupApi(token,userProfile.userID,drillDownItem.id)
     })
   }
+  iconPress = () => {
+    this.setState({modalInfo: !this.state.modalInfo})
+  }
   render() {
     let {data} = this.state
     let {userProfile,drillDownItem} = this.props
+    let group_name = drillDownItem.name ? drillDownItem.name : ''
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -185,7 +194,7 @@ class MyLionsGroupView extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'GROUP NAME'}/>
+            <HeaderTitleWithModal title={group_name}  iconPress={this.iconPress}/>
             <GrayContainer >
               <ExpertRank data={userProfile}  />
               <RankList data={data} title={'GROUP LADDER'} />
@@ -196,7 +205,14 @@ class MyLionsGroupView extends Component {
             </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
-          <LoginRequire/>
+          <SquadModal
+            modalVisible={this.state.modalInfo}
+            callbackParent={this.iconPress}>
+            <View style={[styles.modalContent]}>
+              <Text style={styles.modalContentTitleText}>PRIVATE LEAGUES</Text>
+              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+            </View>
+          </SquadModal>
           <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>

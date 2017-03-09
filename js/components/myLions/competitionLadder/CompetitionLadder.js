@@ -388,7 +388,6 @@ class CompetitionLadder extends Component {
             <CompetitionCenter />
             <LionsFooter isLoaded={true} />
           </ScrollView>
-          <LoginRequire/>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
                            createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
