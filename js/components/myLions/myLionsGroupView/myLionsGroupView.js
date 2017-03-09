@@ -12,6 +12,7 @@ import Swiper from 'react-native-swiper'
 
 import theme from '../../../themes/base-theme'
 import styles from './styles'
+import globleStyles from  '../styles'
 import shapes from '../../../themes/shapes'
 import styleVar from '../../../themes/variable'
 import loader from '../../../themes/loader-position'
@@ -30,7 +31,10 @@ import { getGroupInfo } from '../../utility/apiasyncstorageservice/eyc3GroupsAct
 import { replaceRoute, pushNewRoute ,popRoute} from '../../../actions/route'
 import EYSFooter from '../../global/eySponsoredFooter'
 
+
+
 import HeaderTitleWithModal from '../components/HeaderTitleWithModal'
+import ModalInviteCode from '../myLionsInviteCodeView'
 import GrayContainer from '../../global/GrayContainer'
 import ExpertRank from  '../../global/ExpertRank'
 import RankList from  '../../global/RankingList'
@@ -63,7 +67,10 @@ class MyLionsGroupView extends Component {
     this.isUnMounted = false
     this.state = {
       data:defaultData,
-      modalInfo: false
+      modalInfo: false,
+      modalInviteCode: false,
+      modalLeaveInfo: false,
+      modalConfirmedResult: false
     }
   }
 
@@ -149,11 +156,14 @@ class MyLionsGroupView extends Component {
           isLoaded:false,
         })
         if(res.data.success){
-          this.props.popRoute()
-        }else {
+          this.modalConfirmedResult()
           this.setState({
-            joinType: 'error',
+            isLoaded:false,
+            modalLeaveInfo: false,
           })
+        }else {
+
+
         }
       },
       onError: (error)=>{
@@ -173,6 +183,10 @@ class MyLionsGroupView extends Component {
   }
 
   leaveGroup = () => {
+    this.setState({modalLeaveInfo: true})
+
+  }
+  leaveGroupRequset = () => {
     let {userProfile,drillDownItem} = this.props
     getAccessToken().then(token=>{
       this.leaveGroupApi(token,userProfile.userID,drillDownItem.id)
@@ -181,10 +195,28 @@ class MyLionsGroupView extends Component {
   iconPress = () => {
     this.setState({modalInfo: !this.state.modalInfo})
   }
+  inviteButtonPress = () => {
+    this.setState({modalInviteCode: true})
+  }
+  hideInviteCodeView = () => {
+    this.setState({modalInviteCode: false})
+  }
+  modalConfirmedResult = () => {
+    this.setState({
+      modalConfirmedResult: true
+    })
+  }
+  hideModal = () => {
+    this.setState({
+      modalLeaveInfo: false,
+      modalConfirmedResult: false
+    })
+  }
   render() {
-    let {data} = this.state
+    let {data,modalInviteCode} = this.state
     let {userProfile,drillDownItem} = this.props
     let group_name = drillDownItem.name ? drillDownItem.name : ''
+    let confirmedResult  = 'You are no longer part of the <' +   group_name + '> private league'
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -200,7 +232,7 @@ class MyLionsGroupView extends Component {
               <RankList data={data} title={'GROUP LADDER'} />
             </GrayContainer>
             <View style={styles.groupAction}>
-              <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  />
+              <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  onPress={this.inviteButtonPress} />
               <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor} onPress={this.leaveGroup}/>
             </View>
             <LionsFooter isLoaded={true} />
@@ -213,6 +245,31 @@ class MyLionsGroupView extends Component {
               <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
             </View>
           </SquadModal>
+          <ModalInviteCode modalVisible = {modalInviteCode } callbackParent ={this.hideInviteCodeView}
+                           data = {data}
+          />
+          <SquadModal
+            modalVisible={this.state.modalLeaveInfo}
+            callbackParent={this.hideModal}>
+            <View style={globleStyles.modalViewWrapper}>
+              <Text style={globleStyles.modalTitleTextCenter}>LEAVE LEAGUE</Text>
+              <Text style={[globleStyles.modalTitleTextCenter, styles.modalContentText]}>You will no longer be a member of this private league and will not be able to view the group ladder</Text>
+              <View style={globleStyles.modalBtnWrapper}>
+                <ButtonFeedback rounded onPress={this.hideModal} label='CANCEL' style={[globleStyles.modlaBtnConfirm,styles.modlaBtnConfirm]} />
+                <ButtonFeedback rounded  onPress={this.leaveGroupRequset}   label='CONFIRM' style={[globleStyles.modlaBtnConfirm,globleStyles.btnConfirmGreen,styles.btnConfirmRed]}  />
+              </View>
+            </View>
+          </SquadModal>
+          <SquadModal
+            modalVisible={this.state.modalConfirmedResult}
+            callbackParent={this.hideModal}>
+            <View style={globleStyles.modalViewWrapper}>
+              <Text style={globleStyles.modalBtnTitle}>CONFIRMED</Text>
+              <Text style={[globleStyles.modalTitleTextCenter,styles.modalContentText]}>{confirmedResult}</Text>
+              <ButtonFeedback rounded label={'OK'} onPress={()=>this.props.popRoute()}  style={globleStyles.modalConfirmBtn} />
+            </View>
+          </SquadModal>
+
           <EYSFooter mySquadBtn={true}/>
         </View>
       </Container>

@@ -112,4 +112,10 @@ module.exports = styleSheetCreate({
       lineHeight: 26
     }
   },
+  modlaBtnConfirm: {
+    backgroundColor:'rgb(38,38,38)'
+  },
+  btnConfirmRed: {
+    backgroundColor:'rgb(208,7,41)',
+  }
 })
