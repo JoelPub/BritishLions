@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styleVar from '../../../themes/variable'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper,strToLower } from '../../utility/helper'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import TeamModel from  '../../../modes/Team'
@@ -129,7 +129,7 @@ class TeamPlayerEditor extends Component {
         console.log('nextProps.removePlayer',nextProps.removePlayer)
         if(nextProps.removePlayer!==this.props.removePlayer&&nextProps.removePlayer===true) {
         console.log('updateTeam')
-            this._updateTeam('remove',this.props.positionToRemove.toLowerCase())
+            this._updateTeam('remove',strToLower(this.props.positionToRemove))
         }
     }
     componentWillUnmount() {
@@ -160,78 +160,73 @@ class TeamPlayerEditor extends Component {
                 this.props._setModalVisible(true,'remove')
             }
             else {
-                this._updateTeam('add',this.props.positionToAdd.toLowerCase())
+                this._updateTeam('add',strToLower(this.props.positionToAdd.split('|')[0]),strToLower(this.props.positionToAdd.split('|')[1]))
             }
     }
 
-    _updateTeam(type,position){
+    _updateTeam(type,position,subPosition){
         console.log('type',type)
         console.log('position',position)
+        console.log('subPosition',subPosition)
         let update=true
         console.log('this.props.teamDataTemp',this.props.teamDataTemp)
         console.log('this.props.playerid',this.props.playerid)
         let tmpFeed=TeamModel(this.props.teamDataTemp)
         console.log('tmpFeed',tmpFeed.toJS())
-        if(position==='') {
-            this.props._setModalVisible(true, 'message', '', 'PLEASE SELECT A POSITION', 'OK')
-        }
-        else {
-            tmpFeed.forEach((value,index)=>{
-                console.log('index',index)
-                if(index==='backs'||index==='forwards') {
+        tmpFeed.forEach((value,index)=>{
+            console.log('index',index)
+            if(index==='backs'||index==='forwards') {
                 console.log('value',value)
-                    if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined){
-                            console.log('found')
-                            console.log('this.props.positionToRemove',this.props.positionToRemove)
-                        if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {
-                            console.log('tmpFeed',tmpFeed.toJS())
-                            tmpFeed=tmpFeed.update(index,val=>{
-                                val[val.findIndex(x=>x.id.toString()===this.props.playerid)].id=''
-                                return val
-                            })
-                            console.log('tmpFeed',tmpFeed.toJS())
-                            this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid))
-                        }
+                if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined){
+                        console.log('found')
+                    if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
+                        console.log('tmpFeed',tmpFeed.toJS())
+                        tmpFeed=tmpFeed.update(index,val=>{
+                            val[val.findIndex(x=>x.id.toString()===this.props.playerid)].id=''
+                            return val
+                        })
+                        console.log('tmpFeed',tmpFeed.toJS())
+                        this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid))
                     }
+                }
+            }
+            else {
+                if(value.toString()===this.props.playerid) {
+                    if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
+                        console.log('!!!tmpFeed',tmpFeed.toJS())
+                        tmpFeed=tmpFeed.set(index,'')
+                        this.props.setTeamToShow(removePlayer(this.props.teamToShow,index))
+                    }
+                }
+            }
+        })
+
+        if(type==='add') {
+            if(position==='backs'||position==='forwards') {
+                console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                tmpFeed=tmpFeed.update(position,val=>{
+                    val[val.findIndex(x=>x.name===subPosition)].id=this.props.playerid
+                    return val
+                })
+                // tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push({name:'loosehead_prop',id:this.props.playerid}))
+                console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                console.log('position',position)
+                this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid,subPosition))
+            }
+            else{
+                if(tmpFeed.get(position).trim()==='') {
+                    tmpFeed=tmpFeed.set(position,this.props.playerid)
+                    this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail))
                 }
                 else {
-                    if(value.toString()===this.props.playerid) {
-                        if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove)) {
-                            console.log('!!!tmpFeed',tmpFeed.toJS())
-                            tmpFeed=tmpFeed.set(index,'')
-                            this.props.setTeamToShow(removePlayer(this.props.teamToShow,index))
-                        }
-                    }
-                }
-            })
-
-            if(type==='add') {
-                if(position==='backs'||position==='forwards') {
-                    console.log('tmpFeed.get(position)',tmpFeed.get(position))
-                    tmpFeed=tmpFeed.update(position,val=>{
-                        val[val.findIndex(x=>x.name==='loosehead_prop')].id=this.props.playerid
-                        return val
-                    })
-                    // tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push({name:'loosehead_prop',id:this.props.playerid}))
-                    console.log('tmpFeed.get(position)',tmpFeed.get(position))
-                    console.log('position',position)
-                    this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid))
-                }
-                else{
-                    if(tmpFeed.get(position).trim()==='') {
-                        tmpFeed=tmpFeed.set(position,this.props.playerid)
-                        this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail))
-                    }
-                    else {
-                        update=false
-                        this.setState({ teamDataFeed:tmpFeed.toJS() })
-                     }
-                }
-
+                    update=false
+                    this.setState({ teamDataFeed:tmpFeed.toJS() })
+                 }
             }
-            if(update){
-               this._updateTeamPlayer(tmpFeed,position, type)
-            }
+
+        }
+        if(update){
+           this._updateTeamPlayer(tmpFeed,position, type)
         }
         
     }

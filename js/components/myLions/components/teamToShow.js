@@ -56,15 +56,15 @@ export function removePlayer(teamToShow,position,playerid) {
     console.log('removeplayer teamToShow',teamToShow)
     return teamToShow
 }
-export function addPlayer(teamToShow,position,detail,playerid) {
+export function addPlayer(teamToShow,position,detail,playerid,subPosition) {
     console.log('addplayer')
     if(playerid) {
         console.log('playerid',playerid)
         console.log('val',teamToShow[position].find(value=>value.position==='loosehead_prop'))
-        teamToShow[position].find(value=>value.position==='loosehead_prop').info=detail
+        teamToShow[position].find(value=>value.position===subPosition).info=detail
     }
     else {
-        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position==='wildcard'?'widecard':value.position)).info=detail
+        teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
     }
     console.log('teamToShow',teamToShow[position])
     return teamToShow

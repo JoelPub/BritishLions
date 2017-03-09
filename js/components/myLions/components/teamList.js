@@ -268,9 +268,9 @@ export default class TeamList extends Component {
                                                     <View style={styles.posWrapper} key={index}>
                                                         {   
                                                             item.info===null?
-                                                            <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add','forwards',8)}/>
+                                                            <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',`forwards|${item.position}`)}/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards',8,index)}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards')}/>
                                                         }
                                                     </View>
                                                 )
@@ -301,9 +301,9 @@ export default class TeamList extends Component {
                                                 <View style={styles.posWrapper} key={index}>
                                                 {
                                                     item.info===null?                                                        
-                                                       <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add','backs',7)}/>
+                                                       <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',`backs|${item.position}`)}/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs',7,index)}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs')}/>
                                                 }
                                                 </View>
                                                 )
@@ -329,9 +329,9 @@ export default class TeamList extends Component {
                                 </View>
                                 {
                                 item.info===null?
-                                <AddIndivPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position,1)}/>
+                                <AddIndivPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position)}/>
                                 :
-                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position,1,0)}/>
+                                <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position)}/>
                                 }
                             </View>
                         )

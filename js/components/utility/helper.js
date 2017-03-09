@@ -12,3 +12,9 @@ export function strToUpper(str) {
 
     return str
 }
+export function strToLower(str) {
+    if (str)
+    	return str.toLowerCase()
+
+    return str
+}
