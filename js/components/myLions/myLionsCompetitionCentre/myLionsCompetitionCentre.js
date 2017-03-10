@@ -192,7 +192,10 @@ class MyLionsCompetitionCentre extends Component {
                                                 </ButtonFeedback>
                                             )
                                         })
-                                    }
+                                    } 
+                                    <ButtonFeedback onPress={() => this.props.pushNewRoute('myLionsTestRound')} style={{backgroundColor:'transparent'}}>
+                                        <Round title={'TEST ROUND'} lock={false} detail={{description:'Test Round'}}/>
+                                    </ButtonFeedback>
                                     </View>
                                 </View>
                             </View>
