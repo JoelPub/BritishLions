@@ -107,7 +107,7 @@ class TacticsManger extends Component {
   }
   iconPress =() => {
     this.setState({
-      modalResults: true,
+      modalResults: !this.state.modalResults,
     })
   }
   handleDropDownData = (teamToShow) => {
@@ -140,7 +140,7 @@ class TacticsManger extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress}/>
+            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress} />
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
@@ -156,7 +156,7 @@ class TacticsManger extends Component {
               <Slider onValuesChange={this.onValuesChange} value={0.5}/>
               <Text style={styles.ValueText}>{replacementsSliderValue}</Text>
             </SmallBox>
-            <SmallBox title={'REPLACEMENTS'} height={185}>
+            <SmallBox title={'PLAY STYLE'} height={185}>
               <Slider onValuesChange={this.onValuesChangeOther} value={0.5}/>
               <Text style={styles.ValueText}>{playStyleSliderValue}</Text>
             </SmallBox>
@@ -170,7 +170,7 @@ class TacticsManger extends Component {
           <LoginRequire/>
           <SquadModal
             modalVisible={this.state.modalResults}
-            callbackParent={() => {}}>
+            callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>RESULTS</Text>
               <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>

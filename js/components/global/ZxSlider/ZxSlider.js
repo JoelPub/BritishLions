@@ -99,7 +99,6 @@ class ZxSlider extends Component {
            </View>
          </View>
          <Image style={[styles.markerStyle,touchStyle]} {...this._panResponder.panHandlers} source={ruby} >
-
          </Image>
       </View>
     )
