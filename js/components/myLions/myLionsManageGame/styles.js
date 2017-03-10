@@ -75,13 +75,17 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 28,
         lineHeight: 28,
-        color: '#FFF'
+        color: '#FFF',
+        textAlign:'center',
+        marginTop:28
     },
     modalContentText: {
         fontFamily: 'Helvetica Neue',
         fontSize: 16,
         lineHeight: 22,
         color: '#FFF',
+        textAlign:'center',
+        marginVertical:10,
         android: {
             lineHeight: 26
         }
@@ -97,24 +101,4 @@ module.exports = styleSheetCreate({
     greenBackground: {
         backgroundColor:'rgb(3,79,38)'
     },
-    playBtn:{
-        height: 80,
-        borderRadius:40,
-        paddingLeft:10,
-        backgroundColor:'rgba(208,7,41,0.14)',
-        alignItems:'center',
-        paddingTop:25
-    },
-    playBtnActive:{
-        backgroundColor:'rgb(9,127,64)'
-    },
-    textPlay:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 36,
-        lineHeight: 36,
-        color: 'rgba(255,255,255,0.14)',
-    },
-    textPlayActive:{
-        color: 'rgb(255,255,255)'
-    }
 })

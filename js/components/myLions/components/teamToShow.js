@@ -10,10 +10,10 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
                 value.map((v,i)=>{
                     console.log('v.posotion',v.position)
                     console.log('team.get(index)',team.get(index))
-                    console.log('find result',team.get(index).find(x=>x.name===v.position))
-                    if(team.get(index).find(x=>x.name===v.position)!==undefined) {
+                    console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
+                    if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
                         tempFeed=tempFeed.update(index,val=>{
-                            val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.name===v.position).id,uniondata)
+                            val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
                             return val
                         })
                     }

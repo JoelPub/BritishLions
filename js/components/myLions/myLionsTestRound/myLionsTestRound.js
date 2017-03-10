@@ -39,7 +39,7 @@ import TeamSaveBtn from '../components/teamSaveBtn'
 import {convertTeamToShow} from '../components/teamToShow'
 import Versus from '../components/versus'
 
-class MyLionsManageTeam extends Component {
+class MyLionsTestRound extends Component {
 
     constructor(props){
         super(props)
@@ -104,9 +104,13 @@ class MyLionsManageTeam extends Component {
                                     onPress={() => { this.setState({modalVisible: true}) }}>
                                     <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                                 </ButtonFeedback>
-                                <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
                                 <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
-                                <TeamSaveBtn />
+                                <View style={styles.wrapper}>
+                                    <ButtonFeedback rounded onPress={() => this._saveTeam()}
+                                        style={[styles.btnSave, styles.btnGreen ]}>
+                                        <Text style={styles.btnText}>SUBMIT TEAM</Text>
+                                    </ButtonFeedback>
+                                </View>
                                 <LionsFooter isLoaded={true} />
                             </ScrollView>
                         :
@@ -136,12 +140,52 @@ class MyLionsManageTeam extends Component {
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
-                this.props.setTeamDataTemp(this.props.teamData)
-                this.setTeam(TeamModel.fromJS(this.props.teamData))
+                let optionsTeam = {
+                    url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
+                    data: { "id":this.props.userProfile.userID,
+                            "round_id":123, 
+                            "game_id": 1},
+                    onAxiosStart: null,
+                    onAxiosEnd: null,
+                    method: 'post',
+                    onSuccess: (res) => {
+                        console.log('res.data',res.data)
+                        if(res.data) {
+                            this.setTeam(TeamModel.fromJS(res.data))
+                        }
+                        
+                    },
+                    isRequiredToken: true,
+                    channel: 'EYC3',
+                    isQsStringify:false
+                }
+                service(optionsTeam)
             }
         }).catch((error) => {
                     this._showError(error) 
         })
+    }   
+    _saveTeam() {
+
+       let options = {
+           url: this.saveSquadUrl,
+           data: { "id":this.props.userProfile.userID,
+                            "round_id":123, 
+                            "game_id": 1,
+                            "team":this.props.teamData},
+           onAxiosStart: () => {},
+           onAxiosEnd: () => {
+           },
+           onSuccess: (res) => {
+                this.props.pushNewRoute('myLionsTestRound')
+           },
+           onError: null,
+           onAuthorization: null,
+           isRequiredToken: true
+       }
+
+       service(options)
+
     }
     componentWillReceiveProps(nextProps) {
         console.log('componentWillReceiveProps',nextProps.teamDataTemp)
@@ -174,9 +218,9 @@ class MyLionsManageTeam extends Component {
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
+        if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
             console.log('!!!team not equal')
-            this.props.setTeamDataTemp(team.toJS())
+            this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
         }
         else {            
@@ -209,5 +253,5 @@ export default connect((state) => {
         netWork: state.network,
         userProfile: state.squad.userProfile,
     }
-}, bindAction)(MyLionsManageTeam)
+}, bindAction)(MyLionsTestRound)
 

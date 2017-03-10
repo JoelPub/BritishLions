@@ -201,25 +201,36 @@ class MyLionsSelectPlayerListing extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  let optionsSelectPlayers = {
-                      url: 'https://api.myjson.com/bins/vq1d5',
-                      data: {},
-                      onAxiosStart: null,
-                      onAxiosEnd: null,
-                      method: 'get',
-                      onSuccess: (res) => {
-                          if(res.data) {
-                                  console.log('res.data',res.data)
-                                  this._listPlayer(res.data.data, catchedFullPlayerList)
-                          }
-                      },
-                      onError: null,
-                      onAuthorization: () => {
-                              this._signInRequired()
-                      },
-                      isRequiredToken: true
-                  }
-                  service(optionsSelectPlayers)
+                  let optionsOfficialSquad = {
+                    url: 'http://biltestapp.azurewebsites.net/GetOfficalSquad',
+                    data: {},
+                    onAxiosStart: null,
+                    onAxiosEnd: null,
+                    method: 'post',
+                    onSuccess: (res) => {
+                        // console.log('res.data',res.data)
+                        if(res.data) {
+                            let playerList=[]
+                            for (let node in res.data) {
+                                if(node==='backs'||node==='forwards') {
+                                    res.data[node].map((value,index)=>{
+                                        playerList.push(value)
+                                    })
+                                }
+                                else {
+                                    playerList.push(res.data[node])
+                                }
+                            }
+                            // console.log('playerList',playerList)
+                            this._listPlayer(playerList, catchedFullPlayerList)
+                        }
+                        
+                    },
+                    isRequiredToken: true,
+                    channel: 'EYC3',
+                    isQsStringify:false
+                }
+                service(optionsOfficialSquad)
 
                 
               }
@@ -233,10 +244,16 @@ class MyLionsSelectPlayerListing extends Component {
 
     _listPlayer(playerList, playerFeed){
         let selectPlayers = []
-        let playerids = playerList.split('|')
-        playerids.map((id,j) => {
+        let filter=this.props.positionToAdd.split('|')[1]
+        playerList.map((id,j) => {
                 selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
         })
+        // console.log('filter',filter.replace(/\s/g,''))
+        // console.log('selectPlayers',selectPlayers)
+        if(filter!==undefined) {
+
+            selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,''))
+        }
         this.setState({
             isLoaded: true,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)
@@ -254,5 +271,9 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null, bindAction)(MyLionsSelectPlayerListing)
+export default connect((state) => {
+    return {
+        positionToAdd: state.position.positionToAdd,
+    }
+}, bindAction)(MyLionsSelectPlayerListing)
 

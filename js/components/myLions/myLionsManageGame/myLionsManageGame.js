@@ -28,7 +28,8 @@ import styleVar from '../../../themes/variable'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { strToUpper } from '../../utility/helper'
-
+import GamePlayBtn from '../components/gamePlayBtn'
+import loadingImage from '../../../../images/loading.gif'
 const locStyle = styleSheetCreate({
     headerStadium: {
         backgroundColor: '#FFF',
@@ -107,7 +108,50 @@ class MyLionsCompetitionGameResults extends Component {
             gameInfo:{},
             drillDownItem:this.props.drillDownItem,
             isNetwork: true,
+            modalContent:this.getModalContent(),
+            modalVisible: false,
         }
+    }
+    getModalContent(mode,title,subtitle,btn){
+        switch(mode)  {
+            case 'loading' :
+                return(
+                    <View style={[styles.modalContent]}>
+                        <Text style={styles.modalContentTitleText}>PLAYING...</Text>
+                        <Image style={{width:50,height:50,alignSelf:'center',}} source={loadingImage} />    
+                    </View>
+                )
+                break
+            case 'message' :
+                return(
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalContentTitleText}>{title}</Text>
+                        <Text style={styles.modalContentText}>{subtitle}</Text>
+                        <ButtonFeedback rounded label={btn} onPress={()=>this._setModalVisible(false)}  style={styles.modalConfirmBtn} />
+                    </View>
+                )
+                break
+            case 'info' :
+                return (
+                    <View style={[styles.modalContent]}>
+                        <Text style={styles.modalContentTitleText}>MANAGE GAME</Text>
+                        <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                    </View>
+                )
+                break
+            default:
+                return (
+                    <View>
+                    </View>
+                )
+        }
+    }
+
+    _setModalVisible=(visible,mode,title,subtitle,btn) => {
+        this.setState({
+            modalVisible:visible,
+            modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
+        })
     }
 
     componentWillUnmount() {
@@ -128,7 +172,7 @@ class MyLionsCompetitionGameResults extends Component {
                         <Text style={styles.pageTitleText}>MANAGE GAME</Text>
                         <ButtonFeedback 
                             style={styles.pageTitleBtnIconRight} 
-                            onPress={() => { this.setState({modalResults: true}) }}>
+                            onPress={() => this._setModalVisible(true,'info')}>
                             <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                         </ButtonFeedback>
                     </View>
@@ -179,29 +223,22 @@ class MyLionsCompetitionGameResults extends Component {
                         <View style={[styles.btns,this.props.tactics&&styles.greenBackground]}>
                             <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
-                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]}>
-                                 <ButtonFeedback style={[styles.playBtn,this.props.teamStatus&&styles.playBtnActive]}>
-                                        <Text style={[styles.textPlay,this.props.teamStatus&&styles.textPlayActive]}>
-                                            PLAY GAME
-                                        </Text>
-                                </ButtonFeedback>
+                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]} >
+                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)}/>    
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     :
                     <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    <SquadModal 
-                        modalVisible={this.state.modalResults}
-                        callbackParent={() => {}}>
-                            <View style={[styles.modalContent]}>
-                                <Text style={styles.modalContentTitleText}>MANAGE GAME</Text>
-                                <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
-                            </View>
-                    </SquadModal>
                         
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
+                    <SquadModal
+                        modalVisible={this.state.modalVisible}
+                        callbackParent={this._setModalVisible}>
+                            {this.state.modalContent}
+                    </SquadModal>
                 </View>
             </Container>
         )

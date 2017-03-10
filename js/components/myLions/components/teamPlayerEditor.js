@@ -140,13 +140,13 @@ class TeamPlayerEditor extends Component {
     _updateMyTeamStatus() {
         // show loading in adding and removing button
         this.setState({isMyTeamPlayerUpdating: true})
-        let teamFeed=TeamModel(this.props.teamDataTemp)
+        let teamFeed=TeamModel.fromJS(this.props.teamDataTemp)
         console.log('@@@teamFeed',teamFeed.toJS())
         let inTeam = false
         
         teamFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
-                if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined) inTeam=true
+                if(value.find(x=>x.get('id').toString()===this.props.playerid)!==undefined) inTeam=true
             }
             else {
                 if(value.toString()===this.props.playerid) inTeam=true
@@ -171,21 +171,21 @@ class TeamPlayerEditor extends Component {
         let update=true
         console.log('this.props.teamDataTemp',this.props.teamDataTemp)
         console.log('this.props.playerid',this.props.playerid)
-        let tmpFeed=TeamModel(this.props.teamDataTemp)
+        let tmpFeed=TeamModel.fromJS(this.props.teamDataTemp)
         console.log('tmpFeed',tmpFeed.toJS())
         tmpFeed.forEach((value,index)=>{
             console.log('index',index)
             if(index==='backs'||index==='forwards') {
                 console.log('value',value)
-                if(value.find(x=>x.id.toString()===this.props.playerid)!==undefined){
+                if(value.find(x=>x.get('id').toString()===this.props.playerid)!==undefined){
                         console.log('found')
                     if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
                         console.log('tmpFeed',tmpFeed.toJS())
                         tmpFeed=tmpFeed.update(index,val=>{
-                            val[val.findIndex(x=>x.id.toString()===this.props.playerid)].id=''
-                            return val
+                            let t=List(val)
+                            t=t.splice(t.findIndex(x=>x.get('id').toString()===this.props.playerid),1)
+                            return t
                         })
-                        console.log('tmpFeed',tmpFeed.toJS())
                         this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid))
                     }
                 }
@@ -193,7 +193,6 @@ class TeamPlayerEditor extends Component {
             else {
                 if(value.toString()===this.props.playerid) {
                     if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
-                        console.log('!!!tmpFeed',tmpFeed.toJS())
                         tmpFeed=tmpFeed.set(index,'')
                         this.props.setTeamToShow(removePlayer(this.props.teamToShow,index))
                     }
@@ -205,10 +204,10 @@ class TeamPlayerEditor extends Component {
             if(position==='backs'||position==='forwards') {
                 console.log('tmpFeed.get(position)',tmpFeed.get(position))
                 tmpFeed=tmpFeed.update(position,val=>{
-                    val[val.findIndex(x=>x.name===subPosition)].id=this.props.playerid
-                    return val
-                })
-                // tmpFeed=tmpFeed.set(position,tmpFeed.get(position).push({name:'loosehead_prop',id:this.props.playerid}))
+                            let t=List(val)
+                            t=t.push({"name":subPosition,"id":this.props.playerid})
+                            return t
+                        })
                 console.log('tmpFeed.get(position)',tmpFeed.get(position))
                 console.log('position',position)
                 this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid,subPosition))
