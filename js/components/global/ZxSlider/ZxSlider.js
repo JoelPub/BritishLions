@@ -68,13 +68,26 @@ class ZxSlider extends Component {
           left: this.countSize(left+gs.dx)
         })
       },
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderTerminate: (evt, gestureState) => {
+        // 另一个组件已经成为了新的响应者，所以当前手势将被取消。
+      },
       onPanResponderRelease: (evt,gs)=>{
         //活动结束后
-        this.setState({
-          left: this.countSize(left+gs.dx)
-        })
-
-        this.props.onValuesChange((this.state.left/(styleVar.deviceWidth-112)).toFixed(2))
+        let endLeft = this.countSize(left+gs.dx)
+        if(this.props.valuesCount){
+          this.setState({
+            left: this.countComplexSize(endLeft)
+          })
+          let widthItem = ( styleVar.deviceWidth-112) /this.props.valuesCount
+          let index = Math.round(this.state.left /widthItem)
+          this.props.onValuesChange(index)
+        }else {
+          this.setState({
+            left: endLeft
+          })
+          this.props.onValuesChange((this.state.left/(styleVar.deviceWidth-112)).toFixed(2))
+        }
       }
     })
   }
@@ -83,6 +96,15 @@ class ZxSlider extends Component {
     left = left>styleVar.deviceWidth-112 ? styleVar.deviceWidth-112 : left
     cleft = left < 0 ? 0 : left
     return cleft
+  }
+  countComplexSize = (left) =>{
+    console.log('崩溃中')
+    let widthItem = ( styleVar.deviceWidth-112) /this.props.valuesCount
+    let index = Math.round(left /widthItem)
+    console.log(index)
+    let result = index* widthItem
+    console.log(result)
+    return  result
   }
 
   render() {
@@ -99,7 +121,6 @@ class ZxSlider extends Component {
            </View>
          </View>
          <Image style={[styles.markerStyle,touchStyle]} {...this._panResponder.panHandlers} source={ruby} >
-
          </Image>
       </View>
     )
@@ -113,9 +134,9 @@ ZxSlider.propTypes = {
   unselectedStyle: View.propTypes.style,
   markerStyle: View.propTypes.style,
   pressedMarkerStyle: View.propTypes.style,
-
   values: PropTypes.number,
   onValuesChange: PropTypes.func,
+  valuesCount: PropTypes.number,
 }
 ZxSlider.defaultProps = {
 

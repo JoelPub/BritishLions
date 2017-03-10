@@ -26,6 +26,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
 import {getEYC3FullPlayerList} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { setTacticsToSave } from '../../../actions/tactics'
 
 
 import EYSFooter from '../../global/eySponsoredFooter'
@@ -40,6 +41,44 @@ import Slider from '../../global/ZxSlider'
 
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5'];
+
+const localDataTactics = [
+  {
+   name:'10-Man' ,
+   value: '10-man'
+  },{
+    name:'Balanced' ,
+    value: 'balanced'
+  },{
+    name:'Running' ,
+    value: 'running'
+  }
+]
+const localDataReplacements= [
+  {
+    name:'50 Minutes' ,
+    value: '50'
+  },{
+    name:'55 Minutes' ,
+    value: '55'
+  },{
+    name:'60 Minutes' ,
+    value: '60'
+  }, {
+    name:'65 Minutes' ,
+    value: '65'
+  }, {
+    name:'70 Minutes' ,
+    value: '70'
+  },{
+    name:'75 Minutes' ,
+    value: '75'
+  },{
+    name:'No Replacements' ,
+    value: '80'
+  }
+
+]
 
 class SmallBox extends Component {
   constructor (props) {
@@ -79,8 +118,8 @@ class TacticsManger extends Component {
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
       dropDownValue: 'Select Player',
-      replacementsSliderValue: '0',
-      playStyleSliderValue: '0'
+      replacementsSliderValue: 3,
+      playStyleSliderValue: 1
     }
   }
   /*get Data*/
@@ -94,20 +133,32 @@ class TacticsManger extends Component {
   }
   onValuesChange = (value) => {
     this.setState({
-      replacementsSliderValue: value,
+      replacementsSliderValue: Number(value),
     })
   }
   onValuesChangeOther = (value) => {
     this.setState({
-      playStyleSliderValue: value,
+      playStyleSliderValue: Number(value),
     })
   }
   saveOnPress = () =>{
 
+    let { dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
+    let {userProfile,teamToShow} = this.props
+    let TacticData = localDataTactics[playStyleSliderValue]
+    let ReplacementsData = localDataReplacements[replacementsSliderValue]
+
+    
+   let pacticsData = {
+      starPlayer: dropDownValue,
+      tactic: TacticData.value,
+      replacements: ReplacementsData.value
+    }
+    this.props.setTacticsToSave (pacticsData)
   }
   iconPress =() => {
     this.setState({
-      modalResults: true,
+      modalResults: !this.state.modalResults,
     })
   }
   handleDropDownData = (teamToShow) => {
@@ -127,9 +178,24 @@ class TacticsManger extends Component {
      return result
 
   }
+  handStartData = (teamToShow) => {
+    let result = []
+    if(!teamToShow.backs) return result
+    teamToShow.backs.map(
+      (item)=>{
+        result.push(item)
+      }
+    )
+    teamToShow.forwards.map((item)=>{
+      result.push(item)
+    })
+    return result
+  }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile,teamToShow} = this.props
+    let TacticData = localDataTactics[playStyleSliderValue]
+    let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let dropDownData = this.handleDropDownData(teamToShow)
     return (
       <Container theme={theme}>
@@ -140,7 +206,7 @@ class TacticsManger extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress}/>
+            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress} />
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
@@ -153,12 +219,12 @@ class TacticsManger extends Component {
               </ModalDropdown>
             </SmallBox>
             <SmallBox title={'REPLACEMENTS'} height={185}>
-              <Slider onValuesChange={this.onValuesChange} value={0.5}/>
-              <Text style={styles.ValueText}>{replacementsSliderValue}</Text>
+              <Slider onValuesChange={this.onValuesChange} value={0.5}  valuesCount={6}/>
+              <Text style={styles.ValueText}>{ReplacementsData.name}</Text>
             </SmallBox>
-            <SmallBox title={'REPLACEMENTS'} height={185}>
-              <Slider onValuesChange={this.onValuesChangeOther} value={0.5}/>
-              <Text style={styles.ValueText}>{playStyleSliderValue}</Text>
+            <SmallBox title={'PLAY STYLE'} height={185}>
+              <Slider onValuesChange={this.onValuesChangeOther} value={0.5} valuesCount={2}/>
+              <Text style={styles.ValueText}>{TacticData.name}</Text>
             </SmallBox>
             <View style={styles.saveContainer}>
               <ButtonFeedback style={styles.saveBtn} onPress={this.saveOnPress}>
@@ -170,7 +236,7 @@ class TacticsManger extends Component {
           <LoginRequire/>
           <SquadModal
             modalVisible={this.state.modalResults}
-            callbackParent={() => {}}>
+            callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>RESULTS</Text>
               <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
@@ -197,6 +263,7 @@ function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
+    setTacticsToSave: (tactics)=>dispatch(setTacticsToSave(tactics)),
   }
 }
 export default connect((state) => {
