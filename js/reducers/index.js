@@ -10,6 +10,7 @@ import token from './token'
 import network from './network'
 import position from './position'
 import squad from './squad'
+import tactics from  './tactics'
 
 export default combineReducers({
 	drawer,
@@ -19,5 +20,6 @@ export default combineReducers({
 	token,
 	network,
 	position,
-	squad
+	squad,
+	tactics
 })

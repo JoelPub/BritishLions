@@ -18,6 +18,8 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import Versus from '../components/versus'
 import TeamWidget from '../components/teamWidget'
 import LinearGradient from 'react-native-linear-gradient'
+import { setTacticsToRemove } from '../../../actions/tactics'
+
 import SquadModal from '../../global/squadModal'
 import shapes from '../../../themes/shapes'
 import styles from './styles'
@@ -174,7 +176,7 @@ class MyLionsCompetitionGameResults extends Component {
                         <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&styles.greenBackground]}>
                             <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
                         </View>
-                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]}>
+                        <View style={[styles.btns,this.props.tactics&&styles.greenBackground]}>
                             <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]}>
@@ -207,6 +209,7 @@ class MyLionsCompetitionGameResults extends Component {
 
 
     componentDidMount() {
+        this.props.setTacticsToRemove('')
         this.setState({isLoaded:false},()=>{
             this.getInfo()
         })
@@ -259,15 +262,18 @@ function bindAction(dispatch) {
     return {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        setTacticsToRemove: (tactics)=>dispatch(setTacticsToRemove(tactics)),
     }
 }
 
 export default connect((state) => {
+    console.log(state)
     return {
         drillDownItem: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
         teamStatus: state.squad.teamStatus,
         netWork: state.network,
+        tactics: state.tactics.tacticsData
     }
 },  bindAction)(MyLionsCompetitionGameResults)
