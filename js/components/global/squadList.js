@@ -146,7 +146,7 @@ const PlayerImgCell =({data,onPress}) =>(
             height = {styleVar.deviceWidth / 3}>
             <Image transparent
                 resizeMode='contain'
-                source={data.image}
+                source={{uri:data.image}}
                 style={styles.playerImage} />
         </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>

@@ -241,7 +241,7 @@ class MyLionsPlayerProfile extends Component {
                     <ScrollView bounces={false} ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.header}>
                             <View style={styles.playerPic}>
-                                <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
+                                <Image resizeMode='cover' source={{uri:this.props.detail.image}} style={styles.playerPicImg}/>
                                 <Image source={require('../../../images/redCircle.png')} style={styles.playerPicCover}/>
                             </View>
 

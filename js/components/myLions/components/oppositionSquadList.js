@@ -184,7 +184,7 @@ const PlayerImgCell =({data,onPress}) =>(
             height = {styleVar.deviceWidth / 3}>
             <Image transparent
                 resizeMode='contain'
-                source={data.info.image}
+                source={{uri:data.info.image}}
                 style={styles.playerImage} />
         </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>
@@ -203,7 +203,7 @@ const IndivPlayerImgCell =({data,onPress}) =>(
             height = {styleVar.deviceWidth / 2}>
             <Image transparent
                 resizeMode='contain'
-                source={data.image}
+                source={{uri:data.image}}
                 style={styles.indivPlayerImage} />
         </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>
