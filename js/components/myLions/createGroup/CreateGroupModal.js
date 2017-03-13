@@ -65,7 +65,7 @@ class GreateGroupModal extends Component {
       case 'create':
       {
         PageData.title = 'CREATE PRIVATE LEAGUE'
-        PageData.contentText =  'Create a private group and invite friends. Names must be . <insert EYC3 naming requirements/rules>'
+        PageData.contentText =  'Create a private league and invite friends. Names must be . <insert EYC3 naming requirements/rules>'
         PageData.subTitle = 'LEAGUE NAME'
         PageData.subContentText = ''
       }
@@ -73,9 +73,9 @@ class GreateGroupModal extends Component {
       case 'error':
       {
         PageData.title = 'ERROR'
-        PageData.contentText =  'Unfortunatelyt the following error occured when attempting to create your group.'
-        PageData.subTitle = 'INVALID GROUP NAME'
-        PageData.subContentText = 'Please choose a valid group name and try again.'
+        PageData.contentText =  'Unfortunatelyt the following error occured when attempting to create your league.'
+        PageData.subTitle = 'INVALID LEAGUE NAME'
+        PageData.subContentText = 'Please choose a valid league name and try again.'
       }
         break;
       case 'success':
@@ -83,7 +83,7 @@ class GreateGroupModal extends Component {
         PageData.title = 'SUCCESS'
         PageData.contentText =  data ?  data.message : ''
         PageData.subTitle = data ? data.invitation_code : ''
-        PageData.subContentText = 'Invite friends to join your group by sharing this code. You may view the code for later reference at any time within your private group view.'
+        PageData.subContentText = 'Invite friends to join your league by sharing this code. You may view the code for later reference at any time within your private league view.'
       }
         break;
 
