@@ -27,10 +27,6 @@ const EYC3_GET_EXPERTS_URL_NAME = 'EYC3ExpertsSquads'
 const EYC3_GET_COMPETTITION_LADDER = 'EYC3ExpertsSquads'
 
 
-
-
-
-
 const GOODFORM_GET_FAVORITE_PLAYER_URL = '/protected/mylionsfavourit?_=1480039224954'
 const GOODFORM_GET_FAVORITE_PLAYER_URL_NAME = 'GoodFormFavoritePlayers'
 const GOODFORM_ADD_FAVORITE_PLAYER_URL = '/protected/player/add'
@@ -44,6 +40,10 @@ const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME = 'SaveGoodFormUserCustomized
 const GOODFORM_REFRESH_TOKEN_URL = '/sessions/create'
 const GOODFORM_USERS_URL = '/users'
 
+//R3
+//Squad
+const EYC3_GETOFFICALSQUAD_URL_NAME = 'EYC3GetOfficalSquad'
+const EYC3_GETOFFICALSQUAD_URL = '/GetOfficalSquad'
 
 export function getAssembledUrl(urlName) {
     switch (urlName) {
@@ -75,9 +75,13 @@ export function getAssembledUrl(urlName) {
             return GODDFORM_BASE_URL + GOODFORM_REFRESH_TOKEN_URL
         case GOODFORM_USERS_URL:
             return GODDFORM_BASE_URL + GOODFORM_USERS_URL
+        case EYC3_GETOFFICALSQUAD_URL_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_GETOFFICALSQUAD_URL
     }
 }
-//R3
+/*R3*/
+
+//GROUP
 const EYC3_POST_COMPETITIONLADDER_NAME = 'GetCompetitionLadder'
 const EYC3_POST_COMPETITIONLADDER = '/GetCompetitionLadder'
 
@@ -128,6 +132,8 @@ export const actionsApi = {
     eyc3CreateGroup: getGroupUrl(EYC3_POST_CREATEAGROUP_NAME),
     eyc3JoinGroup:getGroupUrl(EYC3_POST_JOINAGROUP_NAME),
     eyc3LeaveGroup: getGroupUrl(EYC3_POST_LEAVEAGROUP_NAME),
+    eyc3GetOfficalSquad: getAssembledUrl(EYC3_GETOFFICALSQUAD_URL_NAME)
+
 }
 
 
