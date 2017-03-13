@@ -77,7 +77,7 @@ class TeamWidget extends Component {
 		return (
         <View>
         {
-            this.state.fullTeam?
+            this.state.fullTeam&&this.props.tactics!==null?
                 <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
                      <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
                         <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
@@ -93,9 +93,16 @@ class TeamWidget extends Component {
                 :
                 <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
                      <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
+                     {
+                        this.state.fullTeam?
+                        <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
+                            <Icon name='md-checkmark' style={locStyle.icon} /> 
+                        </View>
+                        :
                         <View style={locStyle.btnCircle}>
                             <Text style={locStyle.iconText}>{this.props.iconText}</Text>
                         </View>
+                     }                        
                         <View style={locStyle.titleText}>
                             <Text style={locStyle.btnText}>
                                  {this.props.text}
@@ -198,5 +205,6 @@ export default connect((state) => {
     return {
         teamData: state.squad.teamData,
         userProfile: state.squad.userProfile,
+        tactics: state.tactics.tacticsData,
     }
 },  bindAction)(TeamWidget)
