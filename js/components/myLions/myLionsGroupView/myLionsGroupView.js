@@ -226,7 +226,7 @@ class MyLionsGroupView extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={group_name}  iconPress={this.iconPress}/>
+            <HeaderTitleWithModal title={group_name.toUpperCase()}  iconPress={this.iconPress}/>
             <GrayContainer >
               <ExpertRank data={userProfile}  />
               <RankList data={data} title={'GROUP LADDER'} />
