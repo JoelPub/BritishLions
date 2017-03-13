@@ -116,9 +116,9 @@ export default TacticsWidget
 TacticsWidget.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func,
-  fullTactic: PropTypes.bool
+  fullTactic: PropTypes.object
 }
 TacticsWidget.defaultProps = {
   onPress: ()=>{},
-  fullTactic: false
+  fullTactic: null
 }
