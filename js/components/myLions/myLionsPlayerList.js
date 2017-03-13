@@ -76,7 +76,7 @@ class MyLionsPlayerList extends Component {
                                 height = {styleVar.deviceWidth / 2}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={rowData.image} 
+                                    source={{uri:rowData.image}} 
                                     style={styles.gridBoxImg}
                                     key={rowID}/>
                             </ImagePlaceholder>
@@ -108,7 +108,7 @@ class MyLionsPlayerList extends Component {
                     <View style={styles.searchImg}>
                         <Image transparent
                             resizeMode='stretch'
-                            source={rowData.image}
+                            source={{uri:rowData.image}}
                             style={styles.playerImg}
                             key={rowID}
                              />
@@ -204,19 +204,6 @@ class MyLionsPlayerList extends Component {
                 countryid: this.union.id,
                 isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
             })
-            if(typeof image==='string') {
-               if (image.indexOf('125.gif') > 0) {
-                    players[index].image = require(`../../../contents/unions/nations/125.png`)
-                } else if (image.indexOf('126.gif') > 0) {
-                    players[index].image = require(`../../../contents/unions/nations/126.png`)
-                } else if (image.indexOf('127.gif') > 0) {
-                    players[index].image = require(`../../../contents/unions/nations/127.png`)
-                } else if (image.indexOf('128.gif') > 0) {
-                    players[index].image = require(`../../../contents/unions/nations/128.png`)
-                } else {
-                    players[index].image = {uri:image}
-                } 
-            }
             if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8') players[index].position='Back Row'
             if(strToUpper(item.position)==='Utility Back') players[index].position='Full Back'
 

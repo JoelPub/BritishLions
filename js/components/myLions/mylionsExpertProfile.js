@@ -102,19 +102,7 @@ class MyLionsExpertProfile extends Component {
                              Object.assign(player, {'countryid':u,
                                                     logo: union.image,
                                                     country: union.displayname.toUpperCase()})
-                             if(typeof player.image==='string') {
-                                if (player.image.indexOf('125.gif') > 0) {
-                                     player.image = require(`../../../contents/unions/nations/125.png`)
-                                 } else if (player.image.indexOf('126.gif') > 0) {
-                                     player.image = require(`../../../contents/unions/nations/126.png`)
-                                 } else if (player.image.indexOf('127.gif') > 0) {
-                                     player.image = require(`../../../contents/unions/nations/127.png`)
-                                 } else if (player.image.indexOf('128.gif') > 0) {
-                                     player.image = require(`../../../contents/unions/nations/128.png`)
-                                 } else {
-                                     player.image = {uri:player.image}
-                                 }
-                             }
+                             
                              items.push(player)
                          }
                      })

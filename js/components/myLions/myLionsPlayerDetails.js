@@ -66,7 +66,7 @@
 //            height = {styleVar.deviceWidth / 3}>
 //            <Image transparent
 //                resizeMode='contain'
-//                source={data.image}
+//                source={{uri:data.image}}
 //                style={styles.playerImage} />
 //        </ImagePlaceholder>
 //        <View style={styles.playerNameTextWrapper}>
@@ -741,7 +741,7 @@
 //                    <ScrollView bounces={false} ref={(scrollView) => { this._scrollView = scrollView }}>
 //                        <View style={styles.header}>
 //                            <View style={styles.playerPic}>
-//                                <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
+//                                <Image resizeMode='cover' source={{uri:this.props.detail.image}} style={styles.playerPicImg}/>
 //                                <Image source={require('../../../images/redCircle.png')} style={styles.playerPicCover}/>
 //                            </View>
 //

@@ -101,4 +101,9 @@ module.exports = styleSheetCreate({
     greenBackground: {
         backgroundColor:'rgb(3,79,38)'
     },
+    loadingGif: {
+        width:75,
+        height:75,
+        alignSelf:'center',
+    }
 })
