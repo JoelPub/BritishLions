@@ -119,7 +119,7 @@ class MyLionsCompetitionGameResults extends Component {
                 return(
                     <View style={[styles.modalContent]}>
                         <Text style={styles.modalContentTitleText}>PLAYING...</Text>
-                        <Image style={{width:50,height:50,alignSelf:'center',}} source={loadingImage} />    
+                       <Image style={styles.loadingGif} source={loadingImage} />    
                     </View>
                 )
                 break
