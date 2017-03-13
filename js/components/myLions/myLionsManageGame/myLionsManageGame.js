@@ -220,7 +220,7 @@ class MyLionsCompetitionGameResults extends Component {
                         <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&styles.greenBackground]}>
                             <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
                         </View>
-                        <View style={[styles.btns,this.props.tactics&&styles.greenBackground]}>
+                        <View style={[styles.btns,styles.manageTeam,this.props.tactics&&styles.greenBackground]}>
                             <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]} >

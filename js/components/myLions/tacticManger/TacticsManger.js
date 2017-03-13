@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,Alert} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -118,6 +118,7 @@ class TacticsManger extends Component {
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
       dropDownValue: 'Select Player',
+      dropDownIndex: 0,
       replacementsSliderValue: 3,
       playStyleSliderValue: 1
     }
@@ -129,6 +130,7 @@ class TacticsManger extends Component {
   dropDownOnSelect = (index,value) => {
     this.setState({
       dropDownValue: value,
+      dropDownIndex: index
     })
   }
   onValuesChange = (value) => {
@@ -143,18 +145,34 @@ class TacticsManger extends Component {
   }
   saveOnPress = () =>{
 
-    let { dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
+    let { dropDownValue, replacementsSliderValue,playStyleSliderValue,dropDownIndex} = this.state
     let {userProfile,teamToShow} = this.props
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
+    let resultArr = this.handStartData(teamToShow)
+    let starPlayer = null
+    if (dropDownIndex===0) {
+      Alert.alert(
+        'Warning',
+        'Please select a star player',
+        [{text: 'Dismiss'}]
+      )
+      return
+    }else {
+      starPlayer = resultArr[dropDownIndex]
+    }
 
-    
    let pacticsData = {
-      starPlayer: dropDownValue,
+      starPlayer: starPlayer,
       tactic: TacticData.value,
       replacements: ReplacementsData.value
     }
     this.props.setTacticsToSave (pacticsData)
+    Alert.alert(
+      'Success',
+      'You have been saved successfully',
+      [{text: 'Dismiss'}]
+    )
   }
   iconPress =() => {
     this.setState({
@@ -169,14 +187,30 @@ class TacticsManger extends Component {
     if(!teamToShow.backs) return result
     teamToShow.backs.map(
       (item)=>{
-        result.push(item.name)
+        result.push(item.info.name)
       }
     )
     teamToShow.forwards.map((item)=>{
-       result.push(item.name)
+       result.push(item.info.name)
      })
      return result
 
+  }
+  _showError(error) {
+    if(!this.state.isNetwork) return
+
+    if(error === 'Please make sure that you\'re connected to the network.') {
+      this.setState({
+        isNetwork: false
+      })
+    }
+    if(error !== ''){
+      Alert.alert(
+        'An error occured',
+        error,
+        [{text: 'Dismiss'}]
+      )
+    }
   }
   handStartData = (teamToShow) => {
     let result = []
