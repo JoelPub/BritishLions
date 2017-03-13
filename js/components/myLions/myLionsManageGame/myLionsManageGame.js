@@ -17,6 +17,7 @@ import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import Versus from '../components/versus'
 import TeamWidget from '../components/teamWidget'
+import Tactics from '../components/TacticWidget'
 import LinearGradient from 'react-native-linear-gradient'
 import { setTacticsToRemove } from '../../../actions/tactics'
 
@@ -220,8 +221,8 @@ class MyLionsCompetitionGameResults extends Component {
                         <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&styles.greenBackground]}>
                             <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
                         </View>
-                        <View style={[styles.btns,this.props.tactics&&styles.greenBackground]}>
-                            <TeamWidget text={'TACTICS'}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
+                        <View style={[styles.btns,styles.manageTeam,this.props.tactics&&styles.greenBackground]}>
+                            <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]} >
                              <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)}/>    
