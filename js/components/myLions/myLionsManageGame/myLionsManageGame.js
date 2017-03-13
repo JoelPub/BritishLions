@@ -218,13 +218,13 @@ class MyLionsCompetitionGameResults extends Component {
                         </Grid>
 
                         
-                        <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&styles.greenBackground]}>
+                        <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]}>
                             <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
                         </View>
-                        <View style={[styles.btns,styles.manageTeam,this.props.tactics&&styles.greenBackground]}>
+                        <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]}>
                             <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
-                        <View style={[styles.btns,this.props.teamStatus&&styles.greenBackground]} >
+                        <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]} >
                              <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)}/>    
                         </View>
                         <LionsFooter isLoaded={true} />

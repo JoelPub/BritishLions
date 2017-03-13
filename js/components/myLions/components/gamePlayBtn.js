@@ -48,23 +48,26 @@ class GamePlayBtn extends Component {
         super(props)
         this.getGameResultUrl='http://biltestapp.azurewebsites.net/GetGameResult'
         this.state = {
-            isMyTeamPlayerUpdating: false,
-            inTeam: false,
-            teamDataFeed: TeamModel().toJS(),
-            isMyTeamPlayerSubmitting: false,
-            btnSubmit:'',
+            isActive:this.props.teamStatus&&this.props.tactics!==null
     	}
     }
 
 	render() {
         return (
-            <ButtonFeedback style={[styles.playBtn,this.props.teamStatus&&styles.playBtnActive]} disabled={!this.props.teamStatus} onPress={()=>this.playGame()}>
-                    <Text style={[styles.textPlay,this.props.teamStatus&&styles.textPlayActive]}>
+            <ButtonFeedback style={[styles.playBtn,this.state.isActive&&styles.playBtnActive]} disabled={!this.state.isActive} onPress={()=>this.playGame()}>
+                    <Text style={[styles.textPlay,this.state.isActive&&styles.textPlayActive]}>
                         PLAY GAME
                     </Text>
             </ButtonFeedback>
         )
 	}
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps.teamStatus',nextProps.teamStatus)
+        console.log('nextProps.tactics',nextProps.tactics)
+        console.log('this.props.teamStatus',this.props.teamStatus)
+        console.log('this.props.tactics',this.props.tactics)
+        this.setState({isActive:nextProps.teamStatus&&nextProps.tactics!==null})
+    }
 
     playGame() {
        this.props._setModalVisible(true,'loading')
@@ -79,9 +82,9 @@ class GamePlayBtn extends Component {
                 "ground_id":345,
                 "team":this.props.teamData,
                 "tactics":{
-                    "boost_player":12334,
-                    "interchange":"75",
-                    "play_style":"balanced"
+                    "boost_player":this.props.tactics.starPlayer.info.id,
+                    "interchange":this.props.tactics.starPlayer.replacements,
+                    "play_style":this.props.tactics.starPlayer.tactic
                 }
             },
             method: 'post',
@@ -117,6 +120,7 @@ export default connect((state) => {
     return {
         teamData: state.squad.teamData,
         teamStatus: state.squad.teamStatus,
+        tactics: state.tactics.tacticsData,
         userProfile: state.squad.userProfile,
     }
 },  bindAction)(GamePlayBtn)
