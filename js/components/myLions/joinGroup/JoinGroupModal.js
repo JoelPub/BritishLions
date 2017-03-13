@@ -55,8 +55,8 @@ class JoinGroupModal extends Component {
     {
       case 'join':
       {
-        PageData.title = 'JOIN GROUP'
-        PageData.contentText =  'Enter your group invite code below to join.'
+        PageData.title = 'JOIN LEAGUE'
+        PageData.contentText =  'Enter your league invite code below to join.'
         PageData.subTitle = ''
         PageData.subContentText = ''
       }
@@ -64,7 +64,7 @@ class JoinGroupModal extends Component {
       case 'error':
       {
         PageData.title = 'ERROR'
-        PageData.contentText =  'Something went wrong when trying to join the group. Please try again later.'
+        PageData.contentText =  'Something went wrong when trying to join the league. Please try again later.'
         PageData.subTitle = ''
         PageData.subContentText = ''
       }
