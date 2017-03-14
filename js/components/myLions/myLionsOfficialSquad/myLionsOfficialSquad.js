@@ -23,13 +23,14 @@ import { alertBox } from '../../utility/alertBox'
 import refresh from '../../../themes/refresh-control'
 import { drillDown} from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
-import { removeToken, getUserId } from '../../utility/asyncStorageServices'
+import { removeToken, getUserId ,getAccessToken} from '../../utility/asyncStorageServices'
+
 import { service } from '../../utility/services'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { setOfficialSquadToShow } from '../../../actions/squad'
-import { getAssembledUrl } from '../../utility/urlStorage'
+import { getAssembledUrl,actionsApi } from '../../utility/urlStorage'
 import OfficialSquadModel from  '../../../modes/Squad/OfficialSquadModel'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
@@ -118,7 +119,11 @@ class MyLionsOfficialSquad extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getSquad(), 600)        
+        //setTimeout(() => this._getSquad(), 600)
+        let {userProfile} = this.props
+        getAccessToken().then(token=>{
+            this._getSquad(token,userProfile.userID)
+        })
     }
     
     _replaceRoute(route) {
@@ -142,17 +147,22 @@ class MyLionsOfficialSquad extends Component {
         )
     }
 
-    _getSquad(){
+    _getSquad(token,userId){
       console.log('_getSquad')
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   let optionsOfficialSquad = {
-                      url: 'https://api.myjson.com/bins/14iqg1',
-                      data: {id:this.state.userID},
+                      url: actionsApi.eyc3GetOfficalSquad,
+                      data: {
+                          id:userId,
+                          access_token: token
+                            },
                       onAxiosStart: null,
                       onAxiosEnd: null,
-                      method: 'get',
+                      method: 'post',
+                      channel: 'EYC3',
+                      isQsStringify:false,
                       onSuccess: (res) => {
                           if(res.data) {
                                   console.log('res.data',res.data)
@@ -194,7 +204,8 @@ export default connect((state) => {
     return {
         drillDownItem: state.content.drillDownItem,
         officialSquadToShow: state.squad.officialSquadToShow,
-        netWork: state.network
+        netWork: state.network,
+        userProfile:state.squad.userProfile
     }
 }, bindAction)(MyLionsOfficialSquad)
 
