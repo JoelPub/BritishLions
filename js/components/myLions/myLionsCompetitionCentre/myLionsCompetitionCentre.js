@@ -170,7 +170,7 @@ class MyLionsCompetitionCentre extends Component {
                                 <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]} onPress={() => this.props.pushNewRoute('competitionLadder')}>
                                     <Icon name='ios-trophy' style={styles.roundButtonIcon} />
                                     <Text style={styles.roundButtonLabel}>
-                                        COMPETITION LADDER
+                                        LEADERBOARD
                                     </Text>
                                 </ButtonFeedback>
                             </View>
