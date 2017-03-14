@@ -49,6 +49,9 @@ const locStyle = styleSheetCreate({
             marginBottom: -7
         }
     },
+    backRound:{
+        backgroundColor: 'rgb(38,38,38)',
+    },
     summary: {
         paddingVertical: 20
     },
@@ -312,8 +315,18 @@ class MyLionsCompetitionGameResults extends Component {
                                         <Summary data={this.state.resultInfo} />
                                     </SummaryCardWrapper>
                                 </View>
-
                                 <View style={[styles.guther, locStyle.borderTop]}>
+                                    <ButtonFeedback
+                                      rounded
+                                      style={[styles.roundButton, {marginBottom: 30},,locStyle.backRound]}
+                                      onPress={() => this.props.pushNewRoute('myLionsOfficialSquad')}>
+                                        <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
+                                               style={styles.roundButtonImage}>
+                                        </Image>
+                                        <Text style={styles.roundButtonLabel}>
+                                            BACK TO ROUND
+                                        </Text>
+                                    </ButtonFeedback>
                                     <ButtonFeedback 
                                         rounded 
                                         style={[styles.roundButton, {marginBottom: 30}]}
@@ -328,6 +341,7 @@ class MyLionsCompetitionGameResults extends Component {
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
+                        <LionsFooter isLoaded={true} />
                     </ScrollView>
 
                     <SquadModal 
@@ -338,7 +352,7 @@ class MyLionsCompetitionGameResults extends Component {
                                 <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
                             </View>
                     </SquadModal>
-                        
+
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
                 </View>
