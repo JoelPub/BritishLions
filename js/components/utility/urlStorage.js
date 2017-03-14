@@ -45,6 +45,8 @@ const GOODFORM_USERS_URL = '/users'
 const EYC3_GETOFFICALSQUAD_URL_NAME = 'EYC3GetOfficalSquad'
 const EYC3_GETOFFICALSQUAD_URL = '/GetOfficalSquad'
 
+const EYC3_GETCOMPETITIONCENTREINFO_URL_NAME = 'EYC3GetCompetitionCentreInfo'
+const EYC3_GETCOMPETITIONCENTREINFO_URL = '/GetCompetitionCentreInfo'
 export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
@@ -77,6 +79,8 @@ export function getAssembledUrl(urlName) {
             return GODDFORM_BASE_URL + GOODFORM_USERS_URL
         case EYC3_GETOFFICALSQUAD_URL_NAME:
             return EYC3_BASE_URL_DUMMY + EYC3_GETOFFICALSQUAD_URL
+        case EYC3_GETCOMPETITIONCENTREINFO_URL_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_GETCOMPETITIONCENTREINFO_URL
     }
 }
 /*R3*/
@@ -132,7 +136,9 @@ export const actionsApi = {
     eyc3CreateGroup: getGroupUrl(EYC3_POST_CREATEAGROUP_NAME),
     eyc3JoinGroup:getGroupUrl(EYC3_POST_JOINAGROUP_NAME),
     eyc3LeaveGroup: getGroupUrl(EYC3_POST_LEAVEAGROUP_NAME),
-    eyc3GetOfficalSquad: getAssembledUrl(EYC3_GETOFFICALSQUAD_URL_NAME)
+    eyc3GetOfficalSquad: getAssembledUrl(EYC3_GETOFFICALSQUAD_URL_NAME),
+    eyc3GetCompetitionCentreInfo: getAssembledUrl(EYC3_GETCOMPETITIONCENTREINFO_URL_NAME),
+
 
 }
 

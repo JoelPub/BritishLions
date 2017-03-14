@@ -20,7 +20,8 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { setUserProfile } from '../../../actions/squad'
-import { getUserId, removeToken } from '../../utility/asyncStorageServices'
+import { getUserId, removeToken ,getAccessToken} from '../../utility/asyncStorageServices'
+import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
 
 const locStyle = styleSheetCreate({
@@ -214,7 +215,10 @@ class MyLionsCompetitionCentre extends Component {
     _renderLogic(isLogin) {
         if (isLogin) { // user is logged in
             this.setState({isLoaded:false},()=>{
-                this.getInfo()
+                let {userProfile} = this.props
+                getAccessToken().then(token=>{
+                    this.getInfo(token,userProfile.userID)
+                })
             })
         }
     }
@@ -223,17 +227,22 @@ class MyLionsCompetitionCentre extends Component {
     componentWillMount() {
         // this.setState({isLoaded:false},()=>{
         //     this.getInfo()
-        // })
+        // })id
     }
 
-    getInfo(){
+    getInfo(token,userId){
         console.log('getInfo')
         let optionsInfo = {
-            url: 'https://api.myjson.com/bins/thhlh',
-            data: {id:this.state.userID},
+            url: actionsApi.eyc3GetCompetitionCentreInfo,
+            data: {
+              access_token:token,
+              id:userId
+            },
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'get',
+            method: 'post',
+            channel: 'EYC3',
+            isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
                     console.log('res.data',res.data)
