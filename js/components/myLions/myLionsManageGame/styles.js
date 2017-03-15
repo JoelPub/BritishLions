@@ -90,6 +90,23 @@ module.exports = styleSheetCreate({
             lineHeight: 26
         }
     },
+    modalContentTitleTextLeft: {
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        lineHeight: 28,
+        color: '#FFF',
+        marginTop:28
+    },
+    modalContentTextLeft: {
+        fontFamily: 'Helvetica Neue',
+        fontSize: 16,
+        lineHeight: 22,
+        color: '#FFF',
+        marginVertical:0,
+        android: {
+            lineHeight: 26
+        }
+    },
     btns: {
         paddingHorizontal: 30,
         paddingBottom:24,
