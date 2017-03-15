@@ -198,7 +198,7 @@ class MyLionsCompetitionGameResults extends Component {
                                                 <View style={gridBoxTouchable}>
                                                     <View style={[locStyle.header]}>
                                                         <Text style={[locStyle.headerText, locStyle.headerText2]}>
-                                                            {strToUpper(item.headerLabel)}
+                                                            {strToUpper(item.headerLabel==='referees'?'referee':item.headerLabel)}
                                                         </Text>
                                                     </View>
                                                     <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
