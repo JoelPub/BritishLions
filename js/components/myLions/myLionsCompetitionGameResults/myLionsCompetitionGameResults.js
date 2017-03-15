@@ -15,6 +15,9 @@ import LionsFooter from '../../global/lionsFooter'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 import { strToUpper } from '../../utility/helper'
+import { actionsApi } from '../../utility/urlStorage'
+import { getAccessToken} from '../../utility/asyncStorageServices'
+
 import Versus from '../components/versus'
 import SummaryCardWrapper from '../components/summaryCardWrapper'
 import SquadModal from '../../global/squadModal'
@@ -362,18 +365,28 @@ class MyLionsCompetitionGameResults extends Component {
 
     componentWillMount() {
         this.setState({isLoaded:false},()=>{
-            this.getInfo()
+            getAccessToken().then(token=>{
+                this.getInfo(token)
+            })
         })
     }
 
-    getInfo(){
+    getInfo(token){
         console.log('getInfo')
         let optionsInfo = {
-            url: 'https://api.myjson.com/bins/xlvvp',
-            data: {id:this.state.userID},
+            url: actionsApi.eyc3GetHistoricalGameResult,
+            data:
+             {
+                access_token: token,
+                id : this.props.userProfile.userID,
+                round_id:1,
+                game_id:3
+             },
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'get',
+            method: 'post',
+            channel: 'EYC3',
+            isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
                     console.log('res.data',res.data)
@@ -406,5 +419,6 @@ export default connect((state) => {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
         netWork: state.network,
+        tactics: state.tactics.tacticsData,
     }
 },  bindAction)(MyLionsCompetitionGameResults)
