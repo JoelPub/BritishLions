@@ -48,7 +48,7 @@ class Landing extends Component {
         this.state = {
             apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
             apiGalleriesUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php',
-            apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY',
+            apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyDZ_Oe-ZMxv-3vL3SX3BB2KE5wKVwkF64U',
             isLoaded: false,
             isFetchContent: false,
             isProfileSummaryLoaded: false,

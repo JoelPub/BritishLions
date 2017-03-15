@@ -114,7 +114,7 @@ class DetailsLionsTV extends Component {
                         <YouTube
                         ref='youtubePlayer'
                         videoId= {this.state.videoId}
-                        apiKey='AIzaSyAz7Z48Cl9g5AgCd1GJRiIKwM9Q3Sz2ifY'
+                        apiKey='AIzaSyDZ_Oe-ZMxv-3vL3SX3BB2KE5wKVwkF64U'
                         hidden={false}
                         rel={true}
                         showinfo={false}
