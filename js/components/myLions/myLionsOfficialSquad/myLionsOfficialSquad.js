@@ -98,7 +98,7 @@ class MyLionsOfficialSquad extends Component {
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <Text style={[styles.headerTitle,styles.squadTitle]}>2017 OFFICIAL SQUAD</Text>
+                                <Text style={[styles.headerTitle,styles.squadTitle]}>2017 LIONS SQUAD</Text>
                                 <OfficialSquadList squadDatafeed={this.props.officialSquadToShow} pressImg={this._showDetail.bind(this)}/>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
                                     <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
