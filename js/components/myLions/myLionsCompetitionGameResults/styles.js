@@ -49,6 +49,9 @@ module.exports = styleSheetCreate({
         fontSize: 28,
         lineHeight: 28
     },
+    backRound:{
+        backgroundColor: 'rgb(38,38,38)',
+    },
     roundButton: {
         height: 50,
         backgroundColor: styleVar.colorScarlet,
@@ -67,6 +70,14 @@ module.exports = styleSheetCreate({
         android:{
             marginBottom: 1,
         }
+    },
+    roundButtonImage: {
+        marginBottom: 5,
+        android:{
+            marginBottom: 1,
+        },
+        width:20,
+        height:31
     },
     roundButtonLabel: {
         backgroundColor: 'transparent',
