@@ -82,6 +82,7 @@ module.exports = styleSheetCreate({
     height:50,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection:'row'
   },
   saveText: {
     color: 'rgb(255, 255, 255)',
@@ -90,7 +91,6 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     textAlign:'center',
     width:80,
-    paddingTop:15
   },
   modalContent: {
     paddingHorizontal: 28,
