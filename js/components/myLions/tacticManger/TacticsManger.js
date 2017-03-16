@@ -113,11 +113,21 @@ class TacticsManger extends Component {
     super(props)
     this._scrollView = ScrollView
     this.isUnMounted = false
+    let dropDownValue = 'Select Player'
+    if (this.props.tactics===null) {
+      dropDownValue ='Select Player'
+    }else {
+      console.log(this.props.tactics)
+
+      console.log(this.props.tactics.tacticsData)
+      dropDownValue =this.props.tactics.starPlayer.info.name
+    }
+
     this.state = {
       isLoaded: false,
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
-      dropDownValue: 'Select Player',
+      dropDownValue: dropDownValue,
       dropDownIndex: 0,
       replacementsSliderValue: 3,
       playStyleSliderValue: 1
@@ -224,7 +234,7 @@ class TacticsManger extends Component {
   }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
-    let {userProfile,teamToShow} = this.props
+    let {userProfile,teamToShow,tactics} = this.props
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let dropDownData = this.handleDropDownData(teamToShow)
