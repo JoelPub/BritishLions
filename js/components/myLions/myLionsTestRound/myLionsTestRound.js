@@ -44,6 +44,7 @@ class MyLionsTestRound extends Component {
     constructor(props){
         super(props)
         this._scrollView = ScrollView
+        this.saveSquadUrl='http://biltestapp.azurewebsites.net/SaveUserCustomizedSquad'
         this.state={
             isLoaded: false,
             modalVisible: false,
@@ -177,7 +178,7 @@ class MyLionsTestRound extends Component {
            onAxiosEnd: () => {
            },
            onSuccess: (res) => {
-                this.props.pushNewRoute('myLionsTestRound')
+                this.props.pushNewRoute('myLionsTestRoundSubmit')
            },
            onError: null,
            onAuthorization: null,

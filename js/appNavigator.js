@@ -37,6 +37,7 @@ import MyLionsPlayerProfile from './components/myLions/myLionsPlayerProfile'
 import MyLionsCoachProfile from './components/myLions/myLionsCoachProfile'
 import MyLionsShareView from './components/myLions/myLionsShareView'
 import MyLionsShareGameResult from './components/myLions/myLionsShareGameResult'
+import MyLionsShareTestRound from './components/myLions/myLionsShareTestRound'
 import MyLionsUnionsList from './components/myLions/myLionsUnionsList'
 import MyLionsSquad from './components/myLions/myLionsSquad'
 import MyLionsOfficialSquad from './components/myLions/myLionsOfficialSquad'
@@ -46,6 +47,7 @@ import MyLionsCompetitionCentre from './components/myLions/myLionsCompetitionCen
 import MyLionsCompetitionGameListing from './components/myLions/myLionsCompetitionGameListing'
 import MyLionsManageTeam from './components/myLions/myLionsManageTeam'
 import MyLionsTestRound from './components/myLions/myLionsTestRound'
+import MyLionsTestRoundSubmit from './components/myLions/myLionsTestRoundSubmit'
 import MyLionsManageGame from './components/myLions/myLionsManageGame'
 import MyLionsCompetitionGameResults from './components/myLions/myLionsCompetitionGameResults'
 import MyLionsTactics from './components/myLions/tacticManger'
@@ -350,6 +352,8 @@ class AppNavigator extends Component {
                 return <MyLionsManageTeam navigator={navigator} />
             case 'myLionsTestRound':
                 return <MyLionsTestRound navigator={navigator} />
+            case 'myLionsTestRoundSubmit':
+                return <MyLionsTestRoundSubmit navigator={navigator} />
             case 'myLionsTactics':
                 return <MyLionsTactics navigator={navigator} />
             case 'myLionsSelectPlayerListing':
@@ -362,6 +366,8 @@ class AppNavigator extends Component {
                 return <MyLionsShareView navigator={navigator} />
             case 'myLionsShareGameResult' :
                 return <MyLionsShareGameResult navigator={navigator} />
+            case 'myLionsShareTestRound' :
+                return <MyLionsShareTestRound navigator={navigator} />
             case 'competition':
                 return <Competition navigator={navigator} />
             case 'tours':
