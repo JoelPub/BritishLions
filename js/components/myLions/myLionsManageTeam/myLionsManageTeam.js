@@ -95,10 +95,10 @@ class MyLionsManageTeam extends Component {
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                        <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
                                 <ButtonFeedback 
                                     style={styles.pageTitleBtnIconRight} 
                                     onPress={() => { this.setState({modalVisible: true}) }}>

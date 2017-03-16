@@ -27,6 +27,7 @@ import styles from './styles'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import { service } from '../../utility/services'
+import { drillDown ,shareReplace} from '../../../actions/content'
 
 
 const locStyle = styleSheetCreate({
@@ -191,7 +192,7 @@ const locStyle = styleSheetCreate({
     }
 })
 
-const Summary = ({data}) => (
+const Summary = ({data,shareView}) => (
     <View style={locStyle.summary}>
         <View style={locStyle.summaryGuther}>
             <View style={[locStyle.summaryRow, {marginBottom: 20}]}>
@@ -246,6 +247,7 @@ const Summary = ({data}) => (
             <View style={locStyle.summaryRow2}>
                 <ButtonFeedback
                     rounded label='Share'
+                    onPress={shareView}
                     style={[styles.button, locStyle.summaryShare]}>
                         <Text style={locStyle.summaryShareText}>SHARE</Text>
                         <Icon name='md-share-alt' style={locStyle.summaryShareIcon} />
@@ -271,6 +273,16 @@ class MyLionsCompetitionGameResults extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+    goShare = () => {
+        //console.log(this.state.rating)
+        let data = {
+            gameData:this.state.drillDownItem,
+            userData:this.props.userProfile,
+            teamDatafeed: this.props.teamToShow,
+            resultInfo:this.state.resultInfo,
+        }
+        this.props.drillDownItemShare(data, 'myLionsShareGameResult', false, true)
     }
 
     render() {
@@ -315,7 +327,7 @@ class MyLionsCompetitionGameResults extends Component {
                                 
                                 <View style={styles.guther}>
                                     <SummaryCardWrapper>
-                                        <Summary data={this.state.resultInfo} />
+                                        <Summary data={this.state.resultInfo} shareView={this.goShare}/>
                                     </SummaryCardWrapper>
                                 </View>
                                 <View style={[styles.guther, locStyle.borderTop]}>
@@ -409,7 +421,8 @@ class MyLionsCompetitionGameResults extends Component {
 
 function bindAction(dispatch) {
     return {
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }
 
@@ -420,5 +433,6 @@ export default connect((state) => {
         userProfile: state.squad.userProfile,
         netWork: state.network,
         tactics: state.tactics.tacticsData,
+        teamToShow: state.squad.teamToShow,
     }
 },  bindAction)(MyLionsCompetitionGameResults)

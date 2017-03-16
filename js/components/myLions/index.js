@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator } from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator, Modal } from 'react-native'
 import { isFirstLogIn, getUserId,getUserFullName } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
@@ -19,7 +19,6 @@ import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { pushNewRoute } from '../../actions/route'
-import { Modal } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
@@ -98,9 +97,11 @@ class MyLions extends Component {
             currentPage: 0,
             isLoaded:true,
             userID:'',
-            isNetwork: true
+            isNetwork: true,
+            btnDisable:false,
+            totalPages:3,
+            onBordingModalVisible:false,
         }
-        this.totalPages = 3
         this.pageWindow=[]
         this.isUnMounted = false
         this._scrollView = ScrollView
@@ -150,21 +151,27 @@ class MyLions extends Component {
     }
 
     prev(){
-        this.setState({
-            swiperWindow: this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
-            currentPage:this.state.currentPage-1
-        },()=>{
-            this.refs['swiper'].scrollBy(-1,true)
+        this.setState({btnDisable:true},()=>{
+            this.setState({
+                swiperWindow: this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
+                currentPage:this.state.currentPage-1
+            },()=>{
+                this.setState({currentPage:this.state.currentPage-1},()=>{this.refs['swiper'].scrollBy(-1,true)})                
+            }) 
         })
+        
     }
 
     next(){
-        this.setState({
-            swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
-            currentPage:this.state.currentPage+1
-        },()=>{
-            this.refs['swiper'].scrollBy(1,true)
+        this.setState({btnDisable:true},()=>{
+            this.setState({
+                swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
+                currentPage:this.state.currentPage+1
+            },()=>{
+                this.setState({currentPage:this.state.currentPage+1},()=>{this.refs['swiper'].scrollBy(1,true)})                
+            })
         })
+        
     }
 
     _setModalVisible=(visible) => {
@@ -183,8 +190,8 @@ class MyLions extends Component {
     }
 
     measurePage(page,event) {
-        // console.log('measurePage')
-        if(this.pageWindow.length===this.totalPages) return
+        console.log('measurePage')
+        if(this.pageWindow.length===this.state.totalPages) return
         const { x, width, height, } = event.nativeEvent.layout
         let i=this.pageWindow.findIndex((value)=>value.index===page)
         // console.log('page',page)
@@ -204,11 +211,13 @@ class MyLions extends Component {
     }
 
     scrollEnd(e, state, context){
-        // console.log('scrollEnd')
+        console.log('scrollEnd')
        
             this.setState({
                 currentPage:state.index,
                 swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size
+            },()=>{
+                setTimeout(()=>this.setState({btnDisable:false}),100)
             })   
     }
 
@@ -264,7 +273,7 @@ class MyLions extends Component {
                         },
                         isRequiredToken: true
                     }
-                    service(optionsTeam)
+                    this.setState({onBordingModalVisible:true},()=>service(optionsTeam))
                 }
                 else {
                     this.getProfile()
@@ -275,6 +284,7 @@ class MyLions extends Component {
 
     getRating(squadData){
         // console.log('getRating',squadData)
+        this.setState({onBordingModalVisible:false})
         let optionsSquadRating = {
             url: 'http://biltestapp.azurewebsites.net/GetOnBoardingInfo',
             data: Object.assign(squadData,{id:this.state.userID}),
@@ -296,7 +306,7 @@ class MyLions extends Component {
                             "Click next to discover what's new in this version."
                             ]
                         })
-                        this.totalPages = Data.length
+                        this.setState({totalPages:Data.length})
                 }
                 this.setState({modalVisible:true})
                 this.getProfile()
@@ -325,7 +335,7 @@ class MyLions extends Component {
             method: 'get',
             onSuccess: (res) => {
                 if(res.data) {
-                    console.log('res.data',res.data)
+                    // console.log('res.data',res.data)
                         getUserFullName().then((userName) => {                            
                             let initName=''
                             userName.split(' ').map((value,index)=>{
@@ -357,6 +367,9 @@ class MyLions extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+    _onBordingModalVisible(visible) {
+        this.setState({onBordingModalVisible:visible})
     }
 
     render() {
@@ -442,20 +455,20 @@ class MyLions extends Component {
                                                         })
                                                     }
                                                     {
-                                                        (index===this.totalPages-1)&&<ButtonFeedback rounded label='COMPETITION CENTRE' onPress={() => [this.props.pushNewRoute('myLionsCompetitionCentre'),this._setModalVisible(false)]} style={[styles.button, styles.btnonBoardSquard]}  />
+                                                        (index===this.state.totalPages-1)&&<ButtonFeedback rounded disabled={this.state.btnDisable} label='COMPETITION CENTRE' onPress={() => [this.props.pushNewRoute('myLionsCompetitionCentre'),this._setModalVisible(false)]} style={[styles.button, styles.btnonBoardSquard]}  />
                                                     }
                                                     <View style={styles.onboardingPageBtns}>
                                                         {
                                                             index===0?
-                                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
+                                                            <ButtonFeedback rounded disabled={this.state.btnDisable} onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
                                                             :
-                                                            <ButtonFeedback rounded onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
+                                                            <ButtonFeedback rounded disabled={this.state.btnDisable} onPress={()=>this.prev()} label='BACK' style={styles.btnBack} />
                                                         }
                                                         {
-                                                            index===this.totalPages-1?
-                                                            <ButtonFeedback rounded onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
+                                                            index===this.state.totalPages-1?
+                                                            <ButtonFeedback rounded disabled={this.state.btnDisable} onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipRight} />
                                                             :
-                                                            <ButtonFeedback rounded onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
+                                                            <ButtonFeedback rounded disabled={this.state.btnDisable} onPress={()=>this.next()} label='NEXT' style={styles.btnNext}  />
                                                         }
                                                     </View>
                                                 </View>
@@ -496,6 +509,14 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
+                    <Modal
+                        visible={this.state.onBordingModalVisible}
+                        transparent={true}
+                        onRequestClose={()=>this._onBordingModalVisible(false)}>
+                            <View style={styles.onBoardingModal}>
+                                <ActivityIndicator style={loader.centered} size='small' />
+                            </View>
+                    </Modal>
                 </View>
             </Container>
         )

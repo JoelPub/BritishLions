@@ -135,8 +135,8 @@ class MyLionsCompetitionGameResults extends Component {
             case 'info' :
                 return (
                     <View style={[styles.modalContent]}>
-                        <Text style={styles.modalContentTitleText}>MANAGE GAME</Text>
-                        <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                        <Text style={styles.modalContentTitleTextLeft}>MANAGE GAME</Text>
+                        <Text style={styles.modalContentTextLeft}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
                     </View>
                 )
                 break
@@ -198,7 +198,7 @@ class MyLionsCompetitionGameResults extends Component {
                                                 <View style={gridBoxTouchable}>
                                                     <View style={[locStyle.header]}>
                                                         <Text style={[locStyle.headerText, locStyle.headerText2]}>
-                                                            {strToUpper(item.headerLabel)}
+                                                            {strToUpper(item.headerLabel==='referees'?'referee':item.headerLabel)}
                                                         </Text>
                                                     </View>
                                                     <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
