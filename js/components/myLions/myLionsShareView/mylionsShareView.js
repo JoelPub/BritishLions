@@ -15,6 +15,7 @@ import styles from './styles'
 import shapes from '../../../themes/shapes'
 import styleVar from '../../../themes/variable'
 import loader from '../../../themes/loader-position'
+import { alertBox } from '../../utility/alertBox'
 
 import LoginRequire from '../../global/loginRequire'
 import LionsHeader from '../../global/lionsHeader'
