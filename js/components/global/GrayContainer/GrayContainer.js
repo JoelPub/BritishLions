@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component, Children } from 'react'
+import React, { Component, Children, PropTypes } from 'react'
 import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -56,7 +56,7 @@ export default class GrayContainer extends Component {
   render() {
     return (
       <View style={[styles.scoreCard]} >
-        <View style={styles.semiCard}>
+        <View style={[styles.semiCard,this.props.semiCardStyle]}>
           {this.props.children}
           <View style={styles.semiCardFooter}>
             <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
@@ -66,5 +66,7 @@ export default class GrayContainer extends Component {
       </View>
     )
   }
-
+}
+GrayContainer.propTypes = {
+  semiCardStyle: PropTypes.any
 }

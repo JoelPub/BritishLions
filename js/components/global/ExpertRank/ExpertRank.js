@@ -107,76 +107,90 @@ const styles = styleSheetCreate({
   }
 
 })
-const  Circle = ({data}) => {
+const  Circle = ({data,profileNameViewStyle,profileNameTextStyle}) => {
   return (
-    <View style={styles.profileNameView}>
-      <Text style={styles.profileNameText}>{data.initName.toUpperCase()}</Text>
+    <View style={[styles.profileNameView,profileNameViewStyle]}>
+      <Text style={[styles.profileNameText,profileNameTextStyle]}>{data.initName.toUpperCase()}</Text>
     </View>
   )
 }
-const  CircleRank = ({data}) => {
+const  CircleRank = ({data,profileRankCircleViewStyle,userRankStyle}) => {
   return (
-    <View style={styles.profileRankCircleView}>
+    <View style={[styles.profileRankCircleView,profileRankCircleViewStyle]}>
       <Text style={styles.profileRankTextTitle}>RANK</Text>
-      <Text style={styles.profileSubTextTitle}>{data.rank}</Text>
+      <Text style={[styles.profileSubTextTitle,userRankStyle]}>{data.rank}</Text>
     </View>
   )
 }
-const  TitleSubTitle = ({data}) => {
+const  TitleSubTitle = ({data,profileTitleTextStyle,profileSubTitleTextStyle}) => {
   return (
     <View style={styles.profileTitleView}>
-      <Text style={styles.profileTitleText}>{data.userName.toUpperCase()}</Text>
-      <Text style={styles.profileSubTitleText}>{data.selector_rating.toUpperCase()}</Text>
+      <Text style={[styles.profileTitleText,profileTitleTextStyle]}>{data.userName.toUpperCase()}</Text>
+      <Text style={[styles.profileSubTitleText,profileSubTitleTextStyle]}>{data.selector_rating.toUpperCase()}</Text>
     </View>
   )
 }
-const  Roles = ({data}) => {
+const  Roles = ({data,profileSubTextTitleStyle,profileRankTextTitleStyle}) => {
   return (
     <View style={styles.rolesContainer}>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>W</Text>
-        <Text style={styles.profileSubTextTitle}>{data.w}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>W</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.w}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>L</Text>
-        <Text style={styles.profileSubTextTitle}>{data.l}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>L</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.l}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>D</Text>
-        <Text style={styles.profileSubTextTitle}>{data.d}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>D</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.d}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>F</Text>
-        <Text style={styles.profileSubTextTitle}>{data.f}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>F</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.f}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>A</Text>
-        <Text style={styles.profileSubTextTitle}>{data.a}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>A</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.a}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>BP</Text>
-        <Text style={styles.profileSubTextTitle}>{data.bp}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>BP</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.bp}</Text>
       </View>
       <View style={styles.rolesTextBox}>
-        <Text style={styles.profileRankTextTitle}>PTS</Text>
-        <Text style={styles.profileSubTextTitle}>{data.pts}</Text>
+        <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>PTS</Text>
+        <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.pts}</Text>
       </View>
     </View>
   )
 }
-const Profile = ({data}) => {
+const Profile = ({data,profileNameViewStyle,profileNameTextStyle,profileTitleTextStyle,profileSubTitleTextStyle}) => {
   return (
-    <View style={styles.profileContainer}>
-      <Circle data={data} />
-      <TitleSubTitle data={data} />
+    <View style={[styles.profileContainer]}>
+      <Circle data={data}
+              profileNameViewStyle={profileNameViewStyle}
+              profileNameTextStyle={profileNameTextStyle}
+      />
+      <TitleSubTitle data={data}
+                     profileTitleTextStyle={profileTitleTextStyle}
+                     profileSubTitleTextStyle={profileSubTitleTextStyle}
+      />
     </View>
   )
 }
-const RankView = ({data}) => {
+const RankView = ({data,profileRankCircleViewStyle,profileSubTextTitleStyle,profileRankTextTitleStyle,userRankStyle}) => {
   return (
     <View style={styles.profileContainer}>
-      <CircleRank data={data}/>
-      <Roles data={data} />
+      <CircleRank data={data}
+                  profileRankCircleViewStyle={profileRankCircleViewStyle}
+                  profileSubTextTitleStyle={profileSubTextTitleStyle}
+                  userRankStyle={userRankStyle}
+      />
+      <Roles data={data}
+             profileSubTextTitleStyle={profileSubTextTitleStyle}
+             profileRankTextTitleStyle={profileRankTextTitleStyle}
+             userRankStyle={userRankStyle}
+      />
     </View>
   )
 }
@@ -187,11 +201,28 @@ class ExpertRank extends Component {
     }
   }
   render() {
-    let {data} =this.props
+    let {data,profileNameViewStyle,profileRankCircleViewStyle,profileRankTextTitleStyle,profileSubTextTitleStyle
+      ,profileNameTextStyle,profileTitleTextStyle,
+      profileSubTitleTextStyle,userRankStyle
+      } =this.props
     return (
-      <View style={[styles.container]} >
-        <Profile data={data}/>
-        <RankView data={data}/>
+      <View style={[styles.container,this.props.containerStyle]} >
+        <Profile data={data}
+                 profileNameViewStyle={this.props.profileNameViewStyle}
+                 profileNameTextStyle={profileNameTextStyle}
+                 profileRankCircleViewStyle={profileRankCircleViewStyle}
+                 profileTitleTextStyle ={profileTitleTextStyle}
+                 profileSubTitleTextStyle= {profileSubTitleTextStyle}
+                 userRankStyle={userRankStyle}
+
+
+        />
+        <RankView data={data}
+                  profileRankCircleViewStyle={profileRankCircleViewStyle}
+                  profileRankTextTitleStyle={profileRankTextTitleStyle}
+                  profileSubTextTitleStyle={profileSubTextTitleStyle}
+                  userRankStyle={userRankStyle}
+        />
       </View>
     )
   }
@@ -199,5 +230,17 @@ class ExpertRank extends Component {
 export default ExpertRank
 
 ExpertRank.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+
+  containerStyle: PropTypes.any,
+  profileNameViewStyle:PropTypes.any,
+  profileSubTextTitleStyle: PropTypes.any,
+  profileNameTextStyle: PropTypes.any,
+  profileTitleTextStyle : PropTypes.any,
+  profileSubTitleTextStyle : PropTypes.any,
+
+  profileRankCircleViewStyle:PropTypes.any,
+  profileRankTextTitleStyle : PropTypes.any,
+  userRankStyle: PropTypes.any,
 }
+

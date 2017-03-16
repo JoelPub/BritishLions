@@ -58,12 +58,11 @@ const ButtonWithIcon = (props) => {
     </ButtonFeedback>
   )
 }
-const  ShareButton = () => {
+const  ShareButton = ({onPress}) => {
   return (
     <ButtonFeedback
       rounded label='Share'
-      disabled = {true}
-      style={[styles.button,styles.scoreCardShare]}>
+      style={[styles.button,styles.scoreCardShare]} onPress={onPress}>
       <Text  style={styles.scoreCardShareText}>SHARE</Text>
       <Icon name='md-share-alt' style={styles.scoreCardShareIcon} />
     </ButtonFeedback>
@@ -350,7 +349,10 @@ class CompetitionLadder extends Component {
       this.joinGroupApi(token,userProfile.userID,inputText)
     })
   }
-
+  shareClick = () => {
+    let { data } = this.state
+    this.props.drillDown(data,'myLionsCompetitionCentreShare')
+  }
     measurePage(event) {
         console.log('measurePage')
         // console.log('event',event)
@@ -383,7 +385,7 @@ class CompetitionLadder extends Component {
             <GrayContainer >
               <ExpertRank data={userProfile}/>
               <RankList data={data} />
-              <ShareButton />
+              <ShareButton onPress={this.shareClick} />
             </GrayContainer>
             <View onLayout={this.measurePage.bind(this)}>
               <MyPride  data= {data} groupNameOnPress={this.groupNameOnPress}
