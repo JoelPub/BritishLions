@@ -1390,4 +1390,12 @@ module.exports = styleSheetCreate({
             lineHeight: 26
         }
     },
+    onBoardingModal:{
+        flex:1,
+        marginTop:20,
+        backgroundColor:'rgba(0,0,0,0.2)',
+        android: {
+            marginTop:0
+        }
+    }
 })
