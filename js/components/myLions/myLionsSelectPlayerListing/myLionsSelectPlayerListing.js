@@ -64,7 +64,7 @@ class MyLionsSelectPlayerListing extends Component {
                                 height = {styleVar.deviceWidth / 2}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={rowData.image} 
+                                    source={{uri:rowData.image}} 
                                     style={styles.gridBoxImg}
                                     key={rowID}/>
                             </ImagePlaceholder>
@@ -208,7 +208,7 @@ class MyLionsSelectPlayerListing extends Component {
                     onAxiosEnd: null,
                     method: 'post',
                     onSuccess: (res) => {
-                        // console.log('res.data',res.data)
+                        console.log('res.data',res.data)
                         if(res.data) {
                             let playerList=[]
                             for (let node in res.data) {
@@ -250,10 +250,10 @@ class MyLionsSelectPlayerListing extends Component {
         })
         // console.log('filter',filter.replace(/\s/g,''))
         // console.log('selectPlayers',selectPlayers)
-        if(filter!==undefined) {
+        // if(filter!==undefined) {
 
-            selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,''))
-        }
+        //     selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,''))
+        // }
         this.setState({
             isLoaded: true,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)

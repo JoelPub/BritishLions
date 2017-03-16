@@ -11,7 +11,7 @@ import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper } from '../../utility/helper'
-
+import {map2Show} from '../components/teamToShow'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -193,7 +193,7 @@ const AddIndivPlayerCell = ({pos,onPress})=>(
 const PlayerImgCell =({data,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
         <View style={styles.playerPositionTextWrapper}>
-            <Text style={styles.playerPositionText} numberOfLines={1}>{strToUpper(data.position)}</Text>
+            <Text style={styles.playerPositionText} numberOfLines={1}>{strToUpper(map2Show(data.position))}</Text>
         </View>
         <ImagePlaceholder 
             width = {styleVar.deviceWidth / 3}
@@ -268,7 +268,7 @@ export default class TeamList extends Component {
                                                     <View style={styles.posWrapper} key={index}>
                                                         {   
                                                             item.info===null?
-                                                            <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',`forwards|${item.position}`)}/>
+                                                            <AddPlayerCell pos={'forwards'} onPress = {() => this.props.pressAdd('add',`forwards|${item.position}`)}/>
                                                             :
                                                             <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards')}/>
                                                         }
@@ -301,7 +301,7 @@ export default class TeamList extends Component {
                                                 <View style={styles.posWrapper} key={index}>
                                                 {
                                                     item.info===null?                                                        
-                                                       <AddPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',`backs|${item.position}`)}/>
+                                                       <AddPlayerCell pos={'backs'} onPress = {() => this.props.pressAdd('add',`backs|${item.position}`)}/>
                                                     :
                                                         <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs')}/>
                                                 }
@@ -329,7 +329,7 @@ export default class TeamList extends Component {
                                 </View>
                                 {
                                 item.info===null?
-                                <AddIndivPlayerCell pos={item.position} onPress = {() => this.props.pressAdd('add',item.position)}/>
+                                <AddIndivPlayerCell pos={strToUpper(item.position)==='CAPTAIN'?'MATCH CAPTAIN':item.position} onPress = {() => this.props.pressAdd('add',item.position)}/>
                                 :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position)}/>
                                 }
