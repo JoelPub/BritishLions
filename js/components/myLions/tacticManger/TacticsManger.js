@@ -25,7 +25,7 @@ import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
 import {getEYC3FullPlayerList} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { replaceRoute, pushNewRoute,popRoute } from '../../../actions/route'
 import { setTacticsToSave } from '../../../actions/tactics'
 
 
@@ -168,11 +168,8 @@ class TacticsManger extends Component {
       replacements: ReplacementsData.value
     }
     this.props.setTacticsToSave (pacticsData)
-    Alert.alert(
-      'Success',
-      'You have been saved successfully',
-      [{text: 'Dismiss'}]
-    )
+    this.props.popRoute()
+
   }
   iconPress =() => {
     this.setState({
@@ -298,15 +295,18 @@ function bindAction(dispatch) {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
     setTacticsToSave: (tactics)=>dispatch(setTacticsToSave(tactics)),
+    popRoute :(route)=>dispatch(popRoute(route))
   }
 }
 export default connect((state) => {
+  console.log(state)
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,
     userProfile:state.squad.userProfile,
     dropDownData: state.squad.teamData,
     teamToShow: state.squad.teamToShow,
+    tactics: state.tactics.tacticsData
   }
 }, bindAction)(TacticsManger)
 TacticsManger.defaultProps = {
