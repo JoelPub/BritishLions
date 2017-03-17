@@ -25,7 +25,7 @@ import ImagePlaceholder from '../../utility/imagePlaceholder'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ImageCircle from '../../utility/imageCircle'
 import {getEYC3FullPlayerList} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
-import { replaceRoute, pushNewRoute } from '../../../actions/route'
+import { replaceRoute, pushNewRoute,popRoute } from '../../../actions/route'
 import { setTacticsToSave } from '../../../actions/tactics'
 
 
@@ -113,11 +113,21 @@ class TacticsManger extends Component {
     super(props)
     this._scrollView = ScrollView
     this.isUnMounted = false
+    let dropDownValue = 'Select Player'
+    if (this.props.tactics===null) {
+      dropDownValue ='Select Player'
+    }else {
+      console.log(this.props.tactics)
+
+      console.log(this.props.tactics.tacticsData)
+      dropDownValue =this.props.tactics.starPlayer.info.name
+    }
+
     this.state = {
       isLoaded: false,
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
-      dropDownValue: 'Select Player',
+      dropDownValue: dropDownValue,
       dropDownIndex: 0,
       replacementsSliderValue: 3,
       playStyleSliderValue: 1
@@ -168,11 +178,8 @@ class TacticsManger extends Component {
       replacements: ReplacementsData.value
     }
     this.props.setTacticsToSave (pacticsData)
-    Alert.alert(
-      'Success',
-      'You have been saved successfully',
-      [{text: 'Dismiss'}]
-    )
+    this.props.popRoute()
+
   }
   iconPress =() => {
     this.setState({
@@ -227,7 +234,7 @@ class TacticsManger extends Component {
   }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
-    let {userProfile,teamToShow} = this.props
+    let {userProfile,teamToShow,tactics} = this.props
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let dropDownData = this.handleDropDownData(teamToShow)
@@ -298,15 +305,18 @@ function bindAction(dispatch) {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
     setTacticsToSave: (tactics)=>dispatch(setTacticsToSave(tactics)),
+    popRoute :(route)=>dispatch(popRoute(route))
   }
 }
 export default connect((state) => {
+  console.log(state)
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,
     userProfile:state.squad.userProfile,
     dropDownData: state.squad.teamData,
     teamToShow: state.squad.teamToShow,
+    tactics: state.tactics.tacticsData
   }
 }, bindAction)(TacticsManger)
 TacticsManger.defaultProps = {

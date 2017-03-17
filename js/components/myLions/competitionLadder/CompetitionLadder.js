@@ -117,10 +117,10 @@ const GroupNameList = ({data,onPress}) => {
     </View>
   )
 }
-const CompetitionCenter = () => {
+const CompetitionCenter = ({onPress}) => {
   return (
-    <View style={styles.CompetitionCenterView}>
-      <ButtonWithIcon  iconName  = {'md-analytics'} title = {'COMPETITION CENTRE'} />
+    <View style={styles.CompetitionCenterView} >
+      <ButtonWithIcon  iconName  = {'md-analytics'} title = {'COMPETITION CENTRE'} onPress={onPress} />
     </View>
   )
 }
@@ -368,6 +368,10 @@ class CompetitionLadder extends Component {
 
 
     }
+  navToCompetitionCentre = () => {
+    console.log('navToCompetitionCentre')
+    this.props.pushNewRoute('myLionsCompetitionCentre')
+  }
 
   render() {
     let { data ,isCreating, createType, isJoining, joinType ,modalData} = this.state
@@ -392,7 +396,7 @@ class CompetitionLadder extends Component {
                         createGroupOnPress={this.createGroupOnPress}
                         joinGroupOnPress={this.joinGroupOnPress}/>
             </View>
-            <CompetitionCenter />
+            <CompetitionCenter onPress={this.navToCompetitionCentre}/>
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <SquadModal
@@ -434,6 +438,7 @@ function bindAction(dispatch) {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
     replaceRoute:(route)=>dispatch(replaceRoute(route)),
     setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
+    pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
   }
 }
 export default connect((state) => {
