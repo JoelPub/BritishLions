@@ -35,11 +35,11 @@ class ModalInviteCodeVIew extends Component {
   callbackParent = ()=> {
     this.props.callbackParent()
   }
-  getDetail = (description,data) =>{
+  getDetail = (description,data,groupName) =>{
 
     let PageData = {
       title: '' ,
-      contentText: 'The group invite code for League Name is:',
+      contentText: 'The group invite code for '+groupName +' is:',
       subTitle: data ? data.invitation_code : '',
       subContentText: 'Invite friends to join your league by sharing this code. You may view the code for later reference at any time within your private league view.',
     }
@@ -53,8 +53,8 @@ class ModalInviteCodeVIew extends Component {
     shareTextWithTitle(invitation_code,'')
   }
   render() {
-    let { modalType ,data} = this.props
-    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType,data)
+    let { modalType ,data,groupName} = this.props
+    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType,data,groupName)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
     if(modalType !== 'create'){
       subTitleStyle = styles.modalErrorGroupSubTitle
@@ -78,6 +78,7 @@ ModalInviteCodeVIew.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
-  data : PropTypes.object
+  data : PropTypes.object,
+  groupName: PropTypes.string
 }
 export default ModalInviteCodeVIew

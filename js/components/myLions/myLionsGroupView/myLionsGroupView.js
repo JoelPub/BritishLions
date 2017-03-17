@@ -246,7 +246,7 @@ class MyLionsGroupView extends Component {
             </View>
           </SquadModal>
           <ModalInviteCode modalVisible = {modalInviteCode } callbackParent ={this.hideInviteCodeView}
-                           data = {data}
+                           data = {data} groupName={group_name}
           />
           <SquadModal
             modalVisible={this.state.modalLeaveInfo}
