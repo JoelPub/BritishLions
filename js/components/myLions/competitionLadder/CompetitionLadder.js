@@ -431,8 +431,6 @@ class CompetitionLadder extends Component {
     this.isUnMounted = true
   }
 }
-
-
 function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),

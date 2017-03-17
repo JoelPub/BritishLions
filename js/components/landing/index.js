@@ -579,7 +579,7 @@ class Landing extends Component {
                         <View>
                             <View style={styles.pageTitle}>
                                 <Text style={styles.pageTitleText}>
-                                    OFFICIAL 2017 SQUAD
+                                    2017 LIONS SQUAD
                                 </Text>
                             </View>
                             <ButtonFeedback
