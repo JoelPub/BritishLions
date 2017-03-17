@@ -73,7 +73,7 @@ const MyPride = (props) => {
   return (
     <View style={styles.prideContainer} >
       <View style={styles.prideTitleView}>
-        <Text style={styles.prideTitleText}>MY PRIDE</Text>
+        <Text style={styles.prideTitleText}>PRIVATE LEAGUES</Text>
       </View>
       <GroupAction createGroupOnPress={createGroupOnPress} joinGroupOnPress={joinGroupOnPress} />
       <GroupNameList onPress={groupNameOnPress} data={data} />
@@ -83,9 +83,9 @@ const MyPride = (props) => {
 const GroupAction = ({createGroupOnPress,joinGroupOnPress}) => {
   return (
     <View style={styles.groupActionView}>
-      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE GROUP'} style={styles.grayBackgroundColor}
+      <ButtonWithIcon  iconName  = {'md-people'} title = {'CREATE LEAGUE'} style={styles.grayBackgroundColor}
                        onPress={createGroupOnPress}/>
-      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN GROUP'} style={styles.grayBackgroundColor}
+      <ButtonWithIcon  iconName  = {'md-person'} title = {'JOIN LEAGUE'} style={styles.grayBackgroundColor}
                        onPress={joinGroupOnPress}/>
     </View>
   )
