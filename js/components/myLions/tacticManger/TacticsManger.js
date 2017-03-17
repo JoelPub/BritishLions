@@ -279,7 +279,7 @@ class TacticsManger extends Component {
             modalVisible={this.state.modalResults}
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
-              <Text style={styles.modalContentTitleText}>RESULTS</Text>
+              <Text style={styles.modalContentTitleText}>SELECT TACTICS</Text>
               <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </Text>
             </View>
           </SquadModal>
