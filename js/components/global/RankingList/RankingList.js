@@ -25,7 +25,7 @@ const styles = styleSheetCreate({
     height: null,
   },
   titleText:{
-    color:'rgb(255,255,255)',
+    color:'rgb(255,230,0)',
     fontFamily: styleVar.fontCondensed,
     backgroundColor: 'transparent',
     fontSize:28,
@@ -235,5 +235,5 @@ RankingList.propTypes = {
   title:PropTypes.string,
 }
 RankingList.defaultProps = {
-  title:'GLOBAL TOP5',
+  title:'GLOBAL TOP 5',
 }
