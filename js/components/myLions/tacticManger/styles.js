@@ -27,6 +27,33 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     marginTop:4
   },
+  pageTitle: {
+    backgroundColor: 'transparent',
+    paddingTop: 20,
+    paddingBottom: 6,
+    borderColor: styleVar.colorGrey2,
+    borderBottomWidth: 1,
+  },
+  pageTitleText: {
+    alignSelf: 'center',
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 28,
+    lineHeight: 28,
+    color: styleVar.colorScarlet,
+    backgroundColor: 'transparent',
+    textAlign:'center',
+  },
+  pageTitleBtnIconRight: {
+    position: 'absolute',
+    right: 12,
+    top: 16
+  },
+  pageTitleBtnIcon: {
+    color: styleVar.colorScarlet,
+    fontSize: 28,
+    lineHeight: 28
+  },
+
   smallBoxContent: {
     flex: 1,
     backgroundColor: 'rgb(239,239,240)',
