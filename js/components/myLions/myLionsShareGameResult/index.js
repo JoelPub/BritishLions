@@ -1,2 +1,2 @@
-import MyLionsShareGameResult from './myLionsShareGameResult'
-export default MyLionsShareGameResult
+import myLionsShareGameResult from './myLionsShareGameResult'
+export default myLionsShareGameResult
