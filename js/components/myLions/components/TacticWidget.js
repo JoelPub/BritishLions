@@ -31,6 +31,7 @@ const locStyle = styleSheetCreate({
     fontSize: 36,
     lineHeight: 36,
     color: '#FFF',
+    backgroundColor:'transparent',
   },
   icon: {
     fontSize:36,
@@ -43,6 +44,7 @@ const locStyle = styleSheetCreate({
     lineHeight: 36,
     color: '#FFF',
     textAlign:'center',
+    backgroundColor:'transparent',
   },
   btnCircle:{
     height:60,
