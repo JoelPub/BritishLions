@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator,Alert} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,Alert,TouchableHighlight} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -234,6 +234,16 @@ class TacticsManger extends Component {
     })
     return result
   }
+  renderRow =(rowData, rowID, highlighted) =>{
+    let evenRow = rowID % 2;
+    return (
+      <View>
+          <Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
+            {rowData}
+          </Text>
+        </View>
+    )
+  }
   render() {
     let { isLoaded ,dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile,teamToShow,tactics} = this.props
@@ -262,7 +272,10 @@ class TacticsManger extends Component {
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
                              options={dropDownData}
-                             onSelect={this.dropDownOnSelect}>
+                             onSelect={this.dropDownOnSelect}
+                             dropdownStyle={styles.dropDownList}
+                             renderRow={this.renderRow}
+              >
                 <View style={styles.dropDownSub}>
                   <Text style={styles.dropDownText}>{dropDownValue}</Text>
                   <Icon name='md-arrow-dropdown' style={styles.dropDownIcon} />
