@@ -44,14 +44,16 @@ const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 
 
 const localDataTactics = [
   {
-   name:'10-Man' ,
-   value: '10-man'
-  },{
-    name:'Balanced' ,
-    value: 'balanced'
-  },{
     name:'Running' ,
     value: 'running'
+  }
+  ,{
+    name:'Balanced' ,
+    value: 'balanced'
+  },
+  {
+    name:'10-Man' ,
+    value: '10-man'
   }
 ]
 const localDataReplacements= [
