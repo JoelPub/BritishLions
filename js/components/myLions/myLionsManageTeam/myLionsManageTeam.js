@@ -95,15 +95,18 @@ class MyLionsManageTeam extends Component {
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                        <View>
                         <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
+                            <ButtonFeedback 
+                                style={styles.pageTitleBtnIconRight} 
+                                onPress={() => { this.setState({modalVisible: true}) }}>
+                                <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
+                            </ButtonFeedback>
+                        </View>
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                <ButtonFeedback 
-                                    style={styles.pageTitleBtnIconRight} 
-                                    onPress={() => { this.setState({modalVisible: true}) }}>
-                                    <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
-                                </ButtonFeedback>
+                                
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
                                 <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
                                 <TeamSaveBtn />
