@@ -28,7 +28,6 @@ import SquadModal from '../../global/squadModal'
 import PlayerFigure from '../../global/playerFigure'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getAssembledUrl } from '../../utility/urlStorage'
-import { setPositionToAdd , setPositionToRemove} from '../../../actions/position'
 import ProfileListModel from  '../../../modes/Players'
 import ProfileModel from '../../../modes/Players/Profile'
 import FigureListModel from  '../../../modes/Players/Profile/SeasonList/Season/FigureList'
@@ -99,7 +98,7 @@ class MyLionsCoachProfile extends Component {
                     <ScrollView bounces={false} ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.header}>
                             <View style={styles.playerPic}>
-                                <Image resizeMode='cover' source={this.props.detail.image} style={styles.playerPicImg}/>
+                                <Image resizeMode='cover' source={{uri:this.props.detail.image}} style={styles.playerPicImg}/>
                                 <Image source={require('../../../../images/redCircle.png')} style={styles.playerPicCover}/>
                             </View>
                             
@@ -154,8 +153,6 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
-        setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
-        setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setSquadToShow:(squad)=>dispatch(setSquadToShow(squad)),
         setSquadData:(squad)=>dispatch(setSquadData(squad)),
     }
@@ -165,8 +162,6 @@ export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
-        positionToAdd: state.position.positionToAdd,
-        positionToRemove: state.position.positionToRemove,
         squadToShow: state.squad.squadToShow,
         squadData: state.squad.squadData,
     }

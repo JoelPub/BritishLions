@@ -545,7 +545,7 @@
 //    }
 //
 //    updateSquad(){
-//        if(this.state.inSquad&&this.props.positionToRemove!=='') {
+//        if(this.state.inSquad&&this.props.positionToRemove!==null) {
 //            this._setModalVisible(true,'remove')
 //        }
 //        else {
@@ -682,7 +682,7 @@
 //                this.setState({ isMySquadPlayerSubmitting: false })
 //            },
 //            onSuccess: (res) => {
-//                let successDesc = this.state.inSquad&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+//                let successDesc = this.state.inSquad&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
 //                position = position?position.toUpperCase() : ''
 //
 //                if (type === 'replace') {
@@ -695,8 +695,8 @@
 //                    //console.log('!!!squadData',squadData)
 //                    this.props.setSquadData(JSON.stringify(squadData))
 //                    removeUserCustomizedSquad()
-//                    this.props.setPositionToAdd('')
-//                    this.props.setPositionToRemove('')
+//                    this.props.setPositionToAdd(null)
+//                    this.props.setPositionToRemove(null)
 //                })
 //            },
 //            onError: (res) => {
@@ -719,9 +719,9 @@
 //        let buttonText = ''
 //
 //        if (this.state.isMySquadPlayerSubmitting && this.state.btnSubmit === 'SQUAD') {
-//            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVING..':'UPDATING..'
+//            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==null? 'REMOVING..':'UPDATING..'
 //        } else {
-//            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
+//            buttonText = this.state.inSquad === true&&this.props.positionToRemove!==null? 'REMOVE':'ADD'
 //        }
 //
 //        let logo = ''
@@ -776,7 +776,7 @@
 //                                            style={[
 //                                                styles.btn,
 //                                                styles.btnLeft,
-//                                                this.state.inSquad === true&&this.props.positionToRemove!==''? styles.btnLeftRed : styles.btnGreen
+//                                                this.state.inSquad === true&&this.props.positionToRemove!==null? styles.btnLeftRed : styles.btnGreen
 //                                            ]}>
 //                                            <Text style={styles.btnText}>{buttonText}</Text>
 //                                        </ButtonFeedback>

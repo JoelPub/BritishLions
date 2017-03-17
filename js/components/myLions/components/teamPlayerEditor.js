@@ -80,11 +80,11 @@ class TeamPlayerEditor extends Component {
     }
 
 	render() {
-        let buttonText =  this.state.inTeam === true&&this.props.positionToRemove!==''? 'REMOVE':'ADD'
+        let buttonText =  this.state.inTeam === true&&this.props.positionToRemove!==null? 'REMOVE':'ADD'
 		return (
             <View>
             {
-                (this.props.positionToAdd===''&&this.props.positionToRemove==='')?
+                (this.props.positionToAdd===null&&this.props.positionToRemove===null)?
                 null
                 :
                 <View style={styles.buttons}>
@@ -102,7 +102,7 @@ class TeamPlayerEditor extends Component {
                                 style={[
                                     styles.btn,
                                     styles.btnLeft,
-                                    this.state.inTeam === true&&this.props.positionToRemove!==''? styles.btnLeftRed : styles.btnGreen
+                                    this.state.inTeam === true&&this.props.positionToRemove!==null? styles.btnLeftRed : styles.btnGreen
                                 ]}>
                                 <Text style={styles.btnText}>{buttonText}</Text>
                             </ButtonFeedback>
@@ -119,7 +119,7 @@ class TeamPlayerEditor extends Component {
         console.log('TeamPlayerEditor componentDidmount')
         console.log('this.props.positionToAdd',this.props.positionToAdd)
         console.log('this.props.positionToRemove',this.props.positionToRemove)
-        if (this.props.positionToAdd===''&&this.props.positionToRemove==='') return
+        if (this.props.positionToAdd===null&&this.props.positionToRemove===null) return
         this._updateMyTeamStatus()
     }
 
@@ -134,7 +134,7 @@ class TeamPlayerEditor extends Component {
     }
     componentWillUnmount() {
         console.log('Unmount')
-            this.props.setPositionToRemove('')
+            this.props.setPositionToRemove(null)
 
     }
     _updateMyTeamStatus() {
@@ -156,7 +156,7 @@ class TeamPlayerEditor extends Component {
     }
 
     updateTeam(){
-            if(this.state.inTeam&&this.props.positionToRemove!=='') {
+            if(this.state.inTeam&&this.props.positionToRemove!==null) {
                 this.props._setModalVisible(true,'remove')
             }
             else {
@@ -230,13 +230,13 @@ class TeamPlayerEditor extends Component {
         
     }
     _updateTeamPlayer(teamData,position, type='') {
-        let successDesc = this.state.inTeam&&this.props.positionToRemove!==''? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+        let successDesc = this.state.inTeam&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
         position = position?position.toUpperCase() : ''
         this.setState({ inTeam: !this.state.inTeam, teamDataFeed:teamData.toJS() }, () => {
             this.props._setModalVisible(true, 'message', position, successDesc, 'OK')
             this.props.setTeamDataTemp(teamData.toJS())
-            this.props.setPositionToAdd('')
-            this.props.setPositionToRemove('')
+            this.props.setPositionToAdd(null)
+            this.props.setPositionToRemove(null)
         })
     }
 }

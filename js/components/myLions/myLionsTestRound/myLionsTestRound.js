@@ -73,14 +73,14 @@ class MyLionsTestRound extends Component {
         }
     }
     _showDetail(item, route,playerPos) {
-        this.props.setPositionToAdd('')
+        this.props.setPositionToAdd(null)
         this.props.setPositionToRemove(playerPos)
         this.props.drillDown(item, route)
     }
 
     _addPlayer(type,playerPos) {
         this.props.setPositionToAdd(playerPos)
-        this.props.setPositionToRemove('')
+        this.props.setPositionToRemove(null)
         this.props.pushNewRoute('myLionsSelectPlayerListing')
     }
 

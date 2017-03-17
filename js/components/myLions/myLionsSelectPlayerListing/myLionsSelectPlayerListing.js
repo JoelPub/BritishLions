@@ -190,7 +190,7 @@ class MyLionsSelectPlayerListing extends Component {
         )
     }
     componentWillUnmount() {
-            this.props.setPositionToAdd('')
+            this.props.setPositionToAdd(null)
     }
 
     componentDidMount() {
