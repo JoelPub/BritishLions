@@ -230,6 +230,14 @@ const Summary = ({data,shareView}) => (
                 </View>
                 <Text style={locStyle.summaryValue}>{ data.me.penalties || 'N/A' }</Text>
             </View>
+
+            <View style={locStyle.summaryRow}>
+                <Text style={locStyle.summaryValue}>{ data.ai.dropped_goals || 'N/A' }</Text>
+                <View style={locStyle.summaryTextWrapper}>
+                    <Text style={locStyle.summaryText}>DROP GOALS</Text>
+                </View>
+                <Text style={locStyle.summaryValue}>{ data.me.dropped_goals || 'N/A' }</Text>
+            </View>
         </View>
 
         <View style={[locStyle.summaryRow, locStyle.summaryRowBorder]}>
@@ -378,19 +386,22 @@ class MyLionsCompetitionGameResults extends Component {
     componentWillMount() {
         this.setState({isLoaded:false},()=>{
             getAccessToken().then(token=>{
-                this.getInfo(token)
+                let {userProfile} = this.props
+                this.getInfo(token,userProfile)
             })
         })
     }
 
-    getInfo(token){
+    getInfo(token,userProfile){
         console.log('getInfo')
         let optionsInfo = {
             url: actionsApi.eyc3GetHistoricalGameResult,
             data:
              {
                 access_token: token,
-                id : this.props.userProfile.userID,
+                id:userProfile.userId,
+                first_name:userProfile.firstName,
+                last_name:userProfile.lastName,
                 round_id:1,
                 game_id:3
              },
@@ -404,8 +415,6 @@ class MyLionsCompetitionGameResults extends Component {
                     console.log('res.data',res.data)
                     this.setState({isLoaded: true, resultInfo: res.data})
                 }
-
-                console.log(this.state.resultInfo)
             },
             onError: ()=>{
                 this.setState({isLoaded:true})
