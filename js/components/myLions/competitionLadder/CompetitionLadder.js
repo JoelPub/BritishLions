@@ -385,7 +385,7 @@ class CompetitionLadder extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'COMPETITION LADDER'} iconPress={this.iconPress}/>
+            <HeaderTitleWithModal title={'LEADERBOARD'} iconPress={this.iconPress}/>
             <GrayContainer >
               <ExpertRank data={userProfile}/>
               <RankList data={data} />
@@ -403,7 +403,7 @@ class CompetitionLadder extends Component {
             modalVisible={this.state.modalInfo}
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
-              <Text style={styles.modalContentTitleText}>PRIVATE LEAGUES</Text>
+              <Text style={styles.modalContentTitleText}>LEADERBOARD</Text>
               <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
             </View>
           </SquadModal>
