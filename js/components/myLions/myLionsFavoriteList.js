@@ -379,8 +379,8 @@ class MyLionsFavoriteList extends Component {
 
     _showDetail(item, route) {
         
-        this.props.setPositionToAdd('')
-        this.props.setPositionToRemove('')
+        this.props.setPositionToAdd(null)
+        this.props.setPositionToRemove(null)
         this.props.drillDown(item, 'myLionsPlayerDetails')
     }
 

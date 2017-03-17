@@ -174,7 +174,7 @@ class MyLionsSquad extends Component {
 
     _addPlayer(type,playerPos,max) {
         this.props.setPositionToAdd(playerPos)
-        this.props.setPositionToRemove('')
+        this.props.setPositionToRemove(null)
         this.props.pushNewRoute('myLionsUnionsList')
     }
 

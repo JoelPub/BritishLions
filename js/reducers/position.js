@@ -2,6 +2,7 @@
 
 import type { Action } from '../actions/types'
 import { SET_POSITION_TOADD,SET_POSITION_TOREMOVE } from '../actions/position'
+import { strToUpper } from '../components/utility/helper'
 
 export type State = {
     positionToAdd: string,
@@ -18,13 +19,13 @@ export default function (state:State = initialState, action:Action): State {
     if (action.type === SET_POSITION_TOADD) {
         return {
             ...state,
-            positionToAdd: action.positionToAdd.toUpperCase()
+            positionToAdd: strToUpper(action.positionToAdd)
         }
     }
     if (action.type === SET_POSITION_TOREMOVE) {
         return {
             ...state,
-            positionToRemove: action.positionToRemove.toUpperCase()
+            positionToRemove: strToUpper(action.positionToRemove)
         }
     }
 
