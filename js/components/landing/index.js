@@ -29,7 +29,7 @@ import { getAssembledUrl } from '../utility/urlStorage'
 import { getUserId, removeToken, getUserFullName } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
-
+import { actionsApi } from '../utility/urlStorage'
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import fixturesList from '../../../contents/fixtures/data.json'
@@ -39,8 +39,6 @@ class Landing extends Component {
 
     constructor(props) {
         super(props)
-
-        this.isUnMounted = false
         this.totalPlayer = 35
         this.getMySquadRatingUrl = getAssembledUrl('EYC3GetMySquadRating')
         this.latestUpdatesFeeds = []
@@ -86,7 +84,6 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 
                 this._latestUpdate('news', json.data, 1)
             },
@@ -106,7 +103,6 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 
                 this._latestUpdate('galleries', json.data, 3)
             },
@@ -126,7 +122,6 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 
                 this._latestUpdate('lions tv', json.data.items, 2)
             },
@@ -166,8 +161,6 @@ class Landing extends Component {
     }
 
     _latestUpdate(cat, data, order) {
-        if (this.isUnMounted) return // return nothing if the component is already unmounted
-
         data = this._limitList(data, 1)[0]
         data.category = cat
         data.order = order
@@ -227,8 +220,6 @@ class Landing extends Component {
     _getSquad() {
         console.log('get squad...')
         getUserCustomizedSquad().then((catchedSquad)=>{
-            if (this.isUnMounted) return // return nothing if the component is already unmounted
-
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoadedSquad: true }, () => {
@@ -246,39 +237,55 @@ class Landing extends Component {
         })   
     }
 
-    _getProfileSummary(){
+    componentDidMount() {
+        setTimeout(() => {
+            this._fetchContent()
+            if (this.props.isAccessGranted) {
+                getUserId().then((userID) => {
+                    this.setState({ userID },()=>{
+                        getUserFullName().then((userName) => {
+                            let firstName=userName.split(' ')[0]||''
+                            let lastName=userName.split(' ')[1]||''
+                            let initName = ''
+                            userName.split(' ').map((value, index)=>{
+                                initName = initName + value[0]
+                            })
+                            this._getProfileSummary(userName,firstName,lastName,initName)
+                        }).catch((error) => {})
+                        
+                    })
+                }).catch((error) => {})
+            }
+        }, 600)
+    }
+
+    _getProfileSummary(userName,firstName,lastName,initName){
         let optionsUserProfile = {
-            url: 'https://api.myjson.com/bins/18w6qd',
-            data: {id:this.state.userID},
+            url: actionsApi.eyc3GetuserProfileSummary,
+            data: {id:this.state.userID,first_name:firstName,last_name:lastName},
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'get',
+            method: 'post',
+            channel: 'EYC3',
+            isQsStringify:false,
             onSuccess: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-
                 if(res.data) {
-                    getUserFullName().then((userName) => {                            
-                        let initName = ''
-                        userName.split(' ').map((value, index)=>{
-                            initName = initName + value[0]
-                        })
+                    console.log('res.data',res.data)
+                    let userProfile = Object.assign(res.data, {
+                        userName: userName, 
+                        initName: initName, 
+                        firstNmae: firstName,
+                        lastName: lastName, 
+                        userID: this.state.userID
+                    })
 
-                        let userProfile = Object.assign(res.data, {
-                            userName: userName, 
-                            initName: initName, 
-                            userID: this.state.userID
-                        })
-
-                        this.setState({ isProfileSummaryLoaded: true }, () => {
-                            this.props.setUserProfile(userProfile)
-                        })
-                    }).catch((error) => {})
+                    this.setState({ isProfileSummaryLoaded: true }, () => {
+                        this.props.setUserProfile(userProfile)
+                    })
                 }
             },
             onError: null,
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
-                
                 this._signInRequired()
             },
             isRequiredToken: true
@@ -294,11 +301,6 @@ class Landing extends Component {
         let widecard = this._convertToArr(data.widecard)
         let captain = this._convertToArr(data.captain)
         let totalPlayerSelected = backs.length + forwards.length + kicker.length + widecard.length + captain.length
-        // console.log('backs: ', backs)
-        // console.log('forwards: ', forwards)
-        // console.log('kicker: ', kicker)
-        // console.log('widecard: ', widecard)
-        // console.log('captain: ', captain)
         if (totalPlayerSelected === this.totalPlayer) {
             isFullPlayer = true
 
@@ -360,7 +362,6 @@ class Landing extends Component {
                 this.setState({ isLoadedSquad: true })
             },
             onSuccess: (rating) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this.setState({
                     rating: rating.data
                 },()=>{      
@@ -368,11 +369,9 @@ class Landing extends Component {
                 })
             },
             onError: (res) => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._showError(res)
             },
             onAuthorization: () => {
-                if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._signInRequired()
             },
             isRequiredToken: true,
@@ -380,33 +379,6 @@ class Landing extends Component {
         }
 
         service(optionsSquadRating)        
-    }
-
-    componentWillMount() {
-        getUserId().then((userID) => {
-            this.setState({ userID })
-        }).catch((error) => {})
-    }
-
-    componentDidMount() {
-        setTimeout(() => {
-            this._fetchContent()
-            if (this.props.isAccessGranted) {
-                //this._getSquad()
-                this._getProfileSummary()
-            }
-        }, 600)
-    }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.isAccessGranted) {
-    //         //this._getSquad()
-    //         this._getProfileSummary()
-    //     }
-    // }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
     }
 
     _renderNewsFeed() {

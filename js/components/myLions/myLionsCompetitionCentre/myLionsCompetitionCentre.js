@@ -217,26 +217,21 @@ class MyLionsCompetitionCentre extends Component {
             this.setState({isLoaded:false},()=>{
                 let {userProfile} = this.props
                 getAccessToken().then(token=>{
-                    this.getInfo(token,userProfile.userID)
+                    this.getInfo(token,userProfile)
                 })
             })
         }
     }
 
-
-    componentWillMount() {
-        // this.setState({isLoaded:false},()=>{
-        //     this.getInfo()
-        // })id
-    }
-
-    getInfo(token,userId){
+    getInfo(token,userProfile){
         console.log('getInfo')
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
             data: {
               access_token:token,
-              id:userId
+              id:userProfile.userId,
+              first_name:userProfile.firstName,
+              last_name:userProfile.lastName
             },
             onAxiosStart: null,
             onAxiosEnd: null,
@@ -247,7 +242,14 @@ class MyLionsCompetitionCentre extends Component {
                 if(res.data) {
                     console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
-                        this.props.setUserProfile(Object.assign(res.data,{userName:this.props.userProfile.userName,initName:this.props.userProfile.initName,userID:this.props.userProfile.userID}))
+                        let userProfile = Object.assign(res.data, {
+                        userName: userProfile.userName, 
+                        initName: userProfile.initName, 
+                        firstNmae: userProfile.firstName,
+                        lastName: userProfile.lastName, 
+                        userID: userProfile.userID
+                    })
+                        this.props.setUserProfile(userProfile)
                     })
                 }
             },
