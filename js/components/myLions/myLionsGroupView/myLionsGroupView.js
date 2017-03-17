@@ -216,7 +216,7 @@ class MyLionsGroupView extends Component {
     let {data,modalInviteCode} = this.state
     let {userProfile,drillDownItem} = this.props
     let group_name = drillDownItem.name ? drillDownItem.name : ''
-    let confirmedResult  = 'You are no longer part of the <' +   group_name + '> private league'
+    let confirmedResult  = 'You are no longer part of the' +   group_name + 'private league'
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -233,7 +233,7 @@ class MyLionsGroupView extends Component {
             </GrayContainer>
             <View style={styles.groupAction}>
               <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  onPress={this.inviteButtonPress} />
-              <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE GROUP'} style={styles.grayBackgroundColor} onPress={this.leaveGroup}/>
+              <ButtonWithIcon  iconName  = {'md-exit'} title = {'LEAVE LEAGUE'} style={styles.grayBackgroundColor} onPress={this.leaveGroup}/>
             </View>
             <LionsFooter isLoaded={true} />
           </ScrollView>
