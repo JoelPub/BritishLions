@@ -138,23 +138,6 @@ const styles = styleSheetCreate({
         alignItems:'center',
     },
 })
-
-const AddPlayerCell = ({pos,onPress})=>(
-    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
-        <View style={styles.posAddWrapper}>
-            <Icon name='md-person-add' style={styles.addPlayerIcon} />
-        </View>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText}>ADD</Text>
-                <Text style={styles.playerNameText}>
-                    { pos.toUpperCase() }
-                </Text>
-                </View>
-        </View>
-    </ButtonFeedback>
-    )
 const PlayerImgCell =({data,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
         <ImagePlaceholder 
@@ -221,13 +204,8 @@ export default class OfficialSquadList extends Component {
                                         { position}
                                     </Text>
                                 </View>
-                                {
-                                item.info===null?
-                                <AddPlayerCell pos={item.position}/>
-                                :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,item.position==='coach'?'myLionsCoachProfile':'myLionsPlayerProfile',item.position,1,0)}/>
-                                }
-                            </View>
+                                </View>
                         )
                     },this) 
                 }                                
@@ -248,12 +226,7 @@ export default class OfficialSquadList extends Component {
                                         rowData.map((item,index)=>{
                                             return(
                                                     <View style={styles.posWrapper} key={index}>
-                                                        {   
-                                                            item===null?
-                                                            <AddPlayerCell pos='FORWARDS'/>
-                                                            :
                                                             <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','forwards',16,index)}/>
-                                                        }
                                                     </View>
                                                 )
                                         }, this)
@@ -281,12 +254,34 @@ export default class OfficialSquadList extends Component {
                                         rowData.map((item,index)=>{
                                             return(
                                                 <View style={styles.posWrapper} key={index}>
-                                                {
-                                                    item===null?                                                        
-                                                       <AddPlayerCell pos='BACKS'/>
-                                                    :
                                                         <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','backs',16,index)}/>
-                                                }
+                                                </View>
+                                                )
+                                        }, this)
+                                    }
+                                </View>
+                            )
+
+                        },this)
+                    }
+                </Swiper>
+                
+                <PositionTitle pos='COACHING STAFF' data={this.props.squadDatafeed.coachstaffs}/>
+                <Swiper
+                height={styleVar.deviceWidth*0.63}
+                loop={false}
+                dotColor='rgba(255,255,255,0.3)'
+                activeDotColor='rgb(239,239,244)'
+                paginationStyle={{bottom:styleVar.deviceWidth/20}}>
+                    {
+                        this._mapJSON(this.props.squadDatafeed.coachstaffs,3).map((rowData,i)=>{
+                            return(
+                                <View style={styles.posSwiperRow} key={i}>
+                                    {
+                                        rowData.map((item,index)=>{
+                                            return(
+                                                <View style={styles.posWrapper} key={index}>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','coachstaffs',16,index)}/>
                                                 </View>
                                                 )
                                         }, this)

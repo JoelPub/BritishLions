@@ -1,29 +1,35 @@
 'use strict'
 
 import OfficialSquadShowModel from  '../../../modes/Squad/OfficialSquadShowModel'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper,strToLower } from '../../utility/helper'
 import Coach from '../../../../contents/my-lions/official/coach'
 import { searchPlayer } from './searchPlayer'
+import Immutable, { Record, List} from 'immutable'
 export function convertSquadToShow(squad,fullPlayerList,uniondata) {
     console.log('squad',squad.toJS())
     let tempFeed=new OfficialSquadShowModel()
     tempFeed.forEach((value,index)=>{
         console.log('index',index)
-            if(index==='backs'||index==='forwards') {
-                value.map((v,i)=>{
-                    if(squad.get(index)[i]!==undefined) {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=searchPlayer(fullPlayerList,squad.get(index)[i],uniondata)
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i]=null
-                            return val
-                        })
-                    }
+            if(index==='backs'||index==='forwards'||index==='coachstaffs') {
+                // value.map((v,i)=>{
+                //     if(squad.get(index)[i]!==undefined) {
+                //         tempFeed=tempFeed.update(index,val=>{
+                //             val[i]=searchPlayer(fullPlayerList,squad.get(index)[i],uniondata)
+                //             return val
+                //         })
+                //     }
+                //     else {
+                //         tempFeed=tempFeed.update(index,val=>{
+                //             val[i]=null
+                //             return val
+                //         })
+                //     }
+                // })
+                tempFeed=tempFeed.set(index,new List())
+                squad.get(index).map((v,i)=>{
+                    tempFeed=tempFeed.update(index,val=>{return val.push(searchPlayer(fullPlayerList,v,uniondata))})
                 })
+                console.log('tempFeed.get(index)',tempFeed.get(index).toJS())
             }
             else {
                 value.map((v,i)=>{

@@ -36,6 +36,7 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Cursor from 'immutable/contrib/cursor'
 import OfficialSquadList from '../components/officialSquadList'
 import {convertSquadToShow} from '../components/officialSquadToShow'
+import { strToUpper,isEmptyObject } from '../../utility/helper'
 
 class MyLionsOfficialSquad extends Component {
 
@@ -177,7 +178,13 @@ class MyLionsOfficialSquad extends Component {
                       },
                       isRequiredToken: true
                   }
-                  service(optionsOfficialSquad)
+                  if(typeof(this.props.officialSquadToShow)==='object'&&!isEmptyObject(this.props.officialSquadToShow)) {
+                    this.setState({isLoaded:true})
+                  }
+                  else {
+                    service(optionsOfficialSquad)
+                  }
+                  
 
                 
               }

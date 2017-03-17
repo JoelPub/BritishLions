@@ -5,7 +5,8 @@ const OfficialSquadShowModel = Record({
     {'position':'coach',info:null},
     {'position':'captain',info:null},
   ], 
-  'forwards':[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null], 
-  'backs':[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+  'forwards':new List(), 
+  'backs':new List(), 
+  'coachstaffs':new List()
 })
 export default OfficialSquadShowModel
