@@ -44,14 +44,16 @@ const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 
 
 const localDataTactics = [
   {
-   name:'10-Man' ,
-   value: '10-man'
-  },{
-    name:'Balanced' ,
-    value: 'balanced'
-  },{
     name:'Running' ,
     value: 'running'
+  }
+  ,{
+    name:'Balanced' ,
+    value: 'balanced'
+  },
+  {
+    name:'10-Man' ,
+    value: '10-man'
   }
 ]
 const localDataReplacements= [
@@ -246,8 +248,16 @@ class TacticsManger extends Component {
             title='MY LIONS'
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
+
+          <View style={styles.pageTitle}>
+            <Text style={styles.pageTitleText}>SELECT TACTICS</Text>
+            <ButtonFeedback
+              style={styles.pageTitleBtnIconRight}
+              onPress={this.iconPress}>
+              <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
+            </ButtonFeedback>
+          </View>
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <HeaderTitleWithModal title={'SELECT TACTICS'} iconPress={this.iconPress} />
             <Versus gameData={this.state.drillDownItem} userData={userProfile} />
             <SmallBox title={'STAR PLAYER'} >
               <ModalDropdown style={styles.dropDown}
