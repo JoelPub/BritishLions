@@ -73,7 +73,7 @@ const MyPride = (props) => {
   return (
     <View style={styles.prideContainer} >
       <View style={styles.prideTitleView}>
-        <Text style={styles.prideTitleText}>MY PRIDE</Text>
+        <Text style={styles.prideTitleText}>PRIVATE LEAGUES</Text>
       </View>
       <GroupAction createGroupOnPress={createGroupOnPress} joinGroupOnPress={joinGroupOnPress} />
       <GroupNameList onPress={groupNameOnPress} data={data} />
