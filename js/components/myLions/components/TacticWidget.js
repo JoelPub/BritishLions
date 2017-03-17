@@ -56,7 +56,8 @@ const locStyle = styleSheetCreate({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    marginLeft:-60
+    marginLeft:-60,
+    backgroundColor:'transparent'
   }
 })
 

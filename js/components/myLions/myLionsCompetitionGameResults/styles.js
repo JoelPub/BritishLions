@@ -86,7 +86,7 @@ module.exports = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop:5,
-        marginLeft: 5,
+        marginLeft: 10,
         color: '#FFF'
     },
     modalContent: {
