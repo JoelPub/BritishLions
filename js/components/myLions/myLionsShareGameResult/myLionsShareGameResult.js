@@ -162,14 +162,20 @@ class MyLionsShareGameResult extends Component {
                   {
                       this.props.data.resultInfo.is_won?
                           <View style={[styles.result, styles.resultWonBg]}>
-                              <Text style={styles.resultText}>
-                                  {strToUpper(this.props.data.resultInfo.message)}
+                              <Text style={styles.resultText} >
+                                  {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf('!')+1))}
+                              </Text>
+                              <Text style={styles.resultText} >
+                                  {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf('!')+1))}
                               </Text>
                           </View>
                       :
                           <View style={[styles.result]}>
-                              <Text style={styles.resultText}>
-                                  {strToUpper(this.props.data.resultInfo.message)}
+                              <Text style={styles.resultText} >
+                                  {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf('.')+1))}
+                              </Text>
+                              <Text style={styles.resultText} >
+                                  {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf('.')+1))}
                               </Text>
                           </View>
                   }

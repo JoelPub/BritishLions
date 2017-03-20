@@ -105,7 +105,7 @@ class MyLionsTestRound extends Component {
                                     onPress={() => { this.setState({modalVisible: true}) }}>
                                     <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                                 </ButtonFeedback>
-                                <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
+                                <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                 <View style={styles.wrapper}>
                                     <ButtonFeedback rounded onPress={() => this._saveTeam()}
                                         style={[styles.btnSave, styles.btnGreen ]}>
@@ -117,9 +117,9 @@ class MyLionsTestRound extends Component {
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
-                    <SquadModal 
+                    <SquadModal
                         modalVisible={this.state.modalVisible}
-                        callbackParent={() => {}}>
+                        callbackParent={() => {this.setState({modalVisible: false})}}>
                             <View style={[styles.modalContent]}>
                                 <Text style={styles.modalContentTitleText}>SELECT TEAM</Text>
                                 <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>

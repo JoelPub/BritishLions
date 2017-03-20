@@ -141,6 +141,10 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     textAlign:'center',
     width:80,
+    marginTop: 10,
+    android: {
+        marginTop: 4
+    }
   },
   modalContent: {
     paddingHorizontal: 28,

@@ -319,14 +319,20 @@ class MyLionsCompetitionGameResults extends Component {
                                 {
                                     this.state.resultInfo.is_won?
                                         <View style={[locStyle.result, locStyle.resultWonBg]}>
-                                            <Text style={locStyle.resultText}>
-                                                {strToUpper(this.state.resultInfo.message)}
+                                            <Text style={locStyle.resultText} >
+                                                {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('!')+1))}
+                                            </Text>
+                                            <Text style={locStyle.resultText} >
+                                                {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf('!')+1))}
                                             </Text>
                                         </View>
                                     :
                                         <View style={[locStyle.result]}>
-                                            <Text style={locStyle.resultText}>
-                                                {strToUpper(this.state.resultInfo.message)}
+                                            <Text style={locStyle.resultText} >
+                                                {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('.')+1))}
+                                            </Text>
+                                            <Text style={locStyle.resultText} >
+                                                {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf('.')+1))}
                                             </Text>
                                         </View>
                                 }

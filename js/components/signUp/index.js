@@ -547,7 +547,7 @@ class SignUp extends Component {
                                         style={styles.footerBtn}
                                         onPress={() => this._popRoute()}>
                                             <Icon name='md-arrow-back' style={styles.footerBtnIcon} />
-                                            <Text style={styles.footerBtnText}> BACK TO LOGIN</Text>
+                                            <Text style={styles.footerBtnText}> BACK TO Sign in</Text>
                                     </ButtonFeedback>
                                 </Col>
                                 <Col>
