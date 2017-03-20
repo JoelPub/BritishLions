@@ -81,7 +81,7 @@ class GreateGroupModal extends Component {
       case 'success':
       {
         PageData.title = 'SUCCESS'
-        PageData.contentText =  data ?  data.message : ''
+        PageData.contentText =   'Your private league ' +this.state.text + ' has been successfully created.'
         PageData.subTitle = data ? data.invitation_code : ''
         PageData.subContentText = 'Invite friends to join your league by sharing this code. You may view the code for later reference at any time within your private league view.'
       }
@@ -134,6 +134,8 @@ GreateGroupModal.propTypes = {
   modalType: PropTypes.string,
   createButtonClick: PropTypes.func.isRequired,
   errorBackButtonClick: PropTypes.func.isRequired,
-  data : PropTypes.object
+  data : PropTypes.object,
+  groupName: PropTypes.string,
+
 }
 export default GreateGroupModal

@@ -62,10 +62,7 @@ class Landing extends Component {
     }
 
     _isSignIn(route) {
-        if (this.props.isAccessGranted)
-            this._navigateTo(route)
-        else
-            this._reLogin()
+        this._navigateTo(route)
     }
 
     _navigateTo(route) {
