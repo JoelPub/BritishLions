@@ -126,7 +126,7 @@ const  TitleSubTitle = ({data,profileTitleTextStyle,profileSubTitleTextStyle}) =
   return (
     <View style={styles.profileTitleView}>
       <Text style={[styles.profileTitleText,profileTitleTextStyle]}>{data.userName.toUpperCase()}</Text>
-      <Text style={[styles.profileSubTitleText,profileSubTitleTextStyle]}>{data.selector_rating.toUpperCase()}</Text>
+      <Text style={[styles.profileSubTitleText,profileSubTitleTextStyle]}>{data.selectorRating.toUpperCase()}</Text>
     </View>
   )
 }

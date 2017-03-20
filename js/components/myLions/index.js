@@ -354,15 +354,14 @@ class MyLions extends Component {
             onSuccess: (res) => {
                 if(res.data) {
                     console.log('res.data',res.data)
-                    let userProfile = Object.assign(res.data, {
-                        userName: userName, 
-                        initName: initName, 
-                        firstNmae: firstName,
-                        lastName: lastName, 
-                        userID: this.state.userID
-                    })
-                    this.props.setUserProfile(userProfile)
-
+                        let userProfile = Object.assign(res.data, {
+                            userName: userName,
+                            initName: initName,
+                            firstNmae: firstName,
+                            lastName: lastName,
+                            userID: this.state.userID
+                        })
+                        this.props.setUserProfile(userProfile)
                 }
             },
             onError: null,
