@@ -66,9 +66,20 @@ module.exports = styleSheetCreate({
     borderColor: 'rgb(216, 217, 218)',
     backgroundColor: 'rgb(255,255,255)',
     marginTop: 30,
-    paddingHorizontal: 15,
     justifyContent: 'center',
-
+  },
+  dropDownList: {
+    marginTop:20,
+    width:styleVar.deviceWidth-26*2,
+    marginLeft:0
+  },
+  dropDownCellStyle :{
+    height: 40
+  },
+  dropDowntextStyle :{
+    fontSize: 18,
+    color:'red',
+    marginLeft:15
   },
   dropDownSub: {
     flexDirection:'row',
@@ -77,7 +88,19 @@ module.exports = styleSheetCreate({
     color: 'rgb(38, 38, 38)',
     fontSize: 18,
     lineHeight: 20,
-    fontFamily: styleVar.fontGeorgia
+    fontFamily: styleVar.fontGeorgia,
+    marginLeft:15
+  },
+  highlightedRowText:{
+    color: 'black',
+  },
+  rowText:{
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    fontSize: 18,
+    color: 'gray',
+    backgroundColor: 'white',
+    textAlignVertical: 'center',
   },
   dropDownIcon: {
     color: 'rgb(38, 38, 38)',
