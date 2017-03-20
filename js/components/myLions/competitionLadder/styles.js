@@ -152,11 +152,14 @@ module.exports = styleSheetCreate({
     borderColor: 'rgb(216, 217, 218)',
   },
   groupNameText:{
-    marginLeft: 30,
+    marginLeft: 12,
     fontFamily: styleVar.fontGeorgia,
     color:'black',
     fontSize: 18,
-    lineHeight: 18,
+    lineHeight: 24,
+    android:{
+      paddingTop:-4
+    }
   },
   playIcon:{
     color: 'rgb(208,7,42)',
