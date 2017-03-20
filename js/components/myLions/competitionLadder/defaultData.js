@@ -1,5 +1,5 @@
 var data = {
-  selector_rating: '',
+  selectorRating: '',
   rank: 0,
   w: 0,
   l: 0,

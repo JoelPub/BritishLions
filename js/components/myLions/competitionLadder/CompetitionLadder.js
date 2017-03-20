@@ -343,7 +343,11 @@ class CompetitionLadder extends Component {
     })
   }
   joinButtonClick = (inputText) => {
-    let {userProfile} = this.props
+    let {userProfile,netWork} = this.props
+    if(netWork.connectionInfo==='NONE'){
+      this.showNetError()
+      return
+    }
     getAccessToken().then(token=>{
       console.log(token)
       this.joinGroupApi(token,userProfile.userID,inputText)
@@ -372,10 +376,18 @@ class CompetitionLadder extends Component {
     console.log('navToCompetitionCentre')
     this.props.pushNewRoute('myLionsCompetitionCentre')
   }
+  showNetError  = ()=> {
+    Alert.alert(
+      'An error occured',
+      'Please make sure that you\'re connected to the network.',
+      [{text: 'Dismiss'}]
+    )
+  }
 
   render() {
     let { data ,isCreating, createType, isJoining, joinType ,modalData} = this.state
     let {userProfile} = this.props
+    console.log(userProfile)
     return (
       <Container theme={theme}>
         <View style={styles.container} >
@@ -444,7 +456,8 @@ export default connect((state) => {
   return {
     route: state.route,
     privateLeagues: state.squad.privateLeagues,
-    userProfile:state.squad.userProfile
+    userProfile:state.squad.userProfile,
+    netWork: state.network,
   }
 }, bindAction)(CompetitionLadder)
 CompetitionLadder.defaultProps = {
