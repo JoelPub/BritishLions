@@ -69,7 +69,7 @@ var data = {
   ],
   my_groups: [
     {
-      name:'GROUP NAME' ,
+      name:'group name' ,
       id: null
     }
   ]
