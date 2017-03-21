@@ -2,13 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Root</key>
-	<dict>
-		<key>url</key>
-		<string>http://report-bl.clarisite.com</string>
-		<key>appid</key>
-		<string>A2BA2975-8DDB-9C8F-C629-FA45318BE325</string>
-	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
