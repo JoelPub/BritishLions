@@ -155,8 +155,12 @@ class TeamWidget extends Component {
                     method: 'post',
                     onSuccess: (res) => {
                         console.log('res.data',res.data)
-                        if(res.data) {
+                        console.log('typeof res.data',typeof res.data)
+                        if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
+                        }
+                        else {
+                            this.setTeam(TeamModel.fromJS({}))
                         }
                         
                     },

@@ -303,7 +303,7 @@ class MyLions extends Component {
         this.setState({onBordingModalVisible:false})
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
-            data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName}),
+            data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
             onAxiosStart: null,
             onAxiosEnd: null,
             method: 'post',
