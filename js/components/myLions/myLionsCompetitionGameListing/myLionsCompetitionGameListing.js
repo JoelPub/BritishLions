@@ -103,6 +103,7 @@ class MyLionsCompetitionGameListing extends Component {
         super(props)
         this.isUnMounted = false
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+        this.round_id = null
         this.state = {
             isLoaded: false,
             userID:'',
@@ -206,7 +207,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                 </ButtonFeedback>
                                             </View>
                                         </View>
-                                        <ButtonFeedback onPress={()=> { this._drillDown(item, statusBoxRoute) }}>
+                                        <ButtonFeedback onPress={()=> { this._drillDown(Object.assign(item,{round_id:this.round_id}), statusBoxRoute) }}>
                                             <View style={triangleShape} />
                                             <View style={statusBox}>
                                                 <Text style={locStyle.statusBoxText}>
@@ -267,6 +268,7 @@ class MyLionsCompetitionGameListing extends Component {
             let {userProfile,drillDownItem} = this.props
             console.log('drillDownItem',drillDownItem)
             console.log('userProfile',userProfile)
+            this.round_id=drillDownItem.round_id
             let optionsGameList = {
                 url: 'http://biltestapp.azurewebsites.net/GetGameList',
                 data: {

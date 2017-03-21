@@ -219,7 +219,7 @@ class MyLionsCompetitionGameResults extends Component {
 
                         
                         <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]}>
-                            <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  />
+                            <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  round_id={this.round_id} game={this.game}/>
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]}>
                             <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
@@ -269,6 +269,11 @@ class MyLionsCompetitionGameResults extends Component {
         }
     }
     getInfo(){
+        console.log('!!!this.props.drillDownItem',this.props.drillDownItem)
+
+        let {drillDownItem} = this.props
+        this.round_id=drillDownItem.round_id
+        this.game=drillDownItem.game
         let optionsInfo = {
             url: 'http://biltestapp.azurewebsites.net/GetGameElements',
             data: {id:this.props.userProfile.userID},
