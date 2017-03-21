@@ -183,37 +183,46 @@ class MyLionsCompetitionGameResults extends Component {
 
                         <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
                         <View style={[locStyle.headerStadium]}>
-                            <Text style={locStyle.headerStadiumText}>{this.state.gameInfo.grounds[Math.trunc(Math.random()*this.state.gameInfo.grounds.length)].name}</Text>
+                            <Text style={locStyle.headerStadiumText}>{this.grounds_name}</Text>
                         </View>
                         
                         <Grid>
-                            <Row>
-                                {
-                                    dummyData.map((item, key) => {
-                                        let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                                        let gridBoxTouchable = (key ===  0)?[styles.gridBoxTouchable, styles.gridBoxTitleRight, locStyle.gridBoxWrapper] : [styles.gridBoxTouchable, locStyle.gridBoxWrapper]
-                                        let randomNumber=Math.trunc(Math.random()*this.state.gameInfo[item.headerLabel].length)
-                                        return (
-                                            <Col key={key}>
-                                                <View style={gridBoxTouchable}>
-                                                    <View style={[locStyle.header]}>
-                                                        <Text style={[locStyle.headerText, locStyle.headerText2]}>
-                                                            {strToUpper(item.headerLabel==='referees'?'referee':item.headerLabel)}
-                                                        </Text>
-                                                    </View>
-                                                    <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
-                                                        
-                                                        <View style={locStyle.gridBoxTitle}>
-                                                            <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
-                                                                {strToUpper(this.state.gameInfo[item.headerLabel][randomNumber].name)}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                </View>
-                                            </Col>
-                                        )
-                                    }, this)
-                                }
+                            <Row>                                
+                                <Col >
+                                    <View style={[styles.gridBoxTouchable, styles.gridBoxTitleRight, locStyle.gridBoxWrapper]}>
+                                        <View style={[locStyle.header]}>
+                                            <Text style={[locStyle.headerText, locStyle.headerText2]}>
+                                                WEATHER
+                                            </Text>
+                                        </View>
+                                        <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
+                                            
+                                            <View style={locStyle.gridBoxTitle}>
+                                                <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
+                                                    {strToUpper(this.weather_name)}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </Col>
+
+                                <Col >
+                                    <View style={[styles.gridBoxTouchable, locStyle.gridBoxWrapper]}>
+                                        <View style={[locStyle.header]}>
+                                            <Text style={[locStyle.headerText, locStyle.headerText2]}>
+                                                REFEREE
+                                            </Text>
+                                        </View>
+                                        <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
+                                            
+                                            <View style={locStyle.gridBoxTitle}>
+                                                <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
+                                                    {strToUpper(this.referees_name)}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </Col>
                             </Row>
                         </Grid>
 
@@ -225,7 +234,7 @@ class MyLionsCompetitionGameResults extends Component {
                             <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]} >
-                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)}/>    
+                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)} grounds_id={this.grounds_id} weather_id={this.weather_id} referees_id={this.referees_id} round_id={this.round_id} game={this.game}/>    
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
@@ -284,6 +293,12 @@ class MyLionsCompetitionGameResults extends Component {
                 console.log('res',res)
                 if(res.data) {
                     console.log('res.data',res.data)
+                    this.grounds_id=res.data[0].grounds[Math.trunc(Math.random()*res.data[0].grounds.length)].id
+                    this.grounds_name=res.data[0].grounds[Math.trunc(Math.random()*res.data[0].grounds.length)].name
+                    this.weather_id=res.data[0].weather[Math.trunc(Math.random()*res.data[0].weather.length)].id
+                    this.weather_name=res.data[0].weather[Math.trunc(Math.random()*res.data[0].weather.length)].name
+                    this.referees_id=res.data[0].referees[Math.trunc(Math.random()*res.data[0].referees.length)].id
+                    this.referees_name=res.data[0].referees[Math.trunc(Math.random()*res.data[0].referees.length)].name
                     this.setState({isLoaded:true,gameInfo:res.data[0]})
                 }
             },

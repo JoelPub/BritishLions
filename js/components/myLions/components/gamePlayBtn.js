@@ -71,31 +71,35 @@ class GamePlayBtn extends Component {
 
     playGame() {
        this.props._setModalVisible(true,'loading')
+       console.log('this.props.tactics',this.props.tactics)
        let options = {
             url: this.getGameResultUrl,
             data: {
                 "id" : this.props.userProfile.userID,
-                "round_id":1,
-                "game_id":3,
-                "weather_id":123,
-                "referee_id":234,
-                "ground_id":345,
+                "round_id":this.props.round_id,
+                "game_id":this.props.game,
+                "weather_id":this.props.weather_id,
+                "referee_id":this.props.referees_id,
+                "ground_id":this.props.grounds_id,
                 "team":this.props.teamData,
                 "tactics":{
                     "boost_player":this.props.tactics.starPlayer.info.id,
-                    "interchange":this.props.tactics.starPlayer.replacements,
-                    "play_style":this.props.tactics.starPlayer.tactic
+                    "interchange":this.props.tactics.replacements,
+                    "play_style":this.props.tactics.tactic
                 }
             },
             method: 'post',
             onAxiosStart: () => {},
             onAxiosEnd: () => {
+                console.log('onAxiosEnd')
             },
             onSuccess: (res) => {
+                console.log('res',res)
                 this.props._setModalVisible(false)
                 this.props.pushNewRoute('myLionsCompetitionGameResults')
             },
             onError: ()=>{
+                console.log('onError')
                 this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attampting to process your game. \n\n Please try again later.','GO BACK')
             },
             onAuthorization: null,
@@ -104,7 +108,7 @@ class GamePlayBtn extends Component {
             isQsStringify:false
        }
 
-       setTimeout(()=>service(options),3000)
+       service(options)
 
     }
 }
