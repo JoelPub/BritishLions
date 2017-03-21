@@ -271,7 +271,7 @@ class Landing extends Component {
                     let userProfile = Object.assign(res.data, {
                         userName: userName, 
                         initName: initName, 
-                        firstNmae: firstName,
+                        firstName: firstName,
                         lastName: lastName, 
                         userID: this.state.userID
                     })
