@@ -1,6 +1,10 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
+apply plugin: 'com.archinamon.aspectj'
+aspectj {
+    includeAspectsFromJar 'one_aspects'
+}
 
 import com.android.build.OutputFile
 
@@ -93,6 +97,9 @@ android {
         dirs 'libs'
         }
     }
+    dexOptions {
+        jumboMode = true
+    }
 
     defaultConfig {
         applicationId "com.lionsofficial"
@@ -178,7 +185,10 @@ dependencies {
       compile 'com.facebook.fresco:webpsupport:0.11.0'
 
       // For WebP support, without animations
-      compile 'com.facebook.fresco:webpsupport:0.11.0'
+    
+    compile 'org.aspectj:aspectjrt:1.8.9'
+
+    compile project(':react-native-one')
 
 }
 

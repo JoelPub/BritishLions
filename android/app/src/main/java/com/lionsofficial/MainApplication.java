@@ -25,6 +25,8 @@ import com.lionsofficial.reactPackager.ClarisiteAgentReactPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
 
+import com.thunderhead.one.react.OnePackage;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +62,8 @@ public class MainApplication extends Application implements ReactApplication {
           new ClarisiteAgentReactPackage(),
           new ReactNativeYouTube(),
           new LinearGradientPackage(),
-          new FacebookLoginPackage()
+          new FacebookLoginPackage(),
+          new OnePackage()
       );
     }
   };
