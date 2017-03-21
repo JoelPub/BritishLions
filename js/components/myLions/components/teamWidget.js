@@ -148,8 +148,8 @@ class TeamWidget extends Component {
                 let optionsTeam = {
                     url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
                     data: { "id":this.props.userProfile.userID,
-                            "round_id":123, 
-                            "game_id": 1},
+                            "round_id":this.props.round_id, 
+                            "game_id": this.props.game},
                     onAxiosStart: null,
                     onAxiosEnd: null,
                     method: 'post',

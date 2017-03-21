@@ -77,13 +77,17 @@ class TeamSaveBtn extends Component {
        let options = {
            url: this.saveSquadUrl,
            data: { "id":this.props.userProfile.userID,
-                            "round_id":123, 
-                            "game_id": 1,
+                            "round_id":this.props.gameData.round_id, 
+                            "game_id": this.props.gameData.game,
                             "team":this.props.teamDataTemp},
            onAxiosStart: () => {},
            onAxiosEnd: () => {
            },
+            method: 'post',
+            channel: 'EYC3',
+            isQsStringify:false,
            onSuccess: (res) => {
+                console.log('res',res)
                 this.props.setTeamData(this.props.teamDataTemp)
                 this.props.popRoute()
            },

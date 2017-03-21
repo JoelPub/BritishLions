@@ -109,7 +109,7 @@ class MyLionsManageTeam extends Component {
                                 
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
                                 <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
-                                <TeamSaveBtn />
+                                <TeamSaveBtn gameData={this.state.drillDownItem}/>
                                 <LionsFooter isLoaded={true} />
                             </ScrollView>
                         :

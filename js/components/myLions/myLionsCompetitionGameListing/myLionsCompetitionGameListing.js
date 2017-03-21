@@ -103,6 +103,7 @@ class MyLionsCompetitionGameListing extends Component {
         super(props)
         this.isUnMounted = false
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+        this.round_id = null
         this.state = {
             isLoaded: false,
             userID:'',
@@ -206,7 +207,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                 </ButtonFeedback>
                                             </View>
                                         </View>
-                                        <ButtonFeedback onPress={()=> { this._drillDown(item, statusBoxRoute) }}>
+                                        <ButtonFeedback onPress={()=> { this._drillDown(Object.assign(item,{round_id:this.round_id}), statusBoxRoute) }}>
                                             <View style={triangleShape} />
                                             <View style={statusBox}>
                                                 <Text style={locStyle.statusBoxText}>
@@ -264,27 +265,38 @@ class MyLionsCompetitionGameListing extends Component {
     _getList(){
       console.log('_getList')
       this.setState({ isLoaded: false },()=>{
+            let {userProfile,drillDownItem} = this.props
+            console.log('drillDownItem',drillDownItem)
+            console.log('userProfile',userProfile)
+            this.round_id=drillDownItem.round_id
             let optionsGameList = {
-              url: 'https://api.myjson.com/bins/en699',
-              data: {id:this.state.userID},
-              onAxiosStart: null,
-              onAxiosEnd: null,
-              method: 'get',
-              onSuccess: (res) => {
-                  if(res.data) {
-                          console.log('res.data',res.data)                    
-                          this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
-                  }
-              },
-              onError: () => {this.setState({isLoaded:true}), () => {
-                      this._showError(error) // prompt error
-              }},
-              onAuthorization: () => {
-                      this._signInRequired()
-              },
-              isRequiredToken: true
+                url: 'http://biltestapp.azurewebsites.net/GetGameList',
+                data: {
+                  id:userProfile.userID,
+                  first_name:userProfile.firstName,
+                  last_name:userProfile.lastName,
+                  round_id:drillDownItem.round_id
+                },
+                onAxiosStart: null,
+                onAxiosEnd: null,
+                method: 'post',
+                channel: 'EYC3',
+                isQsStringify:false,
+                onSuccess: (res) => {
+                    if(res.data) {
+                        console.log('res.data',res.data)
+                        this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
+                    }
+                },
+                onError: ()=>{
+                    this.setState({isLoaded:true})
+                },
+                onAuthorization: () => {
+                        this._signInRequired()
+                },
+                isRequiredToken: true
             }
-            service(optionsGameList)
+            service(optionsGameList)        
       })
     }
 }
@@ -295,4 +307,9 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null,  bindAction)(MyLionsCompetitionGameListing)
+export default connect((state) => {
+    return {
+        drillDownItem: state.content.drillDownItem,
+        userProfile: state.squad.userProfile,
+    }
+},  bindAction)(MyLionsCompetitionGameListing)
