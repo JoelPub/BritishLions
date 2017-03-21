@@ -225,11 +225,12 @@ class MyLionsCompetitionCentre extends Component {
 
     getInfo(token,userProfile){
         console.log('getInfo')
+        console.log('userProfile',userProfile)
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
             data: {
               access_token:token,
-              id:userProfile.userId,
+              id:userProfile.userID,
               first_name:userProfile.firstName,
               last_name:userProfile.lastName
             },
@@ -239,18 +240,21 @@ class MyLionsCompetitionCentre extends Component {
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
-                if(res.data) {
+                if(res.data&&res.data.rounds) {
                     console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
                         let userProfile = Object.assign(res.data, {
                         userName: userProfile.userName, 
                         initName: userProfile.initName, 
-                        firstNmae: userProfile.firstName,
+                        firstName: userProfile.firstName,
                         lastName: userProfile.lastName, 
                         userID: userProfile.userID
                     })
                         this.props.setUserProfile(userProfile)
                     })
+                }
+                else {
+                    this.setState({isLoaded:true})
                 }
             },
             onError: ()=>{
