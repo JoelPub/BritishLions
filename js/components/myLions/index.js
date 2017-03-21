@@ -251,43 +251,43 @@ class MyLions extends Component {
                             // when first login, it will show the onboarding
                             isFirst = isFirst === 'yes'? true : false
                             // isFirst = true
-                            // this.setState({ modalVisible: isFirst },()=>{this.getRating()})
-                            if (isFirst) {
-                                let squadData={ "backs" : [],
-                                                "wildcard" : "",
-                                                "captain" : "",
-                                                "forwards" : [],
-                                                "kicker" : ""
-                                                }                
-                                let optionsTeam = {
-                                    url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
-                                    method: 'get',
-                                    onSuccess: (res) => {
-                                        if(res.data) {
-                                            // console.log('res.data',res.data)
-                                            let squadFeed=eval(`(${res.data})`)
-                                            for( let pos in squadData) {
-                                                // console.log('pos',pos)
-                                                // console.log('squadFeed[pos]',squadFeed[pos==='wildcard'?'widecard':pos])
-                                                if(squadFeed[pos==='wildcard'?'widecard':pos]) {
-                                                    squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos].split('|'):squadFeed[pos==='wildcard'?'widecard':pos]
-                                                }
+                            // if (isFirst) {
+                            let squadData={ "backs" : [],
+                                            "wildcard" : "",
+                                            "captain" : "",
+                                            "forwards" : [],
+                                            "kicker" : ""
+                                            }                
+                            let optionsTeam = {
+                                url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
+                                method: 'get',
+                                onSuccess: (res) => {
+                                    if(res.data) {
+                                        // console.log('res.data',res.data)
+                                        let squadFeed=eval(`(${res.data})`)
+                                        for( let pos in squadData) {
+                                            // console.log('pos',pos)
+                                            // console.log('squadFeed[pos]',squadFeed[pos==='wildcard'?'widecard':pos])
+                                            if(squadFeed[pos==='wildcard'?'widecard':pos]) {
+                                                squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos].split('|'):squadFeed[pos==='wildcard'?'widecard':pos]
                                             }
                                         }
+                                    }
 
-                                        this.getRating(squadData,userName,firstName,lastName,initName)
-                                        
-                                    },
-                                    onError: ()=>{
-                                        this.getRating(squadData,userName,firstName,lastName,initName)
-                                    },
-                                    isRequiredToken: true
-                                }
-                                this.setState({onBordingModalVisible:true},()=>service(optionsTeam))
+                                    this.getRating(isFirst,squadData,userName,firstName,lastName,initName)
+                                    
+                                },
+                                onError: ()=>{
+                                    this.getRating(isFirst,squadData,userName,firstName,lastName,initName)
+                                },
+                                isRequiredToken: true
                             }
-                            else {
-                                this.getProfile(userName,firstName,lastName,initName)
-                            }
+                            service(optionsTeam)
+                            // this.setState({onBordingModalVisible:true},()=>service(optionsTeam))
+                            // }
+                            // else {
+                            //     this.getProfile(userName,firstName,lastName,initName)
+                            // }
                         }).catch((error) => {})                        
                     }).catch((error) => {})
                     
@@ -298,18 +298,19 @@ class MyLions extends Component {
         }
     }
 
-    getRating(squadData,userName,firstName,lastName,initName){
+    getRating(isFirst,squadData,userName,firstName,lastName,initName){
         // console.log('getRating',squadData)
         this.setState({onBordingModalVisible:false})
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
-            data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName}),
+            data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
             onAxiosStart: null,
             onAxiosEnd: null,
             method: 'post',
             onSuccess: (res) => {
                 console.log('res',res)
-                if(res.data) {
+                if(res.data&&isFirst) {
+                    this.setState({onBordingModalVisible:true},()=>{
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
                             "highLight":3,
@@ -322,9 +323,10 @@ class MyLions extends Component {
                             "Click next to discover what's new in this version."
                             ]
                         })
-                        this.setState({totalPages:Data.length})
+                        this.setState({totalPages:Data.length,modalVisible:true})
+                    })
+                        
                 }
-                this.setState({modalVisible:true})
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onError: ()=>{

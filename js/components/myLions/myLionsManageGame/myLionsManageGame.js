@@ -279,7 +279,7 @@ class MyLionsCompetitionGameResults extends Component {
                 console.log('res',res)
                 if(res.data) {
                     console.log('res.data',res.data)
-                    this.setState({isLoaded:true,gameInfo:res.data})
+                    this.setState({isLoaded:true,gameInfo:res.data[0]})
                 }
             },
             onError: ()=>{
