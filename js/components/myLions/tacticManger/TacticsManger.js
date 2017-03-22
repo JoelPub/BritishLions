@@ -114,15 +114,12 @@ class TacticsManger extends Component {
   constructor (props) {
     super(props)
     this._scrollView = ScrollView
-    this.isUnMounted = false
     let dropDownValue = 'Select Player'
+    console.log('this.props.tactics',this.props.tactics)
     if (this.props.tactics===null) {
       dropDownValue ='Select Player'
     }else {
-      console.log(this.props.tactics)
-
-      console.log(this.props.tactics.tacticsData)
-      dropDownValue =this.props.tactics.starPlayer.info.name
+      dropDownValue =this.props.tactics.starPlayer.info&&this.props.tactics.starPlayer.info.name?this.props.tactics.starPlayer.info.name:'Select Player'
     }
 
     this.state = {
@@ -196,11 +193,11 @@ class TacticsManger extends Component {
     if(!teamToShow.backs) return result
     teamToShow.backs.map(
       (item)=>{
-        result.push(item.info.name)
+        if(item.info&&item.info.name) result.push(item.info.name)
       }
     )
     teamToShow.forwards.map((item)=>{
-       result.push(item.info.name)
+       if(item.info&&item.info.name) result.push(item.info.name)
      })
      return result
 
@@ -310,15 +307,6 @@ class TacticsManger extends Component {
         </View>
       </Container>
     )
-  }
-  componentDidMount() {
-    getEYC3FullPlayerList().then((data)=>{
-
-    })
-  }
-
-  componentWillUnmount() {
-    this.isUnMounted = true
   }
 }
 

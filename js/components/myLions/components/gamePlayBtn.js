@@ -83,7 +83,7 @@ class GamePlayBtn extends Component {
                 "ground_id":this.props.grounds_id,
                 "team":this.props.teamData,
                 "tactics":{
-                    "boost_player":this.props.tactics.starPlayer.info.id,
+                    "boost_player":this.props.tactics.starPlayer.info&&this.props.tactics.starPlayer.info.id?this.props.tactics.starPlayer.info.id:'',
                     "interchange":this.props.tactics.replacements,
                     "play_style":this.props.tactics.tactic
                 }
