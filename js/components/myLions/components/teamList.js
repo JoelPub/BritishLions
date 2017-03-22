@@ -270,7 +270,7 @@ export default class TeamList extends Component {
                                                             item.info===null?
                                                             <AddPlayerCell pos={'forward'} onPress = {() => this.props.pressAdd('add',`forwards|${item.position}`)}/>
                                                             :
-                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards')}/>
+                                                            <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',`forwards|${item.position}`)}/>
                                                         }
                                                     </View>
                                                 )
@@ -303,7 +303,7 @@ export default class TeamList extends Component {
                                                     item.info===null?                                                        
                                                        <AddPlayerCell pos={'back'} onPress = {() => this.props.pressAdd('add',`backs|${item.position}`)}/>
                                                     :
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs')}/>
+                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',`backs|${item.position}`)}/>
                                                 }
                                                 </View>
                                                 )

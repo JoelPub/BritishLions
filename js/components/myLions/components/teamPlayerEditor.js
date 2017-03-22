@@ -19,6 +19,7 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { setPositionToAdd , setPositionToRemove} from '../../../actions/position'
+import {map2Show} from '../components/teamToShow'
 const styles = styleSheetCreate({
     buttons: {
         flexDirection: 'row',
@@ -129,7 +130,7 @@ class TeamPlayerEditor extends Component {
         console.log('nextProps.removePlayer',nextProps.removePlayer)
         if(nextProps.removePlayer!==this.props.removePlayer&&nextProps.removePlayer===true) {
         console.log('updateTeam')
-            this._updateTeam('remove',strToLower(this.props.positionToRemove))
+            this._updateTeam('remove',strToLower(this.props.positionToRemove.split('|')[0]),strToLower(this.props.positionToRemove.split('|')[1]))
         }
     }
     componentWillUnmount() {
@@ -225,19 +226,16 @@ class TeamPlayerEditor extends Component {
 
         }
         if(update){
-           this._updateTeamPlayer(tmpFeed,position, type)
+            let successDesc = this.state.inTeam&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
+            let positionDisplay = subPosition?strToUpper(map2Show(subPosition)) :position?strToUpper(position) : ''
+            this.setState({ inTeam: !this.state.inTeam, teamDataFeed:tmpFeed.toJS() }, () => {
+                this.props._setModalVisible(true, 'message', positionDisplay, successDesc, 'OK')
+                this.props.setTeamDataTemp(tmpFeed.toJS())
+                this.props.setPositionToAdd(null)
+                this.props.setPositionToRemove(null)
+            })
         }
         
-    }
-    _updateTeamPlayer(teamData,position, type='') {
-        let successDesc = this.state.inTeam&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
-        position = position?position.toUpperCase() : ''
-        this.setState({ inTeam: !this.state.inTeam, teamDataFeed:teamData.toJS() }, () => {
-            this.props._setModalVisible(true, 'message', position, successDesc, 'OK')
-            this.props.setTeamDataTemp(teamData.toJS())
-            this.props.setPositionToAdd(null)
-            this.props.setPositionToRemove(null)
-        })
     }
 }
 
