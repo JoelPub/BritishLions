@@ -84,15 +84,12 @@ class MyLionsOfficialSquad extends Component {
         this.props.drillDown(item, route)
     }
     render() {
-        let { drillDownItem } = this.props
-        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
 
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
-                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -209,7 +206,6 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        drillDownItem: state.content.drillDownItem,
         officialSquadToShow: state.squad.officialSquadToShow,
         netWork: state.network,
         userProfile:state.squad.userProfile

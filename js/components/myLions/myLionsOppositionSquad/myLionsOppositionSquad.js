@@ -161,7 +161,8 @@ class MyLionsOppositionSquad extends Component {
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 this.fullPlayerList=catchedFullPlayerList
-                let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.props.drillDownItem.team),catchedFullPlayerList,this.uniondata)
+                let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.props.drillDownItem.expertTeam),catchedFullPlayerList,this.uniondata)
+                console.log('showSquadFeed',showSquadFeed.toJS())
                 this.props.setOppositionSquadToShow(showSquadFeed.toJS())
                 this.setState({isLoaded:true})
               }

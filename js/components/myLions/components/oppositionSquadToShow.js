@@ -1,28 +1,18 @@
 'use strict'
 
 import OppositionSquadShowModel from  '../../../modes/Squad/OppositionSquadShowModel'
+import { strToUpper,strToLower } from '../../utility/helper'
 import { searchPlayer } from './searchPlayer'
+import Immutable, { Record, List} from 'immutable'
 export function convertSquadToShow(squad,fullPlayerList,uniondata) {
     console.log('squad',squad.toJS())
     let tempFeed=new OppositionSquadShowModel()
     tempFeed.forEach((value,index)=>{
         console.log('index',index)
             if(index==='backs'||index==='forwards') {
-                value.map((v,i)=>{
-                    if(squad.get(index)[i]!==undefined) {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].position=squad.get(index)[i].name
-                            val[i].info=searchPlayer(fullPlayerList,squad.get(index)[i].id,uniondata)
-                            return val
-                        })
-                    }
-                    else {
-                        tempFeed=tempFeed.update(index,val=>{
-                            val[i].position=''
-                            val[i].info=null
-                            return val
-                        })
-                    }
+                tempFeed=tempFeed.set(index,new List())
+                squad.get(index).map((v,i)=>{
+                    tempFeed=tempFeed.update(index,val=>{return val.push({name:v.name,info:searchPlayer(fullPlayerList,v.id,uniondata)})})
                 })
             }
             else {
