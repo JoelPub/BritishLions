@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import {Image, View, Text, ActivityIndicator} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
-import { strToUpper } from '../utility/helper'
+import { strToUpper , isEmptyObject} from '../utility/helper'
 import ButtonFeedback from '../utility/buttonFeedback'
 import styleVar from '../../themes/variable'
 import Swiper from 'react-native-swiper'
@@ -33,7 +33,7 @@ const styles = styleSheetCreate({
         width: 48,
         backgroundColor: 'transparent',
         position: 'absolute',
-        right: 5,
+        right: 8,
         top: 5
     },
     btnCardInfo:{
@@ -55,7 +55,7 @@ const styles = styleSheetCreate({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        paddingVertical: 20
+        paddingVertical: 8
     },
     ratingTitle:{
         fontFamily: styleVar.fontCondensed,
@@ -234,6 +234,12 @@ const styles = styleSheetCreate({
     },
     pagination: {
         bottom: 0
+    },
+    statisticsText: {
+        fontFamily: styleVar.fontGeorgia,
+        fontSize:16,
+        lineHeight:20,
+        color:'rgb(255,255,255)'
     }
 })
 
@@ -329,13 +335,15 @@ export default class PlayerFigure extends Component {
                                         { this.state.profile.overall_score || 'NA' }
                                     </Text>
                                 </View>*/}
-                                <ButtonFeedback 
+                                {
+                                !isEmptyObject(this.state.profile)&&<ButtonFeedback 
                                     onPress={()=>this.props.pressInfo(true,'info')}
                                         style={styles.btnCardInfoWrapper}> 
                                     <View style={styles.btnCardInfo}>
                                         <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
                                     </View>
                                 </ButtonFeedback>
+                                }
                             </View>
 
                            {/* <View style={styles.playerPerfromanceWrapper}>
@@ -368,6 +376,7 @@ export default class PlayerFigure extends Component {
                                 </View>
                             </View>*/}
                             <View style={styles.playerFigureWrapper}>
+                            {!isEmptyObject(this.state.profile)?
                                 <View style={styles.playerFigureView}>
                                     <View style={styles.playerFigureTypeView}>
                                     {
@@ -430,6 +439,12 @@ export default class PlayerFigure extends Component {
                                         }
                                     </Swiper>
                                 </View>
+                                :
+                                <View>
+                                    <Text style={styles.statisticsText}> Sorry, no other performance data is currently available for this player.</Text>
+                                </View>
+
+                            }
                             </View>
                             <View style={styles.semiCardFooter}>
                                 <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>

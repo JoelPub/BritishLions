@@ -80,25 +80,8 @@ class MyLionsPlayerProfile extends Component {
             case 'info' :
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
-                        <Text style={styles.modalTitleText}>Overall Rating</Text>
-                        <Text style={styles.modalTextRN}>To provide an overall player rating EY took the results of more than 700 international and top tier club rugby games started by players in the 2015/2016 & 2016/2017 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s performance will be updated.</Text>
-                        <Text style={[styles.modalTextRN, styles.modalTextMTop]}>For each game there are over 150 features collected on player performance. Using advanced analytic techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
-
-                        <Text style={styles.modalTitleText}>Recent Performance</Text>
-                        <Text style={styles.modalTextRN}>Recent Performance is a score out of 100 based on how a player has performed in their last five matches.</Text>
-
-                        <Text style={styles.modalTitleText}>Attack</Text>
-                        <Text style={styles.modalTextRN}>Metres – the average number of metres gained from overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Lineouts won – the average number of lineouts won from overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Scrums won – the average number of scrums won in overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Clean breaks – the average number of clean breaks in overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Offloads – the average number of offloads in overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Tries – the average number of tries scored in overall games started in the last two seasons.</Text>
-
-                        <Text style={styles.modalTitleText}>Defence</Text>
-                        <Text style={styles.modalTextRN}>Tackles – The average number of successful tackles made in overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Turnovers won – the average number of turnovers won in overall games started in the last two seasons.</Text>
-                        <Text style={styles.modalTextRN}>Collection success – the average number of intercepts, catches and loose ball off ground in overall games started in the last two seasons.</Text>
+                        <Text style={styles.modalTitleText}>ATTACK / DEFENCE / KICKING</Text>
+                        <Text style={styles.modalTextRN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
                     </ScrollView>
                 )
                 break
@@ -281,12 +264,12 @@ class MyLionsPlayerProfile extends Component {
                                 <Text style={styles.detail}>{this.props.detail.weightm} </Text>
                             </Col>
                         </Grid>
-                        <Grid style={[styles.detailsGrid, styles.detailsGridColFull, styles.detailsGridGreyBackground]}>
-                            <Col style={styles.detailsGridCol} size={1}>
+                        <Grid style={styles.detailsGrid}>
+                            <Col style={styles.detailsGridCol} >
                                 <Text style={styles.detailsLabel}>BIRTHPLACE</Text>
                                 <Text style={styles.detail}>{this.props.detail.birthplace} </Text>
                             </Col>
-                            <Col style={styles.detailsGridCol} size={1}>
+                            <Col style={styles.detailsGridCol} >
                                 <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
                                 <Text style={styles.detail}>{this.props.detail.honours} </Text>
                             </Col>
