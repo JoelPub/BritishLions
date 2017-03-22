@@ -11,20 +11,6 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
     tempFeed.forEach((value,index)=>{
         console.log('index',index)
             if(index==='backs'||index==='forwards'||index==='coachstaffs') {
-                // value.map((v,i)=>{
-                //     if(squad.get(index)[i]!==undefined) {
-                //         tempFeed=tempFeed.update(index,val=>{
-                //             val[i]=searchPlayer(fullPlayerList,squad.get(index)[i],uniondata)
-                //             return val
-                //         })
-                //     }
-                //     else {
-                //         tempFeed=tempFeed.update(index,val=>{
-                //             val[i]=null
-                //             return val
-                //         })
-                //     }
-                // })
                 tempFeed=tempFeed.set(index,new List())
                 squad.get(index).map((v,i)=>{
                     tempFeed=tempFeed.update(index,val=>{return val.push(searchPlayer(fullPlayerList,v,uniondata))})

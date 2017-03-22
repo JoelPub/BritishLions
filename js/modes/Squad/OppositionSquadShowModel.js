@@ -5,7 +5,7 @@ const OppositionSquadShowModel = Record({
     {'position':'captain',info:null},
     {'position':'kicker',info:null},
   ], 
-  'forwards':[{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null}], 
-  'backs':[{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null},{'position':'',info:null}]
+  'forwards':new List(), 
+  'backs':new List()
   })
 export default OppositionSquadShowModel
