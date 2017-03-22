@@ -23,4 +23,23 @@ export function isEmptyObject(e) {
     for (t in e)  
         return !1;  
     return !0  
-} 
+}
+export function splitName(name,spliter,maxLength) {
+        let nameArr=[]
+        let i=0
+        name.split(spliter).map((value,index)=>{
+            if(index===0) {
+                nameArr[i]=value
+            }
+            else {
+                if (nameArr[i].length+value.length<maxLength) {
+                    nameArr[i]=nameArr[i]+spliter+value 
+                }
+                else {
+                    i++
+                    nameArr[i]=value
+                }
+            }
+        })
+        return nameArr
+}

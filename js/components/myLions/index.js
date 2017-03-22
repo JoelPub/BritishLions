@@ -250,7 +250,7 @@ class MyLions extends Component {
                         isFirstLogIn().then((isFirst) => {
                             // when first login, it will show the onboarding
                             isFirst = isFirst === 'yes'? true : false
-                            isFirst = true
+                            // isFirst = true
                             if (isFirst) this.setState({onBordingModalVisible:true})
                             let squadData={ "backs" : [],
                                             "wildcard" : "",
