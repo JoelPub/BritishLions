@@ -250,8 +250,8 @@ class MyLions extends Component {
                         isFirstLogIn().then((isFirst) => {
                             // when first login, it will show the onboarding
                             isFirst = isFirst === 'yes'? true : false
-                            // isFirst = true
-                            // if (isFirst) {
+                            isFirst = true
+                            if (isFirst) this.setState({onBordingModalVisible:true})
                             let squadData={ "backs" : [],
                                             "wildcard" : "",
                                             "captain" : "",
@@ -283,11 +283,6 @@ class MyLions extends Component {
                                 isRequiredToken: true
                             }
                             service(optionsTeam)
-                            // this.setState({onBordingModalVisible:true},()=>service(optionsTeam))
-                            // }
-                            // else {
-                            //     this.getProfile(userName,firstName,lastName,initName)
-                            // }
                         }).catch((error) => {})                        
                     }).catch((error) => {})
                     
@@ -310,7 +305,6 @@ class MyLions extends Component {
             onSuccess: (res) => {
                 console.log('res',res)
                 if(res.data&&isFirst) {
-                    this.setState({onBordingModalVisible:true},()=>{
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
                             "highLight":3,
@@ -324,13 +318,11 @@ class MyLions extends Component {
                             ]
                         })
                         this.setState({totalPages:Data.length,modalVisible:true})
-                    })
                         
                 }
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onError: ()=>{
-                this.setState({modalVisible:true})
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onAuthorization: () => {
