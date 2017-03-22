@@ -7,7 +7,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styles from '../styles'
 import styleVar from '../../../themes/variable'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper,splitName } from '../../utility/helper'
 import ButtonFeedback from '../../utility/buttonFeedback'
 
 const locStyle = styleSheetCreate({
@@ -112,6 +112,7 @@ export default class Versus extends Component {
     }
 
 	render() {
+        
 		return (
             <LinearGradient  colors={['#af001e', '#820417']}>
                 <View style={locStyle.wrapper}>
@@ -120,8 +121,15 @@ export default class Versus extends Component {
                             resizeMode='cover' 
                             source={{uri: this.props.gameData.image}} 
                             style={[styles.imageCircle, locStyle.imageCircle]} />
-                        
-                        <Text style={locStyle.name}>{strToUpper(this.props.gameData.title)}</Text>
+                        <View>
+                        {
+                            splitName(this.props.gameData.title,' ',10).map((value,index)=>{
+                                return(
+                                    <Text key={index} style={locStyle.name}>{strToUpper(value)}</Text>
+                                    )
+                            },this)
+                        }
+                        </View>
                     </View>   
 
                     <View style={locStyle.versusWrapper}>
@@ -133,9 +141,16 @@ export default class Versus extends Component {
                     <View style={locStyle.circleWrapper}>
                         <View style={locStyle.circle}>
                             <Text style={locStyle.circleText}>{strToUpper(this.props.userData.initName)}</Text>
-                        </View> 
-
-                        <Text style={locStyle.name}>{strToUpper(this.props.userData.userName)}</Text>
+                        </View>
+                        <View>
+                        {
+                            splitName(this.props.userData.userName,' ',10).map((value,index)=>{
+                                return(
+                                    <Text key={index} style={locStyle.name}>{strToUpper(value)}</Text>
+                                    )
+                            },this)
+                        }
+                        </View>
                     </View>
                 </View>
                 <View>
