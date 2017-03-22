@@ -80,7 +80,13 @@ export default function (state:State = initialState, action:Action): State {
 
   if (action.type === POP_TO_ROUTE) {
     let r=globalNav.navigator.getCurrentRoutes()
-    globalNav.navigator.popToRoute(r[r.findIndex(x=>x.id===action.route)])
+    if(r.findIndex(x=>x.id===action.route)===-1) {
+       globalNav.navigator.pop()
+    }
+    else {
+      globalNav.navigator.popToRoute(r[r.findIndex(x=>x.id===action.route)])
+    }
+    
     let routes = state.routes
     return {
       routes: [...routes, action.route]
