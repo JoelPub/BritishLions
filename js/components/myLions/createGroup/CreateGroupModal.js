@@ -110,9 +110,9 @@ class GreateGroupModal extends Component {
     }
 
     return(
-      <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
         <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
-           <View style={[styles.modalViewWrapper,styles.modalGropp]}>
+          <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
+          <View style={[styles.modalViewWrapper,styles.modalGropp]}>
               <Text style={styles.modalCreateGroupTitle}>{title}</Text>
               <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
               <Text style={subTitleStyle}>{subTitle}</Text>
@@ -123,8 +123,9 @@ class GreateGroupModal extends Component {
               {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
               {modalType==='success' ? <ShareButton onPress={this.shareClick } close = {this.callbackParent} /> : null}
             </View>
+          </KeyboardAwareScrollView>
        </SquadModal>
-     </KeyboardAwareScrollView>
+
     )
   }
 }
