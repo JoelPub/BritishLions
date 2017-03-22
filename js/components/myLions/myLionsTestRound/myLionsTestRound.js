@@ -30,7 +30,7 @@ import { globalNav } from '../../../appNavigator'
 import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
-import { setTeamToShow,setTeamDataTemp } from '../../../actions/squad'
+import { setTeamToShow } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import TeamModel from  '../../../modes/Team'
 import Immutable, { Map, List,Iterable } from 'immutable'
@@ -50,7 +50,6 @@ class MyLionsTestRound extends Component {
             modalVisible: false,
             userID:'',
             isNetwork: true,
-            drillDownItem:this.props.drillDownItem,
         }
         this.uniondata = Data
         this.fullPlayerList={}
@@ -85,14 +84,11 @@ class MyLionsTestRound extends Component {
     }
 
     render() {
-        let { drillDownItem } = this.props
-        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true} 
-                        backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -144,7 +140,7 @@ class MyLionsTestRound extends Component {
                 let optionsTeam = {
                     url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
                     data: { "id":this.props.userProfile.userID,
-                            "round_id":123, 
+                            "round_id":1, 
                             "game_id": 1},
                     onAxiosStart: null,
                     onAxiosEnd: null,
@@ -171,7 +167,7 @@ class MyLionsTestRound extends Component {
        let options = {
            url: this.saveSquadUrl,
            data: { "id":this.props.userProfile.userID,
-                            "round_id":123, 
+                            "round_id":1, 
                             "game_id": 1,
                             "team":this.props.teamData},
            onAxiosStart: () => {},
@@ -189,9 +185,9 @@ class MyLionsTestRound extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps',nextProps.teamDataTemp)
-        if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
+        console.log('componentWillReceiveProps',nextProps.teamData)
+        if(Immutable.is(TeamModel.fromJS(nextProps.teamData),TeamModel.fromJS(this.props.teamData))===false) {
+            this.setTeam(TeamModel.fromJS(nextProps.teamData))  
         }
     }
     
@@ -241,16 +237,13 @@ function bindAction(dispatch) {
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
-        setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
     }
 }
 
 export default connect((state) => {
     return {
-        drillDownItem: state.content.drillDownItem,
         teamToShow: state.squad.teamToShow,
         teamData: state.squad.teamData,
-        teamDataTemp: state.squad.teamDataTemp,
         netWork: state.network,
         userProfile: state.squad.userProfile,
     }
