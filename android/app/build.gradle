@@ -110,6 +110,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -187,7 +189,7 @@ dependencies {
       // For WebP support, without animations
     
     compile 'org.aspectj:aspectjrt:1.8.9'
-
+    compile 'com.android.support:multidex:1.0.0'
     compile project(':react-native-one')
 
 }
