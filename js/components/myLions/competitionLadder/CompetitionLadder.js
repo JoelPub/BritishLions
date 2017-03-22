@@ -139,6 +139,7 @@ class CompetitionLadder extends Component {
       joinType: 'ladder',
       isNetwork: true,
       modalData: null,
+      joinModalData:null,
       modalInfo: false
     }
   }
@@ -266,6 +267,7 @@ class CompetitionLadder extends Component {
         }else {
           this.setState({
             createType: 'error',
+
           })
         }
       },
@@ -309,14 +311,15 @@ class CompetitionLadder extends Component {
         this.setState({
           isLoaded:false,
         })
-        if(res.data.success){
+        if(res.data.success ==='true'){
           this.setState({
               joinType: 'success',
-            modalData: res.data
+            joinModalData: res.data
           })
         }else {
           this.setState({
             joinType: 'error',
+            joinModalData:res.data
           })
         }
       },
@@ -385,7 +388,7 @@ class CompetitionLadder extends Component {
   }
 
   render() {
-    let { data ,isCreating, createType, isJoining, joinType ,modalData} = this.state
+    let { data ,isCreating, createType, isJoining, joinType ,modalData,joinModalData} = this.state
     let {userProfile} = this.props
     console.log(userProfile)
     return (
@@ -425,7 +428,11 @@ class CompetitionLadder extends Component {
                            data = {modalData}
           />
           <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}
-                     joinButtonClick = {this.joinButtonClick} okButtonClick ={this.dissMissModel} />
+                     joinButtonClick = {this.joinButtonClick}
+                     okButtonClick ={this.dissMissModel}
+                     data={joinModalData}
+
+          />
         </View>
       </Container>
     )
