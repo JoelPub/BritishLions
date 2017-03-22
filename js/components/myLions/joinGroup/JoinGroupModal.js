@@ -44,13 +44,18 @@ class JoinGroupModal extends Component {
   callbackParent = ()=> {
     this.props.callbackParent()
   }
-  getDetail = (description) =>{
+  getDetail = (description,data) =>{
     let PageData = {
       title: '' ,
       contentText: '',
       subTitle: '',
       subContentText: '',
     }
+    console.log(data)
+    let successContentText = ''
+      if (data&&data.group_name){
+        successContentText = 'You are now a member of ' + data.group_name
+      }
     switch(description)
     {
       case 'join':
@@ -64,7 +69,7 @@ class JoinGroupModal extends Component {
       case 'error':
       {
         PageData.title = 'ERROR'
-        PageData.contentText =  'Something went wrong when trying to join the league. Please try again later.'
+        PageData.contentText =  data ? data.message : 'Something went wrong when trying to join the league. Please try again later.'
         PageData.subTitle = ''
         PageData.subContentText = ''
       }
@@ -72,7 +77,7 @@ class JoinGroupModal extends Component {
       case 'success':
       {
         PageData.title = 'SUCCESS'
-        PageData.contentText =  'You are now a member of .'
+        PageData.contentText =  successContentText
         PageData.subTitle = ''
         PageData.subContentText = ''
       }
@@ -87,17 +92,15 @@ class JoinGroupModal extends Component {
       this.props.joinButtonClick(this.state.invitation_code)
     }
   }
-  goBackClick = () => {
 
-  }
   okClick = () => {
    if(this.props.okButtonClick){
      this.props.okButtonClick(this.state.invitation_code)
    }
   }
   render() {
-    let { modalType } = this.props
-    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType)
+    let { modalType,data } = this.props
+    let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType,data)
     let subTitleStyle  = styles.modalCreateGroupSubTitle
     if(modalType !== 'join'){
       subTitleStyle = styles.modalErrorGroupSubTitle
@@ -112,7 +115,7 @@ class JoinGroupModal extends Component {
             {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}
              onChangeText={ (invitation_code) => this.setState({invitation_code}) }/> : null}
             {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
-            {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
+            {modalType==='error' ? <ErrorButton  onPress={this.callbackParent} /> : null}
             {modalType==='success' ? <ShareButton onPress={this.okClick } close = {this.callbackParent} /> : null}
           </View>
         </SquadModal>
@@ -125,7 +128,7 @@ JoinGroupModal.propTypes = {
   callbackParent: PropTypes.func.isRequired,
   modalType: PropTypes.string,
   joinButtonClick: PropTypes.func.isRequired,
-  okButtonClick: PropTypes.func
-
+  okButtonClick: PropTypes.func,
+  data : PropTypes.object,
 }
 export default JoinGroupModal
