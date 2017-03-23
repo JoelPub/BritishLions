@@ -249,5 +249,5 @@ RankingList.propTypes = {
   title:PropTypes.string,
 }
 RankingList.defaultProps = {
-  title:'GLOBAL TOP5',
+  title:'GLOBAL TOP 5',
 }
