@@ -108,7 +108,7 @@ class MyLionsManageTeam extends Component {
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} pressBtn={()=> { this.props.drillDown(this.state.drillDownItem, 'myLionsOppositionSquad') }}/>
-                                <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>                                    
+                                <TeamList teamDatafeed={this.props.teamToShow} pressImg={this._showDetail.bind(this)} pressAdd={this._addPlayer.bind(this)}/>
                                 <TeamSaveBtn gameData={this.state.drillDownItem}/>
                                 <LionsFooter isLoaded={true} />
                             </ScrollView>
@@ -177,12 +177,14 @@ class MyLionsManageTeam extends Component {
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        console.log("!!!!!!! showteam:::::", showTeamFeed.toJS())
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
             console.log('!!!team not equal')
             this.props.setTeamDataTemp(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
         }
-        else {            
+        else {
+            this.props.setTeamToShow(showTeamFeed.toJS())
             this.setState({ isLoaded: true })
         }
         
