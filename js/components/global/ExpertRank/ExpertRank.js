@@ -103,6 +103,9 @@ const styles = styleSheetCreate({
     marginTop: 18,
   },
   rolesTextBox: {
+    width:18,
+  },
+  rolesTextBoxPts: {
     width:25,
   }
 
@@ -131,33 +134,39 @@ const  TitleSubTitle = ({data,profileTitleTextStyle,profileSubTitleTextStyle}) =
   )
 }
 const  Roles = ({data,profileSubTextTitleStyle,profileRankTextTitleStyle}) => {
+  let rolesTextBox = {width : 25}
+  if(styleVar.deviceWidth<=320){
+    rolesTextBox ={
+      width: 18
+    }
+  }
   return (
     <View style={styles.rolesContainer}>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>W</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.w}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>L</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.l}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>D</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.d}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>F</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.f}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>A</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.a}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={rolesTextBox}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>BP</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.bp}</Text>
       </View>
-      <View style={styles.rolesTextBox}>
+      <View style={styles.rolesTextBoxPts}>
         <Text style={[styles.profileRankTextTitle,profileRankTextTitleStyle]}>PTS</Text>
         <Text style={[styles.profileSubTextTitle,profileSubTextTitleStyle]}>{data.pts}</Text>
       </View>
