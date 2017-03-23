@@ -5,14 +5,15 @@ import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
 import android.view.WindowManager;
 import android.content.res.Configuration;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.os.Bundle;
+
+import com.clarisite.mobile.ClarisiteAgent;
+import com.clarisite.mobile.exceptions.EyeViewException;
 
 public class MainActivity extends ReactActivity {
 
@@ -29,6 +30,11 @@ public class MainActivity extends ReactActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adjustFontScale(getResources().getConfiguration());
+
+        try {
+            ClarisiteAgent.start();
+        } catch  (EyeViewException e) {
+        }
     }
 
     private void adjustFontScale(Configuration configuration) {
