@@ -20,9 +20,9 @@ const styles = styleSheetCreate({
     width: null,
     height: 195,
     backgroundColor: 'rgb(95,96,98)',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgb(128, 127, 131)',
+
     borderRadius:5,
+    paddingVertical:2
   },
   profileContainer:{
     width: null,

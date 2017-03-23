@@ -241,7 +241,7 @@ class CompetitionLadder extends Component {
       group_name: group_name
     }
     if(group_name===''||!group_name) {
-      this._showError("group name Can't be empty")
+      this._showError("League Name can't be empty")
       return
     }
     console.log(JSON.stringify(query))

@@ -16,13 +16,14 @@ const styles = styleSheetCreate({
   container:{
     flex: 1,
     width: null,
-    height: 195,
     backgroundColor: 'rgb(95,96,98)'
   },
   titleView:{
     flex: 1,
     width: null,
     height: null,
+    borderTopWidth: 1,
+    borderTopColor: 'rgb(128, 127, 131)',
   },
   titleText:{
     color:'rgb(255,230,0)',
@@ -216,7 +217,7 @@ class RankingList extends Component {
       }
     }
     return (
-      <View style={[styles.scoreCard]} >
+      <View style={[styles.container]} >
           <View style={styles.titleView}>
             <Text style={styles.titleText} >{title}</Text>
           </View>
