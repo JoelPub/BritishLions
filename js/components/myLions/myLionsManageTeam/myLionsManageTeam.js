@@ -177,11 +177,10 @@ class MyLionsManageTeam extends Component {
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        console.log("!!!!!!! showteam:::::", showTeamFeed.toJS())
+        this.props.setTeamToShow(showTeamFeed.toJS())
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
             console.log('!!!team not equal')
             this.props.setTeamDataTemp(team.toJS())
-            this.props.setTeamToShow(showTeamFeed.toJS())
         }
         else {
             this.props.setTeamToShow(showTeamFeed.toJS())

@@ -152,10 +152,7 @@ class MyLionsOfficialSquad extends Component {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   let optionsOfficialSquad = {
                       url: actionsApi.eyc3GetOfficalSquad,
-                      data: {
-                          id:userId,
-                          access_token: token
-                            },
+                      data: {},
                       onAxiosStart: null,
                       onAxiosEnd: null,
                       method: 'post',
@@ -175,12 +172,12 @@ class MyLionsOfficialSquad extends Component {
                       },
                       isRequiredToken: true
                   }
-                  if(typeof(this.props.officialSquadToShow)==='object'&&!isEmptyObject(this.props.officialSquadToShow)) {
-                    this.setState({isLoaded:true})
-                  }
-                  else {
+                  // if(typeof(this.props.officialSquadToShow)==='object'&&!isEmptyObject(this.props.officialSquadToShow)) {
+                  //   this.setState({isLoaded:true})
+                  // }
+                  // else {
                     service(optionsOfficialSquad)
-                  }
+                  // }
                   
 
                 

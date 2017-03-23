@@ -143,12 +143,9 @@ class CompetitionLadderShare extends Component {
   }
   componentDidMount() {
     setTimeout(()=>{
-      this.shareSnapshot('scorecard',this.callback)
+      this.shareSnapshot('',this.callback)
     },2000)
-
   }
-
-
 }
 
 

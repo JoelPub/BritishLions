@@ -62,7 +62,6 @@ export function addPlayer(teamToShow,position,detail,playerid,subPosition) {
     console.log('addplayer')
     if(playerid) {
         console.log('playerid',playerid)
-        console.log('val',teamToShow[position].find(value=>value.position==='loosehead_prop'))
         teamToShow[position].find(value=>value.position===subPosition).info=detail
     }
     else {

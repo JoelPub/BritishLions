@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { pushNewRoute } from '../../../actions/route'
+import { pushNewRoute,popToRoute } from '../../../actions/route'
 import { Image, Text, View, ScrollView, ListView, ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
@@ -270,17 +270,12 @@ class MyLionsCompetitionGameResults extends Component {
 
     constructor(props) {
         super(props)
-        this.isUnMounted = false
         this.state = {
             isLoaded: false,
             resultInfo: [],
             modalResults: false,
             drillDownItem: this.props.drillDownItem,
         }
-    }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
     }
     goShare = () => {
         //console.log(this.state.rating)
@@ -348,7 +343,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback
                                       rounded
                                       style={[styles.roundButton, {marginBottom: 30},,locStyle.backRound]}
-                                      onPress={() => this.props.pushNewRoute('myLionsOfficialSquad')}>
+                                      onPress={() => this.props.popToRoute('myLionsCompetitionGameListing')}>
                                         <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                                style={styles.roundButtonImage}>
                                         </Image>
@@ -359,7 +354,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback 
                                         rounded 
                                         style={[styles.roundButton, {marginBottom: 30}]}
-                                        onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                        onPress={() => this.props.popToRoute('myLionsCompetitionCentre')}>
                                         <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                         <Text style={styles.roundButtonLabel}>
                                             COMPETITION CENTRE
@@ -389,12 +384,18 @@ class MyLionsCompetitionGameResults extends Component {
         )
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        console.log('!!!!!!MyLionsCompetitionGameResults componentDidMount')
         this.setState({isLoaded:false},()=>{
-            getAccessToken().then(token=>{
-                let {userProfile} = this.props
-                this.getInfo(token,userProfile)
-            })
+            if (this.state.drillDownItem&&this.state.drillDownItem.isLiveResult) {
+                this.setState({isLoaded: true, resultInfo: this.state.drillDownItem})
+            }
+            else {
+                getAccessToken().then(token=>{
+                    let {userProfile} = this.props
+                    this.getInfo(token,userProfile)
+                })
+            }
         })
     }
 
@@ -437,6 +438,7 @@ class MyLionsCompetitionGameResults extends Component {
 function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        popToRoute: (route)=>dispatch(popToRoute(route)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }

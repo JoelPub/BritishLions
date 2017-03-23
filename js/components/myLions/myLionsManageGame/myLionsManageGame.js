@@ -85,24 +85,11 @@ const locStyle = styleSheetCreate({
 })
 
 
-const dummyData = [
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/114146.jpg',
-        headerLabel: 'weather'     
 
-    },
-    {
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2015/lions/125/250x250/19930.jpg',
-        headerLabel: 'referees'    
-    }
-]
-
-
-class MyLionsCompetitionGameResults extends Component {
+class MyLionsManageGame extends Component {
 
     constructor(props) {
         super(props)
-        this.isUnMounted = false
         this.state = {
             modalResults: false,
             isLoaded:false,
@@ -153,10 +140,6 @@ class MyLionsCompetitionGameResults extends Component {
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
-    }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
     }
 
     render() {
@@ -234,7 +217,7 @@ class MyLionsCompetitionGameResults extends Component {
                             <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]} >
-                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)} grounds_id={this.grounds_id} weather_id={this.weather_id} referees_id={this.referees_id} round_id={this.round_id} game={this.game}/>    
+                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)} grounds_id={this.grounds_id} weather_id={this.weather_id} referees_id={this.referees_id} round_id={this.round_id} game={this.game} image={this.image} title={this.title}/>    
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
@@ -280,8 +263,10 @@ class MyLionsCompetitionGameResults extends Component {
     getInfo(){
         console.log('!!!this.props.drillDownItem',this.props.drillDownItem)
 
-        let {drillDownItem} = this.props
+        let {drillDownItem} = this.state
         this.round_id=drillDownItem.round_id
+        this.title=drillDownItem.title
+        this.image=drillDownItem.image
         this.game=drillDownItem.game
         let optionsInfo = {
             url: 'http://biltestapp.azurewebsites.net/GetGameElements',
@@ -334,4 +319,4 @@ export default connect((state) => {
         netWork: state.network,
         tactics: state.tactics.tacticsData
     }
-},  bindAction)(MyLionsCompetitionGameResults)
+},  bindAction)(MyLionsManageGame)

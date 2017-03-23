@@ -10,7 +10,7 @@ import shapes from '../../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper,splitName } from '../../utility/helper'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -25,8 +25,9 @@ const styles = styleSheetCreate({
         color:'rgb(255,255,255)'
     },
     playerPositionTextWrapper:{
-        paddingVertical:10,
+        height:styleVar.deviceWidth*0.16,
         justifyContent: 'center',
+        paddingTop:5
     },
     playerNameTextWrapper:{
         marginTop:-12,
@@ -52,12 +53,7 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 18,
         lineHeight: 18,
-        paddingBottom: 2,
-        marginTop:5,
         backgroundColor: 'transparent',
-        android: {
-            paddingBottom: 3,
-        }
     },
     playerNameText: {
         textAlign: 'center',
@@ -143,7 +139,7 @@ const styles = styleSheetCreate({
     posSwiperRow:{
         flexDirection:'row',
         backgroundColor:'black',
-        height:styleVar.deviceWidth*0.73
+        height:styleVar.deviceWidth*0.78
     },
     posWrapper:{
         width:styleVar.deviceWidth/3+1,
@@ -158,26 +154,16 @@ const styles = styleSheetCreate({
     },
 })
 
-const AddPlayerCell = ({pos,onPress})=>(
-    <ButtonFeedback  onPress= {onPress}  style={styles.posBtn}>
-        <View style={styles.posAddWrapper}>
-            <Icon name='md-person-add' style={styles.addPlayerIcon} />
-        </View>
-        <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
-            <View style={styles.titleBox}>
-                <Text style={styles.playerNameText}>ADD</Text>
-                <Text style={styles.playerNameText}>
-                    { pos.toUpperCase() }
-                </Text>
-                </View>
-        </View>
-    </ButtonFeedback>
-    )
 const PlayerImgCell =({data,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
         <View style={styles.playerPositionTextWrapper}>
-            <Text style={styles.playerPositionText} numberOfLines={1}>{strToUpper(data.position)}</Text>
+            {
+                splitName(data.name,' ',10).map((value,index)=>{
+                    return(
+                        <Text key={index} style={styles.playerPositionText}>{strToUpper(value)}</Text>
+                        )
+                },this)
+            }
         </View>
         <ImagePlaceholder 
             width = {styleVar.deviceWidth / 3}
@@ -243,12 +229,7 @@ export default class OppositionSquadList extends Component {
                                         { position}
                                     </Text>
                                 </View>
-                                {
-                                item.info===null?
-                                <AddPlayerCell pos={item.position}/>
-                                :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position,1,0)}/>
-                                }
                             </View>
                         )
                     },this) 
@@ -257,7 +238,7 @@ export default class OppositionSquadList extends Component {
 
                 <PositionTitle pos='FORWARDS' data={this.props.squadDatafeed.forwards}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -270,12 +251,7 @@ export default class OppositionSquadList extends Component {
                                         rowData.map((item,index)=>{
                                             return(
                                                     <View style={styles.posWrapper} key={index}>
-                                                        {   
-                                                            item===null?
-                                                            <AddPlayerCell pos='FORWARDS'/>
-                                                            :
                                                             <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','forwards',16,index)}/>
-                                                        }
                                                     </View>
                                                 )
                                         }, this)
@@ -290,7 +266,7 @@ export default class OppositionSquadList extends Component {
                 
                 <PositionTitle pos='BACKS' data={this.props.squadDatafeed.backs}/>
                 <Swiper
-                height={styleVar.deviceWidth*0.73}
+                height={styleVar.deviceWidth*0.78}
                 loop={false}
                 dotColor='rgba(255,255,255,0.3)'
                 activeDotColor='rgb(239,239,244)'
@@ -303,12 +279,7 @@ export default class OppositionSquadList extends Component {
                                         rowData.map((item,index)=>{
                                             return(
                                                 <View style={styles.posWrapper} key={index}>
-                                                {
-                                                    item===null?                                                        
-                                                       <AddPlayerCell pos='BACKS'/>
-                                                    :
                                                         <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile','backs',16,index)}/>
-                                                }
                                                 </View>
                                                 )
                                         }, this)

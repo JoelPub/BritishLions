@@ -27,5 +27,5 @@ export default { 	id: '17327',
 					country: 'SCOTLAND',
 					countryid: '127',
 					education: 'Hamilton Boys\' High School and Waitako University',
-					biog:'Playing Career \n At the official Shop'
+					biog:"<h1>Playing Career</h1><p>At the Official Shop, you can take your pick from our full range of clothing or accessories to accompany your wardrobe, including the iconic British & Irish Lions jersey.</p><h1>Coaching Career</h1><p>We also have a range of classic jerseys, t-shirts, gifts, leisure-wear and more. No matter what kind of rugby fan you are, the Official Lions Shop has something to help you show your support for the 2017 squad.</p><h1>Ireland</h1><p>Ordering with the Official Shop couldn’t be easier, with fast delivery options available to most locations across the globe, and hassle free returns to ensure </p>"
 				}

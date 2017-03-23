@@ -16,13 +16,14 @@ const styles = styleSheetCreate({
   container:{
     flex: 1,
     width: null,
-    height: 195,
     backgroundColor: 'rgb(95,96,98)'
   },
   titleView:{
     flex: 1,
     width: null,
     height: null,
+    borderTopWidth: 1,
+    borderTopColor: 'rgb(128, 127, 131)',
   },
   titleText:{
     color:'rgb(255,230,0)',
@@ -129,7 +130,7 @@ const styles = styleSheetCreate({
     width:25,
   },
 })
-const  Header = () => {
+const  Header = ({addStyle}) => {
   return (
       <View style={styles.subTitleView}>
         <View style={styles.IDText}>
@@ -138,32 +139,32 @@ const  Header = () => {
         <View style={styles.rankTextView}>
           <Text style={[styles.subTitleText]}>RANK</Text>
         </View>
-        <View style={styles.WTextTop}>
+        <View style={[styles.WTextTop,addStyle]}>
           <Text style={[styles.subTitleText]}>W</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop,addStyle]}>
           <Text style={styles.subTitleText}>L</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop,addStyle]}>
           <Text style={styles.subTitleText}>D</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop,addStyle]}>
           <Text style={styles.subTitleText}>F</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop,addStyle]}>
           <Text style={styles.subTitleText}>A</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop,addStyle]}>
           <Text style={styles.subTitleText}>BP</Text>
         </View>
-        <View style={styles.LTextTop}>
+        <View style={[styles.LTextTop]}>
           <Text style={styles.subTitleText}>PTS</Text>
         </View>
       </View>
 
   )
 }
-const  Content = ({data,index}) => {
+const  Content = ({data,index,addStyle}) => {
   return (
     <View style={styles.subContentView}>
       <View style={styles.IdTextView}>
@@ -172,22 +173,22 @@ const  Content = ({data,index}) => {
       <View style={styles.rankContentTextView}>
         <Text style={[styles.subContentText]}>{data.rank}</Text>
       </View>
-      <View style={styles.WText}>
+      <View style={[styles.WText,addStyle]}>
         <Text style={[styles.subContentText]}>{data.w}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.l}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.d}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.f}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.a}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.bp}</Text>
       </View>
       <View style={styles.LText}>
@@ -209,18 +210,24 @@ class RankingList extends Component {
     let arr = []
     if(data.top_five) arr = data.top_five
     if(data.top_twenty) arr = data.top_twenty
+    let rolesTextBox = {width : 25}
+    if(styleVar.deviceWidth<=320){
+      rolesTextBox ={
+        width: 18
+      }
+    }
     return (
-      <View style={[styles.scoreCard]} >
+      <View style={[styles.container]} >
           <View style={styles.titleView}>
             <Text style={styles.titleText} >{title}</Text>
           </View>
         <View style={styles.contentView}>
-            <Header />
+            <Header addStyle={rolesTextBox}/>
 
           {
             arr.map((item,index)=>{
               return(
-                <Content  key={index} data={item} index={index}/>
+                <Content  key={index} data={item} index={index} addStyle={rolesTextBox}/>
               )
             })
           }

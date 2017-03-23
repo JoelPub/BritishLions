@@ -137,7 +137,7 @@ const styles = styleSheetCreate({
     width:25,
   },
 })
-const  Header = () => {
+const  Header = ({addStyle}) => {
   return (
     <View style={styles.subTitleView}>
       <View style={styles.IDText}>
@@ -146,22 +146,22 @@ const  Header = () => {
       <View style={styles.rankTextView}>
         <Text style={[styles.subTitleText]}>RANK</Text>
       </View>
-      <View style={styles.WTextTop}>
+      <View style={[styles.WTextTop,addStyle]}>
         <Text style={[styles.subTitleText]}>W</Text>
       </View>
-      <View style={styles.LTextTop}>
+      <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>L</Text>
       </View>
-      <View style={styles.LTextTop}>
+      <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>D</Text>
       </View>
-      <View style={styles.LTextTop}>
+      <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>F</Text>
       </View>
-      <View style={styles.LTextTop}>
+      <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>A</Text>
       </View>
-      <View style={styles.LTextTop}>
+      <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>BP</Text>
       </View>
       <View style={styles.LTextTop}>
@@ -171,7 +171,7 @@ const  Header = () => {
 
   )
 }
-const  Content = ({data,index}) => {
+const  Content = ({data,index,addStyle}) => {
   return (
     <View style={styles.subContentView}>
       <View style={styles.IdTextView}>
@@ -180,22 +180,22 @@ const  Content = ({data,index}) => {
       <View style={styles.rankContentTextView}>
         <Text style={[styles.subContentText,styles.whiteColor]}>{data.rank}</Text>
       </View>
-      <View style={styles.WText}>
+      <View style={[styles.WText,addStyle]}>
         <Text style={[styles.subContentText]}>{data.w}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.l}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.d}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.f}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.a}</Text>
       </View>
-      <View style={styles.LText}>
+      <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.bp}</Text>
       </View>
       <View style={styles.LText}>
@@ -217,18 +217,24 @@ class RankingList extends Component {
     let arr = []
     if(data.top_five) arr = data.top_five
     if(data.top_twenty) arr = data.top_twenty
+    let rolesTextBox = {width : 25}
+    if(styleVar.deviceWidth<=320){
+      rolesTextBox ={
+        width: 18
+      }
+    }
     return (
       <View style={[styles.scoreCard]} >
         <View style={styles.titleView}>
           <Text style={styles.titleText} >{title}</Text>
         </View>
         <View style={styles.contentView}>
-          <Header />
+          <Header addStyle={rolesTextBox} />
 
           {
             arr.map((item,index)=>{
               return(
-                <Content  key={index} data={item} index={index}/>
+                <Content  key={index} data={item} index={index} addStyle={rolesTextBox}/>
               )
             })
           }
@@ -243,5 +249,5 @@ RankingList.propTypes = {
   title:PropTypes.string,
 }
 RankingList.defaultProps = {
-  title:'GLOBAL TOP5',
+  title:'GLOBAL TOP 5',
 }
