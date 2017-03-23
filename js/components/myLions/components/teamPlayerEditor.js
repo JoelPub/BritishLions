@@ -227,7 +227,7 @@ class TeamPlayerEditor extends Component {
         }
         if(update){
             let successDesc = this.state.inTeam&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
-            let positionDisplay = subPosition?strToUpper(map2Show(subPosition)) :position?strToUpper(position) : ''
+            let positionDisplay = subPosition?strToUpper(subPosition) :position?strToUpper(position) : ''
             this.setState({ inTeam: !this.state.inTeam, teamDataFeed:tmpFeed.toJS() }, () => {
                 this.props._setModalVisible(true, 'message', positionDisplay, successDesc, 'OK')
                 this.props.setTeamDataTemp(tmpFeed.toJS())

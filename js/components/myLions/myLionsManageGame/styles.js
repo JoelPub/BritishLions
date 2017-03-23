@@ -59,8 +59,9 @@ module.exports = styleSheetCreate({
     },
     pageTitleBtnIconRight: {
         position: 'absolute',
-        right: 12,
-        top: 16
+        right: 2,
+        top: 6,
+        padding:10
     },
     pageTitleBtnIcon: {
         color: styleVar.colorScarlet,

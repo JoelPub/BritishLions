@@ -270,17 +270,12 @@ class MyLionsCompetitionGameResults extends Component {
 
     constructor(props) {
         super(props)
-        this.isUnMounted = false
         this.state = {
             isLoaded: false,
             resultInfo: [],
             modalResults: false,
             drillDownItem: this.props.drillDownItem,
         }
-    }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
     }
     goShare = () => {
         //console.log(this.state.rating)
@@ -389,12 +384,18 @@ class MyLionsCompetitionGameResults extends Component {
         )
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        console.log('!!!!!!MyLionsCompetitionGameResults componentDidMount')
         this.setState({isLoaded:false},()=>{
-            getAccessToken().then(token=>{
-                let {userProfile} = this.props
-                this.getInfo(token,userProfile)
-            })
+            if (this.state.drillDownItem&&this.state.drillDownItem.isLiveResult) {
+                this.setState({isLoaded: true, resultInfo: this.state.drillDownItem})
+            }
+            else {
+                getAccessToken().then(token=>{
+                    let {userProfile} = this.props
+                    this.getInfo(token,userProfile)
+                })
+            }
         })
     }
 

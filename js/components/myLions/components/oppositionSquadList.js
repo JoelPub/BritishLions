@@ -10,7 +10,7 @@ import shapes from '../../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper,splitName } from '../../utility/helper'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -25,8 +25,9 @@ const styles = styleSheetCreate({
         color:'rgb(255,255,255)'
     },
     playerPositionTextWrapper:{
-        paddingVertical:10,
+        height:styleVar.deviceWidth*0.16,
         justifyContent: 'center',
+        paddingTop:5
     },
     playerNameTextWrapper:{
         marginTop:-12,
@@ -52,12 +53,7 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize: 18,
         lineHeight: 18,
-        paddingBottom: 2,
-        marginTop:5,
         backgroundColor: 'transparent',
-        android: {
-            paddingBottom: 3,
-        }
     },
     playerNameText: {
         textAlign: 'center',
