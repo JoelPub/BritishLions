@@ -20,7 +20,7 @@ const styles = styleSheetCreate({
     width: null,
     height: 195,
     backgroundColor: 'rgb(95,96,98)',
-    
+
     borderRadius:5,
     paddingVertical:2
   },
