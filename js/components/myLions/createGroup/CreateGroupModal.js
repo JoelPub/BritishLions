@@ -116,7 +116,7 @@ class GreateGroupModal extends Component {
               <Text style={styles.modalCreateGroupTitle}>{title}</Text>
               <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
               <Text style={subTitleStyle}>{subTitle}</Text>
-              {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput}   onChangeText={ (text) => this.setState({text})}/> : null}
+              {modalType==='create' ? <TextInput style={styles.modalCreateGroupInput} underlineColorAndroid='transparent'  onChangeText={ (text) => this.setState({text})}/> : null}
               {modalType==='create' ? <CreateButton onPress={this.createGroupClick} /> : null}
               {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
               {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
