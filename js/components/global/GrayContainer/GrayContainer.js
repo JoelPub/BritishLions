@@ -43,7 +43,11 @@ const styles = styleSheetCreate({
     fontSize:13,
     marginRight:5,
     color:'rgb(255,255,255)',
+    marginBottom: 2
   },
+  iconEy:{
+    marginBottom: 3
+  }
 })
 
 export default class GrayContainer extends Component {
@@ -60,7 +64,7 @@ export default class GrayContainer extends Component {
           {this.props.children}
           <View style={styles.semiCardFooter}>
             <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
-            <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
+            <Image  style={styles.iconEy} source={require('../../../../images/footer/eyLogo.png')}></Image>
           </View>
         </View>
       </View>
