@@ -1014,7 +1014,8 @@ module.exports = styleSheetCreate({
         borderRadius:4,
         color: 'black',
         height: 60,
-        paddingLeft: 5
+        paddingLeft: 5,
+
     },
     createGroupFooter:{
         marginTop: 24,
@@ -1029,6 +1030,9 @@ module.exports = styleSheetCreate({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor:'rgb(9,127,64)',
+        android:{
+
+        }
     },
     footerCloseBtn:{
         width: 280,
@@ -1090,7 +1094,10 @@ module.exports = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop: 0,
-        fontFamily: styleVar.fontCondensed
+        fontFamily: styleVar.fontCondensed,
+        android:{
+            marginTop: -8
+        }
     },
     modalTitle:{
         fontFamily: styleVar.fontCondensed,
