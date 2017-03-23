@@ -19,6 +19,7 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { popRoute,pushNewRoute } from '../../../actions/route'
+import { drillDown } from '../../../actions/content'
 const styles = styleSheetCreate({    
     playBtn:{
         height: 80,
@@ -96,11 +97,11 @@ class GamePlayBtn extends Component {
             onSuccess: (res) => {
                 console.log('res',res)
                 this.props._setModalVisible(false)
-                this.props.pushNewRoute('myLionsCompetitionGameResults')
+                this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image}), 'myLionsCompetitionGameResults')
             },
             onError: ()=>{
                 console.log('onError')
-                this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attampting to process your game. \n\n Please try again later.','GO BACK')
+                this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
             },
             onAuthorization: null,
             isRequiredToken: true,
@@ -115,6 +116,7 @@ class GamePlayBtn extends Component {
 
 function bindAction(dispatch) {
     return {
+        drillDown: (data, route)=>dispatch(drillDown(data, route)),
         popRoute: ()=>dispatch(popRoute()),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
     }
