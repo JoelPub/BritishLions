@@ -57,6 +57,8 @@ const styles = styleSheetCreate({
     },
     playerNameText: {
         textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
         fontFamily: styleVar.fontCondensed,
         fontSize: 18,
         lineHeight: 18,

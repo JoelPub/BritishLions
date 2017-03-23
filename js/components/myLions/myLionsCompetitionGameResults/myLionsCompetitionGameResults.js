@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { pushNewRoute } from '../../../actions/route'
+import { pushNewRoute,popToRoute } from '../../../actions/route'
 import { Image, Text, View, ScrollView, ListView, ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
@@ -343,7 +343,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback
                                       rounded
                                       style={[styles.roundButton, {marginBottom: 30},,locStyle.backRound]}
-                                      onPress={() => this.props.pushNewRoute('myLionsOfficialSquad')}>
+                                      onPress={() => this.props.popToRoute('myLionsCompetitionGameListing')}>
                                         <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                                style={styles.roundButtonImage}>
                                         </Image>
@@ -354,7 +354,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback 
                                         rounded 
                                         style={[styles.roundButton, {marginBottom: 30}]}
-                                        onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                        onPress={() => this.props.popToRoute('myLionsCompetitionCentre')}>
                                         <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                         <Text style={styles.roundButtonLabel}>
                                             COMPETITION CENTRE
@@ -438,6 +438,7 @@ class MyLionsCompetitionGameResults extends Component {
 function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        popToRoute: (route)=>dispatch(popToRoute(route)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
     }
 }

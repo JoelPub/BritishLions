@@ -249,11 +249,18 @@ class MyLionsSelectPlayerListing extends Component {
                 selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
         })
         // console.log('filter',filter.replace(/\s/g,''))
-        // console.log('selectPlayers',selectPlayers)
-        // if(filter!==undefined) {
-
-        //     selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,''))
-        // }
+        console.log('selectPlayers',selectPlayers)
+        console.log('filter',filter)
+        console.log('this.props.teamToShow',this.props.teamToShow)
+        if(filter===undefined) {
+            selectPlayers=selectPlayers.filter(x=>{
+                return this.props.teamToShow.forwards.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1 || this.props.teamToShow.backs.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1
+            })
+        }
+        else {
+           //     selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,'')) 
+        }
+        console.log('selectPlayers',selectPlayers)
         this.setState({
             isLoaded: true,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)
@@ -274,6 +281,7 @@ function bindAction(dispatch) {
 export default connect((state) => {
     return {
         positionToAdd: state.position.positionToAdd,
+        teamToShow: state.squad.teamToShow,
     }
 }, bindAction)(MyLionsSelectPlayerListing)
 

@@ -90,7 +90,6 @@ class MyLionsManageGame extends Component {
 
     constructor(props) {
         super(props)
-        this.isUnMounted = false
         this.state = {
             modalResults: false,
             isLoaded:false,
@@ -141,10 +140,6 @@ class MyLionsManageGame extends Component {
             modalVisible:visible,
             modalContent:visible?this.getModalContent(mode,title,subtitle,btn):this.getModalContent()
         })
-    }
-
-    componentWillUnmount() {
-        this.isUnMounted = true
     }
 
     render() {
