@@ -48,6 +48,7 @@ class MyLionsOppositionSquad extends Component {
             image:this.props.drillDownItem.image,
             title:this.props.drillDownItem.title,
             description:this.props.drillDownItem.description,
+            drillDownItem:this.props.drillDownItem,
         }
         this.uniondata = Data
     }
@@ -87,7 +88,7 @@ class MyLionsOppositionSquad extends Component {
         this.props.drillDown(item, route)
     }
     render() {
-        let { drillDownItem } = this.props
+        let { drillDownItem } = this.state
         let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
 
         return (
@@ -111,7 +112,7 @@ class MyLionsOppositionSquad extends Component {
                                     <View style={styles.headerPlayerDetails}>
                                         <Text style={styles.headerPlayerName}>{strToUpper(this.state.title)}</Text>
                                         <Text style={[styles.headerPlayerPosition,{textAlign:'center',paddingHorizontal:25}]}>{this.state.description}</Text>
-                                        <ButtonFeedback rounded onPress={()=> { this.props.drillDown({'image':this.state.image,'title':this.state.title},'myLionsManageGame') }}
+                                        <ButtonFeedback rounded onPress={()=> { this.props.drillDown(this.state.drillDownItem,'myLionsManageGame') }}
                                             style={[styles.btn, styles.btnGreen ]}>
                                             <Text style={styles.btnText}>PLAY</Text>
                                         </ButtonFeedback>
@@ -161,7 +162,7 @@ class MyLionsOppositionSquad extends Component {
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 this.fullPlayerList=catchedFullPlayerList
-                let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.props.drillDownItem.expertTeam),catchedFullPlayerList,this.uniondata)
+                let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.state.drillDownItem.expertTeam),catchedFullPlayerList,this.uniondata)
                 console.log('showSquadFeed',showSquadFeed.toJS())
                 this.props.setOppositionSquadToShow(showSquadFeed.toJS())
                 this.setState({isLoaded:true})
