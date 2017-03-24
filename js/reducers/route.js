@@ -6,11 +6,13 @@ import { PUSH_NEW_ROUTE, POP_ROUTE, RESET_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, RE
 import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
-  routes: Array<string>
+  routes: Array<string>,
+  rtl:Bool
 }
 
 const initialState = {
-  routes: ['news']
+  routes: ['news'],
+  rtl:false
 }
 
 export default function (state:State = initialState, action:Action): State {
@@ -30,7 +32,8 @@ export default function (state:State = initialState, action:Action): State {
     }
 
   if (action.type === REPLACE_ROUTE) {
-    globalNav.navigator.replaceWithAnimation({id: action.route})
+    // console.log('reducers replace rout',action.rtl)
+    globalNav.navigator.replaceWithAnimation({id: action.route},action.rtl)
     let routes = state.routes
     routes.pop()
     return {

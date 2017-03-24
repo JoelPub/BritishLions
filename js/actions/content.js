@@ -99,7 +99,8 @@ export function drillDown(item, route:string):Action {
     }
 }
 
-export function drillReplace(item, route:string, isSub, isPushNewRoute: false):Action {
+export function drillReplace(item, route:string, isSub, isPushNewRoute: false,rtl:false):Action {
+    // console.log('action drillReplace',rtl)
     return (dispatch, getState) => {
         if (isSub)
             dispatch(pushContentItem({item}))
@@ -109,8 +110,8 @@ export function drillReplace(item, route:string, isSub, isPushNewRoute: false):A
 
         if (isPushNewRoute) 
             dispatch(pushNewRoute(route))
-        else
-            dispatch(replaceRoute(route))
+        else 
+            dispatch(replaceRoute(route,rtl))
     }
 }
 

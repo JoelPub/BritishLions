@@ -9,10 +9,12 @@ export const POP_ROUTE = 'POP_ROUTE'
 export const RESET_ROUTE = 'RESET_ROUTE'
 export const POP_TO_ROUTE = 'POP_TO_ROUTE'
 
-export function replaceRoute(route:string):Action {
+export function replaceRoute(route:string,rtl:Bool):Action {
+    // console.log('action replaceRoute',rtl)
     return {
         type: REPLACE_ROUTE,
-        route: route
+        route: route,
+        rtl:rtl
     }
 }
 

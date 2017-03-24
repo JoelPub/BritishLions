@@ -82,9 +82,11 @@ class NewsDetailsSub extends Component {
        // console.log('_handlePanResponderEnd getstureState',gestureState)
        if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
-            let item = gestureState.dx<0?this._items[index + 1]:this._items[index-1]
+            let rtl=gestureState.dx<0?false:true
+            // console.log('rtl',rtl)
+            let item = rtl?this._items[index - 1]:this._items[index+1]
             if(item) {
-                this.props.drillReplace(item, 'newsDetailsSub', false)
+                this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
             }  
        }
         return true
@@ -176,7 +178,7 @@ class NewsDetailsSub extends Component {
 
 function bindAction(dispatch) {
     return {
-        drillReplace: (data, route, tpl)=>dispatch(drillReplace(data, route, tpl))
+        drillReplace: (data, route, isSub, isPushNewRoute,rtl)=>dispatch(drillReplace(data, route, isSub, isPushNewRoute,rtl))
     }
 }
 

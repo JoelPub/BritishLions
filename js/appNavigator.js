@@ -83,14 +83,18 @@ import {
 } from 'react-native-google-analytics-bridge';
 
 
-Navigator.prototype.replaceWithAnimation = function (route) {
+Navigator.prototype.replaceWithAnimation = function (route,rtl) {
+    // console.log('replaceWithAnimation',route)
+    // console.log('replaceWithAnimation',rtl)
+    // console.log('this.state.sceneConfigStack',this.state.sceneConfigStack)
     const activeLength = this.state.presentedIndex + 1
     const activeStack = this.state.routeStack.slice(0, activeLength)
     const activeAnimationConfigStack = this.state.sceneConfigStack.slice(0, activeLength)
     const nextStack = activeStack.concat([route])
     const destIndex = nextStack.length - 1
-    const nextSceneConfig = this.props.configureScene(route, nextStack)
+    const nextSceneConfig = this.props.configureScene(route, nextStack,rtl)
     const nextAnimationConfigStack = activeAnimationConfigStack.concat([nextSceneConfig])
+    // console.log('nextAnimationConfigStack',nextAnimationConfigStack)
 
     const replacedStack = activeStack.slice(0, activeLength - 1).concat([route])
     this._emitWillFocus(nextStack[destIndex])
@@ -259,14 +263,29 @@ class AppNavigator extends Component {
                     <Navigator
                         style={statusBarColor}
                         ref={(ref) => this._navigator = ref}
-                        configureScene={(route) => {
-                            return {
-                                // ...Navigator.SceneConfigs.FloatFromRight,
-                                ...Navigator.SceneConfigs.PushFromRight,
-                                gestures: {
-                                  pop: {
-                                    ...Navigator.SceneConfigs.FloatFromRight.gestures.pop
-                                  }
+                        configureScene={(route,nextStack,rtl) => {
+                            // console.log('!!!!!!route',route)
+                            // console.log('rtl',rtl)
+                            if (rtl===true) {
+                                console.log('from left')
+                                return {
+                                    ...Navigator.SceneConfigs.FloatFromLeft,
+                                    gestures: {
+                                      pop: {
+                                        ...Navigator.SceneConfigs.FloatFromRight.gestures.pop
+                                      }
+                                    }
+                                }
+                            }
+                            else {
+                                console.log('from right')
+                                return {
+                                    ...Navigator.SceneConfigs.PushFromRight,
+                                    gestures: {
+                                      pop: {
+                                        ...Navigator.SceneConfigs.FloatFromRight.gestures.pop
+                                      }
+                                    }
                                 }
                             }
                         }}
