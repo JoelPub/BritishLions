@@ -127,7 +127,6 @@ class TacticsManger extends Component {
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
       dropDownValue: dropDownValue,
-      dropDownIndex: 0,
       replacementsSliderValue: 3,
       playStyleSliderValue: 1
     }
@@ -139,7 +138,6 @@ class TacticsManger extends Component {
   dropDownOnSelect = (index,value) => {
     this.setState({
       dropDownValue: value,
-      dropDownIndex: index
     })
   }
   onValuesChange = (value) => {
@@ -152,15 +150,16 @@ class TacticsManger extends Component {
       playStyleSliderValue: Number(value),
     })
   }
+
   saveOnPress = () =>{
 
-    let { dropDownValue, replacementsSliderValue,playStyleSliderValue,dropDownIndex} = this.state
+    let { dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile,teamToShow} = this.props
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let resultArr = this.handStartData(teamToShow)
     let starPlayer = null
-    if (dropDownIndex===0) {
+    if (dropDownValue=='Select Player') {
       Alert.alert(
         'Warning',
         'Please select a star player',
@@ -168,7 +167,7 @@ class TacticsManger extends Component {
       )
       return
     }else {
-      starPlayer = resultArr[dropDownIndex]
+      starPlayer = resultArr.find((item)=>item.info.name===name)
     }
 
    let pacticsData = {
