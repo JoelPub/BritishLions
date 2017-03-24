@@ -259,11 +259,13 @@ class CompetitionLadder extends Component {
           isLoaded:false,
         })
         if(res.data){
-          console.log('为什么不跳转')
+
           this.setState({
             createType: 'success',
             modalData: res.data
           })
+          console.log('去更新UI')
+          this.updateDataAndUI()
         }else {
           this.setState({
             createType: 'error',
@@ -316,6 +318,7 @@ class CompetitionLadder extends Component {
               joinType: 'success',
             joinModalData: res.data
           })
+          this.updateDataAndUI()
         }else {
           this.setState({
             joinType: 'error',
@@ -437,15 +440,20 @@ class CompetitionLadder extends Component {
       </Container>
     )
   }
+  updateDataAndUI = () =>{
+    let {userProfile} = this.props
+    getAccessToken().then(token=>{
+      console.log(token)
+      this.fetchData(token,userProfile.userID)
+    })
+  }
   componentDidMount() {
     let {userProfile} = this.props
-
     getAccessToken().then(token=>{
       console.log(token)
        this.fetchData(token,userProfile.userID)
     })
   }
-
   componentWillUnmount() {
     this.isUnMounted = true
   }
@@ -459,12 +467,13 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-
+  //console.log(state.route)
   return {
     route: state.route,
     privateLeagues: state.squad.privateLeagues,
     userProfile:state.squad.userProfile,
     netWork: state.network,
+
   }
 }, bindAction)(CompetitionLadder)
 CompetitionLadder.defaultProps = {
