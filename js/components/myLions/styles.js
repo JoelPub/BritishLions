@@ -963,7 +963,7 @@ module.exports = styleSheetCreate({
         height:styleVar.deviceHeight-200,
     },
     modalGropp:{
-        height:styleVar.deviceHeight,
+      //  height:styleVar.deviceHeight,
     },
     modalTitleTextCenter:{
         fontFamily: styleVar.fontCondensed,
@@ -984,7 +984,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:36,
         lineHeight:36,
-        marginTop:28,
+        marginTop:0,
         textAlign:'center'
     },
     modalCreateGroupContent:{
