@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking} from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -17,6 +17,7 @@ import { shareTextWithTitle } from '../utility/socialShare'
 import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
 import loader from '../../themes/loader-position'
+import { drillReplace } from '../../actions/content'
 
 
 class NewsDetailsSub extends Component {
@@ -29,6 +30,7 @@ class NewsDetailsSub extends Component {
          this._scrollView = ScrollView
         this.webview = WebView
         this.stopPost=false
+        this._items = this.props.json
     }
     onLoadRequest(e){
         if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
@@ -54,6 +56,45 @@ class NewsDetailsSub extends Component {
         this.stopPost=true
         this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
     }
+    componentWillMount() {
+        this._panResponder = PanResponder.create({
+          onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+          // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+          // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+          // onPanResponderGrant: this._handlePanResponderGrant,
+          // onPanResponderMove: this._handlePanResponderMove,
+          onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+          onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+          
+        })
+    }
+
+    _handleStartShouldSetPanResponderCapture(e, gestureState) {
+       // console.log('_handleStartShouldSetPanResponderCapture e._targetInst',e._targetInst._currentElement)
+       // console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
+       if(e._targetInst._currentElement === 'SHARE'||e._targetInst._currentElement === 'NEXT STORY') {
+            return false
+       }
+        return true
+    }
+
+    _handlePanResponderEnd(e, gestureState) {
+       // console.log('_handlePanResponderEnd getstureState',gestureState)
+       if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
+            let index = this._findID(this._items, this.props.article.id)
+            let item = gestureState.dx<0?this._items[index + 1]:this._items[index-1]
+            if(item) {
+                this.props.drillReplace(item, 'newsDetailsSub', false)
+            }  
+       }
+        return true
+    }
+
+    _findID(data, idToLookFor) {
+        return data.findIndex((item) => {
+            return item.id == idToLookFor
+        })
+    }
     render() {
         return (
             <Container theme={theme}>
@@ -64,6 +105,7 @@ class NewsDetailsSub extends Component {
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                    <View  {...this._panResponder.panHandlers}>
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <ImagePlaceholder height={270}>
                             <Image source={{uri: this.props.article.image}} style={styles.banner}>
@@ -123,6 +165,7 @@ class NewsDetailsSub extends Component {
                             }
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
+                    </View>
                     <EYSFooter/>
                 </View>
 
@@ -131,8 +174,15 @@ class NewsDetailsSub extends Component {
     }
 }
 
+function bindAction(dispatch) {
+    return {
+        drillReplace: (data, route, tpl)=>dispatch(drillReplace(data, route, tpl))
+    }
+}
+
 export default connect((state) => {
     return {
-        article: state.content.drillDownItemSub
+        article: state.content.drillDownItemSub,
+        json: state.content.contentState
     }
-}, null)(NewsDetailsSub)
+}, bindAction)(NewsDetailsSub)
