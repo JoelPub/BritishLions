@@ -241,12 +241,22 @@ class Landing extends Component {
                 getUserId().then((userID) => {
                     this.setState({ userID },()=>{
                         getUserFullName().then((userName) => {
-                            let firstName=userName.split(' ')[0]||''
-                            let lastName=userName.split(' ')[1]||''
+                            let firstName=''
+                            let lastName=''
                             let initName = ''
-                            userName.split(' ').map((value, index)=>{
-                                initName = initName + value[0]
-                            })
+                            if(typeof userName==='string') {
+                                let u=userName.trim().replace(/\s+/g,' ')
+                                // console.log('userName',userName)
+                                firstName=u.split(' ')[0]||''
+                                lastName=u.split(' ')[1]||''
+                                initName = ''
+                                u.split(' ').map((value, index)=>{
+                                    initName = initName + value[0]
+                                })
+                                // console.log('firstName',firstName)
+                                // console.log('lastName',lastName)
+                                // console.log('initName',initName)
+                            }
                             this._getProfileSummary(userName,firstName,lastName,initName)
                         }).catch((error) => {})
                         

@@ -20,7 +20,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { setUserProfile } from '../../../actions/squad'
-import { getUserId, removeToken ,getAccessToken} from '../../utility/asyncStorageServices'
+import { getUserId, removeToken ,getAccessToken,getUserFullName} from '../../utility/asyncStorageServices'
 import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
 
@@ -215,24 +215,43 @@ class MyLionsCompetitionCentre extends Component {
     _renderLogic(isLogin) {
         if (isLogin) { // user is logged in
             this.setState({isLoaded:false},()=>{
-                let {userProfile} = this.props
-                getAccessToken().then(token=>{
-                    this.getInfo(token,userProfile)
-                })
+                // let {userProfile} = this.props
+                // getAccessToken().then(token=>{
+                //     this.getInfo(token,userProfile)
+                // })
+                getUserId().then((userID) => {
+                        getUserFullName().then((userName) => {
+                            let firstName=''
+                            let lastName=''
+                            let initName = ''
+                            if(typeof userName==='string') {
+                                let u=userName.trim().replace(/\s+/g,' ')
+                                // console.log('userName',userName)
+                                firstName=u.split(' ')[0]||''
+                                lastName=u.split(' ')[1]||''
+                                initName = ''
+                                u.split(' ').map((value, index)=>{
+                                    initName = initName + value[0]
+                                })
+                                // console.log('firstName',firstName)
+                                // console.log('lastName',lastName)
+                                // console.log('initName',initName)
+                            }
+                            this.getInfo(userID,userName,firstName,lastName,initName)
+                        }).catch((error) => {})
+                }).catch((error) => {})
             })
         }
     }
 
-    getInfo(token,userProfile){
+    getInfo(userID,userName,firstName,lastName,initName){
         console.log('getInfo')
-        console.log('userProfile',userProfile)
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
             data: {
-              access_token:token,
-              id:userProfile.userID,
-              first_name:userProfile.firstName,
-              last_name:userProfile.lastName
+              id:userID,
+              first_name:firstName,
+              last_name:lastName
             },
             onAxiosStart: null,
             onAxiosEnd: null,
@@ -244,11 +263,11 @@ class MyLionsCompetitionCentre extends Component {
                     console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
                         let userInfo = Object.assign(res.data, {
-                        userName: userProfile.userName, 
-                        initName: userProfile.initName, 
-                        firstName: userProfile.firstName,
-                        lastName: userProfile.lastName, 
-                        userID: userProfile.userID
+                        userName: userName, 
+                        initName: initName, 
+                        firstName: firstName,
+                        lastName: lastName, 
+                        userID: userID
                     })
                         this.props.setUserProfile(userInfo)
                     })
