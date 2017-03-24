@@ -6,7 +6,7 @@ import { setAccessGranted } from './actions/token'
 import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View, Alert,NativeModules,AsyncStorage } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
@@ -211,11 +211,6 @@ class AppNavigator extends Component {
         configure.then(
             schedule()
         )
-        // console.log('!!! System.out start')
-       // NativeModules.ClarisiteAgentBridge.start("http://report-bl.clarisite.com","A2BA2975-8DDB-9C8F-C629-FA45318BE325",(msg)=>{console.log('System.out ' , msg)}, (error)=>{console.log('System.out ' , error)})
-        // if(Platform.OS === 'android') {
-        //     NativeModules.ClarisiteAgentBridge.start()
-        // }
     }
 
     popRoute() {

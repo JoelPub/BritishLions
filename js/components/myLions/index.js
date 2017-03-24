@@ -30,7 +30,7 @@ import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
 import { strToUpper } from '../utility/helper'
-import { setUserProfile , setPrivateLeagues} from '../../actions/squad'
+import { setUserProfile , setPrivateLeagues, setVisitedOnboarding} from '../../actions/squad'
 import { actionsApi } from '../utility/urlStorage'
 
 const locStyle = styleSheetCreate({
@@ -304,7 +304,7 @@ class MyLions extends Component {
             method: 'post',
             onSuccess: (res) => {
                 console.log('res',res)
-                if(res.data&&isFirst) {
+                if(res.data&&isFirst&&!this.props.visitedOnboarding) {
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
                             "highLight":3,
@@ -317,7 +317,7 @@ class MyLions extends Component {
                             "Click next to discover what's new in this version."
                             ]
                         })
-                        this.setState({totalPages:Data.length,modalVisible:true})
+                        this.setState({totalPages:Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding(true))
                         
                 }
                 this.getProfile(userName,firstName,lastName,initName)
@@ -531,6 +531,7 @@ function bindAction(dispatch) {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
         setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
+        setVisitedOnboarding:(visitedOnboarding)=>dispatch(setVisitedOnboarding(visitedOnboarding)),
     }
 }
 
@@ -539,6 +540,7 @@ export default connect((state) => {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
         privateLeagues: state.squad.privateLeagues,
+        visitedOnboarding: state.squad.visitedOnboarding,
         netWork: state.network
     }
 },  bindAction)(MyLions)

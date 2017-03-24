@@ -30,6 +30,7 @@ export type Action =
     | { type: 'SET_PRIVATE_LEAGUES' }
     | { type: 'SET_TACTICS_TOREMOVE' }
     | { type: 'SET_TACTICS_TOSAVE' }
+    | { type: 'SET_VISITED_ONBOARDING' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

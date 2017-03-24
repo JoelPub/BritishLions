@@ -1,7 +1,7 @@
 'use strict'
 
 
-const APP_VERSION_NO = '2' // release: 2
+const APP_VERSION_NO = '3' // release: 3
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const EYC3_BASE_URL_DUMMY= 'http://biltestapp.azurewebsites.net'
