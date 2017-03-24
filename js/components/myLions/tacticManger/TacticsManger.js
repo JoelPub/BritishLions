@@ -115,21 +115,28 @@ class TacticsManger extends Component {
     super(props)
     this._scrollView = ScrollView
     let dropDownValue = 'Select Player'
+    let playStyleSliderValue = 1
+    let replacementsSliderValue = 3
     console.log('this.props.tactics',this.props.tactics)
     if (this.props.tactics===null) {
       dropDownValue ='Select Player'
+      playStyleSliderValue = 1
+      replacementsSliderValue = 3
+
     }else {
       dropDownValue =this.props.tactics.starPlayer.info&&this.props.tactics.starPlayer.info.name?this.props.tactics.starPlayer.info.name:'Select Player'
+      playStyleSliderValue = this.findDataTacticsLocation(this.props.tactics.tactic)
+      replacementsSliderValue = this.findReplacementsLocation(this.props.tactics.replacements)
     }
+    console.log(this.props.tactics)
 
     this.state = {
       isLoaded: false,
       modalResults:false,
       drillDownItem: this.props.drillDownItem,
       dropDownValue: dropDownValue,
-      dropDownIndex: 0,
-      replacementsSliderValue: 3,
-      playStyleSliderValue: 1
+      replacementsSliderValue: replacementsSliderValue,
+      playStyleSliderValue: playStyleSliderValue
     }
   }
   /*get Data*/
@@ -139,7 +146,6 @@ class TacticsManger extends Component {
   dropDownOnSelect = (index,value) => {
     this.setState({
       dropDownValue: value,
-      dropDownIndex: index
     })
   }
   onValuesChange = (value) => {
@@ -152,15 +158,52 @@ class TacticsManger extends Component {
       playStyleSliderValue: Number(value),
     })
   }
+  findDataTacticsLocation =(value) => {
+    switch(value)
+    {
+      case 'running':
+
+        return 0
+      case 'balanced':
+
+        return 1
+      case '10-man':
+
+        return 2
+      default:
+        break
+    }
+  }
+  findReplacementsLocation =(value) => {
+    switch(value)
+    {
+      case '50':
+        return 0
+      case '55':
+        return 1
+      case '60':
+        return 2
+      case '65':
+        return 3
+      case '70':
+        return 4
+      case '75':
+        return 5
+      case '80':
+        return 6
+      default:
+        break
+    }
+  }
   saveOnPress = () =>{
 
-    let { dropDownValue, replacementsSliderValue,playStyleSliderValue,dropDownIndex} = this.state
+    let { dropDownValue, replacementsSliderValue,playStyleSliderValue} = this.state
     let {userProfile,teamToShow} = this.props
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let resultArr = this.handStartData(teamToShow)
     let starPlayer = null
-    if (dropDownIndex===0) {
+    if (dropDownValue==='Select Player') {
       Alert.alert(
         'Warning',
         'Please select a star player',
@@ -168,7 +211,9 @@ class TacticsManger extends Component {
       )
       return
     }else {
-      starPlayer = resultArr[dropDownIndex]
+      console.log(resultArr)
+      starPlayer = resultArr.find((item)=>item.info!==null&&item.info.name===dropDownValue)
+      console.log('11111111111')
     }
 
    let pacticsData = {
@@ -247,6 +292,8 @@ class TacticsManger extends Component {
     let TacticData = localDataTactics[playStyleSliderValue]
     let ReplacementsData = localDataReplacements[replacementsSliderValue]
     let dropDownData = this.handleDropDownData(teamToShow)
+    let TacticDataValue = playStyleSliderValue/2
+    let ReplacementsDataValue = replacementsSliderValue/6
     return (
       <Container theme={theme}>
         <View style={styles.container}>
@@ -280,11 +327,11 @@ class TacticsManger extends Component {
               </ModalDropdown>
             </SmallBox>
             <SmallBox title={'REPLACEMENTS'} height={185}>
-              <Slider onValuesChange={this.onValuesChange} value={0.5}  valuesCount={6}/>
+              <Slider onValuesChange={this.onValuesChange} value={ReplacementsDataValue}  valuesCount={6}/>
               <Text style={styles.ValueText}>{ReplacementsData.name}</Text>
             </SmallBox>
             <SmallBox title={'PLAY STYLE'} height={185}>
-              <Slider onValuesChange={this.onValuesChangeOther} value={0.5} valuesCount={2}/>
+              <Slider onValuesChange={this.onValuesChangeOther} value={TacticDataValue} valuesCount={2}/>
               <Text style={styles.ValueText}>{TacticData.name}</Text>
             </SmallBox>
             <View style={styles.saveContainer}>
