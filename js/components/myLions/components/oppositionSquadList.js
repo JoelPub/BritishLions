@@ -226,7 +226,7 @@ export default class OppositionSquadList extends Component {
                             <View style={styles.indivPosition} key={index}>
                                 <View style={styles.indivPosTitle}>
                                     <Text style={styles.indivPosTitleText}>
-                                        { position}
+                                        { position === 'CAPTAIN'? 'MATCH CAPTAIN' : position }
                                     </Text>
                                 </View>
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position,1,0)}/>

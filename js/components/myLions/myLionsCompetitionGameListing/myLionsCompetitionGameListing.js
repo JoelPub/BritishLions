@@ -200,7 +200,7 @@ class MyLionsCompetitionGameListing extends Component {
                                                     { item.description }
                                                 </Text>
 
-                                                <ButtonFeedback rounded style={[styles.roundButton, styles.roundButtonAlt, locStyle.roundButton]} onPress={()=> { this._drillDown(item, 'myLionsOppositionSquad') }}>
+                                                <ButtonFeedback rounded style={[styles.roundButton, styles.roundButtonAlt, locStyle.roundButton]} onPress={()=> { this._drillDown(Object.assign(item,{round_id:this.round_id,isLiveResult:false}), 'myLionsOppositionSquad') }}>
                                                     <Text style={[styles.roundButtonLabel, styles.roundButtonLabelAlt]}>
                                                         VIEW TEAM
                                                     </Text>
