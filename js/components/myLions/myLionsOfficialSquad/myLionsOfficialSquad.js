@@ -119,15 +119,12 @@ class MyLionsOfficialSquad extends Component {
     componentDidMount() {
         //setTimeout(() => this._getSquad(), 600)
         let {userProfile} = this.props
-        getAccessToken().then(token=>{
-            this._getSquad(token,userProfile.userID)
-        })
+        this._getSquad(token,userProfile.userID)
     }
     
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
-
     _reLogin() {
         removeToken()
         this.props.setAccessGranted(false)
@@ -155,7 +152,7 @@ class MyLionsOfficialSquad extends Component {
                       data: {},
                       onAxiosStart: null,
                       onAxiosEnd: null,
-                      method: 'post',
+                      method: 'get',
                       channel: 'EYC3',
                       isQsStringify:false,
                       onSuccess: (res) => {
@@ -168,7 +165,7 @@ class MyLionsOfficialSquad extends Component {
                       },
                       onError: null,
                       onAuthorization: () => {
-                              this._signInRequired()
+                            //  this._signInRequired()
                       },
                       isRequiredToken: true
                   }

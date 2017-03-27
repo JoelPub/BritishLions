@@ -225,17 +225,14 @@ export function service(options) {
 	}
 
 	let opt = Object.assign(defaults, options)
-	
-
-
 	if (opt.isRequiredToken) {
+		console.log('isRequiredToken')
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
-
 				if(opt.channel === 'EYC3') {
 					//axios.defaults.headers.common['Content-Type'] = 'application/json'
 					opt.data = Object.assign(opt.data, {'access_token':accessToken})
-				}	
+				}
 
 				const axiosInstance = axios.create()
 				axiosInstance.interceptors.request.use((config) => {
@@ -243,7 +240,6 @@ export function service(options) {
 
 					return config
 				})
-
 				//axiosInstance.defaults.headers.common['Authorization'] = `bearer ${accessToken}`	// THIS WILL CHANGE THE GLOBLE SETTINGS,PLEASE BE AWARED BEFORE USE IT
 				callApi(opt, axiosInstance)
 			} else {
@@ -252,7 +248,6 @@ export function service(options) {
 					opt.onAuthorization('Sign In is Required')
 				}
 			}
-
 		}).catch((error) => {
 			// Sign In is Required
 			if (opt.onAuthorization) {
@@ -260,6 +255,7 @@ export function service(options) {
 			}
     	})
 	} else {
+		console.log('^^^^^^^^^')
 		axios.interceptors.request.use((config) => {
 			return config
 		})
