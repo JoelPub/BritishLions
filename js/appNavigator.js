@@ -76,6 +76,8 @@ import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
 import Storage from 'react-native-storage'
 
+
+
 import {
   GoogleAnalyticsTracker,
   GoogleTagManager,
@@ -184,7 +186,8 @@ class AppNavigator extends Component {
             enableCache: true,
         })
         global.storage = storage
-
+        NativeModules.One.init( "ONE-YOUR-SITEKEY", "yourTouchpoint", "your-api-key", "your-shared-secret", "your@user.id",
+          false, "eu2.thunderhead.com")
         globalNav.navigator = this._navigator
 
         this.props.store.subscribe(() => {
