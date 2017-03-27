@@ -112,7 +112,7 @@ class JoinGroupModal extends Component {
           <View style={[styles.modalViewWrapper,styles.modalGropp]}>
             <Text style={styles.modalCreateGroupTitle}>{title}</Text>
             <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-            {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput}
+            {modalType==='join' ? <TextInput style={styles.modalCreateGroupInput} underlineColorAndroid='transparent'
              onChangeText={ (invitation_code) => this.setState({invitation_code}) }/> : null}
             {modalType==='join' ? <CreateButton onPress={this.joinGroupClick} /> : null}
             {modalType==='error' ? <ErrorButton  onPress={this.callbackParent} /> : null}
