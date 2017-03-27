@@ -23,6 +23,7 @@ import { setUserProfile } from '../../../actions/squad'
 import { getUserId, removeToken ,getAccessToken,getUserFullName} from '../../utility/asyncStorageServices'
 import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
+import { setTeamDataTemp,setTeamData } from '../../../actions/squad'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -134,15 +135,15 @@ class MyLionsCompetitionCentre extends Component {
 
     constructor(props) {
         super(props)
-        this.isUnMounted = false
         this.state={
             isLoaded: false,
             competitionInfo:[]
         }
     }
 
-    componentWillUnmount() {
-        this.isUnMounted = true
+    componentDidMount() {
+        this.props.setTeamDataTemp()
+        this.props.setTeamData()
     }
 
     _drillDown = (data) => {
@@ -316,7 +317,9 @@ function bindAction(dispatch) {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
+        setTeamData:(team)=>dispatch(setTeamData(team)),
     }
 }
 

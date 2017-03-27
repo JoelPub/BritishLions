@@ -45,7 +45,6 @@ class MyLionsTestRound extends Component {
     constructor(props){
         super(props)
         this._scrollView = ScrollView
-        this.saveSquadUrl='http://biltestapp.azurewebsites.net/SaveUserCustomizedSquad'
         this.state={
             isLoaded: false,
             modalVisible: false,
@@ -150,8 +149,11 @@ class MyLionsTestRound extends Component {
                     method: 'post',
                     onSuccess: (res) => {
                         console.log('res.data',res.data)
-                        if(res.data) {
+                        if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
+                        }
+                        else {
+                            this.setTeam(TeamModel.fromJS({}))
                         }
                         
                     },
@@ -169,6 +171,7 @@ class MyLionsTestRound extends Component {
     setTeam(team){
         console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        console.log('showTeamFeed',showTeamFeed.toJS())
         this.props.setTeamToShow(showTeamFeed.toJS())
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
             console.log('!!!team not equal')
@@ -190,24 +193,30 @@ class MyLionsTestRound extends Component {
     _saveTeam() {
 
        let options = {
-           url: this.saveSquadUrl,
+           url: actionsApi.eyc3SaveUserCustomizedSquad,
            data: {  "id":this.props.userProfile.userID,
                     "first_name":this.props.userProfile.firstName,
                     "last_name":this.props.userProfile.lastName,
                     "round_id":0, 
                     "game_id": 0,
-                    "team":this.props.teamDataTemp},
+                    "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
            onAxiosStart: () => {},
            onAxiosEnd: () => {
            },
            onSuccess: (res) => {
+            console.log('res.data',res.data)
                 if(res.data&&res.data.success) {
                     this.props.pushNewRoute('myLionsTestRoundSubmit') 
                 }
            },
-           onError: null,
-           onAuthorization: null,
-           isRequiredToken: true
+           onError: () => {
+            console.log('onError')
+           },
+            onAuthorization: null,
+            isQsStringify:false,
+            method: 'post',
+            channel: 'EYC3',
+            isRequiredToken: true
        }
 
        service(options)

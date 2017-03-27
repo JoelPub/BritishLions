@@ -166,8 +166,8 @@ class MyLionsShareTestRound extends Component {
                     {
                       indivPos.map((item,i)=>{
                         let position = strToUpper(item.position) === 'CAPTAIN'? 'MATCH CAPTAIN' : strToUpper(item.position)
-                        let firstName = item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" "))
-                        let lastName = item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length)
+                        let firstName = item.info!==null?item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" ")):''
+                        let lastName = item.info!==null?item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length):''
                         return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
                       })
                     }

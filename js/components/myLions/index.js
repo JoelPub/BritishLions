@@ -29,7 +29,7 @@ import SquadModal from '../global/squadModal'
 import CreateGroupModal from './createGroup'
 import JoinGroupModal from  './joinGroup'
 import { service } from '../utility/services'
-import { strToUpper } from '../utility/helper'
+import { strToUpper,isEmptyObject } from '../utility/helper'
 import { setUserProfile , setPrivateLeagues, setVisitedOnboarding} from '../../actions/squad'
 import { actionsApi } from '../utility/urlStorage'
 
@@ -315,7 +315,8 @@ class MyLions extends Component {
             method: 'post',
             onSuccess: (res) => {
                 console.log('res',res)
-                if(res.data&&isFirst&&!this.props.visitedOnboarding) {
+                console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
+                if(res.data&&isFirst&&!(this.props.visitedOnboarding.id!==undefined && this.props.visitedOnboarding.id===this.state.userID)) {
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
                             "highLight":3,
@@ -328,7 +329,7 @@ class MyLions extends Component {
                             "Click next to discover what's new in this version."
                             ]
                         })
-                        this.setState({totalPages:Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding(true))
+                        this.setState({totalPages:Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding({id:this.state.userID}))
                         
                 }
                 this.getProfile(userName,firstName,lastName,initName)

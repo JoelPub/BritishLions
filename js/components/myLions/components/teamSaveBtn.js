@@ -19,6 +19,7 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { popRoute } from '../../../actions/route'
+import { actionsApi } from '../../utility/urlStorage'
 const styles = styleSheetCreate({
     wrapper:{
         backgroundColor: 'rgb(4, 79, 38)',
@@ -75,25 +76,27 @@ class TeamSaveBtn extends Component {
     _saveTeam() {
 
        let options = {
-           url: this.saveSquadUrl,
-           data: { "id":this.props.userProfile.userID,
+            url: actionsApi.eyc3SaveUserCustomizedSquad,
+            data: {         "id":this.props.userProfile.userID,
+                            "first_name":this.props.userProfile.firstName,
+                            "last_name":this.props.userProfile.lastName,
                             "round_id":this.props.gameData.round_id, 
                             "game_id": this.props.gameData.game,
-                            "team":this.props.teamDataTemp},
-           onAxiosStart: () => {},
-           onAxiosEnd: () => {
-           },
+                            "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
+            onAxiosStart: () => {},
+            onAxiosEnd: () => {
+            },
             method: 'post',
             channel: 'EYC3',
             isQsStringify:false,
-           onSuccess: (res) => {
+            onSuccess: (res) => {
                 console.log('res',res)
                 this.props.setTeamData(this.props.teamDataTemp)
                 this.props.popRoute()
-           },
-           onError: null,
-           onAuthorization: null,
-           isRequiredToken: true
+            },
+            onError: null,
+            onAuthorization: null,
+            isRequiredToken: true
        }
 
        service(options)

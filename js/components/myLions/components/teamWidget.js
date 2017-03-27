@@ -194,7 +194,7 @@ class TeamWidget extends Component {
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
             // console.log('not equal')
             this.props.setTeamData(team.toJS())
-            this.props.setTeamToShow(showTeamFeed.toJS())
+            // this.props.setTeamToShow(showTeamFeed.toJS())
          }
             this.setState({fullTeam:fullFeed})
             this.props.setTeamStatus(fullFeed)
@@ -205,7 +205,6 @@ class TeamWidget extends Component {
 
 function bindAction(dispatch) {
     return {
-        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
         setTeamStatus:(teamStatus)=>dispatch(setTeamStatus(teamStatus)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
     }

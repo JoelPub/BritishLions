@@ -183,7 +183,6 @@ class MyLionsManageTeam extends Component {
             this.props.setTeamDataTemp(team.toJS())
         }
         else {
-            this.props.setTeamToShow(showTeamFeed.toJS())
             this.setState({ isLoaded: true })
         }
         

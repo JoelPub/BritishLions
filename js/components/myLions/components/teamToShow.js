@@ -8,18 +8,16 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
     tempFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    console.log('v.posotion',v.position)
-                    console.log('team.get(index)',team.get(index))
-                    console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
+                    // console.log('v.posotion',v.position)
+                    // console.log('team.get(index)',team.get(index))
+                    // console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
                     if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
-                    console.log("!!!!!!!! line 15")
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
                             return val
                         })
                     }
                     else {
-                    console.log("!!!!!!!! line 21")
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=null
                             return val

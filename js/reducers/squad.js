@@ -14,7 +14,7 @@ export type State = {
     officialSquadToShow: Object,
     oppositionSquadToShow: Object,
     privateLeagues: boolean,
-    visitedOnboarding: boolean,
+    visitedOnboarding: Object,
 }
 
 const initialState = {
@@ -28,7 +28,7 @@ const initialState = {
     officialSquadToShow: {},
     oppositionSquadToShow: {},
     privateLeagues: false,
-    visitedOnboarding: false,
+    visitedOnboarding: {},
 }
 
 export default function (state:State = initialState, action:Action): State {
@@ -70,6 +70,7 @@ export default function (state:State = initialState, action:Action): State {
         }
     }
     if (action.type === SET_TEAM_DATA_TEMP) {
+        console.log('reducer teamDataTemp',action.teamDataTemp)
         return {
             ...state,
             teamDataTemp: action.teamDataTemp

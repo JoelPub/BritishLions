@@ -45,13 +45,14 @@ export function setTeamStatus(teamStatus):Action {
         teamStatus
     }
 }
-export function setTeamData(teamData):Action {
+export function setTeamData(teamData={}):Action {
     return {
         type: SET_TEAM_DATA,
         teamData
     }
 }
-export function setTeamDataTemp(teamDataTemp):Action {
+export function setTeamDataTemp(teamDataTemp={}):Action {
+    console.log('action teamDataTemp')
     return {
         type: SET_TEAM_DATA_TEMP,
         teamDataTemp
@@ -78,7 +79,7 @@ export function setPrivateLeagues(privateLeagues):Action {
 }
 
 
-export function setVisitedOnboarding(visitedOnboarding):Action {
+export function setVisitedOnboarding(visitedOnboarding={}):Action {
     return {
         type: SET_VISITED_ONBOARDING,
         visitedOnboarding
