@@ -18,6 +18,7 @@ import {convertTeamToShow} from '../components/teamToShow'
 import { setTeamToShow,setTeamStatus,setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
+import { actionsApi } from '../../utility/urlStorage'
 
 const locStyle = styleSheetCreate({
     btnBg: {
@@ -146,8 +147,10 @@ class TeamWidget extends Component {
         console.log('teamWidget catchedFullPlayerList')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
-                    url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
+                    url: actionsApi.eyc3GetUserCustomizedSquad,
                     data: { "id":this.props.userProfile.userID,
+                            "first_name":this.props.userProfile.firstName,
+                            "last_name":this.props.userProfile.lastName,
                             "round_id":this.props.round_id, 
                             "game_id": this.props.game},
                     onAxiosStart: null,

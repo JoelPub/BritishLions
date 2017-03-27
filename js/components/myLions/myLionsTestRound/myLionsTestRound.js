@@ -30,7 +30,7 @@ import { globalNav } from '../../../appNavigator'
 import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
-import { setTeamToShow } from '../../../actions/squad'
+import { setTeamToShow,setTeamDataTemp } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import TeamModel from  '../../../modes/Team'
 import Immutable, { Map, List,Iterable } from 'immutable'
@@ -38,6 +38,7 @@ import TeamList from '../components/teamList'
 import TeamSaveBtn from '../components/teamSaveBtn'
 import {convertTeamToShow} from '../components/teamToShow'
 import Versus from '../components/versus'
+import { actionsApi } from '../../utility/urlStorage'
 
 class MyLionsTestRound extends Component {
 
@@ -132,16 +133,18 @@ class MyLionsTestRound extends Component {
         this._getTeam()
     }
     _getTeam(){
-        console.log('_getTeam',this.props.teamData)
+        console.log('_getTeam',this.props.teamDataTemp)
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
-                    url: 'http://biltestapp.azurewebsites.net/GetUserCustomizedSquad',
+                    url: actionsApi.eyc3GetUserCustomizedSquad,
                     data: { "id":this.props.userProfile.userID,
-                            "round_id":1, 
-                            "game_id": 1},
+                            "first_name":this.props.userProfile.firstName,
+                            "last_name":this.props.userProfile.lastName,
+                            "round_id":0, 
+                            "game_id": 0},
                     onAxiosStart: null,
                     onAxiosEnd: null,
                     method: 'post',
@@ -161,20 +164,46 @@ class MyLionsTestRound extends Component {
         }).catch((error) => {
                     this._showError(error) 
         })
-    }   
+    }  
+
+    setTeam(team){
+        console.log('!!!setTeam',team.toJS())
+        let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        this.props.setTeamToShow(showTeamFeed.toJS())
+        if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
+            console.log('!!!team not equal')
+            this.props.setTeamDataTemp(team.toJS())
+        }
+        else {            
+            this.setState({ isLoaded: true })
+        }
+        
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps',nextProps.teamDataTemp)
+        if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
+            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
+        }
+    }
     _saveTeam() {
 
        let options = {
            url: this.saveSquadUrl,
-           data: { "id":this.props.userProfile.userID,
-                            "round_id":1, 
-                            "game_id": 1,
-                            "team":this.props.teamData},
+           data: {  "id":this.props.userProfile.userID,
+                    "first_name":this.props.userProfile.firstName,
+                    "last_name":this.props.userProfile.lastName,
+                    "round_id":0, 
+                    "game_id": 0,
+                    "team":this.props.teamDataTemp},
            onAxiosStart: () => {},
            onAxiosEnd: () => {
            },
            onSuccess: (res) => {
-                this.props.pushNewRoute('myLionsTestRoundSubmit')
+                if(res.data&&res.data.success) {
+                    this.props.pushNewRoute('myLionsTestRoundSubmit') 
+                }
            },
            onError: null,
            onAuthorization: null,
@@ -183,12 +212,6 @@ class MyLionsTestRound extends Component {
 
        service(options)
 
-    }
-    componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps',nextProps.teamData)
-        if(Immutable.is(TeamModel.fromJS(nextProps.teamData),TeamModel.fromJS(this.props.teamData))===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamData))  
-        }
     }
     
     _replaceRoute(route) {
@@ -211,21 +234,6 @@ class MyLionsTestRound extends Component {
             }]
         )
     }
-
-    setTeam(team){
-        console.log('!!!setTeam',team.toJS())
-        let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
-            console.log('!!!team not equal')
-            this.props.setTeamData(team.toJS())
-            this.props.setTeamToShow(showTeamFeed.toJS())
-        }
-        else {            
-            this.setState({ isLoaded: true })
-        }
-        
-
-    }
 }
 
 function bindAction(dispatch) {
@@ -237,13 +245,14 @@ function bindAction(dispatch) {
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
+        setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
     }
 }
 
 export default connect((state) => {
     return {
         teamToShow: state.squad.teamToShow,
-        teamData: state.squad.teamData,
+        teamDataTemp: state.squad.teamDataTemp,
         netWork: state.network,
         userProfile: state.squad.userProfile,
     }
