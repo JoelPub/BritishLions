@@ -35,7 +35,10 @@ const styles = styleSheetCreate({
     fontSize:28,
     height: 59,
     textAlign:'center',
-    paddingTop: 25,
+    paddingTop: 20,
+    android:{
+      paddingTop: 10,
+    }
   },
   contentView:{
     marginTop: 25,
