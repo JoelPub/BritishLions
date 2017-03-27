@@ -26,7 +26,9 @@ import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
 
 import com.thunderhead.one.react.OnePackage;
-import com.android.support.MultiDex;
+
+import android.support.multidex.MultiDex;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +37,7 @@ import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.magus.fblogin.FacebookLoginPackage; //
 
 public class MainApplication extends Application implements ReactApplication {
+
   @Override
   protected void attachBaseContext(Context base) {
     super.attachBaseContext(base);
@@ -52,7 +55,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
-
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
