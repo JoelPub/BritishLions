@@ -57,6 +57,9 @@ const EYC3_GETUSERPROFILESUMMARY_URL = '/GetuserProfileSummary'
 const EYC3_GETONBOARDINGINFO_URL_NAME = 'EYC3GetOnBoardingInfo'
 const EYC3_GETONBOARDINGINFO_URL = '/GetOnBoardingInfo'
 
+const EYC3_GETUSERCUSTOMIZEDSQUAD_URL_NAME = 'EYC3GetUserCustomizedSquad'
+const EYC3_GETUSERCUSTOMIZEDSQUAD_URL = '/GetUserCustomizedSquad'
+
 export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
@@ -97,6 +100,8 @@ export function getAssembledUrl(urlName) {
             return EYC3_BASE_URL_DUMMY + EYC3_GETUSERPROFILESUMMARY_URL
         case EYC3_GETONBOARDINGINFO_URL_NAME:
             return EYC3_BASE_URL_DUMMY + EYC3_GETONBOARDINGINFO_URL
+        case EYC3_GETUSERCUSTOMIZEDSQUAD_URL_NAME:
+            return EYC3_BASE_URL_DUMMY + EYC3_GETUSERCUSTOMIZEDSQUAD_URL
     }
 }
 /*R3*/
@@ -156,6 +161,7 @@ export const actionsApi = {
     eyc3GetCompetitionCentreInfo: getAssembledUrl(EYC3_GETCOMPETITIONCENTREINFO_URL_NAME),
     eyc3GetHistoricalGameResult: getAssembledUrl(EYC3_GETHISTORICALGAMERESULT_URL_NAME),
     eyc3GetuserProfileSummary: getAssembledUrl(EYC3_GETUSERPROFILESUMMARY_URL_NAME),
-    eyc3GetOnBoardingInfo: getAssembledUrl(EYC3_GETONBOARDINGINFO_URL_NAME)
+    eyc3GetOnBoardingInfo: getAssembledUrl(EYC3_GETONBOARDINGINFO_URL_NAME),
+    eyc3GetUserCustomizedSquad: getAssembledUrl(EYC3_GETUSERCUSTOMIZEDSQUAD_URL_NAME)
 }
 export const APP_VERSION = APP_VERSION_NO 

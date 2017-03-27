@@ -19,7 +19,6 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { setPositionToAdd , setPositionToRemove} from '../../../actions/position'
-import {map2Show} from '../components/teamToShow'
 const styles = styleSheetCreate({
     buttons: {
         flexDirection: 'row',
@@ -72,7 +71,6 @@ const styles = styleSheetCreate({
 class TeamPlayerEditor extends Component {
 	constructor(props){
         super(props)
-        this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
         this.state = {
             isMyTeamPlayerUpdating: false,
             inTeam: false,
