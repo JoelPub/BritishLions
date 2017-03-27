@@ -30,9 +30,10 @@ import { globalNav } from '../../../appNavigator'
 import LionsFooter from '../../global/lionsFooter'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { setPositionToAdd } from '../../../actions/position'
-import { strToUpper } from '../../utility/helper'
+import { strToUpper , strToLower} from '../../utility/helper'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import {searchPlayer} from '../components/searchPlayer'
+import {mapFShow} from '../components/teamToShow'
 
 class MyLionsSelectPlayerListing extends Component {
 
@@ -258,7 +259,7 @@ class MyLionsSelectPlayerListing extends Component {
             })
         }
         else {
-           //     selectPlayers=selectPlayers.filter(x=>strToUpper(x.position.replace(/\s/g,''))===filter.replace(/\_/g,'')) 
+               selectPlayers=selectPlayers.filter(x=>mapFShow(filter.replace(/\_/g,'')).split('-').indexOf(strToLower(x.position))>-1) 
         }
         console.log('selectPlayers',selectPlayers)
         this.setState({
