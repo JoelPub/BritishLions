@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,DeviceEventEmitter} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -156,6 +156,7 @@ class MyLionsGroupView extends Component {
           isLoaded:false,
         })
         if(res.data.success){
+          DeviceEventEmitter.emit('leaveLeague', '');
           this.modalConfirmedResult()
           this.setState({
             isLoaded:false,

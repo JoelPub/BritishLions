@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator,Alert} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,Alert,DeviceEventEmitter} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -146,6 +146,7 @@ class CompetitionLadder extends Component {
       joinModalData:null,
       modalInfo: false
     }
+    this.subscription = null
   }
   _showError(error) {
     if(!this.state.isNetwork) return
@@ -457,9 +458,11 @@ class CompetitionLadder extends Component {
       console.log(token)
        this.fetchData(token,userProfile.userID)
     })
+    this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updateDataAndUI);
   }
   componentWillUnmount() {
     this.isUnMounted = true
+    this.subscription.remove();
   }
 }
 function bindAction(dispatch) {
@@ -477,7 +480,6 @@ export default connect((state) => {
     privateLeagues: state.squad.privateLeagues,
     userProfile:state.squad.userProfile,
     netWork: state.network,
-
   }
 }, bindAction)(CompetitionLadder)
 CompetitionLadder.defaultProps = {
