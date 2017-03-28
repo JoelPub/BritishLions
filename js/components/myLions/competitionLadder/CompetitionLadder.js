@@ -76,7 +76,11 @@ const MyPride = (props) => {
         <Text style={styles.prideTitleText}>PRIVATE LEAGUES</Text>
       </View>
       <GroupAction createGroupOnPress={createGroupOnPress} joinGroupOnPress={joinGroupOnPress} />
-      <GroupNameList onPress={groupNameOnPress} data={data} />
+      {
+        data.my_groups.length!==0 ?
+          <GroupNameList onPress={groupNameOnPress} data={data} /> :null
+
+      }
     </View>
   )
 }
