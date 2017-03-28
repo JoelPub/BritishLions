@@ -43,6 +43,9 @@ const locStyle = styleSheetCreate({
     resultWonBg: {
         backgroundColor: 'rgb(9, 127, 64)'
     },
+    resultWonBgFailure: {
+        backgroundColor: 'rgb(38, 38, 38)'
+    },
     resultText: {
         color: '#FFF',
         fontSize: 36,
@@ -322,7 +325,7 @@ class MyLionsCompetitionGameResults extends Component {
                                             </Text>
                                         </View>
                                     :
-                                        <View style={[locStyle.result]}>
+                                        <View style={[locStyle.result,locStyle.resultWonBgFailure]}>
                                             <Text style={locStyle.resultText} >
                                                 {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('.')+1))}
                                             </Text>
