@@ -226,7 +226,6 @@ export function service(options) {
 
 	let opt = Object.assign(defaults, options)
 	if (opt.isRequiredToken) {
-		console.log('isRequiredToken')
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {
 				if(opt.channel === 'EYC3') {
@@ -255,7 +254,6 @@ export function service(options) {
 			}
     	})
 	} else {
-		console.log('^^^^^^^^^')
 		axios.interceptors.request.use((config) => {
 			return config
 		})
