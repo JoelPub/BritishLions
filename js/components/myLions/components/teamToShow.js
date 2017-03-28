@@ -46,9 +46,9 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
         return tempFeed    
 }
 
-export function removePlayer(teamToShow,position,playerid) {
+export function removePlayer(teamToShow,position,playerid,subPosition) {
     if(playerid) {
-        teamToShow[position].find(value=>value.info&&value.info.id&&value.info.id.toString()===playerid).info=null
+        teamToShow[position].find(value=>value.info&&value.info.id&&value.info.id.toString()===playerid&&value.position===subPosition).info=null
     }
     else {
         teamToShow['indivPos'].find(value=>strToUpper(position)===strToUpper(value.position)).info=null
@@ -145,7 +145,7 @@ export function mapFShow(position) {
             return 'scrum half-utility back'
             break
         case 'fly-half' :
-            return 'fly half-centre-utility back'
+            return 'fly half-utility back'
             break
         case 'left-wing' :
             return 'fly half-centre-winger-fullback-full back-utility back'
