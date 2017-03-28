@@ -176,16 +176,16 @@ class TeamPlayerEditor extends Component {
             console.log('index',index)
             if(index==='backs'||index==='forwards') {
                 console.log('value',value)
-                if(value.find(x=>x.get('id').toString()===this.props.playerid)!==undefined){
+                if(value.find(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition)!==undefined){
                         console.log('found')
                     if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
                         console.log('tmpFeed',tmpFeed.toJS())
                         tmpFeed=tmpFeed.update(index,val=>{
                             let t=List(val)
-                            t=t.splice(t.findIndex(x=>x.get('id').toString()===this.props.playerid),1)
+                            t=t.splice(t.findIndex(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition),1)
                             return t
                         })
-                        this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid))
+                        this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition))
                     }
                 }
             }
