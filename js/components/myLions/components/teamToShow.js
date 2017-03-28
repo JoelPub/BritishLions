@@ -138,14 +138,14 @@ export function mapFShow(position) {
         case 'openside-flanker' :
             return 'lock-flanker-back row-number 8'
             break
-        case 'number 8' :
+        case 'number-8' :
             return 'lock-flanker-back row-number 8'
             break
         case 'scrum-half' :
-            return 'scrum half - utility back'
+            return 'scrum half-utility back'
             break
         case 'fly-half' :
-            return 'fly half - centre - utility back'
+            return 'fly half-centre-utility back'
             break
         case 'left-wing' :
             return 'fly half-centre-winger-fullback-full back-utility back'

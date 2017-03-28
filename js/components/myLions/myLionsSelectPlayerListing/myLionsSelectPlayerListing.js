@@ -259,7 +259,7 @@ class MyLionsSelectPlayerListing extends Component {
             })
         }
         else {
-               selectPlayers=selectPlayers.filter(x=>mapFShow(filter.replace(/\_/g,'')).split('-').indexOf(strToLower(x.position))>-1) 
+               selectPlayers=selectPlayers.filter(x=>mapFShow(filter).split('-').indexOf(strToLower(x.position))>-1) 
         }
         console.log('selectPlayers',selectPlayers)
         this.setState({
