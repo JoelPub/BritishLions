@@ -171,7 +171,7 @@ const  Content = ({data,index,addStyle}) => {
         <Text style={[styles.subContentText,styles.whiteColor]}>JP</Text>
       </View>
       <View style={styles.rankContentTextView}>
-        <Text style={[styles.subContentText]}>{data.rank}</Text>
+        <Text style={[styles.subContentText]}>{index+1}</Text>
       </View>
       <View style={[styles.WText,addStyle]}>
         <Text style={[styles.subContentText]}>{data.w}</Text>

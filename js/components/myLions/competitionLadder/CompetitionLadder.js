@@ -467,7 +467,7 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  //console.log(state.route)
+  console.log(state.route)
   return {
     route: state.route,
     privateLeagues: state.squad.privateLeagues,
