@@ -1,8 +1,8 @@
 var data = {
   group_id:1223,
-  invitation_code:'AD323FC',
-  group_name: 'GROUP_NAME',
-  selector_rating:'',
+  invitationCode:'AD323FC',
+  groupName: 'GROUP_NAME',
+  selectorRating:'',
   rank:2134,
   w:22,
   l:12,

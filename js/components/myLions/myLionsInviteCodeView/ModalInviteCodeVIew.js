@@ -36,11 +36,12 @@ class ModalInviteCodeVIew extends Component {
     this.props.callbackParent()
   }
   getDetail = (description,data,groupName) =>{
+    console.log(data)
 
     let PageData = {
       title: '' ,
       contentText: 'The group invite code for '+groupName +' is:',
-      subTitle: data ? data.invitation_code : '',
+      subTitle: data ? data.invitationCode : '',
       subContentText: 'Invite friends to join your league by sharing this code. You may view the code for later reference at any time within your private league view.',
     }
 
@@ -49,7 +50,7 @@ class ModalInviteCodeVIew extends Component {
 
   shareClick = () => {
     let { data} = this.props
-    let invitation_code = data ? data.invitation_code : ''
+    let invitation_code = data ? data.invitationCode : ''
     shareTextWithTitle(invitation_code,'')
   }
   render() {
