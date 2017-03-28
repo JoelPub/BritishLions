@@ -110,7 +110,6 @@ class MyLionsOfficialSquad extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />
                     }
                     <EYSFooter mySquadBtn={true}/>
-                    <LoginRequire/>
                 </View>
             </Container>
         )
@@ -119,7 +118,7 @@ class MyLionsOfficialSquad extends Component {
     componentDidMount() {
         //setTimeout(() => this._getSquad(), 600)
         let {userProfile} = this.props
-        this._getSquad(token,userProfile.userID)
+        this._getSquad(userProfile.userID)
     }
     
     _replaceRoute(route) {
@@ -142,17 +141,16 @@ class MyLionsOfficialSquad extends Component {
         )
     }
 
-    _getSquad(token,userId){
-      console.log('_getSquad')
+    _getSquad(userId){
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   let optionsOfficialSquad = {
                       url: actionsApi.eyc3GetOfficalSquad,
-                      data: {},
+                      //data: {},
                       onAxiosStart: null,
                       onAxiosEnd: null,
-                      method: 'get',
+                      method: 'post',
                       channel: 'EYC3',
                       isQsStringify:false,
                       onSuccess: (res) => {
@@ -167,17 +165,15 @@ class MyLionsOfficialSquad extends Component {
                       onAuthorization: () => {
                             //  this._signInRequired()
                       },
-                      isRequiredToken: true
+                      isRequiredToken: false
                   }
                   // if(typeof(this.props.officialSquadToShow)==='object'&&!isEmptyObject(this.props.officialSquadToShow)) {
                   //   this.setState({isLoaded:true})
                   // }
                   // else {
-                    service(optionsOfficialSquad)
+                   service(optionsOfficialSquad)
                   // }
-                  
 
-                
               }
           }).catch((error) => {
               this.setState({ isLoaded: true }, () => {
