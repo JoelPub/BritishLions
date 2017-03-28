@@ -10,7 +10,6 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import styleVar from '../../../themes/variable'
 import { strToUpper } from '../../utility/helper'
 import ButtonFeedback from '../../utility/buttonFeedback'
-import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
 import {convertTeamToShow,removePlayer,addPlayer} from '../components/teamToShow'
@@ -48,6 +47,7 @@ class GamePlayBtn extends Component {
 	constructor(props){
         super(props)
         this.getGameResultUrl='http://biltestapp.azurewebsites.net/GetGameResult'
+        this.submitting=false
         this.state = {
             isActive:this.props.teamStatus&&this.props.tactics!==null
     	}
@@ -63,16 +63,31 @@ class GamePlayBtn extends Component {
         )
 	}
     componentWillReceiveProps(nextProps) {
+        console.log('this.props.connectionInfo',this.props.connectionInfo)
+        
+        console.log('nextProps.connectionInfo',nextProps.connectionInfo)
         console.log('nextProps.teamStatus',nextProps.teamStatus)
         console.log('nextProps.tactics',nextProps.tactics)
         console.log('this.props.teamStatus',this.props.teamStatus)
         console.log('this.props.tactics',this.props.tactics)
-        this.setState({isActive:nextProps.teamStatus&&nextProps.tactics!==null})
+        if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||nextProps.connectionInfo==='NONE')) {
+                console.log('!!!!!network lost')
+                console.log('this.submitting',this.submitting)
+            if(this.submitting) {
+                console.log('!!!!!show network error')
+               this.props._setModalVisible(true,'message','ERROR','Network error \n\n Please try again later.','GO BACK')
+            }
+        }
+        else {
+            this.setState({isActive:nextProps.teamStatus&&nextProps.tactics!==null})
+        }
+        
     }
 
     playGame() {
-       this.props._setModalVisible(true,'loading')
-       console.log('this.props.tactics',this.props.tactics)
+        this.submitting=true
+        this.props._setModalVisible(true,'loading')
+        console.log('this.props.tactics',this.props.tactics)
        let options = {
             url: this.getGameResultUrl,
             data: {
@@ -96,12 +111,23 @@ class GamePlayBtn extends Component {
             },
             onSuccess: (res) => {
                 console.log('res',res)
-                this.props._setModalVisible(false)
-                this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image}), 'myLionsCompetitionGameResults')
+                console.log('typeof res.data',typeof res.data)
+                if(typeof res.data ==='object') {                    
+                    this.props._setModalVisible(false)
+                    this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image}), 'myLionsCompetitionGameResults')
+                }
+                else if(typeof res.data==='string') {
+                    this.props._setModalVisible(true,'message','ERROR',res.data+'\n\n Please try again later.','GO BACK')
+                }
+                else {
+                    this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
+                }
+                this.submitting=false
             },
             onError: ()=>{
                 console.log('onError')
                 this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
+                this.submitting=false
             },
             onAuthorization: null,
             isRequiredToken: true,
@@ -128,5 +154,6 @@ export default connect((state) => {
         teamStatus: state.squad.teamStatus,
         tactics: state.tactics.tacticsData,
         userProfile: state.squad.userProfile,
+        connectionInfo: state.network.connectionInfo
     }
 },  bindAction)(GamePlayBtn)

@@ -10,7 +10,6 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 import styleVar from '../../../themes/variable'
 import { strToUpper,strToLower } from '../../utility/helper'
 import ButtonFeedback from '../../utility/buttonFeedback'
-import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
 import {convertTeamToShow,removePlayer,addPlayer} from '../components/teamToShow'
@@ -179,13 +178,27 @@ class TeamPlayerEditor extends Component {
                 if(value.find(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition)!==undefined){
                         console.log('found')
                     if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
-                        console.log('tmpFeed',tmpFeed.toJS())
+                        console.log('tmpFeed.toJS()',tmpFeed.toJS())
                         tmpFeed=tmpFeed.update(index,val=>{
                             let t=List(val)
                             t=t.splice(t.findIndex(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition),1)
                             return t
                         })
-                        this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition))
+                        let sTeam=removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition)
+                        // this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition))
+                        console.log('@@@captain')
+                        if(tmpFeed.get('captain').toString()===this.props.playerid) {
+                            console.log('true')
+                            tmpFeed=tmpFeed.set('captain','')
+                            // this.props.setTeamToShow(removePlayer(this.props.teamToShow,'captain'))
+                            sTeam=removePlayer(sTeam,'captain')
+                        }
+                        if(tmpFeed.get('kicker').toString()===this.props.playerid) {
+                            tmpFeed=tmpFeed.set('kicker','')
+                            // this.props.setTeamToShow(removePlayer(this.props.teamToShow,'kicker'))
+                            sTeam=removePlayer(sTeam,'kicker')
+                        }
+                        this.props.setTeamToShow(sTeam)
                     }
                 }
             }
