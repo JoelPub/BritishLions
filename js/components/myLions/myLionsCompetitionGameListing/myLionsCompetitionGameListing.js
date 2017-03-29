@@ -21,6 +21,7 @@ import styleVar from '../../../themes/variable'
 import { service } from '../../utility/services'
 import {  getUserId } from '../../utility/asyncStorageServices'
 import loader from '../../../themes/loader-position'
+import { strToUpper,strToLower } from '../../utility/helper'
 
 const locStyle = styleSheetCreate({
     gridBoxWrapper: {
@@ -108,7 +109,8 @@ class MyLionsCompetitionGameListing extends Component {
             isLoaded: false,
             userID:'',
             gameList: this.ds.cloneWithRows([]),
-            isNetwork: true
+            isNetwork: true,
+            drillDownItem:this.props.drillDownItem
         }
     }
 
@@ -236,7 +238,7 @@ class MyLionsCompetitionGameListing extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     
                     <View style={styles.pageTitle}>
-                        <Text style={styles.pageTitleText}>ROUND 1 COMPETITION</Text>
+                        <Text style={styles.pageTitleText}>{strToUpper(this.state.drillDownItem.name)}</Text>
                     </View>
 
                     {

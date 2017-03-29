@@ -72,7 +72,8 @@ const locStyle = styleSheetCreate({
         justifyContent: 'center',
         paddingTop: 0,
         paddingBottom: 0,
-        marginBottom: 1
+        marginBottom: 1,
+        flex:1
     },
     summaryRowBorder: {
         borderTopWidth: 1,
@@ -119,10 +120,10 @@ const locStyle = styleSheetCreate({
     },
 
     summaryTextWrapper: {
-        width: 130,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: -12
+        marginTop: -12,
+        flex:1
     },
     summaryText: {
         fontFamily: styleVar.fontCondensed,
@@ -139,7 +140,10 @@ const locStyle = styleSheetCreate({
         marginTop: 10,
         android: {
             marginBottom: 8
-        }
+        },
+        flex:1,
+        textAlign:'center',
+
     },
     summaryTextSmall: {
         fontFamily: styleVar.fontCondensed,

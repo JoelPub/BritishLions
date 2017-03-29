@@ -31,7 +31,8 @@ module.exports = styleSheetCreate({
   },
   wrapper:{
     borderTopWidth:0,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    paddingHorizontal:5,
   },
   posWrapper:{
     width:(styleVar.deviceWidth-40)/2+1,
