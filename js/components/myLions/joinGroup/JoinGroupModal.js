@@ -42,6 +42,9 @@ class JoinGroupModal extends Component {
     this._scrollView = KeyboardAwareScrollView
   }
   callbackParent = ()=> {
+    this.state = {
+      text: ''
+    };
     this.props.callbackParent()
   }
   getDetail = (description,data) =>{
@@ -94,6 +97,9 @@ class JoinGroupModal extends Component {
   }
 
   okClick = () => {
+    this.state = {
+      text: ''
+    };
    if(this.props.okButtonClick){
      this.props.okButtonClick(this.state.invitation_code)
    }
