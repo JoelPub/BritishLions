@@ -98,8 +98,8 @@ class GreateGroupModal extends Component {
   goBackClick = () => {
     this.props.errorBackButtonClick()
   }
-  shareClick = (subTitle) => {
-    shareTextWithTitle(subTitle,'')
+  shareClick = () => {
+    shareTextWithTitle(this.props.data.invitation_code,'')
   }
   render() {
     let { modalType ,data} = this.props
@@ -123,7 +123,7 @@ class GreateGroupModal extends Component {
                 {modalType==='error' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
                 {modalType==='error' ? <ErrorButton  onPress={this.goBackClick} /> : null}
                 {modalType==='success' ? <Text style={styles.modalCreateGroupContent}>{subContentText}</Text> : null}
-                {modalType==='success' ? <ShareButton onPress={this.shareClick(subTitle) } close = {this.callbackParent} /> : null}
+                {modalType==='success' ? <ShareButton onPress={this.shareClick} close = {this.callbackParent} /> : null}
               </View>
           </KeyboardAwareScrollView>
        </SquadModal>
