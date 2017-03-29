@@ -22,6 +22,14 @@ import { strToUpper } from '../../utility/helper'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
 
 
+const  TitleAndDescribe = ({title,describe}) => {
+    return (
+      <View >
+          <Text style={styles.textTitle}>{title}</Text>
+          <Text style={styles.textDetail}>{describe}</Text>
+      </View>
+    )
+}
 class MyLionsCoachProfile extends Component {
     constructor(props){
         super(props)
@@ -67,26 +75,31 @@ class MyLionsCoachProfile extends Component {
                         <Grid style={[styles.detailsGrid, styles.detailsGridColFull]}>
                             <Col style={[styles.detailsGridGreyBackground, styles.detailsGridCol]} size={1}>
                                 <Text style={styles.detailsLabel}>UNION</Text>
-                                <Text style={styles.detail}>{this.props.detail.education} </Text>
+                                <Text style={styles.detail}>{this.props.detail.union} </Text>
                             </Col>
                         </Grid>
+                        <View style={styles.textView}>
+                            <TitleAndDescribe title={'Playing Career'} describe={this.props.detail.playcareer} />
+                            <TitleAndDescribe title={'Coaching Career'} describe={this.props.detail.coachcareer} />
 
-                        <View style={[styles.playerDesc,{height:this.state.height}]}>
+                        </View>
+                        <View style={[styles.webView,{height:this.state.height}]}>
                             <WebView
-                                style={{flex:1}}
-                                bounces={false}
-                                scrollEnabled={false}
-                                source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}h1{font-size: 18px;font-family: 'georgia';line-height: 18px;color: rgb(38,38,38);margin-top: 20px;margin_bottom:0;font-weight:bold}p{font-size: 16px;font-family: 'georgia';line-height: 22px;color: rgb(38,38,38);margin-top: -5px;margin_bottom:0;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.detail.biog}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
-                                onNavigationStateChange={(title)=>{
+                              style={{flex:1}}
+                              bounces={false}
+                              scrollEnabled={false}
+                              source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}h1{font-size: 18px;font-family: 'georgia';line-height: 18px;color: rgb(38,38,38);margin-top: 20px;margin_bottom:0;font-weight:bold}p{font-size: 16px;font-family: 'georgia';line-height: 22px;color: rgb(38,38,38);margin-top: -5px;margin_bottom:0;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.detail.bio}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
+                              onNavigationStateChange={(title)=>{
                                     if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
                                         this.setState({
-                                            height:(parseInt(title.title)+150)
+                                            height:(parseInt(title.title)+60)
                                         })
                                     }
                                 }}
                             />
                         </View>
-                        <LionsFooter isLoaded={true} />
+
+                            <LionsFooter isLoaded={true} />
                     </ScrollView>
                     < EYSFooter mySquadBtn={true} />
                     <LoginRequire/>

@@ -13,6 +13,7 @@ export const SET_OFFICIAL_SQUAD_TOSHOW = 'SET_OFFICIAL_SQUAD_TOSHOW'
 export const SET_OPPOSITION_SQUAD_TOSHOW = 'SET_OPPOSITION_SQUAD_TOSHOW'
 export const SET_PRIVATE_LEAGUES = 'SET_PRIVATE_LEAGUES'
 export const SET_VISITED_ONBOARDING = 'SET_VISITED_ONBOARDING'
+export const SET_COACH_AND_STAFF = 'SET_COACH_AND_STAFF'
 
 export function setUserProfile(userProfile):Action {
     return {
@@ -83,5 +84,11 @@ export function setVisitedOnboarding(visitedOnboarding={}):Action {
     return {
         type: SET_VISITED_ONBOARDING,
         visitedOnboarding
+    }
+}
+export function setCoachAndStaff(cocahAndStaff):Action {
+    return {
+        type: SET_COACH_AND_STAFF,
+        cocahAndStaff
     }
 }
