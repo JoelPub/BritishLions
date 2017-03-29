@@ -48,6 +48,9 @@ class GreateGroupModal extends Component {
     };
   }
   callbackParent = ()=> {
+    this.state = {
+      text: ''
+    };
     this.props.callbackParent()
   }
   getDetail = (description,data) =>{
@@ -96,6 +99,9 @@ class GreateGroupModal extends Component {
    this.props.createButtonClick(this.state.text)
   }
   goBackClick = () => {
+    this.state = {
+      text: ''
+    };
     this.props.errorBackButtonClick()
   }
   shareClick = () => {

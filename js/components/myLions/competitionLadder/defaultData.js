@@ -68,10 +68,6 @@ var data = {
     }
   ],
   my_groups: [
-    {
-      name:'group name' ,
-      id: null
-    }
   ]
 }
 export  default data
