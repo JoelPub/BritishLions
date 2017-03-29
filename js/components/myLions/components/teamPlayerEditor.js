@@ -217,7 +217,21 @@ class TeamPlayerEditor extends Component {
                 console.log('tmpFeed.get(position)',tmpFeed.get(position))
                 tmpFeed=tmpFeed.update(position,val=>{
                             let t=List(val)
-                            t=t.push({"name":subPosition,"id":this.props.playerid})
+                            // console.log('t',t.toJS())
+                            // console.log('t',t.findIndex(x=>x.get('name')===subPosition))
+                            if(t.findIndex(x=>x.get('name')===subPosition)!==-1) {
+                                // console.log('position exist')
+                                t=t.update(t.findIndex(x=>x.get('name')===subPosition),v=>{
+                                    // console.log('v',v.toJS())
+                                    let w=Map(v)
+                                    w=w.set('id',this.props.playerid)
+                                    return w
+                                })
+                            }
+                            else {
+                               t=t.push({"name":subPosition,"id":this.props.playerid}) 
+                            }
+                            
                             return t
                         })
                 console.log('tmpFeed.get(position)',tmpFeed.get(position))

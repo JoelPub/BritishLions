@@ -206,6 +206,20 @@ const PositionTitle =({pos,data}) =>(
       <Text style={styles.posTitleCenter}>{pos.toUpperCase()}</Text>
     </View>
 )
+const AddIndivPlayerCell = ({pos})=>(
+    <ButtonFeedback  style={styles.posBtn}>
+        <View style={styles.posIndivAddWrapper}>            
+        </View>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText}>
+                    { pos.toUpperCase() }
+                </Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
 
 
 export default class OppositionSquadList extends Component {
@@ -229,7 +243,13 @@ export default class OppositionSquadList extends Component {
                                         { position === 'CAPTAIN'? 'MATCH CAPTAIN' : position }
                                     </Text>
                                 </View>
+                                {
+                                item.info===null?
+                                <AddIndivPlayerCell pos={strToUpper(item.position)=== 'CAPTAIN'? 'MATCH CAPTAIN' : item.position}/>
+                                :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,'myLionsPlayerProfile',item.position,1,0)}/>
+                                }
+                                
                             </View>
                         )
                     },this) 

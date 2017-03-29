@@ -13,9 +13,8 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
             if(index==='backs'||index==='forwards'||index==='coachstaffs') {
                 tempFeed=tempFeed.set(index,new List())
                 squad.get(index).map((v,i)=>{
-                    tempFeed=tempFeed.update(index,val=>{return val.push(searchPlayer(fullPlayerList,v,uniondata))})
+                    if(searchPlayer(fullPlayerList,v,uniondata)!==null) tempFeed=tempFeed.update(index,val=>{return val.push(searchPlayer(fullPlayerList,v,uniondata))})
                 })
-                console.log('tempFeed.get(index)',tempFeed.get(index).toJS())
             }
             else {
                 value.map((v,i)=>{
@@ -37,6 +36,7 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
                     }
                 })
             }
+                console.log('tempFeed.get(index)1',tempFeed.get(index))
         })
         return tempFeed
 }

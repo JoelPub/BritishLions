@@ -181,7 +181,20 @@ const PositionTitle =({pos,data}) =>(
       <Text style={styles.posTitleCenter}>{pos.toUpperCase()}</Text>
     </View>
 )
-
+const AddIndivPlayerCell = ({pos})=>(
+    <ButtonFeedback  style={styles.posBtn}>
+        <View style={styles.posIndivAddWrapper}>            
+        </View>
+        <View style={styles.playerNameTextWrapper}>
+            <View style={[shapes.triangle]} />
+            <View style={styles.titleBox}>
+                <Text style={styles.playerNameText}>
+                    { pos.toUpperCase() }
+                </Text>
+                </View>
+        </View>
+    </ButtonFeedback>
+    )
 
 export default class OfficialSquadList extends Component {
 	constructor(props){
@@ -204,7 +217,12 @@ export default class OfficialSquadList extends Component {
                                         { position}
                                     </Text>
                                 </View>
+                                {
+                                item.info===null?
+                                <AddIndivPlayerCell pos={strToUpper(item.position)}/>
+                                :
                                 <IndivPlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,item.position==='coach'?'myLionsCoachProfile':'myLionsPlayerProfile',item.position,1,0)}/>
+                                }
                                 </View>
                         )
                     },this) 
