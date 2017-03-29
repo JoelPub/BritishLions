@@ -101,7 +101,7 @@ class MyLionsShareTestRound extends Component {
 
   componentDidMount() {
     setTimeout(()=>{
-      this.shareSnapshot('scorecard',this.callback)
+      this.shareSnapshot("I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",this.callback)
     },2000)
 
   }

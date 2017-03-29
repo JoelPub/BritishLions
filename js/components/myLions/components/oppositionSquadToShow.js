@@ -12,7 +12,7 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
             if(index==='backs'||index==='forwards') {
                 tempFeed=tempFeed.set(index,new List())
                 squad.get(index).map((v,i)=>{
-                    tempFeed=tempFeed.update(index,val=>{return val.push({name:v.name,info:searchPlayer(fullPlayerList,v.id,uniondata)})})
+                    if(searchPlayer(fullPlayerList,v.id,uniondata)!==null) tempFeed=tempFeed.update(index,val=>{return val.push({name:v.name,info:searchPlayer(fullPlayerList,v.id,uniondata)})})
                 })
             }
             else {

@@ -215,11 +215,11 @@ class MyLionsSelectPlayerListing extends Component {
                             for (let node in res.data) {
                                 if(node==='backs'||node==='forwards') {
                                     res.data[node].map((value,index)=>{
-                                        playerList.push(value)
+                                        if (playerList.indexOf(value)===-1) {playerList.push(value)}
                                     })
                                 }
                                 else {
-                                    playerList.push(res.data[node])
+                                    if (playerList.indexOf(res.data[node])===-1) {playerList.push(res.data[node])}
                                 }
                             }
                             // console.log('playerList',playerList)
@@ -247,7 +247,7 @@ class MyLionsSelectPlayerListing extends Component {
         let selectPlayers = []
         let filter=this.props.positionToAdd.split('|')[1]
         playerList.map((id,j) => {
-                selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
+                if(searchPlayer(playerFeed,id,this.uniondata)!==null) selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
         })
         // console.log('filter',filter.replace(/\s/g,''))
         console.log('selectPlayers',selectPlayers)
@@ -259,7 +259,22 @@ class MyLionsSelectPlayerListing extends Component {
             })
         }
         else {
-               selectPlayers=selectPlayers.filter(x=>mapFShow(filter).split('-').indexOf(strToLower(x.position))>-1) 
+               selectPlayers=selectPlayers.filter(x=>{
+                        let result=false
+                        if(typeof x.position==='string') {
+                            x.position.split('/').map((value,index)=>{
+                                console.log('value',value)
+                                console.log('mapFShow(filter)',mapFShow(filter))
+                                if(mapFShow(filter).split('-').indexOf(strToLower(value).trim())>-1 ) {
+                                    console.log('found')
+                                    result=true
+                                }
+                            })
+                        }
+                        
+                        return result
+                    }
+                ) 
         }
         console.log('selectPlayers',selectPlayers)
         this.setState({
