@@ -24,6 +24,7 @@ import { getUserId, removeToken ,getAccessToken,getUserFullName} from '../../uti
 import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
 import { setTeamDataTemp,setTeamData } from '../../../actions/squad'
+import { strToUpper,strToLower } from '../../utility/helper'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -147,7 +148,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     _drillDown = (data) => {
-        this.props.drillDown(data, 'myLionsCompetitionGameListing')
+        data.is_test_round?this.props.drillDown(data, 'myLionsTestRound'):this.props.drillDown(data, 'myLionsCompetitionGameListing')
     }
 
     render() {
@@ -190,14 +191,11 @@ class MyLionsCompetitionCentre extends Component {
                                         this.state.competitionInfo.map((value,index)=>{
                                             return (
                                                 <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
-                                                    <Round title={`ROUND ${value.round_id} COMPETITION`} lock={!value.is_available} detail={value}/>
+                                                    <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
                                                 </ButtonFeedback>
                                             )
                                         })
-                                    } 
-                                    <ButtonFeedback onPress={() => this.props.pushNewRoute('myLionsTestRound')} style={{backgroundColor:'transparent'}}>
-                                        <Round title={'TEST ROUND'} lock={false} detail={{description:'Test Round'}}/>
-                                    </ButtonFeedback>
+                                    }
                                     </View>
                                 </View>
                             </View>

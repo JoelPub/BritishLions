@@ -145,7 +145,7 @@ export function mapFShow(position) {
             return 'scrum half-utility back'
             break
         case 'fly-half' :
-            return 'fly half-utility back'
+            return 'fly half-centre-utility back'
             break
         case 'left-wing' :
             return 'fly half-centre-winger-fullback-full back-utility back'
