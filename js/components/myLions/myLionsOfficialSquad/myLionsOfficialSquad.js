@@ -29,7 +29,7 @@ import { service } from '../../utility/services'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { setOfficialSquadToShow } from '../../../actions/squad'
+import { setOfficialSquadToShow,setCoachAndStaff } from '../../../actions/squad'
 import { getAssembledUrl,actionsApi } from '../../utility/urlStorage'
 import OfficialSquadModel from  '../../../modes/Squad/OfficialSquadModel'
 import Immutable, { Map, List,Iterable } from 'immutable'
@@ -37,6 +37,7 @@ import Cursor from 'immutable/contrib/cursor'
 import OfficialSquadList from '../components/officialSquadList'
 import {convertSquadToShow} from '../components/officialSquadToShow'
 import { strToUpper,isEmptyObject } from '../../utility/helper'
+import _fetch from '../../utility/fetch'
 
 class MyLionsOfficialSquad extends Component {
 
@@ -97,7 +98,7 @@ class MyLionsOfficialSquad extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>2017 LIONS SQUAD</Text>
-                                <OfficialSquadList squadDatafeed={this.props.officialSquadToShow} pressImg={this._showDetail.bind(this)}/>
+                                <OfficialSquadList squadDatafeed={this.props.officialSquadToShow} coachAndStaffData={this.props.coachAndStaffData} pressImg={this._showDetail.bind(this)}/>
                                 <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
                                     <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
@@ -119,6 +120,7 @@ class MyLionsOfficialSquad extends Component {
         //setTimeout(() => this._getSquad(), 600)
         let {userProfile} = this.props
         this._getSquad(userProfile.userID)
+        this._getCoachAndStaffData()
     }
     
     _replaceRoute(route) {
@@ -140,7 +142,26 @@ class MyLionsOfficialSquad extends Component {
             }]
         )
     }
+    _getCoachAndStaffData = () => {
+        let coachAndStaff = [];
+        _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/coaches.php'}).then((json)=>{
+           console.log(json)
+            json.map((item)=>{
+            coachAndStaff.push(item)
+            })
+            _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/backroom.php'}).then((json)=>{
+                json.map((item)=>{
+                    coachAndStaff.push(item)
+                })
+                console.log('测试******')
+                console.log(coachAndStaff)
+                this.props.setCoachAndStaff(coachAndStaff)
+            })
 
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
     _getSquad(userId){
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
@@ -191,14 +212,17 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setOfficialSquadToShow:(squad)=>dispatch(setOfficialSquadToShow(squad)),
+        setCoachAndStaff: (cocahAndStaff)=>dispatch(setCoachAndStaff(cocahAndStaff)),
     }
 }
 
 export default connect((state) => {
+  //  console.log(state)
     return {
         officialSquadToShow: state.squad.officialSquadToShow,
         netWork: state.network,
-        userProfile:state.squad.userProfile
+        userProfile:state.squad.userProfile,
+        coachAndStaffData: state.squad.coachData
     }
 }, bindAction)(MyLionsOfficialSquad)
 

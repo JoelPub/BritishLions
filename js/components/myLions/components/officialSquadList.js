@@ -200,15 +200,44 @@ export default class OfficialSquadList extends Component {
 	constructor(props){
         super(props)
     }
+  dellCoachAndCaptain = (coachAndStaffData,squadDatafeed) => {
+      let  data= []
+      let itemOne = {
+          position: 'coach',
+          info: coachAndStaffData[0]
+      }
+      data.push(itemOne)
+      data.push(squadDatafeed.indivPos[1])
 
+      return  data
+  }
+    dellStaffData = (coachAndStaffData) => {
+        let  data= []
+        coachAndStaffData.map((item,index)=>{
+            let itemOne = {
+                position: 'coach',
+                info: item
+            }
+            if (index!==0){
+                data.push(itemOne)
+            }
+        })
+
+        return  data
+    }
 	render() {
+      let  {coachAndStaffData,squadDatafeed} = this.props
+      console.log(coachAndStaffData)
+      console.log(squadDatafeed)
+      let TopTwoBoxData = this.dellCoachAndCaptain(coachAndStaffData,squadDatafeed)
+      let StaffData = this.dellStaffData(coachAndStaffData)
 		return (
 
             <View>
 
                 <View style={styles.individaulPositionRow}>
                 {
-                    this.props.squadDatafeed.indivPos.map((item,index)=>{
+                    TopTwoBoxData.map((item,index)=>{
                         let position = item.position.toUpperCase()
                         return (
                             <View style={styles.indivPosition} key={index}>
@@ -292,14 +321,14 @@ export default class OfficialSquadList extends Component {
                 activeDotColor='rgb(239,239,244)'
                 paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                     {
-                        this._mapJSON(this.props.squadDatafeed.coachstaffs,3).map((rowData,i)=>{
+                        this._mapJSON(StaffData,3).map((rowData,i)=>{
                             return(
                                 <View style={styles.posSwiperRow} key={i}>
                                     {
                                         rowData.map((item,index)=>{
                                             return(
                                                 <View style={styles.posWrapper} key={index}>
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','coachstaffs',16,index)}/>
+                                                        <PlayerImgCell data={item.info} onPress = {() => this.props.pressImg(item.info,item.position==='coach'?'myLionsCoachProfile':'myLionsPlayerProfile',item.position,1,0)}/>
                                                 </View>
                                                 )
                                         }, this)

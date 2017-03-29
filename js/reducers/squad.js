@@ -1,7 +1,7 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_TEAM_DATA_TEMP,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW,SET_PRIVATE_LEAGUES,SET_TEAM_STATUS,SET_VISITED_ONBOARDING } from '../actions/squad'
+import { SET_USER_PROFILE,SET_SQUAD_TOSHOW,SET_SQUAD_DATA,SET_TEAM_TOSHOW,SET_TEAM_DATA,SET_TEAM_DATA_TEMP,SET_OFFICIAL_SQUAD_TOSHOW,SET_OPPOSITION_SQUAD_TOSHOW,SET_PRIVATE_LEAGUES,SET_TEAM_STATUS,SET_VISITED_ONBOARDING,SET_COACH_AND_STAFF } from '../actions/squad'
 
 export type State = {
     userProfile: Object,
@@ -15,6 +15,7 @@ export type State = {
     oppositionSquadToShow: Object,
     privateLeagues: boolean,
     visitedOnboarding: Object,
+    coachData: Object
 }
 
 const initialState = {
@@ -29,6 +30,7 @@ const initialState = {
     oppositionSquadToShow: {},
     privateLeagues: false,
     visitedOnboarding: {},
+    coachData:{}
 }
 
 export default function (state:State = initialState, action:Action): State {
@@ -98,6 +100,12 @@ export default function (state:State = initialState, action:Action): State {
         return {
             ...state,
             visitedOnboarding: action.visitedOnboarding
+        }
+    }
+    if (action.type === SET_COACH_AND_STAFF) {
+        return {
+            ...state,
+            coachData: action.cocahAndStaff
         }
     }
 
