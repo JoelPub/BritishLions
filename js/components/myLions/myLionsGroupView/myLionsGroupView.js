@@ -217,7 +217,7 @@ class MyLionsGroupView extends Component {
     let {data,modalInviteCode} = this.state
     let {userProfile,drillDownItem} = this.props
     let group_name = drillDownItem.name ? drillDownItem.name : ''
-    let confirmedResult  = 'You are no longer part of the ' +   group_name + 'private league'
+    let confirmedResult  = 'You are no longer part of the ' +  group_name + ' private league.'
     return (
       <Container theme={theme}>
         <View style={styles.container}>
