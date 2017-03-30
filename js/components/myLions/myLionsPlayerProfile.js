@@ -174,24 +174,33 @@ class MyLionsPlayerProfile extends Component {
                 this.setState({ isLoaded:true })
             },
             onSuccess: (res) => {
+                console.log('profile res.data',res.data)
                 let profile = ProfileListModel.fromJS([new ProfileModel()])
 
                 if (res.data instanceof Array  && res.data.length!==0) {
+                    console.log('valid')
                     profile=ProfileListModel.fromJS(res.data)
-                } else {
-                    profile = profile.update(0,value=>{
-                        return value=value.update('Attack',v=>{
-                            return v=FigureListModel.fromJS([new FigureModel()])
-                        })
-                    })
-                }
+                } 
+                // else {
+                //     console.log('invalid')
+                //     profile = profile.update(0,value=>{
+                //         return value=value.update('Attack',v=>{
+                //             return v=FigureListModel.fromJS([new FigureModel()])
+                //         })
+                //     })
+                // }
 
                 this.setState({ profile, isLoaded: true })
             },
             onError: (res) => {
-                this.setState({isLoaded:true }, () => {
-                    this._showError(res)
-                })
+                let profile = ProfileListModel.fromJS([new ProfileModel()])
+                // profile = profile.update(0,value=>{
+                //     return value=value.update('Attack',v=>{
+                //         return v=FigureListModel.fromJS([new FigureModel()])
+                //     })
+                // })
+
+                this.setState({ profile, isLoaded: true })
             },
             onAuthorization: () => {
                 this.setState({isLoaded:true }, () => {
@@ -285,7 +294,7 @@ class MyLionsPlayerProfile extends Component {
                                 null
 
                         }
-                        <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
+                        {this.state.isLoaded&&<PlayerFigure profile={this.state.profile} pressInfo={this._setModalVisible.bind(this)}/>}
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     < EYSFooter mySquadBtn={true} />

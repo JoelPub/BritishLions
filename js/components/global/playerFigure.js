@@ -250,8 +250,7 @@ export default class PlayerFigure extends Component {
             underlineLength: [],
             tabStatus: [],
             tabSubjects: ['Attack','Defense','Kicking'],
-            profile:{},
-            isLoaded:false
+            profile:this.props.profile.first(),
         }
         this.currentPage = 0
     }
@@ -308,24 +307,26 @@ export default class PlayerFigure extends Component {
 
     componentWillReceiveProps(nextProps,nextState) {
         console.log('!!!Figure componentWillReceiveProps')
+        console.log('nextProps.profile.toJS()',nextProps.profile.toJS())
+        console.log('this.props.profile.toJS()',this.props.profile.toJS())
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
+            console.log('not equal')
             let profile=nextProps.profile.first()
-            profile.forEach((value,index)=>{
-                if (value.trim){
-                    if(index==='Kicking'&&value.trim()!==''&&value.trim) {
-                        profile=profile.set(index,JSON.parse(value))
-                    }
-                }
-            })
-            this.setState({isLoaded:true,profile:profile.toJS()})
+            // profile.forEach((value,index)=>{
+            //     if (value.trim){
+            //         if(index==='Kicking'&&value.trim()!==''&&value.trim) {
+            //             profile=profile.set(index,JSON.parse(value))
+            //         }
+            //     }
+            // })
+            console.log('profile',profile.toJS())
+            this.setState({profile:profile.toJS()})
         }
     }
 
     render() {
         return (
             <View>
-            {
-                this.state.isLoaded?
                     <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
                         <View style={styles.fullCard}>
                             <View style={styles.playerOverallRating}>
@@ -414,9 +415,14 @@ export default class PlayerFigure extends Component {
                                                         <View style={styles.playerFigureRow}>
                                                         {
                                                             this.state.profile[node].map((item, j) => {
+                                                                console.log('node',node)
+                                                                console.log('item',item)
                                                                 let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
-                                                                let name = strToUpper(item.name.trim())
+                                                                console.log('value',value)
+                                                                let name = strToUpper(item.name).trim()
+                                                                console.log('name',name)
                                                                 let playerFigureUnit = name !== 'TACKLES'? [styles.playerFigureUnit] : [styles.playerFigureUnit, styles.playerFigureUnit2]
+                                                                console.log('playerFigureUnit',playerFigureUnit)
                                                                 if (name != 'MISSED TACKLES') {
                                                                     return(
                                                                         <View style={playerFigureUnit} key={j}>
@@ -452,9 +458,6 @@ export default class PlayerFigure extends Component {
                             </View>
                         </View>
                     </View>
-                :
-                    <ActivityIndicator style={loader.scoreCard} size='small' /> 
-            }
             </View>            
             )
     }

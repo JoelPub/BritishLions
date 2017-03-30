@@ -9,7 +9,7 @@ const ProfileModel = Record({
   'player_consistency': '',
   'Attack': new FigureListModel(),
   'Defense': new FigureListModel(),
-  'Kicking': ''
+  'Kicking': new FigureListModel()
 })
 ProfileModel.prototype.constructor.fromJS = function (values) {
   // console.log('@@@ProfileModel.fromJS',values)

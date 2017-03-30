@@ -160,25 +160,37 @@ class MyLionsShareGameResult extends Component {
                   <ShareHeaderView />
                   <Versus gameData={this.props.data.gameData} userData={this.props.data.userData} />
                   {
-                      this.props.data.resultInfo.is_won?
-                          <View style={[styles.result, styles.resultWonBg]}>
+                      strToUpper(this.props.data.resultInfo.is_draw)==='TRUE'?
+                          <View style={[styles.result, styles.resultDrawBg]}>
                               <Text style={styles.resultText} >
-                                  {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf('!')+1))}
-                              </Text>
-                              <Text style={styles.resultText} >
-                                  {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf('!')+1))}
+                                  {strToUpper(this.props.data.resultInfo.message)}
                               </Text>
                           </View>
-                      :
-                          <View style={[styles.result]}>
-                              <Text style={styles.resultText} >
-                                  {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf('.')+1))}
-                              </Text>
-                              <Text style={styles.resultText} >
-                                  {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf('.')+1))}
-                              </Text>
+                          :
+                          <View>
+                              {
+                                  strToUpper(this.props.data.resultInfo.is_won)==='TRUE'?
+                                      <View style={[styles.result, styles.resultWonBg]}>
+                                          <Text style={styles.resultText} >
+                                              {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf('!')+1))}
+                                          </Text>
+                                          <Text style={styles.resultText} >
+                                              {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf('!')+1))}
+                                          </Text>
+                                      </View>
+                                  :
+                                      <View style={[styles.result]}>
+                                          <Text style={styles.resultText} >
+                                              {strToUpper(this.props.data.resultInfo.message.substring(0,this.props.data.resultInfo.message.indexOf(',')+1))}
+                                          </Text>
+                                          <Text style={styles.resultText} >
+                                              {strToUpper(this.props.data.resultInfo.message.substring(this.props.data.resultInfo.message.indexOf(',')+1))}
+                                          </Text>
+                                      </View>
+                              }
                           </View>
                   }
+                  
                     <View style={[styles.summaryRow, {marginBottom: 20}]}>
                       <View style={styles.summaryCircle}>
                           <Text style={styles.summaryCircleText}>{ this.props.data.resultInfo.ai.score || 'N/A' }</Text>

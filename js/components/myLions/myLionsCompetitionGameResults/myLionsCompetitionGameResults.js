@@ -40,6 +40,9 @@ const locStyle = styleSheetCreate({
             paddingBottom: 20
         }
     },
+    resultDrawBg: {
+        backgroundColor: 'rgb(208,7,41)'
+    },
     resultWonBg: {
         backgroundColor: 'rgb(9, 127, 64)'
     },
@@ -116,14 +119,15 @@ const locStyle = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         color: '#FFF',
-        marginTop: 10
+        marginTop: 10,
+        textAlign:'center'
     },
 
     summaryTextWrapper: {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: -12,
-        flex:1
+        flex:3
     },
     summaryText: {
         fontFamily: styleVar.fontCondensed,
@@ -141,7 +145,7 @@ const locStyle = styleSheetCreate({
         android: {
             marginBottom: 8
         },
-        flex:1,
+        flex:2,
         textAlign:'center',
 
     },
@@ -196,6 +200,13 @@ const locStyle = styleSheetCreate({
         borderTopWidth: 1,
         paddingTop: 40,
         paddingBottom: 15
+    },
+    sideCol:{
+        flex:2,
+        alignItems:'center'
+    },
+    centerCol:{
+        flex:3
     }
 })
 
@@ -203,15 +214,19 @@ const Summary = ({data,shareView}) => (
     <View style={locStyle.summary}>
         <View style={locStyle.summaryGuther}>
             <View style={[locStyle.summaryRow, {marginBottom: 20}]}>
-                <View style={locStyle.summaryCircle}>
-                    <Text style={locStyle.summaryCircleText}>{ data.ai.score || 'N/A' }</Text>
-                </View> 
-                <View>
+                <View style={locStyle.sideCol}>
+                    <View style={locStyle.summaryCircle}>
+                        <Text style={locStyle.summaryCircleText}>{ data.ai.score || 'N/A' }</Text>
+                    </View>
+                </View>
+                <View style={locStyle.centerCol}>
                     <Text style={locStyle.summaryTitle}>SCORE</Text>
-                </View> 
-                <View style={locStyle.summaryCircle}>
-                    <Text style={locStyle.summaryCircleText}>{ data.me.score || 'N/A' }</Text>
-                </View> 
+                </View>
+                <View style={locStyle.sideCol}>
+                    <View style={locStyle.summaryCircle}>
+                        <Text style={locStyle.summaryCircleText}>{ data.me.score || 'N/A' }</Text>
+                    </View>
+                </View>
             </View>
             
             <View style={locStyle.summaryRow}>
@@ -318,27 +333,37 @@ class MyLionsCompetitionGameResults extends Component {
                     {
                         this.state.isLoaded?
                             <View>
-                                {
-                                    this.state.resultInfo.is_won?
-                                        <View style={[locStyle.result, locStyle.resultWonBg]}>
-                                            <Text style={locStyle.resultText} >
-                                                {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('!')+1))}
-                                            </Text>
-                                            <Text style={locStyle.resultText} >
-                                                {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf('!')+1))}
-                                            </Text>
-                                        </View>
+                            {
+                                strToUpper(this.state.resultInfo.is_draw)==='TRUE'?
+                                    <View style={[locStyle.result, locStyle.resultDrawBg]}>
+                                        <Text style={locStyle.resultText} >
+                                            {strToUpper(this.state.resultInfo.message)}
+                                        </Text>
+                                    </View>
                                     :
-                                        <View style={[locStyle.result,locStyle.resultWonBgFailure]}>
-                                            <Text style={locStyle.resultText} >
-                                                {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('.')+1))}
-                                            </Text>
-                                            <Text style={locStyle.resultText} >
-                                                {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf('.')+1))}
-                                            </Text>
-                                        </View>
-                                }
-
+                                    <View>
+                                        {
+                                            strToUpper(this.state.resultInfo.is_won)==='TRUE'?
+                                                <View style={[locStyle.result, locStyle.resultWonBg]}>
+                                                    <Text style={locStyle.resultText} >
+                                                        {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf('!')+1))}
+                                                    </Text>
+                                                    <Text style={locStyle.resultText} >
+                                                        {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf('!')+1))}
+                                                    </Text>
+                                                </View>
+                                            :
+                                                <View style={[locStyle.result,locStyle.resultWonBgFailure]}>
+                                                    <Text style={locStyle.resultText} >
+                                                        {strToUpper(this.state.resultInfo.message.substring(0,this.state.resultInfo.message.indexOf(',')+1))}
+                                                    </Text>
+                                                    <Text style={locStyle.resultText} >
+                                                        {strToUpper(this.state.resultInfo.message.substring(this.state.resultInfo.message.indexOf(',')+1))}
+                                                    </Text>
+                                                </View>
+                                        }
+                                    </View>
+                            }
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
                                 
                                 <View style={styles.guther}>
