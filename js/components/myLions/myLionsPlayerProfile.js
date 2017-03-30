@@ -73,7 +73,7 @@ class MyLionsPlayerProfile extends Component {
                     <View style={styles.modalViewWrapper}>
                         <Text style={styles.modalBtnTitle}>{title}</Text>
                         <Text style={styles.modalTitleTextCenter}>{subtitle}</Text>
-                        <ButtonFeedback rounded label={btn} onPress={()=>this.props.popToRoute('myLionsManageTeam')}  style={styles.modalConfirmBtn} />
+                        <ButtonFeedback rounded label={btn} onPress={()=>this.props.popToRoute(this.props.viewDetailFrom)}  style={styles.modalConfirmBtn} />
                     </View>
                 )
                 break
@@ -314,5 +314,6 @@ export default connect((state) => {
     return {
         detail: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,
+        viewDetailFrom: state.position.viewDetailFrom,
     }
 }, bindAction)(MyLionsPlayerProfile)

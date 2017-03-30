@@ -70,16 +70,19 @@ class NewsDetails extends Component {
     }
 
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
-       // console.log('_handleStartShouldSetPanResponderCapture e._targetInst',e._targetInst._currentElement)
-       // console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
-       if(e._targetInst._currentElement === 'SHARE'||e._targetInst._currentElement === 'NEXT STORY') {
+       console.log('_handleStartShouldSetPanResponderCapture e',e.target)
+       for(let node in e) {
+        console.log('node',node)
+       }
+       console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
+       if(e._targetInst._currentElement === 'SHARE'||e._targetInst._currentElement === 'NEXT STORY'||e._targetInst._currentElement.props&&e._targetInst._currentElement.props.children === 'SHARE'||e._targetInst._currentElement.props&&e._targetInst._currentElement.props.children&&e._targetInst._currentElement.props.children[0] === 'NEXT STORY') {
             return false
        }
         return true
     }
 
     _handlePanResponderEnd(e, gestureState) {
-       // console.log('_handlePanResponderEnd getstureState',gestureState)
+       console.log('_handlePanResponderEnd getstureState',gestureState)
        if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
@@ -107,8 +110,8 @@ class NewsDetails extends Component {
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    <View  {...this._panResponder.panHandlers}>
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+                            <View  {...this._panResponder.panHandlers}>
                             <ImagePlaceholder height={270}>
                                 <Image source={{uri: this.props.article.image}} style={styles.banner}>
                                     <Image 
@@ -166,8 +169,8 @@ class NewsDetails extends Component {
                                     !this.state.isLoaded&&<ActivityIndicator style={loader.centered} size='large' />
                                 }
                             <LionsFooter isLoaded={true} />
+                            </View>
                         </ScrollView>
-                    </View>
                     <EYSFooter/>
                 </View>
 
