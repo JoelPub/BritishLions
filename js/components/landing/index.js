@@ -564,7 +564,11 @@ class Landing extends Component {
                             <ButtonFeedback
                                 style={styles.banner}
                                 onPress={() => this._isSignIn('myLionsOfficialSquad')}>
-                                <ImagePlaceholder height={200}></ImagePlaceholder>
+                                <ImagePlaceholder height={200}>
+                                    <Image
+                                      source={{uri: 'https://bileurostoraged001.blob.core.windows.net/expertimages/SquadPhoto.jpg'}}
+                                    />
+                                </ImagePlaceholder>
                                 <View style={[shapes.triangle, {marginTop: -12}]} />
                                 <View style={styles.bannerDetails}>
                                     <Text style={styles.bannerTitle} numberOfLines={1}>
