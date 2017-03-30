@@ -18,7 +18,8 @@ module.exports = styleSheetCreate({
     },
     gridBoxTouchableView: {
         alignSelf: 'stretch',
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        height: 290
     },
     gridBoxImgWrapper: {
         alignSelf: 'stretch',

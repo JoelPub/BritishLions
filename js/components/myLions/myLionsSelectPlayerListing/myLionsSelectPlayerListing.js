@@ -71,7 +71,7 @@ class MyLionsSelectPlayerListing extends Component {
                             </ImagePlaceholder>
                         </View>
                         <View style={[shapes.triangle]} />
-                        <View style={styleGridBoxTitle}>
+                        <View style={[styleGridBoxTitle,{height:104}]}>
                             <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase().substring(0, rowData.name.lastIndexOf(" "))}</Text>
                             <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase().substring(rowData.name.lastIndexOf(" ")+1, rowData.name.length)}</Text>
                             <Text style={styles.gridBoxTitleSupportText}>Position: {rowData.position}</Text>
