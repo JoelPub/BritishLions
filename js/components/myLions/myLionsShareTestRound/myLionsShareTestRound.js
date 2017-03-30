@@ -22,7 +22,7 @@ import Versus from '../components/versus'
 const ShareHeaderView = ({detail}) => (
   <View style={styles.viewShareHeader}>
     <Image resizeMode='contain' style={styles.viewHeaderImage} source={logo} />
-    <Text style={styles.headerTextBold}> Thankyou for submitting your team.</Text>
+    <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
     <Text style={styles.headerText}>The fans pick XV will be published via social media before the first test.</Text>
   </View>
 )
