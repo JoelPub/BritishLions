@@ -289,7 +289,7 @@ module.exports = styleSheetCreate({
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 20,
-        marginTop: 20,
+        paddingTop: 20,
         borderTopWidth: 1,
         borderTopColor: gridBorderColor
     },

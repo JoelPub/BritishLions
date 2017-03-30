@@ -206,7 +206,6 @@ class MyLionsPlayerProfile extends Component {
     }
 
     render() {
-
         let logo = ''
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
         if (this.props.detail) {
@@ -271,10 +270,10 @@ class MyLionsPlayerProfile extends Component {
                             </Col>
                             <Col style={styles.detailsGridCol} >
                                 <Text style={styles.detailsLabel}>INTERNATIONAL CAPS</Text>
-                                <Text style={styles.detail}>{this.props.detail.honours} </Text>
+                                <Text style={styles.detail}>{this.props.detail.honours}</Text>
                             </Col>
                         </Grid>
-                        {/*
+                        {
                             this.props.detail.biog?
                                 <View style={styles.playerDesc}>
                                     <HTMLView
@@ -285,7 +284,7 @@ class MyLionsPlayerProfile extends Component {
                             :
                                 null
 
-                        */}
+                        }
                         <PlayerFigure profile={this.state.profile} isLoaded={this.state.isLoaded} pressInfo={this._setModalVisible.bind(this)}/>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
