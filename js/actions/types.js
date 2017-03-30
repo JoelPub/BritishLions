@@ -27,6 +27,7 @@ export type Action =
     | { type: 'SET_NETWORK_STATUS' }
     | { type: 'SET_POSITION_TOADD' }
     | { type: 'SET_POSITION_TOREMOVE' }
+    | { type: 'SET_VIEWDETAIL_FROM' }
     | { type: 'SET_PRIVATE_LEAGUES' }
     | { type: 'SET_TACTICS_TOREMOVE' }
     | { type: 'SET_TACTICS_TOSAVE' }

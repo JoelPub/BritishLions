@@ -29,7 +29,7 @@ import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import SquadModal from '../../global/squadModal'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { setPositionToAdd,setPositionToRemove } from '../../../actions/position'
+import { setPositionToAdd,setPositionToRemove,setViewdetailFrom } from '../../../actions/position'
 import { setTeamToShow,setTeamDataTemp } from '../../../actions/squad'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import TeamModel from  '../../../modes/Team'
@@ -80,6 +80,7 @@ class MyLionsManageTeam extends Component {
     _addPlayer(type,playerPos) {
         this.props.setPositionToAdd(playerPos)
         this.props.setPositionToRemove(null)
+        this.props.setViewdetailFrom('myLionsManageTeam')
         this.props.pushNewRoute('myLionsSelectPlayerListing')
     }
 
@@ -198,6 +199,7 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        setViewdetailFrom:(page)=>dispatch(setViewdetailFrom(page)),
         setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
         setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
     }
