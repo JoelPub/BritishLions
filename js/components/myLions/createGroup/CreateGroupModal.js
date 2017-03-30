@@ -96,6 +96,7 @@ class GreateGroupModal extends Component {
     return PageData
   }
   createGroupClick = () => {
+    this._scrollView.scrollToPosition(0,0,false)
    this.props.createButtonClick(this.state.text)
   }
   goBackClick = () => {
