@@ -25,12 +25,19 @@ import { service } from '../../utility/services'
 import { drillDown ,shareReplace} from '../../../actions/content'
 
 
-const ShareHeaderView = ({detail}) => (
-  <View style={styles.viewShareHeader}>
-        <Text style={styles.headerTextBold}> Thankyou for submitting your team.</Text>
-        <Text style={styles.headerText}>The fans pick XV will be published via  social media before the first test.</Text>
-  </View>
-)
+const ShareHeaderView = ({detail}) => {
+  let height = 0
+  if (styleVar.deviceWidth===320){
+    height= styleVar.deviceWidth*0.45 + 20
+  }else {
+    height= styleVar.deviceWidth*0.45
+  }
+  return(
+    <View style={[styles.viewShareHeader,{height:height}]}>
+          <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
+          <Text style={styles.headerText}>The fans pick XV will be published via  social media before the first test.</Text>
+    </View>
+  )}
 
 const  NoteName = ({title,firstName,lastName}) => (
   <View style={styles.posWrapper}>
