@@ -83,9 +83,9 @@ class MyLionsCoachProfile extends Component {
                             <TitleAndDescribe title={'Coaching Career'} describe={this.props.detail.coachcareer} />
 
                         </View>
-                        <View style={[styles.webView,{height:this.state.height}]}>
+                        <View style={[styles.webView,{height:this.state.height+20}]}>
                             <WebView
-                              style={{flex:1}}
+                              style={styles.webViewStyle}
                               bounces={false}
                               scrollEnabled={false}
                               source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}h1{font-size: 18px;font-family: 'georgia';line-height: 18px;color: rgb(38,38,38);margin-top: 20px;margin_bottom:0;font-weight:bold}p{font-size: 16px;font-family: 'georgia';line-height: 22px;color: rgb(38,38,38);margin-top: -5px;margin_bottom:0;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.detail.bio}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}

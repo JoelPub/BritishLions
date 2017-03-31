@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
-import { updateToken, removeToken } from '../utility/asyncStorageServices'
+import { updateToken, removeToken ,SaveUserNameAndPassword,getReloginInfo} from '../utility/asyncStorageServices'
 import { Keyboard, Dimensions,Image, PanResponder, NativeModules, Alert} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
@@ -16,6 +16,7 @@ import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { APP_VERSION, actionsApi } from '../utility/urlStorage'
+
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -92,6 +93,33 @@ class Login extends Component {
             this.props.setAccessGranted(false)
         }, 400)
         this._setupGoogleSignin()
+        this.ReLogin()
+    }
+    ReLogin = () =>{
+        getReloginInfo().then((result)=>{
+          console.log(result)
+            if (result===null) return
+            let reloginInfo = JSON.parse(result)
+            let {email , password, loginWay }=reloginInfo
+            if(loginWay==='password') {
+                let passWord = getLoginPassword()
+                this.setState({
+                    user: null,
+                    email: email,
+                    password: passWord,
+                })
+                this._handleSignIn(true)
+            }
+            if(loginWay==='google') {
+                this.setState({
+                    user: email,
+                })
+                this._SignInWithGoogle(this.state.user)
+            }
+            if(loginWay==='fb') {
+                this._handleFBLogin(true)
+            }
+      })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -106,11 +134,45 @@ class Login extends Component {
         this.props.pushNewRoute(route)
     }
 
-    _createToken(res) {
+    _createTokenByPassword(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
+        SaveUserNameAndPassword(this.state.email,this.state.password,'password')
+        this.setState({
+            user: null,
+            email: '',
+            password: '',
+            customMessages: '',
+            customMessagesType: 'success'
+        })
+        this.props.setAccessGranted(true)
+        console.log('去跳转 ')
+        this._replaceRoute('myLions')
+    }
+    _createTokenByFB(res) {
+        let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
+        console.log('this.state.email: ', this.state.email)
+        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
+        // reset the fields and hide loader
+        SaveUserNameAndPassword(this.state.email,'Test1','fb')
+        this.setState({
+            user: null,
+            email: '',
+            password: '',
+            customMessages: '',
+            customMessagesType: 'success'
+        })
+        this.props.setAccessGranted(true)
+        this._replaceRoute('myLions')
+    }
+    _createTokenByGoogle(res) {
+        let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
+        console.log('this.state.email: ', this.state.email)
+        updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
+        // reset the fields and hide loader
+        SaveUserNameAndPassword(this.state.email,'Test1','google')
         this.setState({
             user: null,
             email: '',
@@ -155,7 +217,7 @@ class Login extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._createToken.bind(this),
+                onSuccess: this._createTokenByGoogle.bind(this),
                 onError: (res) => {
                     console.log('error')
                     console.log(res)
@@ -199,7 +261,7 @@ class Login extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._createToken.bind(this),
+                onSuccess: this._createTokenByFB.bind(this),
                 onError: (res) => {
                     console.log('error')
                     console.log(res)
@@ -229,7 +291,6 @@ class Login extends Component {
                 submit: false
             }
         })
-
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
@@ -245,7 +306,7 @@ class Login extends Component {
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._createToken.bind(this),
+                onSuccess: this._createTokenByPassword.bind(this),
                 onError: (res) => {
                     this.setState({ 
                         customMessages: res,
@@ -359,7 +420,6 @@ class Login extends Component {
                     },
                     onSuccess: this._SignInWithFB(true),
                     onError: (res) => {
-                        console.log('注册失败')
                         console.log(res)
                         this.setState({
                             customMessages: res,

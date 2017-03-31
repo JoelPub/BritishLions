@@ -6,7 +6,10 @@ const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
 
-export async function updateToken(accessTokenID='', refreshTokenID='', firstName='', lastName='', is_first_log_in = true, logged_in_email='') {
+const RELOGIN = 'RELOGIN'
+
+
+  export async function updateToken(accessTokenID='', refreshTokenID='', firstName='', lastName='', is_first_log_in = true, logged_in_email='') {
     let loginExpired = generateLoginExpiration().toString()
     is_first_log_in = is_first_log_in === 'true'? 'yes' : 'no'
     
@@ -29,15 +32,16 @@ export async function updateToken(accessTokenID='', refreshTokenID='', firstName
         )
     }
 }
+export async function SaveUserNameAndPassword(  logged_in_email='', password='',loginWay ='password') {
 
-export async function removeToken() {
     try {
-        await AsyncStorage.removeItem('ACCESS_TOKEN') 
-        await AsyncStorage.removeItem('REFRESH_TOKEN')
-        await AsyncStorage.removeItem('LOGIN_EXPIRED')
-        await AsyncStorage.removeItem('USER_FULLNAME')
-        await AsyncStorage.removeItem('IS_FIRST_LOGIN')
-        await AsyncStorage.removeItem('LOGGED_IN_EMAIL')
+        let reLoginInfo = {
+            email:logged_in_email,
+            password:password,
+            loginWay:loginWay
+        }
+        await AsyncStorage.setItem(RELOGIN, JSON.stringify(reLoginInfo))
+
     } catch (err) {
         Alert.alert(
           'An error occured',
@@ -46,6 +50,28 @@ export async function removeToken() {
         )
     }
 }
+
+
+export async function removeToken(isRelogin) {
+    try {
+        await AsyncStorage.removeItem('ACCESS_TOKEN')
+        await AsyncStorage.removeItem('REFRESH_TOKEN')
+        await AsyncStorage.removeItem('LOGIN_EXPIRED')
+        await AsyncStorage.removeItem('USER_FULLNAME')
+        await AsyncStorage.removeItem('IS_FIRST_LOGIN')
+        await AsyncStorage.removeItem('LOGGED_IN_EMAIL')
+        if(isRelogin){
+            await AsyncStorage.removeItem(RELOGIN)
+        }
+    } catch (err) {
+        Alert.alert(
+          'An error occured',
+          'AsyncStorage error: ' + err.message,
+          [{text: 'DISMISS'}]
+        )
+    }
+}
+
 
 export async function getAccessToken() {
     return await AsyncStorage.getItem('ACCESS_TOKEN', (err, result) => {
@@ -77,7 +103,15 @@ export async function getUserId() {
         return result
     })
 }
-
+export async function getReloginInfo() {
+    return await AsyncStorage.getItem(RELOGIN, (err, result) => {
+        if(err){
+            return err
+        }else {
+            return result
+        }
+    })
+}
 function getDateNow() {
     let dateNow = new Date // current time and date
     //dateNow = 'Thu Jan 26 2017 19:08:40 GMT+0800 (PHT)'
@@ -107,7 +141,6 @@ export async function checkIfLogin() {
             return true  // token still valid
         }
     }
-
     // the token was expired
     return false
 }

@@ -101,7 +101,7 @@ module.exports = styleSheetCreate({
     webView :{
         borderTopWidth: 1,
         borderColor: gridBorderColor,
-        marginTop: 30,
+        marginTop: 20,
         paddingHorizontal: 20
     },
     detailsGridColFull: {
@@ -113,15 +113,15 @@ module.exports = styleSheetCreate({
     },
     textView:{
        marginTop: 10,
-       paddingHorizontal: 20
+       paddingHorizontal: 24
     },
     textTitle: {
         fontFamily: styleVar.fontGeorgia,
         color: styleVar.colorText,
         fontSize: styleVar.textFontSize,
         lineHeight: styleVar.textLineHeight,
-        marginTop: 30,
-
+        fontWeight:'bold',
+        marginTop: 20,
     },
     textDetail:{
         color: styleVar.colorText,
@@ -129,6 +129,10 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         marginTop: 3,
 
+    },
+    webViewStyle: {
+        flex:1,
+        marginTop:20
     }
 
 })
