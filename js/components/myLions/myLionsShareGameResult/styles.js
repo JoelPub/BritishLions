@@ -32,7 +32,6 @@ module.exports = styleSheetCreate({
   wrapper:{
     borderTopWidth:0,
     backgroundColor: '#FFF',
-    paddingHorizontal:5,
   },
   posWrapper:{
     width:(styleVar.deviceWidth-40)/2+1,
@@ -172,6 +171,9 @@ module.exports = styleSheetCreate({
       android: {
           paddingBottom: 20
       }
+  },
+  resultDrawBg: {
+      backgroundColor: 'rgb(208,7,41)'
   },
   resultWonBg: {
       backgroundColor: 'rgb(9, 127, 64)'

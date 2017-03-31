@@ -12,7 +12,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 
 const locStyle = styleSheetCreate({
     wrapper: {
-        padding: 20,
+        padding: 30,
         alignItems: 'flex-start',
         justifyContent: 'center',
         flexDirection: 'row'
