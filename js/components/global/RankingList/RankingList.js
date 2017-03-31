@@ -129,16 +129,20 @@ const styles = styleSheetCreate({
     marginLeft:30,
     width:25,
   },
+  nilView:{
+  paddingHorizontal:12,
+    paddingBottom:20
+  },
   describeText: {
     color:'rgb(255,255,255)',
-    alignItems:'center',
+    textAlign:'center',
     fontSize:16,
   },
   describeText2: {
     color:'rgb(255,255,255)',
-    alignItems:'center',
     fontSize:16,
-    marginTop:20
+    marginTop:20,
+    textAlign:'center',
   }
 })
 const  Header = ({addStyle}) => {
@@ -210,9 +214,9 @@ const  Content = ({data,index,addStyle}) => {
 }
 
 const NilGroup = (props) => (
-  <View >
-    <Text style={styles.describeText}>Thanks for creating a Private League.</Text>
-    <Text style={styles.describeText2}>A League ladder will be generated within the next 24 hours.</Text>
+  <View style={styles.nilView}>
+    <Text style={styles.describeText}   numberOfLines={3}>Thanks for creating a Private League.</Text>
+    <Text style={styles.describeText2}   numberOfLines={3}>A league ladder will be generated within the next 24 hours.</Text>
   </View>
 )
 class RankingList extends Component {
@@ -238,19 +242,20 @@ class RankingList extends Component {
           <View style={styles.titleView}>
             <Text style={styles.titleText} >{title}</Text>
           </View>
-        <View style={styles.contentView}>
-          {
-            arr.length!==0 ? <Header addStyle={rolesTextBox}/>: null
-          }
-          {
-           arr.length===0 ? <NilGroup/> :
-             arr.map((item,index)=>{
-               return(
-                 <Content  key={index} data={item} index={index} addStyle={rolesTextBox}/>
-               )
-             })
-          }
-        </View>
+
+        {
+          arr.length===0 ? <NilGroup/> :
+            <View style={styles.contentView}>
+             <Header addStyle={rolesTextBox}/>
+              {
+                arr.map((item, index)=> {
+                  return (
+                    <Content key={index} data={item} index={index} addStyle={rolesTextBox}/>
+                  )
+                })
+              }
+          </View>
+        }
       </View>
     )
   }
