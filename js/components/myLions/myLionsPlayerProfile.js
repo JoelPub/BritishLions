@@ -167,7 +167,8 @@ class MyLionsPlayerProfile extends Component {
 
     getPlayerProfile() {
         let optionsPlayerProfile = {
-            url: this.PlayersProfileUrl,
+            // url: this.PlayersProfileUrl,
+            url: 'http://bilTestApp.azurewebsites.net/getOfficialSquadPlayerProfile',
             data:{player_id:this.playerid},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
@@ -207,7 +208,7 @@ class MyLionsPlayerProfile extends Component {
                     this._signInRequired()
                 })
             },
-            isRequiredToken: true,
+            isRequiredToken: false,
             channel:'EYC3'
         }
 
