@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { pushNewRoute,popToRoute } from '../../../actions/route'
-import { Image, Text, View, ScrollView, ListView, ActivityIndicator } from 'react-native'
+import { Image, Text, View, ScrollView, ListView, ActivityIndicator ,DeviceEventEmitter} from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -309,6 +309,12 @@ class MyLionsCompetitionGameResults extends Component {
         }
         this.props.drillDownItemShare(data, 'myLionsShareGameResult', false, true)
     }
+    popToRoute = () => {
+        console.log(11111111111111111111111111111111111111)
+        console.log(this.state.drillDownItem.round_id)
+        DeviceEventEmitter.emit('_getList', this.state.drillDownItem.round_id);
+        this.props.popToRoute('myLionsCompetitionGameListing')
+    }
 
     render() {
         return (
@@ -375,7 +381,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback
                                       rounded
                                       style={[styles.roundButton, {marginBottom: 30},,locStyle.backRound]}
-                                      onPress={() => this.props.popToRoute('myLionsCompetitionGameListing')}>
+                                      onPress={this.popToRoute}>
                                         <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                                style={styles.roundButtonImage}>
                                         </Image>

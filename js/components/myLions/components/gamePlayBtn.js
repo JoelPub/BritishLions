@@ -114,7 +114,7 @@ class GamePlayBtn extends Component {
                 console.log('typeof res.data',typeof res.data)
                 if(typeof res.data ==='object') {                    
                     this.props._setModalVisible(false)
-                    this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image}), 'myLionsCompetitionGameResults')
+                    this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image,round_id:this.props.round_id}), 'myLionsCompetitionGameResults')
                 }
                 else if(typeof res.data==='string') {
                     this.props._setModalVisible(true,'message','ERROR',res.data+'\n\n Please try again later.','GO BACK')

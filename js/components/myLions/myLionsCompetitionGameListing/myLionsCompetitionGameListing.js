@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { drillDown } from '../../../actions/content'
-import { Image, Text, View, ScrollView, ListView,ActivityIndicator } from 'react-native'
+import { Image, Text, View, ScrollView, ListView,ActivityIndicator ,DeviceEventEmitter} from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -112,6 +112,7 @@ class MyLionsCompetitionGameListing extends Component {
             isNetwork: true,
             drillDownItem:this.props.drillDownItem
         }
+        this.subscription = null
     }
 
     componentWillMount() {
@@ -120,9 +121,7 @@ class MyLionsCompetitionGameListing extends Component {
         }).catch((error) => {})
     }
 
-    componentWillUnmount() {
-        this.isUnMounted = true
-    }
+
 
     _drillDown = (data, route) => {
         this.props.drillDown(data, route)
@@ -261,10 +260,54 @@ class MyLionsCompetitionGameListing extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getList(), 600)        
+        setTimeout(() => this._getList(), 600)
+
+        this.subscription = DeviceEventEmitter.addListener('_getList',this.updateList);
+
+    }
+    componentWillUnmount() {
+        this.isUnMounted = true
+        this.subscription.remove();
+    }
+    updateList =(round_id)=> {
+        console.log('updateList')
+        this.setState({ isLoaded: false },()=>{
+            let {userProfile,drillDownItem} = this.props
+            console.log('drillDownItem',drillDownItem)
+            console.log('userProfile',userProfile)
+            this.round_id=round_id
+            let optionsGameList = {
+                url: 'http://biltestapp.azurewebsites.net/GetGameList',
+                data: {
+                    id:userProfile.userID,
+                    first_name:userProfile.firstName,
+                    last_name:userProfile.lastName,
+                    round_id:round_id
+                },
+                onAxiosStart: null,
+                onAxiosEnd: null,
+                method: 'post',
+                channel: 'EYC3',
+                isQsStringify:false,
+                onSuccess: (res) => {
+                    if(res.data) {
+                        console.log('res.data',res.data)
+                        this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
+                    }
+                },
+                onError: ()=>{
+                    this.setState({isLoaded:true})
+                },
+                onAuthorization: () => {
+                    this._signInRequired()
+                },
+                isRequiredToken: true
+            }
+            service(optionsGameList)
+        })
     }
 
-    _getList(){
+    _getList=()=>{
       console.log('_getList')
       this.setState({ isLoaded: false },()=>{
             let {userProfile,drillDownItem} = this.props
@@ -302,6 +345,7 @@ class MyLionsCompetitionGameListing extends Component {
       })
     }
 }
+
 
 function bindAction(dispatch) {
     return {
