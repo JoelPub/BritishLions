@@ -1,5 +1,5 @@
 export default {
-	1: require('./provincial.jpg'),
+	1: require('./leo.jpg'),
   2: require('./blues.jpg'),
   3: require('./crusaders.jpg'),
   4: require('./highlanders.jpg'),
