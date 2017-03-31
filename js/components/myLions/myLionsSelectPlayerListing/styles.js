@@ -19,7 +19,7 @@ module.exports = styleSheetCreate({
     gridBoxTouchableView: {
         alignSelf: 'stretch',
         backgroundColor: '#FFF',
-        height: 290
+        height: styleVar.deviceWidth*0.724
     },
     gridBoxImgWrapper: {
         alignSelf: 'stretch',
@@ -44,13 +44,10 @@ module.exports = styleSheetCreate({
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 14,
-        //height:styleVar.deviceWidth*0.16,
-        paddingHorizontal: 1,
-        android: {
-            paddingTop: 12,
-            paddingBottom: 6
-        }
+        paddingVertical: styleVar.deviceWidth*0.027,
+        width: styleVar.deviceWidth / 2,
+        height:styleVar.deviceWidth*0.224,
+        paddingHorizontal: 1
     },
     gridBoxTitleRight: {
         borderRightWidth: 1,
@@ -59,20 +56,21 @@ module.exports = styleSheetCreate({
     gridBoxTitleText: {
         textAlign: 'center',
         fontFamily: styleVar.fontCondensed,
-        fontSize: 24,
-        lineHeight: 24,
-        paddingTop: 4,
+        backgroundColor:'transparent',
+        fontSize: 20,
+        lineHeight: 22,
+        paddingTop: 0,
         marginTop: -6,
         android: {
             paddingTop: 0,
-            lineHeight: 30,
+            lineHeight: 24,
         }
     },
     gridBoxTitleSupportText: {
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 14,
         fontFamily: styleVar.fontGeorgia,
-        paddingBottom: 10
+        marginTop: -8,
     },
     emptyPlayer: {
         paddingHorizontal: 20,

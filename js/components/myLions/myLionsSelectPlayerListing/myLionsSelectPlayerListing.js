@@ -30,7 +30,7 @@ import { globalNav } from '../../../appNavigator'
 import LionsFooter from '../../global/lionsFooter'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { setPositionToAdd } from '../../../actions/position'
-import { strToUpper , strToLower} from '../../utility/helper'
+import { strToUpper , strToLower,splitName} from '../../utility/helper'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import {searchPlayer} from '../components/searchPlayer'
 import {mapFShow} from '../components/teamToShow'
@@ -71,10 +71,15 @@ class MyLionsSelectPlayerListing extends Component {
                             </ImagePlaceholder>
                         </View>
                         <View style={[shapes.triangle]} />
-                        <View style={[styleGridBoxTitle,{height:104}]}>
-                            <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase().substring(0, rowData.name.lastIndexOf(" "))}</Text>
-                            <Text style={styles.gridBoxTitleText} numberOfLines={1}>{rowData.name.toUpperCase().substring(rowData.name.lastIndexOf(" ")+1, rowData.name.length)}</Text>
-                            <Text style={styles.gridBoxTitleSupportText}>Position: {rowData.position}</Text>
+                        <View style={[styleGridBoxTitle]}>
+                            {
+                                splitName(rowData.name,' ',7).map((value,index)=>{
+                                    return(
+                                        <Text key={index} style={styles.gridBoxTitleText}>{strToUpper(value)}</Text>
+                                        )
+                                },this)
+                            }
+                            <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
                         </View>
                     </View>
                 </ButtonFeedback>
