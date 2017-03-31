@@ -432,7 +432,7 @@ class MyLionsCompetitionGameResults extends Component {
     }
 
     getInfo(token,userProfile){
-        console.log('getInfo')
+        console.warn('this.state.drillDownItem',this.state.drillDownItem)
         let optionsInfo = {
             url: actionsApi.eyc3GetHistoricalGameResult,
             data:
@@ -441,8 +441,8 @@ class MyLionsCompetitionGameResults extends Component {
                 id:userProfile.userId,
                 first_name:userProfile.firstName,
                 last_name:userProfile.lastName,
-                round_id:1,
-                game_id:3
+                round_id:this.state.drillDownItem.round_id,
+                game_id:this.state.drillDownItem.game
              },
             onAxiosStart: null,
             onAxiosEnd: null,
