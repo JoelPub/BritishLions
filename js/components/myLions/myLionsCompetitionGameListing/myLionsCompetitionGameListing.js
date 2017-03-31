@@ -171,11 +171,11 @@ class MyLionsCompetitionGameListing extends Component {
                     {
                         rowData.map((item, key) => {
                             let styleGridBoxImgWrapper = (key === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
-                            let triangleShape = item.IsPlayed? [shapes.triangle] : [shapes.triangle, locStyle.shapeGreen]
-                            let statusBoxText = item.IsPlayed? 'VIEW RESULTS' : 'PLAY'
+                            let triangleShape = (item.isPlayed === "true")? [shapes.triangle] : [shapes.triangle, locStyle.shapeGreen]
+                            let statusBoxText = (item.isPlayed === "true") ? 'VIEW RESULTS' : 'PLAY'
                             let statusBox = [locStyle.statusBox, ]
-                            let statusBoxRoute = item.IsPlayed? 'myLionsCompetitionGameResults' : 'myLionsManageGame'
-                            if (!item.IsPlayed) {
+                            let statusBoxRoute = (item.isPlayed === "true")? 'myLionsCompetitionGameResults' : 'myLionsManageGame'
+                            if (item.isPlayed === "false") {
                                 statusBox.push(locStyle.greenBg)
                             }
 
