@@ -45,6 +45,8 @@ import fetch from '../../utility/fetch'
 import { shareTextWithTitle } from '../../utility/socialShare'
 import { setPrivateLeagues} from '../../../actions/squad'
 
+
+
 import DataModel from './defaultData'
 const ButtonWithIcon = (props) => {
   let {iconName,title,style,onPress} = props

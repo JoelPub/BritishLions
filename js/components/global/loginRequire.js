@@ -33,9 +33,9 @@ class LoginRequire extends Component {
     }
 
     _askToSignIn() {
-        removeToken()
+        removeToken(false)
         this.props.setAccessGranted(false)
-        
+
         Alert.alert(
             'Your session has expired',
             'Please sign into your account again.',

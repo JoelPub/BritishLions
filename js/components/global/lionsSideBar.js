@@ -143,7 +143,7 @@ class LionsSidebar extends Component {
             [
                 {text: 'Yes', onPress: () => {
                     this.props.setAccessGranted(false)
-                    removeToken()
+                    removeToken(true)
                     removeGoodFormFavoritePlayerList()
                     removeUserCustomizedSquad()
                     this.navigateTo('landing')

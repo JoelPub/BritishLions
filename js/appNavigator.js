@@ -155,7 +155,7 @@ class AppNavigator extends Component {
                 onError: (error) => {
                     //console.log('error: ', error)
                     // logout user
-                    removeToken()
+                    removeToken(false)
                     this.props.setAccessGranted(false)
                 },
                 isRefreshToken: true
