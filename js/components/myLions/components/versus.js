@@ -12,7 +12,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 
 const locStyle = styleSheetCreate({
     wrapper: {
-        padding: 30,
+        padding: styleVar.deviceWidth*0.05,
         alignItems: 'flex-start',
         justifyContent: 'center',
         flexDirection: 'row'
@@ -22,14 +22,14 @@ const locStyle = styleSheetCreate({
     },
     versus: {
         backgroundColor: styleVar.colorText,
-        width: 48,
-        height: 48,
-        borderRadius: 24,
+        width: styleVar.deviceWidth*0.128,
+        height: styleVar.deviceWidth*0.128,
+        borderRadius: styleVar.deviceWidth*0.064,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 10,
-        marginHorizontal: 15,
-        marginTop: 25
+        paddingTop: styleVar.deviceWidth*0.027,
+        marginHorizontal: styleVar.deviceWidth*0.04,
+        marginTop: styleVar.deviceWidth*0.067
     },
     versusText: {
         color: '#FFF',
@@ -46,14 +46,14 @@ const locStyle = styleSheetCreate({
         marginBottom: 15
     },
     circle: {
-        width: 100,
-        height: 100,
+        width: styleVar.deviceWidth*0.27,
+        height: styleVar.deviceWidth*0.27,
         borderColor: 'rgb(255, 255, 255)',
         borderWidth: 2,
-        borderRadius: 50,
+        borderRadius: styleVar.deviceWidth*0.135,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 15
+        marginBottom: styleVar.deviceWidth*0.04
     },
     circleText: {
         fontFamily: styleVar.fontCondensed,

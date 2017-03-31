@@ -58,14 +58,14 @@ module.exports = styleSheetCreate({
     },
     imageCircle: {
         alignSelf: 'center',
-        marginTop: 15,
-        marginBottom: 5,
-        width:100,
-        height:100,
-        borderRadius:50,
+        marginTop: styleVar.deviceWidth*0.04,
+        marginBottom: styleVar.deviceWidth*0.013,
+        width:styleVar.deviceWidth*0.27,
+        height:styleVar.deviceWidth*0.27,
+        borderRadius:styleVar.deviceWidth*0.135,
         android: {
-            marginBottom: 15,
-            borderRadius:100,
+            marginBottom: styleVar.deviceWidth*0.04,
+            borderRadius:styleVar.deviceWidth*0.27,
         }
     },
     headerTitle: {
