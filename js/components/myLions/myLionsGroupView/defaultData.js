@@ -12,28 +12,6 @@ var data = {
   bp:0,
   pts:0,
   top_twenty:[
-    {
-      id:'JP',
-      rank:1,
-      w:0,
-      l:0,
-      d:0,
-      f:0,
-      a:0,
-      bp:0,
-      pts:0
-    },
-    {
-      id:'JP',
-      rank:2,
-      w:0,
-      l:0,
-      d:0,
-      f:0,
-      a:0,
-      bp:0,
-      pts:0
-    }
   ]
 }
 export  default data
