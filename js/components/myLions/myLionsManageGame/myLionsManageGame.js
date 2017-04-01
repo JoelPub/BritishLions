@@ -14,6 +14,7 @@ import LionsHeader from '../../global/lionsHeader'
 import EYSFooter from '../../global/eySponsoredFooter'
 import LionsFooter from '../../global/lionsFooter'
 import ImagePlaceholder from '../../utility/imagePlaceholder'
+import LoadingAnimation from '../../utility/loadingAnimation'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import Versus from '../components/versus'
 import TeamWidget from '../components/teamWidget'
@@ -30,7 +31,6 @@ import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { strToUpper } from '../../utility/helper'
 import GamePlayBtn from '../components/gamePlayBtn'
-import loadingImage from '../../../../images/loading.gif'
 const locStyle = styleSheetCreate({
     headerStadium: {
         backgroundColor: '#FFF',
@@ -106,7 +106,7 @@ class MyLionsManageGame extends Component {
                 return(
                     <View style={[styles.modalContent]}>
                         <Text style={styles.modalContentTitleText}>PLAYING...</Text>
-                       <Image style={styles.loadingGif} source={loadingImage} />    
+                           <LoadingAnimation />
                     </View>
                 )
                 break
