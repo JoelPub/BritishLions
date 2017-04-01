@@ -53,7 +53,10 @@ class Galleries extends Component {
                 onPress={() => this._drillDown(rowData)}
                 disabled={!this.state.isLoaded}>
                 <ImagePlaceholder height={420 * (styleVar.deviceWidth/750)}>
-                    <Image source={{uri: rowData.thumb50}} style={styles.galleriesImage} />
+                {
+                    rowData.thumb50&&<Image source={{uri: rowData.thumb50}} style={styles.galleriesImage} />
+                }
+                    
                 </ImagePlaceholder>
                 <View style={[shapes.triangle, styles.triangle]} />
                 <View style={styles.galleriesContent}>

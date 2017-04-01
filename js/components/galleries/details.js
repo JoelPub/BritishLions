@@ -19,6 +19,7 @@ import Slider from '../utility/imageSlider'
 import Share from 'react-native-share'
 import RNFetchBlob from 'react-native-fetch-blob'
 import { alertBox } from '../utility/alertBox'
+import loader from '../../themes/loader-position'
 
 class Gallery extends Component {
 
@@ -26,8 +27,10 @@ class Gallery extends Component {
          super(props)
          this.state = {
               currentImg: 0,
-              isSubmitting: false
+              isSubmitting: false,
+              isLoaded:false
          }
+         this.content=this.props.content
     }
 
     renderPagination = (index, total, context) => {
@@ -39,13 +42,36 @@ class Gallery extends Component {
             </View>
         )
     }
+    componentDidMount(){
+        this.content.images.map((value,index)=>{
+            Image.getSize(value.image,(width,height)=>{
+                Object.assign(value,{'width':width,'height':height})
+                if(index===this.content.images.length-1) {
+                    console.log('this.content.images',this.content.images)
+                    this.setState({isLoaded:true}) 
+                }
+                
+            })
+        })
+        
+    }
     renderContent() {
+        let imgStyle=Slider.galleryPoster
+        let viewStyle=null
+        if(this.children.props.w<this.children.props.h) {
+            imgStyle=[Slider.galleryPoster,{transform:[{scale:styleVar.deviceHeight/260}],}]
+        }
+        else {
+            viewStyle={flex:1}
+            imgStyle=[Slider.galleryPoster,{transform:[{rotateZ:'90deg'},{scale:styleVar.deviceHeight/(styleVar.deviceWidth+100)}],flex:1,flexDirection:'row'}]
+        }
+        
         return (
-            <View>
-                <Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>
-                <Image style={Slider.galleryPoster} source={{uri:this.children.props.source.uri}} />
-            </View>
-        )
+                <View style={viewStyle}>
+                    <Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>
+                    <Image style={imgStyle} source={{uri:this.children.props.source.uri}} />
+                </View>
+            )
     }
 
     shareImg(context, imgUrl,callback){
@@ -99,11 +125,13 @@ class Gallery extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.galleryDetailHeader}>
                             <Text style={styles.galleryDetailHeaderText}>
-                                {this.props.content.title}
+                                {this.content.title}
                             </Text>
                         </View>
 
                         <View>
+                        {
+                            this.state.isLoaded?
                             <Swiper
                                 ref='swiper'
                                 height={270}
@@ -111,21 +139,24 @@ class Gallery extends Component {
                                 onMomentumScrollEnd={(e, state, context) => this.setState({currentImg:state.index})}
                                 loop={false}>
                                 {
-                                    this.props.content.images.map((img,index)=>{
+                                    this.content.images.map((img,index)=>{
                                         return(
                                             <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent}>
-                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} caption={img.caption}/>
+                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} caption={img.caption} w={img.width} h={img.height}/>
                                             </Lightbox>
                                         )
                                     })
                                 }
-                            </Swiper>
+                            </Swiper>:
+                            <ActivityIndicator style={loader.centered} size='small' />
+                        }
+                            
                         </View>
 
                         <View style={styles.shareWrapper}>
                             <TouchableOpacity
                                 disabled = {this.state.isSubmitting}
-                                onPress={ ()=> this.shareImg(this.props.content.title,this.props.content.images[this.state.currentImg].image,this.callback.bind(this)) }
+                                onPress={ ()=> this.shareImg(this.content.title,this.content.images[this.state.currentImg].image,this.callback.bind(this)) }
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 {
@@ -140,7 +171,7 @@ class Gallery extends Component {
 
                         <View style={styles.description}>
                             <Text style={styles.paragraph}>
-                                {this.props.content.title}
+                                {this.content.title}
                             </Text>
                         </View>
 
