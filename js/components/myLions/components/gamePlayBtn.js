@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Text, Platform } from 'react-native'
 import { Container, Icon } from 'native-base'
@@ -54,10 +54,11 @@ class GamePlayBtn extends Component {
     }
 
 	render() {
+    let buttonLable =  this.props.isGameOver ? 'RESULT' : 'PLAY GAME'
         return (
             <ButtonFeedback style={[styles.playBtn,this.state.isActive&&styles.playBtnActive]} disabled={!this.state.isActive} onPress={()=>this.playGame()}>
                     <Text style={[styles.textPlay,this.state.isActive&&styles.textPlayActive]}>
-                        PLAY GAME
+                      {buttonLable}
                     </Text>
             </ButtonFeedback>
         )
@@ -157,3 +158,6 @@ export default connect((state) => {
         connectionInfo: state.network.connectionInfo
     }
 },  bindAction)(GamePlayBtn)
+GamePlayBtn.propTypes = {
+  isGameOver: PropTypes.bool,
+}

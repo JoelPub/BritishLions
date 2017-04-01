@@ -297,6 +297,7 @@ class MyLionsCompetitionGameResults extends Component {
             resultInfo: [],
             modalResults: false,
             drillDownItem: this.props.drillDownItem,
+            isPop:false
         }
     }
     goShare = () => {
@@ -310,9 +311,10 @@ class MyLionsCompetitionGameResults extends Component {
         this.props.drillDownItemShare(data, 'myLionsShareGameResult', false, true)
     }
     popToRoute = () => {
-        console.log(11111111111111111111111111111111111111)
-        console.log(this.state.drillDownItem.round_id)
         DeviceEventEmitter.emit('_getList', this.state.drillDownItem.round_id);
+        this.setState({
+         isPop:true
+        })
         this.props.popToRoute('myLionsCompetitionGameListing')
     }
 
@@ -435,6 +437,13 @@ class MyLionsCompetitionGameResults extends Component {
                 })
             }
         })
+    }
+    componentWillUnmount() {
+
+            setTimeout(() => DeviceEventEmitter.emit('_getList', this.state.drillDownItem.round_id), 600)
+        
+
+
     }
 
     getInfo(token,userProfile){
