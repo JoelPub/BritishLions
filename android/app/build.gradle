@@ -1,10 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
-apply plugin: 'com.archinamon.aspectj'
-aspectj {
-    includeAspectsFromJar 'one_aspects'
-}
 
 import com.android.build.OutputFile
 
@@ -97,9 +93,6 @@ android {
         dirs 'libs'
         }
     }
-    dexOptions {
-        jumboMode = true
-    }
 
     defaultConfig {
         applicationId "com.lionsofficial"
@@ -110,8 +103,6 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        // Enabling multidex support.
-        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -187,10 +178,7 @@ dependencies {
       compile 'com.facebook.fresco:webpsupport:0.11.0'
 
       // For WebP support, without animations
-    
-    compile 'org.aspectj:aspectjrt:1.8.9'
-    compile 'com.android.support:multidex:1.0.0'
-    compile project(':react-native-one')
+      compile 'com.facebook.fresco:webpsupport:0.11.0'
 
 }
 

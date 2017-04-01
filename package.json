@@ -38,8 +38,7 @@
     "redux-persist": "^3.2.2",
     "redux-thunk": "^2.1.0",
     "rnpm": "^1.9.0",
-    "rx": "^4.1.0",
-    "react-native-one": "latest"
+    "rx": "^4.1.0"
   },
   "jest": {
     "preset": "jest-react-native"
