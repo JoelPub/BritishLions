@@ -117,16 +117,15 @@ module.exports = styleSheetCreate({
       marginBottom: -4
   },
   posWrapper:{
-    width:(styleVar.deviceWidth-40)/2+1,
-    marginLeft:-1,
+    width:(styleVar.deviceWidth-40)/2,
+    borderColor:'rgb(128,127,131)',
+    borderTopWidth:1,
+    borderBottomWidth:1,
+    borderLeftWidth:1
   },
   indivPosTitle:{
-    borderTopWidth:1,
-    borderLeftWidth:1,
-    borderColor:'rgb(128,127,131)',
     height:50,
     paddingTop:12,
-    borderRightWidth:1
   },
   indivPosTitleText:{
     color:'rgb(255,230,0)',
@@ -136,14 +135,9 @@ module.exports = styleSheetCreate({
     lineHeight:24,
   },
   posBtn:{
-    borderLeftWidth:0,
-    borderColor:'rgb(255,255,255)'
   },
   playerNameTextWrapper:{
     marginTop:-12,
-    borderColor: 'rgb(128,127,131)',
-    borderBottomWidth: 1,
-    borderLeftWidth:1,
     paddingTop: 0,
     paddingBottom: 13,
     android: {

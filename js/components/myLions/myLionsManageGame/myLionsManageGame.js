@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { pushNewRoute } from '../../../actions/route'
 import { drillDown } from '../../../actions/content'
-import { Image, Text, View, ScrollView, ListView,ActivityIndicator } from 'react-native'
+import { Image, Text, View, ScrollView, ListView,ActivityIndicator,DeviceEventEmitter } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -98,7 +98,9 @@ class MyLionsManageGame extends Component {
             isNetwork: true,
             modalContent:this.getModalContent(),
             modalVisible: false,
+            isGameOver: false
         }
+        this.subscription = null
     }
     getModalContent(mode,title,subtitle,btn){
         switch(mode)  {
@@ -217,7 +219,11 @@ class MyLionsManageGame extends Component {
                             <Tactics title={'TACTICS'} fullTactic={this.props.tactics}  iconText={'2'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsTactics')}  />
                         </View>
                         <View style={[styles.btns,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]} >
-                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)} grounds_id={this.grounds_id} weather_id={this.weather_id} referees_id={this.referees_id} round_id={this.round_id} game={this.game} image={this.image} title={this.title}/>    
+                             <GamePlayBtn _setModalVisible={this._setModalVisible.bind(this)} grounds_id={this.grounds_id} weather_id={this.weather_id} referees_id={this.referees_id}
+                                          round_id={this.round_id} game={this.game}
+                                          image={this.image} title={this.title}
+                                          isGameOver={this.props.drillDownItem.isLiveResult}
+                             />
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
@@ -243,6 +249,13 @@ class MyLionsManageGame extends Component {
         this.setState({isLoaded:false},()=>{
             this.getInfo()
         })
+      //  this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updatePlayButtonStatus);
+    }
+    updatePlayButtonStatus = () => {
+        this.setState(
+          {
+             isGameOver:true
+          })
     }
     _showError(error) {
         if(!this.state.isNetwork) return
