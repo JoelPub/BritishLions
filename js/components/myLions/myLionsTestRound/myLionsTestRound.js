@@ -191,36 +191,49 @@ class MyLionsTestRound extends Component {
         }
     }
     _saveTeam() {
+        console.warn("this.props.teamDataTemp:",this.props.teamDataTemp)
+        if(this.props.teamDataTemp.backs.length === 7
+        && this.props.teamDataTemp.forwards.length === 8
+        && this.props.teamDataTemp.captain !== ""
+        && this.props.teamDataTemp.kicker !== "")
+        {
+           let options = {
+               url: actionsApi.eyc3SaveUserCustomizedSquad,
+               data: {  "id":this.props.userProfile.userID,
+                        "first_name":this.props.userProfile.firstName,
+                        "last_name":this.props.userProfile.lastName,
+                        "round_id":0,
+                        "game_id": 0,
+                        "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
+               onAxiosStart: () => {},
+               onAxiosEnd: () => {
+               },
+               onSuccess: (res) => {
+                console.log('res.data',res.data)
+                    if(res.data&&res.data.success) {
+                        this.props.pushNewRoute('myLionsTestRoundSubmit')
+                    }
+               },
+               onError: () => {
+                console.log('onError')
+               },
+                onAuthorization: null,
+                isQsStringify:false,
+                method: 'post',
+                channel: 'EYC3',
+                isRequiredToken: true
+           }
 
-       let options = {
-           url: actionsApi.eyc3SaveUserCustomizedSquad,
-           data: {  "id":this.props.userProfile.userID,
-                    "first_name":this.props.userProfile.firstName,
-                    "last_name":this.props.userProfile.lastName,
-                    "round_id":0, 
-                    "game_id": 0,
-                    "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
-           onAxiosStart: () => {},
-           onAxiosEnd: () => {
-           },
-           onSuccess: (res) => {
-            console.log('res.data',res.data)
-                if(res.data&&res.data.success) {
-                    this.props.pushNewRoute('myLionsTestRoundSubmit') 
-                }
-           },
-           onError: () => {
-            console.log('onError')
-           },
-            onAuthorization: null,
-            isQsStringify:false,
-            method: 'post',
-            channel: 'EYC3',
-            isRequiredToken: true
-       }
-
-       service(options)
-
+           service(options)
+       }else{
+            Alert.alert(
+                'Warning',
+                'Please complete the full squad selection first before the submission',
+                [{
+                    text: 'Dismiss'
+                }]
+            )
+        }
     }
     
     _replaceRoute(route) {

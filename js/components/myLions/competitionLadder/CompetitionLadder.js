@@ -267,13 +267,11 @@ class CompetitionLadder extends Component {
         })
         if(res.data){
           if(res.data.success === "true"){
-              console.warn("res.data",res.data)
               this.setState({
                 createType: 'success',
                 modalData: res.data
               })
           }else{
-              console.warn("res.data",res.data)
               this.setState({
                 createType: 'error',
                 modalData: res.data
