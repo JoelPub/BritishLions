@@ -225,6 +225,7 @@ export function service(options) {
 	}
 
 	let opt = Object.assign(defaults, options)
+
 	if (opt.isRequiredToken) {
 		getAccessToken().then((accessToken) => {
 			if (accessToken) {

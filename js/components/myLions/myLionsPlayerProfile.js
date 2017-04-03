@@ -10,7 +10,6 @@ import LinearGradient from 'react-native-linear-gradient'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import shapes from '../../themes/shapes'
-import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
@@ -123,16 +122,16 @@ class MyLionsPlayerProfile extends Component {
         this._replaceRoute('login')
     }
 
-    _signInRequired() {
-        Alert.alert(
-            'Your session has expired',
-            'Please sign into your account.',
-            [{
-                text: 'SIGN IN',
-                onPress: this._reLogin.bind(this)
-            }]
-        )
-    }
+//    _signInRequired() {
+//        Alert.alert(
+//            'Your session has expired',
+//            'Please sign into your account.',
+//            [{
+//                text: 'SIGN IN',
+//                onPress: this._reLogin.bind(this)
+//            }]
+//        )
+//    }
 
 
     _showError(error) {
@@ -174,6 +173,7 @@ class MyLionsPlayerProfile extends Component {
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })
             },
+            isRequiredToken: false,
             onSuccess: (res) => {
                 console.log('profile res.data',res.data)
                 let profile = ProfileListModel.fromJS([new ProfileModel()])
@@ -204,11 +204,10 @@ class MyLionsPlayerProfile extends Component {
                 this.setState({ profile, isLoaded: true })
             },
             onAuthorization: () => {
-                this.setState({isLoaded:true }, () => {
-                    this._signInRequired()
-                })
+                //this.setState({isLoaded:true }, () => {
+                    //this._signInRequired()
+                //})
             },
-            isRequiredToken: false,
             channel:'EYC3'
         }
 
@@ -299,7 +298,6 @@ class MyLionsPlayerProfile extends Component {
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     < EYSFooter mySquadBtn={true} />
-                    <LoginRequire/>
                     <SquadModal
                         modalVisible={this.state.modalVisible}
                         callbackParent={this._setModalVisible}>

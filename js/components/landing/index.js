@@ -219,6 +219,7 @@ class Landing extends Component {
         getUserCustomizedSquad().then((catchedSquad)=>{
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
+
                     this.setState({ isLoadedSquad: true }, () => {
                         this._signInRequired()
                     })
