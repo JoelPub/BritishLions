@@ -20,8 +20,6 @@ module.exports = styleSheetCreate({
   },
   viewShareHeader: {
     backgroundColor: styleVar.brandPrimary,
-    height: styleVar.deviceWidth*0.8,
-    width: null,
     alignItems: 'center'
   },
   viewHeaderImage: {
@@ -230,6 +228,7 @@ module.exports = styleSheetCreate({
     color:'rgb(255,255,255)',
     textAlign:'center',
     marginTop:10,
+    marginBottom:4,
     marginHorizontal:24,
     },
   headerTextBold: {
