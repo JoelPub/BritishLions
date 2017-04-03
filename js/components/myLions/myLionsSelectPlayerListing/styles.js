@@ -71,6 +71,9 @@ module.exports = styleSheetCreate({
         lineHeight: 14,
         fontFamily: styleVar.fontGeorgia,
         marginTop: -8,
+        android: {
+            marginTop:5
+        }
     },
     emptyPlayer: {
         paddingHorizontal: 20,
