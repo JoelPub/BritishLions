@@ -8,7 +8,7 @@ export function  searchPlayer(player,id,uniondata) {
         for(let union in player) {
             result=player[union].find((item)=>item.id===id.toString())
             if(result !== undefined) {
-                let unionInfo = uniondata.find((n)=> strToUpper(n.displayname)===strToUpper(result.honours.split('/')[0]).trim())
+                let unionInfo = uniondata.find((n)=> strToUpper(n.displayname)===strToUpper(result.honours.split('(')[0]).trim())
                 Object.assign(result, {
                     logo: unionInfo!==undefined?unionInfo.image:"https:\/\/cdn.soticservers.net\/tools\/images\/teams\/logos\/250x250\/117.png", 
                     country: unionInfo!==undefined?unionInfo.displayname.toUpperCase():''

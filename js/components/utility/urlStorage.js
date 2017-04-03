@@ -9,7 +9,7 @@ const EYC3_BASE_URL_DUMMY= 'http://biltestapp.azurewebsites.net'
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
-const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=234'
+const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=410'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
 const SOTIC_GET_SUPPLIED_IMAGE_URL = '/feeds/app/graphics_json.php'
 const SOTIC_GET_SUPPLIED_IMAGE_URL_NAME = 'SoticSuppliedImage'
