@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { popRoute, pushNewRoute } from '../../actions/route'
+import { popRoute, pushNewRoute, popToRoute } from '../../actions/route'
 import { openDrawer } from '../../actions/drawer'
 import { Image } from 'react-native'
 import { Header, Text, Icon } from 'native-base'
@@ -79,11 +79,15 @@ class LionsHeader extends Component {
 		super(props)
 	}
 
-	popRoute() {
-        if (this.props.backRoute) 
-            this.props.pushNewRoute(this.props.backRoute)
-        else
-            this.props.popRoute()
+	popRoute(isOnResultPage) {
+        if(isOnResultPage)
+            this.props.popToRoute('myLionsCompetitionGameListing')
+        else{
+            if (this.props.backRoute)
+                this.props.pushNewRoute(this.props.backRoute)
+            else
+                this.props.popRoute()
+        }
 	}
 
     pushNewRoute(route) {
@@ -103,9 +107,10 @@ class LionsHeader extends Component {
         }
     }
 
-	getBackArrowHTML() {
+
+	getBackArrowHTML(isOnResultPage) {
 		return (
-			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute()}>
+			<ButtonFeedback style={styles.btnArrow} onPress={() => this.popRoute(isOnResultPage)}>
 				<Icon name='md-arrow-back' style={styles.headerIcon} />
 			</ButtonFeedback>
 		)
@@ -140,7 +145,7 @@ class LionsHeader extends Component {
     render() {
     	let title = this.props.title || ''
         title = title === 'LANDING'? '' : title
-        let backArrowSwitch = this.props.back? this.getBackArrowHTML() : this.getLogoHTML()
+        let backArrowSwitch = this.props.back? this.getBackArrowHTML(this.props.isOnResultPage) : this.getLogoHTML()
 
         return (
             <Header>
@@ -160,7 +165,8 @@ function bindAction(dispatch) {
     return {
         openDrawer: ()=>dispatch(openDrawer()),
         pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
-        popRoute: ()=>dispatch(popRoute())
+        popRoute: ()=>dispatch(popRoute()),
+        popToRoute: (route)=>dispatch(popToRoute(route))
     }
 }
 

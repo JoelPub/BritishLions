@@ -157,7 +157,6 @@ class MyLionsShareGameResult extends Component {
               <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} >
 
                 <View ref='scorecard' style={styles.wrapper}>
-                  <ShareHeaderView />
                   <Versus gameData={this.props.data.gameData} userData={this.props.data.userData} />
                   {
                       strToUpper(this.props.data.resultInfo.is_draw)==='TRUE'?

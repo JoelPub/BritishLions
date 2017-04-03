@@ -324,6 +324,7 @@ class MyLionsCompetitionGameResults extends Component {
                 <View style={styles.container}>
                     <LionsHeader 
                         back={true}
+                        isOnResultPage={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
