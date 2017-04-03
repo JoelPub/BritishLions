@@ -77,7 +77,7 @@ class GreateGroupModal extends Component {
       {
         PageData.title = 'ERROR'
         PageData.contentText =  'Unfortunatelyt the following error occured when attempting to create your league.'
-        PageData.subTitle = 'INVALID LEAGUE NAME'
+        PageData.subTitle = data ? data.message : ""
         PageData.subContentText = 'Please choose a valid league name and try again.'
       }
         break;

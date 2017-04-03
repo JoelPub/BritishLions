@@ -93,13 +93,14 @@ export async function createGroup (accessToken,group_name,userID) {
           'group_name':group_name
         })
       }).then(response => {
+      //console.warn('create group: ',JSON.stringify(response.json()))
         return response.json()
       }).then(json => {
         if(json){
           //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
           storage.save({
             key: EYC3_CREATE_A_GROUP,
-            expires: 1000 * 3600,
+            expires: 0,
             id,
             rawData: json[0]
           })
@@ -120,7 +121,7 @@ export async function createGroup (accessToken,group_name,userID) {
     id:'1001',
     syncInBackground: true
   }).then(ret => {
-    //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+    //console.warn('create group: ',JSON.stringify(ret))
     return ret
   }).catch(err => {
     //console.log(err.message);
