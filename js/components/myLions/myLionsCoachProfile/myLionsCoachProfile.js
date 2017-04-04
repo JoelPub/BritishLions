@@ -40,6 +40,8 @@ class MyLionsCoachProfile extends Component {
 
     render() {
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
+        let role = this.props.detail.name ? this.props.detail.role : ''
+
          return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -58,7 +60,7 @@ class MyLionsCoachProfile extends Component {
                             
                             <View style={styles.headerPlayerDetails}>
                                 <Text style={styles.headerPlayerName}>{name}</Text>
-                                <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
+                                <Text style={styles.headerPlayerPosition}>{role}</Text>
                             </View>
                         </View>
                         <Grid style={styles.detailsGrid}>
