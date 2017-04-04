@@ -57,6 +57,11 @@ const styles = styleSheetCreate({
     },
     cardCircleRankText: { 
         marginTop: 8,
+        android: {
+            marginBottom: 0,
+            paddingBottom: 5,
+            marginTop: 4
+        }
     },
     cardName: {
         marginTop: 12,

@@ -52,12 +52,13 @@ const styles = styleSheetCreate({
     height: 70,
     borderRadius: 35,
     marginLeft:25,
-    marginTop: 5,
+    marginTop: 1,
     backgroundColor:'rgb(71,72,73)',
     alignItems:'center',
     paddingTop: 15,
     android: {
-      paddingTop: 18
+      paddingTop: 18,
+      marginTop: 2,
     }
   },
   profileRankTextTitle: {
@@ -67,12 +68,21 @@ const styles = styleSheetCreate({
     lineHeight:18,
     backgroundColor:'transparent',
   },
+  profileRankCircleTitleText: {
+    marginTop: 2,
+    android: {
+      marginTop: -2
+    }
+  },
   profileSubTextTitle: {
     color:'rgb(255,230,0)',
     fontFamily: styleVar.fontCondensed,
     fontSize:18,
     lineHeight:18,
-    backgroundColor:'transparent'
+    backgroundColor:'transparent',
+    android: {
+      marginTop: 4
+    }
   },
   profileNameText: {
     color:'rgb(255,255,255)',
@@ -120,8 +130,8 @@ const  Circle = ({data,profileNameViewStyle,profileNameTextStyle}) => {
 const  CircleRank = ({data,profileRankCircleViewStyle,userRankStyle}) => {
   return (
     <View style={[styles.profileRankCircleView,profileRankCircleViewStyle]}>
-      <Text style={styles.profileRankTextTitle}>RANK</Text>
-      <Text style={[styles.profileSubTextTitle,userRankStyle]}>{data.rank}</Text>
+      <Text style={[styles.profileRankTextTitle, styles.profileRankCircleTitleText]}>RANK</Text>
+      <Text style={[styles.profileSubTextTitle, userRankStyle]}>{data.rank}</Text>
     </View>
   )
 }
