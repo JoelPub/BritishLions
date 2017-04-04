@@ -154,13 +154,14 @@ module.exports = styleSheetCreate({
     fontFamily: styleVar.fontCondensed,
     fontSize: 28,
     lineHeight: 28,
-    color: '#FFF'
+    color: '#FFF',
   },
   modalContentText: {
     fontFamily: 'Helvetica Neue',
     fontSize: 16,
     lineHeight: 22,
     color: '#FFF',
+    marginBottom: 20,
     android: {
       lineHeight: 26
     }

@@ -121,7 +121,7 @@ class MyLionsManageTeam extends Component {
                         callbackParent={() => {}}>
                             <View style={[styles.modalContent]}>
                                 <Text style={styles.modalContentTitleText}>SELECT TEAM</Text>
-                                <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                                <Text style={styles.modalContentText}>You can select the XV you want to challenge the Experts XV. Along with your XV you can select your Game Captain and Kicker who will help determine if your XV will be victorious. You can view the oppositions XV to see who you will be playing against. In this section you can also save your team if you would like to use it as the basis of subsequent matches.</Text>
                             </View>
                     </SquadModal>
                     <EYSFooter mySquadBtn={true}/>

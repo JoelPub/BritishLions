@@ -108,6 +108,7 @@ module.exports = styleSheetCreate({
     fontSize: 16,
     lineHeight: 22,
     color: '#FFF',
+    marginBottom: 20,
     android: {
       lineHeight: 26
     }

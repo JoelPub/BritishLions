@@ -243,7 +243,8 @@ class MyLionsGroupView extends Component {
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>PRIVATE LEAGUES</Text>
-              <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+              <Text style={styles.modalContentText}>You are now in one of your private leagues, you will be able to see your rank and points, alongside the top 20 members in the private league.</Text>
+              <Text style={styles.modalContentText}>You can invite others to the league by using the selecting “Invite Code” and sharing it with your friends. If you no longer want to be part of this league you can leave it by selecting “Leave League”.</Text>
             </View>
           </SquadModal>
           <ModalInviteCode modalVisible = {modalInviteCode } callbackParent ={this.hideInviteCodeView}

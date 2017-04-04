@@ -414,7 +414,7 @@ class MyLionsCompetitionGameResults extends Component {
                         callbackParent={() => {}}>
                             <View style={[styles.modalContent]}>
                                 <Text style={styles.modalContentTitleText}>RESULTS</Text>
-                                <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                                <Text style={styles.modalContentText}>The EY analytics engine computer will has taken take into account your selections and the random factors you have been given to and determined the outcome of the match. including how the points were scored.  You can share the result of the match with your friends on social media, or return to the competition centre andto prepare for the next match.</Text>
                             </View>
                     </SquadModal>
 
