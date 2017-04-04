@@ -78,8 +78,8 @@ const locStyle = styleSheetCreate({
     roundHeaderTitleText: {
         fontFamily: styleVar.fontCondensed,
         backgroundColor: 'transparent',
-        fontSize: 27,
-        lineHeight: 27,
+        fontSize: 28,
+        lineHeight: 28,
         color: '#FFF',
         marginTop: 14,
         android: {
