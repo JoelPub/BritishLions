@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.os.Bundle;
 
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -35,11 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
     @Override
-    protected String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
-
-    @Override
     protected boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
@@ -48,7 +42,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new CodePush("P7FV3MtKy-PsbDJEdyBpoimOMEujEy_kN_e5z", getApplicationContext(), BuildConfig.DEBUG),
           new RNGoogleSigninPackage(),
           new GoogleAnalyticsBridgePackage(),
           new ReactNativePushNotificationPackage(),
