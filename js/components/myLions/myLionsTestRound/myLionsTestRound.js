@@ -119,7 +119,7 @@ class MyLionsTestRound extends Component {
                         callbackParent={() => {this.setState({modalVisible: false})}}>
                             <View style={[styles.modalContent]}>
                                 <Text style={styles.modalContentTitleText}>SELECT TEAM</Text>
-                                <Text style={styles.modalContentText}>Lorem ipsum doloramet, conse tetur adipiscing elit. Vestibulum in elit quam. Etiam ullamcorper neque eu lorem elementum, a sagittis sem ullamcorper. Suspendisse ut dui diam.</Text>
+                                <Text style={styles.modalContentText}>Select the run-on XV you think will be chosen by Warren Gatland for the upcoming Test match. Once you have chosen, you can share your picks on Social Media. You will be able to make changes to this Team until the day before the official team announcement.</Text>
                             </View>
                     </SquadModal>
                     <EYSFooter mySquadBtn={true}/>
