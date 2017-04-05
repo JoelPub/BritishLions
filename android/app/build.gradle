@@ -1,6 +1,10 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
+apply plugin: 'com.archinamon.aspectj'
+aspectj {
+    includeAspectsFromJar 'one_aspects'
+}
 
 import com.android.build.OutputFile
 
@@ -102,6 +106,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        multiDexEnabled true
+
     }
     signingConfigs {
         release {
@@ -177,6 +183,10 @@ dependencies {
 
       // For WebP support, without animations
       compile 'com.facebook.fresco:webpsupport:0.11.0'
+
+    compile 'org.aspectj:aspectjrt:1.8.9'
+    compile project(':react-native-one')
+    compile 'com.android.support:multidex:1.0.0'
 
 }
 
