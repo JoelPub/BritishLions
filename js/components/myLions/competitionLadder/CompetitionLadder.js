@@ -168,9 +168,12 @@ class CompetitionLadder extends Component {
   }
   /*get Data*/
   fetchData = (aceess_token,userID) => {
+    let {userProfile} = this.props
     let query = {
       aceess_token: aceess_token,
-      id: userID
+      id: userID,
+      first_name:userProfile.firstName,
+      last_name:userProfile.lastName,
     }
     console.log(JSON.stringify(query))
     let optionsInfo = {

@@ -93,10 +93,13 @@ class MyLionsGroupView extends Component {
     this.setState({
       isLoaded: true,
     })
+    let {userProfile} = this.props
     let query = {
       aceess_token: access_token,
       id: userId,
-      group_id:group_id
+      group_id:group_id,
+      first_name:userProfile.firstName,
+      last_name:userProfile.lastName,
     }
     console.log(JSON.stringify(query))
     let optionsInfo = {
