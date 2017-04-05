@@ -94,9 +94,9 @@ const locStyle = styleSheetCreate({
     },
 
     summaryCircle: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: styleVar.deviceWidth*0.187,
+        height: styleVar.deviceWidth*0.187,
+        borderRadius: styleVar.deviceWidth*0.0935,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 10,
@@ -105,6 +105,7 @@ const locStyle = styleSheetCreate({
     },
     summaryCircleText: {
         color: 'rgb(95, 96, 98)',
+        backgroundColor:'transparent',
         fontSize: 36,
         lineHeight: 36,
         textAlign: 'center',
@@ -448,7 +449,7 @@ class MyLionsCompetitionGameResults extends Component {
     }
 
     getInfo(token,userProfile){
-        console.warn('this.state.drillDownItem',this.state.drillDownItem)
+        // console.warn('this.state.drillDownItem',this.state.drillDownItem)
         let optionsInfo = {
             url: actionsApi.eyc3GetHistoricalGameResult,
             data:
