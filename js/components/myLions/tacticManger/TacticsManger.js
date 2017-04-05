@@ -328,11 +328,11 @@ class TacticsManger extends Component {
             </SmallBox>
             <SmallBox title={'REPLACEMENTS'} height={185}>
               <Slider onValuesChange={this.onValuesChange} value={ReplacementsDataValue}  valuesCount={6}/>
-              <Text style={styles.ValueText}>{ReplacementsData.name}</Text>
+              <Text style={styles.ValueText}>{ReplacementsData.name.toUpperCase()}</Text>
             </SmallBox>
             <SmallBox title={'PLAY STYLE'} height={185}>
               <Slider onValuesChange={this.onValuesChangeOther} value={TacticDataValue} valuesCount={2}/>
-              <Text style={styles.ValueText}>{TacticData.name}</Text>
+              <Text style={styles.ValueText}>{TacticData.name.toUpperCase()}</Text>
             </SmallBox>
             <View style={styles.saveContainer}>
               <ButtonFeedback style={styles.saveBtn} onPress={this.saveOnPress}>
