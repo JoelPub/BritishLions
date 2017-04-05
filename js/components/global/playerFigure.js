@@ -29,12 +29,12 @@ const styles = styleSheetCreate({
         borderRadius:5,
     },
     btnCardInfoWrapper:{
-        height: 48,
-        width: 48,
+        height: 24,
+        width: 24,
         backgroundColor: 'transparent',
         position: 'absolute',
-        right: 8,
-        top: 5
+        right: 10,
+        top: 8
     },
     btnCardInfo:{
         height: 24,
@@ -336,15 +336,6 @@ export default class PlayerFigure extends Component {
                                         { this.state.profile.overall_score || 'NA' }
                                     </Text>
                                 </View>*/}
-                                {
-                                !isEmptyObject(this.state.profile)&&<ButtonFeedback 
-                                    onPress={()=>this.props.pressInfo(true,'info')}
-                                        style={styles.btnCardInfoWrapper}> 
-                                    <View style={styles.btnCardInfo}>
-                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
-                                    </View>
-                                </ButtonFeedback>
-                                }
                             </View>
 
                            {/* <View style={styles.playerPerfromanceWrapper}>
@@ -456,6 +447,15 @@ export default class PlayerFigure extends Component {
                                 <Text style={styles.semiCardFooterText}> Analytics Sponsored by </Text>
                                 <Image source={require('../../../images/footer/eyLogo.png')}></Image>
                             </View>
+                            {
+                                !isEmptyObject(this.state.profile)&&<ButtonFeedback 
+                                    onPress={()=>this.props.pressInfo(true,'info')}
+                                        style={styles.btnCardInfoWrapper}> 
+                                    <View style={styles.btnCardInfo}>
+                                        <Icon name='md-information-circle' style={styles.cardInfoIcon}/>
+                                    </View>
+                                </ButtonFeedback>
+                            }
                         </View>
                     </View>
             </View>            
