@@ -168,9 +168,12 @@ class CompetitionLadder extends Component {
   }
   /*get Data*/
   fetchData = (aceess_token,userID) => {
+    let {userProfile} = this.props
     let query = {
       aceess_token: aceess_token,
-      id: userID
+      id: userID,
+      first_name:userProfile.firstName,
+      last_name:userProfile.lastName,
     }
     console.log(JSON.stringify(query))
     let optionsInfo = {
@@ -245,7 +248,9 @@ class CompetitionLadder extends Component {
     let query = {
       aceess_token: aceess_token,
       id: userID,
-      group_name: group_name
+      group_name: group_name,
+      first_name:this.props.userProfile.firstName,
+      last_name:this.props.userProfile.lastName,
     }
     if(group_name===''||!group_name) {
       this._showError("League Name can't be empty")
@@ -306,7 +311,9 @@ class CompetitionLadder extends Component {
     let query = {
       aceess_token: aceess_token,
       id: userID,
-      invitation_code: invitation_code
+      invitation_code: invitation_code,
+      first_name:this.props.userProfile.firstName,
+      last_name:this.props.userProfile.lastName,
     }
     if(invitation_code===''||!invitation_code) {
       this._showError("invitation code Can't be empty")

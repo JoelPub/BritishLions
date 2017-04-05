@@ -299,7 +299,7 @@ class MyLionsCompetitionCentre extends Component {
 
     _signInRequired() {
         Alert.alert(
-            'Your session has expired',
+            'Warning',
             'Please sign into your account.',
             [{
                 text: 'SIGN IN', 
