@@ -22,6 +22,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.lionsofficial.reactPackager.calendarReactPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
+import com.thunderhead.one.react.OnePackage;
+import android.support.multidex.MultiDex;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,11 @@ import com.magus.fblogin.FacebookLoginPackage; //
 
 public class MainApplication extends Application implements ReactApplication {
 
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
+  }
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
     @Override
@@ -51,7 +58,8 @@ public class MainApplication extends Application implements ReactApplication {
           new calendarReactPackage(),
           new ReactNativeYouTube(),
           new LinearGradientPackage(),
-          new FacebookLoginPackage()
+          new FacebookLoginPackage(),
+          new OnePackage()
       );
     }
   };

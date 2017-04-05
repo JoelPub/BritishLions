@@ -28,6 +28,11 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import { service } from '../../utility/services'
 import { drillDown ,shareReplace} from '../../../actions/content'
+import Data from '../../../../contents/unions/data'
+import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import TeamModel from  '../../../modes/Team'
+import {convertTeamToShow} from '../components/teamToShow'
+import { setTeamToShow } from '../../../actions/squad'
 
 
 const locStyle = styleSheetCreate({
@@ -94,9 +99,9 @@ const locStyle = styleSheetCreate({
     },
 
     summaryCircle: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: styleVar.deviceWidth*0.187,
+        height: styleVar.deviceWidth*0.187,
+        borderRadius: styleVar.deviceWidth*0.0935,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 10,
@@ -105,6 +110,7 @@ const locStyle = styleSheetCreate({
     },
     summaryCircleText: {
         color: 'rgb(95, 96, 98)',
+        backgroundColor:'transparent',
         fontSize: 36,
         lineHeight: 36,
         textAlign: 'center',
@@ -299,6 +305,7 @@ class MyLionsCompetitionGameResults extends Component {
             drillDownItem: this.props.drillDownItem,
             isPop:false
         }
+        this.uniondata = Data
     }
     goShare = () => {
         //console.log(this.state.rating)
@@ -448,7 +455,7 @@ class MyLionsCompetitionGameResults extends Component {
     }
 
     getInfo(token,userProfile){
-        console.warn('this.state.drillDownItem',this.state.drillDownItem)
+        // console.warn('this.state.drillDownItem',this.state.drillDownItem)
         let optionsInfo = {
             url: actionsApi.eyc3GetHistoricalGameResult,
             data:
@@ -469,6 +476,15 @@ class MyLionsCompetitionGameResults extends Component {
                 if(res.data) {
                     console.log('res.data',res.data)
                     this.setState({isLoaded: true, resultInfo: res.data})
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+                        if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                            console.log('true')
+                            let showTeamFeed=convertTeamToShow(TeamModel.fromJS(res.data.team),catchedFullPlayerList,this.uniondata)
+                            this.props.setTeamToShow(showTeamFeed.toJS())
+                        }
+                    }).catch((error) => {
+                                this._showError(error) 
+                    })
                 }
             },
             onError: ()=>{
@@ -488,6 +504,7 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         popToRoute: (route)=>dispatch(popToRoute(route)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
+        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
     }
 }
 
