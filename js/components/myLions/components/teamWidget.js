@@ -188,13 +188,13 @@ class TeamWidget extends Component {
         let fullFeed=true
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
         // console.log('showTeamFeed',showTeamFeed.toJS())
+        this.props.setTeamToShow(showTeamFeed.toJS())
         showTeamFeed.forEach((value,index)=>{
             if (value.find(x=>x.info===null)!==undefined) fullFeed=false
         })
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
             // console.log('not equal')
             this.props.setTeamData(team.toJS())
-            // this.props.setTeamToShow(showTeamFeed.toJS())
          }
             this.setState({fullTeam:fullFeed})
             this.props.setTeamStatus(fullFeed)
@@ -207,6 +207,7 @@ function bindAction(dispatch) {
     return {
         setTeamStatus:(teamStatus)=>dispatch(setTeamStatus(teamStatus)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
+        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
     }
 }
 

@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { pushNewRoute } from '../../../actions/route'
+import { pushNewRoute,popToRoute } from '../../../actions/route'
 import { Image, Text, View, ScrollView, ListView, ActivityIndicator, Platform } from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
@@ -165,7 +165,7 @@ class MyLionsTestRoundSubmit extends Component {
                             <ButtonFeedback 
                                 rounded 
                                 style={[styles.roundButton, {marginBottom: 30}]}
-                                onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                onPress={() => this.props.popToRoute('myLionsCompetitionCentre')}>
                                 <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                 <Text style={styles.roundButtonLabel}>
                                     COMPETITION CENTRE
@@ -195,6 +195,7 @@ function bindAction(dispatch) {
     return {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
+        popToRoute: (route)=>dispatch(popToRoute(route)),
     }
 }
 
