@@ -23,7 +23,7 @@ import { setUserProfile } from '../../../actions/squad'
 import { getUserId, removeToken ,getAccessToken,getUserFullName} from '../../utility/asyncStorageServices'
 import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
-import { setTeamDataTemp,setTeamData } from '../../../actions/squad'
+import { setTeamDataTemp,setTeamData,setTeamToShow } from '../../../actions/squad'
 import { strToUpper,strToLower } from '../../utility/helper'
 
 const locStyle = styleSheetCreate({
@@ -145,6 +145,7 @@ class MyLionsCompetitionCentre extends Component {
     componentDidMount() {
         this.props.setTeamDataTemp()
         this.props.setTeamData()
+        this.props.setTeamToShow()
     }
 
     _drillDown = (data) => {
@@ -318,6 +319,7 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
+        setTeamToShow:(teamToShow)=>dispatch(setTeamToShow(teamToShow)),
     }
 }
 

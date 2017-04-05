@@ -191,7 +191,7 @@ class MyLionsTestRound extends Component {
         }
     }
     _saveTeam() {
-        console.warn("this.props.teamDataTemp:",this.props.teamDataTemp)
+        // console.warn("this.props.teamDataTemp:",this.props.teamDataTemp)
         if(this.props.teamDataTemp.backs.length === 7
         && this.props.teamDataTemp.forwards.length === 8
         && this.props.teamDataTemp.captain !== ""

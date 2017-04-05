@@ -33,7 +33,7 @@ export function setSquadData(squadData):Action {
         squadData
     }
 }
-export function setTeamToShow(teamToShow):Action {
+export function setTeamToShow(teamToShow={}):Action {
     return {
         type: SET_TEAM_TOSHOW,
         teamToShow
