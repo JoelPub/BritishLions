@@ -121,12 +121,13 @@ module.exports = styleSheetCreate({
         fontSize: styleVar.textFontSize,
         lineHeight: styleVar.textLineHeight,
         fontWeight:'bold',
-        marginTop: 20,
+        marginTop: 20
     },
     textDetail:{
         color: styleVar.colorText,
-        fontSize: 18,
-        lineHeight: 24,
+        fontFamily: styleVar.fontGeorgia,
+        fontSize: styleVar.textFontSize,
+        lineHeight: styleVar.textLineHeight,
         marginTop: 3,
 
     },

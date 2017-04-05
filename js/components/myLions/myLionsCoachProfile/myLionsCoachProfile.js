@@ -41,6 +41,24 @@ class MyLionsCoachProfile extends Component {
     render() {
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
         let role = this.props.detail.name ? this.props.detail.role : ''
+        let bio = `<!DOCTYPE html>
+            <html>
+                <head>
+                    <style>
+                        body { width: ${parseInt(styleVar.deviceWidth)-50}px; font-size: 18px; font-family: 'Georgia'; line-height: 22px; color: rgb(38,38,38); }
+                        h1 { font-size: 18px;font-family: 'Georgia';line-height: 18px; color: rgb(38,38,38);margin-top: 20px;margin_bottom:0;font-weight:bold }
+                        p{ font-size: 18px; font-family: 'Georgia'; line-height: 22px; color: rgb(38,38,38); } 
+                        ul { font-size: 18px; line-height: 24px; font-family: 'Georgia'; }
+                        li { font-size: 18px; font-family: 'Georgia'; line-height: 24px; color: rgb(38,38,38); }
+                    </style>
+                </head>
+                <body>
+                    ${this.props.detail.bio}
+                    <script>window.onload=function(){
+                        window.location.hash = 1;document.title = document.body.clientHeight;}
+                    </script>
+                </body>
+            </html>`
 
          return (
             <Container theme={theme}>
@@ -89,7 +107,7 @@ class MyLionsCoachProfile extends Component {
                               style={styles.webViewStyle}
                               bounces={false}
                               scrollEnabled={false}
-                              source={{html:`<!DOCTYPE html><html><head><style>body{width:${parseInt(styleVar.deviceWidth)-50}px;}h1{font-size: 18px;font-family: 'georgia';line-height: 18px;color: rgb(38,38,38);margin-top: 20px;margin_bottom:0;font-weight:bold}p{font-size: 16px;font-family: 'georgia';line-height: 22px;color: rgb(38,38,38);margin-top: -5px;margin_bottom:0;}ul{font-size: 18px;line-height: 24px;}li{font-size: 18px;font-family: 'georgia';line-height: 24px;color: rgb(38,38,38);}</style></head><body>${this.props.detail.bio}<script>window.onload=function(){window.location.hash = 1;document.title = document.body.clientHeight;}</script></body></html>`}}
+                              source={{html: bio}}
                               onNavigationStateChange={(title)=>{
                                     if(title.title!== undefined && title.title.trim()!==''&&isNaN(title.title)===false) {
                                         this.setState({
