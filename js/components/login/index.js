@@ -45,7 +45,7 @@ const GoogleAndFBContainer = ({googleOnPress,fbOnPress}) => (
 class Login extends Component {
     constructor(props) {
         super(props)
-        this._scrollView = KeyboardAwareScrollView
+        //this._scrollView = KeyboardAwareScrollView
         this.state = {
             email: '',
             password: '',
@@ -363,14 +363,14 @@ class Login extends Component {
                         customMessagesType: 'error'
                     })
 
-                    this._scrollView.scrollToPosition(0,0,false)
+                    this.refs._scrollView.scrollToPosition(0,0,false)
                 }
             }
 
             service(options)
 
         } else {
-            this._scrollView.scrollToPosition(0,0,false)
+            this.refs._scrollView.scrollToPosition(0,0,false)
         }
     }
     _handleSignUpWithFB(isFormValidate){
@@ -426,14 +426,14 @@ class Login extends Component {
                             customMessagesType: 'error'
                         })
 
-                        this._scrollView.scrollToPosition(0,0,false)
+                        this.refs._scrollView.scrollToPosition(0,0,false)
                     }
                 }
 
                 service(options)
 
             } else {
-                this._scrollView.scrollToPosition(0,0,false)
+                this.refs._scrollView.scrollToPosition(0,0,false)
             }
             return json
         }).catch((error)=>{
@@ -442,7 +442,7 @@ class Login extends Component {
                 customMessages: error,
                 customMessagesType: 'error'
             })
-            this._scrollView.scrollToPosition(0,0,false)
+            this.refs._scrollView.scrollToPosition(0,0,false)
         })
     }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
@@ -457,7 +457,7 @@ class Login extends Component {
       }
 
     _scrollToMessages() {
-        this._scrollView.scrollToPosition(this.msgboxPosX,this.msgboxPosY,false)
+        this.refs._scrollView.scrollToPosition(this.msgboxPosX,this.msgboxPosY,false)
     }
 
     focusMessage(event) {
@@ -539,7 +539,7 @@ class Login extends Component {
                 <View theme={theme} 
                     {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
-                        <KeyboardAwareScrollView style={styles.main} ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <KeyboardAwareScrollView style={styles.main} ref='_scrollView'>
                             <View style={styles.content}>
                                 <Image
                                     resizeMode='contain'

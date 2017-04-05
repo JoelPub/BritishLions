@@ -600,7 +600,6 @@
 				7E77C8059B8B436EA392720F /* RNShare.xcodeproj */,
 				72A7C4463140460EA53DD1EC /* RNViewShot.xcodeproj */,
 				1850F3EEC6F84DF392F232D1 /* RNFetchBlob.xcodeproj */,
-				09E7B1A31DCF4757BF3E0B1F /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
