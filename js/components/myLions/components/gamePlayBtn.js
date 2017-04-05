@@ -86,6 +86,12 @@ class GamePlayBtn extends Component {
     }
 
     playGame() {
+      let isGameOVer = this.props.isGameOver
+      if (isGameOVer) {
+        this.props.drillDown(this.props.drillDownItem, 'myLionsCompetitionGameResults')
+        return
+      }
+
         this.submitting=true
         this.props._setModalVisible(true,'loading')
         console.log('this.props.tactics',this.props.tactics)
@@ -151,11 +157,12 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
+        drillDownItem: state.content.drillDownItem,
         teamData: state.squad.teamData,
         teamStatus: state.squad.teamStatus,
         tactics: state.tactics.tacticsData,
         userProfile: state.squad.userProfile,
-        connectionInfo: state.network.connectionInfo
+        connectionInfo: state.network.connectionInfo,
     }
 },  bindAction)(GamePlayBtn)
 GamePlayBtn.propTypes = {

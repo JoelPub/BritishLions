@@ -189,7 +189,7 @@ class MyLions extends Component {
     }
 
     measurePage(page,event) {
-        console.log('measurePage')
+        // console.log('measurePage')
         if(this.pageWindow.length===this.state.totalPages) return
         const { x, width, height, } = event.nativeEvent.layout
         let i=this.pageWindow.findIndex((value)=>value.index===page)
@@ -210,7 +210,7 @@ class MyLions extends Component {
     }
 
     scrollEnd(e, state, context){
-        console.log('scrollEnd')
+        // console.log('scrollEnd')
        
             this.setState({
                 currentPage:state.index,
@@ -230,10 +230,13 @@ class MyLions extends Component {
             modalInfoVisible: true
         })
     }
+    componentDidMount() {
+        // console.log('onBordingModalVisible true')      
+        this.setState({onBordingModalVisible:true})
+    }
 
     _renderLogic(isLogin) {
         if (isLogin) { // user is logged in
-
             this._updateFavPlayers()
 
 
@@ -262,7 +265,10 @@ class MyLions extends Component {
                             // when first login, it will show the onboarding
                             isFirst = isFirst === 'yes'? true : false
                             // isFirst = true
-                            if (isFirst) this.setState({onBordingModalVisible:true})
+                            if (!isFirst) {
+                                // console.log('onBordingModalVisible false1')      
+                                this.setState({onBordingModalVisible:false})
+                            }
                             let squadData={ "backs" : [],
                                             "wildcard" : "",
                                             "captain" : "",
@@ -294,19 +300,23 @@ class MyLions extends Component {
                                 isRequiredToken: true
                             }
                             service(optionsTeam)
-                        }).catch((error) => {})                        
-                    }).catch((error) => {})
+                        }).catch((error) => {this.setState({onBordingModalVisible:false})})                        
+                    }).catch((error) => {this.setState({onBordingModalVisible:false})})
                     
                 })
-            }).catch((error) => {})
+            }).catch((error) => {this.setState({onBordingModalVisible:false})})
 
 
+        }
+        else {
+
+            // console.log('onBordingModalVisible false2')      
+            this.setState({onBordingModalVisible:false})
         }
     }
 
     getRating(isFirst,squadData,userName,firstName,lastName,initName){
         // console.log('getRating',squadData)
-        this.setState({onBordingModalVisible:false})
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
             data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
@@ -316,6 +326,8 @@ class MyLions extends Component {
             onSuccess: (res) => {
                 console.log('res',res)
                 console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
+                // console.log('onBordingModalVisible false3')      
+                this.setState({onBordingModalVisible:false})
                 if(res.data&&isFirst&&!(this.props.visitedOnboarding.id!==undefined && this.props.visitedOnboarding.id===this.state.userID)) {
                         Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
                             "id": "0",
@@ -335,9 +347,13 @@ class MyLions extends Component {
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onError: ()=>{
+                // console.log('onBordingModalVisible false4')      
+                this.setState({onBordingModalVisible:false})
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onAuthorization: () => {
+                    // console.log('onBordingModalVisible false5')      
+                    this.setState({onBordingModalVisible:false})
                     this._signInRequired()
             },
             isRequiredToken: true,
@@ -391,6 +407,14 @@ class MyLions extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
+                    <Modal
+                        visible={this.state.onBordingModalVisible}
+                        transparent={true}
+                        onRequestClose={()=>this._onBordingModalVisible(false)}>
+                            <View style={styles.onBoardingModal}>
+                                <ActivityIndicator style={loader.centered} size='small' />
+                            </View>
+                    </Modal>
                         <LionsHeader 
                             title='MY LIONS'
                             contentLoaded={true}
@@ -523,14 +547,6 @@ class MyLions extends Component {
                                 <Text style={styles.modalText}>Players are individually rated on their defensive and attacking abilities.</Text>
                             </ScrollView>
                     </SquadModal>
-                    <Modal
-                        visible={this.state.onBordingModalVisible}
-                        transparent={true}
-                        onRequestClose={()=>this._onBordingModalVisible(false)}>
-                            <View style={styles.onBoardingModal}>
-                                <ActivityIndicator style={loader.centered} size='small' />
-                            </View>
-                    </Modal>
                 </View>
             </Container>
         )

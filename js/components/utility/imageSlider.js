@@ -9,7 +9,7 @@ var deviceHeight = Dimensions.get('window').height
 var deviceWidth = Dimensions.get('window').width
 module.exports = StyleSheet.create({
     galleryPoster: {
-        height: 270,
+        height: deviceWidth*0.72,
         position: 'relative',
         resizeMode: 'contain'
     },

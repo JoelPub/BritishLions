@@ -47,7 +47,7 @@ class Gallery extends Component {
             Image.getSize(value.image,(width,height)=>{
                 Object.assign(value,{'width':width,'height':height})
                 if(index===this.content.images.length-1) {
-                    console.log('this.content.images',this.content.images)
+                    // console.log('this.content.images',this.content.images)
                     this.setState({isLoaded:true}) 
                 }
                 
@@ -58,12 +58,15 @@ class Gallery extends Component {
     renderContent() {
         let imgStyle=Slider.galleryPoster
         let viewStyle=null
+        let nScale=1
         if(this.children.props.w<this.children.props.h) {
-            imgStyle=[Slider.galleryPoster,{transform:[{scale:styleVar.deviceHeight/260}],}]
+            nScale=Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth*0.72),(styleVar.deviceWidth*this.children.props.h)/(styleVar.deviceWidth*0.72*this.children.props.w))
+            imgStyle=[Slider.galleryPoster,{transform:[{scale:nScale}],height: styleVar.deviceHeight*0.72,}]
         }
         else {
             viewStyle={flex:1}
-            imgStyle=[Slider.galleryPoster,{transform:[{rotateZ:'90deg'},{scale:styleVar.deviceHeight/(styleVar.deviceWidth+100)}],flex:1,flexDirection:'row'}]
+            nScale=Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth),(this.children.props.w)/(this.children.props.h))
+            imgStyle=[Slider.galleryPoster,{transform:[{rotateZ:'90deg'},{scale:nScale}],flex:1,flexDirection:'row'}]
         }
         
         return (
@@ -134,15 +137,16 @@ class Gallery extends Component {
                             this.state.isLoaded?
                             <Swiper
                                 ref='swiper'
-                                height={270}
+                                height={styleVar.deviceWidth*0.72}
                                 renderPagination={this.renderPagination}
                                 onMomentumScrollEnd={(e, state, context) => this.setState({currentImg:state.index})}
                                 loop={false}>
                                 {
                                     this.content.images.map((img,index)=>{
+                                        let imageStyle=((img.height/img.width)>0.72)?{height: styleVar.deviceWidth*0.72}:{height:img.height*styleVar.deviceWidth/img.width}
                                         return(
-                                            <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent}>
-                                                <Image style={Slider.galleryPoster} source={{uri:img.image}} caption={img.caption} w={img.width} h={img.height}/>
+                                            <Lightbox key={index} navigator={this.props.navigator} renderContent={this.renderContent} swipeToDismiss={false}>
+                                                <Image style={[Slider.galleryPoster, imageStyle]} source={{uri:img.image}} caption={img.caption} w={img.width} h={img.height}/>
                                             </Lightbox>
                                         )
                                     })
