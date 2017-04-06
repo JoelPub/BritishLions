@@ -222,7 +222,7 @@ const Summary = ({data,shareView}) => (
             <View style={[locStyle.summaryRow, {marginBottom: 20}]}>
                 <View style={locStyle.sideCol}>
                     <View style={locStyle.summaryCircle}>
-                        <Text style={locStyle.summaryCircleText}>{ data.ai.score || 'N/A' }</Text>
+                        <Text style={locStyle.summaryCircleText}>{ data.ai.score || 0 }</Text>
                     </View>
                 </View>
                 <View style={locStyle.centerCol}>
@@ -230,52 +230,52 @@ const Summary = ({data,shareView}) => (
                 </View>
                 <View style={locStyle.sideCol}>
                     <View style={locStyle.summaryCircle}>
-                        <Text style={locStyle.summaryCircleText}>{ data.me.score || 'N/A' }</Text>
+                        <Text style={locStyle.summaryCircleText}>{ data.me.score || 0 }</Text>
                     </View>
                 </View>
             </View>
             
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>{ data.ai.tries || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.tries || 0 }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>TRIES</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>{ data.me.tries || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.tries || 0 }</Text>
             </View>
 
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>{ data.ai.conversions || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.conversions || 0 }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>CONVERSIONS</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>{ data.me.conversions || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.conversions || 0 }</Text>
             </View>
 
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>{ data.ai.penalties || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.penalties || 0 }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>PENALTIES</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>{ data.me.penalties || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.penalties || 0 }</Text>
             </View>
 
             <View style={locStyle.summaryRow}>
-                <Text style={locStyle.summaryValue}>{ data.ai.dropped_goals || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.ai.dropped_goals || 0 }</Text>
                 <View style={locStyle.summaryTextWrapper}>
                     <Text style={locStyle.summaryText}>DROP GOALS</Text>
                 </View>
-                <Text style={locStyle.summaryValue}>{ data.me.dropped_goals || 'N/A' }</Text>
+                <Text style={locStyle.summaryValue}>{ data.me.dropped_goals || 0 }</Text>
             </View>
         </View>
 
         <View style={[locStyle.summaryRow, locStyle.summaryRowBorder]}>
             <View style={[locStyle.summaryCol, locStyle.summaryColRight]}>
                 <Text style={locStyle.summaryTextSmall}>COMPETITION POINTS</Text>
-                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.competition_points || 'N/A' }</Text>
+                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.competition_points || 0 }</Text>
             </View>
             <View style={locStyle.summaryCol}>
                 <Text style={locStyle.summaryTextSmall}>BONUS POINTS</Text>
-                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.bonus_points || 'N/A' }</Text>
+                <Text style={[locStyle.summaryValue, locStyle.summaryValue2]}>{ data.bonus_points || 0 }</Text>
             </View>
         </View>
 

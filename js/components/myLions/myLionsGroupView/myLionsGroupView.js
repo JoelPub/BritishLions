@@ -235,7 +235,7 @@ class MyLionsGroupView extends Component {
             <HeaderTitleWithModal title={group_name.toUpperCase()}  iconPress={this.iconPress}/>
             <GrayContainer >
               <ExpertRank data={userProfile}  />
-              <RankList data={data} title={'LEAGUE LEADERBAORD'} />
+              <RankList data={data} title={'LEAGUE LEADERBOARD'} />
             </GrayContainer>
             <View style={styles.groupAction}>
               <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  onPress={this.inviteButtonPress} />

@@ -67,6 +67,7 @@ const styles = styleSheetCreate({
     fontSize:18,
     lineHeight:18,
     backgroundColor:'transparent',
+    textAlign: 'center'
   },
   profileRankCircleTitleText: {
     marginTop: 2,
@@ -80,6 +81,7 @@ const styles = styleSheetCreate({
     fontSize:18,
     lineHeight:18,
     backgroundColor:'transparent',
+    textAlign: 'center',
     android: {
       marginTop: 4
     }
@@ -92,7 +94,10 @@ const styles = styleSheetCreate({
     backgroundColor:'transparent'
   },
   profileTitleView: {
-    marginLeft:25,
+    marginLeft: 32,
+    android: {
+     marginLeft:36
+    },
     marginTop: 35,
   },
   profileTitleText: {
@@ -109,7 +114,7 @@ const styles = styleSheetCreate({
   },
   rolesContainer:{
     flexDirection:'row',
-    marginLeft:25,
+    marginLeft:29,
     marginTop: 18,
   },
   rolesTextBox: {

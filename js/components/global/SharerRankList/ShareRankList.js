@@ -65,6 +65,7 @@ const styles = styleSheetCreate({
     fontSize:18,
     lineHeight:18,
     backgroundColor:'transparent',
+    textAlign: 'center',
   },
   subContentText:{
     color:'rgb(38,38,38)',
@@ -72,6 +73,7 @@ const styles = styleSheetCreate({
     fontSize:18,
     lineHeight:18,
     backgroundColor:'transparent',
+    textAlign: 'center',
   },
   IDText:{
     marginLeft:0,
