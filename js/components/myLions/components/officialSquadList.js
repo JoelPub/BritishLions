@@ -208,22 +208,20 @@ export default class OfficialSquadList extends Component {
       }
       data.push(itemOne)
       data.push(squadDatafeed.indivPos[1])
-
       return  data
   }
-    dellStaffData = (coachAndStaffData) => {
-        let  data= []
-        coachAndStaffData.map((item,index)=>{
-            let itemOne = {
-                position: 'coach',
-                info: item
-            }
-            if (index!==0){
-                data.push(itemOne)
-            }
+  dellStaffData = (coachAndStaffData) => {
+    let  data= []
+    coachAndStaffData.map((item,index)=>{
+    let itemOne = {
+    position: 'coach',
+    info: item
+    }
+    if (index!==0){
+        data.push(itemOne)
+        }
         })
-
-        return  data
+    return  data
     }
 	render() {
       let  {coachAndStaffData,squadDatafeed} = this.props
