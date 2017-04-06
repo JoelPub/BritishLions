@@ -20,6 +20,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import shapes from '../../themes/shapes'
 import Swiper from 'react-native-swiper'
+import LinearGradient from 'react-native-linear-gradient'
 import SummaryCardWrapper from '../global/summaryCardWrapper'
 import ProfileSummaryCard from '../myLions/components/profileSummaryCard'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
@@ -618,10 +619,12 @@ class Landing extends Component {
                                             style={styles.banner}
                                             onPress={() => this._drillDown(item, 'fixtureDetails')}>
                                             <ImagePlaceholder height={200}>
-                                                <Image
-                                                    resizeMode='cover' 
-                                                    style={styles.bannerImg}
-                                                    source={image} />
+                                                <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                                                    <Image
+                                                        resizeMode='center' 
+                                                        style={styles.bannerImg}
+                                                        source={image} />
+                                                </LinearGradient>
                                             </ImagePlaceholder>
                                             <View style={[shapes.triangle, {marginTop: -12}]} />
                                             <View style={styles.bannerDetails}>
