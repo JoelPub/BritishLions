@@ -68,9 +68,25 @@ class ZxSlider extends Component {
           left: this.countSize(left+gs.dx)
         })
       },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderTerminate: (evt, gestureState) => {
+      onPanResponderTerminationRequest: (evt, gs) => true,
+      onPanResponderTerminate: (evt, gs) => {
         // 另一个组件已经成为了新的响应者，所以当前手势将被取消。
+        console.log('这里被调用')
+        let endLeft = this.countSize(left+gs.dx)
+        if(this.props.valuesCount){
+          this.setState({
+            left: this.countComplexSize(endLeft)
+          })
+          let widthItem = ( styleVar.deviceWidth-112) /this.props.valuesCount
+          let index = Math.round(this.state.left /widthItem)
+          this.props.onValuesChange(index)
+        }else {
+          this.setState({
+            left: endLeft
+          })
+          this.props.onValuesChange((this.state.left/(styleVar.deviceWidth-112)).toFixed(2))
+        }
+
       },
       onPanResponderRelease: (evt,gs)=>{
         //活动结束后
