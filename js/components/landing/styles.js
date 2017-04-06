@@ -132,7 +132,8 @@ module.exports = styleSheetCreate({
     },
     bannerImg: {
         width: styleVar.deviceWidth,
-        height: 200
+        height: 200,
+        alignSelf: 'center'
     },
 
     swiper: {
