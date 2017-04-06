@@ -224,6 +224,12 @@ class ExpertRank extends Component {
       ,profileNameTextStyle,profileTitleTextStyle,
       profileSubTitleTextStyle,userRankStyle
       } =this.props
+      if(data.initName === undefined)
+        data.initName = ''
+      if(data.userName === undefined)
+        data.userName = ''
+      if(data.selectorRating === undefined)
+        data.selectorRating = ''
     return (
       <View style={[styles.container,this.props.containerStyle]} >
         <Profile data={data}
