@@ -208,18 +208,20 @@ const PositionTitle =({pos,data}) =>(
 )
 const AddIndivPlayerCell = ({pos})=>(
     <ButtonFeedback  style={styles.posBtn}>
-        <View style={styles.posIndivAddWrapper}>            
-        </View>
+        <ImagePlaceholder 
+            width = {styleVar.deviceWidth / 2}
+            height = {styleVar.deviceWidth / 2}>
+        </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>
             <View style={[shapes.triangle]} />
             <View style={styles.titleBox}>
                 <Text style={styles.playerNameText}>
                     { pos.toUpperCase() }
                 </Text>
-                </View>
+            </View>
         </View>
     </ButtonFeedback>
-    )
+)
 
 
 export default class OppositionSquadList extends Component {
