@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator, Modal } from 'react-native'
-import { isFirstLogIn, getUserId,getUserFullName } from '../utility/asyncStorageServices'
+import { Image, View, ScrollView, ActivityIndicator, Modal, Alert } from 'react-native'
+import { isFirstLogIn, getUserId,removeToken,getUserFullName } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -18,7 +18,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { pushNewRoute } from '../../actions/route'
+import { pushNewRoute, replaceRoute } from '../../actions/route'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
@@ -32,6 +32,7 @@ import { service } from '../utility/services'
 import { strToUpper,isEmptyObject } from '../utility/helper'
 import { setUserProfile , setPrivateLeagues, setVisitedOnboarding} from '../../actions/squad'
 import { actionsApi } from '../utility/urlStorage'
+import { setAccessGranted } from '../../actions/token'
 
 const locStyle = styleSheetCreate({
     button: {
@@ -402,6 +403,27 @@ class MyLions extends Component {
         this.setState({onBordingModalVisible:visible})
     }
 
+    _replaceRoute(route) {
+        this.props.replaceRoute(route)
+    }
+
+    _reLogin() {
+        removeToken()
+        this.props.setAccessGranted(false)
+        this._replaceRoute('login')
+    }
+
+    _signInRequired() {
+        Alert.alert(
+            'Your session has expired',
+            'Please sign into your account.',
+            [{
+                text: 'SIGN IN', 
+                onPress: this._reLogin.bind(this)
+            }]
+        )
+    }
+
     render() {
 
         return (
@@ -560,6 +582,8 @@ function bindAction(dispatch) {
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
         setPrivateLeagues:(privateLeagues)=>dispatch(setPrivateLeagues(privateLeagues)),
         setVisitedOnboarding:(visitedOnboarding)=>dispatch(setVisitedOnboarding(visitedOnboarding)),
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
     }
 }
 
