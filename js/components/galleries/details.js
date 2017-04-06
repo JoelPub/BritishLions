@@ -61,7 +61,7 @@ class Gallery extends Component {
         let nScale=1
         if(this.children.props.w<this.children.props.h) {
             nScale=Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth*0.72),(styleVar.deviceWidth*this.children.props.h)/(styleVar.deviceWidth*0.72*this.children.props.w))
-            imgStyle=[Slider.galleryPoster,{transform:[{scale:nScale}],height: styleVar.deviceHeight*0.72,}]
+            imgStyle=[Slider.galleryPoster,{transform:[{scale:nScale}]}]
         }
         else {
             viewStyle={flex:1}
