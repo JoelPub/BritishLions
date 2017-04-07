@@ -217,8 +217,8 @@ const  Content = ({data,index,addStyle}) => {
 
 const NilGroup = (props) => (
   <View style={styles.nilView}>
-    <Text style={styles.describeText}   numberOfLines={3}>Thanks for creating a Private League.</Text>
-    <Text style={styles.describeText2}   numberOfLines={3}>A league ladder will be generated within the next 24 hours.</Text>
+    <Text style={styles.describeText} numberOfLines={3}>You have successfully created a private league.</Text>
+    <Text style={styles.describeText2} numberOfLines={3}>Your league table will be generated within the next 24 hours.</Text>
   </View>
 )
 class RankingList extends Component {
