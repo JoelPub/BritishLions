@@ -191,8 +191,8 @@ class MyLionsCompetitionCentre extends Component {
                                     {
                                         this.state.competitionInfo.map((value,index)=>{
                                             return (
-                                                <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
-                                                    <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
+                                                <ButtonFeedback disabled={!value.is_available||!value.is_active} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
+                                                    <Round title={strToUpper(value.name)} lock={!value.is_available||!value.is_active} detail={value}/>
                                                 </ButtonFeedback>
                                             )
                                         })

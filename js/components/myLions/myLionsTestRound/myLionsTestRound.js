@@ -51,6 +51,7 @@ class MyLionsTestRound extends Component {
             modalVisible: false,
             userID:'',
             isNetwork: true,
+            drillDownItem:this.props.drillDownItem
         }
         this.uniondata = Data
         this.fullPlayerList={}
@@ -147,7 +148,7 @@ class MyLionsTestRound extends Component {
                     data: { "id":this.props.userProfile.userID,
                             "first_name":this.props.userProfile.firstName,
                             "last_name":this.props.userProfile.lastName,
-                            "round_id":0, 
+                            "round_id":this.state.drillDownItem.round_id, 
                             "game_id": 0},
                     onAxiosStart: null,
                     onAxiosEnd: null,
@@ -208,7 +209,7 @@ class MyLionsTestRound extends Component {
                data: {  "id": this.props.userProfile.userID,
                         "first_name": this.props.userProfile.firstName,
                         "last_name": this.props.userProfile.lastName,
-                        "round_id":0,
+                        "round_id":this.state.drillDownItem.round_id,
                         "game_id": 0,
                         "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
                onAxiosStart: () => {},
@@ -284,6 +285,7 @@ export default connect((state) => {
         teamDataTemp: state.squad.teamDataTemp,
         netWork: state.network,
         userProfile: state.squad.userProfile,
+        drillDownItem: state.content.drillDownItem,
     }
 }, bindAction)(MyLionsTestRound)
 
