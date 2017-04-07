@@ -198,11 +198,11 @@ class AppNavigator extends Component {
             if(this.props.store.getState().drawer.drawerState == 'closed')
                 this._drawer.close()
         })
-        NativeModules.One.init( "ONE-YOUR-SITEKEY",
-          "yourTouchpoint",
-          "your-api-key",
-          "your-shared-secret",
-          "your@user.id",
+        NativeModules.One.init( "ONE-IB2BPGLKAN-9813",
+          "",
+          "",
+          "",
+          "dli@lionsrugby",
           false,
           "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
