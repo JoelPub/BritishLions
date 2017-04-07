@@ -208,7 +208,7 @@ class MyLionsSelectPlayerListing extends Component {
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   let optionsOfficialSquad = {
-                    url: 'http://biltestapp.azurewebsites.net/GetOfficalSquad',
+                    url: 'http://bilprod.azurewebsites.net/GetOfficalSquad',
                     data: {},
                     onAxiosStart: null,
                     onAxiosEnd: null,

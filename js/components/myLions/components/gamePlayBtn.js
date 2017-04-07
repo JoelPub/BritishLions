@@ -46,7 +46,7 @@ const styles = styleSheetCreate({
 class GamePlayBtn extends Component {
 	constructor(props){
         super(props)
-        this.getGameResultUrl='http://biltestapp.azurewebsites.net/GetGameResult'
+        this.getGameResultUrl='http://bilprod.azurewebsites.net/GetGameResult'
         this.submitting=false
         this.state = {
             isActive:this.props.teamStatus&&this.props.tactics!==null
