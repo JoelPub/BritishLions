@@ -56,7 +56,7 @@ class MyLionsTestRound extends Component {
         this.fullPlayerList={}
 
         // debounce
-        //this._saveTeam = debounce(this._saveTeam, 1000, {leading: true, maxWait: 0, trailing: false})
+        this._saveTeam = debounce(this._saveTeam, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     _showError(error) {
