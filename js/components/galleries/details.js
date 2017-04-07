@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -56,22 +56,40 @@ class Gallery extends Component {
         
     }
     renderContent() {
-        let imgStyle=Slider.galleryPoster
-        let viewStyle=null
-        let nScale=1
-        if(this.children.props.w<this.children.props.h) {
-            nScale=Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth*0.72),(styleVar.deviceWidth*this.children.props.h)/(styleVar.deviceWidth*0.72*this.children.props.w))
-            imgStyle=[Slider.galleryPoster,{transform:[{scale:nScale}]}]
-        }
-        else {
-            viewStyle={flex:1}
-            nScale=Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth),(this.children.props.w)/(this.children.props.h))
-            imgStyle=[Slider.galleryPoster,{transform:[{rotateZ:'90deg'},{scale:nScale}],flex:1,flexDirection:'row'}]
+        let imgStyle = Slider.galleryPoster
+        let viewStyle = null
+        let nScale = 1
+        if( this.children.props.w<this.children.props.h) {
+            nScale = Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth*0.72), (styleVar.deviceWidth*this.children.props.h)/(styleVar.deviceWidth*0.72*this.children.props.w))
+            imgStyle = [
+                Slider.galleryPoster,
+                {
+                    transform:[{scale:nScale}],
+                    marginTop: Platform.OS === 'android'? 25 : -20
+                }
+            ]
+        } else {
+            viewStyle = {
+                flex:1, 
+                flexDirection:'row', 
+                alignItems: 'center',
+                justifyContent: 'center'
+            }
+            nScale = Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth), (this.children.props.w)/(this.children.props.h))
+            imgStyle = [
+                    Slider.galleryPoster, 
+                    {
+                        transform:[{rotateZ:'90deg'}, {scale: nScale}],
+                        flex:1, 
+                        alignSelf: 'center',
+                        marginTop: Platform.OS === 'android'? 25 : -20
+                    }
+                ]
         }
         
         return (
                 <View style={viewStyle}>
-                    <Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>
+                    {/*<Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>*/}
                     <Image style={imgStyle} source={{uri:this.children.props.source.uri}} />
                 </View>
             )
