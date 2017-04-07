@@ -135,7 +135,10 @@ module.exports = styleSheetCreate({
         height: 200,
         alignSelf: 'center'
     },
-
+    fixtureImgContainer: {
+        width: styleVar.deviceWidth,
+        height: 200
+    },
     swiper: {
         backgroundColor: '#fff'
     },
