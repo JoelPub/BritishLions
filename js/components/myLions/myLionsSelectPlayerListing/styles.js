@@ -47,7 +47,10 @@ module.exports = styleSheetCreate({
         paddingVertical: styleVar.deviceWidth*0.027,
         width: styleVar.deviceWidth / 2,
         height:styleVar.deviceWidth*0.224,
-        paddingHorizontal: 1
+        paddingTop: 12,
+        android: {
+            paddingTop: 6
+        }
     },
     gridBoxTitleRight: {
         borderRightWidth: 1,
@@ -63,14 +66,14 @@ module.exports = styleSheetCreate({
         marginTop: -6,
         android: {
             paddingTop: 0,
-            lineHeight: 24,
+            lineHeight: 26,
         }
     },
     gridBoxTitleSupportText: {
-        fontSize: 12,
+        fontSize: 14,
         lineHeight: 14,
         fontFamily: styleVar.fontGeorgia,
-        marginTop: -8,
+        marginTop: -2,
         android: {
             marginTop:5
         }

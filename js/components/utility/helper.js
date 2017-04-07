@@ -24,24 +24,33 @@ export function isEmptyObject(e) {
         return !1;  
     return !0  
 }
-export function splitName(name,spliter,maxLength) {
-        let nameArr=[]
-        let i=0
-        if(typeof name ==='string') {
-            name.split(spliter).map((value,index)=>{
-                if(index===0) {
-                    nameArr[i]=value
-                }
-                else {
-                    if (nameArr[i].length+value.length<maxLength) {
-                        nameArr[i]=nameArr[i]+spliter+value 
-                    }
-                    else {
+
+export function splitName(name, spliter, maxLength, isMergeFirstName = false) {
+        let nameArr = [],
+            newNameArr = [],
+            i = 0
+
+        if(typeof name === 'string') {
+            name.split(spliter).map((value, index)=>{
+                if (index === 0 ) {
+                    nameArr[i] = value
+                } else {
+                    if ((nameArr[i].length + value.length) < maxLength) {
+                        nameArr[i] = nameArr[i] + spliter + value 
+                    } else {
                         i++
-                        nameArr[i]=value
+                        nameArr[i] = value
                     }
                 }
             })
         }
+
+        if (isMergeFirstName && (nameArr.length > 2)) {
+            let firstName = nameArr[0] + ' ' + nameArr[1]
+            nameArr = nameArr.slice(2)
+            nameArr.splice(0, 0, firstName)
+        }
+
+
         return nameArr
 }

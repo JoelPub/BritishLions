@@ -73,10 +73,10 @@ class MyLionsSelectPlayerListing extends Component {
                         <View style={[shapes.triangle]} />
                         <View style={[styleGridBoxTitle]}>
                             {
-                                splitName(rowData.name,' ',7).map((value,index)=>{
+                                splitName(rowData.name, ' ', 7, true).map((value,index)=>{
                                     return(
                                         <Text key={index} style={styles.gridBoxTitleText}>{strToUpper(value)}</Text>
-                                        )
+                                    )
                                 },this)
                             }
                             <Text style={styles.gridBoxTitleSupportText}>{rowData.position}</Text>
