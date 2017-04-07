@@ -167,7 +167,7 @@ class MyLionsPlayerProfile extends Component {
     getPlayerProfile() {
         let optionsPlayerProfile = {
             // url: this.PlayersProfileUrl,
-            url: 'http://bilTestApp.azurewebsites.net/getOfficialSquadPlayerProfile',
+            url: 'http://bilprod.azurewebsites.net/getOfficialSquadPlayerProfile',
             data:{player_id:this.playerid},
             onAxiosStart: () => {},
             onAxiosEnd: () => {

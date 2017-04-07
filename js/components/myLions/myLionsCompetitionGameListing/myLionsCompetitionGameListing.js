@@ -277,7 +277,7 @@ class MyLionsCompetitionGameListing extends Component {
             console.log('userProfile',userProfile)
             this.round_id=round_id
             let optionsGameList = {
-                url: 'http://biltestapp.azurewebsites.net/GetGameList',
+                url: 'http://bilprod.azurewebsites.net/GetGameList',
                 data: {
                     id:userProfile.userID,
                     first_name:userProfile.firstName,
@@ -315,7 +315,7 @@ class MyLionsCompetitionGameListing extends Component {
             console.log('userProfile',userProfile)
             this.round_id=drillDownItem.round_id
             let optionsGameList = {
-                url: 'http://biltestapp.azurewebsites.net/GetGameList',
+                url: 'http://bilprod.azurewebsites.net/GetGameList',
                 data: {
                   id:userProfile.userID,
                   first_name:userProfile.firstName,

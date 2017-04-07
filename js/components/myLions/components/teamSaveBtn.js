@@ -52,7 +52,7 @@ const styles = styleSheetCreate({
 class TeamSaveBtn extends Component {
 	constructor(props){
         super(props)
-        this.saveSquadUrl='http://biltestapp.azurewebsites.net/SaveUserCustomizedSquad'
+        this.saveSquadUrl='http://bilprod.azurewebsites.net/SaveUserCustomizedSquad'
         this.state = {
             isMyTeamPlayerUpdating: false,
             inTeam: false,

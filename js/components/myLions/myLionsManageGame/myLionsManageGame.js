@@ -282,7 +282,7 @@ class MyLionsManageGame extends Component {
         this.image=drillDownItem.image
         this.game=drillDownItem.game
         let optionsInfo = {
-            url: 'http://biltestapp.azurewebsites.net/GetGameElements',
+            url: 'http://bilprod.azurewebsites.net/GetGameElements',
             data: {id:this.props.userProfile.userID},
             onAxiosStart: null,
             onAxiosEnd: null,
