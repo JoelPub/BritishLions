@@ -19,6 +19,7 @@ import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { popRoute } from '../../../actions/route'
 import { actionsApi } from '../../utility/urlStorage'
+import { debounce } from 'lodash'
 const styles = styleSheetCreate({
     wrapper:{
         backgroundColor: 'rgb(4, 79, 38)',
@@ -59,6 +60,9 @@ class TeamSaveBtn extends Component {
             isMyTeamPlayerSubmitting: false,
             btnSubmit:'',
     	}
+
+        // debounce
+        this._saveTeam = debounce(this._saveTeam, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
 	render() {
