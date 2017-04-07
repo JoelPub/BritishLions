@@ -102,11 +102,11 @@ class Login extends Component {
             let reloginInfo = JSON.parse(result)
             let {email , password, loginWay }=reloginInfo
             if(loginWay==='password') {
-                let passWord = getLoginPassword()
+                // let passWord = getLoginPassword()
                 this.setState({
                     user: null,
                     email: email,
-                    password: passWord,
+                    password: password,
                 })
                 this._handleSignIn(true)
             }
