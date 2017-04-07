@@ -39,7 +39,8 @@ import TeamSaveBtn from '../components/teamSaveBtn'
 import {convertTeamToShow} from '../components/teamToShow'
 import Versus from '../components/versus'
 import { actionsApi } from '../../utility/urlStorage'
-
+import { debounce } from 'lodash'
+import { isEmptyObject } from '../../utility/helper'
 class MyLionsTestRound extends Component {
 
     constructor(props){
@@ -53,6 +54,9 @@ class MyLionsTestRound extends Component {
         }
         this.uniondata = Data
         this.fullPlayerList={}
+
+        // debounce
+        //this._saveTeam = debounce(this._saveTeam, 1000, {leading: true, maxWait: 0, trailing: false})
     }
 
     _showError(error) {
@@ -192,16 +196,18 @@ class MyLionsTestRound extends Component {
     }
     _saveTeam() {
         // console.warn("this.props.teamDataTemp:",this.props.teamDataTemp)
-        if(this.props.teamDataTemp.backs.length === 7
-        && this.props.teamDataTemp.forwards.length === 8
-        && this.props.teamDataTemp.captain !== ""
-        && this.props.teamDataTemp.kicker !== "")
+        if( !isEmptyObject(this.props.teamDataTemp) &&
+            (this.props.teamDataTemp.backs.length === 7
+            && this.props.teamDataTemp.forwards.length === 8
+            && this.props.teamDataTemp.captain !== ""
+            && this.props.teamDataTemp.kicker !== ""))
         {
+
            let options = {
                url: actionsApi.eyc3SaveUserCustomizedSquad,
-               data: {  "id":this.props.userProfile.userID,
-                        "first_name":this.props.userProfile.firstName,
-                        "last_name":this.props.userProfile.lastName,
+               data: {  "id": this.props.userProfile.userID,
+                        "first_name": this.props.userProfile.firstName,
+                        "last_name": this.props.userProfile.lastName,
                         "round_id":0,
                         "game_id": 0,
                         "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
