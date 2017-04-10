@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView,NativeModules } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
@@ -39,6 +39,8 @@ class Tours extends Component {
     }
 
     componentDidMount() {
+        NativeModules.One.sendInteraction("/tours",
+          { emailAddress : "" });
         setTimeout(()=>{this._setUpImage()},600)
     }
 

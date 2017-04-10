@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken } from '../utility/asyncStorageServices'
-import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder,TouchableOpacity, Alert } from 'react-native'
+import { Keyboard, Switch, Dimensions, Platform, ScrollView, PanResponder,TouchableOpacity, Alert ,NativeModules} from 'react-native'
 import { service } from '../utility/services'
 import { replaceRoute, popRoute, pushNewRoute } from '../../actions/route'
 import { Container, Content, Text, Icon, Input, View } from 'native-base'
@@ -75,6 +75,7 @@ class SignUp extends Component {
         this.props.popRoute()
     }
     _GoogleSignIn = () => {
+        NativeModules.One.sendInteraction('/register/google', null);
          this.setState({user: {}})
         GoogleSignin.signIn()
           .then((user) => {
@@ -88,6 +89,7 @@ class SignUp extends Component {
           .done();
     }
     _FBSignIn = () => {
+        NativeModules.One.sendInteraction('/register/facebook', null);
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
             if (!error) {
                 console.log(data);
@@ -243,7 +245,7 @@ class SignUp extends Component {
                 submit: false
             }
         })
-
+        NativeModules.One.sendInteraction('/register/button', null);
         if(isFormValidate) {
             let options = {
                 url: this.serviceUsersUrl,
@@ -380,7 +382,9 @@ class SignUp extends Component {
 
         return false
       }
-
+    componentDidMount () {
+        NativeModules.One.sendInteraction('/registerView', null);
+    }
     render() {
         return (
             <Container>

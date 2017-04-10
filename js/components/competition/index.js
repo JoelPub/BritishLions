@@ -1,8 +1,8 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView ,NativeModules} from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
@@ -38,6 +38,8 @@ class Competition extends Component {
          }
 
          componentDidMount() {
+           NativeModules.One.sendInteraction("/competition",
+             { emailAddress : "" });
              setTimeout(()=>{this._setUpImage()},600)
          }
 

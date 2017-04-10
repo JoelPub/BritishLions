@@ -36,6 +36,11 @@ class FixtureDetails extends Component {
     }
 
     calendarAddEvent(params){
+        let  date = this.props.details.date
+        let  interaction = "/fixtures/" + date + '/calendar'
+        NativeModules.One.sendInteraction(interaction,
+          { emailAddress : "" });
+
         let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
         let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
         endDateOfEvent.setHours(endDateOfEvent.getHours() + 1) // Add 1 hour for Event, to provide time range display
@@ -74,6 +79,12 @@ class FixtureDetails extends Component {
                     alertBox('No Access','Please authorize Calendar Access in the Device Settings')
                 })
         }
+    }
+    componentDidMount() {
+        let  date = this.props.details.date
+        let  interaction = "/fixtures/" +date
+        NativeModules.One.sendInteraction(interaction,
+          { emailAddress : "" });
     }
 
     render() {

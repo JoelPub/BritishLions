@@ -87,7 +87,8 @@ class Login extends Component {
         // just to make sure that token was removed and
         // isAccessGranted flag is set to false when 
         // user is in the login page
-
+        NativeModules.One.sendInteraction('/signInView',
+          null);
         setTimeout(() => {
             removeToken() 
             this.props.setAccessGranted(false)
@@ -286,11 +287,15 @@ class Login extends Component {
 
     }
     _handleSignIn(isFormValidate) {
+
         this.setState({
             errorCheck:{
                 submit: false
             }
         })
+        NativeModules.One.sendInteraction('/signIn/button', {
+            emailAddress:this.state.email
+        });
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
@@ -379,7 +384,6 @@ class Login extends Component {
                 submit: false
             }
         })
-        console.log('FB获取用户信息')
         console.log(this.state.fbUser)
         let {token} =this.state.fbUser
         console.log(token)
@@ -437,7 +441,6 @@ class Login extends Component {
             }
             return json
         }).catch((error)=>{
-             console.log('FB获取用户信息错误, error: ', error)
             this.setState({
                 customMessages: error,
                 customMessagesType: 'error'
@@ -486,6 +489,8 @@ class Login extends Component {
         }
     }
     _signIn = () => {
+        NativeModules.One.sendInteraction('/signIn/google',
+          null);
         if(this.state.isFormSubmitting) return;
         GoogleSignin.signIn()
           .then((user) => {
@@ -502,6 +507,8 @@ class Login extends Component {
 
     /* facebook sign in func */
     _handleFBLogin = () => {
+        NativeModules.One.sendInteraction('/signIn/facebook',
+          null);
         if(this.state.isFormSubmitting) return;
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {

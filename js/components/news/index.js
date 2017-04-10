@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, RefreshControl, ScrollView } from 'react-native'
+import { Image, View, ActivityIndicator, RefreshControl, ScrollView,NativeModules } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -103,6 +103,8 @@ class News extends Component {
     }
 
     componentDidMount() {
+      NativeModules.One.sendInteraction("/news",
+        { emailAddress : "" });
         setTimeout(() => {
             this._fetchContent()
         }, 1000)

@@ -1,7 +1,7 @@
 'use strict'
 
-import React, { Component } from 'react'
-import { Linking, Alert } from 'react-native'
+import React, { Component,PropTypes } from 'react'
+import { Linking, Alert ,NativeModules} from 'react-native'
 import ButtonFeedback from './buttonFeedback'
 
 export default class ExternalLink extends Component {
@@ -10,6 +10,17 @@ export default class ExternalLink extends Component {
 	}
 
     goToURL(url) {
+        if(url==='https://tours.lionsrugby.com'){
+            NativeModules.One.sendInteraction("/toursOpen",
+              { emailAddress : "" });
+        }
+        if(url==='http://www.lionsrugby.com/fanzone/competitions.php#.V9ozFJh96rM'){
+            NativeModules.One.sendInteraction("/competitionOpen",
+              { emailAddress : "" });
+        }
+        if(this.props.callBack){
+            this.props.callBack()
+        }
         if(url){
             Linking.canOpenURL(url).then(supported => {
                 if (supported) {
@@ -35,7 +46,13 @@ export default class ExternalLink extends Component {
         )
     }
 }
-
+ExternalLink.propTypes = {
+    type: PropTypes.string,
+    callBack: PropTypes.func
+}
+ExternalLink.defaultProps = {
+    type:'',
+}
 
 export function goToURL(url) {
     if(url){

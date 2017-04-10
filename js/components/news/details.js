@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder} from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder,NativeModules} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -38,8 +38,13 @@ class NewsDetails extends Component {
         }
     }
     goToURL(url) {
+
     Linking.canOpenURL(url).then(supported => {
             if (supported) {
+              if(Platform.OS === 'android'){
+                NativeModules.One.getURLWithOneTid(url,null,null)
+                NativeModules.One.sendInteractionForOutboundLink(url,null,null)
+              }
                 this.webview.stopLoading()
                 Linking.openURL(url)
             } else {
@@ -68,7 +73,10 @@ class NewsDetails extends Component {
           
         })
     }
-
+  componentDidMount() {
+    NativeModules.One.sendInteraction("/news",
+      { emailAddress : "" });
+  }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
        console.log('_handleStartShouldSetPanResponderCapture e',e.target)
        for(let node in e) {
@@ -100,6 +108,11 @@ class NewsDetails extends Component {
             return item.id == idToLookFor
         })
     }
+  sharePress = () => {
+    NativeModules.One.sendInteraction("/news/share",
+      { emailAddress : "" });
+    shareTextWithTitle(this, this.props.article.headline, this.props.article.link)
+  }
     render() {
         return (
             <Container theme={theme}>
@@ -139,7 +152,7 @@ class NewsDetails extends Component {
                             <View style={styles.shareWrapper}>
                                 {this.props.article.author ? <Text style={styles.author} numberOfLines={1}>By {this.props.article.author}</Text> : null}
                                 <ButtonFeedback
-                                    onPress={shareTextWithTitle.bind(this, this.props.article.headline, this.props.article.link)}
+                                    onPress={this.sharePress}
                                     style={styles.shareLink}>
                                     <Text style={styles.shareLinkText}>SHARE</Text>
                                     <Icon name='md-share-alt' style={styles.shareLinkIcon} />

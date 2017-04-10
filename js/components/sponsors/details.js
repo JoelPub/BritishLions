@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView,NativeModules } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -25,7 +25,16 @@ class SponsorDetails extends Component {
         super(props)
         this._scrollView = ScrollView
     }
-
+    componentDidMount() {
+       let interaction = "/sponsors/" + this.props.details.title
+        NativeModules.One.sendInteraction(interaction,
+          null);
+    }
+    linkCallBack = () => {
+        let interaction = "/sponsors/" + this.props.details.title + '/visit'
+        NativeModules.One.sendInteraction(interaction,
+          null);
+    }
     render() {
         let shareLinkIcon = this.props.details.url? <Icon name='md-open' style={styles.shareLinkIcon} /> : null
         
@@ -56,7 +65,7 @@ class SponsorDetails extends Component {
                             </View>
 
                             <View style={styles.shareLinkWrapper}>
-                                <ExternalLink style={styles.shareLink} url={this.props.details.url}>
+                                <ExternalLink style={styles.shareLink} url={this.props.details.url} type={'sponsors'} callBack={this.linkCallBack}>
                                     <Text style={styles.shareLinkText}>{shareLinkIcon} {this.props.details.label.toUpperCase()}</Text>
                                 </ExternalLink>
                             </View>

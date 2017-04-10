@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert } from 'react-native'
+import { Alert,NativeModules } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute, resetRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
@@ -142,6 +142,8 @@ class LionsSidebar extends Component {
             'Are you sure you want to logout?',
             [
                 {text: 'Yes', onPress: () => {
+                    NativeModules.One.sendInteraction('/logout',
+                      { emailAddress : this.props.userProfile.userID });
                     this.props.setAccessGranted(false)
                     removeToken(true)
                     removeGoodFormFavoritePlayerList()
@@ -247,6 +249,7 @@ function bindActions(dispatch) {
 
 export default connect((state) => {
     return {
-        isAccessGranted: state.token.isAccessGranted
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile:state.squad.userProfile,
     }
 }, bindActions)(LionsSidebar)

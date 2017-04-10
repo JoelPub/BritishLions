@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, ScrollView, ListView } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView, ListView ,NativeModules} from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -33,6 +33,8 @@ class Galleries extends Component {
     }
     
     componentDidMount() {
+        NativeModules.One.sendInteraction("/galleries",
+          { emailAddress : "" });
         this.props.fetchContent(this.url)
     }
 
