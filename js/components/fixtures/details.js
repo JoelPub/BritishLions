@@ -13,7 +13,8 @@ import Countdown from '../global/countdown'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-
+import data from '../../../contents/fixtures/data.json'
+import {getAddedToCalanderCheck,setAddedToCalanderCheck} from '../utility/asyncStorageServices'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -35,47 +36,81 @@ class FixtureDetails extends Component {
         }
     }
 
-    calendarAddEvent(params){
-        let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
-        let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
-        endDateOfEvent.setHours(endDateOfEvent.getHours() + 1) // Add 1 hour for Event, to provide time range display
-        let endTime = endDateOfEvent.toISOString() // UTC Format
 
-        if (Platform.OS === 'android') { 
-            // Used third party for Calendar Event
-            // On Function Params : String eventTitle, String descEvent, String locationEvent, String dateOfEvent
-            NativeModules.CalendarMAndroid.addCalendarEvent(params.details.title, params.details.description, params.details.stadium, dateOfEvent)
-        } else { 
-            // Used Native Module access for iOS
-            NativeModules.CalendarManager.authorizeEventStore()
-                .then(status => {
-                    // handle status
-                    if (status === 'authorized') {
-                        NativeModules.CalendarManager.saveEvent(params.details.title, {
-                            location: params.details.stadium,
-                            notes: params.details.description,
-                            startDate: dateOfEvent,
-                            endDate: endTime
-                        })
-                        .then(id => {
-                            // handle success
-                            alertBox('Success','Saved to Calendar')
-                        })
-                        .catch(error => {
-                            // handle error
-                            alertBox('Error','Event cannot be saved to Calendar. Please try again later')
-                        })
-                    }else{
+
+   addMatchesToCalendar(){
+   getAddedToCalanderCheck().then((status) =>{
+   console.warn("status", status)
+       if(status && status === "added"){
+           alertBox('Warning','You have added the events to the calendar')
+        }else{
+        let addedSuccess = true
+         data.map(function(item) {
+            let errorcode = 0
+            let params = {}
+            params.details = item
+            let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
+            let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
+            endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
+            let endTime = endDateOfEvent.toISOString() // UTC Format
+
+            if (Platform.OS === 'android') {
+                // Used third party for Calendar Event
+                // On Function Params : String eventTitle, String descEvent, String locationEvent, String dateOfEvent
+                NativeModules.CalendarMAndroid.addCalendarEvent(params.details.title, params.details.description, params.details.stadium, dateOfEvent)
+            } else {
+                // Used Native Module access for iOS
+                NativeModules.CalendarManager.authorizeEventStore()
+                    .then(status => {
+                        // handle status
+                        if (status === 'authorized') {
+                            NativeModules.CalendarManager.saveEvent(params.details.title, {
+                                location: params.details.stadium,
+                                notes: params.details.description,
+                                startDate: dateOfEvent,
+                                endDate: endTime
+                            })
+                            .then(id => {
+                                // handle success
+                                //alertBox('Success','Saved to Calendar')
+                            })
+                            .catch(error => {
+                                // handle error
+                                addedSuccess = false
+                                errorcode = 1
+                                alertBox('Error','Event cannot be saved to Calendar. Please try again later')
+                            })
+                        }else{
+                            addedSuccess = false
+                            errorcode = 2
+                            alertBox('No Access','Please authorize Calendar Access in the Device Settings')
+                        }
+                    })
+                    .catch(error => {
+                        // handle error
+                        addedSuccess = false
+                        errorcode = 2
                         alertBox('No Access','Please authorize Calendar Access in the Device Settings')
-                    }
-                })
-                .catch(error => {
-                    // handle error
-                    alertBox('No Access','Please authorize Calendar Access in the Device Settings')
-                })
-        }
-    }
+                    })
+            }
+           })
+           if(addedSuccess){
+                console.warn("all logged successfully")
+                setAddedToCalanderCheck()
+           }else{
+                switch(errorcode){
+                    case 1:
+                     alertBox('Error','Event cannot be saved to Calendar. Please try again later')
+                    break;
 
+                    case 2:
+                    alertBox('No Access','Please authorize Calendar Access in the Device Settings')
+                    break;
+                }
+           }
+         }
+       })
+    }
     render() {
         return (
             <Container theme={theme} style={styles.container}>
@@ -110,7 +145,7 @@ class FixtureDetails extends Component {
                                             THE GAME IS TODAY!
                                         </Text>
                                     :
-                                        <ButtonFeedback onPress={()=>this.calendarAddEvent(this.props)}>
+                                        <ButtonFeedback onPress={this.addMatchesToCalendar.bind(this)}>
                                             <Text style={styles.titleBarLinkText}>
                                                 <Icon name='md-calendar' style={styles.icon} /> ADD TO CALENDAR
                                             </Text>
@@ -134,4 +169,3 @@ export default connect((state) => {
         isGameIsOn: !state.timer.isCountDownTimerEnd
     }
 }, null)(FixtureDetails)
-

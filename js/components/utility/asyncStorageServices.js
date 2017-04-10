@@ -79,6 +79,16 @@ export async function getAccessToken() {
     })
 }
 
+export async function setAddedToCalanderCheck() {
+    await AsyncStorage.setItem('ADDED_EVNETS_TO_CALENDAR', "added")
+}
+
+export async function getAddedToCalanderCheck() {
+    return await AsyncStorage.getItem('ADDED_EVNETS_TO_CALENDAR', (err, result) => {
+        return result
+    })
+}
+
 export async function getRefreshToken() {
     return await AsyncStorage.getItem('REFRESH_TOKEN', (err, result) => {
         return result
