@@ -23,6 +23,8 @@ import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
 import Data from '../../../contents/my-lions/onboarding/data'
+import { getSoticFullPlayerListR2} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import loader from '../../themes/loader-position'
 import SquadModal from '../global/squadModal'
@@ -33,6 +35,9 @@ import { strToUpper,isEmptyObject } from '../utility/helper'
 import { setUserProfile , setPrivateLeagues, setVisitedOnboarding} from '../../actions/squad'
 import { actionsApi } from '../utility/urlStorage'
 import { setAccessGranted } from '../../actions/token'
+import {convertSquadToShow,checkFullSquad} from '../global/squadToShow'
+import unionData from '../../../contents/unions/data'
+import SquadModel from  'modes/Squad'
 
 const locStyle = styleSheetCreate({
     button: {
@@ -105,6 +110,7 @@ class MyLions extends Component {
         }
         this.pageWindow=[]
         this._scrollView = ScrollView
+        this.Data=[]
     }
 
     _showList(item, route) {
@@ -225,10 +231,10 @@ class MyLions extends Component {
             })   
     }
 
-    _updateFavPlayers() {
-        removeGoodFormFavoritePlayerList() 
-        getGoodFormFavoritePlayerList()
-    }
+    // _updateFavPlayers() {
+    //     removeGoodFormFavoritePlayerList() 
+    //     getGoodFormFavoritePlayerList()
+    // }
 
     _openInformation() {
         this.setState({
@@ -237,92 +243,101 @@ class MyLions extends Component {
     }
     componentDidMount() {
         // console.log('onBordingModalVisible true')      
-        this.setState({onBordingModalVisible:true})
-        NativeModules.One.sendInteraction("/myLions",
-          { emailAddress : "" });
+        this.setState({onBordingModalVisible:true},()=>{
+            this.Data=[]
+            Data.map((value,index)=>{
+                this.Data.push(value)
+            })
+        })
+        // removeUserCustomizedSquad()
     }
 
     _renderLogic(isLogin) {
         if (isLogin) { // user is logged in
-            this._updateFavPlayers()
-
-
-            getUserId().then((userID) => {
-                this.setState({ userID },()=>{
-                    getUserFullName().then((userName) => {
-                        let firstName=''
-                        let lastName=''
-                        let initName = ''
-                        if(typeof userName==='string') {
-                            let u=userName.trim().replace(/\s+/g,' ')
-                            // console.log('userName',userName)
-                            firstName=u.split(' ')[0]||''
-                            lastName=u.split(' ')[1]||''
-                            initName = ''
-                            u.split(' ').map((value, index)=>{
-                                initName = initName + value[0]
-                            })
-                            // console.log('firstName',firstName)
-                            // console.log('lastName',lastName)
-                            // console.log('initName',initName)
-                        }
-
-                        // check if user is first login
-                        isFirstLogIn().then((isFirst) => {
-                            // when first login, it will show the onboarding
-                            isFirst = isFirst === 'yes'? true : false
-                            // isFirst = true
-                            if (!isFirst) {
-                                // console.log('onBordingModalVisible false1')      
-                                this.setState({onBordingModalVisible:false})
+            // this._updateFavPlayers()
+            setTimeout(()=>{
+                getUserId().then((userID) => {
+                    this.setState({ userID },()=>{
+                        getUserFullName().then((userName) => {
+                            let firstName=''
+                            let lastName=''
+                            let initName = ''
+                            if(typeof userName==='string') {
+                                let u=userName.trim().replace(/\s+/g,' ')
+                                // console.log('userName',userName)
+                                firstName=u.split(' ')[0]||''
+                                lastName=u.split(' ')[1]||''
+                                initName = ''
+                                u.split(' ').map((value, index)=>{
+                                    initName = initName + value[0]
+                                })
+                                // console.log('firstName',firstName)
+                                // console.log('lastName',lastName)
+                                // console.log('initName',initName)
                             }
-                            let squadData={ "backs" : [],
-                                            "wildcard" : "",
-                                            "captain" : "",
-                                            "forwards" : [],
-                                            "kicker" : ""
-                                            }                
-                            let optionsTeam = {
-                                url: 'https://www.api-ukchanges2.co.uk/api/protected/squad/get?_=1483928168053',
-                                method: 'get',
-                                onSuccess: (res) => {
-                                    if(res.data) {
-                                        // console.log('res.data',res.data)
-                                        let squadFeed=eval(`(${res.data})`)
-                                        for( let pos in squadData) {
-                                            // console.log('pos',pos)
-                                            // console.log('squadFeed[pos]',squadFeed[pos==='wildcard'?'widecard':pos])
-                                            if(squadFeed[pos==='wildcard'?'widecard':pos]) {
-                                                squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos].split('|'):squadFeed[pos==='wildcard'?'widecard':pos]
-                                            }
+
+                            // check if user is first login
+                            isFirstLogIn().then((isFirst) => {
+                                // when first login, it will show the onboarding
+                                isFirst = isFirst === 'yes'? true : false
+                                // isFirst = true
+                                let squadData={ "backs" : [],
+                                                "wildcard" : "",
+                                                "captain" : "",
+                                                "forwards" : [],
+                                                "kicker" : ""
+                                                }
+                                if(isFirst) {
+                                    getUserCustomizedSquad().then((catchedSquad)=>{
+                                        if(catchedSquad.error){
+                                                this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
+                                        }else{
+                                            getSoticFullPlayerListR2().then((catchedFullPlayerList) => {
+                                                // console.log('catchedFullPlayerList',catchedFullPlayerList)
+                                                if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                                                    // console.log('catchedSquad.data',catchedSquad.data)
+                                                    let squadFeed=eval(`(${catchedSquad.data})`)
+                                                    let showSquadFeed=convertSquadToShow(SquadModel.format(squadFeed),catchedFullPlayerList,false,unionData)
+                                                    // console.log('squadFeed',squadFeed)
+                                                    // console.log('showSquadFeed',showSquadFeed)
+                                                    let fullFeed=checkFullSquad(showSquadFeed.toJS())
+                                                    // console.log('fullFeed',fullFeed)
+                                                    for( let pos in squadData) {
+                                                        // console.log('pos',pos)
+                                                        if(squadFeed[pos==='wildcard'?'widecard':pos]) {
+                                                            // console.log('squadFeed[pos]',squadFeed[pos])
+                                                            squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos]:squadFeed[pos==='wildcard'?'widecard':pos]
+                                                            // console.log('squadData[pos]',squadData[pos])
+                                                        }
+                                                    }
+                                                    // console.log('squadFeed',squadFeed)
+                                                    this.getRating(isFirst,fullFeed,squadData,userName,firstName,lastName,initName)
+                                                }
+                                                else {
+                                                    this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
+                                                }
+                                            }).catch((error) => {
+                                                this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
+                                            })
                                         }
-                                    }
+                                    })
+                                }
+                                else {
+                                    this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
+                                }                                    
+                            }).catch((error) => {this.getRating(false,false,squadData,userName,firstName,lastName,initName)})                        
+                        }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})                    
+                    })
+                }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})
 
-                                    this.getRating(isFirst,squadData,userName,firstName,lastName,initName)
-                                    
-                                },
-                                onError: ()=>{
-                                    this.getRating(isFirst,squadData,userName,firstName,lastName,initName)
-                                },
-                                isRequiredToken: true
-                            }
-                            service(optionsTeam)
-                        }).catch((error) => {this.setState({onBordingModalVisible:false})})                        
-                    }).catch((error) => {this.setState({onBordingModalVisible:false})})
-                    
-                })
-            }).catch((error) => {this.setState({onBordingModalVisible:false})})
-
-
+            },1000)
         }
         else {
-
-            // console.log('onBordingModalVisible false2')      
-            this.setState({onBordingModalVisible:false})
+            this.setState({onBordingModalVisible:false},()=>this._signInRequired())
         }
     }
 
-    getRating(isFirst,squadData,userName,firstName,lastName,initName){
+    getRating(isFirst,fullFeed,squadData,userName,firstName,lastName,initName){
         // console.log('getRating',squadData)
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
@@ -331,35 +346,36 @@ class MyLions extends Component {
             onAxiosEnd: null,
             method: 'post',
             onSuccess: (res) => {
-                console.log('res',res)
-                console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
-                // console.log('onBordingModalVisible false3')      
+                // console.log('res',res)
+                // console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
+                // console.log('this.state.userID',this.state.userID)
                 this.setState({onBordingModalVisible:false})
-                if(res.data&&isFirst&&!(this.props.visitedOnboarding.id!==undefined && this.props.visitedOnboarding.id===this.state.userID)) {
-                        Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
-                            "id": "0",
-                            "highLight":3,
-                            "description": [
-                            "WELL DONE!",
-                            `You picked ${res.data.percentage} players from the official British & Irish Lions 2017 Squad.`,
-                            "You have earned the rank of:",
-                            strToUpper(res.data.title),
-                            "With the announcement of the official squad, we've updated My Lions with some exciting new gameplay features.",
-                            "Click next to discover what's new in this version."
-                            ]
-                        })
-                        this.setState({totalPages:Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding({id:this.state.userID}))
+                if(res.data&&isFirst&&!(this.props.visitedOnboarding.id!==undefined &&this.props.visitedOnboarding.id!==null && this.props.visitedOnboarding.id===this.state.userID)) {
+                        if (fullFeed) {
+                            this.Data.splice(0,Data[0]&&Data[0].id==='0'?1:0,{
+                                "id": "0",
+                                "highLight":3,
+                                "description": [
+                                "WELL DONE!",
+                                `You picked ${res.data.percentage} players from the official British & Irish Lions 2017 Squad.`,
+                                "You have earned the rank of:",
+                                strToUpper(res.data.selectorRating),
+                                "With the announcement of the official squad, we've updated My Lions with some exciting new gameplay features.",
+                                "Click next to discover what's new in this version."
+                                ]
+                            })
+                        }
+                        
+                        this.setState({totalPages:this.Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding({id:this.state.userID}))
                         
                 }
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onError: ()=>{
-                // console.log('onBordingModalVisible false4')      
                 this.setState({onBordingModalVisible:false})
                 this.getProfile(userName,firstName,lastName,initName)
             },
             onAuthorization: () => {
-                    // console.log('onBordingModalVisible false5')      
                     this.setState({onBordingModalVisible:false})
                     this._signInRequired()
             },
@@ -382,7 +398,7 @@ class MyLions extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    console.log('res.data',res.data)
+                    // console.log('res.data',res.data)
                         let userProfile = Object.assign(res.data, {
                             userName: userName,
                             initName: initName,
@@ -522,7 +538,7 @@ class MyLions extends Component {
                                     onMomentumScrollEnd={this.scrollEnd.bind(this)}
                                     >
                                     {
-                                        Data.map((item,index)=>{
+                                        this.Data.map((item,index)=>{
                                             return(
                                                 <View  key={index} style={[styles.onboardingPage, (!this.state.isLoaded||this.state.currentPage!==index)&&{opacity:0}]} onLayout={this.measurePage.bind(this,index)}>
                                                     {

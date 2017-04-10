@@ -71,9 +71,9 @@ export function convertSquadToShow(squad,fullPlayerList,isPop,uniondata) {
 
 export function checkFullSquad(squadShow) {
     let result=true
-    console.log('squadShow',squadShow)
+    // console.log('squadShow',squadShow)
     for(let node in squadShow) {
-            console.log('node',node)
+            // console.log('node',node)
         if(node==='backs'||node==='forwards') {
             squadShow[node].map((value,index)=>{
                 if(value===null) result=false

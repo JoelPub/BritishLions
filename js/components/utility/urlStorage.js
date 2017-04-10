@@ -11,6 +11,8 @@ const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
 
 const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=410'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
+const SOTIC_GET_PLAYER_URL_R2 = '/tools/feeds?id=408'
+const SOTIC_GET_PLAYER_URL_R2_NAME = 'SoticFullPlayersR2'
 const SOTIC_GET_SUPPLIED_IMAGE_URL = '/feeds/app/graphics_json.php'
 const SOTIC_GET_SUPPLIED_IMAGE_URL_NAME = 'SoticSuppliedImage'
 
@@ -67,6 +69,8 @@ export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
             return SOTIC_BASE_URL + SOTIC_GET_PLAYER_URL
+        case SOTIC_GET_PLAYER_URL_R2_NAME:
+            return SOTIC_BASE_URL + SOTIC_GET_PLAYER_URL_R2
         case SOTIC_GET_SUPPLIED_IMAGE_URL_NAME:
             return SOTIC_BASE_URL + SOTIC_GET_SUPPLIED_IMAGE_URL
         case EYC3_AUTO_POPULATED_SQUAD_URL_NAME:
