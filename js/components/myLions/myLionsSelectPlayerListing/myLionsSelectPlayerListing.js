@@ -24,11 +24,12 @@ import { drillDown } from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
 import { removeToken } from '../../utility/asyncStorageServices'
 import { service } from '../../utility/services'
-import { getAssembledUrl } from '../../utility/urlStorage'
+import { actionsApi } from '../../utility/urlStorage'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import LionsFooter from '../../global/lionsFooter'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getEYC3OfficialSquad,removeEYC3OfficialSquad} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { setPositionToAdd } from '../../../actions/position'
 import { strToUpper , strToLower,splitName} from '../../utility/helper'
 import Immutable, { Map, List,Iterable } from 'immutable'
@@ -200,6 +201,7 @@ class MyLionsSelectPlayerListing extends Component {
     }
 
     componentDidMount() {
+        // removeEYC3OfficialSquad()
         setTimeout(()=>{this._getSelectPlayers()},600)
     }
 
@@ -207,38 +209,59 @@ class MyLionsSelectPlayerListing extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  let optionsOfficialSquad = {
-                    url: 'http://bilprod.azurewebsites.net/GetOfficalSquad',
-                    data: {},
-                    onAxiosStart: null,
-                    onAxiosEnd: null,
-                    method: 'post',
-                    onSuccess: (res) => {
-                        console.log('res.data',res.data)
-                        if(res.data) {
+                //   let optionsOfficialSquad = {
+                //     url: actionsApi.eyc3GetOfficalSquad,
+                //     data: {},
+                //     onAxiosStart: null,
+                //     onAxiosEnd: null,
+                //     method: 'post',
+                //     onSuccess: (res) => {
+                //         console.log('res.data',res.data)
+                //         if(res.data) {
+                //             let playerList=[]
+                //             for (let node in res.data) {
+                //                 if(node==='backs'||node==='forwards') {
+                //                     res.data[node].map((value,index)=>{
+                //                         if (playerList.indexOf(value)===-1) {playerList.push(value)}
+                //                     })
+                //                 }
+                //                 else {
+                //                     if (playerList.indexOf(res.data[node])===-1) {playerList.push(res.data[node])}
+                //                 }
+                //             }
+                //             this._listPlayer(playerList, catchedFullPlayerList)
+                //         }
+                        
+                //     },
+                //     isRequiredToken: true,
+                //     channel: 'EYC3',
+                //     isQsStringify:false
+                // }
+                // service(optionsOfficialSquad)
+                getEYC3OfficialSquad().then((catchedOfficialSquad) => {
+                        // console.log('catchedOfficialSquad',catchedOfficialSquad)
+                        if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
                             let playerList=[]
-                            for (let node in res.data) {
+                            for (let node in catchedOfficialSquad) {
                                 if(node==='backs'||node==='forwards') {
-                                    res.data[node].map((value,index)=>{
+                                    catchedOfficialSquad[node].map((value,index)=>{
                                         if (playerList.indexOf(value)===-1) {playerList.push(value)}
                                     })
                                 }
                                 else {
-                                    if (playerList.indexOf(res.data[node])===-1) {playerList.push(res.data[node])}
+                                    if (playerList.indexOf(catchedOfficialSquad[node])===-1) {playerList.push(catchedOfficialSquad[node])}
                                 }
                             }
-                            // console.log('playerList',playerList)
                             this._listPlayer(playerList, catchedFullPlayerList)
                         }
-                        
-                    },
-                    isRequiredToken: true,
-                    channel: 'EYC3',
-                    isQsStringify:false
-                }
-                service(optionsOfficialSquad)
-
-                
+                        else {                            
+                            this.setState({ isLoaded: true })
+                        }
+                }).catch((error) => {
+                      this.setState({ isLoaded: true }, () => {
+                              this._showError(error) // prompt error
+                      })
+                })
               }
           }).catch((error) => {
               this.setState({ isLoaded: true }, () => {
@@ -255,9 +278,9 @@ class MyLionsSelectPlayerListing extends Component {
                 if(searchPlayer(playerFeed,id,this.uniondata)!==null) selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
         })
         // console.log('filter',filter.replace(/\s/g,''))
-        console.log('selectPlayers',selectPlayers)
-        console.log('filter',filter)
-        console.log('this.props.teamToShow',this.props.teamToShow)
+        // console.log('selectPlayers',selectPlayers)
+        // console.log('filter',filter)
+        // console.log('this.props.teamToShow',this.props.teamToShow)
         if(filter===undefined) {
             selectPlayers=selectPlayers.filter(x=>{
                 return this.props.teamToShow.forwards.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1 || this.props.teamToShow.backs.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1
@@ -268,11 +291,11 @@ class MyLionsSelectPlayerListing extends Component {
                         let result=false
                         if(typeof x.position==='string') {
                             x.position.split('/').map((value,index)=>{
-                                console.log('value',value)
-                                console.log('mapFShow(filter)',mapFShow(filter))
+                                // console.log('value',value)
+                                // console.log('mapFShow(filter)',mapFShow(filter))
                                 if(mapFShow(filter).split('-').indexOf(strToLower(value).trim())>-1 ) {
-                                    console.log('found')
-                                    result=true
+                                    // console.log('found')
+                                    result=this.props.teamToShow.forwards.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)===-1 && this.props.teamToShow.backs.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)===-1
                                 }
                             })
                         }
@@ -281,7 +304,7 @@ class MyLionsSelectPlayerListing extends Component {
                     }
                 ) 
         }
-        console.log('selectPlayers',selectPlayers)
+        // console.log('selectPlayers',selectPlayers)
         this.setState({
             isLoaded: true,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)
