@@ -39,7 +39,12 @@ class FixtureDetails extends Component {
 
 
    calendarAddEvent(params){
-   let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
+     let  date = this.props.details.date
+     let  interaction = "/fixtures/" + date + '/calendar'
+     NativeModules.One.sendInteraction(interaction,
+       { emailAddress : "" });
+
+     let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
    let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
    endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
    let endTime = endDateOfEvent.toISOString() // UTC Format
@@ -117,6 +122,13 @@ class FixtureDetails extends Component {
            })
        }
     }
+    componentDidMount() {
+        let  date = this.props.details.date
+        let  interaction = "/fixtures/" +date
+        NativeModules.One.sendInteraction(interaction,
+          { emailAddress : "" });
+    }
+
     render() {
         return (
             <Container theme={theme} style={styles.container}>

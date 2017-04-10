@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView ,NativeModules} from 'react-native'
 import { drillDown } from '../../actions/content'
 import { Container, Text } from 'native-base'
 import theme from '../../themes/base-theme'
@@ -27,6 +27,10 @@ class Fixtures extends Component {
 
     _drillDown(data) {
         this.props.drillDown(data, 'fixtureDetails')
+    }
+    componentDidMount() {
+      NativeModules.One.sendInteraction("/fixtures",
+        { emailAddress : "" });
     }
 
     render() {

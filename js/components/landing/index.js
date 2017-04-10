@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert } from 'react-native'
+import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert ,NativeModules} from 'react-native'
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
@@ -237,6 +237,9 @@ class Landing extends Component {
     }
 
     componentDidMount() {
+        NativeModules.One.sendInteraction("/home",
+          { emailAddress : "" });
+
         setTimeout(() => {
             this._fetchContent()
             if (this.props.isAccessGranted) {

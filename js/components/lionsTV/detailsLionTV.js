@@ -87,6 +87,11 @@ class DetailsLionsTV extends Component {
                this.playVideo(this.props.connectionInfo) 
             }
   }
+  shareClick = () => {
+    NativeModules.One.sendInteraction("/lionsTV/share",
+      { emailAddress : "" });
+    shareTextWithTitle(this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)
+  }
 
   render(){
     return(
@@ -154,7 +159,7 @@ class DetailsLionsTV extends Component {
                  
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
-                          onPress={shareTextWithTitle.bind(this, this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)}
+                          onPress={this.shareClick}
                           style={styles.shareLink}>
                           <Text style={styles.shareLinkText}>SHARE</Text>
                           <Icon name='md-share-alt' style={styles.shareLinkIcon} />

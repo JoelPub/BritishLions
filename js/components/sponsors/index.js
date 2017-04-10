@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Linking, ScrollView } from 'react-native'
+import { Image, View, Linking, ScrollView,NativeModules } from 'react-native'
 import { drillDown, saveContent } from '../../actions/content'
 import { Container, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -58,6 +58,9 @@ class Sponsors extends Component {
     }
 
     componentDidMount() {
+
+        NativeModules.One.sendInteraction("/sponsors",
+         null);
         this.props.saveContent(Data)
     }
 

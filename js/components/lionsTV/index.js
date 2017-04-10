@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, ScrollView } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView,NativeModules } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -31,6 +31,8 @@ class LionsTV extends Component {
     }
 
     componentDidMount() {
+      NativeModules.One.sendInteraction("/lionsTV",
+        { emailAddress : "" });
         this.props.fetchContent(this.url)
     }
 

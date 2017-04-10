@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder  } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder ,NativeModules } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -127,6 +127,8 @@ class MyAccount extends Component {
                             // logout the user when successfully changed the email
                             removeToken()
                             this.props.setAccessGranted(false)
+                            NativeModules.One.sendInteraction("/myAccount/newEmail",
+                              { emailAddress : this.props.userProfile.userID });
                             Alert.alert(
                                 'Messages',
                                 'Your email has been successfully changed.',
@@ -217,7 +219,11 @@ class MyAccount extends Component {
 
         return false
       }
-
+    componentDidMount() {
+        console.log(this.props.userProfile)
+        NativeModules.One.sendInteraction("/myAccount",
+          { emailAddress : this.props.userProfile.userID });
+    }
     render() {
         return (
             <Container>
@@ -348,11 +354,13 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         popRoute: () => dispatch(popRoute()),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+
     }
 }
 
 export default connect((state) => {
     return {
-        isAccessGranted: state.token.isAccessGranted
+        isAccessGranted: state.token.isAccessGranted,
+        userProfile:state.squad.userProfile,
     }
 }, bindAction)(MyAccount)
