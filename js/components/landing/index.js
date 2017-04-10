@@ -624,7 +624,7 @@ class Landing extends Component {
                                             <ImagePlaceholder height={200}>
                                                 <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
                                                     <Image
-                                                        resizeMode='center' 
+                                                        resizeMode='contain'
                                                         style={styles.bannerImg}
                                                         source={image} />
                                                 </LinearGradient>

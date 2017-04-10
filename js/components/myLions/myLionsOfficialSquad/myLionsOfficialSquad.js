@@ -29,6 +29,7 @@ import { service } from '../../utility/services'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getEYC3OfficialSquad,removeEYC3OfficialSquad} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { setOfficialSquadToShow,setCoachAndStaff } from '../../../actions/squad'
 import { getAssembledUrl,actionsApi } from '../../utility/urlStorage'
 import OfficialSquadModel from  '../../../modes/Squad/OfficialSquadModel'
@@ -160,8 +161,8 @@ class MyLionsOfficialSquad extends Component {
                     therdJson.map((item)=>{
                         coachAndStaff.push(item)
                     })
-                    console.log('测试******')
-                    console.log(coachAndStaff)
+                    // console.log('测试******')
+                    // console.log(coachAndStaff)
                     this.props.setCoachAndStaff(coachAndStaff)
                 })
 
@@ -169,41 +170,46 @@ class MyLionsOfficialSquad extends Component {
 
 
         }).catch((error)=>{
-            console.log(error)
+            // console.log(error)
         })
     }
     _getSquad(userId){
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  let optionsOfficialSquad = {
-                      url: actionsApi.eyc3GetOfficalSquad,
-                      //data: {},
-                      onAxiosStart: null,
-                      onAxiosEnd: null,
-                      method: 'post',
-                      channel: 'EYC3',
-                      isQsStringify:false,
-                      onSuccess: (res) => {
-                          if(res.data) {
-                                  console.log('res.data',res.data)
-                                  let showSquadFeed=convertSquadToShow(OfficialSquadModel(res.data),catchedFullPlayerList,this.uniondata)
-                                  this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                                  this.setState({isLoaded:true})
-                          }
-                      },
-                      onError: null,
-                      onAuthorization: () => {
-                            //  this._signInRequired()
-                      },
-                      isRequiredToken: false
-                  }
-                  // if(typeof(this.props.officialSquadToShow)==='object'&&!isEmptyObject(this.props.officialSquadToShow)) {
-                  //   this.setState({isLoaded:true})
+                  // let optionsOfficialSquad = {
+                  //     url: actionsApi.eyc3GetOfficalSquad,
+                  //     onAxiosStart: null,
+                  //     onAxiosEnd: null,
+                  //     method: 'post',
+                  //     channel: 'EYC3',
+                  //     isQsStringify:false,
+                  //     onSuccess: (res) => {
+                  //         if(res.data) {
+                  //                 let showSquadFeed=convertSquadToShow(OfficialSquadModel(res.data),catchedFullPlayerList,this.uniondata)
+                  //                 this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                  //                 this.setState({isLoaded:true})
+                  //         }
+                  //     },
+                  //     onError: null,
+                  //     isRequiredToken: false
                   // }
-                  // else {
-                   service(optionsOfficialSquad)
-                  // }
+                  //  service(optionsOfficialSquad)
+                  getEYC3OfficialSquad().then((catchedOfficialSquad) => {
+                        // console.log('catchedOfficialSquad',catchedOfficialSquad)
+                        if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
+                            let showSquadFeed=convertSquadToShow(OfficialSquadModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
+                            this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                            this.setState({isLoaded:true})
+                        }
+                        else {
+                            this.setState({ isLoaded: true })
+                        }
+                  }).catch((error) => {
+                        this.setState({ isLoaded: true }, () => {
+                                this._showError(error) // prompt error
+                        })
+                  })
 
               }
           }).catch((error) => {
