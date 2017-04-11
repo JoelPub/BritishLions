@@ -106,7 +106,8 @@ class GreateGroupModal extends Component {
     this.props.errorBackButtonClick()
   }
   shareClick = () => {
-    shareTextWithTitle(this.props.data.invitation_code,'')
+    let describe = 'Join my Private League in the Official British & Irish Lions App, here is the code: [' + this.props.data.invitation_code+'].'
+    shareTextWithTitle(describe,'')
   }
   render() {
     let { modalType ,data} = this.props
