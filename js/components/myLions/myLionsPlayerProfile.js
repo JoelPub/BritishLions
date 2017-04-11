@@ -80,7 +80,7 @@ class MyLionsPlayerProfile extends Component {
                 return (
                     <ScrollView style={styles.modalViewWrapper}>
                         <Text style={styles.modalTitleText}>ATTACK / DEFENCE / KICKING</Text>
-                        <Text style={styles.modalTextRN}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan vehicula ex non commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</Text>
+                        <Text style={styles.modalTextRN}>Key statistics over the 2015/2016 and 2016/2017 seasons compared with average of all eligible players for their position.</Text>
                     </ScrollView>
                 )
                 break
