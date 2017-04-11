@@ -106,7 +106,7 @@ class GreateGroupModal extends Component {
     this.props.errorBackButtonClick()
   }
   shareClick = () => {
-    let  describe = ' I’ve created a private league on the Lions Official App. Use my code: ' + this.props.data.invitation_code+' to join! '
+    let  describe = ' I’ve created a private league on the Lions Official App. Use my code: ' + this.props.data.invitation_code+' to join! #LionsNZ2017 '
     shareTextWithTitle(describe,'')
   }
   render() {
