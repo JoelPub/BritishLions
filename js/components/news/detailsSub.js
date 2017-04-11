@@ -75,7 +75,13 @@ class NewsDetailsSub extends Component {
         console.log('node',node)
        }
        console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
-       if(e._targetInst._currentElement === 'SHARE'||e._targetInst._currentElement === 'NEXT STORY'||e._targetInst._currentElement.props&&e._targetInst._currentElement.props.children === 'SHARE'||e._targetInst._currentElement.props&&e._targetInst._currentElement.props.children&&e._targetInst._currentElement.props.children[0] === 'NEXT STORY') {
+       if (e._targetInst._currentElement === 'SHARE' ||
+           e._targetInst._currentElement === 'NEXT STORY' || 
+           (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') || 
+           (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] === 'NEXT STORY') ||
+           (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
+           
+           ){
             return false
        }
         return true
@@ -107,7 +113,7 @@ class NewsDetailsSub extends Component {
 
                     <LionsHeader 
                         back={true} 
-                        title='NEWS'
+                        title='NEWS 2'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>

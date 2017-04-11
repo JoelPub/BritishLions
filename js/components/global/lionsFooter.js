@@ -132,22 +132,22 @@ export default class Footer extends Component {
 
                         <View style={styles.socialFooterRow}>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.facebook.com/BritishandIrishLions')} style={styles.socialFooter }>
-                                <Icon name="logo-facebook" style={styles.socialFooterIcon} />
+                                <Icon name="logo-facebook" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://twitter.com/lionsofficial')} style={styles.socialFooter }>
-                                <Icon name="logo-twitter" style={styles.socialFooterIcon} />
+                                <Icon name="logo-twitter" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.youtube.com/channel/UC5Pw6iUW8Dgmb_JSEqzXH3w?&ab_channel=TheBritish&IrishLions')} style={styles.socialFooter }>
-                                <Icon name="logo-youtube" style={styles.socialFooterIcon} />
+                                <Icon name="logo-youtube" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.linkedin.com/company/the-british-and-irish-lions')} style={styles.socialFooter }>
-                                <Icon name="logo-linkedin" style={styles.socialFooterIcon} />
+                                <Icon name="logo-linkedin" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.instagram.com/britishandirishlions/')} style={styles.socialFooter }>
-                                <Icon name="logo-instagram" style={styles.socialFooterIcon} />
+                                <Icon name="logo-instagram" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
                             <ButtonFeedback onPress={() => this.goToURL('https://www.periscope.tv/LionsOfficial/')} style={styles.socialFooter}>
-                                <Image style={styles.socialFooterImgIcon} resizeMode='contain' source={require('../../../images/periscopeIcon.png')} />
+                                <Image style={styles.socialFooterImgIcon} swipeException resizeMode='contain' source={require('../../../images/periscopeIcon.png')} />
                             </ButtonFeedback>
                         </View>
 
