@@ -47,7 +47,7 @@ public class CalendarManagerAndroid extends ReactContextBaseJavaModule {
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                     .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis() + 60 * 60 * 1000)
                     .putExtra(CalendarContract.Events.TITLE, eventTitle)
-                    .putExtra(CalendarContract.Events.ALL_DAY, true)
+                    .putExtra(CalendarContract.Events.ALL_DAY, false)
                     .putExtra(CalendarContract.Events.DESCRIPTION, notesEvent)
                     .putExtra(CalendarContract.Events.EVENT_LOCATION, locationEvent)
                     .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
@@ -61,7 +61,7 @@ public class CalendarManagerAndroid extends ReactContextBaseJavaModule {
             Intent intent = new Intent(Intent.ACTION_EDIT);
             intent.setType("vnd.android.cursor.item/event");
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
-            intent.putExtra(CalendarContract.Events.ALL_DAY, true);
+            intent.putExtra(CalendarContract.Events.ALL_DAY, false);
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis() + 60 * 60 * 1000);
             intent.putExtra(CalendarContract.Events.TITLE, eventTitle);
             intent.putExtra(CalendarContract.Events.DESCRIPTION, notesEvent);

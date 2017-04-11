@@ -107,6 +107,7 @@ class FixtureDetails extends Component {
                if(addedSuccess){
                     console.warn("all logged successfully")
                     setAddedToCalanderCheck()
+                    alertBox('','All the events have been added to calendar successfully')
                }else{
                     switch(errorcode){
                         case 1:
