@@ -68,7 +68,7 @@ class GreateGroupModal extends Component {
       case 'create':
       {
         PageData.title = 'CREATE PRIVATE LEAGUE'
-        PageData.contentText =  'Create a private league and invite friends. Names must be . <insert EYC3 naming requirements/rules>'
+        PageData.contentText =  'Create a private league and invite friends. Names must be between 7 and 14 characters long. Please Confirm if the above is accurate'
         PageData.subTitle = 'LEAGUE NAME'
         PageData.subContentText = ''
       }
