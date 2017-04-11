@@ -27,28 +27,39 @@ export default class ExternalLink extends Component {
             console.log(error);
             alert(error);
         });
-        One.getTid().then(function(tid) {
-            let urlWithTid = url+"?one-tid="+tid
-            One.getURLWithOneTid(urlWithTid).then(function(urlWithOneTid) {
-                console.log('*********************');
-                console.log(urlWithOneTid);
-            },function(error) {
-                console.log('error');
-                console.log(error);
-            });
+
+        One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+            console.log('*********************');
+            if(urlWithOneTid){
+                Linking.canOpenURL(urlWithOneTid).then(supported => {
+                    if (supported) {
+                        Linking.openURL(urlWithOneTid)
+                    } else {
+                        Alert.alert(
+                            'Error',
+                            'This device doesnt support URI: ' + urlWithOneTid
+                        )
+                    }
+                })
+            }
+        },function(error) {
+            console.log('error');
+            console.log(error);
+             if(url){
+                Linking.canOpenURL(url).then(supported => {
+                    if (supported) {
+                        Linking.openURL(url)
+                    } else {
+                        Alert.alert(
+                            'Error',
+                            'This device doesnt support URI: ' + url
+                        )
+                    }
+                })
+            }
         });
-        if(url){
-            Linking.canOpenURL(url).then(supported => {
-                if (supported) {
-                    Linking.openURL(url)
-                } else {
-                    Alert.alert(
-                        'Error',
-                        'This device doesnt support URI: ' + url
-                    )
-                }
-            })
-        }
+
+
     }
 
     render() {
