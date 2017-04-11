@@ -146,27 +146,31 @@ class MyLionsOfficialSquad extends Component {
     _getCoachAndStaffData = () => {
         let coachAndStaff = [];
         _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/coaches.php'}).then((json)=>{
-            coachAndStaff.push(json[0])
-
-            _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/management.php'}).then((otherJson)=>{
-                otherJson.map((item)=>{
-                    coachAndStaff.push(item)
-                })
-                json.map((item,index)=>{
-                    if (index!==0){
-                        coachAndStaff.push(item)
-                    }
-                })
-                _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/backroom.php'}).then((therdJson)=>{
-                    therdJson.map((item)=>{
-                        coachAndStaff.push(item)
+            json.map((item)=>{
+                coachAndStaff.push(item)
                     })
-                    // console.log('测试******')
-                    // console.log(coachAndStaff)
-                    this.props.setCoachAndStaff(coachAndStaff)
-                })
 
-            })
+            this.props.setCoachAndStaff(coachAndStaff)
+
+            //_fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/management.php'}).then((otherJson)=>{
+            //    otherJson.map((item)=>{
+            //        coachAndStaff.push(item)
+            //    })
+            //    json.map((item,index)=>{
+            //        if (index!==0){
+            //            coachAndStaff.push(item)
+            //        }
+            //    })
+            //    //_fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/backroom.php'}).then((therdJson)=>{
+            //    //    therdJson.map((item)=>{
+            //    //        coachAndStaff.push(item)
+            //    //    })
+            //    //    // console.log('测试******')
+            //    //    // console.log(coachAndStaff)
+            //    //
+            //    //})
+            //
+            //})
 
 
         }).catch((error)=>{

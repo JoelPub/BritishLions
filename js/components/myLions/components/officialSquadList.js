@@ -311,7 +311,7 @@ export default class OfficialSquadList extends Component {
                     }
                 </Swiper>
                 
-                <PositionTitle pos='COACHING STAFF' data={this.props.squadDatafeed.coachstaffs}/>
+                <PositionTitle pos='COACHING TEAM' data={this.props.squadDatafeed.coachstaffs}/>
                 <Swiper
                 height={styleVar.deviceWidth*0.63}
                 loop={false}
