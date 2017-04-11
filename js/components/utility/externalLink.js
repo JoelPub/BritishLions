@@ -30,7 +30,6 @@ export default class ExternalLink extends Component {
         },function(error) {
             console.log(error);
         });
-
         if(url){
             Linking.canOpenURL(url).then(supported => {
                 if (supported) {
