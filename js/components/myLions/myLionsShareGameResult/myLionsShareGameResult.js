@@ -95,11 +95,26 @@ class MyLionsShareGameResult extends Component {
       [{text: 'Dismiss'}]
     )
   }
+   getShareDescribe = () => {
+     this.props.data.gameData
+     let describe = ''
+     if( strToUpper(this.props.data.resultInfo.is_draw)==='TRUE') {
+       describe= 'I just drew my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!'
 
+     }else {
+       if ( strToUpper(this.props.data.resultInfo.is_won) ==='TRUE'){
+         describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!'
+       }else {
+         describe= ''
+       }
+     }
+     return  describe
 
+   }
   componentDidMount() {
     setTimeout(()=>{
-      this.shareSnapshot("I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",this.callback)
+      this.getShareDescribe()
+      this.shareSnapshot(this.getShareDescribe() ,this.callback)
     },2000)
 
   }
@@ -115,8 +130,8 @@ class MyLionsShareGameResult extends Component {
         })
         .then(
           res => Share.open({
-            title:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
-            message:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
+            title:this.getShareDescribe(),
+            message:this.getShareDescribe(),
             subject:context,
             url: `data:image/png;base64,${res}`
           }).then((info)=>{
