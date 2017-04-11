@@ -26,6 +26,8 @@ class SponsorDetails extends Component {
         this._scrollView = ScrollView
     }
     componentDidMount() {
+        console.log('***********sendInteraction1')
+        console.log( this.props.details.title)
        let interaction = "/sponsors/" + this.props.details.title
         NativeModules.One.sendInteraction(interaction,
           null);
@@ -76,7 +78,9 @@ class SponsorDetails extends Component {
                                     stylesheet={htmlStyles}
                                     onLinkPress={(url) => goToURL(url)}
                                 />
-                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton} next={true} data={[this.props.details.id, 'sponsorDetails']} />
+                                <PaginationButton label='NEXT SPONSOR' style={styles.paginateButton}
+                                                  next={true} data={[this.props.details.id, 'sponsorDetails']}
+                                />
                             </View>
                         </View>
 

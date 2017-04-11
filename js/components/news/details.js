@@ -111,7 +111,7 @@ class NewsDetails extends Component {
   sharePress = () => {
     NativeModules.One.sendInteraction("/news/share",
       { emailAddress : "" });
-    shareTextWithTitle(this, this.props.article.headline, this.props.article.link)
+    shareTextWithTitle(this.props.article.headline, this.props.article.link)
   }
     render() {
         return (
