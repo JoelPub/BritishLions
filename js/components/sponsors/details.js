@@ -28,12 +28,17 @@ class SponsorDetails extends Component {
     componentDidMount() {
         console.log('***********sendInteraction1')
         console.log( this.props.details.title)
-       let interaction = "/sponsors/" + this.props.details.title
+        let titleNoSpace   = this.props.details.title.replace(/\s+/g, '')
+        let  reallyTitle = titleNoSpace.toLowerCase()
+       let interaction = "/sponsors/" + reallyTitle
+        console.log(interaction)
         NativeModules.One.sendInteraction(interaction,
           null);
     }
     linkCallBack = () => {
-        let interaction = "/sponsors/" + this.props.details.title + '/visit'
+        let titleNoSpace   = this.props.details.title.replace(/\s+/g, '')
+        let  reallyTitle = titleNoSpace.toLowerCase()
+        let interaction = "/sponsors/" + reallyTitle + '/visit'
         NativeModules.One.sendInteraction(interaction,
           null);
     }
