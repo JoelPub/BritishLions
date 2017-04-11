@@ -21,13 +21,17 @@ export default class ExternalLink extends Component {
             NativeModules.One.sendInteraction("/competitionOpen",
               { emailAddress : "" });
         }
+        console.log('@@@@@@');
+        console.log(url);
         One.sendInteractionForOutboundLink(url).catch(function(error) {
             console.log(error);
             alert(error);
         });
         One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+            console.log('*********************');
             console.log(urlWithOneTid);
         },function(error) {
+            console.log('error');
             console.log(error);
         });
         if(url){
