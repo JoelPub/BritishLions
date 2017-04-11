@@ -3,7 +3,7 @@
 import React, { Component,PropTypes } from 'react'
 import { Linking, Alert ,NativeModules} from 'react-native'
 import ButtonFeedback from './buttonFeedback'
-
+var One = NativeModules.One;
 export default class ExternalLink extends Component {
 	constructor(props){
 		super(props)
@@ -18,6 +18,15 @@ export default class ExternalLink extends Component {
             NativeModules.One.sendInteraction("/competitionOpen",
               { emailAddress : "" });
         }
+        One.sendInteractionForOutboundLink(url).catch(function(error) {
+            console.log(error);
+            alert(error);
+        });
+        One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+            console.log(urlWithOneTid);
+        },function(error) {
+            console.log(error);
+        });
         if(this.props.callBack){
             this.props.callBack()
         }
@@ -28,7 +37,7 @@ export default class ExternalLink extends Component {
                 } else {
                     Alert.alert(
                         'Error',
-                        'This device doesnt support URI: ' + url,
+                        'This device doesnt support URI: ' + url
                     )
                 }
             })
