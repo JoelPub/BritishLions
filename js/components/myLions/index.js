@@ -418,7 +418,7 @@ class MyLions extends Component {
         service(optionsUserProfile)        
     }
     privateLeagues(){
-        NativeModules.One.sendInteraction("/myLions/myCompetitionLadder",
+        NativeModules.One.sendInteraction("/myLions/privateLeagues",
           { userName : this.props.userProfile.userName });
         this.props.setPrivateLeagues(true)
         this.props.pushNewRoute('competitionLadder')

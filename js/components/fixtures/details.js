@@ -40,7 +40,11 @@ class FixtureDetails extends Component {
 
    calendarAddEvent(params){
      let  date = this.props.details.date
-     let  interaction = "/fixtures/" + date + '/calendar'
+     let dateNoSpace   = date.replace(/\s+/g, '')
+     let  reallyDate = dateNoSpace.toLowerCase()
+
+     let  interaction = "/fixtures/" + reallyDate + '/calendar'
+     console.log(interaction)
      NativeModules.One.sendInteraction(interaction,
        { emailAddress : "" });
 
@@ -123,9 +127,21 @@ class FixtureDetails extends Component {
            })
        }
     }
+     Trim =(m)=>{
+      while((m.length>0)&&(m.charAt(0)==' '))
+          m   =   m.substring(1, m.length);
+
+      while((m.length>0)&&(m.charAt(m.length-1)==' '))
+          m = m.substring(0, m.length-1);
+       return m;
+      }
     componentDidMount() {
-        let  date = this.props.details.date
-        let  interaction = "/fixtures/" +date
+      let  date = this.props.details.date
+      let dateNoSpace   = date.replace(/\s+/g, '')
+      let  reallyDate = dateNoSpace.toLowerCase()
+
+      let  interaction = "/fixtures/" +reallyDate
+      console.log(interaction)
         NativeModules.One.sendInteraction(interaction,
           { emailAddress : "" });
     }
