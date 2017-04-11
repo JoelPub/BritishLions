@@ -330,7 +330,7 @@ class MyLions extends Component {
                     })
                 }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})
 
-            },1000)
+            },2000)
         }
         else {
             this.setState({onBordingModalVisible:false},()=>this._signInRequired())
