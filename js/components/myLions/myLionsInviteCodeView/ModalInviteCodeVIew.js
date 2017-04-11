@@ -51,7 +51,8 @@ class ModalInviteCodeVIew extends Component {
   shareClick = () => {
     let { data} = this.props
     let invitation_code = data ? data.invitationCode : ''
-    shareTextWithTitle(invitation_code,'')
+    let deccribe = 'I’ve joined a private league on the Lions Official App. Use this code: '+invitation_code+' to join! '
+    shareTextWithTitle(deccribe,'')
   }
   render() {
     let { modalType ,data,groupName} = this.props
