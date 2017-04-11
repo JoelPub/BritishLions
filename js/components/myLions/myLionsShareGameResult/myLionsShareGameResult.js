@@ -99,11 +99,11 @@ class MyLionsShareGameResult extends Component {
      this.props.data.gameData
      let describe = ''
      if( strToUpper(this.props.data.resultInfo.is_draw)==='TRUE') {
-       describe= 'I just drew my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!'
+       describe= 'I just drew my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
 
      }else {
        if ( strToUpper(this.props.data.resultInfo.is_won) ==='TRUE'){
-         describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!'
+           describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
        }else {
          describe= ''
        }
@@ -130,7 +130,7 @@ class MyLionsShareGameResult extends Component {
         })
         .then(
           res => Share.open({
-            title:this.getShareDescribe(),
+            title:'LionsNZ2017',
             message:this.getShareDescribe(),
             subject:context,
             url: `data:image/png;base64,${res}`
