@@ -10,6 +10,9 @@ export default class ExternalLink extends Component {
 	}
 
     goToURL(url) {
+        if(this.props.callBack){
+            this.props.callBack()
+        }
         if(url==='https://tours.lionsrugby.com'){
             NativeModules.One.sendInteraction("/toursOpen",
               { emailAddress : "" });
@@ -27,9 +30,7 @@ export default class ExternalLink extends Component {
         },function(error) {
             console.log(error);
         });
-        if(this.props.callBack){
-            this.props.callBack()
-        }
+
         if(url){
             Linking.canOpenURL(url).then(supported => {
                 if (supported) {
