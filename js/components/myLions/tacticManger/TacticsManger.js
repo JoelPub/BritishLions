@@ -355,6 +355,11 @@ class TacticsManger extends Component {
               <Text style={styles.modalContentText}>Replacements – Indicate the time you would like to use your replacements.</Text>
               
               <Text style={styles.modalContentText}>Playing Style – Select the style of rugby you would like to play in this match.</Text>
+
+              <Text style={[styles.modalContentText, styles.modalContentText2]}>Select the type of Rugby you wish to play in this match these are: </Text>
+              <Text style={styles.modalContentText}>Running - Spin the ball wide</Text>
+              <Text style={styles.modalContentText}>10-man - Keep the ball up front</Text>
+              <Text style={styles.modalContentText}>Balanced - a mixture of the other two</Text>
             </View>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
