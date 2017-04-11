@@ -126,7 +126,7 @@ class NewsDetails extends Component {
 
                     <LionsHeader 
                         back={true} 
-                        title='NEWS 1'
+                        title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
