@@ -1,8 +1,8 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component , } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView ,NativeModules} from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -25,7 +25,13 @@ class SponsorDetailsSub extends Component {
         super(props)
         this._scrollView = ScrollView
     }
-
+    componentDidMount() {
+        console.log('***********sendInteraction1')
+        console.log( this.props.details.title)
+        let interaction = "/sponsors/" + this.props.details.title
+        NativeModules.One.sendInteraction(interaction,
+          null);
+    }
     render() {
         let shareLinkIcon = this.props.details.url? <Icon name='md-open' style={styles.shareLinkIcon} /> : null
 

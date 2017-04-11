@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component,PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { drillReplace } from '../../actions/content'
 import { Text, Icon } from 'native-base'
@@ -83,6 +83,11 @@ class PaginationButton extends Component {
             : null
         )
     }
+}
+PaginationButton.propTypes = {
+    callBack: PropTypes.func,
+}
+PaginationButton.defaultProps = {
 }
 
 function bindAction(dispatch) {

@@ -75,7 +75,7 @@ class SignUp extends Component {
         this.props.popRoute()
     }
     _GoogleSignIn = () => {
-        NativeModules.One.sendInteraction('/register/google', null);
+
          this.setState({user: {}})
         GoogleSignin.signIn()
           .then((user) => {
@@ -96,7 +96,7 @@ class SignUp extends Component {
                 this.setState({
                     fbUser:data
                 })
-                this._handleSignUpWithFB(true)
+                this._handleSignUpWithFB(true,'/register/facebook')
 
             } else {
                 console.log(error, data);
@@ -138,6 +138,10 @@ class SignUp extends Component {
                         this.setState({ isFormSubmitting: false })
                     },
                     onSuccess: () => {
+                        NativeModules.One.sendInteraction('/register/facebook', {
+                            username: json.name,
+                            emailAddress:json.email
+                        });
                         this.setState({
                             loginType:'facebook',
                             loginToken:token,
@@ -206,6 +210,10 @@ class SignUp extends Component {
                     this.setState({ isFormSubmitting: false })
                 },
                 onSuccess: () => {
+                    NativeModules.One.sendInteraction('/register/google', {
+                        username: this.this.state.user.name,
+                        emailAddress:this.state.user.email
+                    });
                    console.log(JSON.stringify(this.state.user.accessToken))
                    if(!this.state.user.accessToken){
                        NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
@@ -245,7 +253,7 @@ class SignUp extends Component {
                 submit: false
             }
         })
-        NativeModules.One.sendInteraction('/register/button', null);
+
         if(isFormValidate) {
             let options = {
                 url: this.serviceUsersUrl,
@@ -262,6 +270,11 @@ class SignUp extends Component {
                     this.setState({ isFormSubmitting: true })
                 },
                 onSuccess: (res) => {
+                    let name = this.state.firstName +' ' + this.state.lastName
+                    NativeModules.One.sendInteraction('/register/button', {
+                        username: name,
+                        emailAddress:this.state.email
+                    });
                     this._userSignUp()
                 },
                 onError: (res) => {
