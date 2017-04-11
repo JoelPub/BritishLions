@@ -161,10 +161,13 @@ module.exports = styleSheetCreate({
     fontSize: 16,
     lineHeight: 22,
     color: '#FFF',
-    marginBottom: 20,
+    marginBottom: 10,
     android: {
       lineHeight: 26
     }
+  },
+  modalContentText2: {
+    marginTop: 20
   },
 
 })
