@@ -79,6 +79,7 @@ class NewsDetailsSub extends Component {
            e._targetInst._currentElement === 'NEXT STORY' || 
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') || 
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] === 'NEXT STORY') ||
+           (e._targetInst._currentElement && e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] && e._targetInst._currentElement.props.children[0].props && e._targetInst._currentElement.props.children[0].props.children && e._targetInst._currentElement.props.children[0].props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
            
            ){
