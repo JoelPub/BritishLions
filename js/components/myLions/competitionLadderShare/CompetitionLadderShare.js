@@ -88,9 +88,9 @@ class CompetitionLadderShare extends Component {
         })
         .then(
           res => Share.open({
-            title:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
-            message:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
-            subject:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
+            title:"I’m ranked xxth on the global leaderboard. Download the Official Lions App to get involved!",
+            message:"I’m ranked xxth on the global leaderboard. Download the Official Lions App to get involved!",
+            subject:"I’m ranked xxth on the global leaderboard. Download the Official Lions App to get involved!",
             url: `data:image/png;base64,${res}`
           }).then((info)=>{
             callback()
