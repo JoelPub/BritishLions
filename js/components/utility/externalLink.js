@@ -27,12 +27,15 @@ export default class ExternalLink extends Component {
             console.log(error);
             alert(error);
         });
-        One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-            console.log('*********************');
-            console.log(urlWithOneTid);
-        },function(error) {
-            console.log('error');
-            console.log(error);
+        One.getTid().then(function(tid) {
+            let urlWithTid = url+"?one-tid="+tid
+            One.getURLWithOneTid(urlWithTid).then(function(urlWithOneTid) {
+                console.log('*********************');
+                console.log(urlWithOneTid);
+            },function(error) {
+                console.log('error');
+                console.log(error);
+            });
         });
         if(url){
             Linking.canOpenURL(url).then(supported => {
