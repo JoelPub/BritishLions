@@ -348,13 +348,13 @@ class TacticsManger extends Component {
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>SELECT TACTICS</Text>
               
-              <Text style={styles.modalContentText}>You can select the tactics you want to employ to defeat your opponent. There are three tactics you can manipulate: </Text>
+              <Text style={styles.modalContentText}>Select your tactics to best defeat your opponent.</Text>
 
-              <Text style={styles.modalContentText}>Boost Player – Select the player who will be the player to carry your team to victory</Text>
+              <Text style={styles.modalContentText}>Boost Player – Select your player of the match.</Text>
 
-              <Text style={styles.modalContentText}>Replacements – Select the time when you wish to start bringing on replacements, be careful too early or too late may affect your chances of winning.</Text>
+              <Text style={styles.modalContentText}>Replacements – Indicate the time you would like to use your replacements.</Text>
               
-              <Text style={styles.modalContentText}>Playing Style – Select the type of Rugby you wish to play in this match.</Text>
+              <Text style={styles.modalContentText}>Playing Style – Select the style of rugby you would like to play in this match.</Text>
             </View>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
