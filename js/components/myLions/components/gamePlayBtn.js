@@ -84,7 +84,37 @@ class GamePlayBtn extends Component {
         }
         
     }
-
+  getProfile = (userName,firstName,lastName,initName)=>{
+    // console.log('getProfile')
+    let optionsUserProfile = {
+      url: actionsApi.eyc3GetuserProfileSummary,
+      data: {id:this.props.userProfile.userID,first_name:firstName,last_name:lastName},
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        if(res.data) {
+          // console.log('res.data',res.data)
+          let userProfile = Object.assign(res.data, {
+            userName: userName,
+            initName: initName,
+            firstName: firstName,
+            lastName: lastName,
+            userID: this.state.userID
+          })
+          this.props.setUserProfile(userProfile)
+        }
+      },
+      onError: null,
+      onAuthorization: () => {
+        this._signInRequired()
+      },
+      isRequiredToken: true
+    }
+    service(optionsUserProfile)
+  }
     playGame() {
       let isGameOVer = this.props.isGameOver
       if (isGameOVer) {
@@ -130,6 +160,9 @@ class GamePlayBtn extends Component {
                     this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
                 }
                 this.submitting=false
+
+              let {userName,initName,firstName,lastName} = this.props.userProfile
+                this.getProfile(userName,firstName,lastName,initName)
             },
             onError: ()=>{
                 console.log('onError')
