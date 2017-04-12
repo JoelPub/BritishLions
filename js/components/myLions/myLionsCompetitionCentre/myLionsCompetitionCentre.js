@@ -149,7 +149,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     _drillDown = (data) => {
-        data.is_test_round?this.props.drillDown(data, 'myLionsTestRound'):this.props.drillDown(data, 'myLionsCompetitionGameListing')
+        data.is_test_round?data.is_active?this.props.drillDown(data, 'myLionsTestRound'):this.props.drillDown(data,'myLionsTestRoundSubmit'):this.props.drillDown(data, 'myLionsCompetitionGameListing')
     }
 
     render() {
@@ -191,8 +191,8 @@ class MyLionsCompetitionCentre extends Component {
                                     {
                                         this.state.competitionInfo.map((value,index)=>{
                                             return (
-                                                <ButtonFeedback disabled={!value.is_available||!value.is_active} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
-                                                    <Round title={strToUpper(value.name)} lock={!value.is_available||!value.is_active} detail={value}/>
+                                                <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
+                                                    <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
                                                 </ButtonFeedback>
                                             )
                                         })
