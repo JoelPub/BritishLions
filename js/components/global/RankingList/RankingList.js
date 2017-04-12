@@ -248,13 +248,13 @@ class RankingList extends Component {
           </View>
 
         {
-          arr.length===0 ? <NilGroup/> :
+          arr.length===0&&!this.props.isLoad ? <NilGroup/> :
             <View style={styles.contentView}>
              <Header addStyle={rolesTextBox}/>
               {
                 arr.map((item, index)=> {
                   return (
-                    <Content key={index} data={item} index={index} addStyle={rolesTextBox}/>
+                    <Content key={index} data={item} index={index} addStyle={rolesTextBox} />
                   )
                 })
               }
@@ -268,6 +268,7 @@ export default RankingList
 RankingList.propTypes = {
   data: PropTypes.object,
   title:PropTypes.string,
+  isLoad:PropTypes.bool,
 }
 RankingList.defaultProps = {
   title:'GLOBAL TOP 5',

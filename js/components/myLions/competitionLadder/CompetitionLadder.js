@@ -413,7 +413,8 @@ class CompetitionLadder extends Component {
   render() {
     let { data ,isCreating, createType, isJoining, joinType ,modalData,joinModalData} = this.state
     let {userProfile} = this.props
-    console.log(userProfile)
+   // console.log(userProfile)
+     console.log(data)
     return (
       <Container theme={theme}>
         <View style={styles.container} >
