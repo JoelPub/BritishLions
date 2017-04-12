@@ -23,6 +23,12 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import { service } from '../../utility/services'
 import { drillDown ,shareReplace} from '../../../actions/content'
+import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { actionsApi } from '../../utility/urlStorage'
+import TeamModel from  '../../../modes/Team'
+import {convertTeamToShow} from '../components/teamToShow'
+import Data from '../../../../contents/unions/data'
+import { setTeamToShow } from '../../../actions/squad'
 
 
 const ShareHeaderView = ({detail}) => {
@@ -97,6 +103,11 @@ class MyLionsTestRoundSubmit extends Component {
 
     constructor(props) {
         super(props)
+        this.state={
+            isLoaded: false,
+            drillDownItem:this.props.drillDownItem
+        }
+        this.uniondata = Data
     }
     goShare = () => {
         //console.log(this.state.rating)
@@ -107,11 +118,8 @@ class MyLionsTestRoundSubmit extends Component {
     }
 
     render() {
-        let { indivPos, forwards, backs } =this.props.teamToShow
         let players=[]
-        indivPos.concat(forwards).concat(backs).map((value,index)=>{
-          if (value.info!==null&&value.info.name&&players.indexOf(value.info.name)===-1) players.push(value.info.name) 
-        })
+        
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -130,34 +138,45 @@ class MyLionsTestRoundSubmit extends Component {
                         <ShareHeaderView />
                         <View style={styles.smallContainer}>
 
-                            <View style={styles.listContainer}>
-
-                                <RankingTable title={'TEAM'}  array={players} />
-                          
-                                <View style={styles.jobBoxContainer}>
-                                {
-                                  indivPos.map((item,i)=>{
-                                    let position = strToUpper(item.position) === 'CAPTAIN'? 'MATCH CAPTAIN' : strToUpper(item.position)
-                                    let firstName = item.info!==null?item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" ")):''
-                                    let lastName = item.info!==null?item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length):0
-                                    return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
+                            {
+                              this.state.isLoaded?
+                              <View style={styles.listContainer}>
+                              {
+                                 
+                                  this.props.teamToShow.indivPos.concat(this.props.teamToShow.forwards).concat(this.props.teamToShow.backs).map((value,index)=>{
+                                    if (value.info!==null&&value.info.name&&players.indexOf(value.info.name)===-1) players.push(value.info.name) 
                                   })
-                                }
-                                </View>        
-                                <View style={styles.summaryGuther}>
-                                        <ButtonFeedback
-                                            rounded label='Share'
-                                            onPress={this.goShare}
-                                            style={[styles.button, styles.summaryShare]}>
-                                                <Text style={styles.summaryShareText}>SHARE</Text>
-                                                <Icon name='md-share-alt' style={styles.summaryShareIcon} />
-                                        </ButtonFeedback>
-                                </View>
-                                <View style={styles.footer}>
-                                    <Text style={styles.footerText}> Analytics Sponsored by </Text>
-                                    <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
-                                </View>
-                            </View>
+                              }
+
+                                  <RankingTable title={'TEAM'}  array={players} />
+                            
+                                  <View style={styles.jobBoxContainer}>
+                                  {
+                                    this.props.teamToShow.indivPos.map((item,i)=>{
+                                      let position = strToUpper(item.position) === 'CAPTAIN'? 'MATCH CAPTAIN' : strToUpper(item.position)
+                                      let firstName = item.info!==null?item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" ")):''
+                                      let lastName = item.info!==null?item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length):0
+                                      return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
+                                    })
+                                  }
+                                  </View>        
+                                  <View style={styles.summaryGuther}>
+                                          <ButtonFeedback
+                                              rounded label='Share'
+                                              onPress={this.goShare}
+                                              style={[styles.button, styles.summaryShare]}>
+                                                  <Text style={styles.summaryShareText}>SHARE</Text>
+                                                  <Icon name='md-share-alt' style={styles.summaryShareIcon} />
+                                          </ButtonFeedback>
+                                  </View>
+                                  <View style={styles.footer}>
+                                      <Text style={styles.footerText}> Analytics Sponsored by </Text>
+                                      <Image source={require('../../../../images/footer/eyLogo.png')}></Image>
+                                  </View>
+                              </View>
+                              :
+                              <ActivityIndicator style={loader.centered} size='large' />
+                            }
                         </View>
                             
                             
@@ -189,6 +208,55 @@ class MyLionsTestRoundSubmit extends Component {
             </Container>
         )
     }
+    componentDidMount() {
+        this._getTeam()
+    }
+    _getTeam(){
+        console.log('_getTeam')
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+            if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                console.log('true')
+                this.fullPlayerList=catchedFullPlayerList
+                let optionsTeam = {
+                    url: actionsApi.eyc3GetUserCustomizedSquad,
+                    data: { "id":this.props.userProfile.userID,
+                            "first_name":this.props.userProfile.firstName,
+                            "last_name":this.props.userProfile.lastName,
+                            "round_id":this.state.drillDownItem.round_id, 
+                            "game_id": 0},
+                    onAxiosStart: null,
+                    onAxiosEnd: null,
+                    method: 'post',
+                    onSuccess: (res) => {
+                        console.log('res.data',res.data)
+                        if(res.data&&(typeof res.data==='object')) {
+                            this.setTeam(TeamModel.fromJS(res.data))
+                        }
+                        else {
+                            this.setTeam(TeamModel.fromJS({}))
+                        }
+                        
+                    },
+                    isRequiredToken: true,
+                    channel: 'EYC3',
+                    isQsStringify:false
+                }
+                service(optionsTeam)
+            }
+        }).catch((error) => {
+                    this._showError(error) 
+        })
+    }  
+
+    setTeam(team){
+        console.log('!!!setTeam',team.toJS())
+        let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        console.log('showTeamFeed',showTeamFeed.toJS())
+        this.props.setTeamToShow(showTeamFeed.toJS())
+        this.setState({ isLoaded: true })
+        
+
+    }
 }
 
 function bindAction(dispatch) {
@@ -196,11 +264,14 @@ function bindAction(dispatch) {
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
         drillDownItemShare:(data, route, isSub, isPushNewRoute)=>dispatch(shareReplace(data, route, isSub, isPushNewRoute)),
         popToRoute: (route)=>dispatch(popToRoute(route)),
+        setTeamToShow:(team)=>dispatch(setTeamToShow(team)),
     }
 }
 
 export default connect((state) => {
     return {
         teamToShow: state.squad.teamToShow,
+        userProfile: state.squad.userProfile,
+        drillDownItem: state.content.drillDownItem,
     }
 },  bindAction)(MyLionsTestRoundSubmit)

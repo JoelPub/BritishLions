@@ -218,7 +218,7 @@ class MyLionsTestRound extends Component {
                onSuccess: (res) => {
                 console.log('res.data',res.data)
                     if(res.data&&res.data.success) {
-                        this.props.pushNewRoute('myLionsTestRoundSubmit')
+                        this.props.drillDown(this.state.drillDownItem,'myLionsTestRoundSubmit')
                     }
                },
                onError: () => {
