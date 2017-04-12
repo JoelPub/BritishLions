@@ -71,7 +71,7 @@ class GamePlayBtn extends Component {
         console.log('nextProps.tactics',nextProps.tactics)
         console.log('this.props.teamStatus',this.props.teamStatus)
         console.log('this.props.tactics',this.props.tactics)
-        if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||nextProps.connectionInfo==='NONE')) {
+        if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||strToUpper(nextProps.connectionInfo)==='NONE')) {
                 console.log('!!!!!network lost')
                 console.log('this.submitting',this.submitting)
             if(this.submitting) {

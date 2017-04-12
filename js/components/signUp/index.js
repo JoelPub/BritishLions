@@ -15,6 +15,7 @@ import styles from '../login/login-layout-theme'
 import ErrorHandler from '../utility/errorhandler/index'
 import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
+import ButtonNetwork from '../utility/buttonNetwork'
 import OverlayLoader from '../utility/overlayLoader'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -527,7 +528,7 @@ class SignUp extends Component {
                                         </Grid>
                                     </View>
 
-                                    <ButtonFeedback
+                                    <ButtonNetwork
                                         rounded
                                         disabled = {this.state.isFormSubmitting}
                                         label = {this.state.isFormSubmitting? 'REGISTERING..' : 'REGISTER'}

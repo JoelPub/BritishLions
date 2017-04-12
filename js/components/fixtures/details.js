@@ -50,7 +50,7 @@ class FixtureDetails extends Component {
 
      let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
    let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
-   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
+   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
    let endTime = endDateOfEvent.toISOString() // UTC Format
 
    if (Platform.OS === 'android') {
