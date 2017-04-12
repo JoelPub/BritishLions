@@ -6,6 +6,7 @@ import ButtonFeedback from './buttonFeedback'
 import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import { strToUpper } from '../utility/helper'
+import styleVar from '../../themes/variable'
 
 
 class ButtonNetwork extends Component {
@@ -38,7 +39,7 @@ class ButtonNetwork extends Component {
     render() {
         return (
             <View>
-                <ButtonFeedback {...this.props} disabled = {this.state.btnDisable} >
+                <ButtonFeedback {...this.props} disabled = {this.state.btnDisable} style={this.state.btnDisable&&{backgroundColor: styleVar.brandSecondary}}>
                     {this.props.children}
                 </ButtonFeedback>
                 <Toast
