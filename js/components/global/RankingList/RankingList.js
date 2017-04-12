@@ -182,10 +182,12 @@ const  Header = ({addStyle}) => {
   )
 }
 const  Content = ({data,index,addStyle}) => {
+
+  let IdName =  data.id===null ? '' : data.id
   return (
     <View style={styles.subContentView}>
       <View style={styles.IdTextView}>
-        <Text style={[styles.subContentText,styles.whiteColor]}>JP</Text>
+        <Text style={[styles.subContentText,styles.whiteColor]}>{IdName.toUpperCase()}</Text>
       </View>
       <View style={styles.rankContentTextView}>
         <Text style={[styles.subContentText]}>{index+1}</Text>
