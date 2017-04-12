@@ -96,8 +96,9 @@ export default class Footer extends Component {
       super(props)
 	}
 
-	goToURL(url) {
-
+	goToURL(url, platformName) {
+      NativeModules.One.sendInteraction("/social/"+platformName,null)
+      console.log("!!!!!!!!!!!/social/"+platformName)
       One.sendInteractionForOutboundLink(url).catch(function(error) {
           console.log(error);
           alert(error);
@@ -161,22 +162,22 @@ export default class Footer extends Component {
                         </View>
 
                         <View style={styles.socialFooterRow}>
-                            <ButtonFeedback onPress={() => this.goToURL('https://www.facebook.com/BritishandIrishLions')} style={styles.socialFooter }>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.facebook.com/BritishandIrishLions', 'facebook')} style={styles.socialFooter }>
                                 <Icon name="logo-facebook" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={() => this.goToURL('https://twitter.com/lionsofficial')} style={styles.socialFooter }>
+                            <ButtonFeedback onPress={() => this.goToURL('https://twitter.com/lionsofficial','twitter')} style={styles.socialFooter }>
                                 <Icon name="logo-twitter" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={() => this.goToURL('https://www.youtube.com/channel/UC5Pw6iUW8Dgmb_JSEqzXH3w?&ab_channel=TheBritish&IrishLions')} style={styles.socialFooter }>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.youtube.com/channel/UC5Pw6iUW8Dgmb_JSEqzXH3w?&ab_channel=TheBritish&IrishLions','youtube')} style={styles.socialFooter }>
                                 <Icon name="logo-youtube" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={() => this.goToURL('https://www.linkedin.com/company/the-british-and-irish-lions')} style={styles.socialFooter }>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.linkedin.com/company/the-british-and-irish-lions','linkedin')} style={styles.socialFooter }>
                                 <Icon name="logo-linkedin" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={() => this.goToURL('https://www.instagram.com/britishandirishlions/')} style={styles.socialFooter }>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.instagram.com/britishandirishlions/','instagram')} style={styles.socialFooter }>
                                 <Icon name="logo-instagram" swipeException style={styles.socialFooterIcon} />
                             </ButtonFeedback>
-                            <ButtonFeedback onPress={() => this.goToURL('https://www.periscope.tv/LionsOfficial/')} style={styles.socialFooter}>
+                            <ButtonFeedback onPress={() => this.goToURL('https://www.periscope.tv/LionsOfficial/','periscope')} style={styles.socialFooter}>
                                 <Image style={styles.socialFooterImgIcon} swipeException resizeMode='contain' source={require('../../../images/periscopeIcon.png')} />
                             </ButtonFeedback>
                         </View>
