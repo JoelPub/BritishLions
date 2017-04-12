@@ -1,10 +1,53 @@
 'use strict'
 
 import TeamShowModel from  '../../../modes/Team/TeamShowModel'
+import TeamShowInitModel from  '../../../modes/Team/TeamShowInitModel'
 import { strToUpper,strToLower } from '../../utility/helper'
 import { searchPlayer } from './searchPlayer'
 export function convertTeamToShow(team,fullPlayerList,uniondata) {
     let tempFeed=new TeamShowModel()
+    tempFeed.forEach((value,index)=>{
+            if(index==='backs'||index==='forwards') {
+                value.map((v,i)=>{
+                    // console.log('v.posotion',v.position)
+                    // console.log('team.get(index)',team.get(index))
+                    // console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
+                    if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
+                            return val
+                        })
+                    }
+                    else {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=null
+                            return val
+                        })
+                    }
+                })
+            }
+            else {
+                value.map((v,i)=>{
+                    let p=v.position
+                    if(team.get(p)) {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=searchPlayer(fullPlayerList,team.get(p),uniondata)
+                            return val
+                        })
+                    }
+                    else {
+                        tempFeed=tempFeed.update(index,val=>{
+                            val[i].info=null
+                            return val
+                        })
+                    }
+                })
+            }
+        })
+        return tempFeed    
+}
+export function convertInitTeamToShow(team,fullPlayerList,uniondata) {
+    let tempFeed=new TeamShowInitModel()
     tempFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{

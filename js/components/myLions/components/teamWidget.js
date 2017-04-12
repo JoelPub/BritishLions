@@ -14,7 +14,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
-import {convertTeamToShow} from '../components/teamToShow'
+import {convertInitTeamToShow} from '../components/teamToShow'
 import { setTeamToShow,setTeamStatus,setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
@@ -186,7 +186,7 @@ class TeamWidget extends Component {
     setTeam(team){
         // console.log('!!!setTeam',team.toJS())
         let fullFeed=true
-        let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
+        let showTeamFeed=convertInitTeamToShow(team,this.fullPlayerList,this.uniondata)
         // console.log('showTeamFeed',showTeamFeed.toJS())
         showTeamFeed.forEach((value,index)=>{
             if (value.find(x=>x.info===null)!==undefined) fullFeed=false
