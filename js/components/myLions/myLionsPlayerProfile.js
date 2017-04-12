@@ -213,13 +213,18 @@ class MyLionsPlayerProfile extends Component {
 
         service(optionsPlayerProfile)
     }
-
+     handleHtml = (html) => {
+      let newHtml =  html.replace(/<\/p>\r\n/g, "</p>")
+         return newHtml
+     }
     render() {
         let logo = ''
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
         if (this.props.detail) {
             logo = String(this.props.detail.logo)
         }
+
+
          return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -286,7 +291,7 @@ class MyLionsPlayerProfile extends Component {
                             this.props.detail.biog?
                                 <View style={styles.playerDesc}>
                                     <HTMLView
-                                       value={this.props.detail.biog}
+                                       value={this.handleHtml(this.props.detail.biog)}
                                        stylesheet={htmlStyles}
                                      />
                                 </View>
