@@ -138,7 +138,7 @@ class MyLionsShareView extends Component {
           res => Share.open({
             title:'LionsNZ2017',
             message:"I\'ve picked my players for the @lionsofficial squad. Download the official App to pick yours. #lionswatch",
-            subject:context,
+            subject:'LionsNZ2017',
             url: `data:image/png;base64,${res}`
           }).then((info)=>{
             callback()
