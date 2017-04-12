@@ -291,7 +291,11 @@ module.exports = styleSheetCreate({
         paddingBottom: 20,
         paddingTop: 20,
         borderTopWidth: 1,
-        borderTopColor: gridBorderColor
+        borderTopColor: gridBorderColor,
+        marginBottom: -80,
+        android: {
+            marginBottom: -40
+        }
     },
     emptyPlayer: {
         paddingHorizontal: 20,
