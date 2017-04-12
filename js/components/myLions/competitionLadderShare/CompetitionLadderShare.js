@@ -90,7 +90,7 @@ class CompetitionLadderShare extends Component {
           res => Share.open({
             title:"LionsNZ2017",
             message:"I’m ranked xxth on the global leaderboard. Download the Official Lions App to get involved! #LionsNZ2017",
-            subject:"I’m ranked xxth on the global leaderboard. Download the Official Lions App to get involved! #LionsNZ2017",
+            subject:'LionsNZ2017',
             url: `data:image/png;base64,${res}`
           }).then((info)=>{
             callback()

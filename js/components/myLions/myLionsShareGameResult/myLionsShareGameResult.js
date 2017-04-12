@@ -99,17 +99,21 @@ class MyLionsShareGameResult extends Component {
      this.props.data.gameData
      let describe = ''
      if( strToUpper(this.props.data.resultInfo.is_draw)==='TRUE') {
+       console.log('平')
        describe= 'I just drew my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
 
      }else {
        if ( strToUpper(this.props.data.resultInfo.is_won) ==='TRUE'){
+           console.log('赢')
            describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
        }else {
+         console.log('输')
          describe= ''
        }
      }
+     console.log('描述')
+     console.log(describe)
      return  describe
-
    }
   componentDidMount() {
     setTimeout(()=>{
@@ -132,7 +136,7 @@ class MyLionsShareGameResult extends Component {
           res => Share.open({
             title:'LionsNZ2017',
             message:this.getShareDescribe(),
-            subject:context,
+            subject:'LionsNZ2017',
             url: `data:image/png;base64,${res}`
           }).then((info)=>{
             callback()
