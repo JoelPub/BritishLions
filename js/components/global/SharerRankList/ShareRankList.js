@@ -180,7 +180,7 @@ const  Content = ({data,index,addStyle}) => {
   return (
     <View style={styles.subContentView}>
       <View style={styles.IdTextView}>
-        <Text style={[styles.subContentText,styles.redColor]}>JP</Text>
+        <Text style={[styles.subContentText,styles.redColor]}>{data.id}</Text>
       </View>
       <View style={styles.rankContentTextView}>
         <Text style={[styles.subContentText,styles.whiteColor]}>{data.rank}</Text>
