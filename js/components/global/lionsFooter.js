@@ -1,13 +1,13 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Linking, Image, View, Text } from 'react-native'
+import { Linking, Image, View, Text ,NativeModules} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
-
+var One = NativeModules.One;
 
 const styles = styleSheetCreate({
     container: {
@@ -97,13 +97,43 @@ export default class Footer extends Component {
 	}
 
 	goToURL(url) {
-        Linking.canOpenURL(url).then(supported => {
-            if (supported) {
-                Linking.openURL(url)
-            } else {
-                // console.log('This device doesnt support URI: ' + url)
-            }
-        })
+
+      One.sendInteractionForOutboundLink(url).catch(function(error) {
+          console.log(error);
+          alert(error);
+      });
+
+      One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+          console.log('urlWithOneTid',urlWithOneTid)
+          if(urlWithOneTid){
+              Linking.canOpenURL(urlWithOneTid).then(supported => {
+                  if (supported) {
+                      Linking.openURL(urlWithOneTid)
+                  } else {
+                      Alert.alert(
+                        'Error',
+                        'This device doesnt support URI: ' + urlWithOneTid
+                      )
+                  }
+              })
+          }
+      },function(error) {
+          console.log('error');
+          console.log(error);
+          if(url){
+              Linking.canOpenURL(url).then(supported => {
+                  if (supported) {
+                      Linking.openURL(url)
+                  } else {
+                      Alert.alert(
+                        'Error',
+                        'This device doesnt support URI: ' + url
+                      )
+                  }
+              })
+          }
+      });
+
   }
 
   render(){
