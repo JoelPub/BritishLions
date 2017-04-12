@@ -15,6 +15,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import data from '../../../contents/fixtures/data.json'
 import {getAddedToCalanderCheck,setAddedToCalanderCheck} from '../utility/asyncStorageServices'
+import moment from 'moment'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -48,10 +49,13 @@ class FixtureDetails extends Component {
      NativeModules.One.sendInteraction(interaction,
        { emailAddress : "" });
 
-     let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
+   let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`) // UTC Format
+   dateOfEvent = moment.utc(dateOfEvent).local().format("YYYY-MM-DD HH:mm:ss")
+   console.warn("datessssss",dateOfEvent)
    let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
    endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
    let endTime = endDateOfEvent.toISOString() // UTC Format
+   console.warn("dddddd", dateOfEvent)
 
    if (Platform.OS === 'android') {
        // Used third party for Calendar Event
