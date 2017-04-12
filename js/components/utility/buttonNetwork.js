@@ -13,7 +13,6 @@ class ButtonNetwork extends Component {
 	constructor(props){
 		super(props)
         this.state = {
-            toastVisible: false,
             btnDisable:false
         }
 	}    
@@ -22,12 +21,27 @@ class ButtonNetwork extends Component {
         
         console.log('nextProps.connectionInfo',nextProps.connectionInfo)
         if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||strToUpper(nextProps.connectionInfo)==='NONE')) {
-                console.log('!!!!!network lost')
-                console.log('this.submitting',this.submitting)
-            if(!this.state.toastVisible) {
-                console.log('!!!!!show network error')
-               this.setState({toastVisible:true})
-            }
+            console.log('!!!!!network lost')
+            let toast = Toast.show('Please make sure that you\'re connected to the network.', {
+                duration: Toast.durations.LONG,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                onShow: () => {
+                    // calls on toast\`s appear animation start
+                },
+                onShown: () => {
+                    // calls on toast\`s appear animation end.
+                },
+                onHide: () => {
+                    // calls on toast\`s hide animation start.
+                },
+                onHidden: () => {
+                    // calls on toast\`s hide animation end.
+                }
+            })
             this.setState({btnDisable:true})
         }
         else {            
@@ -42,13 +56,6 @@ class ButtonNetwork extends Component {
                 <ButtonFeedback {...this.props} disabled = {this.state.btnDisable} style={this.state.btnDisable&&{backgroundColor: styleVar.brandSecondary}}>
                     {this.props.children}
                 </ButtonFeedback>
-                <Toast
-                    visible={this.state.toastVisible}
-                    position={Toast.positions.CENTER}
-                    shadow={true}
-                    animation={true}
-                    hideOnPress={true}
-                >Please make sure that you're connected to the network.</Toast>
             </View>
         )
     }
