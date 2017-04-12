@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
-import android.util.Log;
+import java.util.Date;
 /**
  * Created by John Walter Ramos on 05/10/16.
  */
@@ -31,25 +31,28 @@ public class CalendarManagerAndroid extends ReactContextBaseJavaModule {
     @ReactMethod
     public void addCalendarEvent(String eventTitle, String notesEvent, String locationEvent, String dateOfEvent){
 
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");//EEE MMM dd HH:mm:ss z yyyy
-        try {
-            sdf.parse(dateOfEvent);
-            sdf.setTimeZone(timeZone);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//EEE MMM dd HH:mm:ss z yyyy
+        //Date fromGmt = new Date(dateOfEvent);
+       try {
+            Date date= sdf.parse(dateOfEvent);
+            //fromGmt = new Date(date.getTime() + TimeZone.getDefault().getOffset(date.getTime()));
+            //sdf.format(fromGmt)
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        //sdf.setTimeZone(tz);
+        //Calendar beginTime = Calendar.getInstance();
+        //beginTime.setTime(dateOfEvent);
         Calendar beginTime = sdf.getCalendar();
 
-        //Calendar endTime = Calendar.getInstance();
+        Calendar endTime = Calendar.getInstance();
         if (Build.VERSION.SDK_INT >= 14) {
 
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                     .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis() + 120 * 60 * 1000)
-                    .putExtra(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
                     .putExtra(CalendarContract.Events.TITLE, eventTitle)
                     .putExtra(CalendarContract.Events.ALL_DAY, false)
                     .putExtra(CalendarContract.Events.DESCRIPTION, notesEvent)
@@ -67,7 +70,6 @@ public class CalendarManagerAndroid extends ReactContextBaseJavaModule {
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
             intent.putExtra(CalendarContract.Events.ALL_DAY, false);
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis() + 120 * 60 * 1000);
-            intent.putExtra(CalendarContract.Events.EVENT_TIMEZONE, timeZone);
             intent.putExtra(CalendarContract.Events.TITLE, eventTitle);
             intent.putExtra(CalendarContract.Events.DESCRIPTION, notesEvent);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
