@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { drillDown } from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
-import { Image, Text, View, ScrollView, ActivityIndicator, Alert } from 'react-native'
+import { Image, Text, View, ScrollView, ActivityIndicator, Alert ,DeviceEventEmitter} from 'react-native'
 import { Container, Icon } from 'native-base'
 import theme from '../../../themes/base-theme'
 import styles from './styles'
@@ -138,21 +138,40 @@ class MyLionsCompetitionCentre extends Component {
         super(props)
         this.state={
             isLoaded: false,
-            competitionInfo:[]
+            competitionInfo:[],
+            needReflash: false,
+            userProfile: this.props.userProfile
         }
+        this.subscription = null
     }
 
     componentDidMount() {
         this.props.setTeamDataTemp()
         this.props.setTeamData()
         this.props.setTeamToShow()
+
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps')
+        console.log(this.props.userProfile)
+        console.log(nextProps.userProfile)
+        if(this.props.userProfile!==nextProps.userProfile){
+            console.log('这里调用')
+            console.log(this.props.userProfile)
+            console.log(nextProps.userProfile)
+            this.setState({
+                userProfile: nextProps.userProfile
+            })
+        }
+
+    }
     _drillDown = (data) => {
         data.is_test_round?data.is_active?this.props.drillDown(data, 'myLionsTestRound'):this.props.drillDown(data,'myLionsTestRoundSubmit'):this.props.drillDown(data, 'myLionsCompetitionGameListing')
     }
 
     render() {
+        console.log('render')
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -169,7 +188,7 @@ class MyLionsCompetitionCentre extends Component {
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                             
                             <View style={styles.guther}>
-                                <ProfileSummaryCard profile={this.props.userProfile}/>
+                                <ProfileSummaryCard profile={this.state.userProfile}/>
 
                                 <ButtonFeedback rounded style={[styles.roundButton, {marginBottom: 30}]} onPress={() => this.props.pushNewRoute('competitionLadder')}>
                                     <Icon name='ios-trophy' style={styles.roundButtonIcon} />
@@ -324,9 +343,17 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
+    let user = state.squad.userProfile
     return {
         isAccessGranted: state.token.isAccessGranted,
         userProfile: state.squad.userProfile,
+        w:user.w,
+        l:user.l,
+        d:user.d,
+        f:user.f,
+        a:user.a,
+        bp:user.bp,
+        pts:user.pts,
         netWork: state.network
     }
 },  bindAction)(MyLionsCompetitionCentre)

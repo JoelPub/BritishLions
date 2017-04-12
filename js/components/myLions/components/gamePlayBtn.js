@@ -2,7 +2,7 @@
 
 import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, Platform } from 'react-native'
+import { Image, View, Text, Platform,DeviceEventEmitter } from 'react-native'
 import { Container, Icon } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -12,11 +12,12 @@ import { strToUpper } from '../../utility/helper'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
+import { setUserProfile } from '../../../actions/squad'
 import {convertTeamToShow,removePlayer,addPlayer} from '../components/teamToShow'
 import { setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
-import { getAssembledUrl } from '../../utility/urlStorage'
+import { getAssembledUrl,actionsApi } from '../../utility/urlStorage'
 import { popRoute,pushNewRoute } from '../../../actions/route'
 import { drillDown } from '../../../actions/content'
 const styles = styleSheetCreate({    
@@ -84,8 +85,40 @@ class GamePlayBtn extends Component {
         }
         
     }
-
+  getProfile = (userName,firstName,lastName,initName)=>{
+    console.log('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊89')
+    let optionsUserProfile = {
+      url: actionsApi.eyc3GetuserProfileSummary,
+      data: {id:this.props.userProfile.userID,first_name:firstName,last_name:lastName},
+      onAxiosStart: null,
+      onAxiosEnd: null,
+      method: 'post',
+      channel: 'EYC3',
+      isQsStringify:false,
+      onSuccess: (res) => {
+        if(res.data) {
+          // console.log('res.data',res.data)
+          let userProfile = Object.assign(res.data, {
+            userName: userName,
+            initName: initName,
+            firstName: firstName,
+            lastName: lastName,
+            userID: this.state.userID
+          })
+          this.props.setUserProfile(userProfile)
+          console.log('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊')
+        }
+      },
+      onError: null,
+      onAuthorization: () => {
+        this._signInRequired()
+      },
+      isRequiredToken: true
+    }
+    service(optionsUserProfile)
+  }
     playGame() {
+      console.log('啊啊啊啊啊啊啊1playGame')
       let isGameOVer = this.props.isGameOver
       if (isGameOVer) {
         this.props.drillDown(this.props.drillDownItem, 'myLionsCompetitionGameResults')
@@ -117,6 +150,9 @@ class GamePlayBtn extends Component {
                 console.log('onAxiosEnd')
             },
             onSuccess: (res) => {
+              console.log('啊啊啊啊啊啊啊152')
+              let {userName,initName,firstName,lastName} = this.props.userProfile
+              this.getProfile(userName,firstName,lastName,initName)
                 console.log('res',res)
                 console.log('typeof res.data',typeof res.data)
                 if(typeof res.data ==='object') {                    
@@ -130,6 +166,8 @@ class GamePlayBtn extends Component {
                     this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
                 }
                 this.submitting=false
+
+
             },
             onError: ()=>{
                 console.log('onError')
@@ -152,6 +190,7 @@ function bindAction(dispatch) {
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         popRoute: ()=>dispatch(popRoute()),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
     }
 }
 
@@ -163,6 +202,7 @@ export default connect((state) => {
         tactics: state.tactics.tacticsData,
         userProfile: state.squad.userProfile,
         connectionInfo: state.network.connectionInfo,
+
     }
 },  bindAction)(GamePlayBtn)
 GamePlayBtn.propTypes = {
