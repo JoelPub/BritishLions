@@ -67,6 +67,7 @@ class MyLionsGroupView extends Component {
     this.isUnMounted = false
     this.state = {
       data:defaultData,
+      isLoaded:false,
       modalInfo: false,
       modalInviteCode: false,
       modalLeaveInfo: false,
@@ -235,7 +236,7 @@ class MyLionsGroupView extends Component {
             <HeaderTitleWithModal title={group_name.toUpperCase()}  iconPress={this.iconPress}/>
             <GrayContainer >
               <ExpertRank data={userProfile}  />
-              <RankList data={data} title={'LEAGUE LEADERBOARD'} />
+              <RankList data={data} title={'LEAGUE LEADERBOARD'} isLoad={this.state.isLoaded}/>
             </GrayContainer>
             <View style={styles.groupAction}>
               <ButtonWithIcon  iconName  = {'md-barcode'} title = {'INVITE CODE'} style={styles.grayBackgroundColor}  onPress={this.inviteButtonPress} />
