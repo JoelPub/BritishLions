@@ -146,20 +146,22 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     componentDidMount() {
-        this.props.setTeamDataTemp()
-        this.props.setTeamData()
-        this.props.setTeamToShow()
+        setTimeout(()=>{
+            this.props.setTeamDataTemp()
+            this.props.setTeamData()
+            this.props.setTeamToShow()            
+        },1000)
 
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps')
-        console.log(this.props.userProfile)
-        console.log(nextProps.userProfile)
+        // console.log('componentWillReceiveProps')
+        // console.log(this.props.userProfile)
+        // console.log(nextProps.userProfile)
         if(this.props.userProfile!==nextProps.userProfile){
-            console.log('这里调用')
-            console.log(this.props.userProfile)
-            console.log(nextProps.userProfile)
+            // console.log('这里调用')
+            // console.log(this.props.userProfile)
+            // console.log(nextProps.userProfile)
             this.setState({
                 userProfile: nextProps.userProfile
             })
@@ -171,7 +173,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     render() {
-        console.log('render')
+        // console.log('render')
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -264,7 +266,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     getInfo(userID,userName,firstName,lastName,initName){
-        console.log('getInfo')
+        // console.log('getInfo')
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
             data: {
@@ -279,7 +281,7 @@ class MyLionsCompetitionCentre extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data&&res.data.rounds) {
-                    console.log('res.data',res.data)
+                    // console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
                         let userInfo = Object.assign(res.data, {
                         userName: userName, 

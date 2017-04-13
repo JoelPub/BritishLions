@@ -50,7 +50,11 @@ class FixtureDetails extends Component {
        { emailAddress : "" });
 
    let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`) // UTC Format
+   let isDyLightSaving = moment.utc(dateOfEvent).isDST()
+   console.warn("dateOfEvent",dateOfEvent)
+   console.warn("isDyLightSaving",isDyLightSaving)
    dateOfEvent = moment.utc(dateOfEvent).local().format("YYYY-MM-DD HH:mm:ss")
+   console.warn("datessssssUTC",moment.utc(dateOfEvent))
    console.warn("datessssss",dateOfEvent)
 //   let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
 //   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display

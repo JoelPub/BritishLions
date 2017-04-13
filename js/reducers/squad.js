@@ -72,7 +72,7 @@ export default function (state:State = initialState, action:Action): State {
         }
     }
     if (action.type === SET_TEAM_DATA_TEMP) {
-        console.log('reducer teamDataTemp',action.teamDataTemp)
+        // console.log('reducer teamDataTemp',action.teamDataTemp)
         return {
             ...state,
             teamDataTemp: action.teamDataTemp
