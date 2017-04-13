@@ -14,7 +14,7 @@ const CreateButton = ({onPress}) => (
   <View style={styles.createGroupFooter}>
     <ButtonFeedback
       style={styles.footerBtn} onPress= {onPress}>
-      <Text style={styles.footerBtnText}>CREATE</Text>
+      <Text style={styles.footerBtnCreateText}>CREATE</Text>
     </ButtonFeedback>
   </View>
 )
