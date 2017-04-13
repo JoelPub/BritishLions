@@ -23,8 +23,8 @@ import { alertBox } from '../../utility/alertBox'
 import refresh from '../../../themes/refresh-control'
 import { drillDown} from '../../../actions/content'
 import { setAccessGranted } from '../../../actions/token'
-import { removeToken, getUserId ,getAccessToken} from '../../utility/asyncStorageServices'
-
+import { removeToken, getUserId ,getAccessToken,getRefreshToken} from '../../utility/asyncStorageServices'
+import { setJumpTo } from '../../../actions/jump'
 import { service } from '../../utility/services'
 import Data from '../../../../contents/unions/data'
 import { globalNav } from '../../../appNavigator'
@@ -75,6 +75,25 @@ class MyLionsOfficialSquad extends Component {
             )
         }
     }
+
+    _isSignIn(route) {
+             getRefreshToken().then((refreshToken) => {
+                if(refreshToken)
+                    this._navigateTo(route)
+                else{
+                    // console.log('jumproute',route)
+                    this.props.setJumpTo(route)
+                    this._navigateTo('login')
+                }
+             }).catch((error) => {
+                this._navigateTo('login')
+            })
+    }
+
+    _navigateTo(route) {
+        this.props.pushNewRoute(route)
+    }
+
     showNetError  = ()=> {
         Alert.alert(
           'An error occured',
@@ -100,7 +119,8 @@ class MyLionsOfficialSquad extends Component {
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>2017 LIONS SQUAD</Text>
                                 <OfficialSquadList squadDatafeed={this.props.officialSquadToShow} coachAndStaffData={this.props.coachAndStaffData} pressImg={this._showDetail.bind(this)}/>
-                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() => this.props.pushNewRoute('myLionsCompetitionCentre')}>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert]} onPress={() =>this._isSignIn('myLionsCompetitionCentre')}
+                                >
                                     <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
                                         COMPETITION CENTRE
@@ -233,6 +253,7 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setOfficialSquadToShow:(squad)=>dispatch(setOfficialSquadToShow(squad)),
         setCoachAndStaff: (cocahAndStaff)=>dispatch(setCoachAndStaff(cocahAndStaff)),
+        setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
     }
 }
 
