@@ -54,7 +54,6 @@ class FixtureDetails extends Component {
    console.warn("dateOfEvent",dateOfEvent)
    console.warn("isDyLightSaving",isDyLightSaving)
    dateOfEvent = moment.utc(dateOfEvent).local().format("YYYY-MM-DD HH:mm:ss")
-   console.warn("datessssssUTC",moment.utc(dateOfEvent))
    console.warn("datessssss",dateOfEvent)
 //   let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
 //   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
@@ -119,7 +118,7 @@ class FixtureDetails extends Component {
                if(addedSuccess){
                     console.warn("all logged successfully")
                     setAddedToCalanderCheck()
-                    alertBox('','All the events have been added to calendar successfully')
+                    alertBox('','All events have been added to calendar successfully')
                }else{
                     switch(errorcode){
                         case 1:
