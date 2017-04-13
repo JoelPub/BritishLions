@@ -27,7 +27,7 @@ import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/ap
 import SquadModel from  'modes/Squad'
 import Rating from  'modes/SquadPop/Rating'
 import { getAssembledUrl } from '../utility/urlStorage'
-import { getUserId, removeToken, getUserFullName } from '../utility/asyncStorageServices'
+import { getUserId, removeToken, getUserFullName,getRefreshToken } from '../utility/asyncStorageServices'
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 import { actionsApi } from '../utility/urlStorage'
@@ -63,7 +63,19 @@ class Landing extends Component {
     }
 
     _isSignIn(route) {
-        this._navigateTo(route)
+        if(route === 'myLionsOfficialSquad'){
+            this._navigateTo(route)
+        }else{
+             getRefreshToken().then((refreshToken) => {
+                if(refreshToken)
+                    this._navigateTo(route)
+                else
+                    this.props.drillDown(route, 'login')
+             }).catch((error) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
+                this._navigateTo('login')
+            })
+        }
     }
 
     _navigateTo(route) {

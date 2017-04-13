@@ -150,7 +150,11 @@ class Login extends Component {
         })
         this.props.setAccessGranted(true)
         console.log('去跳转 ')
-        this._replaceRoute('myLions')
+        if(this.props.newRoute !== ''){
+            console.warn(this.props.newRoute)
+            this._replaceRoute(this.props.newRoute)
+        }else
+            this._replaceRoute('myLions')
     }
     _createTokenByFB(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
@@ -166,7 +170,10 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        this._replaceRoute('myLions')
+        if(this.props.newRoute !== '')
+            this._replaceRoute(this.props.newRoute)
+        else
+            this._replaceRoute('myLions')
     }
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
@@ -182,7 +189,10 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        this._replaceRoute('myLions')
+        if(this.props.newRoute !== '')
+            this._replaceRoute(this.props.newRoute)
+        else
+            this._replaceRoute('myLions')
     }
     _SignInWithGoogle = (isFormValidate) => {
         this.setState({
@@ -637,6 +647,7 @@ function bindActions(dispatch){
 
 export default connect((state) => {
     return {
+        newRoute: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted
     }
 }, bindActions)(Login)
