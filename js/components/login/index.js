@@ -151,7 +151,7 @@ class Login extends Component {
         this.props.setAccessGranted(true)
         // console.log('去跳转 ')
         if(this.props.newRoute !== ''){
-            console.warn(this.props.newRoute)
+            // console.warn(this.props.newRoute)
             this._replaceRoute(this.props.newRoute)
         }else
             this._replaceRoute('myLions')
