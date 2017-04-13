@@ -41,7 +41,7 @@ const ShareHeaderView = ({detail}) => {
   return(
     <View style={[styles.viewShareHeader,{height:height}]}>
           <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
-          <Text style={styles.headerText}>The fans pick XV will be published via  social media before the first test.</Text>
+          <Text style={styles.headerText}>Here's my team selection for the next test!Download the Offical British & Lions app to select and submit your team.</Text>
     </View>
   )}
 
