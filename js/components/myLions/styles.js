@@ -1098,7 +1098,7 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         paddingTop: 0,
         fontFamily: styleVar.fontCondensed,
-        
+
     },
     modalTitle:{
         fontFamily: styleVar.fontCondensed,
