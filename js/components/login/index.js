@@ -47,8 +47,8 @@ class Login extends Component {
         super(props)
         //this._scrollView = KeyboardAwareScrollView
         this.state = {
-            email: '1@2.com',
-            password: '5418None',
+            email: '',
+            password: '',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
