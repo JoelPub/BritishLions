@@ -16,7 +16,7 @@ import CustomMessages from '../utility/errorhandler/customMessages'
 import ButtonFeedback from '../utility/buttonFeedback'
 import OverlayLoader from '../utility/overlayLoader'
 import { APP_VERSION, actionsApi } from '../utility/urlStorage'
-
+import { setJumpTo } from '../../actions/jump'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -47,8 +47,8 @@ class Login extends Component {
         super(props)
         //this._scrollView = KeyboardAwareScrollView
         this.state = {
-            email: '',
-            password: '',
+            email: '1@2.com',
+            password: '5418None',
             visibleHeight: Dimensions.get('window').height,
             offset: {
                 x:0,
@@ -149,10 +149,11 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        // console.log('去跳转 ')
-        if(this.props.newRoute !== ''){
-            // console.warn(this.props.newRoute)
-            this._replaceRoute(this.props.newRoute)
+        // console.log('this.props.jumpRoute',this.props.jumpRoute)
+        if(this.props.jumpRoute !== null){
+            // console.warn(this.props.jumpRoute)
+            this._replaceRoute(this.props.jumpRoute)
+            this.props.setJumpTo()
         }else
             this._replaceRoute('myLions')
     }
@@ -641,13 +642,14 @@ function bindActions(dispatch){
     return {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
-        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
+        setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
+        setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
     }
 }
 
 export default connect((state) => {
     return {
-        newRoute: state.content.drillDownItem,
+        jumpRoute: state.jump.jumpRoute,
         isAccessGranted: state.token.isAccessGranted
     }
 }, bindActions)(Login)

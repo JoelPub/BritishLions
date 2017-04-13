@@ -32,6 +32,7 @@ export type Action =
     | { type: 'SET_TACTICS_TOREMOVE' }
     | { type: 'SET_TACTICS_TOSAVE' }
     | { type: 'SET_VISITED_ONBOARDING' }
+    | { type: 'JUMP_TO' }
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any
 export type GetState = () => Object

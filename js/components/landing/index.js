@@ -9,6 +9,7 @@ import { drillDown } from '../../actions/content'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { setUserProfile } from '../../actions/squad'
 import { setAccessGranted } from '../../actions/token'
+import { setJumpTo } from '../../actions/jump'
 import theme from '../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../themes/variable'
@@ -69,8 +70,11 @@ class Landing extends Component {
              getRefreshToken().then((refreshToken) => {
                 if(refreshToken)
                     this._navigateTo(route)
-                else
-                    this.props.drillDown(route, 'login')
+                else{
+                    // console.log('jumproute',route)
+                    this.props.setJumpTo(route)
+                    this._navigateTo('login')
+                }
              }).catch((error) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                 this._navigateTo('login')
@@ -667,6 +671,7 @@ function bindAction(dispatch) {
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
+        setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
     }
 }
 

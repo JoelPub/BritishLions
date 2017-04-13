@@ -11,6 +11,7 @@ import network from './network'
 import position from './position'
 import squad from './squad'
 import tactics from  './tactics'
+import jump from  './jump'
 
 export default combineReducers({
 	drawer,
@@ -21,5 +22,6 @@ export default combineReducers({
 	network,
 	position,
 	squad,
-	tactics
+	tactics,
+	jump
 })
