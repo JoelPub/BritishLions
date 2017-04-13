@@ -125,7 +125,7 @@ class MyLionsManageGame extends Component {
                 return (
                     <View style={[styles.modalContent]}>
                         <Text style={styles.modalContentTitleTextLeft}>MANAGE GAME</Text>
-                        <Text style={styles.modalContentTextLeft}>Welcome to the Lions Fantasy Rugby Game, where you select a XV to take on the Experts XV. Like a real rugby match, you will be subject to factors outside of your control Weather, Stadium and Referee. You can overcome these factors and emerge victorious by selecting the appropriate team and tactics.</Text>
+                        <Text style={styles.modalContentTextLeft}>Welcome to the Lions Fantasy Rugby Game, where you select a XV to take on the Experts XV. Like a real rugby match, you will be subject to factors outside of your control including the weather, stadium and referee. You can overcome these factors and emerge victorious by selecting the appropriate team and tactics.</Text>
                     </View>
                 )
                 break
