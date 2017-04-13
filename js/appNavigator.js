@@ -274,7 +274,7 @@ class AppNavigator extends Component {
                             // console.log('!!!!!!route',route)
                             // console.log('rtl',rtl)
                             if (rtl===true) {
-                                console.log('from left')
+                                // console.log('from left')
                                 return {
                                     ...Navigator.SceneConfigs.FloatFromLeft,
                                     gestures: {
@@ -285,7 +285,7 @@ class AppNavigator extends Component {
                                 }
                             }
                             else {
-                                console.log('from right')
+                                // console.log('from right')
                                 return {
                                     ...Navigator.SceneConfigs.PushFromRight,
                                     gestures: {
