@@ -8,6 +8,7 @@ import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
+import DottedLine from '../../../utility/dottedLine'
 
 class Momentum extends Component {
 
@@ -29,18 +30,7 @@ class Momentum extends Component {
                     <View style={{flex:8,borderWidth:1,height:100}}></View>
                     <View style={{width:16,height:16,borderRadius:8,backgroundColor:'green',position:'absolute',top:0,left:100}}/>
                     <View style={{width:16,height:16,borderRadius:8,backgroundColor:'green',position:'absolute',top:100,left:50}}/>
-                    <View style={{height:4,width:111.8,position:'absolute',backgroundColor:'transparent',top:8+55.9,left:108-55.9-27.95,transform:[{rotateZ:'120deg'}]}}>
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:0}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:10}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:20}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:30}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:40}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:50}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:60}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:70}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:80}} />
-                        <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:90}} />
-                    </View>
+                    <DottedLine />
                 </View>
         )
     }
