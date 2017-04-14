@@ -61,6 +61,7 @@ import Competition from './components/competition'
 import Tours from './components/tours'
 import Galleries from './components/galleries'
 import GalleriesDetails from './components/galleries/details'
+import MatchCenter from './components/matchCenter'
 import Fixtures from './components/fixtures'
 import FixtureDetails from './components/fixtures/details'
 import Sponsors from './components/sponsors'
@@ -399,6 +400,8 @@ class AppNavigator extends Component {
                 return <Galleries navigator={navigator} />
             case 'galleriesDetails':
                 return <GalleriesDetails navigator={navigator} />
+            case 'matchCenter':
+                return <MatchCenter navigator={navigator} />
             case 'fixtures':
                 return <Fixtures navigator={navigator} />
             case 'fixtureDetails':
