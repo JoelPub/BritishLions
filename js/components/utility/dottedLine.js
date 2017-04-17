@@ -6,15 +6,6 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 
 const styles = styleSheetCreate({
-    loader: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 500,
-        flex: 1,
-        width: styleVar.deviceWidth,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        marginTop: -50
-    }
 })
 
 export default class DottedLine extends Component {
@@ -23,30 +14,29 @@ export default class DottedLine extends Component {
 	}
     
     render() {
-        let cLeft=100
-        let cTop=0
-        let fLeft=50
-        let fTop=100
-        let w=Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(cTop-fTop,2))
+        let {cLeft,fLeft,radius,isFirst}=this.props
+        let w=Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(100,2))-2*radius
         console.log('w',w)
-        let t=(cTop+fTop)/2
-        let l=(cLeft+fLeft)/2-w/2
+        let t=isFirst?100/2+radius:100/2
+        let l=(cLeft+fLeft)/2-w/2+radius
         console.log('t',t)
         console.log('l',l)
-        let r=360*Math.atan(50/100)/(2*Math.PI)+90+'deg'
+        let r=360*Math.atan((cLeft-fLeft)/100)/(2*Math.PI)+90+'deg'
         console.log('r',r)
+        let d=[]
+        for(let i=0;i<w;i++) {
+            d.push(i*4)
+        }
+
         return (
                 <View style={{height:4,width:w,position:'absolute',backgroundColor:'transparent',top:t,left:l,transform:[{rotateZ:r}]}}>
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:0}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:10}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:20}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:30}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:40}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:50}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:60}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:70}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:80}} />
-                    <View style={{height:2,width:5,backgroundColor:'yellow',position:'absolute',left:90}} />
+                    {
+                        d.map((value,index)=>{
+                            return(
+                                    <View key={index} style={{height:2,width:2,backgroundColor:'yellow',position:'absolute',left:value}} />
+                                )
+                        })
+                    }
                 </View>
         )
     }
