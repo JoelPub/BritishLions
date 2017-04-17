@@ -13,6 +13,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import Momentum from './Component/momentum'
+import StadiumFigure from './Component/StadiumFigure'
 
 class MatchCenter extends Component {
 
@@ -36,7 +37,8 @@ class MatchCenter extends Component {
                                 ref='swiper'
                                 height={styleVar.deviceHeight}
                                 loop={false}>
-                                <Momentum />                               
+                                <Momentum />
+                                <StadiumFigure />
                             </Swiper>
                         </View>
 

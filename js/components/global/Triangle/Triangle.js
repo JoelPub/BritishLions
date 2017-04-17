@@ -5,8 +5,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-
-export default class Triangle extends Component {
+ class Triangle extends Component {
 
   constructor(props){
     super(props)
