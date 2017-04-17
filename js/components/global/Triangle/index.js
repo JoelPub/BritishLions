@@ -1,2 +1,2 @@
-import Triangle from 'Triangle'
+import Triangle from './Triangle'
 export  default Triangle
