@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 import { Image, View, Text } from 'react-native'
+import { connect } from 'react-redux'
+import { drillDown } from '../../actions/content'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
@@ -36,13 +38,14 @@ const locStyle = styleSheetCreate({
     }
 })
 
-export default class PlayerFigure extends Component {
+class PlayerFigure extends Component {
     constructor(props){
         super(props)
 
         this.state = {
             fixturesList: [],
-            isGameLive: true
+            fixturesLeft: [],
+            isGameLive: false
         }
     }
 
@@ -52,12 +55,16 @@ export default class PlayerFigure extends Component {
         }, 600)
     }
 
+    _drillDown(data, route) {
+        this.props.drillDown(data, route)
+    }
+
     _fetchFixture() {
         let fixturesLeft = []
         let dateNow = new Date
-        //dateNow = 'Wed Jun 03 2017 17:34:00 GMT+0800 (PHT)'
+        //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
         dateNow = Date.parse(dateNow)
-
+       
         fixturesList.map(function(item, index) {
             let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
             //console.log(dateSched, new Date(`${item.date} ${item.time}`))
@@ -68,7 +75,8 @@ export default class PlayerFigure extends Component {
         })
 
         this.setState({
-            fixturesList: limitArrayList(fixturesLeft, 1)
+            fixturesList: fixturesLeft,
+            fixturesLeft: limitArrayList(fixturesLeft, 1)
         })
     }
 
@@ -110,11 +118,13 @@ export default class PlayerFigure extends Component {
                                 <View>
                                     <View style={styles.pageTitle}>
                                         <Text style={styles.pageTitleText}>
-                                            UPCOMING FIXTURE
+                                            {
+                                                this.state.fixturesList.length === 1? 'LAST FIXTURE' : 'UPCOMING FIXTURE'
+                                            }
                                         </Text>
                                     </View>
                                     {
-                                        this.state.fixturesList.map(function(item, index) {
+                                        this.state.fixturesLeft.map(function(item, index) {
                                             let date = item.date.toUpperCase() || ''
                                             let title = item.title || ''
                                             let image = fixturesImages[item.id]
@@ -148,3 +158,11 @@ export default class PlayerFigure extends Component {
         )
     }
 }
+
+function bindAction(dispatch) {
+    return {
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect(null, bindAction)(PlayerFigure)
