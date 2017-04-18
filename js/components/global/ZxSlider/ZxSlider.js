@@ -67,6 +67,16 @@ class ZxSlider extends Component {
         this.setState({
           left: this.countSize(left+gs.dx)
         })
+        if(this.props.valuesCount){
+          let widthItem = ( styleVar.deviceWidth-112) /this.props.valuesCount
+          let index = Math.round(this.state.left /widthItem)
+          this.props.onValuesChange(index)
+        }else {
+          this.setState({
+            left: endLeft
+          })
+          this.props.onValuesChange((this.state.left/(styleVar.deviceWidth-112)).toFixed(2))
+        }
       },
       onPanResponderTerminationRequest: (evt, gs) => true,
       onPanResponderTerminate: (evt, gs) => {
