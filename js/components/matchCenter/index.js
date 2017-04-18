@@ -38,11 +38,11 @@ class MatchCenter extends Component {
                         <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
-                                height={700}
+                                height={1480}
                                 loop={false}
                                 dotColor='rgb(255,255,255)'
                                 activeDotColor='black'
-                                paginationStyle={{top:-630,position:'absolute'}}>
+                                paginationStyle={{top:-1410,position:'absolute'}}>
                                 <MatchSummary />
                                 <Momentum />
                                 <StadiumFigure />
