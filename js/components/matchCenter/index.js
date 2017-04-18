@@ -12,6 +12,7 @@ import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
+import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 
@@ -32,11 +33,15 @@ class MatchCenter extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         
-                        <View>
+                        <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
-                                height={styleVar.deviceHeight}
-                                loop={false}>
+                                height={700}
+                                loop={false}
+                                dotColor='rgb(255,255,255)'
+                                activeDotColor='black'
+                                paginationStyle={{top:-630,position:'absolute'}}>
+                                <MatchSummary />
                                 <Momentum />
                                 <StadiumFigure />
                             </Swiper>
