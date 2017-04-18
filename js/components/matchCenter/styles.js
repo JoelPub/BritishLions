@@ -10,4 +10,13 @@ module.exports = styleSheetCreate({
         height: null,
         backgroundColor: '#fff'
     },
+    slide1:{
+
+    },
+    slide2:{
+
+    },
+    slide3:{
+
+    }
 })

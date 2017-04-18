@@ -14,11 +14,13 @@ import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
+import Carousel from '../global/Carousel'
 
 class MatchCenter extends Component {
 
     constructor(props) {
          super(props)
+        this._carousel=null
     }
     
     render() {
@@ -39,6 +41,7 @@ class MatchCenter extends Component {
                                 loop={false}>
                                 <Momentum />
                                 <StadiumFigure />
+                                <Carousel />
                             </Swiper>
                         </View>
 
