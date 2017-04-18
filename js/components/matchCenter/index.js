@@ -34,11 +34,14 @@ class MatchCenter extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         
-                        <View>
+                        <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
-                                height={styleVar.deviceHeight}
-                                loop={false}>
+                                height={700}
+                                loop={false}
+                                dotColor='rgb(255,255,255)'
+                                activeDotColor='black'
+                                paginationStyle={{top:-630,position:'absolute'}}>
                                 <Momentum />
                                 <StadiumFigure />
                                 <Carousel />

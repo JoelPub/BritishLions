@@ -39,10 +39,24 @@ class Momentum extends Component {
                         leftWindow:[{top:20,width:140},],
                         rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
                         timeMark:'30'
+                    },,
+                    {
+                        line:{cLeft:80,fLeft:180,radius:8},
+                        timestamp:['32','34','36','38','40'],
+                        leftWindow:[{top:20,width:140},],
+                        rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
+                        timeMark:'30'
+                    },,
+                    {
+                        line:{cLeft:180,fLeft:80,radius:8},
+                        timestamp:['42','44','46','48','50'],
+                        leftWindow:[{top:20,width:140},],
+                        rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
+                        timeMark:'30'
                     },
                 ]
         return (
-            <View style={{marginTop:50,marginHorizontal:10,borderRadius:5}}>
+            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
                         <View style={{height:16,width:16,borderRadius:8,backgroundColor:'green',marginTop:5}} />
