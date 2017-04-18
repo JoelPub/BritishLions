@@ -54,3 +54,10 @@ export function splitName(name, spliter, maxLength, isMergeFirstName = false) {
 
         return nameArr
 }
+
+export function limitArrayList(list, limit=null) {
+    if (limit) {
+        return list.slice(0, limit)
+    }
+    return list
+}

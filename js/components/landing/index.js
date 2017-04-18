@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert ,NativeModules} from 'react-native'
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
+import { limitArrayList } from '../utility/helper'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { setUserProfile } from '../../actions/squad'
 import { setAccessGranted } from '../../actions/token'
@@ -23,6 +24,7 @@ import shapes from '../../themes/shapes'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import SummaryCardWrapper from '../global/summaryCardWrapper'
+import Fixture from './fixture'
 import ProfileSummaryCard from '../myLions/components/profileSummaryCard'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import SquadModel from  'modes/Squad'
@@ -32,13 +34,8 @@ import { getUserId, removeToken, getUserFullName,getRefreshToken } from '../util
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 import { actionsApi } from '../utility/urlStorage'
-// For mapping a static image only, since require() is not working with concatenating a dynamic variable
-// should be delete this code once api is ready.
-import fixturesList from '../../../contents/fixtures/data.json'
-import fixturesImages from '../../../contents/fixtures/images'
 
 class Landing extends Component {
-
     constructor(props) {
         super(props)
         this.totalPlayer = 35
@@ -53,7 +50,6 @@ class Landing extends Component {
             isFetchContent: false,
             isProfileSummaryLoaded: false,
             latestUpdatesFeeds: [], 
-            fixturesList: [],
             isFullPlayer: true,
             totalPlayerSelected: 0,
             isLoadedSquad: false,
@@ -147,35 +143,14 @@ class Landing extends Component {
         service(options)    
     }
 
-    _fetchFixture() {
-        let fixturesLeft = []
-        let dateNow = new Date
-        //dateNow = 'Wed Jun 03 2017 17:34:00 GMT+0800 (PHT)'
-        dateNow = Date.parse(dateNow)
-
-        fixturesList.map(function(item, index) {
-            let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
-            //console.log(dateSched, new Date(`${item.date} ${item.time}`))
-            
-            if (dateSched > dateNow) {
-                fixturesLeft.push(item)
-            }
-        })
-
-        this.setState({
-            fixturesList: this._limitList(fixturesLeft, 1)
-        })
-    }
-
     _fetchContent() {
         this._fetchNews()
         this._fetchGalleries() 
         this._fetchTV()
-        this._fetchFixture()
     }
 
     _latestUpdate(cat, data, order) {
-        data = this._limitList(data, 1)[0]
+        data = limitArrayList(data, 1)[0]
         data.category = cat
         data.order = order
         this.latestUpdatesFeeds.push(data)
@@ -184,14 +159,6 @@ class Landing extends Component {
             latestUpdatesFeeds: sortBy(this.latestUpdatesFeeds, ['order']),
             isLoaded: true
         })
-    }
-
-    _limitList(list, limit=null) {
-        if (limit) {
-            return list.slice(0, limit)
-        }
-
-        return list
     }
 
     _showError(error) {
@@ -480,6 +447,8 @@ class Landing extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
 
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <Fixture />
+
                         {
                             !this.props.isAccessGranted?
                                 <ButtonFeedback onPress={() => this._isSignIn('myLions')}>
@@ -494,6 +463,11 @@ class Landing extends Component {
                                 null
                         }
 
+                        <View style={styles.pageTitle}>
+                            <Text style={styles.pageTitleText}>
+                                MY LIONS
+                            </Text>
+                        </View>
                         <View style={styles.guther}>
                             {
                                 this.props.isAccessGranted?
@@ -579,7 +553,7 @@ class Landing extends Component {
                         <View>
                             <View style={styles.pageTitle}>
                                 <Text style={styles.pageTitleText}>
-                                    2017 LIONS SQUAD
+                                    OFFICIAL 2017 SQUAD
                                 </Text>
                             </View>
                             <ButtonFeedback
@@ -616,45 +590,6 @@ class Landing extends Component {
                             }
                         </View>
 
-                        <View>
-                            {
-                                this.state.fixturesList.length? 
-                                    <View style={styles.pageTitle}>
-                                        <Text style={styles.pageTitleText}>
-                                            UPCOMING FIXTURE
-                                        </Text>
-                                    </View>
-                                :
-                                    null
-                            }
-                            {
-                                this.state.fixturesList.map(function(item, index) {
-                                    let date = item.date.toUpperCase() || ''
-                                    let title = item.title || ''
-                                    let image = fixturesImages[item.id]
-
-                                    return (
-                                        <ButtonFeedback key={index}
-                                            style={styles.banner}
-                                            onPress={() => this._drillDown(item, 'fixtureDetails')}>
-                                            <ImagePlaceholder height={200}>
-                                                <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
-                                                    <Image
-                                                        resizeMode='contain'
-                                                        style={styles.bannerImg}
-                                                        source={image} />
-                                                </LinearGradient>
-                                            </ImagePlaceholder>
-                                            <View style={[shapes.triangle, {marginTop: -12}]} />
-                                            <View style={styles.bannerDetails}>
-                                                <Text style={styles.bannerTitle}>{ date }</Text>
-                                                <Text style={styles.bannerDesc}>{ title }</Text>
-                                            </View>
-                                        </ButtonFeedback>
-                                    )
-                                }, this)
-                            }
-                        </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter />
