@@ -15,6 +15,9 @@ class MatchSummary extends Component {
 
     constructor(props) {
          super(props)
+         this.state = {
+              h:0
+         }
          this.data = [
           {time: '09:00', title: 'Archery Training', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ', circleColor: '#009688',lineColor:'#009688'},
           {time: '10:45', title: 'Play Badminton', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.'},
@@ -36,7 +39,16 @@ class MatchSummary extends Component {
         console.log('y',y)
         console.log('width',width)
         console.log('height',height)
-    }   
+        this.setState({h:y+200},()=>{
+            if(this.props.isActive) this.props.setHeight(this.state.h)
+        })
+        
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h+50)
+    }
     render() {
         return (
                 <ScrollView style={{flex: 1,marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5}}>

@@ -16,6 +16,24 @@ class Momentum extends Component {
 
     constructor(props) {
          super(props)
+         this.state = {
+              h:0
+         }
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h+50)
+    }
+    measurePage(page,event) {
+        console.log('momentum')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        console.log('page',page)
+        console.log('x',x)
+        console.log('y',y)
+        console.log('width',width)
+        console.log('height',height)
+        this.setState({h:height})
     }
     
     render() {
@@ -57,7 +75,7 @@ class Momentum extends Component {
                     },
                 ]
         return (
-            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
+            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}} onLayout={this.measurePage.bind(this,'momentum')} >
                 <LiveBox data={{}} />
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>

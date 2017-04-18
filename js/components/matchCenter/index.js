@@ -20,8 +20,17 @@ import Carousel from '../global/Carousel'
 class MatchCenter extends Component {
 
     constructor(props) {
-         super(props)
+        super(props)
         this._carousel=null
+         this.state = {
+              index:0,
+              swiperHeight:0
+         }
+
+    }
+    _setHeight(h) {
+        console.log('_setHeight',h)
+        this.setState({swiperHeight:h})
     }
     
     render() {
@@ -38,15 +47,16 @@ class MatchCenter extends Component {
                         <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
-                                height={1480}
+                                height={this.state.swiperHeight}
                                 loop={false}
                                 dotColor='rgb(255,255,255)'
                                 activeDotColor='black'
-                                paginationStyle={{top:-1410,position:'absolute'}}>
-                                <MatchSummary />
-                                <Momentum />
-                                <StadiumFigure />
-                                <Carousel />
+                                paginationStyle={{top:-1*(this.state.swiperHeight-70),position:'absolute'}}
+                                onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
+                                <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
+                                <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
+                                <StadiumFigure  isActive={this.state.index===2}/>
+                                <Carousel  isActive={this.state.index===3}/>
                             </Swiper>
                         </View>
 
