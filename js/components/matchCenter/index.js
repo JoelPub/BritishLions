@@ -15,11 +15,13 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
+import Carousel from '../global/Carousel'
 
 class MatchCenter extends Component {
 
     constructor(props) {
          super(props)
+        this._carousel=null
     }
     
     render() {
@@ -44,6 +46,7 @@ class MatchCenter extends Component {
                                 <MatchSummary />
                                 <Momentum />
                                 <StadiumFigure />
+                                <Carousel />
                             </Swiper>
                         </View>
 

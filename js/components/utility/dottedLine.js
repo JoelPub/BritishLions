@@ -24,7 +24,7 @@ export default class DottedLine extends Component {
         let r=360*Math.atan((cLeft-fLeft)/100)/(2*Math.PI)+90+'deg'
         console.log('r',r)
         let d=[]
-        for(let i=0;i<w;i++) {
+        for(let i=0;i*4<w;i++) {
             d.push(i*4)
         }
 
