@@ -15,6 +15,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
+import SetPlayer from './Component/SetPlayer'
 import Carousel from '../global/Carousel'
 
 class MatchCenter extends Component {
@@ -45,7 +46,7 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-630,position:'absolute'}}>
                                 <MatchSummary />
                                 <Momentum />
-                                <StadiumFigure />
+                                <SetPlayer />
                                 <Carousel />
                             </Swiper>
                         </View>
