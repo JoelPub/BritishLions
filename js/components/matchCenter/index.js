@@ -16,14 +16,14 @@ import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
-
+import ManOfTheMatch from './Component/manOfTheMatch'
 
 class MatchCenter extends Component {
 
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS']
+        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH']
         this.state = {
           index:0,
           swiperHeight:0
@@ -59,6 +59,7 @@ class MatchCenter extends Component {
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
                                 <SetPlayer />
+                                <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
                         </View>
 
