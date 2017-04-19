@@ -75,7 +75,7 @@ class Momentum extends Component {
                     },
                 ]
         return (
-            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}} onLayout={this.measurePage.bind(this,'momentum')} >
+            <View style={{marginTop:50,paddingVertical:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}} onLayout={this.measurePage.bind(this,'momentum')} >
                 <LiveBox data={{}} />
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
