@@ -16,7 +16,7 @@ import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
-import Carousel from '../global/Carousel'
+
 
 class MatchCenter extends Component {
 
@@ -31,7 +31,7 @@ class MatchCenter extends Component {
     }
     _setHeight(h) {
         console.log('_setHeight',h)
-        this.setState({swiperHeight:h})
+        this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
     }
     
     render() {
@@ -45,7 +45,7 @@ class MatchCenter extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         
-                        <View style={{backgroundColor:'grey'}}>
+                        <View style={{backgroundColor:'grey',paddingBottom:50}}>
                             <Swiper
                                 ref='swiper'
                                 height={this.state.swiperHeight}

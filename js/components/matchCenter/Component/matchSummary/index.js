@@ -39,7 +39,7 @@ class MatchSummary extends Component {
         console.log('y',y)
         console.log('width',width)
         console.log('height',height)
-        this.setState({h:y+200},()=>{
+        this.setState({h:y+100},()=>{
             if(this.props.isActive) this.props.setHeight(this.state.h)
         })
         
@@ -47,14 +47,16 @@ class MatchSummary extends Component {
     componentWillReceiveProps(nextProps) {
         console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h+50)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
     render() {
         return (
-                <ScrollView style={{flex: 1,marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5}}>
-                    <LiveBox data={{}} />
+                <ScrollView style={{flex: 1,marginTop:50,marginHorizontal:10}} scrollEnabled={false}>
+                    <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:50}}>
+                      <LiveBox data={{}} />
+                    </View>
                     <Timeline 
-                      style={{flex: 1,padding:10,backgroundColor:'rgb(255,255,255)'}}
+                      style={{flex: 1,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
                       data={this.data}
                       circleSize={20}
                       circleColor='rgb(45,156,219)'
@@ -63,7 +65,8 @@ class MatchSummary extends Component {
                       timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
                       descriptionStyle={{color:'gray'}}
                       options={{
-                        style:{paddingTop:5}
+                        style:{paddingTop:5},
+                        scrollEnabled:false
                       }}
                     />
                     <View onLayout={this.measurePage.bind(this,'matchSummary')} />

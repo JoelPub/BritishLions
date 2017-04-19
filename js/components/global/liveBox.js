@@ -6,6 +6,8 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 
+let containerWidth = styleVar.deviceWidth
+
 const locStyle = styleSheetCreate({ 
     bannerDesc: {
         paddingTop: 7
@@ -14,7 +16,6 @@ const locStyle = styleSheetCreate({
         padding: 20,
         backgroundColor: styleVar.colorGrey,
     },
-    // 40% 30% 30%
 
     liveBox: {
         flexDirection: 'row',
@@ -22,13 +23,13 @@ const locStyle = styleSheetCreate({
         backgroundColor: styleVar.colorGrey,
     },
     team: {
-        width: styleVar.deviceWidth * 0.30,
+        flex: 0.3,
         paddingHorizontal: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
     scoreWrapper: {
-        width: styleVar.deviceWidth * 0.40
+        flex: 0.4,
     },
 
 
@@ -52,10 +53,10 @@ const locStyle = styleSheetCreate({
         flexDirection: 'row'
     },
     circle: {
-        width: styleVar.deviceWidth * 0.16,
-        height: styleVar.deviceWidth * 0.16,
+        width: containerWidth * 0.14,
+        height: containerWidth * 0.14,
         backgroundColor: styleVar.colorScarlet,
-        borderRadius: styleVar.deviceWidth * 0.16,
+        borderRadius: containerWidth * 0.14,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -68,7 +69,7 @@ const locStyle = styleSheetCreate({
         textAlign: 'center',
         marginTop: 15,
         android: {
-            marginTop: 5
+            marginTop: 8
         }
     },
     versus: {
