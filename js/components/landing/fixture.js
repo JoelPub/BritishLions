@@ -45,7 +45,7 @@ class PlayerFigure extends Component {
         this.state = {
             fixturesList: [],
             fixturesLeft: [],
-            isGameLive: false
+            isGameLive: true
         }
     }
 
