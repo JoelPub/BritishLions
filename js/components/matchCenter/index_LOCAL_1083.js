@@ -16,24 +16,14 @@ import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
-
+import Carousel from '../global/Carousel'
+var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 class MatchCenter extends Component {
 
     constructor(props) {
-        super(props)
+         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS']
-        this.state = {
-          index:0,
-          swiperHeight:0
-        }
-
-
-    }
-    _setHeight(h) {
-        console.log('_setHeight',h)
-        this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
     }
     
     render() {
@@ -41,24 +31,28 @@ class MatchCenter extends Component {
             <Container theme={theme}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        back={false} 
-                        title={this.subjects[this.state.index]}
+                        back={true} 
+                        title='MATCH CENTER'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0}>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         
                         <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
-                                height={this.state.swiperHeight}
+                                height={700}
                                 loop={false}
                                 dotColor='rgb(255,255,255)'
                                 activeDotColor='black'
-                                paginationStyle={{top:-1*(this.state.swiperHeight-45),position:'absolute'}}
-                                onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
-                                <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
-                                <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
+                                paginationStyle={{top:-630,position:'absolute'}}>
+                                <MatchSummary />
+                                <Momentum />
                                 <SetPlayer />
+                                <ScrollableTabView locked={true}>
+                                    <Carousel tabLabel="React" />
+                                    <Carousel tabLabel="Flow" />
+                                    <Carousel tabLabel="Jest" />
+                                </ScrollableTabView>
                             </Swiper>
                         </View>
 
