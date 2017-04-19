@@ -53,18 +53,24 @@ class MatchCenter extends Component {
                                 loop={false}
                                 dotColor='rgb(255,255,255)'
                                 activeDotColor='black'
+<<<<<<< HEAD
+                                paginationStyle={{top:-630,position:'absolute'}}>
+                                <MatchSummary />
+                                <Momentum />
+                                <SetPlayer />
+                                <ScrollableTabView locked={true}>
+                                    <Carousel tabLabel="React" />
+                                    <Carousel tabLabel="Flow" />
+                                    <Carousel tabLabel="Jest" />
+                                </ScrollableTabView>
+=======
                                 paginationStyle={{top:-1*(this.state.swiperHeight-70),position:'absolute'}}
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
-
                                 <StadiumFigure  isActive={this.state.index===2}/>
-
-                                <ScrollableTabView locked={true}>
-                                    < View tabLabel="1" />
-                                    <View tabLabel="2" />
-                                    <View tabLabel="3" />
-                                </ScrollableTabView>
+                                <Carousel  isActive={this.state.index===3}/>
+>>>>>>> 3c4badb3e7d0839949e35d17d8af9f09016059eb
                             </Swiper>
                         </View>
 

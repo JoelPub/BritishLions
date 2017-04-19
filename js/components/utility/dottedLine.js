@@ -16,13 +16,13 @@ export default class DottedLine extends Component {
     render() {
         let {cLeft,fLeft,radius,isFirst}=this.props
         let w=Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(100,2))-2*radius
-        console.log('w',w)
+        // console.log('w',w)
         let t=isFirst?100/2+radius:100/2
         let l=(cLeft+fLeft)/2-w/2+radius
-        console.log('t',t)
-        console.log('l',l)
+        // console.log('t',t)
+        // console.log('l',l)
         let r=360*Math.atan((cLeft-fLeft)/100)/(2*Math.PI)+90+'deg'
-        console.log('r',r)
+        // console.log('r',r)
         let d=[]
         for(let i=0;i*4<w;i++) {
             d.push(i*4)

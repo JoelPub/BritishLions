@@ -10,11 +10,30 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import MomentumTracker from '../../../utility/momentumTracker'
 import Fixture from '../../../utility/fixture'
+import LiveBox from '../../../global/liveBox'
 
 class Momentum extends Component {
 
     constructor(props) {
          super(props)
+         this.state = {
+              h:0
+         }
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h+50)
+    }
+    measurePage(page,event) {
+        console.log('momentum')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        console.log('page',page)
+        console.log('x',x)
+        console.log('y',y)
+        console.log('width',width)
+        console.log('height',height)
+        this.setState({h:height})
     }
     
     render() {
@@ -39,14 +58,14 @@ class Momentum extends Component {
                         leftWindow:[{top:20,width:140},],
                         rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
                         timeMark:'30'
-                    },,
+                    },
                     {
                         line:{cLeft:80,fLeft:180,radius:8},
                         timestamp:['32','34','36','38','40'],
                         leftWindow:[{top:20,width:140},],
                         rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
                         timeMark:'30'
-                    },,
+                    },
                     {
                         line:{cLeft:180,fLeft:80,radius:8},
                         timestamp:['42','44','46','48','50'],
@@ -56,7 +75,8 @@ class Momentum extends Component {
                     },
                 ]
         return (
-            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
+            <View style={{marginTop:50,paddingTop:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}} onLayout={this.measurePage.bind(this,'momentum')} >
+                <LiveBox data={{}} />
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
                         <View style={{height:16,width:16,borderRadius:8,backgroundColor:'green',marginTop:5}} />
