@@ -10,4 +10,17 @@ module.exports = styleSheetCreate({
     height: null,
     backgroundColor: '#fff'
   },
+  tabBarUnderlineStyle:{
+    backgroundColor: 'red'
+  },
+  tabBarActiveTextColor:{
+    backgroundColor: 'red'
+  },
+  itemContainer:{
+    flexDirection:'row',
+    backgroundColor: styleVar.colorGrey,
+    paddingLeft:10
+  }
+
+
 })
