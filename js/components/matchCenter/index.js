@@ -17,6 +17,7 @@ import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
 import Carousel from '../global/Carousel'
+var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 class MatchCenter extends Component {
 
@@ -47,7 +48,11 @@ class MatchCenter extends Component {
                                 <MatchSummary />
                                 <Momentum />
                                 <SetPlayer />
-                                <Carousel />
+                                <ScrollableTabView locked={true}>
+                                    <Carousel tabLabel="React" />
+                                    <Carousel tabLabel="Flow" />
+                                    <Carousel tabLabel="Jest" />
+                                </ScrollableTabView>
                             </Swiper>
                         </View>
 
