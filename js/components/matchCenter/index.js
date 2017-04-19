@@ -23,10 +23,12 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-         this.state = {
-              index:0,
-              swiperHeight:0
-         }
+        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS']
+        this.state = {
+          index:0,
+          swiperHeight:0
+        }
+
 
     }
     _setHeight(h) {
@@ -39,20 +41,20 @@ class MatchCenter extends Component {
             <Container theme={theme}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        back={true} 
-                        title='MATCH CENTER'
+                        back={false} 
+                        title={this.subjects[this.state.index]}
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0}>
                         
-                        <View style={{backgroundColor:'grey',paddingBottom:50}}>
+                        <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
                                 height={this.state.swiperHeight}
                                 loop={false}
                                 dotColor='rgb(255,255,255)'
                                 activeDotColor='black'
-                                paginationStyle={{top:-1*(this.state.swiperHeight-70),position:'absolute'}}
+                                paginationStyle={{top:-1*(this.state.swiperHeight-45),position:'absolute'}}
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
