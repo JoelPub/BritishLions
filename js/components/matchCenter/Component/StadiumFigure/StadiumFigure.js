@@ -9,13 +9,13 @@ import Triangle from '../../../../components/global/Triangle'
 const styles = styleSheetCreate({
   container: {
     flex: 1,
-    width: 200,
-    height: 450,
+    width: 202,
+    height: 416,
     backgroundColor: '#fff'
   },
   image: {
-    width:200,
-    height:450,
+    width:202,
+    height:416,
     position:'absolute',
 
   }
