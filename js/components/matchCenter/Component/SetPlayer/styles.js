@@ -8,7 +8,8 @@ module.exports = styleSheetCreate({
     flex: 1,
     width: null,
     height: null,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    overflow:'hidden'
   },
   tabBarUnderlineStyle:{
     backgroundColor: 'red'
@@ -19,7 +20,14 @@ module.exports = styleSheetCreate({
   itemContainer:{
     flexDirection:'row',
     backgroundColor: styleVar.colorGrey,
-    paddingLeft:10
+    marginTop:5,
+    paddingHorizontal:10
+  },
+  rightContainer: {
+    width:styleVar.deviceWidth-202-30,
+    borderWidth:1,
+    borderColor:'rgb(216,217,218)',
+    borderLeftWidth:0
   }
 
 

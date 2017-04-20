@@ -9,7 +9,8 @@ import theme from '../../../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../../../themes/variable'
 import Triangle from '../../../../../../components/global/Triangle'
-
+import lionsCopyImage from  './images/lionsCopy2.png'
+import barbarinasCopyImage from  './images/barbariansCopy.png'
 
 class Scoreboard extends Component {
 
@@ -29,41 +30,43 @@ class Scoreboard extends Component {
   render() {
    let {isWithProportion,isDown} = this.props
    let  proportionMargin =  isWithProportion ? {marginLeft :10} : {}
-    let line = isDown ? {borderTopWidth:2,borderTopColor:styleVar.colorGrey3} : {}
+    let iconImage = !isDown ?  lionsCopyImage: barbarinasCopyImage
+    let colorConversions = !isDown ? styleVar.brandPrimary : 'black'
+    let colorPenalties = !isDown ? 'rgb(255,204,40)' : 'rgb(31,188,210)'
     return (
-      <View style={ [styles.container,line]}>
+      <View style={ [styles.container]}>
         <View style={styles.titleView}>
-          <View style={{borderBottomColor:'red',borderBottomWidth:2}}>
-            <Text style={styles.scoreboardTitle}>LIONS</Text>
-          </View>
+          <Image   source={iconImage}/>
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
-            <View style={{width:10,height:10,backgroundColor:'red'}}></View>
+            <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
             <Text style={[styles.scoreboardContentTitle]}>CONVERSIONS</Text>
           </View>
-          <View style={{flexDirection:'row',marginTop:10}}>
+          <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>2/2</Text>
               </View> : null
             }
-
             <View style={[styles.ratioTestView,proportionMargin]}>
               <Text style={[styles.ratioTest]}>100%</Text>
             </View>
           </View>
           <View style={styles.contentContainerWithBox}>
-            <View style={{width:10,height:10,backgroundColor:'red'}}></View>
+            <Triangle
+              width={14}
+              height={14}
+              color={colorPenalties}
+            />
             <Text style={[styles.scoreboardContentTitle]}>PENALTIES</Text>
           </View>
-          <View style={{flexDirection:'row',marginTop:10}}>
+          <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>2/2</Text>
               </View> : null
             }
-
             <View style={[styles.ratioTestView,proportionMargin]}>
               <Text style={[styles.ratioTest]}>100%</Text>
             </View>

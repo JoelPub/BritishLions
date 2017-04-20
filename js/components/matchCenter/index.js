@@ -46,7 +46,6 @@ class MatchCenter extends Component {
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0}>
-                        
                         <View style={{backgroundColor:'grey'}}>
                             <Swiper
                                 ref='swiper'
@@ -58,12 +57,13 @@ class MatchCenter extends Component {
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
-                                <SetPlayer />
+                                <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
                         </View>
 
-                        <LionsFooter isLoaded={true} />
+                        <LionsFooter isLoaded={true}  />
                     </ScrollView>
 
                     <EYSFooter />

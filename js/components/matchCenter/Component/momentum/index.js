@@ -75,7 +75,9 @@ class Momentum extends Component {
                     },
                 ]
         return (
+
             <View style={{marginTop:20,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
+
                 <LiveBox data={{}} />
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
