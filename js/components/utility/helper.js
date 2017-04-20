@@ -61,3 +61,22 @@ export function limitArrayList(list, limit=null) {
     }
     return list
 }
+
+export function mapJSON(data, colMax = 2) {
+    let i = 0
+    let k = 0
+    let newData = []
+    let items = []
+    let length = data.length
+
+    for( i = 0; i <data.length; (i += colMax)) {
+        for( k = 0; k < colMax; k++ ) {
+            if(data[i + k]!==undefined)
+                items.push(data[i + k])
+        }
+
+        newData.push(items)
+        items = []
+    }
+    return newData
+}

@@ -7,6 +7,7 @@ import styleVar from '../../themes/variable'
 import Swiper from 'react-native-swiper'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
+import { mapJSON } from '../utility/helper'
 import shapes from '../../themes/shapes'
 
 const styles = styleSheetCreate({ 
@@ -100,25 +101,6 @@ export default class PlayersListSlider extends Component {
         })
     }
 
-    _mapJSON(data, colMax = 2) {
-        let i = 0
-        let k = 0
-        let newData = []
-        let items = []
-        let length = data.length
-
-        for( i = 0; i <data.length; (i += colMax)) {
-            for( k = 0; k < colMax; k++ ) {
-                if(data[i + k]!==undefined)
-                    items.push(data[i + k])
-            }
-
-            newData.push(items)
-            items = []
-        }
-        return newData
-    }
-
     render() {
         return (
             <View>
@@ -129,7 +111,7 @@ export default class PlayersListSlider extends Component {
                     activeDotColor='rgb(239,239,244)'
                     paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                     {
-                        this._mapJSON(this.state.players, 3).map((rowData, i)=>{
+                        mapJSON(this.state.players, 3).map((rowData, i)=>{
                             return(
                                 <View style={styles.posSwiperRow} key={i}>
                                     {
