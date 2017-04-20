@@ -23,7 +23,7 @@ class Momentum extends Component {
     componentWillReceiveProps(nextProps) {
         console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h+50)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
     measurePage(page,event) {
         console.log('momentum')
@@ -33,7 +33,7 @@ class Momentum extends Component {
         console.log('y',y)
         console.log('width',width)
         console.log('height',height)
-        this.setState({h:height})
+        this.setState({h:y+200})
     }
     
     render() {
@@ -64,18 +64,18 @@ class Momentum extends Component {
                         timestamp:['32','34','36','38','40'],
                         leftWindow:[{top:20,width:140},],
                         rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'30'
+                        timeMark:'40'
                     },
                     {
                         line:{cLeft:180,fLeft:80,radius:8},
                         timestamp:['42','44','46','48','50'],
                         leftWindow:[{top:20,width:140},],
                         rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'30'
+                        timeMark:'50'
                     },
                 ]
         return (
-            <View style={{marginTop:50,paddingVertical:50,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}} onLayout={this.measurePage.bind(this,'momentum')} >
+            <View style={{marginTop:20,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
                 <LiveBox data={{}} />
                 <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
@@ -95,6 +95,7 @@ class Momentum extends Component {
                             )
                         })
                 }
+                    <View onLayout={this.measurePage.bind(this,'momentum')} />
                 </View>
             </View>
         )

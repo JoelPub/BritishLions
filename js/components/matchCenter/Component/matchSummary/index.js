@@ -19,16 +19,15 @@ class MatchSummary extends Component {
               h:0
          }
          this.data = [
-          {time: '09:00', title: 'Archery Training', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ', circleColor: '#009688',lineColor:'#009688'},
-          {time: '10:45', title: 'Play Badminton', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.'},
-          {time: '12:00', title: 'Lunch'},
-          {time: '14:00', title: 'Watch Soccer', description: 'Team sport played between two teams of eleven players with a spherical ball. ',lineColor:'#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'},
-          {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688'}
+          {time: '54MIN', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. '},
+          {time: '52MIN', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.'},
+          {time: '49MIN', description: 'Team sport played between two teams of eleven players with a spherical ball. '},
+          {time: '484MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
+          {time: '47MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
+          {time: '45MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
+          {time: '43MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
+          {time: '40MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
+          {time: '38MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'}
         ]
     }
     measurePage(page,event) {
@@ -39,7 +38,7 @@ class MatchSummary extends Component {
         console.log('y',y)
         console.log('width',width)
         console.log('height',height)
-        this.setState({h:y+100},()=>{
+        this.setState({h:y+25},()=>{
             if(this.props.isActive) this.props.setHeight(this.state.h)
         })
         
@@ -49,25 +48,31 @@ class MatchSummary extends Component {
         console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
+    _renderCircle(rowData,sectionID,rowID) {
+      return (
+        <View style={{width:50,height:50,backgroundColor:'rgb(255,255,255)',position:'absolute',left:0,borderWidth:1,borderColor:'rgb(216,217,218)',borderRadius:25,justifyContent:'center'}}>
+        <Text style={{fontSize:17,fontFamily:styleVar.fontCondensed,color:'rgb(175,0,30)',textAlign: 'center'}}>{rowData.time}</Text>
+        </View>)
+    }
     render() {
         return (
-                <ScrollView style={{flex: 1,marginTop:50,marginHorizontal:10}} scrollEnabled={false}>
-                    <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:50}}>
+                <ScrollView style={{marginTop:20,marginHorizontal:10}} scrollEnabled={false}>
+                    <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
                     <Timeline 
-                      style={{flex: 1,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
+                      style={{height:styleVar.deviceHeight-500,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
                       data={this.data}
-                      circleSize={20}
-                      circleColor='rgb(45,156,219)'
-                      lineColor='rgb(45,156,219)'
-                      timeContainerStyle={{minWidth:52, marginTop: 0}}
-                      timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
-                      descriptionStyle={{color:'gray'}}
+                      lineColor='rgb(216,217,218)'
+                      timeContainerStyle={{position:'absolute'}}
+                      timeStyle={{width:0,height:0}}
+                      descriptionStyle={{color:'rgb(38,38,38)',fontSize:14,lineHeight:16,fontFamily:styleVar.fontGeorgia,marginLeft:20}}
+                      separator={false}
                       options={{
                         style:{paddingTop:5},
-                        scrollEnabled:false
+                        scrollEnabled:true
                       }}
+                      renderCircle={this._renderCircle}
                     />
                     <View onLayout={this.measurePage.bind(this,'matchSummary')} />
               </ScrollView>
