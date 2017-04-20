@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
-import { Container, Header, Text, Button, Icon } from 'native-base'
+import { Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
+import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
@@ -59,7 +59,7 @@ let dummyPlayerData = [
     },
 ]
 
-class ManOfTheMatchSubMission extends Component {
+class ManOfTheMatchLanding extends Component {
 
     constructor(props) {
          super(props)
@@ -74,7 +74,7 @@ class ManOfTheMatchSubMission extends Component {
         if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
 
-    measurePage(page,event) {
+    _measurePage(page,event) {
         console.log('momentum')
         const { x, y, width, height, } = event.nativeEvent.layout
         console.log('page',page)
@@ -87,6 +87,10 @@ class ManOfTheMatchSubMission extends Component {
 
     _onPressPlayer(item) {
         console.log('Callback: ', item)
+    }
+
+    _navigateTo(route) {
+        this.props.pushNewRoute(route)
     }
     
     render() {
@@ -101,22 +105,22 @@ class ManOfTheMatchSubMission extends Component {
 
                 <PlayerListSlider data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
 
-                <View style={styles.note}>
+                <View style={styles.guther}>
                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                 </View>
 
                 <View style={styles.roundButtonBg}>
-                    <ButtonFeedback rounded style={styles.roundButton}>
+                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this._navigateTo('landing')}>
                         <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
                             SUBMIT
                         </Text>
                     </ButtonFeedback>
                 </View>
 
-                <View onLayout={this.measurePage.bind(this,'ManOfTheMatchSubMission')} />
+                <View onLayout={this._measurePage.bind(this,'ManOfTheMatch')} />
             </View>
         )
     }
 }
 
-export default connect(null, null)(ManOfTheMatchSubMission)
+export default connect(null, null)(ManOfTheMatchLanding)
