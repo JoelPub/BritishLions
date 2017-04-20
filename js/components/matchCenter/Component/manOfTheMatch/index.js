@@ -10,6 +10,55 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayerListSlider from '../../../global/playerListSlider'
 
+// please remove this dummy data when api is availble
+let dummyPlayerData = [
+    {
+        id: '1',
+        name: 'Rory Best',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
+    },
+    {
+        id: '2',
+        name: 'Moren Ipsum Aber',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
+    },
+    {
+        id: '3',
+        name: 'Lerom Dolor',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
+    },
+    {
+        id: '4',
+        name: 'Rory Best',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
+    },
+    {
+        id: '5',
+        name: 'Moren Ipsum Aber',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
+    },
+    {
+        id: '6',
+        name: 'Lerom Dolor',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
+    },
+    {
+        id: '7',
+        name: 'Rory Best',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
+    },
+    {
+        id: '8',
+        name: 'Moren Ipsum Aber',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
+    },
+    {
+        id: '9',
+        name: 'Lerom Dolor',
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
+    },
+]
+
 class ManOfTheMatch extends Component {
 
     constructor(props) {
@@ -35,32 +84,36 @@ class ManOfTheMatch extends Component {
         console.log('height',height)
         this.setState({ h:y+200 })
     }
+
+    _onPressPlayer(item) {
+        console.log('Callback: ', item)
+    }
     
     render() {
         return (
-            <View style={styles.wrapperBG}>
-                <View style={styles.wrapper}>
-                    <View style={styles.guther}>
-                        <Text style={styles.title}>WHO'S YOUR MAN OF THE MATCH?</Text>
-                        <Text style={styles.desc}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
-                    </View>
-
-                    <PlayerListSlider/>
-
-                    <View style={styles.guther}>
-                        <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
-
-                        <ButtonFeedback 
-                            rounded 
-                            style={[styles.roundButton]}>
-                            <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                SUBMIT
-                            </Text>
-                        </ButtonFeedback>
-                    </View>
-
-                    <View onLayout={this.measurePage.bind(this,'ManOfTheMatch')} />
+            <View style={styles.wrapper}>
+                <View style={styles.title}>
+                    <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
                 </View>
+                <View style={styles.desc}>
+                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                </View>
+
+                <PlayerListSlider data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+
+                <View style={styles.note}>
+                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                </View>
+
+                <View style={styles.roundButtonBg}>
+                    <ButtonFeedback rounded style={styles.roundButton}>
+                        <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
+                            SUBMIT
+                        </Text>
+                    </ButtonFeedback>
+                </View>
+
+                <View onLayout={this.measurePage.bind(this,'ManOfTheMatch')} />
             </View>
         )
     }

@@ -4,51 +4,63 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import styleVar from '../../../../themes/variable'
 
 module.exports = styleSheetCreate({
-    wrapperBG: {
-        marginTop: 20,
-        marginHorizontal: 10,
-        borderRadius: 5,
-        backgroundColor: 'rgb(255,255,255)'
-    },
     wrapper: {
-        borderRadius: 5,
         backgroundColor:'rgb(255,255,255)',
-        paddingTop: 5,
-        paddingBottom: 15
-    },
-    guther: {
-        paddingTop: 20,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 10
+        marginTop: 20,
     },
     title: {
+        backgroundColor: 'transparent',
+        paddingTop: 20,
+        paddingBottom: 6,
+    },
+    titleText: {
+        alignSelf: 'center',
         fontFamily: styleVar.fontCondensed,
-        fontSize: 21,
-        lineHeight: 21,
-        textAlign: 'center',
+        fontSize: 28,
+        lineHeight: 28,
         color: styleVar.colorScarlet,
+        backgroundColor: 'transparent',
+        textAlign:'center',
+        android: {
+            paddingBottom: 5
+        }
     },
     desc: {
+        borderWidth: 1,
+        borderBottomColor: styleVar.colorGrey2,
+        borderTopColor: styleVar.colorGrey2,
+        padding: 20
+    },
+    descText: {
         fontFamily: styleVar.fontGeorgia,
-        fontSize: 17,
+        fontSize: 18,
         lineHeight: 20,
         textAlign: 'center',
         color: styleVar.colorText,
     },
+
+    note: {
+        padding: 20
+    },
     noteText: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 14,
-        lineHeight: 14,
+        lineHeight: 16,
         textAlign: 'center',
-        color: styleVar.colorText,
+        color: styleVar.colorGrey3,
     },
 
+    roundButtonBg: {
+        backgroundColor: 'rgb(4, 79, 38)',
+        paddingTop: 15,
+        paddingBottom: 20,
+    },
     roundButton: {
+        alignSelf: 'center',
         height: 50,
-        backgroundColor: styleVar.colorScarlet,
+        width: 140,
+        backgroundColor: 'rgb(9, 127, 64)',
         flexDirection:'row',
-        marginTop: 20,
         marginBottom: 0,
         paddingTop:5,
         android:{
@@ -72,5 +84,5 @@ module.exports = styleSheetCreate({
         paddingTop:5,
         marginLeft: 5,
         color: '#FFF',
-    },
+    }
 })

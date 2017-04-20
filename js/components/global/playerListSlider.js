@@ -48,6 +48,7 @@ const styles = styleSheetCreate({
         paddingBottom: 2,
         marginTop: -6,
         backgroundColor: 'transparent',
+        color: '#FFF',
         android: {
             marginTop: -2,
             paddingBottom: 3,
@@ -67,17 +68,17 @@ const PlayerImgCell = ({data, onPress}) => (
             height = {styleVar.deviceWidth / 3}>
             <Image transparent
                 resizeMode='contain'
-                source={{uri:data.image}}
+                source={{uri: data.image}}
                 style={styles.playerImage} />
         </ImagePlaceholder>
         <View style={styles.playerNameTextWrapper}>
             <View style={[shapes.triangle]} />
             <View style={styles.titleBox}>
                 <Text style={styles.playerNameText} numberOfLines={1}>
-                    {data.name&&data.name.toUpperCase().substring(0, data.name.lastIndexOf(" "))}
+                    { data.name && data.name.toUpperCase().substring(0, data.name.lastIndexOf(" ")) }
                 </Text>
                 <Text style={styles.playerNameText} numberOfLines={1}>
-                    {data.name&&data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length)}
+                    { data.name && data.name.toUpperCase().substring(data.name.lastIndexOf(" ")+1, data.name.length) }
                 </Text>
             </View>
         </View>
@@ -87,35 +88,64 @@ const PlayerImgCell = ({data, onPress}) => (
 export default class PlayersListSlider extends Component {
     constructor(props){
         super(props)
+
+        this.state = {
+            players: []
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            players: nextProps.data
+        })
+    }
+
+    _mapJSON(data, colMax = 2) {
+        let i = 0
+        let k = 0
+        let newData = []
+        let items = []
+        let length = data.length
+
+        for( i = 0; i <data.length; (i += colMax)) {
+            for( k = 0; k < colMax; k++ ) {
+                if(data[i + k]!==undefined)
+                    items.push(data[i + k])
+            }
+
+            newData.push(items)
+            items = []
+        }
+        return newData
     }
 
     render() {
         return (
             <View>
-                {/*<Swiper
+                <Swiper
                     height={styleVar.deviceWidth*0.63}
                     loop={false}
                     dotColor='rgba(255,255,255,0.3)'
                     activeDotColor='rgb(239,239,244)'
                     paginationStyle={{bottom:styleVar.deviceWidth/20}}>
                     {
-                        this._mapJSON(this.props.squadDatafeed.forwards,3).map((rowData,i)=>{
+                        this._mapJSON(this.state.players, 3).map((rowData, i)=>{
                             return(
                                 <View style={styles.posSwiperRow} key={i}>
                                     {
-                                        rowData.map((item,index)=>{
+                                        rowData.map((item, index)=>{
                                             return(
                                                 <View style={styles.posWrapper} key={index}>
-                                                        <PlayerImgCell data={item} onPress = {() => this.props.pressImg(item,'myLionsPlayerProfile','forwards',16,index)}/>
+                                                    <PlayerImgCell data={item} onPress={() => this.props.callbackPress(item)} />
                                                 </View>
                                             )
                                         }, this)
                                     }
                                 </View>
                             )
-                        },this)
+                        }, this)
                     }
-                </Swiper>*/}
+                </Swiper>
             </View>
         )
     }
