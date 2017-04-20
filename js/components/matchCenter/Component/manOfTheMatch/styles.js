@@ -8,8 +8,14 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(255,255,255)',
         marginTop: 20,
     },
+    guther: {
+         padding: 20
+    },
     title: {
+        borderTopWidth: 1,
+        borderTopColor: styleVar.colorGrey2,
         backgroundColor: 'transparent',
+        paddingHorizontal: 20,
         paddingTop: 20,
         paddingBottom: 6,
     },
@@ -26,7 +32,8 @@ module.exports = styleSheetCreate({
         }
     },
     desc: {
-        borderWidth: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
         borderBottomColor: styleVar.colorGrey2,
         borderTopColor: styleVar.colorGrey2,
         padding: 20
@@ -39,9 +46,6 @@ module.exports = styleSheetCreate({
         color: styleVar.colorText,
     },
 
-    note: {
-        padding: 20
-    },
     noteText: {
         fontFamily: styleVar.fontGeorgia,
         fontSize: 14,
