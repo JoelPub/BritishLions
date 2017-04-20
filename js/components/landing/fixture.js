@@ -79,7 +79,9 @@ class PlayerFigure extends Component {
             fixturesLeft: limitArrayList(fixturesLeft, 1)
         })
     }
+    goToCoachBox = () => {
 
+    }
     render() {
         return (
             <View>
@@ -103,7 +105,9 @@ class PlayerFigure extends Component {
                                 </Text>
                                 <ButtonFeedback 
                                     rounded 
-                                    style={[styles.roundButton]}>
+                                    style={[styles.roundButton]}
+                                    onPress={this.goToCoachBox}
+                                >
                                     <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
                                         COACH'S BOX

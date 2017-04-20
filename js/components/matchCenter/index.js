@@ -57,7 +57,8 @@ class MatchCenter extends Component {
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
-                                <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)} />
+                                <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
                         </View>
