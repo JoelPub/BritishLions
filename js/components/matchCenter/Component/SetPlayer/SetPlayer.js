@@ -11,6 +11,7 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import StadiumFigure from '../StadiumFigure'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Scoreboard from './Components/Scoreboard'
+import SetPlayerTabBar from  './Components/SetPlayerTabBar'
 
 class SetPlayer extends Component {
 
@@ -26,7 +27,7 @@ class SetPlayer extends Component {
           locked={true}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           initialPage={0}
-          renderTabBar={() => <ScrollableTabBar />}
+          renderTabBar={() => <SetPlayerTabBar />}
           tabBarActiveTextColor={'black'}
         >
           <View style={styles.itemContainer} tabLabel='KICKS' >
