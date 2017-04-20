@@ -13,6 +13,7 @@ import Countdown from '../global/countdown'
 import LionsFooter from '../global/lionsFooter'
 import LiveGame from './components/liveGame'
 import MatchResults from './components/matchResults'
+import GamedayTeam from './components/gamedayTeam'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import data from '../../../contents/fixtures/data.json'
@@ -24,6 +25,7 @@ import styleVar from '../../themes/variable'
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import images from '../../../contents/fixtures/images'
+import { strToUpper,isEmptyObject } from '../utility/helper'
 
 class FixtureDetails extends Component {
 
@@ -31,18 +33,19 @@ class FixtureDetails extends Component {
         super(props)
         this._scrollView = ScrollView
         this.state = {
-            isGameIsOn: false
+            isGameIsOn: false,
+            details:this.props.details
         }
     }
 
-    componentWillReceiveProps() {
-        this.state = {
-            isGameIsOn: this.props.isGameIsOn
-        }
-    }
+    // componentWillReceiveProps() {
+    //     this.state = {
+    //         isGameIsOn: this.props.isGameIsOn
+    //     }
+    // }
 
    calendarAddEvent(params) {
-        let  date = this.props.details.date
+        let  {date} = this.state.details
         let dateNoSpace   = date.replace(/\s+/g, '')
         let  reallyDate = dateNoSpace.toLowerCase()
 
@@ -147,17 +150,17 @@ class FixtureDetails extends Component {
     }
 
     componentDidMount() {
-      let  date = this.props.details.date
-      let dateNoSpace   = date.replace(/\s+/g, '')
-      let  reallyDate = dateNoSpace.toLowerCase()
+        let  {date} = this.state.details
+        let dateNoSpace   = date.replace(/\s+/g, '')
+        let  reallyDate = dateNoSpace.toLowerCase()
 
-      let  interaction = "/fixtures/" +reallyDate
-      console.log(interaction)
-        NativeModules.One.sendInteraction(interaction,
-          { emailAddress : "" });
+        let  interaction = "/fixtures/" +reallyDate
+        console.log(interaction)
+        NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
+        console.log('this.state.details',this.state.details)
     }
-
     render() {
+        let {date,title,stadiumtime,time,id,description,stadiumlocation} = this.state.details
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
@@ -169,21 +172,21 @@ class FixtureDetails extends Component {
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
                             <View style={[styles.fixtureBanner, styles.fixtureBannerDetail]}>
-                                <Text style={[styles.dateText, styles.dateTextDetail]}>{this.props.details.date.toUpperCase()}</Text>
-                                <Text style={[styles.teamText, styles.teamTextDetail]}>{this.props.details.title}</Text>
+                                <Text style={[styles.dateText, styles.dateTextDetail]}>{strToUpper(date)}</Text>
+                                <Text style={[styles.teamText, styles.teamTextDetail]}>{title}</Text>
                             </View>
                             <ImagePlaceholder height={170}>
                                 <Image
                                     resizeMode='cover' 
                                     style={styles.fixtureImg}
-                                    source={images[this.props.details.id]} />
+                                    source={images[id]} />
                             </ImagePlaceholder>
                             <View style={styles.titleBar}>
-                                <Text style={styles.titleBarText}>{this.props.details.stadiumlocation}</Text>
-                                <Text style={[styles.titleBarText, styles.titleBarText2]}>{this.props.details.stadiumtime}</Text>
+                                <Text style={styles.titleBarText}>{stadiumlocation}</Text>
+                                <Text style={[styles.titleBarText, styles.titleBarText2]}>{stadiumtime}</Text>
                             </View>
 
-                            <Countdown endDate={`${this.props.details.date} ${this.props.details.time}`}/> 
+                            <Countdown endDate={`${date} ${time}`}/> 
                             
                             <View style={styles.titleBarLink}>
                                 {
@@ -204,8 +207,10 @@ class FixtureDetails extends Component {
                             <LiveGame />
                             <MatchResults/>
 
-                            <Text style={styles.pageText}>{this.props.details.description}</Text>
+                            <Text style={styles.pageText}>{description}</Text>
                         </View>
+                        <GamedayTeam />
+                        
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter />
