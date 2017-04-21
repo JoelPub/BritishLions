@@ -5,15 +5,15 @@ export default [
             "WELCOME TO MY LIONS",
             "Warren Gatland has now selected the 2017 Lions who will tour NZ.",
             "Now you can play Lions Fantasy Rugby by selecting your starting XV. ",
-            "Lions Fantasy Rugby will allow you to test out your starting XV against the teams selected by Rugby experts."
+            "Lions Fantasy Rugby will allow you to test out your starting XV against the team\'s selected by Rugby experts."
         ]
     },
     {
         "id": "2",
         "description": [
             "WELCOME TO MY LIONS",
-            "Weather, stadium conditions and referee selection will impact your teams performance which you can overcome by selecting the right team and tactics in order to defeat the opposition.",
-            "EY will generate an outcome and score based on player and team analytics which you can than share with your friends, view your position in the ladder and join or create private leagues. "
+            "Weather, stadium conditions and referee selection will impact your team\'s performance which you can overcome by selecting the right team and tactics in order to defeat the opposition.",
+            "EY will generate an outcome and score based on player and team analytics which you can then share with your friends, view your position in the ladder and join or create private leagues. "
         ]
     },
     {
