@@ -219,7 +219,7 @@ class AppNavigator extends Component {
             // console.log('globalNav.navigator',globalNav.navigator)
             var routes = globalNav.navigator.getCurrentRoutes()
 
-            if(routes[routes.length - 1].id == 'landing' || routes[routes.length - 1].id == 'login') {
+            if(routes[routes.length - 1].id == 'landing') {
                 return false
             }
             else {
