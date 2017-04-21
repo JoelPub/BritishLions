@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from './actions/token'
-import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
+import { getAccessToken, getRefreshToken, updateToken, removeToken, getCurrentVersionNumber, setCurrentVersionNumber } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
 import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage ,NativeModules} from 'react-native'
@@ -70,7 +70,7 @@ import Unions from './components/unions'
 import UnionDetails from './components/unions/details'
 import UnionDetailsSub from './components/unions/detailsSub'
 import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBackground'
-import { actionsApi } from './components/utility/urlStorage'
+import { actionsApi, APP_VERSION } from './components/utility/urlStorage'
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
@@ -188,6 +188,14 @@ class AppNavigator extends Component {
             enableCache: true,
         })
         global.storage = storage
+
+        getCurrentVersionNumber().then((versionNumber)=>{
+            if(versionNumber === undefined || versionNumber !== '3'){
+                AsyncStorage.clear()
+                setCurrentVersionNumber()
+            }
+
+        })
 
         globalNav.navigator = this._navigator
 
