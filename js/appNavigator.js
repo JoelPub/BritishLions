@@ -215,7 +215,9 @@ class AppNavigator extends Component {
             false,
             "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            var routes = this._navigator.getCurrentRoutes()
+            // console.log('this._navigator',this._navigator)
+            // console.log('globalNav.navigator',globalNav.navigator)
+            var routes = globalNav.navigator.getCurrentRoutes()
 
             if(routes[routes.length - 1].id == 'landing' || routes[routes.length - 1].id == 'login') {
                 return false
