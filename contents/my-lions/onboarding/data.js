@@ -3,24 +3,25 @@ export default [
         "id": "1",
         "description": [
             "WELCOME TO MY LIONS",
-            "Join the debate and select your own Lions squad to travel to New Zealand.",
-            "EY has developed an algorithm to rate your squad by analysing player statistics over the last two years in international and top tier club competitions."
+            "Warren Gatland has now selected the 2017 Lions who will tour NZ.",
+            "Now you can play Lions Fantasy Rugby by selecting your starting XV. ",
+            "Lions Fantasy Rugby will allow you to test out your starting XV against the teams selected by Rugby experts."
         ]
     },
     {
         "id": "2",
         "description": [
             "WELCOME TO MY LIONS",
-            "The statistics have been weighted to take into account the competition level and the key attack and defence metrics for each position.",
-            "In addition to selecting your forwards and backs, you will have the ability to nominate your Captain and Kicker whose rating will be multiplied to boost your score."
+            "Weather, stadium conditions and referee selection will impact your teams performance which you can overcome by selecting the right team and tactics in order to defeat the opposition.",
+            "EY will generate an outcome and score based on player and team analytics which you can than share with your friends, view your position in the ladder and join or create private leagues. "
         ]
     },
     {
         "id": "3",
         "description": [
             "WELCOME TO MY LIONS",
-            "Player statistics will be updated after every round of the RBS 6 Nations. You can update your squad by adding or removing players.",
-            "Start selecting your squad!"
+            "In the lead up to each test against New Zealand, you will also have the opportunity to select and share your favourite starting XV. ",
+            "Let’s play!"
         ]
     }
 ]

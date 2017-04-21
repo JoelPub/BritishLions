@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder} from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder,NativeModules} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -33,13 +33,19 @@ class NewsDetailsSub extends Component {
         this._items = this.props.json
     }
     onLoadRequest(e){
+        // console.log('onLoadRequest')
         if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
             this.goToURL(e.url)
         }
     }
     goToURL(url) {
+        // console.log('gotoURL',url)
     Linking.canOpenURL(url).then(supported => {
             if (supported) {
+              if(Platform.OS === 'android'){
+                NativeModules.One.getURLWithOneTid(url)
+                NativeModules.One.sendInteractionForOutboundLink(url)
+              }
                 this.webview.stopLoading()
                 Linking.openURL(url)
             } else {
@@ -68,13 +74,16 @@ class NewsDetailsSub extends Component {
           
         })
     }
-
+  componentDidMount() {
+    NativeModules.One.sendInteraction("/news",
+      { emailAddress : "" });
+  }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
-       console.log('_handleStartShouldSetPanResponderCapture e',e.target)
-       for(let node in e) {
-        console.log('node',node)
-       }
-       console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
+       // console.log('_handleStartShouldSetPanResponderCapture e',e.target)
+       // for(let node in e) {
+       //  console.log('node',node)
+       // }
+       // console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
        if (e._targetInst._currentElement === 'SHARE' ||
            e._targetInst._currentElement === 'NEXT STORY' || 
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') || 
@@ -82,14 +91,17 @@ class NewsDetailsSub extends Component {
            (e._targetInst._currentElement && e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] && e._targetInst._currentElement.props.children[0].props && e._targetInst._currentElement.props.children[0].props.children && e._targetInst._currentElement.props.children[0].props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
            
-           ){
+           )
+       {
+        // console.log('return false')
             return false
        }
+       // console.log('return true')
         return true
     }
 
     _handlePanResponderEnd(e, gestureState) {
-       console.log('_handlePanResponderEnd getstureState',gestureState)
+       // console.log('_handlePanResponderEnd getstureState',gestureState)
        if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
@@ -99,6 +111,7 @@ class NewsDetailsSub extends Component {
                 this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
             }  
        }
+       // console.log('return true')
         return true
     }
 
@@ -107,6 +120,11 @@ class NewsDetailsSub extends Component {
             return item.id == idToLookFor
         })
     }
+  sharePress = () => {
+    NativeModules.One.sendInteraction("/news/share",
+      { emailAddress : "" });
+    shareTextWithTitle(this.props.article.headline, this.props.article.link)
+  }
     render() {
         return (
             <Container theme={theme}>
@@ -146,7 +164,7 @@ class NewsDetailsSub extends Component {
                         <View style={styles.shareWrapper}>
                             {this.props.article.author ? <Text style={styles.author} numberOfLines={1}>By {this.props.article.author}</Text> : null}
                             <ButtonFeedback
-                                onPress={shareTextWithTitle.bind(this, this.props.article.headline, this.props.article.link)}
+                                    onPress={this.sharePress}
                                 style={styles.shareLink}>
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 <Icon name='md-share-alt' style={styles.shareLinkIcon} />
