@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
-import { updateToken, removeToken ,SaveUserNameAndPassword,getReloginInfo} from '../utility/asyncStorageServices'
+import { updateToken, removeToken ,SaveUserNameAndPassword,getReloginInfo, isFirstLogIn} from '../utility/asyncStorageServices'
 import { Keyboard, Dimensions,Image, PanResponder, NativeModules, Alert} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
@@ -152,6 +152,21 @@ class Login extends Component {
         // console.log('this.props.jumpRoute',this.props.jumpRoute)
         if(this.props.jumpRoute !== null){
             // console.warn(this.props.jumpRoute)
+            isFirstLogIn().then((isFirst)=>{
+                 isFirst = isFirst === 'yes'? true : false
+                 if(isFirst)
+                 {
+                    this._replaceRoute('myLions')
+                 }
+                 else
+                 {
+                    this._replaceRoute(this.props.jumpRoute)
+                    this.props.setJumpTo()
+                 }
+            }).catch((error) => {
+                 this._replaceRoute(this.props.jumpRoute)
+                 this.props.setJumpTo()
+            })
             this._replaceRoute(this.props.jumpRoute)
             this.props.setJumpTo()
         }else
@@ -171,10 +186,27 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        if(this.props.newRoute !== '')
-            this._replaceRoute(this.props.newRoute)
-        else
-            this._replaceRoute('myLions')
+        if(this.props.jumpRoute !== null){
+           // console.warn(this.props.jumpRoute)
+           isFirstLogIn().then((isFirst)=>{
+                isFirst = isFirst === 'yes'? true : false
+                if(isFirst)
+                {
+                   this._replaceRoute('myLions')
+                }
+                else
+                {
+                   this._replaceRoute(this.props.jumpRoute)
+                   this.props.setJumpTo()
+                }
+           }).catch((error) => {
+                this._replaceRoute(this.props.jumpRoute)
+                this.props.setJumpTo()
+           })
+           this._replaceRoute(this.props.jumpRoute)
+           this.props.setJumpTo()
+       }else
+           this._replaceRoute('myLions')
     }
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
@@ -190,10 +222,27 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        if(this.props.newRoute !== '')
-            this._replaceRoute(this.props.newRoute)
-        else
-            this._replaceRoute('myLions')
+        if(this.props.jumpRoute !== null){
+           // console.warn(this.props.jumpRoute)
+          isFirstLogIn().then((isFirst)=>{
+               isFirst = isFirst === 'yes'? true : false
+               if(isFirst)
+               {
+                  this._replaceRoute('myLions')
+               }
+               else
+               {
+                  this._replaceRoute(this.props.jumpRoute)
+                  this.props.setJumpTo()
+               }
+          }).catch((error) => {
+               this._replaceRoute(this.props.jumpRoute)
+               this.props.setJumpTo()
+          })
+          this._replaceRoute(this.props.jumpRoute)
+          this.props.setJumpTo()
+        }else
+           this._replaceRoute('myLions')
     }
     _SignInWithGoogle = (isFormValidate) => {
         this.setState({
