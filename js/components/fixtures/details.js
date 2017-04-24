@@ -12,6 +12,7 @@ import LionsHeader from '../global/lionsHeader'
 import Countdown from '../global/countdown'
 import LionsFooter from '../global/lionsFooter'
 import LiveGame from './components/liveGame'
+import PickYourXV from './components/pickYourXV'
 import MatchResults from './components/matchResults'
 import GamedayTeam from './components/gamedayTeam'
 import ImagePlaceholder from '../utility/imagePlaceholder'
@@ -25,7 +26,7 @@ import styleVar from '../../themes/variable'
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import images from '../../../contents/fixtures/images'
-import { strToUpper,isEmptyObject } from '../utility/helper'
+import { strToUpper, isEmptyObject } from '../utility/helper'
 
 class FixtureDetails extends Component {
 
@@ -159,6 +160,7 @@ class FixtureDetails extends Component {
         NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
         console.log('this.state.details',this.state.details)
     }
+
     render() {
         let {date,title,stadiumtime,time,id,description,stadiumlocation} = this.state.details
         return (
@@ -204,11 +206,13 @@ class FixtureDetails extends Component {
                                 }
                             </View>
 
-                            <LiveGame />
-                            <MatchResults/>
+                            <PickYourXV/>
+                            <LiveGame/>
 
                             <Text style={styles.pageText}>{description}</Text>
                         </View>
+
+                        <MatchResults/>
                         <GamedayTeam />
                         
                         <LionsFooter isLoaded={true} />

@@ -9,45 +9,43 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 
 const locStyle = styleSheetCreate({ 
     matchResults: {
-        backgroundColor: 'transparent',
-        marginTop: 20 // please remove this
+        backgroundColor: 'transparent'
     },
     matchResultTitle: {
-        backgroundColor: styleVar.colorGrey,
-        marginBottom: 20,
-        
+        backgroundColor: styleVar.colorText,
+        paddingTop: 20,
+        paddingBottom: 6,
     },
     matchResultTitleText: {
-        alignSelf: 'center',
+         alignSelf: 'center',
         fontFamily: styleVar.fontCondensed,
         fontSize: 28,
         lineHeight: 28,
-        color: styleVar.colorScarlet,
+        color: '#FFF',
         backgroundColor: 'transparent',
         textAlign:'center',
-        marginTop: 15,
         android: {
-            marginTop: 15,
-            marginBottom: 10
+            paddingBottom: 5
         }
     },
+    matchResultGuther: {
+        paddingVertical: 25,
+        paddingHorizontal: 20
+    },
     matchResultRow: {
-        backgroundColor: 'green',
+        //backgroundColor: 'green',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 0,
-        paddingBottom: 0,
         marginBottom: 1
     },
-    
     centerCol: {
          width: 90
     },
     matchResultCircle: {
-        width: styleVar.deviceWidth*0.187,
-        height: styleVar.deviceWidth*0.187,
-        borderRadius: styleVar.deviceWidth*0.0935,
+        width: 70,
+        height: 70,
+        borderRadius: 70,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 10,
@@ -56,8 +54,8 @@ const locStyle = styleSheetCreate({
     matchResultCircleText: {
         color: '#FFF',
         backgroundColor:'transparent',
-        fontSize: 36,
-        lineHeight: 36,
+        fontSize: 28,
+        lineHeight: 28,
         textAlign: 'center',
         fontFamily: styleVar.fontCondensed,
         marginTop: 4,
@@ -67,17 +65,18 @@ const locStyle = styleSheetCreate({
     },
     matchResultCircleTitle: {
         fontFamily: styleVar.fontCondensed,
-        fontSize: 30,
-        lineHeight: 30,
+        fontSize: 28,
+        lineHeight: 28,
         color: styleVar.colorText,
-        textAlign:'center'
+        textAlign:'center',
+        marginTop: 15
     },
     matchResultLabelWrapper: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'pink',
+        //backgroundColor: 'pink',
         padding: 0,
-        marginTop: 10,
+        marginTop: 6,
         width: 150
     },
     matchResultLabel: {
@@ -96,7 +95,7 @@ const locStyle = styleSheetCreate({
             marginBottom: 8
         },
         textAlign:'center',
-        backgroundColor: 'violet'
+        //backgroundColor: 'violet'
     }
 })
 
@@ -113,52 +112,53 @@ export default class MatchResults extends Component {
                         MATCH RESULTS
                     </Text>
                 </View>
-                <View style={[locStyle.matchResultRow, {marginBottom: 10}]}>
-                    <View style={locStyle.sideCol}>
-                        <View style={locStyle.matchResultCircle}>
-                            <Text style={locStyle.matchResultCircleText}>{ 13}</Text>
+                <View style={locStyle.matchResultGuther}>
+                    <View style={[locStyle.matchResultRow, {marginBottom: 15}]}>
+                        <View style={locStyle.sideCol}>
+                            <View style={locStyle.matchResultCircle}>
+                                <Text style={locStyle.matchResultCircleText}>{ 13}</Text>
+                            </View>
+                        </View>
+                        <View style={locStyle.centerCol}>   
+                            <Text style={locStyle.matchResultCircleTitle}>SCORE</Text>
+                        </View>
+                        <View style={locStyle.sideCol}>
+                            <View style={locStyle.matchResultCircle}>
+                                <Text style={locStyle.matchResultCircleText}>{ 21 }</Text>
+                            </View>
                         </View>
                     </View>
-                    <View style={locStyle.centerCol}>   
-                        <Text style={locStyle.matchResultCircleTitle}>SCORE</Text>
-                    </View>
-                    <View style={locStyle.sideCol}>
-                        <View style={locStyle.matchResultCircle}>
-                            <Text style={locStyle.matchResultCircleText}>{ 21 }</Text>
+                    <View style={locStyle.matchResultRow}>
+                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <View style={locStyle.matchResultLabelWrapper}>
+                            <Text style={locStyle.matchResultLabel}>TRIES</Text>
                         </View>
+                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
                     </View>
-                </View>
-                
-                <View style={locStyle.matchResultRow}>
-                    <Text style={locStyle.matchResultValue}>{ 2 }</Text>
-                    <View style={locStyle.matchResultLabelWrapper}>
-                        <Text style={locStyle.matchResultLabel}>TRIES</Text>
-                    </View>
-                    <Text style={locStyle.matchResultValue}>{ 2 }</Text>
-                </View>
 
-                <View style={locStyle.matchResultRow}>
-                    <Text style={locStyle.matchResultValue}>{ 2 }</Text>
-                    <View style={locStyle.matchResultLabelWrapper}>
-                        <Text style={locStyle.matchResultLabel}>CONVERSIONS</Text>
+                    <View style={locStyle.matchResultRow}>
+                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <View style={locStyle.matchResultLabelWrapper}>
+                            <Text style={locStyle.matchResultLabel}>CONVERSIONS</Text>
+                        </View>
+                        <Text style={locStyle.matchResultValue}>{ 1 }</Text>
                     </View>
-                    <Text style={locStyle.matchResultValue}>{ 1 }</Text>
-                </View>
 
-                <View style={locStyle.matchResultRow}>
-                    <Text style={locStyle.matchResultValue}>{ 3 }</Text>
-                    <View style={locStyle.matchResultLabelWrapper}>
-                        <Text style={locStyle.matchResultLabel}>PENALTIES</Text>
+                    <View style={locStyle.matchResultRow}>
+                        <Text style={locStyle.matchResultValue}>{ 3 }</Text>
+                        <View style={locStyle.matchResultLabelWrapper}>
+                            <Text style={locStyle.matchResultLabel}>PENALTIES</Text>
+                        </View>
+                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
                     </View>
-                    <Text style={locStyle.matchResultValue}>{ 2 }</Text>
-                </View>
 
-                <View style={locStyle.matchResultRow}>
-                    <Text style={locStyle.matchResultValue}>{ 3 }</Text>
-                    <View style={locStyle.matchResultLabelWrapper}>
-                        <Text style={locStyle.matchResultLabel}>DROP GOALS</Text>
+                    <View style={locStyle.matchResultRow}>
+                        <Text style={locStyle.matchResultValue}>{ 3 }</Text>
+                        <View style={locStyle.matchResultLabelWrapper}>
+                            <Text style={locStyle.matchResultLabel}>DROP GOALS</Text>
+                        </View>
+                        <Text style={locStyle.matchResultValue}>{ 1 }</Text>
                     </View>
-                    <Text style={locStyle.matchResultValue}>{ 1 }</Text>
                 </View>
             </View>
         )

@@ -64,6 +64,14 @@ const locStyle = styleSheetCreate({
         marginLeft: 5,
         color: '#FFF'
     },
+    roundButtonIcon: {
+        marginBottom: 5,
+        color: 'rgb(255,204,40)',
+        fontSize:24,
+        android:{
+            marginBottom: 1,
+        }
+    },
     logoIcon: {
         width: 21,
         height: 32,
@@ -75,7 +83,7 @@ const locStyle = styleSheetCreate({
     },
 })
 
-export default class LiveBox extends Component {
+export default class PickYourXV extends Component {
     constructor(props){
         super(props)
     }
@@ -83,12 +91,6 @@ export default class LiveBox extends Component {
     render() {
         return (
             <View style={locStyle.liveBox}>
-                <View style={locStyle.liveBoxTitle}>
-                    <Text style={locStyle.liveBoxTitleText}>
-                        GAME NOW LIVE
-                    </Text>
-                </View>
-
                 <View style={locStyle.liveBoxInfo}>
                 <Text style={locStyle.liveBoxDescText}>
                     Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
@@ -99,7 +101,7 @@ export default class LiveBox extends Component {
                     <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                     style={locStyle.logoIcon}/>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
-                        COACH'S BOX
+                        PICK YOUR XV
                     </Text>
                 </ButtonFeedback>
                 </View>

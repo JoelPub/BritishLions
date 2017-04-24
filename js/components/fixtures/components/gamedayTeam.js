@@ -161,16 +161,21 @@ const styles = styleSheetCreate({
         alignItems:'center',
     },
     subject:{
-    	width:null,
-    	height:styleVar.deviceWidth*0.16,
-    	backgroundColor:'rgb(38,38,38)',
-    	justifyContent:'center'
+    	backgroundColor: styleVar.colorText,
+        paddingTop: 20,
+        paddingBottom: 6,
     },
     subjectText: {
-    	fontSize:28,
-    	fontFamily: styleVar.fontCondensed,
-    	color:'rgb(255,255,255)',
-    	textAlign:'center'
+    	alignSelf: 'center',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 28,
+        lineHeight: 28,
+        color: '#FFF',
+        backgroundColor: 'transparent',
+        textAlign:'center',
+        android: {
+            paddingBottom: 5
+        }
     }
 })
 

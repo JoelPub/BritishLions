@@ -137,8 +137,7 @@ class PlayerFigure extends Component {
                                     onPress={this._goToCoachBox}
                                 >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                        style={locStyle.logoIcon}>
-                                    </Image>
+                                        style={locStyle.logoIcon}/>
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
                                         COACH'S BOX
                                     </Text>
