@@ -6,6 +6,8 @@ import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import ButtonFeedback from '../../utility/buttonFeedback'
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import TabBar from  './tabBar'
 
 const locStyle = styleSheetCreate({ 
     matchResults: {
@@ -34,13 +36,21 @@ const locStyle = styleSheetCreate({
     },
     matchResultRow: {
         //backgroundColor: 'green',
+        width: 260,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'center',
         marginBottom: 1
     },
     centerCol: {
-         width: 90
+         width: 110,
+         //backgroundColor: 'pink'
+    },
+    sideCol: {
+        //backgroundColor: 'violet',
+        flex: 1,
+        alignItems: 'center'
     },
     matchResultCircle: {
         width: 70,
@@ -77,7 +87,7 @@ const locStyle = styleSheetCreate({
         //backgroundColor: 'pink',
         padding: 0,
         marginTop: 6,
-        width: 150
+        width: 120
     },
     matchResultLabel: {
         fontFamily: styleVar.fontCondensed,
@@ -91,13 +101,106 @@ const locStyle = styleSheetCreate({
         lineHeight: 30,
         color: styleVar.colorScarlet,
         marginTop: 10,
+        flex: 1,
         android: {
             marginBottom: 8
         },
         textAlign:'center',
         //backgroundColor: 'violet'
-    }
+    },
+
+
+    summaryWrapper: {
+        paddingVertical: 25,
+        paddingHorizontal: 20,
+        backgroundColor: styleVar.colorGrey
+    },
+    summaryContent: {
+        marginTop: 30,
+        //backgroundColor: 'green'
+    },
+    tabBarUnderlineStyle:{
+        backgroundColor: '#FFF'
+    },
+    logo: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    logoIcon: {
+        width: 30,
+        backgroundColor: 'transparent',
+        marginTop: -5,
+        android: {
+            marginTop: 0
+        }
+    },
 })
+
+
+const Summary = () => (
+    <View style={locStyle.summaryContent}>
+        <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
+             <View style={locStyle.logo}>
+                <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
+                                        style={locStyle.logoIcon}/> 
+            </View>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}> </Text>
+            </View>
+            <View style={locStyle.logo}>
+                <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
+                                    style={locStyle.logoIcon}/>
+            </View>
+        </View>
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>{ 12 }%</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>POSSESSION</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>{ 20 }%</Text>
+        </View>
+
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>{ 10 }</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>BREAKS</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>{ 10 }</Text>
+        </View>
+
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>00</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>METRES</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>00</Text>
+        </View>
+
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>SCRUMS WON</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+        </View>
+
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>LINE-OUTS WON</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+        </View>
+
+        <View style={locStyle.matchResultRow}>
+            <Text style={locStyle.matchResultValue}>%</Text>
+            <View style={locStyle.matchResultLabelWrapper}>
+                <Text style={locStyle.matchResultLabel}>PEN/CON.</Text>
+            </View>
+            <Text style={locStyle.matchResultValue}>%</Text>
+        </View>
+    </View>
+)
 
 export default class MatchResults extends Component {
     constructor(props){
@@ -159,6 +262,23 @@ export default class MatchResults extends Component {
                         </View>
                         <Text style={locStyle.matchResultValue}>{ 1 }</Text>
                     </View>
+                </View>
+
+                <View style={locStyle.summaryWrapper}>
+                    <ScrollableTabView
+                        locked={true}
+                        tabBarUnderlineStyle={locStyle.tabBarUnderlineStyle}
+                        initialPage={0}
+                        renderTabBar={() => <TabBar />}
+                        tabBarActiveTextColor={'black'}
+                    >
+                        <View tabLabel='SUMMARY'>
+                            <Summary />
+                        </View>
+                        <View tabLabel='GAME-DAY TEAM'>
+                            <Summary />
+                        </View>
+                    </ScrollableTabView>
                 </View>
             </View>
         )

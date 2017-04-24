@@ -31,7 +31,7 @@ const locStyle = styleSheetCreate({
     liveBoxInfo: {
         paddingHorizontal: 20,
         paddingTop: 25,
-        paddingBottom: 40,
+        paddingBottom: 35,
         backgroundColor: styleVar.colorText,
     },
     liveBoxDescText: {
@@ -61,15 +61,15 @@ const locStyle = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop:5,
-        marginLeft: 5,
+        marginLeft: 7,
         color: '#FFF'
     },
     roundButtonIcon: {
         marginBottom: 5,
         color: 'rgb(255,204,40)',
-        fontSize:24,
+        fontSize: 30,
         android:{
-            marginBottom: 1,
+            marginTop: 7,
         }
     },
     logoIcon: {
@@ -98,8 +98,7 @@ export default class PickYourXV extends Component {
                 <ButtonFeedback 
                     rounded 
                     style={[locStyle.roundButton]}>
-                    <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
-                                    style={locStyle.logoIcon}/>
+                    <Icon name='md-people' style={locStyle.roundButtonIcon} />
                     <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
                         PICK YOUR XV
                     </Text>

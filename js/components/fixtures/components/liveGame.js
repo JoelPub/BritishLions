@@ -31,7 +31,7 @@ const locStyle = styleSheetCreate({
     liveBoxInfo: {
         paddingHorizontal: 20,
         paddingTop: 25,
-        paddingBottom: 40,
+        paddingBottom: 35,
         backgroundColor: styleVar.colorText,
     },
     liveBoxDescText: {
@@ -61,7 +61,7 @@ const locStyle = styleSheetCreate({
         fontSize: 24,
         lineHeight: 24,
         paddingTop:5,
-        marginLeft: 5,
+        marginLeft: 7,
         color: '#FFF'
     },
     logoIcon: {
