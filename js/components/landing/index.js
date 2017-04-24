@@ -67,7 +67,7 @@ class Landing extends Component {
                 if(refreshToken)
                     this._navigateTo(route)
                 else{
-                    // console.log('jumproute',route)
+                    // if (__DEV__)console.log('jumproute',route)
                     this.props.setJumpTo(route)
                     this._navigateTo('login')
                 }
@@ -199,7 +199,7 @@ class Landing extends Component {
     }
 
     _getSquad() {
-        console.log('get squad...')
+        if (__DEV__)console.log('get squad...')
         getUserCustomizedSquad().then((catchedSquad)=>{
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
@@ -234,16 +234,16 @@ class Landing extends Component {
                             let initName = ''
                             if(typeof userName==='string') {
                                 let u=userName.trim().replace(/\s+/g,' ')
-                                // console.log('userName',userName)
+                                // if (__DEV__)console.log('userName',userName)
                                 firstName=u.split(' ')[0]||''
                                 lastName=u.split(' ')[1]||''
                                 initName = ''
                                 u.split(' ').map((value, index)=>{
                                     initName = initName + value[0]
                                 })
-                                // console.log('firstName',firstName)
-                                // console.log('lastName',lastName)
-                                // console.log('initName',initName)
+                                // if (__DEV__)console.log('firstName',firstName)
+                                // if (__DEV__)console.log('lastName',lastName)
+                                // if (__DEV__)console.log('initName',initName)
                             }
                             this._getProfileSummary(userName,firstName,lastName,initName)
                         }).catch((error) => {})
@@ -265,7 +265,7 @@ class Landing extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    console.log('res.data',res.data)
+                    if (__DEV__)console.log('res.data',res.data)
                     let userProfile = Object.assign(res.data, {
                         userName: userName, 
                         initName: initName, 

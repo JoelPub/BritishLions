@@ -175,7 +175,7 @@ class CompetitionLadder extends Component {
       first_name:userProfile.firstName,
       last_name:userProfile.lastName,
     }
-    console.log(JSON.stringify(query))
+    if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3CompetitionLadder,
       data: query,
@@ -185,7 +185,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        console.log(res)
+        if (__DEV__)console.log(res)
         if(res.data){
           this.setState({
             isLoaded:false,
@@ -212,14 +212,14 @@ class CompetitionLadder extends Component {
 
   /*router logic*/
   groupNameOnPress = (data) => {
-    console.log('**********')
-    console.log(data)
+    if (__DEV__)console.log('**********')
+    if (__DEV__)console.log(data)
     this.props.drillDown(data,'myLionsGroupView')
   }
 
   /*groupAction*/
   createGroupOnPress = () => {
-    console.log('createGroupOnPress')
+    if (__DEV__)console.log('createGroupOnPress')
     this.setState({
       isCreating: true,
       createType: 'create',
@@ -232,7 +232,7 @@ class CompetitionLadder extends Component {
     })
   }
   dissMissModel = () =>{
-    console.log('dissMissModel')
+    if (__DEV__)console.log('dissMissModel')
     this.setState({
       isCreating: false,
       isJoining: false,
@@ -256,7 +256,7 @@ class CompetitionLadder extends Component {
       this._showError("League Name can't be empty")
       return
     }
-    console.log(JSON.stringify(query))
+    if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3CreateGroup,
       data: query,
@@ -266,7 +266,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        console.log(res)
+        if (__DEV__)console.log(res)
         this.setState({
           isLoaded:false,
         })
@@ -282,7 +282,7 @@ class CompetitionLadder extends Component {
                 modalData: res.data
               })
           }
-          console.log('去更新UI')
+          if (__DEV__)console.log('去更新UI')
           this.updateDataAndUI()
         }else {
           this.setState({
@@ -292,7 +292,7 @@ class CompetitionLadder extends Component {
         }
       },
       onError: (error)=>{
-        console.log(error)
+        if (__DEV__)console.log(error)
         this.setState({isLoaded:false})
         this._showError(error)
       },
@@ -319,7 +319,7 @@ class CompetitionLadder extends Component {
       this._showError("invitation code Can't be empty")
       return
     }
-    console.log(JSON.stringify(query))
+    if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3JoinGroup,
       data: query,
@@ -329,7 +329,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        console.log(res)
+        if (__DEV__)console.log(res)
         this.setState({
           isLoaded:false,
         })
@@ -347,7 +347,7 @@ class CompetitionLadder extends Component {
         }
       },
       onError: (error)=>{
-        console.log(error)
+        if (__DEV__)console.log(error)
         this.setState({isLoaded:false})
         this._showError(error)
       },
@@ -364,7 +364,7 @@ class CompetitionLadder extends Component {
   createButtonClick = (inputText) => {
     let {userProfile} = this.props
     getAccessToken().then(token=>{
-      console.log(token)
+      if (__DEV__)console.log(token)
       this.createGroupApi(token,userProfile.userID,inputText)
     })
   }
@@ -375,7 +375,7 @@ class CompetitionLadder extends Component {
       return
     }
     getAccessToken().then(token=>{
-      console.log(token)
+      if (__DEV__)console.log(token)
       this.joinGroupApi(token,userProfile.userID,inputText)
     })
   }
@@ -384,13 +384,13 @@ class CompetitionLadder extends Component {
     this.props.drillDown(data,'myLionsCompetitionCentreShare')
   }
     measurePage(event) {
-        console.log('measurePage')
-        // console.log('event',event)
+        if (__DEV__)console.log('measurePage')
+        // if (__DEV__)console.log('event',event)
         const { x, y, width, height, } = event.nativeEvent.layout
-        // console.log('x',x)
-        // console.log('y',y)
-        // console.log('width',width)
-        // console.log('height',height)
+        // if (__DEV__)console.log('x',x)
+        // if (__DEV__)console.log('y',y)
+        // if (__DEV__)console.log('width',width)
+        // if (__DEV__)console.log('height',height)
         if(this.props.privateLeagues) {
           this._scrollView.scrollTo({ y: y, animated: true })
           this.props.setPrivateLeagues(false)
@@ -399,7 +399,7 @@ class CompetitionLadder extends Component {
 
     }
   navToCompetitionCentre = () => {
-    console.log('navToCompetitionCentre')
+    if (__DEV__)console.log('navToCompetitionCentre')
     this.props.pushNewRoute('myLionsCompetitionCentre')
   }
   showNetError  = ()=> {
@@ -413,8 +413,8 @@ class CompetitionLadder extends Component {
   render() {
     let { data ,isCreating, createType, isJoining, joinType ,modalData,joinModalData} = this.state
     let {userProfile} = this.props
-   // console.log(userProfile)
-     console.log(data)
+   // if (__DEV__)console.log(userProfile)
+     if (__DEV__)console.log(data)
     return (
       <Container theme={theme}>
         <View style={styles.container} >
@@ -466,14 +466,14 @@ class CompetitionLadder extends Component {
   updateDataAndUI = () =>{
     let {userProfile} = this.props
     getAccessToken().then(token=>{
-      console.log(token)
+      if (__DEV__)console.log(token)
       this.fetchData(token,userProfile.userID)
     })
   }
   componentDidMount() {
     let {userProfile} = this.props
     getAccessToken().then(token=>{
-      console.log(token)
+      if (__DEV__)console.log(token)
        this.fetchData(token,userProfile.userID)
     })
     this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updateDataAndUI);
@@ -492,7 +492,7 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  console.log(state)
+  if (__DEV__)console.log(state)
   return {
     route: state.route,
     privateLeagues: state.squad.privateLeagues,

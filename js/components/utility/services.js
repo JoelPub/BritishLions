@@ -22,8 +22,8 @@ function errorSlice(errObj) {
 }
 
 function errorHandler(error, opt) {
-	console.log('error-opt: ', opt)
-	console.log('error-error: ', error)
+	if (__DEV__)console.log('error-opt: ', opt)
+	if (__DEV__)console.log('error-error: ', error)
 
     if(error.response != undefined){
         let statusCode = error.response.status
@@ -48,7 +48,7 @@ function errorHandler(error, opt) {
             case 400: // Bad Request (invalid data submitted)
             	if (errorType === 'invalid_grant') {
 								errorDescription = 'The email and password do not match, Please verify and try again.' // refresh token failed
-								console.log(error.response.data.error_description)
+								if (__DEV__)console.log(error.response.data.error_description)
 								if (error.response.data.error_description == 'Google access token invalid.') {
 									errorDescription = 'Google access token invalid.'
 								}
@@ -79,7 +79,7 @@ function errorHandler(error, opt) {
         }
 	}else{
 	    //opt.onError('Something went wrong with your request. Please check your internet and try again later.')
-	    console.log('!!!Something went wrong with the request...........', opt)
+	    if (__DEV__)console.log('!!!Something went wrong with the request...........', opt)
 	}
 }
 
@@ -116,8 +116,8 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 
 			// TODO: make method to dynamic (improve)
 			if (opt.method === 'post') {
-                console.log("qs.stringify(opt.data)", opt.data)
-                console.log("opt.isQsStringify", opt.isQsStringify)
+                if (__DEV__)console.log("qs.stringify(opt.data)", opt.data)
+                if (__DEV__)console.log("opt.isQsStringify", opt.isQsStringify)
 				axiosInstance.post(
 				    opt.url,
 				    opt.isQsStringify ? qs.stringify(opt.data) : opt.data

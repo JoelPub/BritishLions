@@ -3,7 +3,7 @@ import { setNetworkStatus } from '../../actions/network'
 
 export function register(store){
 	NetInfo.addEventListener('change', (connectionInfo) => {
-		console.log('connectionInfo: ', connectionInfo)
+		if (__DEV__)console.log('connectionInfo: ', connectionInfo)
         store.dispatch(setNetworkStatus(connectionInfo))
     })
 }

@@ -61,7 +61,7 @@ class ZxSlider extends Component {
         left = this.state.left
       },
       onPanResponderMove: (evt,gs)=>{
-        console.log(gs.dx+' '+gs.dy)
+        if (__DEV__)console.log(gs.dx+' '+gs.dy)
         //随着手势滑动，相应的改变矩形的位置
 
         this.setState({
@@ -81,7 +81,7 @@ class ZxSlider extends Component {
       onPanResponderTerminationRequest: (evt, gs) => true,
       onPanResponderTerminate: (evt, gs) => {
         // 另一个组件已经成为了新的响应者，所以当前手势将被取消。
-        console.log('这里被调用')
+        if (__DEV__)console.log('这里被调用')
         let endLeft = this.countSize(left+gs.dx)
         if(this.props.valuesCount){
           this.setState({
@@ -124,12 +124,12 @@ class ZxSlider extends Component {
     return cleft
   }
   countComplexSize = (left) =>{
-    console.log('崩溃中')
+    if (__DEV__)console.log('崩溃中')
     let widthItem = ( styleVar.deviceWidth-112) /this.props.valuesCount
     let index = Math.round(left /widthItem)
-    console.log(index)
+    if (__DEV__)console.log(index)
     let result = index* widthItem
-    console.log(result)
+    if (__DEV__)console.log(result)
     return  result
   }
 

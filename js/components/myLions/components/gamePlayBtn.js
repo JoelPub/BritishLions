@@ -65,18 +65,18 @@ class GamePlayBtn extends Component {
         )
 	}
     componentWillReceiveProps(nextProps) {
-        console.log('this.props.connectionInfo',this.props.connectionInfo)
+        if (__DEV__)console.log('this.props.connectionInfo',this.props.connectionInfo)
         
-        console.log('nextProps.connectionInfo',nextProps.connectionInfo)
-        console.log('nextProps.teamStatus',nextProps.teamStatus)
-        console.log('nextProps.tactics',nextProps.tactics)
-        console.log('this.props.teamStatus',this.props.teamStatus)
-        console.log('this.props.tactics',this.props.tactics)
+        if (__DEV__)console.log('nextProps.connectionInfo',nextProps.connectionInfo)
+        if (__DEV__)console.log('nextProps.teamStatus',nextProps.teamStatus)
+        if (__DEV__)console.log('nextProps.tactics',nextProps.tactics)
+        if (__DEV__)console.log('this.props.teamStatus',this.props.teamStatus)
+        if (__DEV__)console.log('this.props.tactics',this.props.tactics)
         if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||strToUpper(nextProps.connectionInfo)==='NONE')) {
-                console.log('!!!!!network lost')
-                console.log('this.submitting',this.submitting)
+                if (__DEV__)console.log('!!!!!network lost')
+                if (__DEV__)console.log('this.submitting',this.submitting)
             if(this.submitting) {
-                console.log('!!!!!show network error')
+                if (__DEV__)console.log('!!!!!show network error')
                this.props._setModalVisible(true,'message','ERROR','Network error \n\n Please try again later.','GO BACK')
             }
         }
@@ -96,7 +96,7 @@ class GamePlayBtn extends Component {
       isQsStringify:false,
       onSuccess: (res) => {
         if(res.data) {
-          // console.log('res.data',res.data)
+          // if (__DEV__)console.log('res.data',res.data)
           let userProfile = Object.assign(res.data, {
             userName: userName,
             initName: initName,
@@ -124,7 +124,7 @@ class GamePlayBtn extends Component {
 
         this.submitting=true
         this.props._setModalVisible(true,'loading')
-        console.log('this.props.tactics',this.props.tactics)
+        if (__DEV__)console.log('this.props.tactics',this.props.tactics)
        let options = {
             url: this.getGameResultUrl,
             data: {
@@ -144,13 +144,13 @@ class GamePlayBtn extends Component {
             method: 'post',
             onAxiosStart: () => {},
             onAxiosEnd: () => {
-                console.log('onAxiosEnd')
+                if (__DEV__)console.log('onAxiosEnd')
             },
             onSuccess: (res) => {
               let {userName,initName,firstName,lastName} = this.props.userProfile
               this.getProfile(userName,firstName,lastName,initName)
-                console.log('res',res)
-                console.log('typeof res.data',typeof res.data)
+                if (__DEV__)console.log('res',res)
+                if (__DEV__)console.log('typeof res.data',typeof res.data)
                 if(typeof res.data ==='object') {                    
                     this.props._setModalVisible(false)
                     this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image,round_id:this.props.round_id}), 'myLionsCompetitionGameResults')
@@ -166,7 +166,7 @@ class GamePlayBtn extends Component {
 
             },
             onError: ()=>{
-                console.log('onError')
+                if (__DEV__)console.log('onError')
                 this.props._setModalVisible(true,'message','ERROR','Unfortunately something went wrong when attempting to process your game. \n\n Please try again later.','GO BACK')
                 this.submitting=false
             },

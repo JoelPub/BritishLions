@@ -34,7 +34,7 @@ class Tours extends Component {
                 })
             }
         }).catch((error) => {
-            console.log("A error occured while trying to get the header image: ", error)
+            if (__DEV__)console.log("A error occured while trying to get the header image: ", error)
         })
     }
 

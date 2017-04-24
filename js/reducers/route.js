@@ -32,7 +32,7 @@ export default function (state:State = initialState, action:Action): State {
     }
 
   if (action.type === REPLACE_ROUTE) {
-    // console.log('reducers replace rout',action.rtl)
+    // if (__DEV__)console.log('reducers replace rout',action.rtl)
     globalNav.navigator.replaceWithAnimation({id: action.route},action.rtl)
     let routes = state.routes
     routes.pop()

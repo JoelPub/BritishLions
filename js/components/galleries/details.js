@@ -47,7 +47,7 @@ class Gallery extends Component {
             Image.getSize(value.image,(width,height)=>{
                 Object.assign(value,{'width':width,'height':height})
                 if(index===this.content.images.length-1) {
-                    // console.log('this.content.images',this.content.images)
+                    // if (__DEV__)console.log('this.content.images',this.content.images)
                     this.setState({isLoaded:true}) 
                 }
                 

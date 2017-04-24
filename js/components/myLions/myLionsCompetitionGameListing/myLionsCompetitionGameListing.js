@@ -270,11 +270,11 @@ class MyLionsCompetitionGameListing extends Component {
         this.subscription.remove();
     }
     updateList =(round_id)=> {
-        console.log('updateList')
+        if (__DEV__)console.log('updateList')
         this.setState({ isLoaded: false },()=>{
             let {userProfile,drillDownItem} = this.props
-            console.log('drillDownItem',drillDownItem)
-            console.log('userProfile',userProfile)
+            if (__DEV__)console.log('drillDownItem',drillDownItem)
+            if (__DEV__)console.log('userProfile',userProfile)
             this.round_id=round_id
             let optionsGameList = {
                 url: 'http://bilprod.azurewebsites.net/GetGameList',
@@ -291,7 +291,7 @@ class MyLionsCompetitionGameListing extends Component {
                 isQsStringify:false,
                 onSuccess: (res) => {
                     if(res.data) {
-                        console.log('res.data',res.data)
+                        if (__DEV__)console.log('res.data',res.data)
                         this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
                     }
                 },
@@ -308,11 +308,11 @@ class MyLionsCompetitionGameListing extends Component {
     }
 
     _getList=()=>{
-      console.log('_getList')
+      if (__DEV__)console.log('_getList')
       this.setState({ isLoaded: false },()=>{
             let {userProfile,drillDownItem} = this.props
-            console.log('drillDownItem',drillDownItem)
-            console.log('userProfile',userProfile)
+            if (__DEV__)console.log('drillDownItem',drillDownItem)
+            if (__DEV__)console.log('userProfile',userProfile)
             this.round_id=drillDownItem.round_id
             let optionsGameList = {
                 url: 'http://bilprod.azurewebsites.net/GetGameList',
@@ -329,7 +329,7 @@ class MyLionsCompetitionGameListing extends Component {
                 isQsStringify:false,
                 onSuccess: (res) => {
                     if(res.data) {
-                        console.log('res.data',res.data)
+                        if (__DEV__)console.log('res.data',res.data)
                         this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
                     }
                 },

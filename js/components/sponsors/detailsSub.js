@@ -26,8 +26,8 @@ class SponsorDetailsSub extends Component {
         this._scrollView = ScrollView
     }
     componentDidMount() {
-        console.log('***********sendInteraction1')
-        console.log( this.props.details.title)
+        if (__DEV__)console.log('***********sendInteraction1')
+        if (__DEV__)console.log( this.props.details.title)
         let interaction = "/sponsors/" + this.props.details.title
         NativeModules.One.sendInteraction(interaction,
           null);

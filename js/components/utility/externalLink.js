@@ -22,7 +22,7 @@ export default class ExternalLink extends Component {
               { emailAddress : "" });
         }
         One.sendInteractionForOutboundLink(url).catch(function(error) {
-            console.log(error);
+            if (__DEV__)console.log(error);
             alert(error);
         });
 
@@ -40,8 +40,8 @@ export default class ExternalLink extends Component {
                 })
             }
         },function(error) {
-            console.log('error');
-            console.log(error);
+            if (__DEV__)console.log('error');
+            if (__DEV__)console.log(error);
              if(url){
                 Linking.canOpenURL(url).then(supported => {
                     if (supported) {

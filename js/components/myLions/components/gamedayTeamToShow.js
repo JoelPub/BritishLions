@@ -5,10 +5,10 @@ import { strToUpper,strToLower } from '../../utility/helper'
 import { searchPlayer } from './searchPlayer'
 import Immutable, { Record, List} from 'immutable'
 export function convertSquadToShow(squad,fullPlayerList,uniondata) {
-    console.log('squad',squad.toJS())
+    if (__DEV__)console.log('squad',squad.toJS())
     let tempFeed=new GamedayTeamShowModel()
     tempFeed.forEach((value,index)=>{
-        console.log('index',index)
+        if (__DEV__)console.log('index',index)
             if(index==='captain') {
                 tempFeed=tempFeed.update(index,val=>{
                         return searchPlayer(fullPlayerList,squad.get(index),uniondata)

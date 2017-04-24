@@ -9,9 +9,9 @@ export function convertTeamToShow(team,fullPlayerList,uniondata) {
     tempFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    // console.log('v.posotion',v.position)
-                    // console.log('team.get(index)',team.get(index))
-                    // console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
+                    // if (__DEV__)console.log('v.posotion',v.position)
+                    // if (__DEV__)console.log('team.get(index)',team.get(index))
+                    // if (__DEV__)console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
                     if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
@@ -51,9 +51,9 @@ export function convertInitTeamToShow(team,fullPlayerList,uniondata) {
     tempFeed.forEach((value,index)=>{
             if(index==='backs'||index==='forwards') {
                 value.map((v,i)=>{
-                    // console.log('v.posotion',v.position)
-                    // console.log('team.get(index)',team.get(index))
-                    // console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
+                    // if (__DEV__)console.log('v.posotion',v.position)
+                    // if (__DEV__)console.log('team.get(index)',team.get(index))
+                    // if (__DEV__)console.log('find result',team.get(index).find(x=>x.get('name')===v.position))
                     if(team.get(index).find(x=>x.get('name')===v.position)!==undefined) {
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=searchPlayer(fullPlayerList,team.get(index).find(x=>x.get('name')===v.position).get('id'),uniondata)
@@ -96,19 +96,19 @@ export function removePlayer(teamToShow,position,playerid,subPosition) {
     else {
         teamToShow['indivPos'].find(value=>strToUpper(position)===strToUpper(value.position)).info=null
     }
-    console.log('removeplayer teamToShow',teamToShow)
+    if (__DEV__)console.log('removeplayer teamToShow',teamToShow)
     return teamToShow
 }
 export function addPlayer(teamToShow,position,detail,playerid,subPosition) {
-    console.log('addplayer')
+    if (__DEV__)console.log('addplayer')
     if(playerid) {
-        console.log('playerid',playerid)
+        if (__DEV__)console.log('playerid',playerid)
         teamToShow[position].find(value=>value.position===subPosition).info=detail
     }
     else {
         teamToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
     }
-    console.log('teamToShow',teamToShow[position])
+    if (__DEV__)console.log('teamToShow',teamToShow[position])
     return teamToShow
 }
 

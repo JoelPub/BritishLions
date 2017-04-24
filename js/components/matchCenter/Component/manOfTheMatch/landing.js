@@ -69,24 +69,24 @@ class ManOfTheMatchLanding extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
 
     _measurePage(page,event) {
-        console.log('momentum')
+        if (__DEV__)console.log('momentum')
         const { x, y, width, height, } = event.nativeEvent.layout
-        console.log('page',page)
-        console.log('x',x)
-        console.log('y',y)
-        console.log('width',width)
-        console.log('height',height)
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
         this.setState({ h:y+200 })
     }
 
     _onPressPlayer(item) {
-        console.log('Callback: ', item)
+        if (__DEV__)console.log('Callback: ', item)
     }
 
     _navigateTo(route) {

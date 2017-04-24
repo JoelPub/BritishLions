@@ -88,9 +88,9 @@ import {
 
 
 Navigator.prototype.replaceWithAnimation = function (route,rtl) {
-    // console.log('replaceWithAnimation',route)
-    // console.log('replaceWithAnimation',rtl)
-    // console.log('this.state.sceneConfigStack',this.state.sceneConfigStack)
+    // if (__DEV__)console.log('replaceWithAnimation',route)
+    // if (__DEV__)console.log('replaceWithAnimation',rtl)
+    // if (__DEV__)console.log('this.state.sceneConfigStack',this.state.sceneConfigStack)
     const activeLength = this.state.presentedIndex + 1
     const activeStack = this.state.routeStack.slice(0, activeLength)
     const activeAnimationConfigStack = this.state.sceneConfigStack.slice(0, activeLength)
@@ -98,7 +98,7 @@ Navigator.prototype.replaceWithAnimation = function (route,rtl) {
     const destIndex = nextStack.length - 1
     const nextSceneConfig = this.props.configureScene(route, nextStack,rtl)
     const nextAnimationConfigStack = activeAnimationConfigStack.concat([nextSceneConfig])
-    // console.log('nextAnimationConfigStack',nextAnimationConfigStack)
+    // if (__DEV__)console.log('nextAnimationConfigStack',nextAnimationConfigStack)
 
     const replacedStack = activeStack.slice(0, activeLength - 1).concat([route])
     this._emitWillFocus(nextStack[destIndex])
@@ -155,7 +155,7 @@ class AppNavigator extends Component {
                     this.props.setAccessGranted(true)
                 },
                 onError: (error) => {
-                    //console.log('error: ', error)
+                    //if (__DEV__)console.log('error: ', error)
                     // logout user
                     removeToken(false)
                     this.props.setAccessGranted(false)
@@ -185,6 +185,10 @@ class AppNavigator extends Component {
     }
 
     componentDidMount() {
+		//ignore js caused app crash in production env
+		if (!__DEV__) require('ErrorUtils').setGlobalHandler(function (err) {
+          console.log('ignore js error');
+        })
         var storage = new Storage({
             size: 1000,
             storageBackend: AsyncStorage,
@@ -219,8 +223,8 @@ class AppNavigator extends Component {
             false,
             "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            // console.log('this._navigator',this._navigator)
-            // console.log('globalNav.navigator',globalNav.navigator)
+            // if (__DEV__)console.log('this._navigator',this._navigator)
+            // if (__DEV__)console.log('globalNav.navigator',globalNav.navigator)
             var routes = globalNav.navigator.getCurrentRoutes()
 
             if(routes[routes.length - 1].id == 'landing') {
@@ -285,10 +289,10 @@ class AppNavigator extends Component {
                         style={statusBarColor}
                         ref={(ref) => this._navigator = ref}
                         configureScene={(route,nextStack,rtl) => {
-                            // console.log('!!!!!!route',route)
-                            // console.log('rtl',rtl)
+                            // if (__DEV__)console.log('!!!!!!route',route)
+                            // if (__DEV__)console.log('rtl',rtl)
                             if (rtl===true) {
-                                // console.log('from left')
+                                // if (__DEV__)console.log('from left')
                                 return {
                                     ...Navigator.SceneConfigs.FloatFromLeft,
                                     gestures: {
@@ -299,7 +303,7 @@ class AppNavigator extends Component {
                                 }
                             }
                             else {
-                                // console.log('from right')
+                                // if (__DEV__)console.log('from right')
                                 return {
                                     ...Navigator.SceneConfigs.PushFromRight,
                                     gestures: {

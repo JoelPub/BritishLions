@@ -225,8 +225,8 @@ export default class OfficialSquadList extends Component {
     }
 	render() {
       let  {coachAndStaffData,squadDatafeed} = this.props
-      console.log(coachAndStaffData)
-      console.log(squadDatafeed)
+      if (__DEV__)console.log(coachAndStaffData)
+      if (__DEV__)console.log(squadDatafeed)
       let TopTwoBoxData = this.dellCoachAndCaptain(coachAndStaffData,squadDatafeed)
       let StaffData = this.dellStaffData(coachAndStaffData)
 		return (

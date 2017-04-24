@@ -31,21 +31,21 @@ class MatchSummary extends Component {
         ]
     }
     measurePage(page,event) {
-        console.log('measurePage')
+        if (__DEV__)console.log('measurePage')
         const { x, y, width, height, } = event.nativeEvent.layout
-        console.log('page',page)
-        console.log('x',x)
-        console.log('y',y)
-        console.log('width',width)
-        console.log('height',height)
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
         this.setState({h:y+25},()=>{
             if(this.props.isActive) this.props.setHeight(this.state.h)
         })
         
     }
     componentWillReceiveProps(nextProps) {
-        console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if (__DEV__)console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        if (__DEV__)console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
     }
     _renderCircle(rowData,sectionID,rowID) {

@@ -308,7 +308,7 @@ class MyLionsCompetitionGameResults extends Component {
         this.uniondata = Data
     }
     goShare = () => {
-        //console.log(this.state.rating)
+        //if (__DEV__)console.log(this.state.rating)
         let data = {
             gameData:this.state.drillDownItem,
             userData:this.props.userProfile,
@@ -433,7 +433,7 @@ class MyLionsCompetitionGameResults extends Component {
     }
 
     componentDidMount() {
-        console.log('!!!!!!MyLionsCompetitionGameResults componentDidMount')
+        if (__DEV__)console.log('!!!!!!MyLionsCompetitionGameResults componentDidMount')
         this.setState({isLoaded:false},()=>{
             if (this.state.drillDownItem&&this.state.drillDownItem.isLiveResult) {
                 this.setState({isLoaded: true, resultInfo: this.state.drillDownItem})
@@ -474,11 +474,11 @@ class MyLionsCompetitionGameResults extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    console.log('res.data',res.data)
+                    if (__DEV__)console.log('res.data',res.data)
                     this.setState({isLoaded: true, resultInfo: res.data})
                     getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                            console.log('true')
+                            if (__DEV__)console.log('true')
                             let showTeamFeed=convertTeamToShow(TeamModel.fromJS(res.data.team),catchedFullPlayerList,this.uniondata)
                             this.props.setTeamToShow(showTeamFeed.toJS())
                         }

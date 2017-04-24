@@ -81,7 +81,7 @@ class MyLionsOfficialSquad extends Component {
                 if(refreshToken)
                     this._navigateTo(route)
                 else{
-                    // console.log('jumproute',route)
+                    // if (__DEV__)console.log('jumproute',route)
                     this.props.setJumpTo(route)
                     this._navigateTo('login')
                 }
@@ -185,8 +185,8 @@ class MyLionsOfficialSquad extends Component {
             //    //    therdJson.map((item)=>{
             //    //        coachAndStaff.push(item)
             //    //    })
-            //    //    // console.log('测试******')
-            //    //    // console.log(coachAndStaff)
+            //    //    // if (__DEV__)console.log('测试******')
+            //    //    // if (__DEV__)console.log(coachAndStaff)
             //    //
             //    //})
             //
@@ -194,7 +194,7 @@ class MyLionsOfficialSquad extends Component {
 
 
         }).catch((error)=>{
-            // console.log(error)
+            // if (__DEV__)console.log(error)
         })
     }
     _getSquad(userId){
@@ -220,7 +220,7 @@ class MyLionsOfficialSquad extends Component {
                   // }
                   //  service(optionsOfficialSquad)
                   getEYC3OfficialSquad().then((catchedOfficialSquad) => {
-                        // console.log('catchedOfficialSquad',catchedOfficialSquad)
+                        // if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
                         if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
                             let showSquadFeed=convertSquadToShow(OfficialSquadModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
                             this.props.setOfficialSquadToShow(showSquadFeed.toJS())
@@ -258,7 +258,7 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-  //  console.log(state)
+  //  if (__DEV__)console.log(state)
     return {
         officialSquadToShow: state.squad.officialSquadToShow,
         netWork: state.network,

@@ -274,7 +274,7 @@ class MyLionsManageGame extends Component {
         }
     }
     getInfo(){
-        console.log('!!!this.props.drillDownItem',this.props.drillDownItem)
+        if (__DEV__)console.log('!!!this.props.drillDownItem',this.props.drillDownItem)
 
         let {drillDownItem} = this.state
         this.round_id=drillDownItem.round_id
@@ -288,9 +288,9 @@ class MyLionsManageGame extends Component {
             onAxiosEnd: null,
             method: 'post',
             onSuccess: (res) => {
-                console.log('res',res)
+                if (__DEV__)console.log('res',res)
                 if(res.data) {
-                    console.log('res.data',res.data)
+                    if (__DEV__)console.log('res.data',res.data)
                     this.grounds_id=res.data[0].grounds[Math.trunc(Math.random()*res.data[0].grounds.length)].id
                     this.grounds_name=res.data[0].grounds[Math.trunc(Math.random()*res.data[0].grounds.length)].name
                     this.weather_id=res.data[0].weather[Math.trunc(Math.random()*res.data[0].weather.length)].id
@@ -323,7 +323,7 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-    console.log(state)
+    if (__DEV__)console.log(state)
     return {
         drillDownItem: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,

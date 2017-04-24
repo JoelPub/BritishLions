@@ -234,9 +234,9 @@ class GamedayTeam extends Component {
     }
 
     _showDetail(item, route,playerPos,max,seq) {
-			console.log('item',item)
-			console.log('route',route)
-			console.log('this.state.details',this.state.details)
+			if (__DEV__)console.log('item',item)
+			if (__DEV__)console.log('route',route)
+			if (__DEV__)console.log('this.state.details',this.state.details)
 			this.props.drillDown(item, route)
     }
 
@@ -245,15 +245,15 @@ class GamedayTeam extends Component {
     }
 
     _getSquad(){
-      console.log('_getSquad')
+      if (__DEV__)console.log('_getSquad')
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   getEYC3OfficialSquad().then((catchedOfficialSquad) => {
-                        console.log('catchedOfficialSquad',catchedOfficialSquad)
+                        if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
                         if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
                             let showSquadFeed=convertSquadToShow(GamedayTeamModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
-                            console.log('showSquadFeed',showSquadFeed.toJS())
+                            if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
                             // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
                             this.setState({gameDayTeam:showSquadFeed.toJS()},()=>{
                                 this.setState({isLoaded:true})

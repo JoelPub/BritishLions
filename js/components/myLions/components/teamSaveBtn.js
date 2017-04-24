@@ -93,7 +93,7 @@ class TeamSaveBtn extends Component {
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
-                console.log('res',res)
+                if (__DEV__)console.log('res',res)
                 this.props.setTeamData(this.props.teamDataTemp)
                 this.props.popRoute()
             },

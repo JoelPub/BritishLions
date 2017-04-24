@@ -195,7 +195,7 @@ class MyLionsPlayerList extends Component {
     }
 
     handlePlayer(players) {
-        console.log('merged players：', players)
+        if (__DEV__)console.log('merged players：', players)
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
@@ -216,7 +216,7 @@ class MyLionsPlayerList extends Component {
         this.playerListFeeds = this.handlePlayer(playersByNation)
         this.setState({ isLoaded: false })
         getGoodFormFavoritePlayerList().then((data)=>{
-            console.log('final data:', JSON.stringify(data))
+            if (__DEV__)console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
@@ -240,13 +240,13 @@ class MyLionsPlayerList extends Component {
 
      _mergeEYC3Player(playerList, eyc3Players){
          let mergedPlayers = []
-         console.log('eyc3Players:', JSON.stringify(eyc3Players[0]))
-         console.log('playerList:', JSON.stringify(playerList))
+         if (__DEV__)console.log('eyc3Players:', JSON.stringify(eyc3Players[0]))
+         if (__DEV__)console.log('playerList:', JSON.stringify(playerList))
          if (eyc3Players.length > 0) {
               for(var i = 0; i<eyc3Players.length; i++){
                   for(var j = 0; j<playerList.length; j++){
                       if (eyc3Players[i].id.toString() === playerList[j].id) {
-                          console.log('succeed:', JSON.stringify(eyc3Players[i].id))
+                          if (__DEV__)console.log('succeed:', JSON.stringify(eyc3Players[i].id))
                           playerList[j].eyc3PlayerScore = eyc3Players[i]["overall_score"]
                           mergedPlayers.push(playerList[j])
                       }
@@ -257,7 +257,7 @@ class MyLionsPlayerList extends Component {
          //   let r=eyc3Players.find((node)=>node.id.toString()===item.id)
          //   mergedPlayers.push(Object.assign(item,{eycsPlayerScore:r===undefined?'N/A':r.overall_score}))
          //})
-         // console.log('mergedPlayers:', mergedPlayers)
+         // if (__DEV__)console.log('mergedPlayers:', mergedPlayers)
         this._getFavoritePlayers(mergedPlayers)
      }
 
@@ -468,11 +468,11 @@ class MyLionsPlayerList extends Component {
 
                 getEYC3FullPlayerList().then((eyc3CatchedFullPlayerList) => {
                      if (eyc3CatchedFullPlayerList !== null && eyc3CatchedFullPlayerList !== 0 && eyc3CatchedFullPlayerList !== -1) {
-                        console.log(eyc3CatchedFullPlayerList)
+                        if (__DEV__)console.log(eyc3CatchedFullPlayerList)
                         this._mergeEYC3Player(catchedFullPlayerList[this.unionFeed.unionId],eyc3CatchedFullPlayerList[this.unionFeed.unionId])
                      }
                  }).catch((error) => {
-                     console.log('Error when try to get the EYC3 full player list: ', error)
+                     if (__DEV__)console.log('Error when try to get the EYC3 full player list: ', error)
                  })
             }
         }).catch((error) => {

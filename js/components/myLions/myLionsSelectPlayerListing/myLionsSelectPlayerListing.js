@@ -216,7 +216,7 @@ class MyLionsSelectPlayerListing extends Component {
                 //     onAxiosEnd: null,
                 //     method: 'post',
                 //     onSuccess: (res) => {
-                //         console.log('res.data',res.data)
+                //         if (__DEV__)console.log('res.data',res.data)
                 //         if(res.data) {
                 //             let playerList=[]
                 //             for (let node in res.data) {
@@ -239,7 +239,7 @@ class MyLionsSelectPlayerListing extends Component {
                 // }
                 // service(optionsOfficialSquad)
                 getEYC3OfficialSquad().then((catchedOfficialSquad) => {
-                        // console.log('catchedOfficialSquad',catchedOfficialSquad)
+                        // if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
                         if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
                             let playerList=[]
                             for (let node in catchedOfficialSquad) {
@@ -277,10 +277,10 @@ class MyLionsSelectPlayerListing extends Component {
         playerList.map((id,j) => {
                 if(searchPlayer(playerFeed,id,this.uniondata)!==null) selectPlayers.push(searchPlayer(playerFeed,id,this.uniondata))
         })
-        // console.log('filter',filter.replace(/\s/g,''))
-        // console.log('selectPlayers',selectPlayers)
-        // console.log('filter',filter)
-        // console.log('this.props.teamToShow',this.props.teamToShow)
+        // if (__DEV__)console.log('filter',filter.replace(/\s/g,''))
+        // if (__DEV__)console.log('selectPlayers',selectPlayers)
+        // if (__DEV__)console.log('filter',filter)
+        // if (__DEV__)console.log('this.props.teamToShow',this.props.teamToShow)
         if(filter===undefined) {
             selectPlayers=selectPlayers.filter(x=>{
                 return this.props.teamToShow.forwards.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1 || this.props.teamToShow.backs.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)>-1
@@ -291,10 +291,10 @@ class MyLionsSelectPlayerListing extends Component {
                         let result=false
                         if(typeof x.position==='string') {
                             x.position.split('/').map((value,index)=>{
-                                // console.log('value',value)
-                                // console.log('mapFShow(filter)',mapFShow(filter))
+                                // if (__DEV__)console.log('value',value)
+                                // if (__DEV__)console.log('mapFShow(filter)',mapFShow(filter))
                                 if(mapFShow(filter).split('-').indexOf(strToLower(value).trim())>-1 ) {
-                                    // console.log('found')
+                                    // if (__DEV__)console.log('found')
                                     result=this.props.teamToShow.forwards.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)===-1 && this.props.teamToShow.backs.findIndex(v=>v.info&&v.info.id&&v.info.id===x.id)===-1
                                 }
                             })
@@ -304,7 +304,7 @@ class MyLionsSelectPlayerListing extends Component {
                     }
                 ) 
         }
-        // console.log('selectPlayers',selectPlayers)
+        // if (__DEV__)console.log('selectPlayers',selectPlayers)
         this.setState({
             isLoaded: true,
             selectPlayers:this.ds.cloneWithRows(selectPlayers)

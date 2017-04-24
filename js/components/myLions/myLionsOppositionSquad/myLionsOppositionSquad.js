@@ -83,8 +83,8 @@ class MyLionsOppositionSquad extends Component {
         )
     }
     _showDetail(item, route,playerPos,max,seq) {
-      console.log('item',item)
-      console.log('route',route)
+      if (__DEV__)console.log('item',item)
+      if (__DEV__)console.log('route',route)
         this.props.drillDown(item, route)
     }
     render() {
@@ -157,13 +157,13 @@ class MyLionsOppositionSquad extends Component {
     }
 
     _getSquad(){
-      console.log('_getSquad')
+      if (__DEV__)console.log('_getSquad')
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 this.fullPlayerList=catchedFullPlayerList
                 let showSquadFeed=convertSquadToShow(OppositionSquadModel(this.state.drillDownItem.expertTeam),catchedFullPlayerList,this.uniondata)
-                console.log('showSquadFeed',showSquadFeed.toJS())
+                if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
                 this.props.setOppositionSquadToShow(showSquadFeed.toJS())
                 this.setState({isLoaded:true})
               }

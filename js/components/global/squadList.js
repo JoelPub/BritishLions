@@ -173,15 +173,15 @@ export default class SquadList extends Component {
         super(props)
     }
     // shouldComponentUpdate(nextProps,nextState) {
-    //     console.log('@@@squadList shouldComponentUpdate')
-    //     console.log('@@@this.props.squadDatafeed',JSON.stringify(this.props.squadDatafeed)!=='{}'?this.props.squadDatafeed.indivPos:'null')
-    //     console.log('@@@nextProps.squadDatafeed',JSON.stringify(nextProps.squadDatafeed)!=='{}'?nextProps.squadDatafeed.indivPos:'null')
-    //     console.log('@@@this.props.squadDatafeed=nextProps.squadDatafeed',Map(this.props.squadDatafeed).equals(Map(nextProps.squadDatafeed))?'true':'false')
+    //     if (__DEV__)console.log('@@@squadList shouldComponentUpdate')
+    //     if (__DEV__)console.log('@@@this.props.squadDatafeed',JSON.stringify(this.props.squadDatafeed)!=='{}'?this.props.squadDatafeed.indivPos:'null')
+    //     if (__DEV__)console.log('@@@nextProps.squadDatafeed',JSON.stringify(nextProps.squadDatafeed)!=='{}'?nextProps.squadDatafeed.indivPos:'null')
+    //     if (__DEV__)console.log('@@@this.props.squadDatafeed=nextProps.squadDatafeed',Map(this.props.squadDatafeed).equals(Map(nextProps.squadDatafeed))?'true':'false')
     //     return !Map(this.props.squadDatafeed).equals(Map(nextProps.squadDatafeed))
     // }
 
 	render() {
-        //console.log('@@@render squadList')
+        //if (__DEV__)console.log('@@@render squadList')
 		return (
 
             <View>

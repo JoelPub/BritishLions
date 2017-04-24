@@ -17,11 +17,11 @@ class ButtonNetwork extends Component {
         }
 	}    
     componentWillReceiveProps(nextProps) {
-        console.log('this.props.connectionInfo',this.props.connectionInfo)
+        if (__DEV__)console.log('this.props.connectionInfo',this.props.connectionInfo)
         
-        console.log('nextProps.connectionInfo',nextProps.connectionInfo)
+        if (__DEV__)console.log('nextProps.connectionInfo',nextProps.connectionInfo)
         if(nextProps.connectionInfo!==this.props.connectionInfo&&(nextProps.connectionInfo===null||strToUpper(nextProps.connectionInfo)==='NONE')) {
-            console.log('!!!!!network lost')
+            if (__DEV__)console.log('!!!!!network lost')
             let toast = Toast.show('Please make sure that you\'re connected to the network.', {
                 duration: Toast.durations.LONG,
                 position: Toast.positions.CENTER,

@@ -9,15 +9,15 @@ const SquadModel = Record({
 })
 
 SquadModel.prototype.constructor.format = function (values) {
- // console.log('@@@SquadModel.fromJS',values)
+ // if (__DEV__)console.log('@@@SquadModel.fromJS',values)
   for(let n in values) {
-    // console.log('n',n)
-    // console.log('values[n]',values[n])
+    // if (__DEV__)console.log('n',n)
+    // if (__DEV__)console.log('values[n]',values[n])
     if(n==='backs'||n==='forwards') {
       values[n]=values[n].split('|').filter((v)=>v.trim()!=='')
     }
   }
-  // console.log('values',values)
+  // if (__DEV__)console.log('values',values)
   return Immutable.fromJS(values)
 }
 export default SquadModel

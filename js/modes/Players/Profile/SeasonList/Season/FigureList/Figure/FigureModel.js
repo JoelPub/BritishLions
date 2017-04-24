@@ -8,7 +8,7 @@ const FigureModel = Record({
 
 })
 FigureModel.prototype.constructor.fromJS = function (values) {
- // console.log('@@@FigureModel.fromJS',values)
+ // if (__DEV__)console.log('@@@FigureModel.fromJS',values)
   let that = this
   let nested = Immutable.fromJS(values, function (key, value) {
 

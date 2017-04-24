@@ -6,10 +6,10 @@ import Coach from '../../../../contents/my-lions/official/coach'
 import { searchPlayer } from './searchPlayer'
 import Immutable, { Record, List} from 'immutable'
 export function convertSquadToShow(squad,fullPlayerList,uniondata) {
-    console.log('squad',squad.toJS())
+    if (__DEV__)console.log('squad',squad.toJS())
     let tempFeed=new OfficialSquadShowModel()
     tempFeed.forEach((value,index)=>{
-        console.log('index',index)
+        if (__DEV__)console.log('index',index)
             if(index==='backs'||index==='forwards'||index==='coachstaffs') {
                 tempFeed=tempFeed.set(index,new List())
                 squad.get(index).map((v,i)=>{
@@ -18,13 +18,13 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
             }
             else {
                 value.map((v,i)=>{
-                    console.log('v',v)
+                    if (__DEV__)console.log('v',v)
                     let p=v.position
-                    console.log('squad.get(p)',squad.get(p))
+                    if (__DEV__)console.log('squad.get(p)',squad.get(p))
                     if(squad.get(p)&&squad.get(p).toString().trim()!=='') {
                         tempFeed=tempFeed.update(index,val=>{
                             val[i].info=searchPlayer(fullPlayerList,squad.get(p),uniondata)
-                            console.log('val[i].info',val[i].info)
+                            if (__DEV__)console.log('val[i].info',val[i].info)
                             return val
                         })
                     }
@@ -36,7 +36,7 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
                     }
                 })
             }
-                console.log('tempFeed.get(index)1',tempFeed.get(index))
+                if (__DEV__)console.log('tempFeed.get(index)1',tempFeed.get(index))
         })
         return tempFeed
 }

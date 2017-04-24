@@ -102,7 +102,7 @@ class MyLionsGroupView extends Component {
       first_name:userProfile.firstName,
       last_name:userProfile.lastName,
     }
-    console.log(JSON.stringify(query))
+    if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3GroupInfo,
       data: query,
@@ -112,7 +112,7 @@ class MyLionsGroupView extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        console.log(res)
+        if (__DEV__)console.log(res)
         if(res.data){
           this.setState({
             isLoaded:false,
@@ -147,7 +147,7 @@ class MyLionsGroupView extends Component {
       this._showError("group_id Can't be empty")
       return
     }
-    console.log(JSON.stringify(query))
+    if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3LeaveGroup,
       data: query,
@@ -157,7 +157,7 @@ class MyLionsGroupView extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        console.log(res)
+        if (__DEV__)console.log(res)
         this.setState({
           isLoaded:false,
         })
@@ -174,7 +174,7 @@ class MyLionsGroupView extends Component {
         }
       },
       onError: (error)=>{
-        console.log(error)
+        if (__DEV__)console.log(error)
         this.setState({isLoaded:false})
         this._showError(error)
       },
@@ -303,7 +303,7 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-  console.log(state)
+  if (__DEV__)console.log(state)
   return {
     route: state.route,
     userProfile:state.squad.userProfile,

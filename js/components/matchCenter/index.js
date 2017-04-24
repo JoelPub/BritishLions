@@ -32,7 +32,7 @@ class MatchCenter extends Component {
 
     }
     _setHeight(h) {
-        console.log('_setHeight',h)
+        if (__DEV__)console.log('_setHeight',h)
         this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
     }
     

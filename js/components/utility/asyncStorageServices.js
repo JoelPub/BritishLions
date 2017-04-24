@@ -135,7 +135,7 @@ export async function getReloginInfo() {
 function getDateNow() {
     let dateNow = new Date // current time and date
     //dateNow = 'Thu Jan 26 2017 19:08:40 GMT+0800 (PHT)'
-    //console.log('dateNow: ', dateNow)
+    //if (__DEV__)console.log('dateNow: ', dateNow)
     return dateNow
 }
 
@@ -144,7 +144,7 @@ function generateLoginExpiration() {
 
     // add 3hours and 50minutes, it will return date parse, no need to parse again
     dateExpired = dateExpired.setHours(dateExpired.getHours() +6*24+ 23, dateExpired.getMinutes() + 50)
-    // console.log('dateExpired: ', new Date(dateExpired))
+    // if (__DEV__)console.log('dateExpired: ', new Date(dateExpired))
     return dateExpired 
 }
 
@@ -156,7 +156,7 @@ export async function checkIfLogin() {
     if (dateExpired) { // if have value and not null
         dateExpired = parseInt(dateExpired)
         distance = dateExpired - dateNow
-        //console.log(dateExpired, dateNow, distance)
+        //if (__DEV__)console.log(dateExpired, dateNow, distance)
         if (distance > 0) {
             return true  // token still valid
         }

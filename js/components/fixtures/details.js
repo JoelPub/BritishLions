@@ -51,7 +51,7 @@ class FixtureDetails extends Component {
         let  reallyDate = dateNoSpace.toLowerCase()
 
         let  interaction = "/fixtures/" + reallyDate + '/calendar'
-        console.log(interaction)
+        if (__DEV__)console.log(interaction)
         NativeModules.One.sendInteraction(interaction, { emailAddress : "" });
 
         let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`) // UTC Format
@@ -156,9 +156,9 @@ class FixtureDetails extends Component {
         let  reallyDate = dateNoSpace.toLowerCase()
 
         let  interaction = "/fixtures/" +reallyDate
-        console.log(interaction)
+        if (__DEV__)console.log(interaction)
         NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
-        console.log('this.state.details',this.state.details)
+        if (__DEV__)console.log('this.state.details',this.state.details)
     }
 
     render() {

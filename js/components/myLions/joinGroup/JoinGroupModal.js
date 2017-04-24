@@ -54,7 +54,7 @@ class JoinGroupModal extends Component {
       subTitle: '',
       subContentText: '',
     }
-    //console.log(data)
+    //if (__DEV__)console.log(data)
     let successContentText = ''
       if (data&&data.group_name){
         successContentText = 'You are now a member of ' + data.group_name + ' .'

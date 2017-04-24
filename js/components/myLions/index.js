@@ -200,12 +200,12 @@ class MyLions extends Component {
     }
 
     measurePage(page,event) {
-        // console.log('measurePage')
+        // if (__DEV__)console.log('measurePage')
         if(this.pageWindow.length===this.state.totalPages) return
         const { x, width, height, } = event.nativeEvent.layout
         let i=this.pageWindow.findIndex((value)=>value.index===page)
-        // console.log('page',page)
-        // console.log('i',i)
+        // if (__DEV__)console.log('page',page)
+        // if (__DEV__)console.log('i',i)
         if (i>-1) {
             this.pageWindow[i].size=height+70
         }
@@ -217,11 +217,11 @@ class MyLions extends Component {
                 swiperWindow: height + 70
             })
         }
-        // console.log('this.pageWindow',this.pageWindow)
+        // if (__DEV__)console.log('this.pageWindow',this.pageWindow)
     }
 
     scrollEnd(e, state, context){
-        // console.log('scrollEnd')
+        // if (__DEV__)console.log('scrollEnd')
        
             this.setState({
                 currentPage:state.index,
@@ -242,7 +242,7 @@ class MyLions extends Component {
         })
     }
     componentDidMount() {
-        // console.log('onBordingModalVisible true')      
+        // if (__DEV__)console.log('onBordingModalVisible true')      
         this.setState({onBordingModalVisible:true},()=>{
             this.Data=[]
             Data.map((value,index)=>{
@@ -264,16 +264,16 @@ class MyLions extends Component {
                             let initName = ''
                             if(typeof userName==='string') {
                                 let u=userName.trim().replace(/\s+/g,' ')
-                                // console.log('userName',userName)
+                                // if (__DEV__)console.log('userName',userName)
                                 firstName=u.split(' ')[0]||''
                                 lastName=u.split(' ')[1]||''
                                 initName = ''
                                 u.split(' ').map((value, index)=>{
                                     initName = initName + value[0]
                                 })
-                                // console.log('firstName',firstName)
-                                // console.log('lastName',lastName)
-                                // console.log('initName',initName)
+                                // if (__DEV__)console.log('firstName',firstName)
+                                // if (__DEV__)console.log('lastName',lastName)
+                                // if (__DEV__)console.log('initName',initName)
                             }
 
                             // check if user is first login
@@ -293,24 +293,24 @@ class MyLions extends Component {
                                                 this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
                                         }else{
                                             getSoticFullPlayerListR2().then((catchedFullPlayerList) => {
-                                                // console.log('catchedFullPlayerList',catchedFullPlayerList)
+                                                // if (__DEV__)console.log('catchedFullPlayerList',catchedFullPlayerList)
                                                 if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                                                    // console.log('catchedSquad.data',catchedSquad.data)
+                                                    // if (__DEV__)console.log('catchedSquad.data',catchedSquad.data)
                                                     let squadFeed=eval(`(${catchedSquad.data})`)
                                                     let showSquadFeed=convertSquadToShow(SquadModel.format(squadFeed),catchedFullPlayerList,false,unionData)
-                                                    // console.log('squadFeed',squadFeed)
-                                                    // console.log('showSquadFeed',showSquadFeed)
+                                                    // if (__DEV__)console.log('squadFeed',squadFeed)
+                                                    // if (__DEV__)console.log('showSquadFeed',showSquadFeed)
                                                     let fullFeed=checkFullSquad(showSquadFeed.toJS())
-                                                    // console.log('fullFeed',fullFeed)
+                                                    // if (__DEV__)console.log('fullFeed',fullFeed)
                                                     for( let pos in squadData) {
-                                                        // console.log('pos',pos)
+                                                        // if (__DEV__)console.log('pos',pos)
                                                         if(squadFeed[pos==='wildcard'?'widecard':pos]) {
-                                                            // console.log('squadFeed[pos]',squadFeed[pos])
+                                                            // if (__DEV__)console.log('squadFeed[pos]',squadFeed[pos])
                                                             squadData[pos]=(pos==='forwards'||pos==='backs')?squadFeed[pos]:squadFeed[pos==='wildcard'?'widecard':pos]
-                                                            // console.log('squadData[pos]',squadData[pos])
+                                                            // if (__DEV__)console.log('squadData[pos]',squadData[pos])
                                                         }
                                                     }
-                                                    // console.log('squadFeed',squadFeed)
+                                                    // if (__DEV__)console.log('squadFeed',squadFeed)
                                                     this.getRating(isFirst,fullFeed,squadData,userName,firstName,lastName,initName)
                                                 }
                                                 else {
@@ -338,7 +338,7 @@ class MyLions extends Component {
     }
 
     getRating(isFirst,fullFeed,squadData,userName,firstName,lastName,initName){
-        // console.log('getRating',squadData)
+        // if (__DEV__)console.log('getRating',squadData)
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
             data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
@@ -346,9 +346,9 @@ class MyLions extends Component {
             onAxiosEnd: null,
             method: 'post',
             onSuccess: (res) => {
-                // console.log('res',res)
-                // console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
-                // console.log('this.state.userID',this.state.userID)
+                // if (__DEV__)console.log('res',res)
+                // if (__DEV__)console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
+                // if (__DEV__)console.log('this.state.userID',this.state.userID)
                 this.setState({onBordingModalVisible:false})
                 if(res.data&&isFirst&&!(this.props.visitedOnboarding.id!==undefined &&this.props.visitedOnboarding.id!==null && this.props.visitedOnboarding.id===this.state.userID)) {
                         if (fullFeed) {
@@ -387,7 +387,7 @@ class MyLions extends Component {
     }
 
     getProfile(userName,firstName,lastName,initName){
-        // console.log('getProfile')
+        // if (__DEV__)console.log('getProfile')
         let optionsUserProfile = {
             url: actionsApi.eyc3GetuserProfileSummary,
             data: {id:this.state.userID,first_name:firstName,last_name:lastName},
@@ -398,7 +398,7 @@ class MyLions extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    // console.log('res.data',res.data)
+                    // if (__DEV__)console.log('res.data',res.data)
                         let userProfile = Object.assign(res.data, {
                             userName: userName,
                             initName: initName,

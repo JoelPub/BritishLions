@@ -220,7 +220,7 @@ class MyAccount extends Component {
         return false
       }
     componentDidMount() {
-        console.log(this.props.userProfile)
+        if (__DEV__)console.log(this.props.userProfile)
         NativeModules.One.sendInteraction("/myAccount",
           { emailAddress : this.props.userProfile.userID });
     }

@@ -80,12 +80,12 @@ class SignUp extends Component {
          this.setState({user: {}})
         GoogleSignin.signIn()
           .then((user) => {
-              console.log(user);
+              if (__DEV__)console.log(user);
               this.setState({user: user})
               this._googleHandleSignUp(true)
           })
           .catch((err) => {
-              console.log('WRONG SIGNIN', err)
+              if (__DEV__)console.log('WRONG SIGNIN', err)
           })
           .done();
     }
@@ -93,14 +93,14 @@ class SignUp extends Component {
         NativeModules.One.sendInteraction('/register/facebook', null);
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
             if (!error) {
-                console.log(data);
+                if (__DEV__)console.log(data);
                 this.setState({
                     fbUser:data
                 })
                 this._handleSignUpWithFB(true,'/register/facebook')
 
             } else {
-                console.log(error, data);
+                if (__DEV__)console.log(error, data);
             }
         })
     }
@@ -111,12 +111,12 @@ class SignUp extends Component {
             }
         })
         let {token} =this.state.fbUser.credentials
-        console.log('this.state.fbUser.credentials: ',this.state.fbUser)
+        if (__DEV__)console.log('this.state.fbUser.credentials: ',this.state.fbUser)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
         fetch({ method: 'GET',url: httpUrl })
             .then((response) => response.json())
             .then( (json) => {
-            console.log('json: ', json)
+            if (__DEV__)console.log('json: ', json)
             let nameArr  = json.name.split(' ')
             let lastName = nameArr[0]
             let firstName=  nameArr[1]
@@ -150,8 +150,8 @@ class SignUp extends Component {
                         this._userSignUp()
                     },
                     onError: (res) => {
-                        console.log('注册失败')
-                        console.log(res)
+                        if (__DEV__)console.log('注册失败')
+                        if (__DEV__)console.log(res)
                         this.setState({
                             customMessages: res,
                             customMessagesType: 'error'
@@ -160,7 +160,7 @@ class SignUp extends Component {
                         this._scrollView.scrollToPosition(0,0,false)
                     }
                 }
-                console.log('postion 222,', JSON.stringify(options))
+                if (__DEV__)console.log('postion 222,', JSON.stringify(options))
 
                 service(options)
 
@@ -215,7 +215,7 @@ class SignUp extends Component {
                         username: this.this.state.user.name,
                         emailAddress:this.state.user.email
                     });
-                   console.log(JSON.stringify(this.state.user.accessToken))
+                   if (__DEV__)console.log(JSON.stringify(this.state.user.accessToken))
                    if(!this.state.user.accessToken){
                        NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
                        .then((token) => {
@@ -241,7 +241,7 @@ class SignUp extends Component {
                     this._scrollView.scrollToPosition(0,0,false)
                 }
             }
-            console.log('postion 111,', JSON.stringify(options))
+            if (__DEV__)console.log('postion 111,', JSON.stringify(options))
             service(options)
 
         } else {
@@ -289,7 +289,7 @@ class SignUp extends Component {
                 },
                 channel:'SignUp'
             }
-            console.log('postion 333,', JSON.stringify(options))
+            if (__DEV__)console.log('postion 333,', JSON.stringify(options))
 
             service(options)
 
@@ -299,7 +299,7 @@ class SignUp extends Component {
     }
 
     _userSignUp() {
-        console.log('called')
+        if (__DEV__)console.log('called')
         // reset the fields
         this.setState({
             firstName: '',
@@ -320,8 +320,8 @@ class SignUp extends Component {
     }
 
     _login() {
-        console.log('starting....token: ', this.state.loginToken)
-        console.log('starting....loginType: ', this.state.loginType)
+        if (__DEV__)console.log('starting....token: ', this.state.loginToken)
+        if (__DEV__)console.log('starting....loginType: ', this.state.loginType)
         let options = {
             url: this.serviceRefreshTokenUrl,
             data: {
@@ -353,7 +353,7 @@ class SignUp extends Component {
                 this._scrollView.scrollToPosition(0,0,false)
             }
         }
-        console.log('postion 444,', JSON.stringify(options))
+        if (__DEV__)console.log('postion 444,', JSON.stringify(options))
 
         service(options)
     }

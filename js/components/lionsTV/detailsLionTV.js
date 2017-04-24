@@ -140,7 +140,7 @@ class DetailsLionsTV extends Component {
                                                + 'Alternatively, you can watch the video through your device\'s browser via the link below.',
                                               [
                                                   {text: 'Watch the video now', onPress: () => this.goToURL(this.convertToEmbed('https://m.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId))},
-                                                  {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                                                  {text: 'Cancel', onPress: () => if (__DEV__)console.log('Cancel Pressed'), style: 'cancel'}
                                               ]
                                           )
                               }

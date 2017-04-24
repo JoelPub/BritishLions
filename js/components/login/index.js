@@ -98,7 +98,7 @@ class Login extends Component {
     }
     ReLogin = () =>{
         getReloginInfo().then((result)=>{
-          // console.log(result)
+          // if (__DEV__)console.log(result)
             if (result===null) return
             let reloginInfo = JSON.parse(result)
             let {email , password, loginWay }=reloginInfo
@@ -137,7 +137,7 @@ class Login extends Component {
 
     _createTokenByPassword(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        // console.log('this.state.email: ', this.state.email)
+        // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,this.state.password,'password')
@@ -149,7 +149,7 @@ class Login extends Component {
             customMessagesType: 'success'
         })
         this.props.setAccessGranted(true)
-        // console.log('this.props.jumpRoute',this.props.jumpRoute)
+        // if (__DEV__)console.log('this.props.jumpRoute',this.props.jumpRoute)
         if(this.props.jumpRoute !== null){
             // console.warn(this.props.jumpRoute)
             isFirstLogIn().then((isFirst)=>{
@@ -174,7 +174,7 @@ class Login extends Component {
     }
     _createTokenByFB(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        // console.log('this.state.email: ', this.state.email)
+        // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,'Test1','fb')
@@ -210,7 +210,7 @@ class Login extends Component {
     }
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        // console.log('this.state.email: ', this.state.email)
+        // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,'Test1','google')
@@ -253,7 +253,7 @@ class Login extends Component {
         if(!this.state.user.accessToken){
             NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
             .then((token) => {
-                // console.log(token)
+                // if (__DEV__)console.log(token)
                 this._signInWithGoogleByToken(isFormValidate, token)
             })
         }else {
@@ -264,7 +264,7 @@ class Login extends Component {
     }
     _signInWithGoogleByToken = (isFormValidate,accessToken) => {
         if(isFormValidate) {
-            // console.log(accessToken)
+            // if (__DEV__)console.log(accessToken)
             let options = {
                 url: this.serviceUrl,
                 data: {
@@ -280,8 +280,8 @@ class Login extends Component {
                 },
                 onSuccess: this._createTokenByGoogle.bind(this),
                 onError: (res) => {
-                    // console.log('error')
-                    // console.log(res)
+                    // if (__DEV__)console.log('error')
+                    // if (__DEV__)console.log(res)
                     if (res == 'Google access token invalid.') {
                         //go to sign up
                         this._handleSignUp(true)
@@ -324,8 +324,8 @@ class Login extends Component {
                 },
                 onSuccess: this._createTokenByFB.bind(this),
                 onError: (res) => {
-                    // console.log('error')
-                    // console.log(res)
+                    // if (__DEV__)console.log('error')
+                    // if (__DEV__)console.log(res)
                     if (res == 'Facebook access token invalid.') {
                         //go to sign up
                         this._handleSignUpWithFB(true)
@@ -444,14 +444,14 @@ class Login extends Component {
                 submit: false
             }
         })
-        // console.log(this.state.fbUser)
+        // if (__DEV__)console.log(this.state.fbUser)
         let {token} =this.state.fbUser
-        // console.log(token)
+        // if (__DEV__)console.log(token)
         let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+token
         fetch(httpUrl.toString())
            .then((response) => response.json())
            .then( (json) => {
-           // console.log('json: ', JSON.stringify(json))
+           // if (__DEV__)console.log('json: ', JSON.stringify(json))
            let nameArr  = json.name.split(' ')
            let lastName = nameArr[0]
            let firstName=  nameArr[1]
@@ -484,7 +484,7 @@ class Login extends Component {
                     },
                     onSuccess: this._SignInWithFB(true),
                     onError: (res) => {
-                        // console.log(res)
+                        // if (__DEV__)console.log(res)
                         this.setState({
                             customMessages: res,
                             customMessagesType: 'error'
@@ -539,13 +539,13 @@ class Login extends Component {
 
             const user = await GoogleSignin.currentUserAsync();
 
-            // console.log(user);
+            // if (__DEV__)console.log(user);
             if(user) this._signOut()
             this._fbSignOut()
 
         }
         catch(err) {
-            // console.log("Google signin error", err.code, err.message);
+            // if (__DEV__)console.log("Google signin error", err.code, err.message);
         }
     }
     _signIn = () => {
@@ -554,13 +554,13 @@ class Login extends Component {
         if(this.state.isFormSubmitting) return;
         GoogleSignin.signIn()
           .then((user) => {
-              // console.log(JSON.stringify(user));
+              // if (__DEV__)console.log(JSON.stringify(user));
               this.setState({user: user});
               this._SignInWithGoogle(true)
 
           })
           .catch((err) => {
-              // console.log('WRONG SIGNIN', err);
+              // if (__DEV__)console.log('WRONG SIGNIN', err);
           })
           .done();
     }
@@ -572,14 +572,14 @@ class Login extends Component {
         if(this.state.isFormSubmitting) return;
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {
-               // console.log(data);
+               // if (__DEV__)console.log(data);
               this.setState({
                fbUser:data.credentials
               })
 
                this._SignInWithFB(true)
            } else {
-                // console.log(error, data);
+                // if (__DEV__)console.log(error, data);
            }
         })
 
@@ -595,7 +595,7 @@ class Login extends Component {
             if (!error) {
                 this.setState({ user : null});
             } else {
-                // console.log(error, data);
+                // if (__DEV__)console.log(error, data);
             }
         })
     }

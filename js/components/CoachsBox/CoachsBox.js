@@ -155,7 +155,7 @@ class CoachsBox extends Component {
   componentDidMount() {
     let {userProfile} = this.props
     getAccessToken().then(token=>{
-      console.log(token)
+      if (__DEV__)console.log(token)
       this.fetchData(token,userProfile.userID)
     })
   }

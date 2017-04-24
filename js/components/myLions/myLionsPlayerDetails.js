@@ -299,8 +299,8 @@
 //    }
 //
 //    componentDidMount() {
-//        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
-//        console.log('!!!Details componentDidMount')
+//        // if (__DEV__)console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+//        if (__DEV__)console.log('!!!Details componentDidMount')
 //        // Let's have a parallel request
 //
 //        setTimeout(()=>{
@@ -317,9 +317,9 @@
 //    }
 //
 //    componentWillReceiveProps(nextProps,nextState) {
-//        console.log('!!!details componentWillReceiveProps')
-//        // console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
-//        // console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
+//        if (__DEV__)console.log('!!!details componentWillReceiveProps')
+//        // if (__DEV__)console.log('!!!Details this.props.squadToShow',this.props.squadToShow)
+//        // if (__DEV__)console.log('!!!Details nextProps.squadToShow',nextProps.squadToShow)
 //    }
 //
 //    _updateFavStatus() {
@@ -550,7 +550,7 @@
 //        }
 //        else {
 //            this.fullSquad=checkFullSquad(this.props.squadToShow)
-//            console.log('this.fullSquad',this.fullSquad)
+//            if (__DEV__)console.log('this.fullSquad',this.fullSquad)
 //            this.fullSquad?this._setModalVisible(true,'replace','SQUAD FULL','CANNOT ADD NEW PLAYER AS YOUR SQUAD IS FULL. \n\n PLEASE SELECT A PLAYER TO REPLACE.'):this._setModalVisible(true,'add')
 //        }
 //    }
@@ -569,7 +569,7 @@
 //        //             this._showError(catchedSquad.error) // prompt error
 //        //         })
 //        //     }else{
-//                    // console.log('details this.props.squadData',this.props.squadData)
+//                    // if (__DEV__)console.log('details this.props.squadData',this.props.squadData)
 //                    let tmpFeed=SquadModel.format(eval(`(${this.props.squadData})`))
 //                    let inSquad = false
 //                    if(Map.isMap(tmpFeed)) tmpFeed.forEach((value,index)=>{
@@ -588,7 +588,7 @@
 //                            if(value===this.playerid) {
 //                                inSquad=true
 //                                if (type==='remove'&&strToUpper(index)===strToUpper(this.props.positionToRemove==='WILDCARD'?'WIDECARD':this.props.positionToRemove)) {
-//                                    console.log('!!!tmpFeed',tmpFeed.toJS())
+//                                    if (__DEV__)console.log('!!!tmpFeed',tmpFeed.toJS())
 //                                    tmpFeed=tmpFeed.set(index,'')
 //                                    this.props.setSquadToShow(removePlayer(this.props.squadToShow,index))
 //                                }
@@ -628,14 +628,14 @@
 //                    if(type==='replace') {
 //                        if(List.isList(tmpFeed.get(position))) {
 //                            // if(tmpFeed.get(position).count()<max) {
-//                                //console.log('tmpFeed',tmpFeed.toJS())
-//                                //console.log('position',position)
-//                                //console.log('seq',seq)
+//                                //if (__DEV__)console.log('tmpFeed',tmpFeed.toJS())
+//                                //if (__DEV__)console.log('position',position)
+//                                //if (__DEV__)console.log('seq',seq)
 //                                tmpFeed=tmpFeed.update(position,val=>{
 //                                    val=val.set(seq,this.playerid)
 //                                    return val
 //                                })
-//                                //console.log('tmpFeed',tmpFeed.toJS())
+//                                //if (__DEV__)console.log('tmpFeed',tmpFeed.toJS())
 //                                this.props.setSquadToShow(replacePlayer(this.props.squadToShow,position,this.props.detail,this.playerid,seq))
 //                            // }
 //                            // else {
@@ -692,7 +692,7 @@
 //
 //                this.setState({ inSquad: !this.state.inSquad, squadDataFeed:squadData.toJS() }, () => {
 //                    this._setModalVisible(true, 'message', position, successDesc, 'OK')
-//                    //console.log('!!!squadData',squadData)
+//                    //if (__DEV__)console.log('!!!squadData',squadData)
 //                    this.props.setSquadData(JSON.stringify(squadData))
 //                    removeUserCustomizedSquad()
 //                    this.props.setPositionToAdd(null)

@@ -9,7 +9,7 @@ const EYC3_FULL_PLAYERS = 'EYC3FullPlayers' // Note: Do not use underscore("_") 
 const EYC3_EXPERTS_SQUADS = 'EYC3ExpertsSquads'
 
 export function removeEYC3FullPlayerList(){
-    //console.log('list cleanup')
+    //if (__DEV__)console.log('list cleanup')
     storage.remove({
         key: EYC3_FULL_PLAYERS,
         id: '1001'
@@ -28,7 +28,7 @@ export function removeEYC3OfficialSquad(){
     })
 }
 export async function getEYC3OfficialSquad() {
-  // console.log('getEYC3OfficialSquad')
+  // if (__DEV__)console.log('getEYC3OfficialSquad')
   storage.sync = {
     EYC3OfficialSquad(params) {
       let {id,resolve,reject}=params
@@ -38,11 +38,11 @@ export async function getEYC3OfficialSquad() {
         body: JSON.stringify({})
       })
       .then(response=>{
-        // console.log('response',response)
+        // if (__DEV__)console.log('response',response)
         return response.json()
       })
       .then(json=>{
-        console.log('json',json)
+        if (__DEV__)console.log('json',json)
         if(json) {
           storage.save({
             key:'EYC3OfficialSquad',
@@ -67,7 +67,7 @@ export async function getEYC3OfficialSquad() {
     syncInBackground:true
   })
   .then(ret=>{
-    // console.log('ret',ret)
+    // if (__DEV__)console.log('ret',ret)
     return ret
   })
   .catch(err=>{
@@ -90,11 +90,11 @@ export async function getEYC3FullPlayerList() {
     // 这里可以使用promise。或是使用普通回调函数，但需要调用resolve或reject。
     storage.sync = {
         EYC3FullPlayers(params){
-          //console.log('start........................')
+          //if (__DEV__)console.log('start........................')
           getAccessToken().then((accessToken) => {
               getUserId().then((userID) =>{
-                  //console.log('accessToken: ',accessToken)
-                  //console.log('userID: ',userID)
+                  //if (__DEV__)console.log('accessToken: ',accessToken)
+                  //if (__DEV__)console.log('userID: ',userID)
                   let {id, resolve, reject } = params
                   fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
                     method: 'POST',
@@ -109,7 +109,7 @@ export async function getEYC3FullPlayerList() {
                     return response.json()
                   }).then(json => {
                     if(json){
-                      //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+                      //if (__DEV__)console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
                       storage.save({
                         key: EYC3_FULL_PLAYERS,
                         expires: 1000 * 3600,
@@ -122,7 +122,7 @@ export async function getEYC3FullPlayerList() {
                       reject && reject(new Error('data parse error'))
                     }
                   }).catch(err => {
-                    //console.log('Warning error: ',err)
+                    //if (__DEV__)console.log('Warning error: ',err)
                     reject && reject(err)
                   })
               })
@@ -135,10 +135,10 @@ export async function getEYC3FullPlayerList() {
           id:'1001',
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+          //if (__DEV__)console.log('Cached eyc3 Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          //console.log(err.message);
+          //if (__DEV__)console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
@@ -154,8 +154,8 @@ export async function getEYC3ExpertsSquads() {
         EYC3ExpertsSquads(params){
             getAccessToken().then((accessToken) => {
                 getUserId().then((userID) =>{
-                    //console.log('accessToken: ', accessToken)
-                    //console.log('userID: ', userID)
+                    //if (__DEV__)console.log('accessToken: ', accessToken)
+                    //if (__DEV__)console.log('userID: ', userID)
                     let {id, resolve, reject } = params
                     fetch(getAssembledUrl(EYC3_EXPERTS_SQUADS), {
                         method: 'POST',
@@ -170,7 +170,7 @@ export async function getEYC3ExpertsSquads() {
                         return response.json()
                     }).then(json => {
                         if (json) {
-                            //console.log('Fresh uncached eyc3 experts squads Data: ', json)
+                            //if (__DEV__)console.log('Fresh uncached eyc3 experts squads Data: ', json)
                             storage.save({
                                 key: EYC3_EXPERTS_SQUADS,
                                 expires: 1000 * 3600,
@@ -182,7 +182,7 @@ export async function getEYC3ExpertsSquads() {
                             reject && reject(new Error('data parse error'))
                         }
                     }).catch(err => {
-                        //console.log('Warning error: ',err)
+                        //if (__DEV__)console.log('Warning error: ',err)
                         reject && reject(err)
                     }) 
                 })
@@ -196,7 +196,7 @@ export async function getEYC3ExpertsSquads() {
           id:'1101',
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached eyc3 experts squads Data: ', ret)
+          //if (__DEV__)console.log('Cached eyc3 experts squads Data: ', ret)
           return ret
         }).catch(err => {
           //console.warn(err.message)

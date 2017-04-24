@@ -120,7 +120,7 @@ class TeamWidget extends Component {
 		)
 	}
     componentDidMount() {
-        // console.log('teamWidget componentDidmount')
+        // if (__DEV__)console.log('teamWidget componentDidmount')
             this._getTeam()
     }
     _showError(error) {
@@ -141,10 +141,10 @@ class TeamWidget extends Component {
     }
 
     _getTeam(){
-        // console.log('teamWidget _getTeam')
+        // if (__DEV__)console.log('teamWidget _getTeam')
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-        // console.log('teamWidget catchedFullPlayerList')
+        // if (__DEV__)console.log('teamWidget catchedFullPlayerList')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
@@ -157,8 +157,8 @@ class TeamWidget extends Component {
                     onAxiosEnd: null,
                     method: 'post',
                     onSuccess: (res) => {
-                        // console.log('res.data',res.data)
-                        // console.log('typeof res.data',typeof res.data)
+                        // if (__DEV__)console.log('res.data',res.data)
+                        // if (__DEV__)console.log('typeof res.data',typeof res.data)
                         if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
                         }
@@ -178,21 +178,21 @@ class TeamWidget extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        // console.log('teamWidget componentWillReceiveProps nextProps',nextProps)
+        // if (__DEV__)console.log('teamWidget componentWillReceiveProps nextProps',nextProps)
         if(Immutable.is(TeamModel.fromJS(nextProps.teamData),TeamModel())===false) {
             this.setTeam(TeamModel.fromJS(nextProps.teamData))  
         }
     }
     setTeam(team){
-        // console.log('!!!setTeam',team.toJS())
+        // if (__DEV__)console.log('!!!setTeam',team.toJS())
         let fullFeed=true
         let showTeamFeed=convertInitTeamToShow(team,this.fullPlayerList,this.uniondata)
-        // console.log('showTeamFeed',showTeamFeed.toJS())
+        // if (__DEV__)console.log('showTeamFeed',showTeamFeed.toJS())
         showTeamFeed.forEach((value,index)=>{
             if (value.find(x=>x.info===null)!==undefined) fullFeed=false
         })
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamData))===false) {
-            // console.log('not equal')
+            // if (__DEV__)console.log('not equal')
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }

@@ -53,7 +53,7 @@ export function setTeamData(teamData={}):Action {
     }
 }
 export function setTeamDataTemp(teamDataTemp={}):Action {
-    // console.log('action teamDataTemp')
+    // if (__DEV__)console.log('action teamDataTemp')
     return {
         type: SET_TEAM_DATA_TEMP,
         teamDataTemp

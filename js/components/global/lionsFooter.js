@@ -98,14 +98,14 @@ export default class Footer extends Component {
 
 	goToURL(url, platformName) {
       NativeModules.One.sendInteraction("/social/"+platformName,null)
-      console.log("!!!!!!!!!!!/social/"+platformName)
+      if (__DEV__)console.log("!!!!!!!!!!!/social/"+platformName)
       One.sendInteractionForOutboundLink(url).catch(function(error) {
-          console.log(error);
+          if (__DEV__)console.log(error);
           alert(error);
       });
 
       One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-          console.log('urlWithOneTid',urlWithOneTid)
+          if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
           if(urlWithOneTid){
               Linking.canOpenURL(urlWithOneTid).then(supported => {
                   if (supported) {
@@ -119,8 +119,8 @@ export default class Footer extends Component {
               })
           }
       },function(error) {
-          console.log('error');
-          console.log(error);
+          if (__DEV__)console.log('error');
+          if (__DEV__)console.log(error);
           if(url){
               Linking.canOpenURL(url).then(supported => {
                   if (supported) {

@@ -36,7 +36,7 @@ class ModalInviteCodeVIew extends Component {
     this.props.callbackParent()
   }
   getDetail = (description,data,groupName) =>{
-    console.log(data)
+    if (__DEV__)console.log(data)
 
     let PageData = {
       title: '' ,

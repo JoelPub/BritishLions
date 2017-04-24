@@ -155,13 +155,13 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('componentWillReceiveProps')
-        // console.log(this.props.userProfile)
-        // console.log(nextProps.userProfile)
+        // if (__DEV__)console.log('componentWillReceiveProps')
+        // if (__DEV__)console.log(this.props.userProfile)
+        // if (__DEV__)console.log(nextProps.userProfile)
         if(this.props.userProfile!==nextProps.userProfile){
-            // console.log('这里调用')
-            // console.log(this.props.userProfile)
-            // console.log(nextProps.userProfile)
+            // if (__DEV__)console.log('这里调用')
+            // if (__DEV__)console.log(this.props.userProfile)
+            // if (__DEV__)console.log(nextProps.userProfile)
             this.setState({
                 userProfile: nextProps.userProfile
             })
@@ -173,7 +173,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     render() {
-        // console.log('render')
+        // if (__DEV__)console.log('render')
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -247,16 +247,16 @@ class MyLionsCompetitionCentre extends Component {
                             let initName = ''
                             if(typeof userName==='string') {
                                 let u=userName.trim().replace(/\s+/g,' ')
-                                // console.log('userName',userName)
+                                // if (__DEV__)console.log('userName',userName)
                                 firstName=u.split(' ')[0]||''
                                 lastName=u.split(' ')[1]||''
                                 initName = ''
                                 u.split(' ').map((value, index)=>{
                                     initName = initName + value[0]
                                 })
-                                // console.log('firstName',firstName)
-                                // console.log('lastName',lastName)
-                                // console.log('initName',initName)
+                                // if (__DEV__)console.log('firstName',firstName)
+                                // if (__DEV__)console.log('lastName',lastName)
+                                // if (__DEV__)console.log('initName',initName)
                             }
                             this.getInfo(userID,userName,firstName,lastName,initName)
                         }).catch((error) => {})
@@ -266,7 +266,7 @@ class MyLionsCompetitionCentre extends Component {
     }
 
     getInfo(userID,userName,firstName,lastName,initName){
-        // console.log('getInfo')
+        // if (__DEV__)console.log('getInfo')
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
             data: {
@@ -281,7 +281,7 @@ class MyLionsCompetitionCentre extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data&&res.data.rounds) {
-                    // console.log('res.data',res.data)
+                    // if (__DEV__)console.log('res.data',res.data)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
                         let userInfo = Object.assign(res.data, {
                         userName: userName, 

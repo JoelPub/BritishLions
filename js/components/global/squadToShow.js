@@ -71,9 +71,9 @@ export function convertSquadToShow(squad,fullPlayerList,isPop,uniondata) {
 
 export function checkFullSquad(squadShow) {
     let result=true
-    // console.log('squadShow',squadShow)
+    // if (__DEV__)console.log('squadShow',squadShow)
     for(let node in squadShow) {
-            // console.log('node',node)
+            // if (__DEV__)console.log('node',node)
         if(node==='backs'||node==='forwards') {
             squadShow[node].map((value,index)=>{
                 if(value===null) result=false
@@ -135,6 +135,6 @@ export function replacePlayer(squadToShow,position,detail,playerid,sequence) {
         squadToShow['indivPos'].find((value)=>strToUpper(position)===strToUpper(value.position)).info=detail
     }
     
-    console.log('squadToShow',squadToShow)
+    if (__DEV__)console.log('squadToShow',squadToShow)
     return squadToShow
 }

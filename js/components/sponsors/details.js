@@ -26,12 +26,12 @@ class SponsorDetails extends Component {
         this._scrollView = ScrollView
     }
     componentDidMount() {
-        console.log('***********sendInteraction1')
-        console.log( this.props.details.title)
+        if (__DEV__)console.log('***********sendInteraction1')
+        if (__DEV__)console.log( this.props.details.title)
         let titleNoSpace   = this.props.details.title.replace(/\s+/g, '')
         let  reallyTitle = titleNoSpace.toLowerCase()
        let interaction = "/sponsors/" + reallyTitle
-        console.log(interaction)
+        if (__DEV__)console.log(interaction)
         NativeModules.One.sendInteraction(interaction,
           null);
     }

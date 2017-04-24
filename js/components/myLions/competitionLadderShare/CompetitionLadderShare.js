@@ -97,7 +97,7 @@ class CompetitionLadderShare extends Component {
           }).then((info)=>{
             callback()
           }).catch((errorMessage)=>{
-            // console.log("error message: " + error)
+            // if (__DEV__)console.log("error message: " + error)
             if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
               alertBox(
                 '',

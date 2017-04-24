@@ -70,7 +70,7 @@ class MyLionsExpertsList extends Component {
   }
   handdleData = () => {
     getEYC3ExpertsSquads().then((ExpertsData) => {
-        //console.log('ExpertsData: ', ExpertsData)
+        //if (__DEV__)console.log('ExpertsData: ', ExpertsData)
         if (this.isUnMounted) return // return nothing if the component is already unmounted
         
         if (ExpertsData !== null && ExpertsData !== 0 && ExpertsData !== -1) {
@@ -83,7 +83,7 @@ class MyLionsExpertsList extends Component {
             })
         }
     }).catch((error) => {
-        console.log('Error when try to get the EYC3 full player list: ', error)
+        if (__DEV__)console.log('Error when try to get the EYC3 full player list: ', error)
     })
   }
 

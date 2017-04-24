@@ -306,11 +306,11 @@ export default class PlayerFigure extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState) {
-        console.log('!!!Figure componentWillReceiveProps')
-        console.log('nextProps.profile.toJS()',nextProps.profile.toJS())
-        console.log('this.props.profile.toJS()',this.props.profile.toJS())
+        if (__DEV__)console.log('!!!Figure componentWillReceiveProps')
+        if (__DEV__)console.log('nextProps.profile.toJS()',nextProps.profile.toJS())
+        if (__DEV__)console.log('this.props.profile.toJS()',this.props.profile.toJS())
         if(!nextProps.profile.equals(this.props.profile)&&!nextProps.profile.equals(ProfileListModel.fromJS([new ProfileModel()]))) {
-            console.log('not equal')
+            if (__DEV__)console.log('not equal')
             let profile=nextProps.profile.first()
             // profile.forEach((value,index)=>{
             //     if (value.trim){
@@ -319,7 +319,7 @@ export default class PlayerFigure extends Component {
             //         }
             //     }
             // })
-            console.log('profile',profile.toJS())
+            if (__DEV__)console.log('profile',profile.toJS())
             this.setState({profile:profile.toJS()})
         }
     }
@@ -406,14 +406,14 @@ export default class PlayerFigure extends Component {
                                                         <View style={styles.playerFigureRow}>
                                                         {
                                                             this.state.profile[node].map((item, j) => {
-                                                                console.log('node',node)
-                                                                console.log('item',item)
+                                                                if (__DEV__)console.log('node',node)
+                                                                if (__DEV__)console.log('item',item)
                                                                 let value = item.value === 'NaN' || !item.value? 'N/A' : item.value
-                                                                console.log('value',value)
+                                                                if (__DEV__)console.log('value',value)
                                                                 let name = strToUpper(item.name).trim()
-                                                                console.log('name',name)
+                                                                if (__DEV__)console.log('name',name)
                                                                 let playerFigureUnit = name !== 'TACKLES'? [styles.playerFigureUnit] : [styles.playerFigureUnit, styles.playerFigureUnit2]
-                                                                console.log('playerFigureUnit',playerFigureUnit)
+                                                                if (__DEV__)console.log('playerFigureUnit',playerFigureUnit)
                                                                 if (name != 'MISSED TACKLES') {
                                                                     return(
                                                                         <View style={playerFigureUnit} key={j}>

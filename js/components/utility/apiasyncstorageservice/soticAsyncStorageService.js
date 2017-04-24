@@ -33,7 +33,7 @@ export async function getSoticFullPlayerList() {
             return response.json()
           }).then(json => {
             if(json){
-              //console.log('Fresh Uncached Sotic Data: ',JSON.stringify(json))
+              //if (__DEV__)console.log('Fresh Uncached Sotic Data: ',JSON.stringify(json))
               storage.save({
                 key: SOTIC_FULL_PLAYERS,
                 id,
@@ -46,7 +46,7 @@ export async function getSoticFullPlayerList() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            //console.log('Warning error: ',err)
+            //if (__DEV__)console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -58,10 +58,10 @@ export async function getSoticFullPlayerList() {
           id:'3001',
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached Sotic Data: ',JSON.stringify(ret))
+          //if (__DEV__)console.log('Cached Sotic Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          //console.log(err.message);
+          //if (__DEV__)console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
@@ -98,7 +98,7 @@ export async function getSoticFullPlayerList() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            //console.log('Warning error: ',err)
+            //if (__DEV__)console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -121,7 +121,7 @@ export async function getSoticFullPlayerList() {
                     return ""
             }
         }).catch(err => {
-          //console.log(err.message);
+          //if (__DEV__)console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0
@@ -149,7 +149,7 @@ export async function getSoticFullPlayerListR2() {
             return response.json()
           }).then(json => {
             if(json){
-              //console.log('Fresh Uncached Sotic Data: ',JSON.stringify(json))
+              //if (__DEV__)console.log('Fresh Uncached Sotic Data: ',JSON.stringify(json))
               storage.save({
                 key: SOTIC_FULL_PLAYERS_R2,
                 id,
@@ -162,7 +162,7 @@ export async function getSoticFullPlayerListR2() {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            //console.log('Warning error: ',err)
+            //if (__DEV__)console.log('Warning error: ',err)
             reject && reject(err)
           })
         }
@@ -174,10 +174,10 @@ export async function getSoticFullPlayerListR2() {
           id:'3201',
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached Sotic Data: ',JSON.stringify(ret))
+          //if (__DEV__)console.log('Cached Sotic Data: ',JSON.stringify(ret))
           return ret
         }).catch(err => {
-          //console.log(err.message);
+          //if (__DEV__)console.log(err.message);
           switch (err.name) {
               case 'NotFoundError':
                  return 0

@@ -62,7 +62,7 @@ class MyLionsExpertProfile extends Component {
     this.uniondata = Data
     let squad = SquadModel.fromJS(this.props.detail.squad)
     this.isUnMounted = false
-    console.log("squad, ", JSON.stringify(squad))
+    if (__DEV__)console.log("squad, ", JSON.stringify(squad))
     this.state = {
       jobTitle: ['CAPTAIN', 'KICKER', 'STAR'],
       squadData:{
@@ -163,11 +163,11 @@ class MyLionsExpertProfile extends Component {
    }
 
   ratingViewClick = () => {
-    console.log('icon被点击')
+    if (__DEV__)console.log('icon被点击')
   }
 
   changeMode = () => {
-    console.log('ratingView被点击')
+    if (__DEV__)console.log('ratingView被点击')
   }
 
   componentDidMount() {

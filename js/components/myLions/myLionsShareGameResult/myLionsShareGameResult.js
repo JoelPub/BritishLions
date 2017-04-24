@@ -53,7 +53,7 @@ const RankNubText = ({num,name,colWidth}) => (
 )
 
 const  RankingTable = ({title,array}) => {
-  console.log(array)
+  if (__DEV__)console.log(array)
   return(
   <View style={styles.rankTableContainer}>
     <View style={styles.rankTitleView}>
@@ -99,20 +99,20 @@ class MyLionsShareGameResult extends Component {
      this.props.data.gameData
      let describe = ''
      if( strToUpper(this.props.data.resultInfo.is_draw)==='TRUE') {
-       console.log('平')
+       if (__DEV__)console.log('平')
        describe= 'I just drew my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
 
      }else {
        if ( strToUpper(this.props.data.resultInfo.is_won) ==='TRUE'){
-           console.log('赢')
+           if (__DEV__)console.log('赢')
            describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
        }else {
-         console.log('输')
+         if (__DEV__)console.log('输')
          describe= ''
        }
      }
-     console.log('描述')
-     console.log(describe)
+     if (__DEV__)console.log('描述')
+     if (__DEV__)console.log(describe)
      return  describe
    }
   componentDidMount() {
@@ -141,7 +141,7 @@ class MyLionsShareGameResult extends Component {
           }).then((info)=>{
             callback()
           }).catch((errorMessage)=>{
-            // console.log("error message: " + error)
+            // if (__DEV__)console.log("error message: " + error)
             if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
               alertBox(
                 '',
@@ -253,7 +253,7 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-  console.log(state)
+  if (__DEV__)console.log(state)
   return {
     data: state.content.drillDownItemShare
   }

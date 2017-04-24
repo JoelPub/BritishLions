@@ -3,7 +3,7 @@
 import { strToUpper } from '../../utility/helper'
 
 export function  searchPlayer(player,id,uniondata) {
-    // console.log('searchPlayer')
+    // if (__DEV__)console.log('searchPlayer')
         let result=null
         for(let union in player) {
             result=player[union].find((item)=>item.id===id.toString())

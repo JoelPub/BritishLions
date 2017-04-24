@@ -186,7 +186,7 @@ class MyLionsSquad extends Component {
       return value && (value.constructor === Object || value.constructor === undefined)
     }
     goShare = () => {
-        //console.log(this.state.rating)
+        //if (__DEV__)console.log(this.state.rating)
         let data = {
             rating: this.state.rating,
             showScoreCard: this.state.showScoreCard,
@@ -245,26 +245,26 @@ class MyLionsSquad extends Component {
     }
 
     componentDidMount() {
-        //console.log('!!!mySquad componentDidMount')
+        //if (__DEV__)console.log('!!!mySquad componentDidMount')
         setTimeout(() => this._getSquad(), 600)        
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log('!!!mySquad componentWillReceiveProps')
-        // console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
-        // console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
-        // console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
-        // console.log('!!!this.props.squadData',this.props.squadData)
-        //console.log('!!!nextProps.squadData',nextProps.squadData)
-        // console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
+        //if (__DEV__)console.log('!!!mySquad componentWillReceiveProps')
+        // if (__DEV__)console.log('!!!this.props.squadToShow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // if (__DEV__)console.log('!!!nextProps.squadToShow',JSON.stringify(nextProps.squadToShow)!=='{}'?nextProps.squadToShow.indivPos:'null')
+        // if (__DEV__)console.log('!!!this.props.squadToShow=nextProps.squadToShow',Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))?'true':'false')
+        // if (__DEV__)console.log('!!!this.props.squadData',this.props.squadData)
+        //if (__DEV__)console.log('!!!nextProps.squadData',nextProps.squadData)
+        // if (__DEV__)console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
         // let routes = globalNav.navigator.getCurrentRoutes()
         
         // re render after 'back nav' pressed
             // if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
-            // console.log('!!!!!',nextProps.route.routes)
+            // if (__DEV__)console.log('!!!!!',nextProps.route.routes)
                 // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
                 if(nextProps.squadData!==null) {
-                    // console.log('pass')
+                    // if (__DEV__)console.log('pass')
                     this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))  
                 }                
             // }
@@ -333,7 +333,7 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        //console.log('!!!setSquadData')
+        //if (__DEV__)console.log('!!!setSquadData')
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
@@ -366,7 +366,7 @@ class MyLionsSquad extends Component {
                 })
             }
         })
-        // console.log('2')
+        // if (__DEV__)console.log('2')
         tmpSquad.forEach((value,index)=>{
             if(List.isList(squad.get(index))) {
                 if(squad.get(index).count()>0)   tmpSquad=tmpSquad.set(index,squad.get(index).join('|'))
@@ -374,7 +374,7 @@ class MyLionsSquad extends Component {
             }
             else tmpSquad=tmpSquad.set(index,squad.get(isPop?index==='widecard'?'wildcard':index:index))
         })
-        // console.log('3')
+        // if (__DEV__)console.log('3')
         let rating=Rating()
         if (isPop)    rating.forEach((value,index)=>{
                         rating=rating.set(index,squad.get(index))
@@ -415,26 +415,26 @@ class MyLionsSquad extends Component {
             },
             isRequiredToken: true
         }
-        // console.log('!!!compare')
-        // console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
-        // console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
+        // if (__DEV__)console.log('!!!compare')
+        // if (__DEV__)console.log('!!!showSquadFeed',JSON.stringify(showSquadFeed.toJS())!=='{}'?showSquadFeed.toJS().indivPos:'null')
+        // if (__DEV__)console.log('!!!this.props.squadToSHow',JSON.stringify(this.props.squadToShow)!=='{}'?this.props.squadToShow.indivPos:'null')
         // if(compareShowSquad(showSquadFeed,this.props.squadToShow)) {
-        //     console.log('!!!show equal')
+        //     if (__DEV__)console.log('!!!show equal')
         //     service(optionsSaveList)
         // } else {
-        //     console.log('!!!show not equal')
+        //     if (__DEV__)console.log('!!!show not equal')
         //     if (JSON.stringify(this.props.squadToShow)!=='{}'&&this.props.squadData!==null) this.setState({isLoaded:true})
         //     this.props.setSquadToShow(showSquadFeed.toJS())
         // }
-        //console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
-        //console.log('!!!this.props.squadData',this.props.squadData)
+        //if (__DEV__)console.log('!!!tmpSquad',JSON.stringify(tmpSquad))
+        //if (__DEV__)console.log('!!!this.props.squadData',this.props.squadData)
         if(JSON.stringify(tmpSquad)!==this.props.squadData) {
-            console.log('!!!squad not equal')
+            if (__DEV__)console.log('!!!squad not equal')
             this.props.setSquadData(JSON.stringify(tmpSquad))
             this.props.setSquadToShow(showSquadFeed.toJS())
         }
         else {
-            //console.log('!!!squad equal')
+            //if (__DEV__)console.log('!!!squad equal')
             service(optionsSaveList)
         }
         

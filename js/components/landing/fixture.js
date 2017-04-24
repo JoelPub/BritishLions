@@ -82,7 +82,7 @@ class PlayerFigure extends Component {
        
         fixturesList.map(function(item, index) {
             let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
-            //console.log(dateSched, new Date(`${item.date} ${item.time}`))
+            //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
             
             if (dateSched > dateNow) {
                 fixturesLeft.push(item)

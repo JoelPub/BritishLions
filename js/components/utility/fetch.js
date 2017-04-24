@@ -74,8 +74,8 @@ async function _fetch (opts) {
   else url = API_BASE_URL + opts.url
 
 //   if (__DEV__) {
-//     console.log('fetching ' + url + (queryString ? '?' + queryString : ''))
-//     console.log(reqOpts)
+//     if (__DEV__)console.log('fetching ' + url + (queryString ? '?' + queryString : ''))
+//     if (__DEV__)console.log(reqOpts)
 //   }
   return await fetch(url + (queryString ? '?' + queryString : ''), reqOpts)
     .then(handleErrors)

@@ -14,23 +14,23 @@ const SquadPopModel = Record({
 })
 
 SquadPopModel.prototype.constructor.format = function (values) {
- // console.log('@@@SquadPopModel.fromJS',values.toJS())
+ // if (__DEV__)console.log('@@@SquadPopModel.fromJS',values.toJS())
  	values.forEach((value,index)=>{
-	    // console.log('index',index)
-	    // console.log('value',value)
+	    // if (__DEV__)console.log('index',index)
+	    // if (__DEV__)console.log('value',value)
  		if(index==='backs'||index==='forwards') {
-	    	// console.log('JSON.parse(value)',JSON.parse(value))
+	    	// if (__DEV__)console.log('JSON.parse(value)',JSON.parse(value))
  			values=values.set(index,List(JSON.parse(value)))
  		}
  	})
   // for(let n in values) {
-  //   console.log('n',n)
-  //   console.log('values[n]',values[n])
+  //   if (__DEV__)console.log('n',n)
+  //   if (__DEV__)console.log('values[n]',values[n])
   //   if(n==='backs'||n==='forwards') {
   //     values[n]=JSON.parse(values[n])
   //   }
   // }
-  // console.log('values.toJS()',values.toJS())
+  // if (__DEV__)console.log('values.toJS()',values.toJS())
   // return Immutable.fromJS(values)
   return values
 }

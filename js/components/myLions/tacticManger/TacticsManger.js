@@ -117,7 +117,7 @@ class TacticsManger extends Component {
     let dropDownValue = 'Select Player'
     let playStyleSliderValue = 1
     let replacementsSliderValue = 3
-    console.log('this.props.tactics',this.props.tactics)
+    if (__DEV__)console.log('this.props.tactics',this.props.tactics)
     if (this.props.tactics===null) {
       dropDownValue ='Select Player'
       playStyleSliderValue = 1
@@ -128,7 +128,7 @@ class TacticsManger extends Component {
       playStyleSliderValue = this.findDataTacticsLocation(this.props.tactics.tactic)
       replacementsSliderValue = this.findReplacementsLocation(this.props.tactics.replacements)
     }
-    console.log(this.props.tactics)
+    if (__DEV__)console.log(this.props.tactics)
 
     this.state = {
       isLoaded: false,
@@ -211,9 +211,9 @@ class TacticsManger extends Component {
       )
       return
     }else {
-      console.log(resultArr)
+      if (__DEV__)console.log(resultArr)
       starPlayer = resultArr.find((item)=>item.info!==null&&item.info.name===dropDownValue)
-      console.log('11111111111')
+      if (__DEV__)console.log('11111111111')
     }
 
    let pacticsData = {
@@ -231,8 +231,8 @@ class TacticsManger extends Component {
     })
   }
   handleDropDownData = (teamToShow) => {
-    console.log('***************************8')
-    console.log(teamToShow)
+    if (__DEV__)console.log('***************************8')
+    if (__DEV__)console.log(teamToShow)
 
     let result = []
     if(!teamToShow.backs) return result
@@ -379,7 +379,7 @@ function bindAction(dispatch) {
   }
 }
 export default connect((state) => {
-  console.log(state)
+  if (__DEV__)console.log(state)
   return {
     route: state.route,
     drillDownItem: state.content.drillDownItem,

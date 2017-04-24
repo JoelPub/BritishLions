@@ -74,7 +74,7 @@ const RankNubText = ({num,name,colWidth}) => (
 )
 
 const  RankingTable = ({title,array}) => {
-  console.log(array)
+  if (__DEV__)console.log(array)
   return(
   <View>
     <View style={styles.rankTitleView}>
@@ -110,7 +110,7 @@ class MyLionsTestRoundSubmit extends Component {
         this.uniondata = Data
     }
     goShare = () => {
-        //console.log(this.state.rating)
+        //if (__DEV__)console.log(this.state.rating)
         let data = {
             teamDatafeed: this.props.teamToShow,
         }
@@ -212,10 +212,10 @@ class MyLionsTestRoundSubmit extends Component {
         this._getTeam()
     }
     _getTeam(){
-        console.log('_getTeam')
+        if (__DEV__)console.log('_getTeam')
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                console.log('true')
+                if (__DEV__)console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
@@ -228,7 +228,7 @@ class MyLionsTestRoundSubmit extends Component {
                     onAxiosEnd: null,
                     method: 'post',
                     onSuccess: (res) => {
-                        console.log('res.data',res.data)
+                        if (__DEV__)console.log('res.data',res.data)
                         if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
                         }
@@ -249,9 +249,9 @@ class MyLionsTestRoundSubmit extends Component {
     }  
 
     setTeam(team){
-        console.log('!!!setTeam',team.toJS())
+        if (__DEV__)console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        console.log('showTeamFeed',showTeamFeed.toJS())
+        if (__DEV__)console.log('showTeamFeed',showTeamFeed.toJS())
         this.props.setTeamToShow(showTeamFeed.toJS())
         this.setState({ isLoaded: true })
         

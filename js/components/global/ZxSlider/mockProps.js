@@ -29,13 +29,13 @@ var BasicMarker = React.createClass({
 var mockProps = {
   values: [0],
   onValuesChangeStart: function () {
-    console.log('press started');
+    if (__DEV__)console.log('press started');
   },
   onValuesChange: function (values) {
-    console.log('changing', values);
+    if (__DEV__)console.log('changing', values);
   },
   onValuesChangeFinish: function (values) {
-    console.log('changed', values);
+    if (__DEV__)console.log('changed', values);
   },
   step: 1,
   min:0,

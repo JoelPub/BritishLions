@@ -10,7 +10,7 @@ const SeasonModel = Record({
 
 })
 SeasonModel.prototype.constructor.fromJS = function (values) {
-  // console.log('@@@SeasonModel.fromJS',values)
+  // if (__DEV__)console.log('@@@SeasonModel.fromJS',values)
   let that = this
   let nested = Immutable.fromJS(values, function (key, value) {
 

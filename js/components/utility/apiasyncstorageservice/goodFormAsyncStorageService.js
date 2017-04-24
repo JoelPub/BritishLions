@@ -11,7 +11,7 @@ const GOODFORM_FAVORITE_PLAYERS = 'GoodFormFavoritePlayers' // Note: Do not use 
 const GOODFORM_USER_SQUAD = 'GoodFormUserCustomizedSquad' // Note: Do not use underscore("_") in key!// 注意:请不要在key中使用_下划线符号!
 
 export function removeGoodFormFavoritePlayerList(){
-    //console.log('Cache for goodform fav list will be cleaned up ')
+    //if (__DEV__)console.log('Cache for goodform fav list will be cleaned up ')
     storage.remove({
         key: GOODFORM_FAVORITE_PLAYERS,
         id: '2001'
@@ -43,7 +43,7 @@ export async function getGoodFormFavoritePlayerList() {
           		method: 'get',
           		onSuccess: (res) => {
           		     if(res){
-                         //console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         //if (__DEV__)console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_FAVORITE_PLAYERS,
                            id,
@@ -56,7 +56,7 @@ export async function getGoodFormFavoritePlayerList() {
                      }
           		},
           		onError: (error) =>{
-          		    //console.log('Warning error: ',error)
+          		    //if (__DEV__)console.log('Warning error: ',error)
           		    let errData = {
                         error:error,
                         auth:null
@@ -64,7 +64,7 @@ export async function getGoodFormFavoritePlayerList() {
                     reject && reject(errData)
           		},
           		onAuthorization: (msg) => {
-          		    //console.log('msg', msg)
+          		    //if (__DEV__)console.log('msg', msg)
           		    let errData = {
                         error:null,
                         auth:msg
@@ -88,10 +88,10 @@ export async function getGoodFormFavoritePlayerList() {
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached Goodform Data: ',JSON.stringify(ret))
+          //if (__DEV__)console.log('Cached Goodform Data: ',JSON.stringify(ret))
           return ret
         }).catch(errData => {
-          //console.log('error:', errData)
+          //if (__DEV__)console.log('error:', errData)
           return errData
         })
 }
@@ -115,7 +115,7 @@ export async function getUserCustomizedSquad() {
               method: 'get',
               onSuccess: (res) => {
                    if(res){
-                         //console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         //if (__DEV__)console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_USER_SQUAD,
                            id,
@@ -128,7 +128,7 @@ export async function getUserCustomizedSquad() {
                      }
               },
               onError: (error) =>{
-                  //console.log('Warning error: ',error)
+                  //if (__DEV__)console.log('Warning error: ',error)
                   let errData = {
                         error:error,
                         auth:null
@@ -136,7 +136,7 @@ export async function getUserCustomizedSquad() {
                     reject && reject(errData)
               },
               onAuthorization: (msg) => {
-                  //console.log('msg', msg)
+                  //if (__DEV__)console.log('msg', msg)
                   let errData = {
                         error:null,
                         auth:msg
@@ -159,10 +159,10 @@ export async function getUserCustomizedSquad() {
           autoSync: true,
           syncInBackground: true
         }).then(ret => {
-          //console.log('Cached Goodform Data: ',JSON.stringify(ret))
+          //if (__DEV__)console.log('Cached Goodform Data: ',JSON.stringify(ret))
           return ret
         }).catch(errData => {
-          //console.log('error:', errData)
+          //if (__DEV__)console.log('error:', errData)
           return errData
         })
 }

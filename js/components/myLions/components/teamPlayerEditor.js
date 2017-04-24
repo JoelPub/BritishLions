@@ -115,24 +115,24 @@ class TeamPlayerEditor extends Component {
 		)
 	}
     componentDidMount() {
-        console.log('TeamPlayerEditor componentDidmount')
-        console.log('this.props.positionToAdd',this.props.positionToAdd)
-        console.log('this.props.positionToRemove',this.props.positionToRemove)
+        if (__DEV__)console.log('TeamPlayerEditor componentDidmount')
+        if (__DEV__)console.log('this.props.positionToAdd',this.props.positionToAdd)
+        if (__DEV__)console.log('this.props.positionToRemove',this.props.positionToRemove)
         if (this.props.positionToAdd===null&&this.props.positionToRemove===null) return
         this._updateMyTeamStatus()
     }
 
     componentWillReceiveProps(nextProps,nextState) {
-        console.log('!!!details componentWillReceiveProps')
-        console.log('this.props.removePlayer',this.props.removePlayer)
-        console.log('nextProps.removePlayer',nextProps.removePlayer)
+        if (__DEV__)console.log('!!!details componentWillReceiveProps')
+        if (__DEV__)console.log('this.props.removePlayer',this.props.removePlayer)
+        if (__DEV__)console.log('nextProps.removePlayer',nextProps.removePlayer)
         if(nextProps.removePlayer!==this.props.removePlayer&&nextProps.removePlayer===true) {
-        console.log('updateTeam')
+        if (__DEV__)console.log('updateTeam')
             this._updateTeam('remove',strToLower(this.props.positionToRemove.split('|')[0]),strToLower(this.props.positionToRemove.split('|')[1]))
         }
     }
     componentWillUnmount() {
-        console.log('Unmount')
+        if (__DEV__)console.log('Unmount')
             this.props.setPositionToRemove(null)
 
     }
@@ -140,7 +140,7 @@ class TeamPlayerEditor extends Component {
         // show loading in adding and removing button
         this.setState({isMyTeamPlayerUpdating: true})
         let teamFeed=TeamModel.fromJS(this.props.teamDataTemp)
-        console.log('@@@teamFeed',teamFeed.toJS())
+        if (__DEV__)console.log('@@@teamFeed',teamFeed.toJS())
         let inTeam = false
         
         teamFeed.forEach((value,index)=>{
@@ -164,22 +164,22 @@ class TeamPlayerEditor extends Component {
     }
 
     _updateTeam(type,position,subPosition){
-        console.log('type',type)
-        console.log('position',position)
-        console.log('subPosition',subPosition)
+        if (__DEV__)console.log('type',type)
+        if (__DEV__)console.log('position',position)
+        if (__DEV__)console.log('subPosition',subPosition)
         let update=true
-        console.log('this.props.teamDataTemp',this.props.teamDataTemp)
-        console.log('this.props.playerid',this.props.playerid)
+        if (__DEV__)console.log('this.props.teamDataTemp',this.props.teamDataTemp)
+        if (__DEV__)console.log('this.props.playerid',this.props.playerid)
         let tmpFeed=TeamModel.fromJS(this.props.teamDataTemp)
-        console.log('tmpFeed',tmpFeed.toJS())
+        if (__DEV__)console.log('tmpFeed',tmpFeed.toJS())
         tmpFeed.forEach((value,index)=>{
-            console.log('index',index)
+            if (__DEV__)console.log('index',index)
             if(index==='backs'||index==='forwards') {
-                console.log('value',value)
+                if (__DEV__)console.log('value',value)
                 if(value.find(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition)!==undefined){
-                        console.log('found')
+                        if (__DEV__)console.log('found')
                     if (type==='remove'&&strToUpper(index)===strToUpper(position)) {
-                        console.log('tmpFeed.toJS()',tmpFeed.toJS())
+                        if (__DEV__)console.log('tmpFeed.toJS()',tmpFeed.toJS())
                         tmpFeed=tmpFeed.update(index,val=>{
                             let t=List(val)
                             t=t.splice(t.findIndex(x=>x.get('id').toString()===this.props.playerid&&x.get('name').toString()===subPosition),1)
@@ -187,9 +187,9 @@ class TeamPlayerEditor extends Component {
                         })
                         let sTeam=removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition)
                         // this.props.setTeamToShow(removePlayer(this.props.teamToShow,index,this.props.playerid,subPosition))
-                        console.log('@@@captain')
+                        if (__DEV__)console.log('@@@captain')
                         if(tmpFeed.get('captain').toString()===this.props.playerid) {
-                            console.log('true')
+                            if (__DEV__)console.log('true')
                             tmpFeed=tmpFeed.set('captain','')
                             // this.props.setTeamToShow(removePlayer(this.props.teamToShow,'captain'))
                             sTeam=removePlayer(sTeam,'captain')
@@ -215,15 +215,15 @@ class TeamPlayerEditor extends Component {
 
         if(type==='add') {
             if(position==='backs'||position==='forwards') {
-                console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                if (__DEV__)console.log('tmpFeed.get(position)',tmpFeed.get(position))
                 tmpFeed=tmpFeed.update(position,val=>{
                             let t=List(val)
-                            // console.log('t',t.toJS())
-                            // console.log('t',t.findIndex(x=>x.get('name')===subPosition))
+                            // if (__DEV__)console.log('t',t.toJS())
+                            // if (__DEV__)console.log('t',t.findIndex(x=>x.get('name')===subPosition))
                             if(t.findIndex(x=>x.get('name')===subPosition)!==-1) {
-                                // console.log('position exist')
+                                // if (__DEV__)console.log('position exist')
                                 t=t.update(t.findIndex(x=>x.get('name')===subPosition),v=>{
-                                    // console.log('v',v.toJS())
+                                    // if (__DEV__)console.log('v',v.toJS())
                                     let w=Map(v)
                                     w=w.set('id',this.props.playerid)
                                     return w
@@ -235,8 +235,8 @@ class TeamPlayerEditor extends Component {
                             
                             return t
                         })
-                console.log('tmpFeed.get(position)',tmpFeed.get(position))
-                console.log('position',position)
+                if (__DEV__)console.log('tmpFeed.get(position)',tmpFeed.get(position))
+                if (__DEV__)console.log('position',position)
                 this.props.setTeamToShow(addPlayer(this.props.teamToShow,position,this.props.detail,this.props.playerid,subPosition))
             }
             else{

@@ -138,10 +138,10 @@ class MyLionsTestRound extends Component {
         this._getTeam()
     }
     _getTeam(){
-        console.log('_getTeam',this.props.teamDataTemp)
+        if (__DEV__)console.log('_getTeam',this.props.teamDataTemp)
         getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                console.log('true')
+                if (__DEV__)console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
@@ -154,7 +154,7 @@ class MyLionsTestRound extends Component {
                     onAxiosEnd: null,
                     method: 'post',
                     onSuccess: (res) => {
-                        console.log('res.data',res.data)
+                        if (__DEV__)console.log('res.data',res.data)
                         if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
                         }
@@ -175,13 +175,13 @@ class MyLionsTestRound extends Component {
     }  
 
     setTeam(team){
-        console.log('!!!setTeam',team.toJS())
+        if (__DEV__)console.log('!!!setTeam',team.toJS())
         let showTeamFeed=convertTeamToShow(team,this.fullPlayerList,this.uniondata)
-        console.log('showTeamFeed',showTeamFeed.toJS())
+        if (__DEV__)console.log('showTeamFeed',showTeamFeed.toJS())
         this.props.setTeamToShow(showTeamFeed.toJS())
         this.setState({ isLoaded: true })
         if(Immutable.is(team,TeamModel.fromJS(this.props.teamDataTemp))===false) {
-            console.log('!!!team not equal')
+            if (__DEV__)console.log('!!!team not equal')
             this.props.setTeamDataTemp(team.toJS())
         }
         
@@ -189,8 +189,8 @@ class MyLionsTestRound extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps nextProps.teamDataTemp',nextProps.teamDataTemp)
-        console.log('componentWillReceiveProps this.props.teamDataTemp',this.props.teamDataTemp)
+        if (__DEV__)console.log('componentWillReceiveProps nextProps.teamDataTemp',nextProps.teamDataTemp)
+        if (__DEV__)console.log('componentWillReceiveProps this.props.teamDataTemp',this.props.teamDataTemp)
         if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
             this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
         }
@@ -216,13 +216,13 @@ class MyLionsTestRound extends Component {
                onAxiosEnd: () => {
                },
                onSuccess: (res) => {
-                console.log('res.data',res.data)
+                if (__DEV__)console.log('res.data',res.data)
                     if(res.data&&res.data.success) {
                         this.props.drillDown(this.state.drillDownItem,'myLionsTestRoundSubmit')
                     }
                },
                onError: () => {
-                console.log('onError')
+                if (__DEV__)console.log('onError')
                },
                 onAuthorization: null,
                 isQsStringify:false,

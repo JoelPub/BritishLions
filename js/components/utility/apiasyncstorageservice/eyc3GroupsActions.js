@@ -36,7 +36,7 @@ export async function getGroupInfo (accessToken,group_id,userID) {
             return response.json()
           }).then(json => {
             if(json){
-              //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+              //if (__DEV__)console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
               storage.save({
                 key: EYC3_GET_GROUP_INFO,
                 expires: 1000 * 3600,
@@ -49,7 +49,7 @@ export async function getGroupInfo (accessToken,group_id,userID) {
               reject && reject(new Error('data parse error'))
             }
           }).catch(err => {
-            //console.log('Warning error: ',err)
+            //if (__DEV__)console.log('Warning error: ',err)
             reject && reject(err)
           })
     }
@@ -60,10 +60,10 @@ export async function getGroupInfo (accessToken,group_id,userID) {
     id:'1001',
     syncInBackground: true
   }).then(ret => {
-    //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+    //if (__DEV__)console.log('Cached eyc3 Data: ',JSON.stringify(ret))
     return ret
   }).catch(err => {
-    //console.log(err.message);
+    //if (__DEV__)console.log(err.message);
     switch (err.name) {
       case 'NotFoundError':
         return 0
@@ -97,7 +97,7 @@ export async function createGroup (accessToken,group_name,userID) {
         return response.json()
       }).then(json => {
         if(json){
-          //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+          //if (__DEV__)console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
           storage.save({
             key: EYC3_CREATE_A_GROUP,
             expires: 0,
@@ -110,7 +110,7 @@ export async function createGroup (accessToken,group_name,userID) {
           reject && reject(new Error('data parse error'))
         }
       }).catch(err => {
-        //console.log('Warning error: ',err)
+        //if (__DEV__)console.log('Warning error: ',err)
         reject && reject(err)
       })
     }
@@ -124,7 +124,7 @@ export async function createGroup (accessToken,group_name,userID) {
     //console.warn('create group: ',JSON.stringify(ret))
     return ret
   }).catch(err => {
-    //console.log(err.message);
+    //if (__DEV__)console.log(err.message);
     switch (err.name) {
       case 'NotFoundError':
         return 0
@@ -157,7 +157,7 @@ export async function joinGroup (accessToken,group_name,userID) {
         return response.json()
       }).then(json => {
         if(json){
-          //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+          //if (__DEV__)console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
           storage.save({
             key: EYC3_JOIN_A_GROUP,
             expires: 1000 * 3600,
@@ -170,7 +170,7 @@ export async function joinGroup (accessToken,group_name,userID) {
           reject && reject(new Error('data parse error'))
         }
       }).catch(err => {
-        //console.log('Warning error: ',err)
+        //if (__DEV__)console.log('Warning error: ',err)
         reject && reject(err)
       })
     }
@@ -181,10 +181,10 @@ export async function joinGroup (accessToken,group_name,userID) {
     id:'1001',
     syncInBackground: true
   }).then(ret => {
-    //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+    //if (__DEV__)console.log('Cached eyc3 Data: ',JSON.stringify(ret))
     return ret
   }).catch(err => {
-    //console.log(err.message);
+    //if (__DEV__)console.log(err.message);
     switch (err.name) {
       case 'NotFoundError':
         return 0
@@ -217,7 +217,7 @@ export async function leaveGroup (accessToken,group_id,userID) {
         return response.json()
       }).then(json => {
         if(json){
-          //console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
+          //if (__DEV__)console.log('Fresh uncached eyc3 Data: ',JSON.stringify(json))
           storage.save({
             key: EYC3_LEAVE_A_GROUP,
             expires: 1000 * 3600,
@@ -230,7 +230,7 @@ export async function leaveGroup (accessToken,group_id,userID) {
           reject && reject(new Error('data parse error'))
         }
       }).catch(err => {
-        //console.log('Warning error: ',err)
+        //if (__DEV__)console.log('Warning error: ',err)
         reject && reject(err)
       })
     }
@@ -241,10 +241,10 @@ export async function leaveGroup (accessToken,group_id,userID) {
     id:'1001',
     syncInBackground: true
   }).then(ret => {
-    //console.log('Cached eyc3 Data: ',JSON.stringify(ret))
+    //if (__DEV__)console.log('Cached eyc3 Data: ',JSON.stringify(ret))
     return ret
   }).catch(err => {
-    //console.log(err.message);
+    //if (__DEV__)console.log(err.message);
     switch (err.name) {
       case 'NotFoundError':
         return 0

@@ -9,7 +9,7 @@ const Rating = Record({
 })
 
 Rating.prototype.constructor.fromJS = function (values) {
- // console.log('@@@Rating.fromJS',values)
+ // if (__DEV__)console.log('@@@Rating.fromJS',values)
   let that = this
   let nested = Immutable.fromJS(values, function (key, value) {
 

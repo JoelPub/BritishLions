@@ -153,7 +153,7 @@ class MyLionsPlayerProfile extends Component {
     }
 
     componentDidMount() {
-        console.log('!!!Details componentDidMount')
+        if (__DEV__)console.log('!!!Details componentDidMount')
         this.getPlayerProfile()
     }
 
@@ -175,15 +175,15 @@ class MyLionsPlayerProfile extends Component {
             },
             isRequiredToken: false,
             onSuccess: (res) => {
-                console.log('profile res.data',res.data)
+                if (__DEV__)console.log('profile res.data',res.data)
                 let profile = ProfileListModel.fromJS([new ProfileModel()])
 
                 if (res.data instanceof Array  && res.data.length!==0) {
-                    console.log('valid')
+                    if (__DEV__)console.log('valid')
                     profile=ProfileListModel.fromJS(res.data)
                 } 
                 // else {
-                //     console.log('invalid')
+                //     if (__DEV__)console.log('invalid')
                 //     profile = profile.update(0,value=>{
                 //         return value=value.update('Attack',v=>{
                 //             return v=FigureListModel.fromJS([new FigureModel()])
