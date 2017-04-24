@@ -86,7 +86,6 @@ class GamePlayBtn extends Component {
         
     }
   getProfile = (userName,firstName,lastName,initName)=>{
-    console.log('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊89')
     let optionsUserProfile = {
       url: actionsApi.eyc3GetuserProfileSummary,
       data: {id:this.props.userProfile.userID,first_name:firstName,last_name:lastName},
@@ -106,7 +105,6 @@ class GamePlayBtn extends Component {
             userID: this.state.userID
           })
           this.props.setUserProfile(userProfile)
-          console.log('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊')
         }
       },
       onError: null,
@@ -118,7 +116,6 @@ class GamePlayBtn extends Component {
     service(optionsUserProfile)
   }
     playGame() {
-      console.log('啊啊啊啊啊啊啊1playGame')
       let isGameOVer = this.props.isGameOver
       if (isGameOVer) {
         this.props.drillDown(this.props.drillDownItem, 'myLionsCompetitionGameResults')
@@ -150,7 +147,6 @@ class GamePlayBtn extends Component {
                 console.log('onAxiosEnd')
             },
             onSuccess: (res) => {
-              console.log('啊啊啊啊啊啊啊152')
               let {userName,initName,firstName,lastName} = this.props.userProfile
               this.getProfile(userName,firstName,lastName,initName)
                 console.log('res',res)
