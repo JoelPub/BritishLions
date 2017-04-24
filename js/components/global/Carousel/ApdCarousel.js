@@ -6,6 +6,9 @@ import SliderEntry from './components/SliderEntry';
 import styles from './styles/index.style';
 import { ENTRIES1, ENTRIES2 } from './static/entries';
 
+import ButtonFeedback from '../../utility/buttonFeedback'
+import { Icon } from 'native-base'
+
 export default class example extends Component {
 
   getSlides (entries) {
@@ -49,11 +52,6 @@ export default class example extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <StatusBar
-          translucent={true}
-          backgroundColor={'rgba(0, 0, 0, 0.3)'}
-          barStyle={'light-content'}
-        />
         <View style={styles.colorsContainer}>
           <View style={styles.color1} />
           <View style={styles.color2} />
@@ -63,9 +61,13 @@ export default class example extends Component {
           indicatorStyle={'white'}
           scrollEventThrottle={200}
         >
-          <Text style={styles.title}>Example 1</Text>
-          <Text style={styles.subtitle}>No momentum | Scale | Opacity</Text>
           { this.example1 }
+          <ButtonFeedback rounded style={[styles.matchButtonView]} >
+            <Icon name='md-analytics' style={styles.matchIcon} />
+            <Text ellipsizeMode='tail' numberOfLines={1} style={styles.matchText} >
+              COMPETITION CENTRE
+            </Text>
+          </ButtonFeedback>
         </ScrollView>
       </View>
     );

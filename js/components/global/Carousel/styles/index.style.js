@@ -1,4 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
+
+import  { styleSheetCreate } from '../../../../themes/lions-stylesheet'
+
+import styleVar from '../../../../themes/variable'
 
 export const colors = {
   black: '#1a1917',
@@ -7,7 +11,7 @@ export const colors = {
   background2: 'hsl(230, 30%, 45%)'
 };
 
-export default StyleSheet.create({
+export default styleSheetCreate({
   container: {
     flex: 1,
     backgroundColor: colors.background1
@@ -49,5 +53,39 @@ export default StyleSheet.create({
     marginBottom: 30
   },
   sliderContainer: {
+  },
+  matchButtonView: {
+
+    height: 50,
+    marginBottom: 35,
+    marginLeft: 30,
+    marginRight: 30,
+    backgroundColor:'rgb(175,0,30)',
+    flexDirection:'row',
+    paddingTop:5,
+    marginTop: 0
+
+  },
+  matchIcon: {
+
+    marginBottom: 5,
+    color: 'rgb(255,204,40)',
+    fontSize: 25,
+    android:{
+      marginBottom: 5,
+    }
+
+  },
+  matchText:{
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 24,
+    lineHeight: 24,
+    paddingTop: 5,
+    color:'white',
+    backgroundColor:'transparent',
+    marginLeft: 8,
+    android:{
+      marginTop: -7,
+    }
   }
 });
