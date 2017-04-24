@@ -79,7 +79,7 @@ const MyPride = (props) => {
       </View>
       <GroupAction createGroupOnPress={createGroupOnPress} joinGroupOnPress={joinGroupOnPress} />
       {
-        data.my_groups.length!==0 ?
+        data.my_groups&&data.my_groups.length!==0 ?
           <GroupNameList onPress={groupNameOnPress} data={data} /> :null
 
       }

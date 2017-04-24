@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from './actions/token'
-import { getAccessToken, getRefreshToken, updateToken, removeToken } from './components/utility/asyncStorageServices'
+import { getAccessToken, getRefreshToken, updateToken, removeToken, getCurrentVersionNumber, setCurrentVersionNumber } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
 import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage ,NativeModules} from 'react-native'
@@ -71,7 +71,7 @@ import Unions from './components/unions'
 import UnionDetails from './components/unions/details'
 import UnionDetailsSub from './components/unions/detailsSub'
 import IosUtilityHeaderBackground from './components/utility/iosUtilityHeaderBackground'
-import { actionsApi } from './components/utility/urlStorage'
+import { actionsApi, APP_VERSION } from './components/utility/urlStorage'
 import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
@@ -190,6 +190,14 @@ class AppNavigator extends Component {
         })
         global.storage = storage
 
+        getCurrentVersionNumber().then((versionNumber)=>{
+            if(versionNumber === undefined || versionNumber !== '3'){
+                AsyncStorage.clear()
+                setCurrentVersionNumber()
+            }
+
+        })
+
         globalNav.navigator = this._navigator
 
         this.props.store.subscribe(() => {
@@ -208,9 +216,11 @@ class AppNavigator extends Component {
             false,
             "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            var routes = this._navigator.getCurrentRoutes()
+            // console.log('this._navigator',this._navigator)
+            // console.log('globalNav.navigator',globalNav.navigator)
+            var routes = globalNav.navigator.getCurrentRoutes()
 
-            if(routes[routes.length - 1].id == 'landing' || routes[routes.length - 1].id == 'login') {
+            if(routes[routes.length - 1].id == 'landing') {
                 return false
             }
             else {
