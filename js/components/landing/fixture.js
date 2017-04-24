@@ -26,16 +26,31 @@ const locStyle = styleSheetCreate({
     },
     infoBox: {
         padding: 20,
-        backgroundColor: styleVar.colorGrey,
+        paddingBottom: 40,
+        backgroundColor: styleVar.colorText,
     },
     infoBoxText: {
-        marginBottom: 10,
-        fontFamily: styleVar.fontCondensed,
+        marginBottom: 20,
+        fontFamily: styleVar.fontGeorgia,
         fontSize: 18,
-        lineHeight: 18,
+        lineHeight: 22,
         textAlign: 'center',
-        color: styleVar.colorText
-    }
+        color: '#FFF',
+    },
+    bannerDetails: {
+        backgroundColor: styleVar.colorText,
+        paddingTop: 18,
+        paddingBottom: 5
+    },
+    logoIcon: {
+        width: 21,
+        height: 32,
+        backgroundColor: 'transparent',
+        marginTop: -5,
+        android: {
+            marginTop: 0
+        }
+    },
 })
 
 class PlayerFigure extends Component {
@@ -79,9 +94,10 @@ class PlayerFigure extends Component {
             fixturesLeft: limitArrayList(fixturesLeft, 1)
         })
     }
-    goToCoachBox = () => {
 
+    _goToCoachBox = () => {
     }
+
     render() {
         return (
             <View>
@@ -94,10 +110,22 @@ class PlayerFigure extends Component {
                                 </Text>
                             </View>
                             
-                            <LiveBox data={{}} />
-
-                            <View style={styles.bannerDetails}>
-                                <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union VS Bristish Dummy</Text>
+                            <LiveBox data={{}} inverse={true}/>
+                            
+                            <ButtonFeedback 
+                                style={styles.banner}
+                                onPress={() => this._drillDown(fixturesList[0], 'fixtureDetails')}>
+                                <ImagePlaceholder height={200}>
+                                    <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                                        <Image
+                                            resizeMode='contain'
+                                            style={styles.bannerImg}
+                                            source={fixturesImages[1]} />
+                                    </LinearGradient>
+                                </ImagePlaceholder>
+                            </ButtonFeedback>
+                            <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
+                                <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
                             </View>
                             <View style={locStyle.infoBox}>
                                 <Text style={locStyle.infoBoxText}>
@@ -106,9 +134,11 @@ class PlayerFigure extends Component {
                                 <ButtonFeedback 
                                     rounded 
                                     style={[styles.roundButton]}
-                                    onPress={this.goToCoachBox}
+                                    onPress={this._goToCoachBox}
                                 >
-                                    <Icon name='md-analytics' style={styles.roundButtonIcon} />
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                        style={locStyle.logoIcon}>
+                                    </Image>
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
                                         COACH'S BOX
                                     </Text>

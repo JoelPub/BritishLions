@@ -9,136 +9,116 @@ import ButtonFeedback from '../utility/buttonFeedback'
 let containerWidth = styleVar.deviceWidth
 
 const locStyle = styleSheetCreate({ 
-    bannerDesc: {
-        paddingTop: 7
-    },
-    infoBox: {
-        padding: 20,
-        backgroundColor: styleVar.colorGrey,
-    },
-
     liveBox: {
         flexDirection: 'row',
-        paddingVertical: 20,
-        backgroundColor: styleVar.colorGrey,
-    },
-    team: {
-        flex: 0.3,
-        paddingHorizontal: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    scoreWrapper: {
-        flex: 0.4,
-    },
-
-
-    teamtext:{
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 18,
-        lineHeight: 18,
-        textAlign: 'center',
-        color: styleVar.colorText,
-    },
-
-    infoBoxText: {
-        marginBottom: 10,
-        fontFamily: styleVar.fontCondensed,
-        fontSize: 18,
-        lineHeight: 18,
-        textAlign: 'center',
-        color: styleVar.colorText
-    },
-    circleWrapper: {
-        flexDirection: 'row'
-    },
-    circle: {
-        width: containerWidth * 0.14,
-        height: containerWidth * 0.14,
-        backgroundColor: styleVar.colorScarlet,
-        borderRadius: containerWidth * 0.14,
+        paddingVertical: 9,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: styleVar.colorText,
+    },
+    liveBoxInverse: {
+        backgroundColor: '#FFF'
+    },
+    circle: {
+        width: 50,
+        height: 50,
+        backgroundColor: styleVar.colorScarlet,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    circleInverse: {
+        marginHorizontal: 9
     },
     circleText: {
         fontFamily: styleVar.fontCondensed,
         backgroundColor: 'transparent',
         color: 'rgb(255, 255, 255)',
-        fontSize: 26,
-        lineHeight: 26,
+        fontSize: 28,
+        lineHeight: 28,
         textAlign: 'center',
-        marginTop: 15,
+        marginTop: 13,
         android: {
-            marginTop: 8
+            marginTop: 5
         }
     },
-    versus: {
-        alignSelf: 'stretch',
+   
+    time: {
+        backgroundColor: '#FFF',
+        width: 90,
+        height: 50,
+        borderRadius: 50,
+        alignItems: 'center',
         justifyContent: 'center',
-        flex: 1
+        marginHorizontal: 40
     },
-    versusText: {
-        color: styleVar.colorText,
-        fontSize: 18,
-        lineHeight: 18,
-        fontFamily: styleVar.fontCondensed,
-        marginTop: 10,
-        textAlign: 'center'
+    timeInverse: {
+        borderWidth: 1,
+        borderColor: styleVar.colorGrey2,
+        marginHorizontal: 15
     },
-    hourTime: {
-        backgroundColor: styleVar.colorText,
-        borderRadius: 23,
-        marginTop: 15,
-        paddingTop: 8,
-        android: {
-            paddingTop: 7,
-            paddingBottom: 4
-        }
-    },
-    hourTimeText: {
-        color: '#FFF',
-        textAlign: 'center',
+    timeText: {
+        color: styleVar.colorScarlet,
         fontFamily: styleVar.fontCondensed,
         backgroundColor: 'transparent',
-        fontSize: 16,
-        lineHeight: 16
-    }
+        fontSize: 24,
+        lineHeight: 24,
+        marginTop: 10,
+        android: {
+            marginTop: 3
+        }
+    },
+    logo: {
+
+    },
+    logoIcon: {
+        width: 40,
+        height: 40,
+        backgroundColor: 'transparent'
+    },
 })
 
 export default class LiveBox extends Component {
     constructor(props){
         super(props)
+
+        this.state = {
+            inverse: true
+        }
     }
 
     render() {
+       
+        let inverse = this.props.inverse || false
+        let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
+        let styleTime = inverse? [locStyle.time] : [locStyle.time, locStyle.timeInverse]
+        let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
+
         return (
-            <View style={locStyle.liveBox}>
-                <View style={locStyle.team}>
-                    <View style={locStyle.teamtextWrapper}>
-                        <Text style={locStyle.teamtext}>PROVINCIAL BARBARIANS</Text>
-                    </View>
-                </View>
-                <View style={locStyle.scoreWrapper}>
-                    <View style={locStyle.circleWrapper}>
-                        <View style={locStyle.circle}>
-                            <Text style={locStyle.circleText}>15</Text>
+            <View style={styleLiveBox}>
+                {
+                    !inverse &&
+                        <View style={locStyle.logo}>
+                            <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                                style={locStyle.logoIcon}/>
                         </View>
-                        <View style={locStyle.versus}>
-                            <Text style={locStyle.versusText}>vs</Text>
-                        </View> 
-                        <View style={locStyle.circle}>
-                            <Text style={locStyle.circleText}>47</Text>
+                }
+                <View style={styleCircle}>
+                    <Text style={locStyle.circleText}>15</Text>
+                </View>
+                <View style={styleTime}>
+                    <Text style={locStyle.timeText}>00:00</Text>
+                </View>
+                <View style={styleCircle}>
+                    <Text style={locStyle.circleText}>47</Text>
+                </View>
+                {
+                    !inverse &&
+                        <View style={locStyle.logo}>
+                            <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                                style={locStyle.logoIcon}/>
                         </View>
-                    </View>  
-                    <View style={locStyle.hourTime}>
-                        <Text style={locStyle.hourTimeText}>HT - 00:00</Text>
-                    </View>
-                </View>
-                <View style={locStyle.team}>
-                    <View style={locStyle.teamtextWrapper}>
-                        <Text style={locStyle.teamtext}>BRITISH & IRISH LIONS</Text>
-                    </View>
-                </View>
+                }
             </View>
         )
     }
