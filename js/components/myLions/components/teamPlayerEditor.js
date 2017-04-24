@@ -78,11 +78,12 @@ class TeamPlayerEditor extends Component {
     }
 
 	render() {
+
         let buttonText =  this.state.inTeam === true&&this.props.positionToRemove!==null? 'REMOVE':'ADD'
 		return (
             <View>
             {
-                (this.props.positionToAdd===null&&this.props.positionToRemove===null)?
+                ((this.props.positionToAdd===null||this.props.positionToAdd==='')&&(this.props.positionToRemove===null||this.props.positionToRemove===''))?
                 null
                 :
                 <View style={styles.buttons}>

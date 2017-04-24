@@ -2,14 +2,17 @@
 
 import React, { Component } from 'react'
 import { Image, Platform } from 'react-native'
+import { pushNewRoute } from '../../actions/route'
+import { connect } from 'react-redux'
 
-export default class SplashPage extends Component {
+class SplashPage extends Component {
     componentWillMount () {
         var navigator = this.props.navigator
         setTimeout (() => {
-            navigator.replace({
-                id: 'landing',
-            })
+            // navigator.replace({
+            //     id: 'landing',
+            // })
+            this.props.pushNewRoute('landing')
         }, 3500)
     }
 
@@ -21,3 +24,11 @@ export default class SplashPage extends Component {
         )
     }
 }
+function bindActions(dispatch) {
+    return {
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+    }
+}
+
+
+export default connect(null, bindActions)(SplashPage)

@@ -1,7 +1,7 @@
 'use strict'
 
 import { Alert, AsyncStorage } from 'react-native'
-
+import {APP_VERSION} from './urlStorage'
 const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
@@ -77,6 +77,16 @@ export async function getAccessToken() {
     return await AsyncStorage.getItem('ACCESS_TOKEN', (err, result) => {
         return result
     })
+}
+
+export async function getCurrentVersionNumber() {
+    return await AsyncStorage.getItem('CURRENT_VERSION_NUMBER', (err, result) => {
+        return result
+    })
+}
+
+export async function setCurrentVersionNumber() {
+    await AsyncStorage.setItem('CURRENT_VERSION_NUMBER', APP_VERSION)
 }
 
 export async function setAddedToCalanderCheck() {
