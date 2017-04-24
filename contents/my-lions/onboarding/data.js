@@ -13,7 +13,7 @@ export default [
         "description": [
             "WELCOME TO MY LIONS",
             "Weather, stadium conditions and referee selection will impact your team\'s performance which you can overcome by selecting the right team and tactics in order to defeat the opposition.",
-            "EY will generate an outcome and score based on player and team analytics which you can then share with your friends, view your position in the ladder and join or create private leagues. "
+            "EY will generate an outcome and score based on player and team analytics which you can then share with your friends, view your position in the ladder and join or create private leagues. ",
             "Nulla accumsan vehicula ex non commodo. "
         ]
     },
