@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { colors } from './index.style';
+import styleVar from '../../../../themes/variable'
+
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -57,7 +59,7 @@ export default StyleSheet.create({
     paddingTop: 20 - entryBorderRadius,
     paddingBottom: 20,
     paddingHorizontal: 16,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(175,0,30)',
     borderBottomLeftRadius: entryBorderRadius,
     borderBottomRightRadius: entryBorderRadius
   },
@@ -65,21 +67,25 @@ export default StyleSheet.create({
     backgroundColor: colors.black
   },
   title: {
-    color: colors.black,
-    fontSize: 13,
-    fontWeight: 'bold',
-    letterSpacing: 0.5
+    color: 'white',
+    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: styleVar.fontCondensed,
+    paddingTop:8
   },
   titleEven: {
     color: 'white'
   },
   subtitle: {
     marginTop: 6,
-    color: colors.gray,
-    fontSize: 12,
-    fontStyle: 'italic'
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
+    fontFamily: styleVar.fontGeorgia,
   },
   subtitleEven: {
     color: 'rgba(255, 255, 255, 0.7)'
-  }
+  },
+
+
 });

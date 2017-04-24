@@ -15,27 +15,59 @@ import styles from './styles'
 import shapes from '../../themes/shapes'
 import styleVar from '../../themes/variable'
 import loader from '../../themes/loader-position'
+import { styleSheetCreate } from '../../themes/lions-stylesheet'
+
 
 import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
 import LionsFooter from '../global/lionsFooter'
-import GrayContainer from '../global/GrayContainer'
-import ExpertRank from  '../global/ExpertRank'
-import RankList from  '../global/RankingList'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import ImageCircle from '../utility/imageCircle'
 import { replaceRoute, pushNewRoute } from '../../actions/route'
 import EYSFooter from '../global/eySponsoredFooter'
 import {getUserFullName} from  '../utility/asyncStorageServices'
 import { getAccessToken} from '../utility/asyncStorageServices'
 import {actionsApi} from  '../utility/urlStorage'
 import { service } from '../utility/services'
+import fixturesImages from '../../../contents/fixtures/images'
 
 import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 
+import Carousel from  '../global/Carousel'
 
+const locStyle = styleSheetCreate({
+  bannerDesc: {
+    paddingTop: 7
+  },
+  infoBox: {
+    padding: 20,
+    paddingBottom: 40,
+    backgroundColor: styleVar.colorText,
+  },
+  infoBoxText: {
+    marginBottom: 20,
+    fontFamily: styleVar.fontGeorgia,
+    fontSize: 18,
+    lineHeight: 22,
+    textAlign: 'center',
+    color: '#FFF',
+  },
+  bannerDetails: {
+    backgroundColor: styleVar.colorText,
+    paddingTop: 18,
+    paddingBottom: 5
+  },
+  logoIcon: {
+    width: 21,
+    height: 32,
+    backgroundColor: 'transparent',
+    marginTop: -5,
+    android: {
+      marginTop: 0
+    }
+  },
+})
 
 
 
@@ -91,20 +123,30 @@ class CoachsBox extends Component {
       <Container theme={theme}>
         <View style={styles.container} >
           <LionsHeader
-            back={true}
-            title='MY LIONS'
+            title="COACH'S BOX"
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-
-
-
+            <View>
+              <ButtonFeedback
+                style={styles.banner}>
+                <ImagePlaceholder height={200}>
+                  <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                    <Image
+                      resizeMode='contain'
+                      style={styles.bannerImg}
+                      source={fixturesImages[1]} />
+                  </LinearGradient>
+                </ImagePlaceholder>
+                <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
+                  <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
+                </View>
+              </ButtonFeedback>
+            </View>
+            <Carousel />
             <LionsFooter isLoaded={true} />
           </ScrollView>
-
           <EYSFooter mySquadBtn={true}/>
-
-          />
         </View>
       </Container>
     )

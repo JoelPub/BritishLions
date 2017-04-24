@@ -96,6 +96,7 @@ class PlayerFigure extends Component {
     }
 
     _goToCoachBox = () => {
+        this._drillDown('', 'coachBox')
     }
 
     render() {

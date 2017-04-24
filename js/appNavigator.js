@@ -43,6 +43,7 @@ import MyLionsSquad from './components/myLions/myLionsSquad'
 import MyLionsOfficialSquad from './components/myLions/myLionsOfficialSquad'
 import MyLionsOppositionSquad from './components/myLions/myLionsOppositionSquad'
 
+
 import MyLionsCompetitionCentre from './components/myLions/myLionsCompetitionCentre'
 import MyLionsCompetitionGameListing from './components/myLions/myLionsCompetitionGameListing'
 import MyLionsManageTeam from './components/myLions/myLionsManageTeam'
@@ -76,6 +77,8 @@ import LionsTV from './components/lionsTV'
 import DetailsLionsTV from './components/lionsTV/detailsLionTV'
 import Contact from './components/contact'
 import Storage from 'react-native-storage'
+
+import CoachBox from './components/CoachsBox'
 
 import {
   GoogleAnalyticsTracker,
@@ -412,6 +415,8 @@ class AppNavigator extends Component {
                 return <GalleriesDetails navigator={navigator} />
             case 'matchCenter':
                 return <MatchCenter navigator={navigator} />
+            case 'coachBox':
+                return <CoachBox navigator={navigator} />
             case 'fixtures':
                 return <Fixtures navigator={navigator} />
             case 'fixtureDetails':
