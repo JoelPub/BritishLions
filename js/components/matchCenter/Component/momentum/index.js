@@ -38,7 +38,8 @@ class Momentum extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({h:y+200},()=>{
+        let h=y+200>styleVar.deviceHeight-340?y+200:styleVar.deviceHeight-340
+        this.setState({h},()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'momentum')
                 this.setState({isChanged:false})

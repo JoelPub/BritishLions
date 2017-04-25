@@ -57,7 +57,6 @@ class MatchCenter extends Component {
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0} style={{backgroundColor:'grey'}}>
-                    {this.state.cover&&<View style={{backgroundColor:'rgb(255,255,255)',height:styleVar.deviceHeight}}></View>}
                     {
                         this.state.isLoaded?
                             <Swiper
