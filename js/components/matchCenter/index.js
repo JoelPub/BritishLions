@@ -17,6 +17,7 @@ import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
 import ManOfTheMatch from './Component/manOfTheMatch'
+import loader from '../../themes/loader-position'
 
 class MatchCenter extends Component {
 
@@ -26,7 +27,8 @@ class MatchCenter extends Component {
         this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH']
         this.state = {
           index:0,
-          swiperHeight:0
+          swiperHeight:0,
+          isLoaded:true
         }
 
 
@@ -45,8 +47,9 @@ class MatchCenter extends Component {
                         title={this.subjects[this.state.index]}
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0}>
-                        <View style={{backgroundColor:'grey'}}>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0} style={{backgroundColor:'grey'}}>
+                    {
+                        this.state.isLoaded?
                             <Swiper
                                 ref='swiper'
                                 height={this.state.swiperHeight}
@@ -61,8 +64,9 @@ class MatchCenter extends Component {
                                 />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
-                        </View>
-
+                        :
+                            <ActivityIndicator style={loader.centered} size='large' />
+                    }
                         <LionsFooter isLoaded={true}  />
                     </ScrollView>
 
