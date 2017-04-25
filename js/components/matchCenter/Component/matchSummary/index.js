@@ -10,24 +10,28 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import Timeline from 'react-native-timeline-listview'
 import LiveBox from '../../../global/liveBox'
+import _fetch from '../../../utility/fetch'
+import loader from '../../../../themes/loader-position'
 
 class MatchSummary extends Component {
 
     constructor(props) {
          super(props)
          this.state = {
-              h:0
+              h:0,
+              data:[],
+              isLoaded:false
          }
          this.data = [
-          {time: '54MIN', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. '},
-          {time: '52MIN', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.'},
-          {time: '49MIN', description: 'Team sport played between two teams of eleven players with a spherical ball. '},
-          {time: '484MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-          {time: '47MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-          {time: '45MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-          {time: '43MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-          {time: '40MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-          {time: '38MIN', description: 'Look out for the Best Gym & Fitness Centers around me :)'}
+          {"time": "54MIN", "description": "The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. "},
+          {"time": "52MIN", "description": "Badminton is a racquet sport played using racquets to hit a shuttlecock across a net."},
+          {"time": "49MIN", "description": "Team sport played between two teams of eleven players with a spherical ball. "},
+          {"time": "484MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
+          {"time": "47MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
+          {"time": "45MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
+          {"time": "43MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
+          {"time": "40MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
+          {"time": "38MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"}
         ]
     }
     measurePage(page,event) {
@@ -54,27 +58,44 @@ class MatchSummary extends Component {
         <Text style={{fontSize:17,fontFamily:styleVar.fontCondensed,color:'rgb(175,0,30)',textAlign: 'center'}}>{rowData.time}</Text>
         </View>)
     }
+    componentDidMount(){
+        _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
+          if(__DEV__)console.log('json',json)
+          this.setState({data:json,isLoaded:true})
+
+        }).catch((error)=>{
+            // if (__DEV__)console.log(error)
+        })
+    }
     render() {
         return (
                 <ScrollView style={{marginTop:20,marginHorizontal:10}} scrollEnabled={false}>
                     <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
-                    <Timeline 
-                      style={{height:styleVar.deviceHeight-500,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
-                      data={this.data}
-                      lineColor='rgb(216,217,218)'
-                      timeContainerStyle={{position:'absolute'}}
-                      timeStyle={{width:0,height:0}}
-                      descriptionStyle={{color:'rgb(38,38,38)',fontSize:14,lineHeight:16,fontFamily:styleVar.fontGeorgia,marginLeft:20}}
-                      separator={false}
-                      options={{
-                        style:{paddingTop:5},
-                        scrollEnabled:true
-                      }}
-                      renderCircle={this._renderCircle}
-                    />
-                    <View onLayout={this.measurePage.bind(this,'matchSummary')} />
+                    {
+                        this.state.isLoaded?
+                          <Timeline 
+                            style={{height:styleVar.deviceHeight-440,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
+                            data={this.state.data}
+                            lineColor='rgb(216,217,218)'
+                            timeContainerStyle={{position:'absolute'}}
+                            timeStyle={{width:0,height:0}}
+                            descriptionStyle={{color:'rgb(38,38,38)',fontSize:14,lineHeight:16,fontFamily:styleVar.fontGeorgia,marginLeft:20}}
+                            separator={false}
+                            options={{
+                              style:{paddingTop:5},
+                              scrollEnabled:true,
+                              enableEmptySections:true
+                            }}
+                            renderCircle={this._renderCircle}
+                          />
+                        :
+                            <ActivityIndicator style={[loader.centered,{height:styleVar.deviceHeight-440}]} size='large' />
+                    }
+
+                          <View onLayout={this.measurePage.bind(this,'matchSummary')} />
+
               </ScrollView>
         )
     }
