@@ -29,14 +29,23 @@ class MatchCenter extends Component {
         this.state = {
           index:0,
           swiperHeight:0,
-          isLoaded:true
+          isLoaded:false,
+          cover:true
         }
 
 
     }
-    _setHeight(h) {
-        if (__DEV__)console.log('_setHeight',h)
+    _setHeight(h,source) {
+        if (__DEV__)console.log(source,'_setHeight',h)
         this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
+    }
+    _setCover(isCover) {
+        if(__DEV__)console.log('_setCover isCover',isCover)
+        this.setState({cover:isCover})
+    }
+    componentDidMount() {
+        if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
+        setTimeout(()=>{this.setState({isLoaded:true})},1000)
     }
     
     render() {
@@ -59,7 +68,7 @@ class MatchCenter extends Component {
                                 activeDotColor='black'
                                 paginationStyle={{top:-1*(this.state.swiperHeight-45),position:'absolute'}}
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
-                                <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)}/>
+                                <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} setCover={this._setCover.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
                                 <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                 />

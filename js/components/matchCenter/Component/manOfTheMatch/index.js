@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { View } from 'react-native'
 import ManOfTheMatchLanding from './landing'
 import ManOfTheMatchPostSubission from './postSubmission'
+import ManOfTheMatchFinal from './final'
 
 class ManOfTheMatch extends Component {
 
@@ -17,7 +18,8 @@ class ManOfTheMatch extends Component {
         return (
             <View>
                 {/*<ManOfTheMatchLanding />*/}
-                <ManOfTheMatchPostSubission />
+                {/*<ManOfTheMatchPostSubission />*/}
+                <ManOfTheMatchFinal />
             </View>
         )
     }

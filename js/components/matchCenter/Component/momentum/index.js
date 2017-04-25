@@ -11,19 +11,24 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import MomentumTracker from '../../../utility/momentumTracker'
 import Fixture from '../../../utility/fixture'
 import LiveBox from '../../../global/liveBox'
+import loader from '../../../../themes/loader-position'
+import _fetch from '../../../utility/fetch'
 
 class Momentum extends Component {
 
     constructor(props) {
          super(props)
          this.state = {
-              h:0
+              h:0,
+              data:[],
+              isLoaded:false,
+              isChanged:false
          }
     }
     componentWillReceiveProps(nextProps) {
         if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'momentum')
     }
     measurePage(page,event) {
         if (__DEV__)console.log('momentum')
@@ -33,7 +38,36 @@ class Momentum extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({h:y+200})
+        let h=y+200>styleVar.deviceHeight-340?y+200:styleVar.deviceHeight-340
+        this.setState({h},()=>{
+            if(this.state.isChanged&&this.props.isActive) {
+                this.props.setHeight(this.state.h,'momentum')
+                this.setState({isChanged:false})
+            }
+        })
+        
+    }
+    componentDidMount(){
+        _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
+          if(__DEV__)console.log('json',json)
+          this.setState({data:json,isLoaded:true})
+
+        }).catch((error)=>{
+            // if (__DEV__)console.log(error)
+        })
+
+        setTimeout(()=>{
+          this.setState({isLoaded:false},()=>{
+            _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
+              if(__DEV__)console.log('json',json)
+              this.setState({isChanged:true},()=>{
+                this.setState({data:json,isLoaded:true})
+              })
+            }).catch((error)=>{
+                // if (__DEV__)console.log(error)
+            })
+          })
+        },10000)
     }
     
     render() {
@@ -89,15 +123,22 @@ class Momentum extends Component {
                             <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
                         </ButtonFeedback>
                     </View>
+                    {
+                        this.state.isLoaded?
+                            <View>
+                                {
+                                    this.state.data.map((value,index)=>{
+                                        return (
+                                            <MomentumTracker key={index} timestamp={value.timestamp} leftWindow={value.leftWindow} rightWindow={value.rightWindow} line={value.line} isFirst={index===0} isLast={index===data.length-1} timeMark={value.timeMark}/>
+                                            )
+                                        })
+                                }
 
-                {
-                    data.map((value,index)=>{
-                        return (
-                            <MomentumTracker key={index} timestamp={value.timestamp} leftWindow={value.leftWindow} rightWindow={value.rightWindow} line={value.line} isFirst={index===0} isLast={index===data.length-1} timeMark={value.timeMark}/>
-                            )
-                        })
-                }
-                    <View onLayout={this.measurePage.bind(this,'momentum')} />
+                                <View onLayout={this.measurePage.bind(this,'momentum')} />
+                            </View>
+                        :
+                            <ActivityIndicator style={[loader.centered]} size='small' />
+                    }
                 </View>
             </View>
         )
