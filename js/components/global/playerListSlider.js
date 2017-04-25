@@ -126,16 +126,6 @@ const Title = ({title}) => (
 export default class PlayersListSlider extends Component {
     constructor(props){
         super(props)
-
-        this.state = {
-            players: []
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            players: nextProps.data
-        })
     }
 
     render() {
@@ -152,7 +142,7 @@ export default class PlayersListSlider extends Component {
                     activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                     paginationStyle={{bottom: styleVar.deviceWidth/20}}>
                     {
-                        mapJSON(this.state.players, 3).map((rowData, i)=>{
+                        mapJSON(this.props.data, 3).map((rowData, i)=>{
                             return(
                                 <View style={styles.posSwiperRow} key={i}>
                                     {
