@@ -35,22 +35,22 @@ class MatchSummary extends Component {
         ]
     }
     measurePage(page,event) {
-        if (__DEV__)console.log('measurePage')
+        // if (__DEV__)console.log('measurePage')
         const { x, y, width, height, } = event.nativeEvent.layout
-        if (__DEV__)console.log('page',page)
-        if (__DEV__)console.log('x',x)
-        if (__DEV__)console.log('y',y)
-        if (__DEV__)console.log('width',width)
-        if (__DEV__)console.log('height',height)
+        // if (__DEV__)console.log('page',page)
+        // if (__DEV__)console.log('x',x)
+        // if (__DEV__)console.log('y',y)
+        // if (__DEV__)console.log('width',width)
+        // if (__DEV__)console.log('height',height)
         this.setState({h:y+25},()=>{
-            if(this.props.isActive) this.props.setHeight(this.state.h)
+            if(this.props.isActive) this.props.setHeight(this.state.h,'match summary')
         })
         
     }
     componentWillReceiveProps(nextProps) {
-        if (__DEV__)console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        if (__DEV__)console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
+        // if (__DEV__)console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        // if (__DEV__)console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'match summary')
     }
     _renderCircle(rowData,sectionID,rowID) {
       return (
@@ -60,7 +60,7 @@ class MatchSummary extends Component {
     }
     componentDidMount(){
         _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
-          if(__DEV__)console.log('json',json)
+          // if(__DEV__)console.log('json',json)
           this.setState({data:json,isLoaded:true},()=>{
             this.props.setCover(false)
           })
@@ -72,7 +72,7 @@ class MatchSummary extends Component {
         setTimeout(()=>{
           this.setState({isLoaded:false},()=>{
             _fetch({url:'https://api.myjson.com/bins/xvxdv'}).then((json)=>{
-              if(__DEV__)console.log('json',json)
+              // if(__DEV__)console.log('json',json)
               this.setState({data:json,isLoaded:true})
             }).catch((error)=>{
                 // if (__DEV__)console.log(error)
