@@ -57,16 +57,16 @@ class MatchCenter extends Component {
                         title={this.subjects[this.state.index]}
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0} style={{backgroundColor:'grey'}}>
+                    <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} scrollEnabled={this.state.index!==0} style={{backgroundColor:'rgb(0,0,0)'}}>
                     {
                         this.state.isLoaded?
                             <Swiper
                                 ref='swiper'
                                 height={this.state.swiperHeight}
                                 loop={false}
-                                dotColor='rgb(255,255,255)'
-                                activeDotColor='black'
-                                paginationStyle={{top:-1*(this.state.swiperHeight-45),position:'absolute'}}
+                                dotColor='rgba(255,255,255,0.3)'
+                                activeDotColor='rgb(255,255,255)'
+                                paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} setCover={this._setCover.bind(this)}/>
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>

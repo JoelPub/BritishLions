@@ -38,7 +38,7 @@ class Momentum extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        let h=y+200>styleVar.deviceHeight-340?y+200:styleVar.deviceHeight-340
+        let h=y+200>styleVar.deviceHeight-370?y+200:styleVar.deviceHeight-370
         this.setState({h},()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'momentum')
@@ -110,15 +110,15 @@ class Momentum extends Component {
                 ]
         return (
 
-            <View style={{marginTop:20,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)'}}>
+            <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
 
                 <LiveBox data={{}} />
-                <View style={{paddingVertical:10,borderWidth:1,borderColor:'rgb(216, 217, 218)',margin:5}}>
+                <View style={{padding:10,borderColor:'rgb(216, 217, 218)'}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
                         <View style={{height:16,width:16,borderRadius:8,backgroundColor:'green',marginTop:5}} />
-                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(0,0,0)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
-                        <View style={{height:10,width:50,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
-                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(0,0,0)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
+                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
+                        <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
+                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
                         <ButtonFeedback >
                             <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
                         </ButtonFeedback>

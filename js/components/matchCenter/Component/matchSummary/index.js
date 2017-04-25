@@ -42,7 +42,7 @@ class MatchSummary extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        this.setState({h:y+25},()=>{
+        this.setState({h:y+50},()=>{
             if(this.props.isActive) this.props.setHeight(this.state.h,'match summary')
         })
         
@@ -82,11 +82,11 @@ class MatchSummary extends Component {
     }
     render() {
         return (
-                <ScrollView style={{marginTop:20,marginHorizontal:10}} scrollEnabled={false}>
-                    <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
+                <ScrollView style={{marginTop:50}} scrollEnabled={false}>
+                    <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
-                    <View style={{height:styleVar.deviceHeight-440,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}} >
+                    <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >
                     {
                         this.state.isLoaded?
                           <Timeline
