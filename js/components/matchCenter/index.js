@@ -17,6 +17,7 @@ import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
 import ManOfTheMatch from './Component/manOfTheMatch'
+import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
 
 class MatchCenter extends Component {
@@ -72,6 +73,7 @@ class MatchCenter extends Component {
                                 <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                 />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
+                                <OnFire />
                             </Swiper>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
