@@ -123,7 +123,11 @@ const locStyle = styleSheetCreate({
     summaryWrapper: {
         paddingVertical: 25,
         paddingHorizontal: 20,
-        backgroundColor: styleVar.colorGrey
+        backgroundColor: styleVar.colorGrey,
+        borderBottomWidth: 1,
+        borderBottomColor: styleVar.colorGrey2,
+        borderTopWidth: 1,
+        borderTopColor: styleVar.colorGrey2,
     },
     summaryContent: {
         marginTop: 30
@@ -141,6 +145,42 @@ const locStyle = styleSheetCreate({
         marginTop: -5,
         android: {
             marginTop: 0
+        }
+    },
+
+    guther: {
+        padding: 20
+    },
+    roundButton: {
+        height: 50,
+        backgroundColor: styleVar.colorScarlet,
+        flexDirection:'row',
+        marginTop: 0,
+        marginBottom: 0,
+        paddingTop:5,
+        android:{
+            paddingTop: 0,
+        }
+    },
+    roundButtonLabel: {
+        backgroundColor: 'transparent',
+        textAlign:'left',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+        paddingTop:5,
+        marginLeft: 7,
+        color: '#FFF',
+        android: {
+            paddingTop: 2,
+        }
+    },
+    roundButtonIcon: {
+        marginBottom: 5,
+        color: 'rgb(255,204,40)',
+        fontSize: 24,
+        android:{
+            marginTop: 4,
         }
     },
 })
@@ -288,6 +328,17 @@ export default class MatchResults extends Component {
                             <Summary />
                         </View>
                     </ScrollableTabView>
+                </View>
+
+                <View style={locStyle.guther}>
+                        <ButtonFeedback 
+                            rounded 
+                            style={[locStyle.roundButton]}>
+                            <Icon name='md-analytics' style={locStyle.roundButtonIcon} />
+                            <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
+                                MATCH CENTRE RESULTS
+                            </Text>
+                        </ButtonFeedback>
                 </View>
             </View>
         )
