@@ -8,7 +8,7 @@ import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
-import PlayerListSlider from '../../../global/playerListSlider'
+import PlayersRankBox from '../../../global/playersRankBox'
 
 // please remove this dummy data when api is availble
 let dummyPlayerData = [
@@ -59,7 +59,29 @@ let dummyPlayerData = [
     },
 ]
 
-class ManOfTheMatchLanding extends Component {
+// please remove this dummy data when api is availble
+let dummyRankingData = [
+    {
+        id: '1',
+        name: 'Rory Best',
+        percentage: 40,
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
+    },
+    {
+        id: '2',
+        name: 'Moren Ipsum Aber',
+        percentage: 24,
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
+    },
+    {
+        id: '3',
+        name: 'Lerom Dolor',
+        percentage: 21,
+        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
+    }
+]
+
+class ManOfTheMatchFinal extends Component {
 
     constructor(props) {
          super(props)
@@ -97,25 +119,18 @@ class ManOfTheMatchLanding extends Component {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.title}>
-                    <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
+                    <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
                 </View>
                 <View style={styles.desc}>
                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                 </View>
 
-                <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                
                 <View style={styles.guther}>
-                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                    <PlayersRankBox data={dummyRankingData} />
                 </View>
 
-                <View style={styles.roundButtonBg}>
-                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this._navigateTo('landing')}>
-                        <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                            SUBMIT
-                        </Text>
-                    </ButtonFeedback>
+                <View style={styles.guther}>
+                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                 </View>
 
                 <View onLayout={this._measurePage.bind(this,'ManOfTheMatch')} />
@@ -124,4 +139,4 @@ class ManOfTheMatchLanding extends Component {
     }
 }
 
-export default connect(null, null)(ManOfTheMatchLanding)
+export default connect(null, null)(ManOfTheMatchFinal)
