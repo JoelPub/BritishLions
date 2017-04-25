@@ -79,7 +79,10 @@ const locStyle = styleSheetCreate({
         lineHeight: 28,
         color: styleVar.colorText,
         textAlign:'center',
-        marginTop: 15
+        marginTop: 15,
+        android: {
+            marginTop: 6
+        }
     },
     matchResultLabelWrapper: {
         alignItems: 'center',
@@ -87,13 +90,20 @@ const locStyle = styleSheetCreate({
         //backgroundColor: 'pink',
         padding: 0,
         marginTop: 6,
-        width: 120
+        width: 120,
+        android: {
+            marginTop: 0
+        }
     },
     matchResultLabel: {
         fontFamily: styleVar.fontCondensed,
         fontSize: 21,
         lineHeight: 21,
-        color: styleVar.colorText
+        color: styleVar.colorText,
+        marginTop: 2,
+        android: {
+            marginTop: 0
+        }
     },
     matchResultValue: {
         fontFamily: styleVar.fontCondensed,
@@ -102,11 +112,11 @@ const locStyle = styleSheetCreate({
         color: styleVar.colorScarlet,
         marginTop: 10,
         flex: 1,
+        textAlign:'center',
+        //backgroundColor: 'violet',
         android: {
             marginBottom: 8
         },
-        textAlign:'center',
-        //backgroundColor: 'violet'
     },
 
 
@@ -116,8 +126,7 @@ const locStyle = styleSheetCreate({
         backgroundColor: styleVar.colorGrey
     },
     summaryContent: {
-        marginTop: 30,
-        //backgroundColor: 'green'
+        marginTop: 30
     },
     tabBarUnderlineStyle:{
         backgroundColor: '#FFF'

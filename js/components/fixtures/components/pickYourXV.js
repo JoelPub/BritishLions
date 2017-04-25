@@ -62,14 +62,17 @@ const locStyle = styleSheetCreate({
         lineHeight: 24,
         paddingTop:5,
         marginLeft: 7,
-        color: '#FFF'
+        color: '#FFF',
+        android: {
+            paddingTop: 2,
+        }
     },
     roundButtonIcon: {
         marginBottom: 5,
         color: 'rgb(255,204,40)',
         fontSize: 30,
         android:{
-            marginTop: 7,
+            marginTop: 4,
         }
     },
     logoIcon: {
