@@ -61,11 +61,24 @@ class MatchSummary extends Component {
     componentDidMount(){
         _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
           if(__DEV__)console.log('json',json)
-          this.setState({data:json,isLoaded:true})
+          this.setState({data:json,isLoaded:true},()=>{
+            this.props.setCover(false)
+          })
 
         }).catch((error)=>{
             // if (__DEV__)console.log(error)
         })
+
+        setTimeout(()=>{
+          this.setState({isLoaded:false},()=>{
+            _fetch({url:'https://api.myjson.com/bins/xvxdv'}).then((json)=>{
+              if(__DEV__)console.log('json',json)
+              this.setState({data:json,isLoaded:true})
+            }).catch((error)=>{
+                // if (__DEV__)console.log(error)
+            })
+          })
+        },3000)
     }
     render() {
         return (
@@ -73,10 +86,10 @@ class MatchSummary extends Component {
                     <View style={{borderTopLeftRadius:5,borderTopRightRadius:5,backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
+                    <View style={{height:styleVar.deviceHeight-440,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}} >
                     {
                         this.state.isLoaded?
-                          <Timeline 
-                            style={{height:styleVar.deviceHeight-440,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)',borderBottomLeftRadius:5,borderBottomRightRadius:5}}
+                          <Timeline
                             data={this.state.data}
                             lineColor='rgb(216,217,218)'
                             timeContainerStyle={{position:'absolute'}}
@@ -91,10 +104,10 @@ class MatchSummary extends Component {
                             renderCircle={this._renderCircle}
                           />
                         :
-                            <ActivityIndicator style={[loader.centered,{height:styleVar.deviceHeight-440}]} size='large' />
-                    }
-
-                          <View onLayout={this.measurePage.bind(this,'matchSummary')} />
+                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                    }                    
+                    </View>
+                    <View onLayout={this.measurePage.bind(this,'matchSummary')} />
 
               </ScrollView>
         )
