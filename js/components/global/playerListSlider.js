@@ -16,6 +16,24 @@ const styles = styleSheetCreate({
         backgroundColor:'black',
         height: styleVar.deviceWidth*0.63
     },
+    title:{
+        flexDirection:'row',
+        justifyContent:'center',
+        borderWidth: 1,
+        borderColor: 'rgb(216,217,218)',
+        height: 50,
+        paddingTop: 15,
+        backgroundColor: 'rgb(239,239,240)',
+        android:{
+            paddingHorizontal: 12,
+        }
+    },
+    titleText:{
+        color:'rgb(175,0,30)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize: 24,
+        lineHeight: 24,
+    },
     posWrapper: {
         width: styleVar.deviceWidth/3+1,
         marginLeft: -1
@@ -60,6 +78,19 @@ const styles = styleSheetCreate({
         width: styleVar.deviceWidth / 3,
         height: styleVar.deviceWidth / 3
     },
+    paginationDot: {
+        backgroundColor: 'rgba(255, 255, 255, 0.3)', 
+        width: 10, 
+        height: 10,
+        borderRadius: 5, 
+        marginLeft: 3, 
+        marginRight: 3, 
+        marginTop: 3, 
+        marginBottom: 3
+    },
+    paginationDotActive: {
+        backgroundColor: 'rgb(239,239,244)', 
+    }
 })
 
 const PlayerImgCell = ({data, onPress}) => (
@@ -86,6 +117,12 @@ const PlayerImgCell = ({data, onPress}) => (
     </ButtonFeedback>
 )
 
+const Title = ({title}) => (
+    <View style={styles.title}>
+        <Text style={styles.titleText}>{title}</Text>
+    </View>
+)
+
 export default class PlayersListSlider extends Component {
     constructor(props){
         super(props)
@@ -104,12 +141,16 @@ export default class PlayersListSlider extends Component {
     render() {
         return (
             <View>
+                {
+                    this.props.title&& <Title title={this.props.title} />
+                }
+                
                 <Swiper
                     height={styleVar.deviceWidth*0.63}
                     loop={false}
-                    dotColor='rgba(255,255,255,0.3)'
-                    activeDotColor='rgb(239,239,244)'
-                    paginationStyle={{bottom:styleVar.deviceWidth/20}}>
+                    dot={<View style={styles.paginationDot} />}
+                    activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                    paginationStyle={{bottom: styleVar.deviceWidth/20}}>
                     {
                         mapJSON(this.state.players, 3).map((rowData, i)=>{
                             return(
