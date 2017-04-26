@@ -6,7 +6,7 @@ import styleVar from '../../../../themes/variable'
 module.exports = styleSheetCreate({
     wrapper: {
         backgroundColor:'rgb(255,255,255)',
-        marginTop: 20,
+        marginTop: 50,
     },
     guther: {
          padding: 20

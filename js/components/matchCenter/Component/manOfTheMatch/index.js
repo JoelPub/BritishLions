@@ -18,8 +18,8 @@ class ManOfTheMatch extends Component {
         return (
             <View>
                 {/*<ManOfTheMatchLanding />*/}
-                {/*<ManOfTheMatchPostSubission />*/}
-                <ManOfTheMatchFinal />
+                <ManOfTheMatchPostSubission />
+                {/*<ManOfTheMatchFinal />*/}
             </View>
         )
     }
