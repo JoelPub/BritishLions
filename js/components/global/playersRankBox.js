@@ -240,16 +240,9 @@ export default class PlayersRankBox extends Component {
         super(props)
 
         this.state = {
-            ranking: [],
             modalVisible: false,
             profile: ProfileListModel.fromJS([new ProfileModel()]),
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            ranking: nextProps.data
-        })
     }
 
     _setModalVisible = (visible, info) => {
@@ -259,7 +252,7 @@ export default class PlayersRankBox extends Component {
     }
 
     render() {
-        let itemsLength = this.state.ranking.length
+        let itemsLength = this.props.data.length
         let title = this.props.title || false
 
         return (
@@ -273,7 +266,7 @@ export default class PlayersRankBox extends Component {
                 }
                 <View style={locStyle.list}>
                     {
-                        this.state.ranking.map((item, index)=>{
+                        this.props.data.map((item, index)=>{
                             let isLastItem = itemsLength === (index + 1)? true : false
                             let contentStyle = isLastItem? [locStyle.content, locStyle.contentLast] : [locStyle.content]
                             let isShowBorderTop = !title && index === 0? true : false
