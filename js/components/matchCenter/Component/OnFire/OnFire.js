@@ -10,10 +10,9 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-
 import SetPlayerTabBar from  '../SetPlayer/Components/SetPlayerTabBar'
 
-
+import OnFireItem from  './components/OnFireItem'
 
 const  IconHeader = ({onPress}) => {
   return (
@@ -51,7 +50,7 @@ class OnFire extends Component {
   render() {
 
     return (
-      <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
+      <View style={{marginTop:50,paddingTop:10,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
           locked={true}
@@ -61,14 +60,18 @@ class OnFire extends Component {
         >
           <View tabLabel='HALF-TIME'>
             <IconHeader />
-
+            <View style={{ padding: 20}}>
+              <OnFireItem title={'METRES'}/>
+              <OnFireItem title={'PASSES'} />
+              <OnFireItem title={'BREAKS'}/>
+              <OnFireItem isLastItem={true} title={'TACKLES'}/>
+            </View>
           </View>
           <View tabLabel='FULL-TIME'>
             <IconHeader />
-
           </View>
         </ScrollableTabView>
-        <View onLayout={this.measurePage.bind(this,'setPlayer')} />
+        <View onLayout={this.measurePage.bind(this,'onFire')} />
       </View>
     )
   }

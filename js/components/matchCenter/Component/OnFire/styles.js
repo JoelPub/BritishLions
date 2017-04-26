@@ -9,6 +9,5 @@ module.exports = styleSheetCreate({
     width: null,
     height: null,
     backgroundColor: '#fff',
-    overflow:'hidden'
   },
 })

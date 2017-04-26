@@ -73,7 +73,7 @@ class MatchCenter extends Component {
                                 <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                 />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
-                                <OnFire />
+                                <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />
