@@ -61,9 +61,7 @@ class MatchSummary extends Component {
     componentDidMount(){
         _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
           // if(__DEV__)console.log('json',json)
-          this.setState({data:json,isLoaded:true},()=>{
-            this.props.setCover(false)
-          })
+          this.setState({data:json,isLoaded:true})
 
         }).catch((error)=>{
             // if (__DEV__)console.log(error)
@@ -78,7 +76,7 @@ class MatchSummary extends Component {
                 // if (__DEV__)console.log(error)
             })
           })
-        },3000)
+        },10000)
     }
     render() {
         return (
@@ -88,7 +86,7 @@ class MatchSummary extends Component {
                     </View>
                     <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >
                     {
-                        this.state.isLoaded?
+                        this.state.isLoaded&&this.props.isActive?
                           <Timeline
                             data={this.state.data}
                             lineColor='rgb(216,217,218)'
