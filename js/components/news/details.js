@@ -31,15 +31,16 @@ class NewsDetails extends Component {
         this.webview = WebView
         this.stopPost=false
         this._items = this.props.json
+        this.currentPosition=0
     }
     onLoadRequest(e){
-        // console.log('onLoadRequest')
+        // if (__DEV__)console.log('onLoadRequest')
         if(e.url.indexOf('HYPERLINK "https://www.lionsrugby.com/"https://www.lionsrugby.com') === -1){
             this.goToURL(e.url)
         }
     }
     goToURL(url) {
-        // console.log('gotoURL',url)
+        // if (__DEV__)console.log('gotoURL',url)
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
               if(Platform.OS === 'android'){
@@ -49,7 +50,7 @@ class NewsDetails extends Component {
                 this.webview.stopLoading()
                 Linking.openURL(url)
             } else {
-                console.log('This device doesnt support URI: ' + url)
+                if (__DEV__)console.log('This device doesnt support URI: ' + url)
             }
         })
     }
@@ -68,7 +69,7 @@ class NewsDetails extends Component {
           // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
           // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
           // onPanResponderGrant: this._handlePanResponderGrant,
-          // onPanResponderMove: this._handlePanResponderMove,
+          onPanResponderMove: this._handlePanResponderMove.bind(this),
           onPanResponderRelease: this._handlePanResponderEnd.bind(this),
           onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
           
@@ -79,11 +80,11 @@ class NewsDetails extends Component {
       { emailAddress : "" });
   }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
-       // console.log('_handleStartShouldSetPanResponderCapture e',e.target)
+       // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)
        // for(let node in e) {
-       //  console.log('node',node)
+       //     if (__DEV__)console.log('node',node)
        // }
-       // console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
+       // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
        if (e._targetInst._currentElement === 'SHARE' ||
            e._targetInst._currentElement === 'NEXT STORY' || 
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') || 
@@ -91,27 +92,48 @@ class NewsDetails extends Component {
            (e._targetInst._currentElement && e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] && e._targetInst._currentElement.props.children[0].props && e._targetInst._currentElement.props.children[0].props.children && e._targetInst._currentElement.props.children[0].props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
            
-           )
-       {
-        // console.log('return false')
-            return false
-       }
-       // console.log('return true')
+           ){
+                  if (__DEV__)console.log('return false')
+                  return false
+             }
+
+       if (__DEV__)console.log('return true')
         return true
     }
 
+    _handlePanResponderMove(e, gestureState) {
+       if (__DEV__)console.log('_handlePanResponderMove gestureState',gestureState)
+       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
+            if(this.currentPosition-gestureState.dy<0) {
+              this.currentPosition=0
+            }
+            else if(this.currentPosition-gestureState.dy>this.state.height+200){
+              this.currentPosition=this.state.height+200
+            }
+            else {
+              this.currentPosition=this.currentPosition-gestureState.dy
+            }
+            if(__DEV__)console.log('this.currentPosition',this.currentPosition)
+            if(__DEV__)console.log('this.state.height',this.state.height)
+            this._scrollView.scrollTo({ y: this.currentPosition, animated: true })
+       }
+       if (__DEV__)console.log('return true')
+        return true
+    }
+
+
     _handlePanResponderEnd(e, gestureState) {
-       // console.log('_handlePanResponderEnd getstureState',gestureState)
+       if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
        if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
-            // console.log('rtl',rtl)
+            if (__DEV__)console.log('rtl',rtl)
             let item = rtl?this._items[index - 1]:this._items[index+1]
             if(item) {
                 this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
             }  
        }
-       // console.log('return true')
+       if (__DEV__)console.log('return true')
         return true
     }
 
