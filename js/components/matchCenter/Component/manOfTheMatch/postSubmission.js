@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -86,6 +86,26 @@ class ManOfTheMatchPostSubission extends Component {
 
     constructor(props) {
          super(props)
+         this.state = {
+              h:0
+         }
+    }
+    
+    componentWillReceiveProps(nextProps) {
+        if (__DEV__)console.log('postSubmission componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        if (__DEV__)console.log('postSubmission componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'postSubmission')
+    }
+
+    _measurePage(page,event) {
+        if (__DEV__)console.log('postSubmission')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
+        this.setState({ h:y+200 })
     }
 
     _onPressPlayer(item) {
@@ -123,6 +143,8 @@ class ManOfTheMatchPostSubission extends Component {
                         </Text>
                     </ButtonFeedback>
                 </View>
+
+                <View onLayout={this._measurePage.bind(this,'postSubmission')} />
             </View>
         )
     }
