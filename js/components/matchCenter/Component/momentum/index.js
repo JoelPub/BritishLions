@@ -19,7 +19,7 @@ class Momentum extends Component {
     constructor(props) {
          super(props)
          this.state = {
-              h:0,
+              h:styleVar.deviceHeight-270,
               data:[],
               isLoaded:false,
               isChanged:false
@@ -28,7 +28,29 @@ class Momentum extends Component {
     componentWillReceiveProps(nextProps) {
         if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'momentum')
+        if(nextProps.isActive&&!this.props.isActive) {
+            this.props.setHeight(this.state.h,'momentum')
+
+            _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
+              if(__DEV__)console.log('json',json)
+              this.setState({data:json,isLoaded:true})
+
+            }).catch((error)=>{
+                // if (__DEV__)console.log(error)
+            })
+            setTimeout(()=>{
+              this.setState({isLoaded:false},()=>{
+                _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
+                  if(__DEV__)console.log('json',json)
+                  this.setState({isChanged:true},()=>{
+                    this.setState({data:json,isLoaded:true})
+                  })
+                }).catch((error)=>{
+                    // if (__DEV__)console.log(error)
+                })
+              })
+            },10000)
+        }
     }
     measurePage(page,event) {
         if (__DEV__)console.log('momentum')
@@ -48,26 +70,9 @@ class Momentum extends Component {
         
     }
     componentDidMount(){
-        _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
-          if(__DEV__)console.log('json',json)
-          this.setState({data:json,isLoaded:true})
 
-        }).catch((error)=>{
-            // if (__DEV__)console.log(error)
-        })
+        this.props.setHeight(this.state.h,'momentum')
 
-        setTimeout(()=>{
-          this.setState({isLoaded:false},()=>{
-            _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
-              if(__DEV__)console.log('json',json)
-              this.setState({isChanged:true},()=>{
-                this.setState({data:json,isLoaded:true})
-              })
-            }).catch((error)=>{
-                // if (__DEV__)console.log(error)
-            })
-          })
-        },10000)
     }
     
     render() {
@@ -124,7 +129,7 @@ class Momentum extends Component {
                         </ButtonFeedback>
                     </View>
                     {
-                        this.state.isLoaded?
+                        this.state.isLoaded&&this.props.isActive?
                             <View>
                                 {
                                     this.state.data.map((value,index)=>{
@@ -137,7 +142,7 @@ class Momentum extends Component {
                                 <View onLayout={this.measurePage.bind(this,'momentum')} />
                             </View>
                         :
-                            <ActivityIndicator style={[loader.centered]} size='small' />
+                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
                     }
                 </View>
             </View>

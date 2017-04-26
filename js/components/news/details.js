@@ -102,20 +102,27 @@ class NewsDetails extends Component {
     }
 
     _handlePanResponderMove(e, gestureState) {
-       if (__DEV__)console.log('_handlePanResponderMove gestureState',gestureState)
+       if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
        if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
-            if(this.currentPosition-gestureState.dy<0) {
-              this.currentPosition=0
-            }
-            else if(this.currentPosition-gestureState.dy>this.state.height+200){
-              this.currentPosition=this.state.height+200
+            if(this.currentPosition===0&&gestureState.dy>0||this.currentPosition===this.state.height+200&&gestureState.dy<0) {
+
             }
             else {
-              this.currentPosition=this.currentPosition-gestureState.dy
+              if(this.currentPosition-gestureState.dy/10<0) {
+                this.currentPosition=0
+              }
+              else if(this.currentPosition-gestureState.dy/10>this.state.height+200){
+                this.currentPosition=this.state.height+200
+              }
+              else {
+                this.currentPosition=this.currentPosition-gestureState.dy/10
+              }
+                if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
+                if (__DEV__)console.log('@@@@@this.state.height',this.state.height)
+                this._scrollView.scrollTo({ y: this.currentPosition, animated: true })
             }
-            if(__DEV__)console.log('this.currentPosition',this.currentPosition)
-            if(__DEV__)console.log('this.state.height',this.state.height)
-            this._scrollView.scrollTo({ y: this.currentPosition, animated: true })
+            
+            
        }
        if (__DEV__)console.log('return true')
         return true
@@ -147,6 +154,12 @@ class NewsDetails extends Component {
       { emailAddress : "" });
     shareTextWithTitle(this.props.article.headline, this.props.article.link)
   }
+  handleScroll(event) {
+    if (__DEV__)console.log(' @@@@@handleScroll this.currentPosition',this.currentPosition)
+    this.currentPosition=event.nativeEvent.contentOffset.y
+
+    if (__DEV__)console.log(' @@@@@event.nativeEvent.contentOffset',event.nativeEvent.contentOffset)
+  }
     render() {
         return (
             <Container theme={theme}>
@@ -157,7 +170,7 @@ class NewsDetails extends Component {
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                        <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
+                        <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} onScroll={this.handleScroll.bind(this)}>
                             <View  {...this._panResponder.panHandlers}>
                             <ImagePlaceholder height={270}>
                                 <Image source={{uri: this.props.article.image}} style={styles.banner}>
