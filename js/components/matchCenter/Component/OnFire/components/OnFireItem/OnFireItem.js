@@ -22,12 +22,12 @@ const  TableCell = ({data}) => {
              source={{uri: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'}}
              style={styles.headerImage}  />
       <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>1.</Text>
-      <Text style={[styles.blackContentText,{left:70}]}>PLAYER NAME</Text>
+      <Text style={[styles.blackContentText,{left:70}]}>{data.player}</Text>
       <Text  style={[styles.blackContentText,{right:10}]}>
-        80M
+        {data.game}
       </Text>
       <Text style={[styles.blackContentText,{right:60}]}>
-        50M
+        {data.average}
       </Text>
     </View>
   )
@@ -50,7 +50,8 @@ class OnFireItem extends Component {
   }
   render() {
     let arr = [1,1,1]
-    let {isLastItem,title} = this.props
+    let {isLastItem,title,data} = this.props
+
     return (
       <View style={[styles.box,,isLastItem ? {borderBottomWidth:1}:{}]}>
         <View style={ [styles.headerView,{ borderBottomWidth: 1}]}>
@@ -64,9 +65,9 @@ class OnFireItem extends Component {
             AVG
           </Text>
         </View>
-        {arr.map((item,index)=>{
+        {data.map((item,index)=>{
           return (
-            <TableCell key={index} />
+            <TableCell key={index} data={item}/>
           )
         })
         }
@@ -79,10 +80,11 @@ export default OnFireItem
 OnFireItem.propTypes = {
   isLastItem: PropTypes.bool,
   title: PropTypes.string,
-
+  on_fire:PropTypes.object,
+  data: PropTypes.any,
 }
 OnFireItem.defaultProps = {
   isLastItem:false,
-  title: ''
-
+  title: '',
+  data: []
 }
