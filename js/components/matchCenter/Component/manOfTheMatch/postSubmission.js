@@ -120,7 +120,7 @@ class ManOfTheMatchPostSubission extends Component {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.guther}>
-                    <PlayersRankBox data={dummyRankingData} />
+                    <PlayersRankBox data={dummyRankingData} title='CURRENT FAN FAVOURITES' />
                 </View>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
