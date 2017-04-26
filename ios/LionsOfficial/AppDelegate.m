@@ -19,11 +19,14 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [Fabric with:@[[Crashlytics class]]];
   NSURL *jsCodeLocation;
   [NSThread sleepForTimeInterval:3.0];  //我这里设置的是3秒
   if([application currentUserNotificationSettings].types==UIUserNotificationTypeNone){

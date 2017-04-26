@@ -14,6 +14,8 @@ import android.os.Bundle;
 
 import com.clarisite.mobile.ClarisiteAgent;
 import com.clarisite.mobile.exceptions.EyeViewException;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ReactActivity {
 
@@ -29,6 +31,7 @@ public class MainActivity extends ReactActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         adjustFontScale(getResources().getConfiguration());
 
         try {
