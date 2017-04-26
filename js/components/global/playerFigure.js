@@ -325,9 +325,10 @@ export default class PlayerFigure extends Component {
     }
 
     render() {
+        let wideLayoutStyle = this.props.wideLayout? [] : [styles.detailsGridColFull,styles.playerCardWrapper]
         return (
             <View>
-                    <View style={[styles.detailsGridColFull,styles.playerCardWrapper]}>
+                    <View style={wideLayoutStyle}>
                         <View style={styles.fullCard}>
                             <View style={styles.playerOverallRating}>
                                 {/*<Text style={styles.ratingTitle}>OVERALL RATING</Text>
