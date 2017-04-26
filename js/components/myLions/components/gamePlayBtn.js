@@ -57,7 +57,7 @@ class GamePlayBtn extends Component {
 	render() {
     let buttonLable =  this.props.isGameOver ? 'RESULT' : 'PLAY GAME'
         return (
-            <ButtonFeedback style={[styles.playBtn,this.state.isActive&&styles.playBtnActive]} disabled={!this.state.isActive} onPress={()=>this.playGame()}>
+            <ButtonFeedback style={[styles.playBtn,this.state.isActive&&styles.playBtnActive]} disabled={!this.state.isActive||this.submitting} onPress={()=>this.playGame()}>
                     <Text style={[styles.textPlay,this.state.isActive&&styles.textPlayActive]}>
                       {buttonLable}
                     </Text>
@@ -124,7 +124,7 @@ class GamePlayBtn extends Component {
 
         this.submitting=true
         this.props._setModalVisible(true,'loading')
-        if (__DEV__)console.log('this.props.tactics',this.props.tactics)
+        if (__DEV__)console.log('playgame this.props.tactics',this.props.tactics)
        let options = {
             url: this.getGameResultUrl,
             data: {

@@ -31,6 +31,7 @@ class NewsDetailsSub extends Component {
         this.webview = WebView
         this.stopPost=false
         this._items = this.props.json
+        this.currentPosition=0
     }
     onLoadRequest(e){
         // if (__DEV__)console.log('onLoadRequest')
@@ -68,7 +69,7 @@ class NewsDetailsSub extends Component {
           // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
           // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
           // onPanResponderGrant: this._handlePanResponderGrant,
-          // onPanResponderMove: this._handlePanResponderMove,
+          onPanResponderMove: this._handlePanResponderMove.bind(this),
           onPanResponderRelease: this._handlePanResponderEnd.bind(this),
           onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
           
@@ -91,27 +92,48 @@ class NewsDetailsSub extends Component {
            (e._targetInst._currentElement && e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] && e._targetInst._currentElement.props.children[0].props && e._targetInst._currentElement.props.children[0].props.children && e._targetInst._currentElement.props.children[0].props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
            
-           )
-       {
-        // if (__DEV__)console.log('return false')
+           ){
+                  if (__DEV__)console.log('return false')
             return false
        }
-       // if (__DEV__)console.log('return true')
+
+       if (__DEV__)console.log('return true')
         return true
     }
 
+    _handlePanResponderMove(e, gestureState) {
+       if (__DEV__)console.log('_handlePanResponderMove gestureState',gestureState)
+       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
+            if(this.currentPosition-gestureState.dy<0) {
+              this.currentPosition=0
+            }
+            else if(this.currentPosition-gestureState.dy>this.state.height+200){
+              this.currentPosition=this.state.height+200
+            }
+            else {
+              this.currentPosition=this.currentPosition-gestureState.dy
+            }
+            if(__DEV__)console.log('this.currentPosition',this.currentPosition)
+            if(__DEV__)console.log('this.state.height',this.state.height)
+            this._scrollView.scrollTo({ y: this.currentPosition, animated: true })
+       }
+       if (__DEV__)console.log('return true')
+        return true
+    }
+
+
     _handlePanResponderEnd(e, gestureState) {
-       // if (__DEV__)console.log('_handlePanResponderEnd getstureState',gestureState)
+       if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
        if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
-            // if (__DEV__)console.log('rtl',rtl)
+            if (__DEV__)console.log('rtl',rtl)
             let item = rtl?this._items[index - 1]:this._items[index+1]
             if(item) {
                 this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
             }  
        }
-       // if (__DEV__)console.log('return true')
+       if (__DEV__)console.log('return true')
         return true
     }
 
