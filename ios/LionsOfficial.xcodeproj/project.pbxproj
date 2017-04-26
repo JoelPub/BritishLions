@@ -36,6 +36,8 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		86E533159A2B479E9EE7F234 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 830F4833B6F44183AB9456C4 /* libRNVectorIcons.a */; };
 		9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21B805EA2B9E47908439C1DE /* MaterialIcons.ttf */; };
+		B12C123F1EB066C300BCE220 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12C123D1EB066C300BCE220 /* Crashlytics.framework */; };
+		B12C12401EB066C300BCE220 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12C123E1EB066C300BCE220 /* Fabric.framework */; };
 		BD5A6B798D394A0F8D7C27A4 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */; };
 		C22013271E2DC6C700BA63D9 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C220130E1E2DC66100BA63D9 /* libRCTFBLogin.a */; };
 		C220132A1E2DCA6000BA63D9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22013291E2DCA6000BA63D9 /* Bolts.framework */; };
@@ -346,6 +348,8 @@
 		830F4833B6F44183AB9456C4 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A03C71C65DBE4FF481B97A43 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
+		B12C123D1EB066C300BCE220 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		B12C123E1EB066C300BCE220 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		BA5A96CBE7724FBA98C6159B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		C22013071E2DC66100BA63D9 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		C22013291E2DCA6000BA63D9 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -407,6 +411,7 @@
 				C22238AB1E694F85004608C5 /* UIKit.framework in Frameworks */,
 				C22238A91E694F7A004608C5 /* CoreGraphics.framework in Frameworks */,
 				C22238A71E694F6A004608C5 /* CoreVideo.framework in Frameworks */,
+				B12C123F1EB066C300BCE220 /* Crashlytics.framework in Frameworks */,
 				C26AAB441E481F7600ADA708 /* AdSupport.framework in Frameworks */,
 				C23DA0AE1E34BFE2005E1727 /* libsqlite3.0.tbd in Frameworks */,
 				C243C17E1E24D9A80052394C /* libz.tbd in Frameworks */,
@@ -438,6 +443,7 @@
 				86E533159A2B479E9EE7F234 /* libRNVectorIcons.a in Frameworks */,
 				6EE1723FF7B24517AF1B9266 /* libRCTYouTube.a in Frameworks */,
 				C243C1B41E24E18C0052394C /* GoogleSignIn.framework in Frameworks */,
+				B12C12401EB066C300BCE220 /* Fabric.framework in Frameworks */,
 				1C6A33877FEE423393839D22 /* libBVLinearGradient.a in Frameworks */,
 				1CB1BF8872D04566BCF0765E /* libRNShare.a in Frameworks */,
 				1D38CC22CE1246DBB650D7CC /* libRNViewShot.a in Frameworks */,
@@ -737,6 +743,8 @@
 		C243C1761E24D98D0052394C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B12C123D1EB066C300BCE220 /* Crashlytics.framework */,
+				B12C123E1EB066C300BCE220 /* Fabric.framework */,
 				C22238B01E694FB8004608C5 /* Security.framework */,
 				C22238AE1E694FAF004608C5 /* libsqlite3.tbd */,
 				C22238AC1E694F90004608C5 /* QuartzCore.framework */,
@@ -833,6 +841,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				B12C12601EB0691A00BCE220 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1241,6 +1250,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
+		};
+		B12C12601EB0691A00BCE220 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/Fabric.framework/run\" f24f58d836dd1c903684d78430cc1bf20184d114 f31a71f0b9c7e7a6d354454747019917bc2256de55d642723690e6fa9879c644";
 		};
 /* End PBXShellScriptBuildPhase section */
 
