@@ -27,7 +27,7 @@ class MatchCenter extends Component {
         this._carousel=null
         this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH']
         this.state = {
-          index:0,
+          index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:0,
           isLoaded:false,
         }
@@ -44,6 +44,8 @@ class MatchCenter extends Component {
     }
     
     render() {
+      if(__DEV__)console.log('**************')
+      if(__DEV__)console.log(this.state.index)
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -59,6 +61,7 @@ class MatchCenter extends Component {
                                 ref='swiper'
                                 height={this.state.swiperHeight}
                                 loop={false}
+                                index={this.state.index}
                                 dotColor='rgba(255,255,255,0.3)'
                                 activeDotColor='rgb(255,255,255)'
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
@@ -82,5 +85,18 @@ class MatchCenter extends Component {
         )
     }
 }
+function bindAction(dispatch) {
+  return {
+    drillDown: (data, route)=>dispatch(drillDown(data, route)),
 
-export default connect(null, null)(MatchCenter)
+  }
+}
+
+export default connect((state) => {
+  console.log(state.content.drillDownItem)
+  return {
+    drillDownItem: state.content.drillDownItem,
+    netWork: state.network
+  }
+}, bindAction)(MatchCenter)
+
