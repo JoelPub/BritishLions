@@ -10,7 +10,12 @@ export default class SliderEntry extends Component {
     illustration: PropTypes.string,
     even: PropTypes.bool
   };
-
+  onPress = () => {
+    if (this.props.itemPress) {
+      if(__DEV__)console.log(this.props.itemPress)
+      this.props.itemPress(this.props.page,this.props.title)
+    }
+  }
   render () {
     const { title, subtitle, illustration, even } = this.props;
 
@@ -22,7 +27,7 @@ export default class SliderEntry extends Component {
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.slideInnerContainer}
-        onPress={() => { alert(`You've clicked '${title}'`); }}
+        onPress={ this.onPress }
       >
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           <Image
@@ -38,4 +43,10 @@ export default class SliderEntry extends Component {
       </TouchableOpacity>
     );
   }
+}
+SliderEntry.propTypes = {
+  itemPress: PropTypes.func,
+  page: PropTypes.any
+}
+SliderEntry.defaultProps = {
 }

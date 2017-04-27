@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component ,PropTypes} from 'react'
 import { Image, View, Text } from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -83,6 +83,11 @@ export default class LiveBox extends Component {
         super(props)
     }
 
+    coachBoxOnpress = () => {
+        if(this.props.buttonOnPress){
+            this.props.buttonOnPress('coachBox')
+        }
+    }
     render() {
         return (
             <View style={locStyle.liveBox}>
@@ -98,7 +103,9 @@ export default class LiveBox extends Component {
                 </Text> 
                 <ButtonFeedback 
                     rounded 
-                    style={[locStyle.roundButton]}>
+                    style={[locStyle.roundButton]}
+                    onPress={this.coachBoxOnpress}
+                >
                     <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                     style={locStyle.logoIcon}/>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
@@ -109,4 +116,7 @@ export default class LiveBox extends Component {
             </View>
         )
     }
+}
+LiveBox.propTypes = {
+    buttonOnPress: PropTypes.func,
 }

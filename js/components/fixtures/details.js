@@ -10,6 +10,7 @@ import theme from '../../themes/base-theme'
 import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
 import Countdown from '../global/countdown'
+import { drillDown } from '../../actions/content'
 import LionsFooter from '../global/lionsFooter'
 import LiveGame from './components/liveGame'
 import PickYourXV from './components/pickYourXV'
@@ -161,6 +162,11 @@ class FixtureDetails extends Component {
         if (__DEV__)console.log('this.state.details',this.state.details)
     }
 
+    goToCoachBox = () => {
+      this.props.drillDown('', 'coachBox')
+
+    }
+
     render() {
         let {date,title,stadiumtime,time,id,description,stadiumlocation} = this.state.details
         return (
@@ -207,7 +213,7 @@ class FixtureDetails extends Component {
                             </View>
 
                             <PickYourXV/>
-                            <LiveGame/>
+                            <LiveGame  buttonOnPress={this.goToCoachBox}/>
 
                             <Text style={styles.pageText}>{description}</Text>
                         </View>
@@ -223,10 +229,15 @@ class FixtureDetails extends Component {
         )
     }
 }
+function bindAction(dispatch) {
+  return {
+    drillDown: (data, route)=>dispatch(drillDown(data, route)),
+  }
+}
 
 export default connect((state) => {
     return {
         details: state.content.drillDownItem,
         isGameIsOn: !state.timer.isCountDownTimerEnd
     }
-}, null)(FixtureDetails)
+}, bindAction)(FixtureDetails)

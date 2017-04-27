@@ -116,7 +116,11 @@ class CoachsBox extends Component {
   }
   /*call  api */
 
-
+  /* nav to  */
+  goToMatch = (page) => {
+    page = page ? page : 0
+    this.props.drillDown({page:page},'matchCenter');
+  }
   render() {
 
     return (
@@ -143,7 +147,7 @@ class CoachsBox extends Component {
                 </View>
               </ButtonFeedback>
             </View>
-            <Carousel />
+            <Carousel centerClick={this.goToMatch} />
             <LionsFooter isLoaded={true} />
           </ScrollView>
           <EYSFooter mySquadBtn={true}/>
