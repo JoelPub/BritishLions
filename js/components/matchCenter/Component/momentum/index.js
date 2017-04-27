@@ -24,6 +24,7 @@ class Momentum extends Component {
               isLoaded:false,
               isChanged:false
          }
+         this.fullTime=120
     }
     componentWillReceiveProps(nextProps) {
         if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
@@ -33,10 +34,11 @@ class Momentum extends Component {
             
             this.setState({isLoaded:false,isChanged:true},()=>{
                 setTimeout(()=>{
-                    _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
+                    _fetch({url:'https://api.myjson.com/bins/xfpd5'}).then((json)=>{
                       if(__DEV__)console.log('json',json)
+                        
                       this.setState({isChanged:true},()=>{
-                        this.setState({data:json,isLoaded:true})
+                        this.setState({data:this.processMomentumData(json.momentum),isLoaded:true})
                       })
                     }).catch((error)=>{
                         // if (__DEV__)console.log(error)
@@ -44,18 +46,72 @@ class Momentum extends Component {
                 },2000)
             })
             setTimeout(()=>{
-              this.setState({isLoaded:false},()=>{
-                _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
+                _fetch({url:'https://api.myjson.com/bins/9zfuh'}).then((json)=>{
                   if(__DEV__)console.log('json',json)
-                  this.setState({isChanged:true},()=>{
-                    this.setState({data:json,isLoaded:true})
-                  })
+                  this.setState({isChanged:true,data:this.processMomentumData(json.momentum)})
                 }).catch((error)=>{
                     // if (__DEV__)console.log(error)
                 })
-              })
-            },10000)
+            },7000)            
+            // this.setState({isLoaded:false,isChanged:true},()=>{
+            //     setTimeout(()=>{
+            //         _fetch({url:'https://api.myjson.com/bins/1akyeh'}).then((json)=>{
+            //           if(__DEV__)console.log('json',json)
+            //           this.setState({isChanged:true},()=>{
+            //             this.setState({data:json,isLoaded:true})
+            //           })
+            //         }).catch((error)=>{
+            //             // if (__DEV__)console.log(error)
+            //         })
+            //     },2000)
+            // })
+            // setTimeout(()=>{
+            //     _fetch({url:'https://api.myjson.com/bins/qc7u1'}).then((json)=>{
+            //       if(__DEV__)console.log('json',json)
+            //       this.setState({isChanged:true,data:json})
+            //     }).catch((error)=>{
+            //         // if (__DEV__)console.log(error)
+            //     })
+            // },7000)
+            // setTimeout(()=>{
+            //     _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
+            //       if(__DEV__)console.log('json',json)
+            //       this.setState({isChanged:true,data:json})
+            //     }).catch((error)=>{
+            //         // if (__DEV__)console.log(error)
+            //     })
+            // },7000)
         }
+    }
+    processMomentumData(data){
+        if(__DEV__)console.log('processMomentumData')
+        let result=[]
+        for(let i=0;i<this.fullTime;i=i+10){
+            let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
+            // if(__DEV__)console.log('momentum',momentum)
+            if(data.team_momentum.findIndex(x=>{
+                return parseInt(x.time)>i&&parseInt(x.time)<=i+10
+            })>-1) {
+                momentum.team_momentum=data.team_momentum.filter(x=>{
+                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10
+                })
+                momentum.score_advantage=data.score_advantage.filter(x=>{
+                    return parseInt(x.time)===i||parseInt(x.time)===i+10
+                })
+                if (i===0) momentum.isFirst=true
+                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
+                momentum.timeMark=i+10
+                result.push(momentum)
+
+            }
+            else {
+                result.push(null)
+            }
+        }
+
+        if(__DEV__)console.log('result',result)
+        return result.reverse()
+
     }
     measurePage(page,event) {
         if (__DEV__)console.log('momentum')
@@ -123,9 +179,9 @@ class Momentum extends Component {
             <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
 
                 <LiveBox data={{}} />
-                <View style={{padding:10,borderColor:'rgb(216, 217, 218)'}}>
+                <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)'}}>
                     <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
-                        <View style={{height:16,width:16,borderRadius:8,backgroundColor:'green',marginTop:5}} />
+                        <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
                         <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
                         <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
                         <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
@@ -139,11 +195,17 @@ class Momentum extends Component {
                                 {
                                     this.state.data.map((value,index)=>{
                                         return (
-                                            <MomentumTracker key={index} timestamp={value.timestamp} leftWindow={value.leftWindow} rightWindow={value.rightWindow} line={value.line} isFirst={index===0} isLast={index===data.length-1} timeMark={value.timeMark}/>
+                                            <View key={index} >
+                                                {value!==null?
+                                                    <MomentumTracker data={value} isHost={false}/>
+                                                    :
+                                                    null
+                                                }
+                                            </View>
                                             )
                                         })
                                 }
-
+                                
                                 <View onLayout={this.measurePage.bind(this,'momentum')} />
                             </View>
                         :
