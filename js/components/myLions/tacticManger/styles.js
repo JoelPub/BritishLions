@@ -87,9 +87,9 @@ module.exports = styleSheetCreate({
   dropDownText: {
     color: 'rgb(38, 38, 38)',
     fontSize: 18,
-    lineHeight: 20,
+    lineHeight: 22,
     fontFamily: styleVar.fontGeorgia,
-    marginLeft:15
+    marginLeft: 15
   },
   highlightedRowText:{
     color: 'black',

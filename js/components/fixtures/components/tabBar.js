@@ -31,7 +31,7 @@ const styles = styleSheetCreate({
         android: {
             marginTop: -5
         },
-        backgroundColor: 'red',
+        //backgroundColor: 'red',
     },
     tabTextView:{
         backgroundColor: styleVar.brandPrimary,
