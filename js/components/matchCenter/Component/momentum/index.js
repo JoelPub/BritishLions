@@ -30,13 +30,18 @@ class Momentum extends Component {
         if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) {
             this.props.setHeight(this.state.h,'momentum')
-
-            _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
-              if(__DEV__)console.log('json',json)
-              this.setState({data:json,isLoaded:true})
-
-            }).catch((error)=>{
-                // if (__DEV__)console.log(error)
+            
+            this.setState({isLoaded:false,isChanged:true},()=>{
+                setTimeout(()=>{
+                    _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
+                      if(__DEV__)console.log('json',json)
+                      this.setState({isChanged:true},()=>{
+                        this.setState({data:json,isLoaded:true})
+                      })
+                    }).catch((error)=>{
+                        // if (__DEV__)console.log(error)
+                    })
+                },2000)
             })
             setTimeout(()=>{
               this.setState({isLoaded:false},()=>{
@@ -60,7 +65,7 @@ class Momentum extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        let h=y+200>styleVar.deviceHeight-370?y+200:styleVar.deviceHeight-370
+        let h=y+180>styleVar.deviceHeight-370?y+180:styleVar.deviceHeight-370
         this.setState({h},()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'momentum')
@@ -142,7 +147,11 @@ class Momentum extends Component {
                                 <View onLayout={this.measurePage.bind(this,'momentum')} />
                             </View>
                         :
-                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                            <View>
+                                <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+
+                                <View onLayout={this.measurePage.bind(this,'momentum')} />
+                            </View>
                     }
                 </View>
             </View>
