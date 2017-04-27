@@ -71,11 +71,11 @@ module.exports = styleSheetCreate({
     },
     gridBoxTitleSupportText: {
         fontSize: 14,
-        lineHeight: 14,
+        lineHeight: 16,
         fontFamily: styleVar.fontGeorgia,
         marginTop: -2,
         android: {
-            marginTop:5
+            marginTop: 3
         }
     },
     emptyPlayer: {
