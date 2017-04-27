@@ -30,13 +30,18 @@ class Momentum extends Component {
         if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) {
             this.props.setHeight(this.state.h,'momentum')
-
-            _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
-              if(__DEV__)console.log('json',json)
-              this.setState({data:json,isLoaded:true})
-
-            }).catch((error)=>{
-                // if (__DEV__)console.log(error)
+            
+            this.setState({isLoaded:false},()=>{
+                setTimeout(()=>{
+                    _fetch({url:'https://api.myjson.com/bins/g5f9v'}).then((json)=>{
+                      if(__DEV__)console.log('json',json)
+                      this.setState({isChanged:true},()=>{
+                        this.setState({data:json,isLoaded:true})
+                      })
+                    }).catch((error)=>{
+                        // if (__DEV__)console.log(error)
+                    })
+                },2000)
             })
             setTimeout(()=>{
               this.setState({isLoaded:false},()=>{
