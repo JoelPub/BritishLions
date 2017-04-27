@@ -126,39 +126,47 @@ const Title = ({title}) => (
 export default class PlayersListSlider extends Component {
     constructor(props){
         super(props)
+         this.state = {
+            isLoad: false,
+         }
     }
 
+    componentDidMount() {
+        setTimeout(()=>this.setState({isLoad:true}),100)
+    }
     render() {
         return (
             <View>
                 {
                     this.props.title&& <Title title={this.props.title} />
                 }
-                
-                <Swiper
-                    height={styleVar.deviceWidth*0.63}
-                    loop={false}
-                    dot={<View style={styles.paginationDot} />}
-                    activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
-                    paginationStyle={{bottom: styleVar.deviceWidth/20}}>
-                    {
-                        mapJSON(this.props.data, 3).map((rowData, i)=>{
-                            return(
-                                <View style={styles.posSwiperRow} key={i}>
-                                    {
-                                        rowData.map((item, index)=>{
-                                            return(
-                                                <View style={styles.posWrapper} key={index}>
-                                                    <PlayerImgCell data={item} onPress={() => this.props.callbackPress(item)} />
-                                                </View>
-                                            )
-                                        }, this)
-                                    }
-                                </View>
-                            )
-                        }, this)
-                    }
-                </Swiper>
+                {
+                    this.state.isLoad &&
+                    <Swiper
+                        height={styleVar.deviceWidth*0.63}
+                        loop={false}
+                        dot={<View style={styles.paginationDot} />}
+                        activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                        paginationStyle={{bottom: styleVar.deviceWidth/20}}>
+                        {
+                            mapJSON(this.props.data, 3).map((rowData, i)=>{
+                                return(
+                                    <View style={styles.posSwiperRow} key={i}>
+                                        {
+                                            rowData.map((item, index)=>{
+                                                return(
+                                                    <View style={styles.posWrapper} key={index}>
+                                                        <PlayerImgCell data={item} onPress={() => this.props.callbackPress(item)} />
+                                                    </View>
+                                                )
+                                            }, this)
+                                        }
+                                    </View>
+                                )
+                            }, this)
+                        }
+                    </Swiper>
+                }
             </View>
         )
     }
