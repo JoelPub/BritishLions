@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component ,PropTypes } from 'react';
 import { View, ScrollView, Text, StatusBar } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from './styles/SliderEntry.style';
@@ -9,9 +9,9 @@ import { ENTRIES1, ENTRIES2 } from './static/entries';
 import ButtonFeedback from '../../utility/buttonFeedback'
 import { Icon } from 'native-base'
 
-export default class example extends Component {
+export default class ApdCarousel extends Component {
 
-  getSlides (entries) {
+  getSlides (entries , onPress) {
     if (!entries) {
       return false;
     }
@@ -21,18 +21,20 @@ export default class example extends Component {
         <SliderEntry
           key={`carousel-entry-${index}`}
           even={(index + 1) % 2 === 0}
+          page={index}
+          itemPress = {onPress}
           {...entry}
         />
       );
     });
   }
 
-  get example1 () {
+  get carousel () {
     return (
       <Carousel
         sliderWidth={sliderWidth}
         itemWidth={itemWidth}
-        firstItem={1}
+        firstItem={0}
         inactiveSlideScale={0.94}
         inactiveSlideOpacity={0.6}
         enableMomentum={true}
@@ -41,14 +43,21 @@ export default class example extends Component {
         showsHorizontalScrollIndicator={false}
         snapOnAndroid={true}
         decelerationRate={'fast'}
-
         removeClippedSubviews={false}
       >
-        { this.getSlides(ENTRIES1) }
+        { this.getSlides(ENTRIES1,this.itemPress) }
       </Carousel>
     );
   }
+  itemPress = (page,title) => {
 
+    this.props.centerClick (page)
+  }
+  onPress = () => {
+    if(this.props.centerClick){
+      this.props.centerClick (0)
+    }
+  }
   render () {
     return (
       <View style={styles.container}>
@@ -61,8 +70,11 @@ export default class example extends Component {
           indicatorStyle={'white'}
           scrollEventThrottle={200}
         >
-          { this.example1 }
-          <ButtonFeedback rounded style={[styles.matchButtonView]} >
+          { this.carousel }
+          <ButtonFeedback rounded
+                          style={[styles.matchButtonView]}
+                          onPress={this.onPress}
+          >
             <Icon name='md-analytics' style={styles.matchIcon} />
             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.matchText} >
               COMPETITION CENTRE
@@ -72,4 +84,9 @@ export default class example extends Component {
       </View>
     );
   }
+}
+ApdCarousel.propTypes = {
+  centerClick: PropTypes.func,
+}
+ApdCarousel.defaultProps = {
 }
