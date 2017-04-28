@@ -28,19 +28,20 @@ class StadiumFigure extends Component {
   }
 
   render() {
-    let {redPoints, blackPoints, whitePoints, bluePoints} = this.props
+    let {redPoints, blackPoints, orangePoints, bluePoints ,titles} = this.props
+    let pointWidth = 14
     return (
       <View style={[styles.container]} >
         <Image style={styles.image} source={stadiumImage} >
           {
             redPoints.map((item,index)=>{
               let loactionStyle = {
-                left:item.x,
-                top:item.y
+                left:item.x+7,
+                top:item.y+7
               }
               return(
                 <View
-                  style={[{width:10,height:10,backgroundColor:'red'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'red'},loactionStyle]}
                   key={index}
                 />
                 )
@@ -49,28 +50,28 @@ class StadiumFigure extends Component {
           {
             blackPoints.map((item,index)=>{
               let loactionStyle = {
-                left:item.x,
-                top:item.y
+                left:item.x+7,
+                top:item.y+7
               }
               return(
                 <View
-                  style={[{width:10,height:10,backgroundColor:'black'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'black'},loactionStyle]}
                   key={index}
                 />
               )
             })
           }
           {
-            whitePoints.map((item,index)=>{
+            orangePoints.map((item,index)=>{
               let loactionStyle = {
-                left:item.x,
-                top:item.y
+                left:item.x+7,
+                top:item.y+7
               }
               return(
                 <Triangle
-                  width={10}
-                  height={10}
-                  color={'white'}
+                  width={pointWidth}
+                  height={pointWidth}
+                  color={'rgb(255,204,40)'}
                   style={[loactionStyle]}
                   key={index}
                 />
@@ -80,14 +81,14 @@ class StadiumFigure extends Component {
           {
             bluePoints.map((item,index)=>{
               let loactionStyle = {
-                left:item.x,
-                top:item.y
+                left:item.x+7,
+                top:item.y+7
               }
               return(
                 <Triangle
-                  width={10}
-                  height={10}
-                  color={'blue'}
+                  width={pointWidth}
+                  height={pointWidth}
+                  color={'rgb(31,188,210)'}
                   style={[loactionStyle]}
                   key={index}
                 />
@@ -103,8 +104,9 @@ export default StadiumFigure
 StadiumFigure.propTypes = {
   redPoints: PropTypes.array,
   blackPoints: PropTypes.array,
-  whitePoints: PropTypes.array,
+  orangePoints: PropTypes.array,
   bluePoints: PropTypes.array,
+  titles:PropTypes.array,
 }
 StadiumFigure.defaultProps = {
   redPoints: [
@@ -127,7 +129,7 @@ StadiumFigure.defaultProps = {
       y: 80
     }
   ],
-  whitePoints: [
+  orangePoints: [
     {
       x: 40,
       y: 50

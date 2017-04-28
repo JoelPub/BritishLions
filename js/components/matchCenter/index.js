@@ -19,7 +19,7 @@ import SetPlayer from './Component/SetPlayer'
 import ManOfTheMatch from './Component/manOfTheMatch'
 import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
-
+import  SetPlayerDefaultData from './Component/SetPlayer/DefaultData'
 class MatchCenter extends Component {
 
     constructor(props) {
@@ -44,8 +44,7 @@ class MatchCenter extends Component {
     }
     
     render() {
-      if(__DEV__)console.log('**************')
-      if(__DEV__)console.log(this.state.index)
+
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -69,13 +68,13 @@ class MatchCenter extends Component {
                                 <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} />
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
                                 <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                            set_plays={SetPlayerDefaultData}
                                 />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                                 <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
                             </Swiper>
                         :
-                            <ActivityIndicator style={loader.centered} size='large' />
-                    }
+                            <ActivityIndicator style={loader.centered} size='large' />}
                         <LionsFooter isLoaded={true}  />
                     </ScrollView>
 
