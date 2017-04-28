@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
+const w=styleVar.deviceWidth*0.48
+const h=styleVar.deviceWidth*0.267
 
 const styles = styleSheetCreate({
 })
@@ -14,14 +16,14 @@ export default class DottedLine extends Component {
 	}
     
     render() {
-        let {cLeft,fLeft,radius,isFirst}=this.props
-        let w=Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(100,2))-2*radius
+        let {cLeft,fLeft,radius,isFirst,isLast}=this.props
+        let w=Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(h,2))-2*radius
         // if (__DEV__)console.log('w',w)
-        let t=isFirst?100/2+radius:100/2
+        let t=isLast?h/2+radius:h/2
         let l=(cLeft+fLeft)/2-w/2+radius
         // if (__DEV__)console.log('t',t)
         // if (__DEV__)console.log('l',l)
-        let r=360*Math.atan((cLeft-fLeft)/100)/(2*Math.PI)+90+'deg'
+        let r=360*Math.atan((cLeft-fLeft)/h)/(2*Math.PI)+90+'deg'
         // if (__DEV__)console.log('r',r)
         let d=[]
         for(let i=0;i*4<w;i++) {
