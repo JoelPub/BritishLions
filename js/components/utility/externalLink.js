@@ -8,7 +8,17 @@ export default class ExternalLink extends Component {
 	constructor(props){
 		super(props)
 	}
+    isCorrectUrl = (url) => {
+        let str=url;
 
+        let Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+        let objExp=new RegExp(Expression);
+        if(objExp.test(str)==true){
+            return true;
+        }else{
+            return false;
+        }
+    }
     goToURL(url) {
         if(this.props.callBack){
             this.props.callBack()
@@ -21,42 +31,44 @@ export default class ExternalLink extends Component {
             NativeModules.One.sendInteraction("/competitionOpen",
               { emailAddress : "" });
         }
-        One.sendInteractionForOutboundLink(url).catch(function(error) {
-            if (__DEV__)console.log(error);
-            alert(error);
-        });
+       if (this.isCorrectUrl(url)){
+           One.sendInteractionForOutboundLink(url).catch(function(error) {
+               if (__DEV__)console.log(error);
+               alert(error);
+           });
 
-        One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-            if(urlWithOneTid){
-                Linking.canOpenURL(urlWithOneTid).then(supported => {
-                    if (supported) {
-                        Linking.openURL(urlWithOneTid)
-                    } else {
-                        Alert.alert(
-                            'Error',
-                            'This device doesnt support URI: ' + urlWithOneTid
-                        )
-                    }
-                })
-            }
-        },function(error) {
-            if (__DEV__)console.log('error');
-            if (__DEV__)console.log(error);
-             if(url){
-                Linking.canOpenURL(url).then(supported => {
-                    if (supported) {
-                        Linking.openURL(url)
-                    } else {
-                        Alert.alert(
-                            'Error',
-                            'This device doesnt support URI: ' + url
-                        )
-                    }
-                })
-            }
-        });
-
-
+           One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+               if(urlWithOneTid){
+                   Linking.canOpenURL(urlWithOneTid).then(supported => {
+                       if (supported) {
+                           Linking.openURL(urlWithOneTid)
+                       } else {
+                           Alert.alert(
+                             'Error',
+                             'This device doesnt support URI: ' + urlWithOneTid
+                           )
+                       }
+                   })
+               }
+           },function(error) {
+               if (__DEV__)console.log('error');
+               if (__DEV__)console.log(error);
+               if(url){
+                   Linking.canOpenURL(url).then(supported => {
+                       if (supported) {
+                           Linking.openURL(url)
+                       } else {
+                           Alert.alert(
+                             'Error',
+                             'This device doesnt support URI: ' + url
+                           )
+                       }
+                   })
+               }
+           });
+       }else {
+           if (__DEV__)console.log('it not a url ');
+       }
     }
 
     render() {
