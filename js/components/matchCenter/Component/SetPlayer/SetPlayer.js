@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
@@ -9,6 +9,7 @@ import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import StadiumFigure from '../StadiumFigure'
+
 
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -42,14 +43,21 @@ class SetPlayer extends Component {
   measurePage(page,event) {
     if (__DEV__)console.log('setPlayer')
     const { x, y, width, height, } = event.nativeEvent.layout
-    if (__DEV__)console.log('page',page)
-    if (__DEV__)console.log('x',x)
-    if (__DEV__)console.log('y',y)
-    if (__DEV__)console.log('width',width)
-    if (__DEV__)console.log('height',height)
     this.setState({h:y-110})
   }
+  SortingData = (kicks) => {
+    let points = {
+      redPoints:[],
+      blackPoints:[],
+      whitePoints:[],
+      bluePoints: []
+    }
+    kicks.opposition.conversions.details
+
+  }
+
   render() {
+   let { kicks, scrums,line_outs} = this.props.set_plays
 
     return (
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
@@ -64,30 +72,65 @@ class SetPlayer extends Component {
          <View tabLabel='KICKS'>
            <IconHeader />
            <View style={styles.itemContainer}  >
-             <StadiumFigure />
+             <StadiumFigure
+               redPoints={ kicks.opposition.conversions.details}
+               orangePoints = {kicks.opposition.penalties.details}
+               blackPoints = {kicks.bil.conversions.details}
+               bluePoints = {kicks.bil.penalties.details}
+             />
              <View style={styles.rightContainer}>
-               <Scoreboard isWithProportion={true}/>
-               <Scoreboard isWithProportion={true} isDown={true}/>
+               <Scoreboard isWithProportion={true}
+                           oppositionScore = {kicks.opposition.conversions}
+                           bilScore = {kicks.opposition.penalties}
+               />
+               <Scoreboard isWithProportion={true} isDown={true}
+                           oppositionScore = {kicks.bil.conversions}
+                           bilScore = {kicks.bil.penalties}
+
+               />
              </View>
            </View>
          </View>
          <View tabLabel='SCRUMS'>
            <IconHeader />
             <View style={styles.itemContainer}  >
-              <StadiumFigure />
+              <StadiumFigure
+                redPoints={ scrums.opposition.won.details}
+                orangePoints = {scrums.opposition.lost.details}
+                blackPoints = {scrums.bil.won.details}
+                bluePoints = {scrums.bil.lost.details}
+
+              />
               <View style={styles.rightContainer}>
-                <Scoreboard />
-                <Scoreboard isDown={true}/>
+                <Scoreboard   titles={['WON','LOST']}
+                              oppositionScore = { scrums.opposition.won}
+                              bilScore =  {scrums.opposition.lost}
+                />
+                <Scoreboard isDown={true} titles={['WON','LOST']}
+                            oppositionScore = { scrums.bil.won}
+                            bilScore =  {scrums.bil.lost}
+                />
               </View>
             </View>
          </View>
           <View tabLabel='LINEOUTS'>
             <IconHeader />
             <View style={styles.itemContainer}  >
-              <StadiumFigure />
+              <StadiumFigure
+                redPoints={ line_outs.opposition.won.details}
+                orangePoints = {line_outs.opposition.lost.details}
+                blackPoints = {line_outs.bil.won.details}
+                bluePoints = {line_outs.bil.lost.details}
+              />
               <View style={styles.rightContainer}>
-                <Scoreboard />
-                <Scoreboard isDown={true}/>
+                <Scoreboard titles={['WON','LOST']}
+                            oppositionScore = { line_outs.opposition.won}
+                            bilScore =  {line_outs.opposition.lost}
+                />
+                <Scoreboard isDown={true} titles={['WON','LOST']}
+                            oppositionScore = { line_outs.bil.won}
+                            bilScore =  {line_outs.bil.lost}
+                />
               </View>
             </View>
           </View>
@@ -99,3 +142,9 @@ class SetPlayer extends Component {
 }
 
 export default SetPlayer
+SetPlayer.propTypes = {
+  set_plays:PropTypes.object,
+}
+SetPlayer.defaultProps = {
+  set_plays: {}
+}

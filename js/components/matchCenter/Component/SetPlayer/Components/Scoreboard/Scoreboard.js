@@ -28,7 +28,7 @@ class Scoreboard extends Component {
     this.updateStyle(page)
   }
   render() {
-   let {isWithProportion,isDown} = this.props
+   let {isWithProportion,isDown ,titles,oppositionScore,bilScore} = this.props
    let  proportionMargin =  isWithProportion ? {marginLeft :10} : {}
     let iconImage = !isDown ?  lionsCopyImage: barbarinasCopyImage
     let colorConversions = !isDown ? styleVar.brandPrimary : 'black'
@@ -41,16 +41,16 @@ class Scoreboard extends Component {
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
             <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
-            <Text style={[styles.scoreboardContentTitle]}>CONVERSIONS</Text>
+            <Text style={[styles.scoreboardContentTitle]}>{titles[0]}</Text>
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
-                <Text style={[styles.proportionText]}>2/2</Text>
+                <Text style={[styles.proportionText]}>{oppositionScore.value}</Text>
               </View> : null
             }
             <View style={[styles.ratioTestView,proportionMargin]}>
-              <Text style={[styles.ratioTest]}>100%</Text>
+              <Text style={[styles.ratioTest]}>{oppositionScore.percentage}</Text>
             </View>
           </View>
           <View style={styles.contentContainerWithBox}>
@@ -59,16 +59,16 @@ class Scoreboard extends Component {
               height={14}
               color={colorPenalties}
             />
-            <Text style={[styles.scoreboardContentTitle]}>PENALTIES</Text>
+            <Text style={[styles.scoreboardContentTitle]}>{titles[1]}</Text>
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
-                <Text style={[styles.proportionText]}>2/2</Text>
+                <Text style={[styles.proportionText]}>{bilScore.value}</Text>
               </View> : null
             }
             <View style={[styles.ratioTestView,proportionMargin]}>
-              <Text style={[styles.ratioTest]}>100%</Text>
+              <Text style={[styles.ratioTest]}>{bilScore.percentage}</Text>
             </View>
           </View>
         </View>
@@ -81,8 +81,20 @@ export default Scoreboard
 Scoreboard.propTypes = {
   isWithProportion: PropTypes.bool,
   isDown: PropTypes.bool,
+  titles: PropTypes.array,
+  oppositionScore: PropTypes.object,
+  bilScore: PropTypes.object,
 }
 Scoreboard.defaultProps = {
+  titles: ['CONVERSIONS','PENALTIES'],
   isWithProportion:false,
-  isDown: false
+  isDown: false,
+  oppositionScore:{
+    value:'',
+    percentage:''
+  },
+  bilScore: {
+    value:'',
+    percentage:''
+  }
 }
