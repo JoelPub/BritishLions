@@ -39,7 +39,7 @@ class MatchCenter extends Component {
 
     }
     iconPress = () => {
-    this.setState({modalInfo: !this.state.modalInfo})-
+    this.setState({modalInfo: !this.state.modalInfo})
     }
     _setHeight(h,source) {
         if (__DEV__)console.log(source,'_setHeight',h)

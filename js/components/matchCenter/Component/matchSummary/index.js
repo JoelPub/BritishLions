@@ -80,13 +80,16 @@ class MatchSummary extends Component {
     }
     render() {
         return (
+            <View>
+            {
+                this.props.isActive?
                 <ScrollView style={{marginTop:50}} scrollEnabled={false}>
                     <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
                     <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >
                     {
-                        this.state.isLoaded&&this.props.isActive?
+                        this.state.isLoaded?
                           <Timeline
                             data={this.state.data}
                             lineColor='rgb(216,217,218)'
@@ -108,6 +111,10 @@ class MatchSummary extends Component {
                     <View onLayout={this.measurePage.bind(this,'matchSummary')} />
 
               </ScrollView>
+                :
+                null
+            }
+            </View>
         )
     }
 }

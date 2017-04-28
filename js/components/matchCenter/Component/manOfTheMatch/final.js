@@ -2,13 +2,14 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text } from 'react-native'
+import { Image, View,ActivityIndicator, Text } from 'react-native'
 import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayersRankBox from '../../../global/playersRankBox'
+import loader from '../../../../themes/loader-position'
 
 // please remove this dummy data when api is availble
 let dummyPlayerData = [
@@ -85,34 +86,89 @@ class ManOfTheMatchFinal extends Component {
 
     constructor(props) {
          super(props)
+         this.state = {
+              h:0,
+              isLoaded:false,
+         }
     }
+    
+    componentWillReceiveProps(nextProps) {
+        if (__DEV__)console.log('Final componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        if (__DEV__)console.log('Final componentWillReceiveProps this.props.isActive',this.props.isActive)
+        if (__DEV__)console.log('Final componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
+        if (__DEV__)console.log('Final componentWillReceiveProps this.props.currentPage',this.props.currentPage)
+        if(nextProps.isActive&&!this.props.isActive||nextProps.isActive&&this.props.isActive&&nextProps.currentPage===3&&this.props.currentPage!==3) {
+            this.props.setHeight(this.state.h,'Final')
+             this.setState({isLoaded:true,isChanged:true})
+        }
+    }
+    componentDidMount(){
+
+        if(this.props.currentPage===3) {
+            this.props.setHeight(this.state.h,'Final')
+            this.setState({isLoaded:true,isChanged:true})
+        }
+
+    }
+    _measurePage(page,event) {
+        if (__DEV__)console.log('Final')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
+        this.setState({ h:y+100 },()=>{
+            if(this.state.isChanged&&this.props.isActive) {
+                this.props.setHeight(this.state.h,'Final')
+                this.setState({isChanged:false})
+            }
+        })
+    }
+
 
     _onPressPlayer(item) {
         if (__DEV__)console.log('Callback: ', item)
     }
-
-    _navigateTo(route) {
-        this.props.pushNewRoute(route)
-    }
     
     render() {
         return (
-            <View style={styles.wrapper}>
-                <View style={styles.title}>
-                    <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
-                </View>
-                <View style={styles.desc}>
-                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
-                </View>
+            <View>
+            {
+                this.props.currentPage===3?
+                <View>
+                    {
+                        this.state.isLoaded&&this.props.isActive?
+                           <View style={styles.wrapper}>
+                                <View style={styles.title}>
+                                    <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
+                                </View>
+                                <View style={styles.desc}>
+                                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                                </View>
 
-                <View style={styles.guther}>
-                    <PlayersRankBox data={dummyRankingData} />
-                </View>
+                                <View style={styles.guther}>
+                                    <PlayersRankBox data={dummyRankingData} />
+                                </View>
 
-                <View style={styles.guther}>
-                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                                <View style={styles.guther}>
+                                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                                </View>
+                                <View onLayout={this._measurePage.bind(this,'Final')} />
+                            </View>
+                        :
+                        <View>
+                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                            <View onLayout={this._measurePage.bind(this,'Final')} />
+                        </View>
+                    }
                 </View>
+                :
+                null
+
+            }
             </View>
+            
         )
     }
 }

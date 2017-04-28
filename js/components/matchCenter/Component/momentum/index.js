@@ -27,21 +27,20 @@ class Momentum extends Component {
          this.fullTime=120
     }
     componentWillReceiveProps(nextProps) {
-        if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
+        // if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+        // if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) {
             this.props.setHeight(this.state.h,'momentum')
             
             this.setState({isLoaded:false,isChanged:true},()=>{
                 setTimeout(()=>{
                     _fetch({url:'https://api.myjson.com/bins/xfpd5'}).then((json)=>{
-                      if(__DEV__)console.log('json',json)
+                      // if(__DEV__)console.log('json',json)
                         
                       this.setState({isChanged:true},()=>{
                         this.setState({data:this.processMomentumData(json.momentum),isLoaded:true})
                       })
                     }).catch((error)=>{
-                        // if (__DEV__)console.log(error)
                     })
                 },2000)
             })
@@ -50,41 +49,12 @@ class Momentum extends Component {
                   if(__DEV__)console.log('json',json)
                   this.setState({isChanged:true,data:this.processMomentumData(json.momentum)})
                 }).catch((error)=>{
-                    // if (__DEV__)console.log(error)
                 })
-            },7000)            
-            // this.setState({isLoaded:false,isChanged:true},()=>{
-            //     setTimeout(()=>{
-            //         _fetch({url:'https://api.myjson.com/bins/1akyeh'}).then((json)=>{
-            //           if(__DEV__)console.log('json',json)
-            //           this.setState({isChanged:true},()=>{
-            //             this.setState({data:json,isLoaded:true})
-            //           })
-            //         }).catch((error)=>{
-            //             // if (__DEV__)console.log(error)
-            //         })
-            //     },2000)
-            // })
-            // setTimeout(()=>{
-            //     _fetch({url:'https://api.myjson.com/bins/qc7u1'}).then((json)=>{
-            //       if(__DEV__)console.log('json',json)
-            //       this.setState({isChanged:true,data:json})
-            //     }).catch((error)=>{
-            //         // if (__DEV__)console.log(error)
-            //     })
-            // },7000)
-            // setTimeout(()=>{
-            //     _fetch({url:'https://api.myjson.com/bins/7a2cz'}).then((json)=>{
-            //       if(__DEV__)console.log('json',json)
-            //       this.setState({isChanged:true,data:json})
-            //     }).catch((error)=>{
-            //         // if (__DEV__)console.log(error)
-            //     })
-            // },7000)
+            },5000) 
         }
     }
     processMomentumData(data){
-        if(__DEV__)console.log('processMomentumData')
+        // if(__DEV__)console.log('processMomentumData')
         let result=[]
         for(let i=0;i<this.fullTime;i=i+10){
             let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
@@ -109,18 +79,18 @@ class Momentum extends Component {
             }
         }
 
-        if(__DEV__)console.log('result',result)
+        // if(__DEV__)console.log('result',result)
         return result.reverse()
 
     }
     measurePage(page,event) {
-        if (__DEV__)console.log('momentum')
+        // if (__DEV__)console.log('momentum')
         const { x, y, width, height, } = event.nativeEvent.layout
-        if (__DEV__)console.log('page',page)
-        if (__DEV__)console.log('x',x)
-        if (__DEV__)console.log('y',y)
-        if (__DEV__)console.log('width',width)
-        if (__DEV__)console.log('height',height)
+        // if (__DEV__)console.log('page',page)
+        // if (__DEV__)console.log('x',x)
+        // if (__DEV__)console.log('y',y)
+        // if (__DEV__)console.log('width',width)
+        // if (__DEV__)console.log('height',height)
         let h=y+180>styleVar.deviceHeight-360?y+180:styleVar.deviceHeight-360
         this.setState({h},()=>{
             if(this.state.isChanged&&this.props.isActive) {
@@ -138,47 +108,53 @@ class Momentum extends Component {
     
     render() {
         return (
+            <View>
+            {
+                this.props.isActive?
+                <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
 
-            <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                    <LiveBox data={{}} />
+                    <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)'}}>
+                        <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
+                            <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
+                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
+                            <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
+                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
+                            <ButtonFeedback >
+                                <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
+                            </ButtonFeedback>
+                        </View>
+                        {
+                            this.state.isLoaded?
+                                <View>
+                                    {
+                                        this.state.data.map((value,index)=>{
+                                            return (
+                                                <View key={index} >
+                                                    {value!==null?
+                                                        <MomentumTracker data={value} isHost={false}/>
+                                                        :
+                                                        null
+                                                    }
+                                                </View>
+                                                )
+                                            })
+                                    }
+                                    
+                                    <View onLayout={this.measurePage.bind(this,'momentum')} />
+                                </View>
+                            :
+                                <View>
+                                    <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
 
-                <LiveBox data={{}} />
-                <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)'}}>
-                    <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
-                        <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
-                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
-                        <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
-                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
-                        <ButtonFeedback >
-                            <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
-                        </ButtonFeedback>
+                                    <View onLayout={this.measurePage.bind(this,'momentum')} />
+                                </View>
+                        }
                     </View>
-                    {
-                        this.state.isLoaded&&this.props.isActive?
-                            <View>
-                                {
-                                    this.state.data.map((value,index)=>{
-                                        return (
-                                            <View key={index} >
-                                                {value!==null?
-                                                    <MomentumTracker data={value} isHost={false}/>
-                                                    :
-                                                    null
-                                                }
-                                            </View>
-                                            )
-                                        })
-                                }
-                                
-                                <View onLayout={this.measurePage.bind(this,'momentum')} />
-                            </View>
-                        :
-                            <View>
-                                <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-
-                                <View onLayout={this.measurePage.bind(this,'momentum')} />
-                            </View>
-                    }
                 </View>
+                :
+                null
+            }
             </View>
         )
     }

@@ -10,6 +10,7 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayerListSlider from '../../../global/playerListSlider'
 import PlayersRankBox from '../../../global/playersRankBox'
+import loader from '../../../../themes/loader-position'
 
 // please remove this dummy data when api is availble
 let dummyPlayerData = [
@@ -87,64 +88,96 @@ class ManOfTheMatchPostSubission extends Component {
     constructor(props) {
          super(props)
          this.state = {
-              h:0
+              h:0,
+              isLoaded:false,
          }
     }
     
     componentWillReceiveProps(nextProps) {
         if (__DEV__)console.log('postSubmission componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         if (__DEV__)console.log('postSubmission componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'postSubmission')
+        if (__DEV__)console.log('postSubmission componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
+        if (__DEV__)console.log('postSubmission componentWillReceiveProps this.props.currentPage',this.props.currentPage)
+        if(nextProps.isActive&&!this.props.isActive||nextProps.isActive&&this.props.isActive&&nextProps.currentPage===2&&this.props.currentPage!==2) {
+            this.props.setHeight(this.state.h,'PostSubission')
+             this.setState({isLoaded:true,isChanged:true})
+        }
     }
+    componentDidMount(){
 
+        if(this.props.currentPage===2) {
+            this.props.setHeight(this.state.h,'PostSubission')
+            this.setState({isLoaded:true,isChanged:true})
+        }
+
+    }
     _measurePage(page,event) {
-        if (__DEV__)console.log('postSubmission')
+        if (__DEV__)console.log('PostSubission')
         const { x, y, width, height, } = event.nativeEvent.layout
         if (__DEV__)console.log('page',page)
         if (__DEV__)console.log('x',x)
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({ h:y+200 })
-    }
+        this.setState({ h:y+550 },()=>{
+            if(this.state.isChanged&&this.props.isActive) {
+                this.props.setHeight(this.state.h,'PostSubission')
+                this.setState({isChanged:false})
+            }
+        })
+    }   
 
     _onPressPlayer(item) {
         if (__DEV__)console.log('Callback: ', item)
     }
-
-    _navigateTo(route) {
-        this.props.pushNewRoute(route)
-    }
     
     render() {
         return (
-            <View style={styles.wrapper}>
-                <View style={styles.guther}>
-                    <PlayersRankBox data={dummyRankingData} title='CURRENT FAN FAVOURITES' />
-                </View>
-                <View style={styles.title}>
-                    <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
-                </View>
-                <View style={styles.desc}>
-                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
-                </View>
+            <View>
+            {
+                this.props.currentPage===2?
+                <View>
+                    {
+                        this.state.isLoaded&&this.props.isActive?
+                            <View style={styles.wrapper}>
+                                <View style={styles.guther}>
+                                    <PlayersRankBox data={dummyRankingData} title='CURRENT FAN FAVOURITES' />
+                                </View>
+                                <View style={styles.title}>
+                                    <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
+                                </View>
+                                <View style={styles.desc}>
+                                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                                </View>
 
-                <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
 
-                <View style={styles.guther}>
-                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                                <View style={styles.guther}>
+                                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                                </View>
+
+                                <View style={styles.roundButtonBg}>
+                                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this.props.pressSubmit(3)}>
+                                        <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
+                                            RESUBMIT
+                                        </Text>
+                                    </ButtonFeedback>
+                                </View>
+
+                                <View onLayout={this._measurePage.bind(this,'PostSubission')} />
+                            </View>
+                        :
+                        <View>
+                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                            <View onLayout={this._measurePage.bind(this,'PostSubission')} />
+                        </View>
+                    }
                 </View>
+                :
+                null
 
-                <View style={styles.roundButtonBg}>
-                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this._navigateTo('landing')}>
-                        <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                            RESUBMIT
-                        </Text>
-                    </ButtonFeedback>
-                </View>
-
-                <View onLayout={this._measurePage.bind(this,'postSubmission')} />
+            }
             </View>
         )
     }
