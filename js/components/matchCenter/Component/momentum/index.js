@@ -121,7 +121,7 @@ class Momentum extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        let h=y+180>styleVar.deviceHeight-370?y+180:styleVar.deviceHeight-370
+        let h=y+180>styleVar.deviceHeight-360?y+180:styleVar.deviceHeight-360
         this.setState({h},()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'momentum')
@@ -137,43 +137,6 @@ class Momentum extends Component {
     }
     
     render() {
-        let data=[
-                    {
-                        line:{cLeft:100,fLeft:50,radius:8},
-                        timestamp:['02','04','06','08','10'],
-                        leftWindow:[{top:0,width:20},{top:20,width:140},{top:40,width:150},{top:80,width:80},],
-                        rightWindow:[{top:60,width:70}],
-                        timeMark:'10'
-                    },
-                    {
-                        line:{cLeft:50,fLeft:150,radius:8},
-                        timestamp:['12','14','16','18','20'],
-                        leftWindow:[{top:0,width:40},{top:20,width:50},],
-                        rightWindow:[{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'20'
-                    },
-                    {
-                        line:{cLeft:150,fLeft:80,radius:8},
-                        timestamp:['22','24','26','28','30'],
-                        leftWindow:[{top:20,width:140},],
-                        rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'30'
-                    },
-                    {
-                        line:{cLeft:80,fLeft:180,radius:8},
-                        timestamp:['32','34','36','38','40'],
-                        leftWindow:[{top:20,width:140},],
-                        rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'40'
-                    },
-                    {
-                        line:{cLeft:180,fLeft:80,radius:8},
-                        timestamp:['42','44','46','48','50'],
-                        leftWindow:[{top:20,width:140},],
-                        rightWindow:[{top:0,width:20},{top:40,width:150},{top:60,width:70},{top:80,width:80}],
-                        timeMark:'50'
-                    },
-                ]
         return (
 
             <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
