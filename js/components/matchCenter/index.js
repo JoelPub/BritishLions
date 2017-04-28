@@ -12,6 +12,7 @@ import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
+import SquadModal from '../global/squadModal'
 import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
@@ -20,6 +21,8 @@ import ManOfTheMatch from './Component/manOfTheMatch'
 import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
 import  SetPlayerDefaultData from './Component/SetPlayer/DefaultData'
+
+
 class MatchCenter extends Component {
 
     constructor(props) {
@@ -30,9 +33,13 @@ class MatchCenter extends Component {
           index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:0,
           isLoaded:false,
+          modalInfo:false,
         }
 
 
+    }
+    iconPress = () => {
+    this.setState({modalInfo: !this.state.modalInfo})-
     }
     _setHeight(h,source) {
         if (__DEV__)console.log(source,'_setHeight',h)
@@ -69,6 +76,7 @@ class MatchCenter extends Component {
                                 <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
                                 <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                             set_plays={SetPlayerDefaultData}
+
                                 />
                                 <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
                                 <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
@@ -77,7 +85,17 @@ class MatchCenter extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />}
                         <LionsFooter isLoaded={true}  />
                     </ScrollView>
-
+                  <SquadModal
+                    modalVisible={this.state.modalInfo}
+                    callbackParent={this.iconPress}>
+                    <ScrollView style={[styles.modalContent]}>
+                      <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                      <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse faucibus sapien ut turpis pretium, tempus dictum ante tincidunt. Proin scelerisque felis tortor. Phasellus blandit velit sem.</Text>
+                      <Text style={styles.modalContentText}>Nulla ex neque, mattis sed posuere vel, porttitor id lacus. Nam mauris arcu, commodo et iaculis eu, tristique nec nisi. Aliquam fermentum ligula magna, non rhoncus lorem pulvinar vel.</Text>
+                      <Text style={styles.modalContentText}>Suspendisse placerat nulla a sagittis tincidunt.
+                        Sed vehicula velit quis placerat dictum. Mauris enim eros, maximus vitae aliquet ac, lacinia eget sapien. Pellentesque iaculis elit imperdiet posuere gravida. Aliquam ut eleifend est. Curabitur eu eros erat. Proin scelerisque felis nec velit pellentesque, vitae sollicitudin justo dapibus. </Text>
+                    </ScrollView>
+                  </SquadModal>
                     <EYSFooter />
                 </View>
             </Container>
