@@ -66,7 +66,8 @@ class ManOfTheMatchLanding extends Component {
          super(props)
          this.state = {
               h:0,
-              isLoaded:false
+              isLoaded:false,
+              bottomView:true
          }
     }
     
@@ -110,7 +111,7 @@ class ManOfTheMatchLanding extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        if(height>0) this.setState({isChanged:true})
+        if(height>0) this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
     }
 
     _onPressPlayer(item) {
@@ -147,7 +148,10 @@ class ManOfTheMatchLanding extends Component {
                                         </Text>
                                     </ButtonFeedback>
                                 </View>
-                                <View onLayout={this._measurePage.bind(this,'Landing')} />
+                                {
+                                    this.state.bottomView&&
+                                    <View onLayout={this._measurePage.bind(this,'Landing')} />
+                                }
                             </View>
                         :
                         <View>
