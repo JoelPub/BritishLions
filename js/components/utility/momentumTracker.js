@@ -52,7 +52,7 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5,backgroundColor:'transparent'}}>{timeMark}</Text>
                     </View>
                     <View style={[{flex:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:1}]}>
                         {
@@ -82,7 +82,7 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5,backgroundColor:'transparent'}}>{timeMark}</Text>
                     </View>
 
                     <View style={{top:0,left:isLast?cLeft-radius:cLeft,width:2*radius,height:isLast?2*radius:radius,borderTopLeftRadius:isLast?radius:0,borderTopRightRadius:isLast?radius:0,borderBottomLeftRadius:radius,borderBottomRightRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
