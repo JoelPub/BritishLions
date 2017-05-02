@@ -119,7 +119,7 @@ class ManOfTheMatchPostSubission extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({ h:y+550 },()=>{
+        this.setState({ h:y+500 },()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'PostSubission')
                 this.setState({isChanged:false})
