@@ -18,6 +18,9 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { getAssembledUrl } from '../../utility/urlStorage'
 import { setPositionToAdd , setPositionToRemove} from '../../../actions/position'
+import Toast from 'react-native-root-toast'
+import { popToRoute } from '../../../actions/route'
+
 const styles = styleSheetCreate({
     buttons: {
         flexDirection: 'row',
@@ -255,7 +258,31 @@ class TeamPlayerEditor extends Component {
             let successDesc = this.state.inTeam&&this.props.positionToRemove!==null? 'PLAYER SUCCESSFULLY REMOVED' : 'SUCCESSFULLY ADDED'
             let positionDisplay = subPosition?strToUpper(subPosition) :position?strToUpper(position) : ''
             this.setState({ inTeam: !this.state.inTeam, teamDataFeed:tmpFeed.toJS() }, () => {
-                this.props._setModalVisible(true, 'message', positionDisplay, successDesc, 'OK')
+                if(type==='add') {
+                    let toast = Toast.show(`${positionDisplay} ${successDesc}`, {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            this.props.popToRoute(this.props.viewDetailFrom)
+                        }
+                    })
+                }
+                else {
+                   this.props._setModalVisible(true, 'message', positionDisplay, successDesc, 'OK') 
+                }
                 this.props.setTeamDataTemp(tmpFeed.toJS())
                 this.props.setPositionToAdd(null)
                 this.props.setPositionToRemove(null)
@@ -271,6 +298,7 @@ function bindAction(dispatch) {
         setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
         setPositionToAdd:(position)=>dispatch(setPositionToAdd(position)),
         setPositionToRemove:(position)=>dispatch(setPositionToRemove(position)),
+        popToRoute: (route)=>dispatch(popToRoute(route))
     }
 }
 
