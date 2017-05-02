@@ -135,11 +135,7 @@ class PlayerFigure extends Component {
 
         this.state = {
             fixture: {},
-            isLoaded: false,
-
-            fixturesList: [],
-            fixturesLeft: [],
-            isGameLive: false
+            isLoaded: false
         }
     }
 
@@ -154,26 +150,26 @@ class PlayerFigure extends Component {
         this.props.drillDown(data, route)
     }
 
-    _fetchFixture() {
-        let fixturesLeft = []
-        let dateNow = new Date
-        //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
-        dateNow = Date.parse(dateNow)
+    // _fetchFixture() {
+    //     let fixturesLeft = []
+    //     let dateNow = new Date
+    //     //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
+    //     dateNow = Date.parse(dateNow)
        
-        fixturesList.map(function(item, index) {
-            let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
-            //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
+    //     fixturesList.map(function(item, index) {
+    //         let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
+    //         //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
             
-            if (dateSched > dateNow) {
-                fixturesLeft.push(item)
-            }
-        })
+    //         if (dateSched > dateNow) {
+    //             fixturesLeft.push(item)
+    //         }
+    //     })
 
-        this.setState({
-            fixturesList: fixturesLeft,
-            fixturesLeft: limitArrayList(fixturesLeft, 1)
-        })
-    }
+    //     this.setState({
+    //         fixturesList: fixturesLeft,
+    //         fixturesLeft: limitArrayList(fixturesLeft, 1)
+    //     })
+    // }
 
     _getFixturesInfo() {
          _fetch({url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo'}).then((res)=>{
@@ -181,7 +177,7 @@ class PlayerFigure extends Component {
 
             // TEMPORARY: merge image FROM LOCAL UNTIL API IS NOT DONE
             res.image = fixturesImages[res.id]
-            //res.game_status = 'live' // intercept
+            //res.game_status = 'live' // intercept game status
 
             this.setState({
                 fixture: res,
@@ -213,7 +209,6 @@ class PlayerFigure extends Component {
     }
 
     render() {
-
         return (
             <View>
                 {
