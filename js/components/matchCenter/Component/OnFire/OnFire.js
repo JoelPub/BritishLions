@@ -2,7 +2,7 @@
 
 import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -17,7 +17,8 @@ import OnFireItem from  './components/OnFireItem'
 const  IconHeader = ({onPress}) => {
   return (
     <View style={{flexDirection:'row-reverse'}} >
-      <ButtonFeedback style={{width:30}} >
+      <ButtonFeedback style={{width:30}}
+                      onPress={onPress}>
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
       </ButtonFeedback>
     </View>
@@ -47,6 +48,10 @@ class OnFire extends Component {
     if (__DEV__)console.log('height',height)
     this.setState({h:y-110})
   }
+  iconPress = () =>{
+    DeviceEventEmitter.emit('matchCenter', 'onFire');
+  }
+
   render() {
    let { on_fire } =this.props
     return (
@@ -59,7 +64,7 @@ class OnFire extends Component {
           tabBarActiveTextColor={'black'}
         >
           <View tabLabel='HALF-TIME'>
-            <IconHeader />
+            <IconHeader onPress={this.iconPress} />
             <View style={{ padding: 20}}>
               <OnFireItem title={'METRES'} data={on_fire.half_time.metres}/>
               <OnFireItem title={'PASSES'} data={on_fire.half_time.passes}/>

@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity,
+  ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -23,6 +24,7 @@ import loader from '../../themes/loader-position'
 import  SetPlayerDefaultData from './Component/SetPlayer/DefaultData'
 
 
+
 class MatchCenter extends Component {
 
     constructor(props) {
@@ -35,7 +37,7 @@ class MatchCenter extends Component {
           isLoaded:false,
           modalInfo:false,
         }
-
+        this.subscription= null
 
     }
     iconPress = () => {
@@ -45,13 +47,21 @@ class MatchCenter extends Component {
         if (__DEV__)console.log(source,'_setHeight',h)
         this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
     }
+    updateMadal = () =>{
+      this.setState({
+        modalInfo: !this.state.modalInfo
+      })
+    }
     componentDidMount() {
         if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
         setTimeout(()=>{this.setState({isLoaded:true})},1000)
+      this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal);
     }
-    
+    componentWillUnmount() {
+      this.isUnMounted = true
+      this.subscription.remove();
+    }
     render() {
-
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
