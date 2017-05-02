@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View,ActivityIndicator, Text } from 'react-native'
+import { Image, View,ActivityIndicator, Platform, Text } from 'react-native'
 import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -67,6 +67,7 @@ class ManOfTheMatchLanding extends Component {
          this.state = {
               h:0,
               isLoaded:false,
+              bottomView:true
          }
     }
     
@@ -89,19 +90,32 @@ class ManOfTheMatchLanding extends Component {
 
     }
     _measurePage(page,event) {
-        if (__DEV__)console.log('Landing')
+        if (__DEV__)console.log('_measurePage')
         const { x, y, width, height, } = event.nativeEvent.layout
         if (__DEV__)console.log('page',page)
         if (__DEV__)console.log('x',x)
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({ h:y+500 },()=>{
+        this.setState({ h:y+50 },()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'Landing')
                 this.setState({isChanged:false})
             }
         })
+    }
+    _measureSlider(event) {
+        if (__DEV__)console.log('_measureSlider')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
+        if(height>0) 
+            {
+                if(Platform.OS==='ios') this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
+                else this.setState({isChanged:true})
+            }
     }
 
     _onPressPlayer(item) {
@@ -123,10 +137,10 @@ class ManOfTheMatchLanding extends Component {
                                 <View style={styles.desc}>
                                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                                 </View>
-
-                                <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                
+                                <View onLayout={this._measureSlider.bind(this)}>
+                                    <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                    <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                </View>
                                 <View style={styles.guther}>
                                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                                 </View>
@@ -138,7 +152,10 @@ class ManOfTheMatchLanding extends Component {
                                         </Text>
                                     </ButtonFeedback>
                                 </View>
-                                <View onLayout={this._measurePage.bind(this,'Landing')} />
+                                {
+                                    this.state.bottomView&&
+                                    <View onLayout={this._measurePage.bind(this,'Landing')} />
+                                }
                             </View>
                         :
                         <View>

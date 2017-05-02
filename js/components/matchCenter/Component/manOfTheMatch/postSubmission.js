@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
+import { Image, View, Text, ActivityIndicator, ScrollView, Platform} from 'react-native'
 import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -90,6 +90,7 @@ class ManOfTheMatchPostSubission extends Component {
          this.state = {
               h:0,
               isLoaded:false,
+              bottomView:true
          }
     }
     
@@ -119,13 +120,26 @@ class ManOfTheMatchPostSubission extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({ h:y+500 },()=>{
+        this.setState({ h:y+50 },()=>{
             if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'PostSubission')
                 this.setState({isChanged:false})
             }
         })
-    }   
+    }
+    _measureSlider(event) {
+        if (__DEV__)console.log('_measureSlider')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
+        if(height>0) 
+            {
+                if(Platform.OS==='ios') this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
+                else this.setState({isChanged:true})
+            }
+    }
 
     _onPressPlayer(item) {
         if (__DEV__)console.log('Callback: ', item)
@@ -150,9 +164,10 @@ class ManOfTheMatchPostSubission extends Component {
                                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                                 </View>
 
-                                <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-
+                                <View onLayout={this._measureSlider.bind(this)}>
+                                    <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                    <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                </View>
                                 <View style={styles.guther}>
                                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                                 </View>
@@ -164,8 +179,11 @@ class ManOfTheMatchPostSubission extends Component {
                                         </Text>
                                     </ButtonFeedback>
                                 </View>
-
-                                <View onLayout={this._measurePage.bind(this,'PostSubission')} />
+                                {
+                                    this.state.bottomView&&
+                                    <View onLayout={this._measurePage.bind(this,'PostSubission')} />
+                                }
+                                
                             </View>
                         :
                         <View>

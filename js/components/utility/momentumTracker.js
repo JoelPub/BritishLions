@@ -36,7 +36,7 @@ export default class MomentumTracker extends Component {
 
         return (
                 <View style={[styles.trackerWrapper,{paddingTop:isLast?radius:0,paddingBottom:isFirst?radius:0,height:isLast&&isFirst?h+2*radius:(isLast||isFirst)?h+radius:h}]}>
-                    <View style={[{flex:8,borderLeftWidth:1.2,borderRightWidth:1.2,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -52,9 +52,9 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5,backgroundColor:'transparent'}}>{timeMark}</Text>
                     </View>
-                    <View style={[{flex:1,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -66,7 +66,7 @@ export default class MomentumTracker extends Component {
                             })
                         }
                     </View>
-                    <View style={[{flex:8,borderLeftWidth:1.2,borderRightWidth:1.2,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -82,11 +82,11 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5,backgroundColor:'transparent'}}>{timeMark}</Text>
                     </View>
 
                     <View style={{top:0,left:isLast?cLeft-radius:cLeft,width:2*radius,height:isLast?2*radius:radius,borderTopLeftRadius:isLast?radius:0,borderTopRightRadius:isLast?radius:0,borderBottomLeftRadius:radius,borderBottomRightRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
-                    <View style={{top:isFirst&&isLast?h:isFirst?h-radius:h,left:isFirst?fLeft-radius:fLeft,width:2*radius,height:isFirst?2*radius:radius,borderTopLeftRadius:radius,borderTopRightRadius:radius,borderBottomLeftRadius:isFirst?radius:0,borderBottomRightRadius:isFirst?radius:0,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
+                    <View style={{top:isFirst&&isLast?h-1:isFirst?h-radius-1:h,left:isFirst?fLeft-radius:fLeft,width:2*radius,height:isFirst?2*radius:radius,borderTopLeftRadius:radius,borderTopRightRadius:radius,borderBottomLeftRadius:isFirst?radius:0,borderBottomRightRadius:isFirst?radius:0,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
                     <DottedLine radius={radius} cLeft={isLast?cLeft-radius:cLeft}  fLeft={isFirst?fLeft-radius:fLeft} isFirst={isFirst} isLast={isLast}/>
                                    
                 </View>
