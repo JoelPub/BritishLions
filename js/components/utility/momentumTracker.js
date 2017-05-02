@@ -36,7 +36,7 @@ export default class MomentumTracker extends Component {
 
         return (
                 <View style={[styles.trackerWrapper,{paddingTop:isLast?radius:0,paddingBottom:isFirst?radius:0,height:isLast&&isFirst?h+2*radius:(isLast||isFirst)?h+radius:h}]}>
-                    <View style={[{flex:8,borderLeftWidth:1.2,borderRightWidth:1.2,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -54,7 +54,7 @@ export default class MomentumTracker extends Component {
                         }
                         <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5}}>{timeMark}</Text>
                     </View>
-                    <View style={[{flex:1,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:1}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -66,7 +66,7 @@ export default class MomentumTracker extends Component {
                             })
                         }
                     </View>
-                    <View style={[{flex:8,borderLeftWidth:1.2,borderRightWidth:1.2,borderTopWidth:1.2,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1.2}]}>
+                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:1}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
