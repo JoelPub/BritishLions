@@ -1099,7 +1099,7 @@ module.exports = styleSheetCreate({
         paddingTop: 0,
         fontFamily: styleVar.fontCondensed,
         android:{
-            marginTop: 2
+            marginTop: 3
         }
     },
     footerBtnCreateText:{

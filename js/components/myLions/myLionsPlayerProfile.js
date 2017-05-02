@@ -245,7 +245,7 @@ class MyLionsPlayerProfile extends Component {
                                 <Text style={styles.headerPlayerName}>{name}</Text>
                                 <Text style={styles.headerPlayerPosition}>{this.props.detail.position}</Text>
                             </View>
-                            <TeamPlayerEditor playerid={this.playerid} _setModalVisible={this._setModalVisible.bind(this)} removePlayer={this.state.removePlayer} detail={this.props.detail}/>
+                            <TeamPlayerEditor playerid={this.playerid} _setModalVisible={this._setModalVisible.bind(this)} removePlayer={this.state.removePlayer} detail={this.props.detail} viewDetailFrom={this.props.viewDetailFrom}/>
                         </View>
                         <Grid style={styles.detailsGrid}>
                             <Col style={styles.detailsGridCol} size={1}>

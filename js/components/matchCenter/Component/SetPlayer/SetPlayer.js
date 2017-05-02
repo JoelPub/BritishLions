@@ -2,7 +2,8 @@
 
 import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity,
+  ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -20,7 +21,8 @@ import SetPlayerTabBar from  './Components/SetPlayerTabBar'
 const  IconHeader = ({onPress}) => {
   return (
     <View style={{flexDirection:'row-reverse'}} >
-      <ButtonFeedback style={{width:30}} >
+      <ButtonFeedback style={{width:30}}
+                      onPress={onPress}>
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
       </ButtonFeedback>
     </View>
@@ -55,6 +57,9 @@ class SetPlayer extends Component {
     kicks.opposition.conversions.details
 
   }
+  iconPress = () =>{
+    DeviceEventEmitter.emit('matchCenter', 'setPlayer');
+  }
 
   render() {
    let { kicks, scrums,line_outs} = this.props.set_plays
@@ -70,7 +75,7 @@ class SetPlayer extends Component {
           tabBarActiveTextColor={'black'}
         >
          <View tabLabel='KICKS'>
-           <IconHeader />
+           <IconHeader onPress={this.iconPress} />
            <View style={styles.itemContainer}  >
              <StadiumFigure
                redPoints={ kicks.opposition.conversions.details}
