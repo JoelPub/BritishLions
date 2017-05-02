@@ -13,6 +13,7 @@ import Fixture from '../../../utility/fixture'
 import LiveBox from '../../../global/liveBox'
 import loader from '../../../../themes/loader-position'
 import _fetch from '../../../utility/fetch'
+import { service } from '../../../utility/services'
 
 class Momentum extends Component {
 
@@ -24,33 +25,56 @@ class Momentum extends Component {
               isLoaded:false,
               isChanged:false
          }
-         this.fullTime=120
+         this.fullTime=80
     }
     componentWillReceiveProps(nextProps) {
         // if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
         // if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
         if(nextProps.isActive&&!this.props.isActive) {
-            this.props.setHeight(this.state.h,'momentum')
+        let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getGameMomentum',
+            data: {id:1},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
+                        this.setState({isChanged:true},()=>{
+                            this.setState({data:this.processMomentumData(res.data.momentum),isLoaded:true})
+                        })
+                }
+            },
+            onError: ()=>{
+                this.setState({isLoaded:true})
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+        }
+        service(optionsInfo) 
+        //     this.props.setHeight(this.state.h,'momentum')
             
-            this.setState({isLoaded:false,isChanged:true},()=>{
-                setTimeout(()=>{
-                    _fetch({url:'https://api.myjson.com/bins/xfpd5'}).then((json)=>{
-                      // if(__DEV__)console.log('json',json)
+        //     this.setState({isLoaded:false,isChanged:true},()=>{
+        //         setTimeout(()=>{
+        //             _fetch({url:'https://api.myjson.com/bins/xfpd5'}).then((json)=>{
+        //               // if(__DEV__)console.log('json',json)
                         
-                      this.setState({isChanged:true},()=>{
-                        this.setState({data:this.processMomentumData(json.momentum),isLoaded:true})
-                      })
-                    }).catch((error)=>{
-                    })
-                },2000)
-            })
-            setTimeout(()=>{
-                _fetch({url:'https://api.myjson.com/bins/9zfuh'}).then((json)=>{
-                  if(__DEV__)console.log('json',json)
-                  this.setState({isChanged:true,data:this.processMomentumData(json.momentum)})
-                }).catch((error)=>{
-                })
-            },5000) 
+        //               this.setState({isChanged:true},()=>{
+        //                 this.setState({data:this.processMomentumData(json.momentum),isLoaded:true})
+        //               })
+        //             }).catch((error)=>{
+        //             })
+        //         },2000)
+        //     })
+        //     setTimeout(()=>{
+        //         _fetch({url:'https://api.myjson.com/bins/9zfuh'}).then((json)=>{
+        //           if(__DEV__)console.log('json',json)
+        //           this.setState({isChanged:true,data:this.processMomentumData(json.momentum)})
+        //         }).catch((error)=>{
+        //         })
+        //     },5000) 
         }
     }
     processMomentumData(data){

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View,ActivityIndicator, Text } from 'react-native'
+import { Image, View,ActivityIndicator, Platform, Text } from 'react-native'
 import { Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -111,7 +111,11 @@ class ManOfTheMatchLanding extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        if(height>0) this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
+        if(height>0) 
+            {
+                if(Platform.OS==='ios') this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
+                else this.setState({isChanged:true})
+            }
     }
 
     _onPressPlayer(item) {
