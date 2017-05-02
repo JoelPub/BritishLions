@@ -36,8 +36,10 @@ class MatchCenter extends Component {
           swiperHeight:0,
           isLoaded:false,
           modalInfo:false,
+          statusArray: [1,0,0,0,0]
         }
         this.subscription= null
+        this.timer  = null
 
     }
     iconPress = () => {
@@ -52,16 +54,72 @@ class MatchCenter extends Component {
         modalInfo: !this.state.modalInfo
       })
     }
+    callApi = () => {
+      if(this.state.index===0){
+        if (__DEV__)console.log('call match summary Api')
+        setTimeout(()=>{
+          this.state.statusArray[0]=1
+          this.setState({
+            statusArray: this.state.statusArray
+          })
+        },6000)
+      }
+      if(this.state.index===1){
+        if (__DEV__)console.log('call momentum Api')
+        setTimeout(()=>{
+          this.state.statusArray[1]=1
+          this.setState({
+            statusArray: this.state.statusArray
+          })
+        },6000)
+
+      }
+      if(this.state.index===2){
+        if (__DEV__)console.log('call  set Play  Api')
+        setTimeout(()=>{
+          this.state.statusArray[2]=1
+          this.setState({
+            statusArray: this.state.statusArray
+          })
+        },6000)
+      }
+      if(this.state.index===3){
+        if (__DEV__)console.log('call man of the match Api')
+        setTimeout(()=>{
+          this.state.statusArray[3]=1
+          this.setState({
+            statusArray: this.state.statusArray
+          })
+        },6000)
+      }
+      if(this.state.index===4){
+        if (__DEV__)console.log('call man of the match Api')
+        setTimeout(()=>{
+          this.state.statusArray[4]=1
+          this.setState({
+            statusArray: this.state.statusArray
+          })
+        },6000)
+      }
+    }
     componentDidMount() {
         if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
         setTimeout(()=>{this.setState({isLoaded:true})},1000)
       this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal);
+      this.timer = setInterval(this.callApi,6000)
     }
     componentWillUnmount() {
       this.isUnMounted = true
       this.subscription.remove();
     }
+    swiperScrollEnd = (e, state, context) => {
+      this.setState({index:state.index})
+      this.timer&&clearTimeout(this.timer)
+      this.callApi()
+      this.timer = setInterval(this.callApi,6000)
+    }
     render() {
+      let { statusArray } = this.state
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -81,15 +139,30 @@ class MatchCenter extends Component {
                                 dotColor='rgba(255,255,255,0.3)'
                                 activeDotColor='rgb(255,255,255)'
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
-                                onMomentumScrollEnd={(e, state, context) => this.setState({index:state.index})}>
-                                <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} />
-                                <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
-                                <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
-                                            set_plays={SetPlayerDefaultData}
+                                onMomentumScrollEnd={this.swiperScrollEnd}>
+                              {
+                                statusArray[0]!==0 ? <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} />
+                                  : <View />
+                              }
+                              {
+                                statusArray[1]!==0 ? <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
+                                  : <View />
+                              }
+                              {
+                                statusArray[2]!==0 ? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                                                 set_plays={SetPlayerDefaultData}/>
+                                  : <View />
+                              }
+                              {
+                                statusArray[3]!==0 ? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
 
-                                />
-                                <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
-                                <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
+                                  : <View />
+                              }
+                              {
+                                statusArray[4]!==0 ? <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
+                                  : <View />
+                              }
+
                             </Swiper>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />}

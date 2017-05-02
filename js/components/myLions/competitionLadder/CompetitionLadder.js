@@ -409,7 +409,12 @@ class CompetitionLadder extends Component {
       [{text: 'Dismiss'}]
     )
   }
-
+  errorBackButtonClick = () => {
+    this.setState({
+      isCreating: true,
+      createType: 'create',
+    })
+  }
   render() {
     let { data ,isCreating, createType, isJoining, joinType ,modalData,joinModalData} = this.state
     let {userProfile} = this.props
@@ -450,7 +455,7 @@ class CompetitionLadder extends Component {
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
-                           createButtonClick = {this.createButtonClick} errorBackButtonClick={this.dissMissModel}
+                           createButtonClick = {this.createButtonClick} errorBackButtonClick={this.errorBackButtonClick}
                            data = {modalData}
           />
           <JoinModal modalVisible = {isJoining} callbackParent ={this.dissMissModel}  modalType={joinType}

@@ -37,11 +37,7 @@ class SetPlayer extends Component {
       h:0
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-    if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
-    if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
-  }
+
   measurePage(page,event) {
     if (__DEV__)console.log('setPlayer')
     const { x, y, width, height, } = event.nativeEvent.layout
@@ -60,8 +56,11 @@ class SetPlayer extends Component {
   iconPress = () =>{
     DeviceEventEmitter.emit('matchCenter', 'setPlayer');
   }
-
+  callApi = () =>{
+   console.log('setPlayerCallApi')
+  }
   render() {
+    let {isActive} = this.props
    let { kicks, scrums,line_outs} = this.props.set_plays
 
     return (
@@ -144,12 +143,28 @@ class SetPlayer extends Component {
       </View>
     )
   }
+  componentWillReceiveProps(nextProps) {
+    if (__DEV__)console.log('setPlayer componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+    if (__DEV__)console.log('setPlayer componentWillReceiveProps this.props.isActive',this.props.isActive)
+    if(nextProps.isActive&&!this.props.isActive) {
+      this.props.setHeight(this.state.h)
+    }
+
+  }
+  componentDidMount() {
+
+  }
+  componentWillUnmount() {
+
+  }
 }
 
 export default SetPlayer
 SetPlayer.propTypes = {
+  isActive:PropTypes.bool,
   set_plays:PropTypes.object,
 }
 SetPlayer.defaultProps = {
-  set_plays: {}
+  set_plays: {},
+  isActive:false
 }
