@@ -33,12 +33,14 @@ class MatchCenter extends Component {
         this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH','ONFIRE']
         this.state = {
           index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
-          swiperHeight:0,
+          swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
           modalInfo:false,
-          statusArray: [true,false,false,false,false],
-          momentumData:null,
-          setPlayerData: null,
+          statusArray: [false,false,false,false,false],
+          momentumData:{},
+          summaryData:[],
+setPlayerData: [],
+
           onFireData:null
         }
         this.subscription= null
@@ -89,16 +91,116 @@ class MatchCenter extends Component {
         return result.reverse()
 
     }
+    processSummaryData(type,json){
+      let result=[]
+      if(type==='init'||type==='refresh') {        
+        json.map((value,index)=>{
+          result.push({seq:index+1,time:value.gameTime,description:value.eventString})
+        })
+      }
+      if (type==='refresh'&&this.state.summaryData.length>0) {
+        this.state.summaryData.map((value,index)=>{
+          result.push({seq:json.length+index+1,time:value.time,description:value.description})
+        })
+      }
+      if (type==='extend') {
+          _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
+            if(__DEV__)console.log('res',res)
+                if(res) {
+                  let tmp=this.state.summaryData
+                  res.map((value,index)=>{
+                    tmp.push({seq:tmp.length+1,time:value.gameTime,description:value.eventString})
+                  })
+                  if(__DEV__)console.log('tmp',tmp)
+                  this.setState({
+                    summaryData:tmp
+                  })
+                }
+
+          })
+      }
+      return result
+    }
     callApi = () => {
       if(this.state.index===0){
         if (__DEV__)console.log('call match summary Api')
-        setTimeout(()=>{
-          this.statusArray.fill(false)
-          this.statusArray[0]=true
-          this.setState({
-            statusArray: this.statusArray,
-          })
-        },6000)
+        if(!this.statusArray[0]) {
+          let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
+            data: {id:1},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
+                        this.statusArray.fill(false)
+                        this.statusArray[0]=true
+                        let tmp=this.processSummaryData('init',res.data)
+                        if(__DEV__)console.log('tmp',tmp)
+                        this.setState({
+                          statusArray: this.statusArray,
+                          summaryData:tmp
+                        })
+                }
+            },
+            onError: ()=>{
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+          }
+          service(optionsInfo) 
+          // _fetch({url:'https://api.myjson.com/bins/15poal'}).then((json)=>{
+          //   if(__DEV__)console.log('json',json)
+          //       if(json) {
+          //               this.statusArray.fill(false)
+          //               this.statusArray[0]=true
+          //               let tmp=this.processSummaryData('init',json)
+          //               if(__DEV__)console.log('tmp',tmp)
+          //               this.setState({
+          //                 statusArray: this.statusArray,
+          //                 summaryData:tmp
+          //               })
+          //       }
+
+          // })
+        }
+        else {
+          let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
+            data: {id:1,"sequenceId" : 20},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
+                        let tmp=this.processSummaryData('refresh',res.data)
+                        if(__DEV__)console.log('tmp',tmp)
+                        this.setState({
+                          summaryData:tmp
+                        })
+                }
+            },
+            onError: ()=>{
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+          }
+          service(optionsInfo) 
+           // _fetch({url:'https://api.myjson.com/bins/nbdp9'}).then((json)=>{
+           //        if(__DEV__)console.log('json',json)
+           //        let tmp=this.processSummaryData('refresh',json)
+           //        if(__DEV__)console.log('tmp',tmp)
+           //        this.setState({
+           //          summaryData:tmp
+           //        })
+           //      })
+        }
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
@@ -138,7 +240,6 @@ class MatchCenter extends Component {
                   let tmp=this.processMomentumData(json.momentum)
                   if(__DEV__)console.log('tmp',tmp)
                   this.setState({
-                    statusArray: this.statusArray,
                     momentumData:tmp
                   })
                 })
@@ -210,9 +311,12 @@ class MatchCenter extends Component {
     }
     componentDidMount() {
         if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
-        setTimeout(()=>{this.setState({isLoaded:true})},1000)
-        this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal);
-        this.timer = setInterval(this.callApi,10000)
+        setTimeout(()=>{this.setState({isLoaded:true},()=>{
+          this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
+            this.callApi()
+            this.timer = setInterval(this.callApi,30000)
+        })},500)
+        
     }
     componentWillUnmount() {
       this.isUnMounted = true
@@ -248,8 +352,8 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
-                                statusArray[0]? <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} />
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.processSummaryData.bind(this)}/>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[0]&&this.state.index===0&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -258,7 +362,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} momentumData={this.state.momentumData}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -278,7 +382,7 @@ class MatchCenter extends Component {
                               {
                                 statusArray[3]? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
 
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -290,7 +394,7 @@ class MatchCenter extends Component {
                                                          setHeight={this._setHeight.bind(this)}
                                                          on_fire={onFireData.on_fire}
                                 />
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />

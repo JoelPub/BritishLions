@@ -6,6 +6,7 @@ import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import ButtonFeedback from '../../utility/buttonFeedback'
+import GamedayTeam from './gamedayTeam'
 
 const locStyle = styleSheetCreate({ 
     liveBox: {
@@ -76,9 +77,16 @@ const locStyle = styleSheetCreate({
             marginTop: 0
         }
     },
+    pageText: {
+        color: styleVar.colorText,
+        fontSize: styleVar.textFontSize,
+        lineHeight: styleVar.textLineHeight,
+        fontFamily: styleVar.fontGeorgia,
+        margin: 20
+    }
 })
 
-export default class LiveBox extends Component {
+export default class LiveGame extends Component {
     constructor(props){
         super(props)
     }
@@ -90,33 +98,37 @@ export default class LiveBox extends Component {
     }
     render() {
         return (
-            <View style={locStyle.liveBox}>
-                <View style={locStyle.liveBoxTitle}>
-                    <Text style={locStyle.liveBoxTitleText}>
-                        GAME NOW LIVE
-                    </Text>
-                </View>
+            <View>
+                <View style={locStyle.liveBox}>
+                    <View style={locStyle.liveBoxTitle}>
+                        <Text style={locStyle.liveBoxTitleText}>
+                            GAME NOW LIVE
+                        </Text>
+                    </View>
 
-                <View style={locStyle.liveBoxInfo}>
-                <Text style={locStyle.liveBoxDescText}>
-                    Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
-                </Text> 
-                <ButtonFeedback 
-                    rounded 
-                    style={[locStyle.roundButton]}
-                    onPress={this.coachBoxOnpress}
-                >
-                    <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
-                                    style={locStyle.logoIcon}/>
-                    <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
-                        COACH'S BOX
-                    </Text>
-                </ButtonFeedback>
+                    <View style={locStyle.liveBoxInfo}>
+                    <Text style={locStyle.liveBoxDescText}>
+                        Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
+                    </Text> 
+                    <ButtonFeedback 
+                        rounded 
+                        style={[locStyle.roundButton]}
+                        onPress={this.coachBoxOnpress}
+                    >
+                        <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
+                                        style={locStyle.logoIcon}/>
+                        <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
+                            COACH'S BOX
+                        </Text>
+                    </ButtonFeedback>
+                    </View>
                 </View>
+                <Text style={locStyle.pageText}>please put the description here please put the description here</Text>
+                <GamedayTeam />
             </View>
         )
     }
 }
-LiveBox.propTypes = {
+LiveGame.propTypes = {
     buttonOnPress: PropTypes.func,
 }

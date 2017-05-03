@@ -18,12 +18,12 @@ class Momentum extends Component {
 
     constructor(props) {
          super(props)
-         this.state = {
-              h:styleVar.deviceHeight-270,
-              data:this.props.momentumData,
+         // this.state = {
+         //      h:styleVar.deviceHeight-270,
+              // data:this.props.momentumData,
               // isLoaded:false,
               // isChanged:false
-         }
+         // }
     }
     // componentWillReceiveProps(nextProps) {
     //     if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.momentumData',nextProps.momentumData)
@@ -91,13 +91,14 @@ class Momentum extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        let h=y+180>styleVar.deviceHeight-360?y+180:styleVar.deviceHeight-360
-        this.setState({h},()=>{
+        let h=y+230>styleVar.deviceHeight-345?y+230:styleVar.deviceHeight-345
+        this.props.setHeight(h,'momentum')
+        // this.setState({h},()=>{
             // if(this.state.isChanged&&this.props.isActive) {
-                this.props.setHeight(this.state.h,'momentum')
+                // this.props.setHeight(this.state.h,'momentum')
                 // this.setState({isChanged:false})
             // }
-        })
+        // })
         
     }
     // componentDidMount(){
@@ -110,15 +111,19 @@ class Momentum extends Component {
         return (
                 <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                     <LiveBox data={{}} />
-                    <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)'}}>
+                    <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)',minHeight:styleVar.deviceHeight-270}}>
                         <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
-                            <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
-                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
-                            <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
-                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
-                            <ButtonFeedback >
-                                <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
-                            </ButtonFeedback>
+                            <View style={{flex:1,flexDirection:'row'}}>
+                                <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
+                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
+                            </View>
+                            <View style={{flex:1,flexDirection:'row'}}>
+                                <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
+                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
+                                <ButtonFeedback >
+                                    <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
+                                </ButtonFeedback>
+                            </View>
                         </View>
                         <View >
                             {

@@ -20,10 +20,10 @@ const locStyle = styleSheetCreate({
         backgroundColor: '#FFF'
     },
     circle: {
-        width: 50,
-        height: 50,
+        width: styleVar.deviceWidth*0.13,
+        height: styleVar.deviceWidth*0.13,
         backgroundColor: styleVar.colorScarlet,
-        borderRadius: 50,
+        borderRadius: styleVar.deviceWidth*0.13,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -45,12 +45,12 @@ const locStyle = styleSheetCreate({
    
     time: {
         backgroundColor: '#FFF',
-        width: 90,
-        height: 50,
-        borderRadius: 50,
+        width: styleVar.deviceWidth*0.24,
+        height: styleVar.deviceWidth*0.13,
+        borderRadius: styleVar.deviceWidth*0.13,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 40
+        marginHorizontal: styleVar.deviceWidth*0.1
     },
     timeInverse: {
         borderWidth: 1,
@@ -72,8 +72,8 @@ const locStyle = styleSheetCreate({
 
     },
     logoIcon: {
-        width: 40,
-        height: 40,
+        width: styleVar.deviceWidth*0.1,
+        height: styleVar.deviceWidth*0.1,
         backgroundColor: 'transparent'
     },
 })
@@ -95,30 +95,35 @@ export default class LiveBox extends Component {
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
 
         return (
-            <View style={styleLiveBox}>
-                {
-                    !inverse &&
-                        <View style={locStyle.logo}>
-                            <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                                style={locStyle.logoIcon}/>
-                        </View>
-                }
-                <View style={styleCircle}>
-                    <Text style={locStyle.circleText}>15</Text>
+            <View>
+                <View style={styleLiveBox}>
+                    {
+                        !inverse &&
+                            <View style={locStyle.logo}>
+                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                                    style={locStyle.logoIcon}/>
+                            </View>
+                    }
+                    <View style={styleCircle}>
+                        <Text style={locStyle.circleText}>15</Text>
+                    </View>
+                    <View style={styleTime}>
+                        <Text style={locStyle.timeText}>00:00</Text>
+                    </View>
+                    <View style={styleCircle}>
+                        <Text style={locStyle.circleText}>47</Text>
+                    </View>
+                    {
+                        !inverse &&
+                            <View style={locStyle.logo}>
+                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                                    style={locStyle.logoIcon}/>
+                            </View>
+                    }
                 </View>
-                <View style={styleTime}>
-                    <Text style={locStyle.timeText}>00:00</Text>
+                <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
+                    <Text style={{color:'rgb(255,255,255)',fontFamily: styleVar.fontGeorgia,fontSize:14,lineHeight:16,textAlign:'center'}}>Provincial Barbarians v British & Irish Lions</Text>
                 </View>
-                <View style={styleCircle}>
-                    <Text style={locStyle.circleText}>47</Text>
-                </View>
-                {
-                    !inverse &&
-                        <View style={locStyle.logo}>
-                            <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                                style={locStyle.logoIcon}/>
-                        </View>
-                }
             </View>
         )
     }

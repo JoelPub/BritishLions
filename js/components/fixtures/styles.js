@@ -127,5 +127,8 @@ module.exports = styleSheetCreate({
     },
     imgSponsor: {
       width: null
+    },
+    activityIndicatorWrapper: {
+        paddingVertical: 20
     }
 })

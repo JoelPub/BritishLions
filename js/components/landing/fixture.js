@@ -196,9 +196,9 @@ class PlayerFigure extends Component {
                         fixture: fixtureInfo.toJS(),
                         isLoaded: true
                     })
+                } else {
+                    this.setState({ isLoaded: true })
                 }
-
-                this.setState({ isLoaded: true })
             }
         })
     }
