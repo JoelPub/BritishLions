@@ -22,6 +22,7 @@ import {getAddedToCalanderCheck,setAddedToCalanderCheck} from '../utility/asyncS
 import moment from 'moment'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
+import { strToLower } from '../utility/helper'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -41,8 +42,8 @@ const Banner = ({data}) => (
                 source={images[data.id]} />
         </ImagePlaceholder>
         <View style={styles.titleBar}>
-            <Text style={styles.titleBarText}>{data.stadium_location}</Text>
-            <Text style={[styles.titleBarText, styles.titleBarText2]}>{data.stadium_time}</Text>
+            <Text style={styles.titleBarText}>{data.stadiumlocation}</Text>
+            <Text style={[styles.titleBarText, styles.titleBarText2]}>{data.stadiumtime}</Text>
         </View>
     </View>
 )
@@ -52,10 +53,12 @@ class FixtureDetails extends Component {
     constructor(props){
         super(props)
         this._scrollView = ScrollView
+        this.isUnMounted = false
+
         this.state = {
-            isGameIsOn: false,
             details: this.props.details,
-            isLoaded: false
+            isLoaded: false,
+            gameStatus: null
         }
     }
 
@@ -173,16 +176,59 @@ class FixtureDetails extends Component {
         if (__DEV__)console.log(interaction)
         NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
         if (__DEV__)console.log('this.state.details',this.state.details)
+
+        this._analyzeGameStatus()
+    }
+
+    _analyzeGameStatus() {
+        let gameStatus = strToLower(this.state.details.game_status) || null
+        
+        if (gameStatus === 'pre') {
+            this._loadPreGame()
+        } else if (gameStatus === 'live') {
+            
+        } else if (gameStatus === 'post') {
+
+        } else {
+            this.setState({ isLoaded: true })
+        }
+    }
+
+    _gameMode() {
+        let fixtureDetails = this.state.details
+        let gameStatus = strToLower(this.state.gameStatus)
+
+        switch (gameStatus) {
+            case 'live':
+                return <LiveGame data={fixtureDetails} buttonOnPress={this.goToCoachBox}/>
+                break;
+            case 'pre':
+                return <PreGame data={fixtureDetails} pressAddCalendar={()=>this.calendarAddEvent(this.props)}/>
+                break;
+            case 'post':
+                return <PostGame data={fixtureDetails}/>
+                break;
+            default:
+                return <View></View>
+        }
+    }
+
+    _loadPreGame() {
+        this.setState({
+            isLoaded: true,
+            gameStatus: 'pre'
+        })
     }
 
     goToCoachBox = () => {
-      this.props.drillDown('', 'coachBox')
+        this.props.drillDown('', 'coachBox')
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     render() {
-        let fixtureDetails = this.state.details
-        let { date, title, stadiumtime, time, id, description, stadiumlocation } = fixtureDetails
-        
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
@@ -193,21 +239,15 @@ class FixtureDetails extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
-                            <Banner data={fixtureDetails} />
-                            
-                            {/*<View style={styles.activityIndicatorWrapper}>
-                                <ActivityIndicator size='small' /> 
-                            </View>*/}
-                            
-                            <PreGame 
-                                data={fixtureDetails} 
-                                pressAddCalendar={()=>this.calendarAddEvent(this.props)}/>
-                            
-                            {/*<LiveGame
-                                data={fixtureDetails} 
-                                buttonOnPress={this.goToCoachBox}/>*/}
-
-                             {/*<PostGame data={fixtureDetails}/>*/}
+                            <Banner data={this.state.details} />
+                            {
+                                this.state.isLoaded?
+                                    this._gameMode()
+                                :
+                                    <View style={styles.activityIndicatorWrapper}>
+                                        <ActivityIndicator size='small' /> 
+                                    </View>
+                            }
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>

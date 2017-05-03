@@ -41,6 +41,13 @@ const locStyle = styleSheetCreate({
             paddingRight: 5
         }
     },
+    pageText: {
+        color: styleVar.colorText,
+        fontSize: styleVar.textFontSize,
+        lineHeight: styleVar.textLineHeight,
+        fontFamily: styleVar.fontGeorgia,
+        margin: 20
+    }
 })
 
 export default class PreGame extends Component {
@@ -59,6 +66,8 @@ export default class PreGame extends Component {
                         </Text>
                     </ButtonFeedback>
                 </View>
+                <Text style={locStyle.pageText}>please put the description here please put the description here</Text>
+                
                 <PickYourXV/>
                 <GamedayTeam />
             </View>
