@@ -21,10 +21,9 @@ import SetPlayer from './Component/SetPlayer'
 import ManOfTheMatch from './Component/manOfTheMatch'
 import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
-import  SetPlayerDefaultData from './Component/SetPlayer/DefaultData'
 import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
-
+import { getGameSetPlays ,getGameOnFire} from '../utility/matchApiManger/matchApiManger'
 
 class MatchCenter extends Component {
 
@@ -38,7 +37,9 @@ class MatchCenter extends Component {
           isLoaded:false,
           modalInfo:false,
           statusArray: [true,false,false,false,false],
-          momentumData:null
+          momentumData:null,
+          setPlayerData: null,
+          onFireData:null
         }
         this.subscription= null
         this.timer  = null
@@ -95,7 +96,7 @@ class MatchCenter extends Component {
           this.statusArray.fill(false)
           this.statusArray[0]=true
           this.setState({
-            statusArray: this.statusArray
+            statusArray: this.statusArray,
           })
         },6000)
       }
@@ -154,13 +155,26 @@ class MatchCenter extends Component {
       }
       if(this.state.index===2){
         if (__DEV__)console.log('call  set Play  Api')
-        setTimeout(()=>{
-          this.statusArray.fill(false)
-          this.statusArray[2]=true
-          this.setState({
-            statusArray: this.statusArray
-          })
-        },6000)
+        if (__DEV__)console.log(getGameSetPlays)
+
+        getGameSetPlays('1',(json)=>{
+
+            this.statusArray.fill(false)
+            this.statusArray[2]=true
+            this.setState({
+              setPlayerData:json.data,
+              statusArray: this.statusArray
+            })
+        },(error)=>{
+
+        })
+        //setTimeout(()=>{
+        //  this.statusArray.fill(false)
+        //  this.statusArray[2]=true
+        //  this.setState({
+        //    statusArray: this.statusArray
+        //  })
+        //},6000)
 
       }
       if(this.state.index===3){
@@ -174,14 +188,24 @@ class MatchCenter extends Component {
         },6000)
       }
       if(this.state.index===4){
-        if (__DEV__)console.log('call man of the match Api')
-        setTimeout(()=>{
+        if (__DEV__)console.log('on fire Api')
+        getGameOnFire('1',(json)=>{
           this.statusArray.fill(false)
           this.statusArray[4]=true
           this.setState({
+            onFireData:json.data,
             statusArray: this.statusArray
           })
-        },6000)
+        },(error)=>{
+
+        })
+        //setTimeout(()=>{
+        //  this.statusArray.fill(false)
+        //  this.statusArray[4]=true
+        //  this.setState({
+        //    statusArray: this.statusArray
+        //  })
+        //},6000)
       }
     }
     componentDidMount() {
@@ -202,7 +226,7 @@ class MatchCenter extends Component {
       })
     }
     render() {
-      let { statusArray } = this.state
+      let { statusArray ,setPlayerData,onFireData} = this.state
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -243,7 +267,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[2]? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
-                                                                 set_plays={SetPlayerDefaultData}/>
+                                                                 set_plays={setPlayerData.set_plays}/>
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[2]&&this.state.index===2&&
@@ -262,7 +286,10 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[4]? <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
+                                statusArray[4]? <OnFire  isActive={this.state.index===4}
+                                                         setHeight={this._setHeight.bind(this)}
+                                                         on_fire={onFireData.on_fire}
+                                />
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4&&
