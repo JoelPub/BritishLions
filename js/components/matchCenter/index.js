@@ -39,7 +39,7 @@ class MatchCenter extends Component {
           modalInfo:false,
           statusArray: [false,false,false,false,false],
           momentumData:{},
-          summaryData:{}
+          summaryData:[]
         }
         this.subscription= null
         this.timer  = null
@@ -89,39 +89,116 @@ class MatchCenter extends Component {
         return result.reverse()
 
     }
+    processSummaryData(type,json){
+      let result=[]
+      if(type==='init'||type==='refresh') {        
+        json.map((value,index)=>{
+          result.push({seq:index+1,time:value.gameTime,description:value.eventString})
+        })
+      }
+      if (type==='refresh'&&this.state.summaryData.length>0) {
+        this.state.summaryData.map((value,index)=>{
+          result.push({seq:json.length+index+1,time:value.time,description:value.description})
+        })
+      }
+      if (type==='extend') {
+          _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
+            if(__DEV__)console.log('res',res)
+                if(res) {
+                  let tmp=this.state.summaryData
+                  res.map((value,index)=>{
+                    tmp.push({seq:tmp.length+1,time:value.gameTime,description:value.eventString})
+                  })
+                  if(__DEV__)console.log('tmp',tmp)
+                  this.setState({
+                    summaryData:tmp
+                  })
+                }
+
+          })
+      }
+      return result
+    }
     callApi = () => {
       if(this.state.index===0){
         if (__DEV__)console.log('call match summary Api')
         if(!this.statusArray[0]) {
-          _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
-            if(__DEV__)console.log('json',json)
-                if(json) {
+          let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
+            data: {id:1},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
                         this.statusArray.fill(false)
                         this.statusArray[0]=true
+                        let tmp=this.processSummaryData('init',res.data)
+                        if(__DEV__)console.log('tmp',tmp)
                         this.setState({
                           statusArray: this.statusArray,
-                          summaryData:json
+                          summaryData:tmp
                         })
                 }
+            },
+            onError: ()=>{
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+          }
+          service(optionsInfo) 
+          // _fetch({url:'https://api.myjson.com/bins/15poal'}).then((json)=>{
+          //   if(__DEV__)console.log('json',json)
+          //       if(json) {
+          //               this.statusArray.fill(false)
+          //               this.statusArray[0]=true
+          //               let tmp=this.processSummaryData('init',json)
+          //               if(__DEV__)console.log('tmp',tmp)
+          //               this.setState({
+          //                 statusArray: this.statusArray,
+          //                 summaryData:tmp
+          //               })
+          //       }
 
-          })
+          // })
         }
         else {
-           _fetch({url:'https://api.myjson.com/bins/xvxdv'}).then((json)=>{
-                  if(__DEV__)console.log('json',json)
-                  this.setState({
-                    statusArray: this.statusArray,
-                    summaryData:json
-                  })
-                })
+          let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
+            data: {id:1,"sequenceId" : 20},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
+                        let tmp=this.processSummaryData('refresh',res.data)
+                        if(__DEV__)console.log('tmp',tmp)
+                        this.setState({
+                          summaryData:tmp
+                        })
+                }
+            },
+            onError: ()=>{
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+          }
+          service(optionsInfo) 
+           // _fetch({url:'https://api.myjson.com/bins/nbdp9'}).then((json)=>{
+           //        if(__DEV__)console.log('json',json)
+           //        let tmp=this.processSummaryData('refresh',json)
+           //        if(__DEV__)console.log('tmp',tmp)
+           //        this.setState({
+           //          summaryData:tmp
+           //        })
+           //      })
         }
-        // setTimeout(()=>{
-        //   this.statusArray.fill(false)
-        //   this.statusArray[0]=true
-        //   this.setState({
-        //     statusArray: this.statusArray
-        //   })
-        // },6000)
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
@@ -211,7 +288,7 @@ class MatchCenter extends Component {
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
           this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
             this.callApi()
-            this.timer = setInterval(this.callApi,10000)
+            this.timer = setInterval(this.callApi,30000)
         })},500)
         
     }
@@ -249,7 +326,7 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
-                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData}/>
+                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.processSummaryData.bind(this)}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[0]&&this.state.index===0&&

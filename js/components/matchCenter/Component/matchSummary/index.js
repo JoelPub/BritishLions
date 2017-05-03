@@ -17,22 +17,6 @@ class MatchSummary extends Component {
 
     constructor(props) {
          super(props)
-         this.state = {
-              h:0,
-              data:[],
-              isLoaded:false
-         }
-         this.data = [
-          {"time": "54MIN", "description": "The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. "},
-          {"time": "52MIN", "description": "Badminton is a racquet sport played using racquets to hit a shuttlecock across a net."},
-          {"time": "49MIN", "description": "Team sport played between two teams of eleven players with a spherical ball. "},
-          {"time": "484MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
-          {"time": "47MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
-          {"time": "45MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
-          {"time": "43MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
-          {"time": "40MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"},
-          {"time": "38MIN", "description": "Look out for the Best Gym & Fitness Centers around me :)"}
-        ]
     }
     measurePage(page,event) {
         // if (__DEV__)console.log('measurePage')
@@ -42,9 +26,7 @@ class MatchSummary extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        this.setState({h:y+50},()=>{
-            this.props.setHeight(this.state.h,'match summary')
-        })
+        this.props.setHeight(y+50,'match summary')
         
     }
     _renderCircle(rowData,sectionID,rowID) {
@@ -52,6 +34,10 @@ class MatchSummary extends Component {
         <View style={{width:50,height:50,backgroundColor:'rgb(255,255,255)',position:'absolute',left:0,borderWidth:1,borderColor:'rgb(216,217,218)',borderRadius:25,justifyContent:'center'}}>
         <Text style={{fontSize:17,fontFamily:styleVar.fontCondensed,color:'rgb(175,0,30)',textAlign: 'center'}}>{rowData.time}</Text>
         </View>)
+    }
+    _onEndReached(){
+      console.log('end reached')
+      this.props.setEndReached('extend')
     }
     render() {
         return (
@@ -70,7 +56,9 @@ class MatchSummary extends Component {
                             options={{
                               style:{paddingTop:5},
                               scrollEnabled:true,
-                              enableEmptySections:true
+                              enableEmptySections:true,
+                              onEndReached:this._onEndReached.bind(this),
+                              onEndReachedThreshold:30
                             }}
                             renderCircle={this._renderCircle}
                           />            
