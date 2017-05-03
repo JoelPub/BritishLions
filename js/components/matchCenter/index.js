@@ -22,7 +22,8 @@ import ManOfTheMatch from './Component/manOfTheMatch'
 import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
 import  SetPlayerDefaultData from './Component/SetPlayer/DefaultData'
-
+import { service } from '../utility/services'
+import _fetch from '../utility/fetch'
 
 
 class MatchCenter extends Component {
@@ -30,20 +31,24 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH']
+        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH','ONFIRE']
         this.state = {
           index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:0,
           isLoaded:false,
           modalInfo:false,
-          statusArray: [1,0,0,0,0]
+          statusArray: [false,false,false,false,false],
+          momentumData:{},
+          summaryData:{}
         }
         this.subscription= null
         this.timer  = null
+        this.statusArray=[false,false,false,false,false]
+        this.fullTime=80
 
     }
     iconPress = () => {
-    this.setState({modalInfo: !this.state.modalInfo})
+        this.setState({modalInfo: !this.state.modalInfo})
     }
     _setHeight(h,source) {
         if (__DEV__)console.log(source,'_setHeight',h)
@@ -54,69 +59,172 @@ class MatchCenter extends Component {
         modalInfo: !this.state.modalInfo
       })
     }
+    processMomentumData(data){
+        // if(__DEV__)console.log('processMomentumData')
+        let result=[]
+        for(let i=0;i<this.fullTime;i=i+10){
+            let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
+            // if(__DEV__)console.log('momentum',momentum)
+            if(data.team_momentum.findIndex(x=>{
+                return parseInt(x.time)>i&&parseInt(x.time)<=i+10
+            })>-1) {
+                momentum.team_momentum=data.team_momentum.filter(x=>{
+                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10
+                })
+                momentum.score_advantage=data.score_advantage.filter(x=>{
+                    return parseInt(x.time)===i||parseInt(x.time)===i+10
+                })
+                if (i===0) momentum.isFirst=true
+                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
+                momentum.timeMark=i+10
+                result.push(momentum)
+
+            }
+            else {
+                result.push(null)
+            }
+        }
+
+        // if(__DEV__)console.log('result',result)
+        return result.reverse()
+
+    }
     callApi = () => {
       if(this.state.index===0){
         if (__DEV__)console.log('call match summary Api')
-        setTimeout(()=>{
-          this.state.statusArray[0]=1
-          this.setState({
-            statusArray: this.state.statusArray
+        if(!this.statusArray[0]) {
+          _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
+            if(__DEV__)console.log('json',json)
+                if(json) {
+                        this.statusArray.fill(false)
+                        this.statusArray[0]=true
+                        this.setState({
+                          statusArray: this.statusArray,
+                          summaryData:json
+                        })
+                }
+
           })
-        },6000)
+        }
+        else {
+           _fetch({url:'https://api.myjson.com/bins/xvxdv'}).then((json)=>{
+                  if(__DEV__)console.log('json',json)
+                  this.setState({
+                    statusArray: this.statusArray,
+                    summaryData:json
+                  })
+                })
+        }
+        // setTimeout(()=>{
+        //   this.statusArray.fill(false)
+        //   this.statusArray[0]=true
+        //   this.setState({
+        //     statusArray: this.statusArray
+        //   })
+        // },6000)
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
-        setTimeout(()=>{
-          this.state.statusArray[1]=1
-          this.setState({
-            statusArray: this.state.statusArray
-          })
-        },6000)
+
+          let optionsInfo = {
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getGameMomentum',
+            data: {id:1},
+            onAxiosStart: null,
+            onAxiosEnd: null,
+            method: 'post',
+            onSuccess: (res) => {
+                // if (__DEV__)console.log('res',res)
+                if(res.data) {
+                    if (__DEV__)console.log('res.data',res.data)
+                        this.statusArray.fill(false)
+                        this.statusArray[1]=true
+                        let tmp=this.processMomentumData(res.data.momentum)
+                        if(__DEV__)console.log('tmp',tmp)
+                        this.setState({
+                          statusArray: this.statusArray,
+                          momentumData:tmp
+                        })
+                }
+            },
+            onError: ()=>{
+            },
+            isRequiredToken: false,
+            channel: 'EYC3',
+            isQsStringify:false
+          }
+        if(!this.statusArray[1]) {
+          service(optionsInfo) 
+        }
+        else {
+           _fetch({url:'https://api.myjson.com/bins/9zfuh'}).then((json)=>{
+                  if(__DEV__)console.log('json',json)
+                  let tmp=this.processMomentumData(json.momentum)
+                  if(__DEV__)console.log('tmp',tmp)
+                  this.setState({
+                    momentumData:tmp
+                  })
+                })
+        }
+
+        // setTimeout(()=>{
+        //   this.statusArray=[0,0,0,0,0]
+        //   this.statusArray[1]=1
+        //   this.setState({
+        //     statusArray: this.statusArray
+        //   })
+        // },6000)
 
       }
       if(this.state.index===2){
         if (__DEV__)console.log('call  set Play  Api')
         setTimeout(()=>{
-          this.state.statusArray[2]=1
+          this.statusArray.fill(false)
+          this.statusArray[2]=true
           this.setState({
-            statusArray: this.state.statusArray
+            statusArray: this.statusArray
           })
         },6000)
       }
       if(this.state.index===3){
         if (__DEV__)console.log('call man of the match Api')
         setTimeout(()=>{
-          this.state.statusArray[3]=1
+          this.statusArray.fill(false)
+          this.statusArray[3]=true
           this.setState({
-            statusArray: this.state.statusArray
+            statusArray: this.statusArray
           })
         },6000)
       }
       if(this.state.index===4){
         if (__DEV__)console.log('call man of the match Api')
         setTimeout(()=>{
-          this.state.statusArray[4]=1
+          this.statusArray.fill(false)
+          this.statusArray[4]=true
           this.setState({
-            statusArray: this.state.statusArray
+            statusArray: this.statusArray
           })
         },6000)
       }
     }
     componentDidMount() {
         if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
-        setTimeout(()=>{this.setState({isLoaded:true})},1000)
-      this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal);
-      this.timer = setInterval(this.callApi,6000)
+        setTimeout(()=>{this.setState({isLoaded:true},()=>{
+          this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
+            this.callApi()
+            this.timer = setInterval(this.callApi,10000)
+        })},500)
+        
     }
     componentWillUnmount() {
       this.isUnMounted = true
       this.subscription.remove();
     }
     swiperScrollEnd = (e, state, context) => {
-      this.setState({index:state.index})
-      this.timer&&clearTimeout(this.timer)
-      this.callApi()
-      this.timer = setInterval(this.callApi,6000)
+      this.setState({index:state.index},()=>{        
+        this.timer&&clearTimeout(this.timer)
+        this.callApi()
+        this.timer = setInterval(this.callApi,10000)
+      })
     }
     render() {
       let { statusArray } = this.state
@@ -141,26 +249,51 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
-                                statusArray[0]!==0 ? <MatchSummary isActive={this.state.index===0} setHeight={this._setHeight.bind(this)} />
-                                  : <View />
+                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData}/>
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[0]&&this.state.index===0&&
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      }
+                                    </View>
                               }
                               {
-                                statusArray[1]!==0 ? <Momentum  isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}/>
-                                  : <View />
+                                statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} momentumData={this.state.momentumData}/>
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[1]&&this.state.index===1&&
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      }
+                                    </View>
                               }
                               {
-                                statusArray[2]!==0 ? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                statusArray[2]? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                                                  set_plays={SetPlayerDefaultData}/>
-                                  : <View />
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[2]&&this.state.index===2&&
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      }
+                                    </View>
                               }
                               {
-                                statusArray[3]!==0 ? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
+                                statusArray[3]? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
 
-                                  : <View />
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[3]&&this.state.index===3&&
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      }
+                                    </View>
                               }
                               {
-                                statusArray[4]!==0 ? <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
-                                  : <View />
+                                statusArray[4]? <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[4]&&this.state.index===4&&
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      }
+                                    </View>
                               }
 
                             </Swiper>

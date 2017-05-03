@@ -43,14 +43,9 @@ class MatchSummary extends Component {
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
         this.setState({h:y+50},()=>{
-            if(this.props.isActive) this.props.setHeight(this.state.h,'match summary')
+            this.props.setHeight(this.state.h,'match summary')
         })
         
-    }
-    componentWillReceiveProps(nextProps) {
-        // if (__DEV__)console.log('match Summary componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        // if (__DEV__)console.log('match Summary componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h,'match summary')
     }
     _renderCircle(rowData,sectionID,rowID) {
       return (
@@ -58,40 +53,15 @@ class MatchSummary extends Component {
         <Text style={{fontSize:17,fontFamily:styleVar.fontCondensed,color:'rgb(175,0,30)',textAlign: 'center'}}>{rowData.time}</Text>
         </View>)
     }
-    componentDidMount(){
-        _fetch({url:'https://api.myjson.com/bins/uyosz'}).then((json)=>{
-          // if(__DEV__)console.log('json',json)
-          this.setState({data:json,isLoaded:true})
-
-        }).catch((error)=>{
-            // if (__DEV__)console.log(error)
-        })
-
-        setTimeout(()=>{
-          this.setState({isLoaded:false},()=>{
-            _fetch({url:'https://api.myjson.com/bins/xvxdv'}).then((json)=>{
-              // if(__DEV__)console.log('json',json)
-              this.setState({data:json,isLoaded:true})
-            }).catch((error)=>{
-                // if (__DEV__)console.log(error)
-            })
-          })
-        },10000)
-    }
     render() {
         return (
-            <View>
-            {
-                this.props.isActive?
                 <ScrollView style={{marginTop:50}} scrollEnabled={false}>
                     <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
-                    <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >
-                    {
-                        this.state.isLoaded?
+                    <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >                    
                           <Timeline
-                            data={this.state.data}
+                            data={this.props.summaryData}
                             lineColor='rgb(216,217,218)'
                             timeContainerStyle={{position:'absolute'}}
                             timeStyle={{width:0,height:0}}
@@ -103,18 +73,11 @@ class MatchSummary extends Component {
                               enableEmptySections:true
                             }}
                             renderCircle={this._renderCircle}
-                          />
-                        :
-                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                    }                    
+                          />            
                     </View>
                     <View onLayout={this.measurePage.bind(this,'matchSummary')} />
 
               </ScrollView>
-                :
-                null
-            }
-            </View>
         )
     }
 }
