@@ -26,7 +26,7 @@ class MatchSummary extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        this.props.setHeight(y+50,'match summary')
+        this.props.setHeight(y,'match summary')
         
     }
     _renderCircle(rowData,sectionID,rowID) {
