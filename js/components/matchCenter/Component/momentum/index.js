@@ -18,12 +18,12 @@ class Momentum extends Component {
 
     constructor(props) {
          super(props)
-         this.state = {
-              h:styleVar.deviceHeight-270,
-              data:this.props.momentumData,
+         // this.state = {
+         //      h:styleVar.deviceHeight-270,
+              // data:this.props.momentumData,
               // isLoaded:false,
               // isChanged:false
-         }
+         // }
     }
     // componentWillReceiveProps(nextProps) {
     //     if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.momentumData',nextProps.momentumData)
@@ -92,12 +92,13 @@ class Momentum extends Component {
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
         let h=y+180>styleVar.deviceHeight-360?y+180:styleVar.deviceHeight-360
-        this.setState({h},()=>{
+        this.props.setHeight(h,'momentum')
+        // this.setState({h},()=>{
             // if(this.state.isChanged&&this.props.isActive) {
-                this.props.setHeight(this.state.h,'momentum')
+                // this.props.setHeight(this.state.h,'momentum')
                 // this.setState({isChanged:false})
             // }
-        })
+        // })
         
     }
     // componentDidMount(){
