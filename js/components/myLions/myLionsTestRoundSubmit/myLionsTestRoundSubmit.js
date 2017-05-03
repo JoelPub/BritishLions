@@ -30,6 +30,7 @@ import {convertTeamToShow} from '../components/teamToShow'
 import Data from '../../../../contents/unions/data'
 import { setTeamToShow } from '../../../actions/squad'
 
+import _fetch from '../../utility/fetch'
 
 const ShareHeaderView = ({detail}) => {
   let height = 0
@@ -155,7 +156,7 @@ class MyLionsTestRoundSubmit extends Component {
                                     this.props.teamToShow.indivPos.map((item,i)=>{
                                       let position = strToUpper(item.position) === 'CAPTAIN'? 'MATCH CAPTAIN' : strToUpper(item.position)
                                       let firstName = item.info!==null?item.info.name.toUpperCase().substring(0, item.info.name.lastIndexOf(" ")):''
-                                      let lastName = item.info!==null?item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length):0
+                                      let lastName = item.info!==null?item.info.name.toUpperCase().substring(item.info.name.lastIndexOf(" ")+1, item.info.name.length):''
                                       return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
                                     })
                                   }
@@ -242,6 +243,13 @@ class MyLionsTestRoundSubmit extends Component {
                     isQsStringify:false
                 }
                 service(optionsTeam)
+                // _fetch({url:'https://api.myjson.com/bins/laaj1'}).then((json)=>{
+                //   if(__DEV__)console.log('json',json)
+                //       if(json) {
+                //               this.setTeam(TeamModel.fromJS(json))
+                //       }
+
+                // })
             }
         }).catch((error) => {
                     this._showError(error) 

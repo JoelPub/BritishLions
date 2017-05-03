@@ -34,7 +34,7 @@ class MatchCenter extends Component {
         this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH','ONFIRE']
         this.state = {
           index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
-          swiperHeight:0,
+          swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
           modalInfo:false,
           statusArray: [false,false,false,false,false],
@@ -250,7 +250,7 @@ class MatchCenter extends Component {
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
                                 statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[0]&&this.state.index===0&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -259,7 +259,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} momentumData={this.state.momentumData}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -269,7 +269,7 @@ class MatchCenter extends Component {
                               {
                                 statusArray[2]? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                                                  set_plays={SetPlayerDefaultData}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[2]&&this.state.index===2&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -279,7 +279,7 @@ class MatchCenter extends Component {
                               {
                                 statusArray[3]? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
 
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -288,7 +288,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[4]? <OnFire  isActive={this.state.index===4} setHeight={this._setHeight.bind(this)}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />

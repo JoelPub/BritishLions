@@ -175,6 +175,10 @@ class LionsSidebar extends Component {
                         <Icon name='md-image' style={styles.icon} />
                         <Text style={styles.linkText}>GALLERIES</Text>
                     </ButtonFeedback>
+                    <ButtonFeedback onPress={() => this.navigateTo('matchCenter')} style={styles.links}>
+                        <Icon name='md-image' style={styles.icon} />
+                        <Text style={styles.linkText}>MATCH CENTER</Text>
+                    </ButtonFeedback>
                     <ButtonFeedback onPress={() => this._isSignIn('myLions')} style={styles.links}>
                         <Icon name='md-heart' style={styles.icon} />
                         <Text style={styles.linkText}>MY LIONS</Text>
