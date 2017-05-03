@@ -161,6 +161,7 @@ class MatchCenter extends Component {
             statusArray: this.statusArray
           })
         },6000)
+
       }
       if(this.state.index===3){
         if (__DEV__)console.log('call man of the match Api')

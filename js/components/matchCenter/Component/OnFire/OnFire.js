@@ -33,25 +33,18 @@ class OnFire extends Component {
       h:0
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (__DEV__)console.log('momentum componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-    if (__DEV__)console.log('momentum componentWillReceiveProps this.props.isActive',this.props.isActive)
-    if(nextProps.isActive&&!this.props.isActive) this.props.setHeight(this.state.h)
-  }
-  measurePage(page,event) {
-    if (__DEV__)console.log('setPlayer')
-    const { x, y, width, height, } = event.nativeEvent.layout
-    if (__DEV__)console.log('page',page)
-    if (__DEV__)console.log('x',x)
-    if (__DEV__)console.log('y',y)
-    if (__DEV__)console.log('width',width)
-    if (__DEV__)console.log('height',height)
-    this.setState({h:y-110})
-  }
+
   iconPress = () =>{
     DeviceEventEmitter.emit('matchCenter', 'onFire');
   }
-
+  mathHeight = (half_time,full_time) => {
+   let  countHalf =  half_time.metres.length + half_time.passes.length + half_time.breaks.length + half_time.breaks.length
+   let  countFull =  full_time.metres.length + full_time.passes.length + full_time.breaks.length + full_time.breaks.length
+   let  realyCount =  countHalf>= countFull ? countHalf : countFull
+    console.log('mathHeight')
+    console.log(realyCount)
+    return  realyCount*50
+  }
   render() {
    let { on_fire } =this.props
     return (
@@ -77,14 +70,26 @@ class OnFire extends Component {
             <View style={{ padding: 20}}>
               <OnFireItem title={'METRES'} data={on_fire.full_time.metres}/>
               <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} />
-              <OnFireItem title={'BREAKS'} data={on_fire.full_time.tackles}/>
-              <OnFireItem isLastItem={true} title={'TACKLES'}/>
+              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks}/>
+              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} />
             </View>
           </View>
         </ScrollableTabView>
-        <View onLayout={this.measurePage.bind(this,'onFire')} />
       </View>
     )
+  }
+  componentDidMount() {
+    let { on_fire } =this.props
+    let height = this.mathHeight(on_fire.half_time,on_fire.full_time)
+    console.log('componentDidMount')
+    console.log(height)
+    this.props.setHeight(height+80+320,'OnFire')
+
+  }
+  componentWillReceiveProps(nextProps) {
+    if (__DEV__)console.log('onFire componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+    if (__DEV__)console.log('onFire componentWillReceiveProps this.props.isActive',this.props.isActive)
+
   }
 }
 export default OnFire
@@ -101,6 +106,24 @@ OnFire.defaultProps = {
           rank: 1,
           game: 80,
           average: 50
+        },
+        {
+          player: 3342,
+          rank: 2,
+          game: 22,
+          average: 87
+        },
+        {
+          player: 3342,
+          rank: 2,
+          game: 22,
+          average: 87
+        },
+        {
+          player: 3342,
+          rank: 2,
+          game: 22,
+          average: 87
         },
         {
           player: 3342,
