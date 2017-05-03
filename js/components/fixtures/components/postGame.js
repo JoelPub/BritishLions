@@ -251,7 +251,7 @@ const Summary = () => (
     </View>
 )
 
-export default class MatchResults extends Component {
+export default class PostGame extends Component {
     constructor(props){
         super(props)
     }

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, NativeModules, ScrollView } from 'react-native'
+import { Image, View, Platform, NativeModules, ScrollView, ActivityIndicator } from 'react-native'
 import { Container, Header, Title, Text, Icon } from 'native-base'
 import { alertBox } from '../utility/alertBox'
 import EYSFooter from '../global/eySponsoredFooter'
@@ -13,9 +13,8 @@ import Countdown from '../global/countdown'
 import { drillDown } from '../../actions/content'
 import LionsFooter from '../global/lionsFooter'
 import LiveGame from './components/liveGame'
-import PickYourXV from './components/pickYourXV'
-import MatchResults from './components/matchResults'
-import GamedayTeam from './components/gamedayTeam'
+import PreGame from './components/preGame'
+import PostGame from './components/postGame'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
 import data from '../../../contents/fixtures/data.json'
@@ -29,6 +28,25 @@ import styleVar from '../../themes/variable'
 import images from '../../../contents/fixtures/images'
 import { strToUpper, isEmptyObject } from '../utility/helper'
 
+const Banner = ({data}) => (
+    <View>
+        <View style={[styles.fixtureBanner, styles.fixtureBannerDetail]}>
+            <Text style={[styles.dateText, styles.dateTextDetail]}>{strToUpper(data.date)}</Text>
+            <Text style={[styles.teamText, styles.teamTextDetail]}>{data.title}</Text>
+        </View>
+        <ImagePlaceholder height={170}>
+            <Image
+                resizeMode='cover' 
+                style={styles.fixtureImg}
+                source={images[data.id]} />
+        </ImagePlaceholder>
+        <View style={styles.titleBar}>
+            <Text style={styles.titleBarText}>{data.stadium_location}</Text>
+            <Text style={[styles.titleBarText, styles.titleBarText2]}>{data.stadium_time}</Text>
+        </View>
+    </View>
+)
+
 class FixtureDetails extends Component {
 
     constructor(props){
@@ -36,15 +54,10 @@ class FixtureDetails extends Component {
         this._scrollView = ScrollView
         this.state = {
             isGameIsOn: false,
-            details:this.props.details
+            details: this.props.details,
+            isLoaded: false
         }
     }
-
-    // componentWillReceiveProps() {
-    //     this.state = {
-    //         isGameIsOn: this.props.isGameIsOn
-    //     }
-    // }
 
    calendarAddEvent(params) {
         let  {date} = this.state.details
@@ -164,11 +177,12 @@ class FixtureDetails extends Component {
 
     goToCoachBox = () => {
       this.props.drillDown('', 'coachBox')
-
     }
 
     render() {
-        let {date,title,stadiumtime,time,id,description,stadiumlocation} = this.state.details
+        let fixtureDetails = this.state.details
+        let { date, title, stadiumtime, time, id, description, stadiumlocation } = fixtureDetails
+        
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
@@ -179,48 +193,22 @@ class FixtureDetails extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
-                            <View style={[styles.fixtureBanner, styles.fixtureBannerDetail]}>
-                                <Text style={[styles.dateText, styles.dateTextDetail]}>{strToUpper(date)}</Text>
-                                <Text style={[styles.teamText, styles.teamTextDetail]}>{title}</Text>
-                            </View>
-                            <ImagePlaceholder height={170}>
-                                <Image
-                                    resizeMode='cover' 
-                                    style={styles.fixtureImg}
-                                    source={images[id]} />
-                            </ImagePlaceholder>
-                            <View style={styles.titleBar}>
-                                <Text style={styles.titleBarText}>{stadiumlocation}</Text>
-                                <Text style={[styles.titleBarText, styles.titleBarText2]}>{stadiumtime}</Text>
-                            </View>
-
-                            <Countdown endDate={`${date} ${time}`}/> 
+                            <Banner data={fixtureDetails} />
                             
-                            <View style={styles.titleBarLink}>
-                                {
-                                    this.state.isGameIsOn?
-                                       
-                                        <Text style={styles.titleBarLinkText}>
-                                            THE GAME IS TODAY!
-                                        </Text>
-                                    :
-                                        <ButtonFeedback onPress={()=>this.calendarAddEvent(this.props)}>
-                                            <Text style={styles.titleBarLinkText}>
-                                                <Icon name='md-calendar' style={styles.icon} /> ADD TO CALENDAR
-                                            </Text>
-                                        </ButtonFeedback>
-                                }
-                            </View>
+                            {/*<View style={styles.activityIndicatorWrapper}>
+                                <ActivityIndicator size='small' /> 
+                            </View>*/}
+                            
+                            <PreGame 
+                                data={fixtureDetails} 
+                                pressAddCalendar={()=>this.calendarAddEvent(this.props)}/>
+                            
+                            {/*<LiveGame
+                                data={fixtureDetails} 
+                                buttonOnPress={this.goToCoachBox}/>*/}
 
-                            <PickYourXV/>
-                            <LiveGame  buttonOnPress={this.goToCoachBox}/>
-
-                            <Text style={styles.pageText}>{description}</Text>
+                             {/*<PostGame data={fixtureDetails}/>*/}
                         </View>
-
-                        <MatchResults/>
-                        <GamedayTeam />
-                        
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     <EYSFooter />
@@ -237,7 +225,6 @@ function bindAction(dispatch) {
 
 export default connect((state) => {
     return {
-        details: state.content.drillDownItem,
-        isGameIsOn: !state.timer.isCountDownTimerEnd
+        details: state.content.drillDownItem
     }
 }, bindAction)(FixtureDetails)
