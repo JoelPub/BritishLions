@@ -8,17 +8,19 @@ import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import styles from './styles'
-import { limitArrayList, strToLower } from '../utility/helper'
+import { limitArrayList, strToLower, strToUpper } from '../utility/helper'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import LinearGradient from 'react-native-linear-gradient'
 import LiveBox from '../global/liveBox'
 import shapes from '../../themes/shapes'
-import _fetch from '../utility/fetch'
+import { service } from '../utility/services'
+import FixtureInfoModel from  '../../modes/Fixtures'
+import Immutable, { Map, List, Iterable } from 'immutable'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
-import fixturesList from '../../../contents/fixtures/data.json'
+//import fixturesList from '../../../contents/fixtures/data.json'
 import fixturesImages from '../../../contents/fixtures/images'
 
 const locStyle = styleSheetCreate({ 
@@ -65,25 +67,30 @@ const PageTitle = ({title}) => (
     </View>
 )
 
-const Banner = ({data, pressBanner}) => (
-    <ButtonFeedback
-        style={styles.banner}
-        onPress={pressBanner}>
-        <ImagePlaceholder height={200}>
-            <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
-                <Image
-                    resizeMode='contain'
-                    style={styles.bannerImg}
-                    source={data.image} />
-            </LinearGradient>
-        </ImagePlaceholder>
-        <View style={[shapes.triangle, {marginTop: -12}]} />
-        <View style={styles.bannerDetails}>
-            <Text style={styles.bannerTitle}>{ data.date }</Text>
-            <Text style={styles.bannerDesc}>{ data.title }</Text>
-        </View>
-    </ButtonFeedback>
-)
+const Banner = ({data, pressBanner}) => {
+    // TEMPORARY: get image FROM LOCAL UNTIL API IS NOT DONE
+    let image = fixturesImages[data.id]
+    
+    return (
+        <ButtonFeedback
+            style={styles.banner}
+            onPress={pressBanner}>
+            <ImagePlaceholder height={200}>
+                <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                    <Image
+                        resizeMode='contain'
+                        style={styles.bannerImg}
+                        source={image} />
+                </LinearGradient>
+            </ImagePlaceholder>
+            <View style={[shapes.triangle, {marginTop: -12}]} />
+            <View style={styles.bannerDetails}>
+                <Text style={styles.bannerTitle}>{ strToUpper(data.date) }</Text>
+                <Text style={styles.bannerDesc}>{ data.title }</Text>
+            </View>
+        </ButtonFeedback>
+    )
+}
 
 const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     <View>
@@ -133,9 +140,11 @@ class PlayerFigure extends Component {
     constructor(props){
         super(props)
 
+        this.isUnMounted = false
+
         this.state = {
-            fixture: {},
-            isLoaded: false
+            fixture: FixtureInfoModel().toJS(),
+            isLoaded: false,
         }
     }
 
@@ -172,19 +181,25 @@ class PlayerFigure extends Component {
     // }
 
     _getFixturesInfo() {
-         _fetch({url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo'}).then((res)=>{
-            //if (__DEV__) console.log('res', res)
+        service({
+            url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo',
+            method: 'get',
+            onSuccess: (res) => {
+                if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-            // TEMPORARY: merge image FROM LOCAL UNTIL API IS NOT DONE
-            res.image = fixturesImages[res.id]
-            //res.game_status = 'live' // intercept game status
+                //if (__DEV__) console.log('res', res.data)
+                if(res.data) {
+                    // intercept game status for debugging purposes
+                    //res.data.game_status = 'live' 
+                    let fixtureInfo = FixtureInfoModel.fromJS(res.data)
+                    this.setState({
+                        fixture: fixtureInfo.toJS(),
+                        isLoaded: true
+                    })
+                }
 
-            this.setState({
-                fixture: res,
-                isLoaded: true
-            })
-        }).catch((error)=>{
-            // if (__DEV__)console.log(error)
+                this.setState({ isLoaded: true })
+            }
         })
     }
 
@@ -206,6 +221,10 @@ class PlayerFigure extends Component {
             default:
                 return <View></View>
         }
+    }
+
+    componentWillUnmount() {
+        this.isUnMounted = true
     }
 
     render() {
