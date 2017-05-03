@@ -38,11 +38,6 @@ class SetPlayer extends Component {
     }
   }
 
-  measurePage(page,event) {
-    if (__DEV__)console.log('setPlayer')
-    const { x, y, width, height, } = event.nativeEvent.layout
-    this.setState({h:y-110})
-  }
   SortingData = (kicks) => {
     let points = {
       redPoints:[],
@@ -139,19 +134,15 @@ class SetPlayer extends Component {
             </View>
           </View>
         </ScrollableTabView>
-        <View onLayout={this.measurePage.bind(this,'setPlayer')} />
       </View>
     )
   }
   componentWillReceiveProps(nextProps) {
     if (__DEV__)console.log('setPlayer componentWillReceiveProps nextProps.isActive',nextProps.isActive)
     if (__DEV__)console.log('setPlayer componentWillReceiveProps this.props.isActive',this.props.isActive)
-    if(nextProps.isActive&&!this.props.isActive) {
-      this.props.setHeight(this.state.h)
-    }
-
   }
   componentDidMount() {
+    this.props.setHeight(600,'SetPlayer')
 
   }
   componentWillUnmount() {
