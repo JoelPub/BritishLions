@@ -37,13 +37,23 @@ class OnFire extends Component {
   iconPress = () =>{
     DeviceEventEmitter.emit('matchCenter', 'onFire');
   }
-  mathHeight = (half_time,full_time) => {
+  mathHeight = (half_time,full_time,index) => {
    let  countHalf =  half_time.metres.length + half_time.passes.length + half_time.breaks.length + half_time.breaks.length
    let  countFull =  full_time.metres.length + full_time.passes.length + full_time.breaks.length + full_time.breaks.length
-   let  realyCount =  countHalf>= countFull ? countHalf : countFull
-    console.log('mathHeight')
-    console.log(realyCount)
-    return  realyCount*50
+   //let  realyCount =  countHalf>= countFull ? countHalf : countFull
+    let realCount = index ===0 ? countHalf : countFull
+    return  realCount*50
+  }
+  onChangeTab = (item) =>{
+    let { on_fire } =this.props
+    let height = this.mathHeight(on_fire.half_time,on_fire.full_time,item.i)
+   if(item.i===0){
+
+     this.props.setHeight(height+80+320,'OnFire')
+   }
+    if(item.i===1){
+      this.props.setHeight(height+80+320,'OnFire')
+    }
   }
   render() {
    let { on_fire } =this.props
@@ -55,6 +65,7 @@ class OnFire extends Component {
           initialPage={0}
           renderTabBar={() => <SetPlayerTabBar />}
           tabBarActiveTextColor={'black'}
+          onChangeTab = {this.onChangeTab}
         >
           <View tabLabel='HALF-TIME'>
             <IconHeader onPress={this.iconPress} />
@@ -80,7 +91,7 @@ class OnFire extends Component {
   }
   componentDidMount() {
     let { on_fire } =this.props
-    let height = this.mathHeight(on_fire.half_time,on_fire.full_time)
+    let height = this.mathHeight(on_fire.half_time,on_fire.full_time,0)
     console.log('componentDidMount')
     console.log(height)
     this.props.setHeight(height+80+320,'OnFire')
@@ -89,6 +100,9 @@ class OnFire extends Component {
   componentWillReceiveProps(nextProps) {
    // if (__DEV__)console.log('onFire componentWillReceiveProps nextProps.isActive',nextProps.isActive)
    // if (__DEV__)console.log('onFire componentWillReceiveProps this.props.isActive',this.props.isActive)
+    if(nextProps.on_fire!==this.props.on_fire){
+
+    }
 
   }
 }
@@ -101,136 +115,30 @@ OnFire.defaultProps = {
   on_fire: {
     half_time: {
       metres: [
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       passes:[
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       breaks:[
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       tackles:[
-        {
-          player: 36,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 4326,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
     },
     full_time: {
       metres: [
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       passes:[
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       breaks:[
-        {
-          player: 23124,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 3342,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
       tackles:[
-        {
-          player: 36,
-          rank: 1,
-          game: 80,
-          average: 50
-        },
-        {
-          player: 4326,
-          rank: 2,
-          game: 22,
-          average: 87
-        },
+
       ],
     }
   }
