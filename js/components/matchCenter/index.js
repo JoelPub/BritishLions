@@ -23,7 +23,7 @@ import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
-import { getGameSetPlays ,getGameOnFire} from '../utility/matchApiManger/matchApiManger'
+import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 
 class MatchCenter extends Component {
 
@@ -248,22 +248,11 @@ class MatchCenter extends Component {
                   })
                 })
         }
-
-        // setTimeout(()=>{
-        //   this.statusArray=[0,0,0,0,0]
-        //   this.statusArray[1]=1
-        //   this.setState({
-        //     statusArray: this.statusArray
-        //   })
-        // },6000)
-
       }
       if(this.state.index===2){
         if (__DEV__)console.log('call  set Play  Api')
-        if (__DEV__)console.log(getGameSetPlays)
-
-        getGameSetPlays('1',(json)=>{
-
+        if (__DEV__)console.log(apiActions)
+        apiActions.getGameSetPlays('1',(json)=>{
             this.statusArray.fill(false)
             this.statusArray[2]=true
             this.setState({
@@ -271,20 +260,11 @@ class MatchCenter extends Component {
               statusArray: this.statusArray
             })
         },(error)=>{
-
         })
-        //setTimeout(()=>{
-        //  this.statusArray.fill(false)
-        //  this.statusArray[2]=true
-        //  this.setState({
-        //    statusArray: this.statusArray
-        //  })
-        //},6000)
-
       }
       if(this.state.index===3){
         if (__DEV__)console.log('on fire Api')
-        getGameOnFire('1',(json)=>{
+        apiActions.getGameOnFire('1',(json)=>{
           this.statusArray.fill(false)
           this.statusArray[3]=true
           this.setState({
@@ -294,13 +274,7 @@ class MatchCenter extends Component {
         },(error)=>{
 
         })
-        //setTimeout(()=>{
-        //  this.statusArray.fill(false)
-        //  this.statusArray[4]=true
-        //  this.setState({
-        //    statusArray: this.statusArray
-        //  })
-        //},6000)
+
       }
       if(this.state.index===4){
         if (__DEV__)console.log('call man of the match Api')
@@ -324,9 +298,10 @@ class MatchCenter extends Component {
     }
     componentWillUnmount() {
       this.subscription.remove();
+      this.timer&&clearTimeout(this.timer)
     }
     swiperScrollEnd = (e, state, context) => {
-      this.setState({index:state.index},()=>{        
+      this.setState({index:state.index},()=>{
         this.timer&&clearTimeout(this.timer)
         this.callApi()
         if(this.state.index!==4) this.timer = setInterval(this.callApi,10000)

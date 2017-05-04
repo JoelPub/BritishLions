@@ -87,8 +87,8 @@ class OnFire extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    if (__DEV__)console.log('onFire componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-    if (__DEV__)console.log('onFire componentWillReceiveProps this.props.isActive',this.props.isActive)
+   // if (__DEV__)console.log('onFire componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+   // if (__DEV__)console.log('onFire componentWillReceiveProps this.props.isActive',this.props.isActive)
 
   }
 }
