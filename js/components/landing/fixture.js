@@ -143,9 +143,12 @@ class PlayerFigure extends Component {
         this.isUnMounted = false
 
         this.state = {
+            //getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
+            getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
             fixture: FixtureInfoModel().toJS(),
             isLoaded: false,
         }
+
     }
 
     componentDidMount() {
@@ -182,7 +185,7 @@ class PlayerFigure extends Component {
 
     _getFixturesInfo() {
         service({
-            url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo',
+            url: this.state.getFixtureInfoURL,
             method: 'get',
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -190,8 +193,8 @@ class PlayerFigure extends Component {
                 //if (__DEV__) console.log('res', res.data)
                 if(res.data) {
                     // intercept game status for debugging purposes
-                    //res.data.game_status = 'live' 
-                    let fixtureInfo = FixtureInfoModel.fromJS(res.data)
+                    //res.data[0].game_status = 'pre' 
+                    let fixtureInfo = FixtureInfoModel.fromJS(res.data[0]) // adding [0] in res.data is for debugging purposes
                     this.setState({
                         fixture: fixtureInfo.toJS(),
                         isLoaded: true
@@ -208,7 +211,9 @@ class PlayerFigure extends Component {
     }
 
     _gameMode(data) {
-        switch (strToLower(data.game_status)) {
+        let gameStatus = strToLower(data.game_status) || null
+        
+        switch (gameStatus) {
             case 'live':
                 return <LiveGame data={data} pressBanner={()=> this._drillDown(data, 'fixtureDetails')} pressCoachBox={this._goToCoachBox}/>
                 break;
