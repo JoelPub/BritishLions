@@ -80,3 +80,9 @@ export function mapJSON(data, colMax = 2) {
     }
     return newData
 }
+
+export function findObjByID(data, idToLookFor) {
+    return data.find((item) => {
+        return item.id == idToLookFor
+    })
+}

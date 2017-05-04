@@ -8,7 +8,7 @@ import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import styles from './styles'
-import { limitArrayList, strToLower, strToUpper } from '../utility/helper'
+import { limitArrayList, strToLower, strToUpper, findObjByID } from '../utility/helper'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import LinearGradient from 'react-native-linear-gradient'
@@ -17,6 +17,7 @@ import shapes from '../../themes/shapes'
 import { service } from '../utility/services'
 import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
+import Countdown from '../global/countdown'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -122,16 +123,20 @@ const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     </View>
 )
 
-const PreGame = ({data, pressBanner}) => (
+const PreGame = ({data, pressBanner, onCountDownEnd}) => (
     <View>
         <PageTitle title='UPCOMING FIXTURE' />
         <Banner data={data} pressBanner={pressBanner}/>
+        <Countdown 
+            isHideUI={true}
+            endDate={`${data.date} ${data.time}`} 
+            onCountDownEnd={onCountDownEnd}/>
     </View>
 )
 
-const PostGame = ({data, pressBanner}) => (
+const PostGame = ({data, pressBanner, isLastFixture}) => (
     <View>
-        <PageTitle title='LAST FIXTURE' />
+        <PageTitle title={isLastFixture? 'LAST FIXTURE' : 'UPCOMING FIXTURE'} />
         <Banner data={data} pressBanner={pressBanner}/>
     </View>
 )
@@ -141,15 +146,18 @@ class PlayerFigure extends Component {
         super(props)
 
         this.isUnMounted = false
-
+        this._timer = null
         this.state = {
             getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
             //getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
             fixture: FixtureInfoModel().toJS(),
+            isLastFixture: false,
             gameStatus: null,
             isLoaded: false,
+            isTimerStarted: false,
+            seconds: 0,
+            maximumSeconds: 300 // 5 minutes
         }
-
     }
 
     componentDidMount() {
@@ -163,26 +171,25 @@ class PlayerFigure extends Component {
         this.props.drillDown(data, route)
     }
 
-    // _fetchFixture() {
-    //     let fixturesLeft = []
-    //     let dateNow = new Date
-    //     //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
-    //     dateNow = Date.parse(dateNow)
-       
-    //     fixturesList.map(function(item, index) {
-    //         let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
-    //         //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
-            
-    //         if (dateSched > dateNow) {
-    //             fixturesLeft.push(item)
-    //         }
-    //     })
+    _sortFixtures(fixturesList, order = 'ASC', isImmutable = false) {
+        let fixtures = []
 
-    //     this.setState({
-    //         fixturesList: fixturesLeft,
-    //         fixturesLeft: limitArrayList(fixturesLeft, 1)
-    //     })
-    // }
+        if (isImmutable) {
+            fixturesList.map(function(item, index) {
+                let fixture = item.toJS()
+                fixtures.push(fixture)
+            })
+        } else {
+            fixtures = fixturesList
+        }
+
+        return fixtures.sort(function(a, b){
+            if (order ===  'DESC')
+                return new Date(b.date) - new Date(a.date)
+            else
+                return new Date(a.date)  - new Date(b.date)
+        })
+    }
 
     _getFixturesInfo() {
         service({
@@ -202,6 +209,7 @@ class PlayerFigure extends Component {
     }
 
     _analyzeFixtures(fixtures) {
+        // if (__DEV__) console.log('analyzing...')
         // logic: check if there's a 'live' then show it
         // if no 'live', the show the first 'pre'
         // if no 'live' and 'pre' then show the last 'post'
@@ -226,6 +234,23 @@ class PlayerFigure extends Component {
             }
         })
 
+        // let dummyArray = [
+        //     { date: "24 June 2017" },
+        //     { date: "21 June 2017" },
+        //     { date: "4 June 2017" },
+        //     { date: "2 July 2017" },
+        //     { date: "14 Aug 2017" },
+        //     { date: "4 May 2017" },
+        //     { date: "10 July 2017" },
+        //     { date: "8 July 2017" },
+        //     { date: "3 June 2017" },
+        // ]
+
+        // sort fixture by date (jsut to make sure)
+        preFixturesArr = this._sortFixtures(preFixturesArr, 'ASC', true)
+        liveFixturesArr = this._sortFixtures(liveFixturesArr, 'ASC', true)
+        postFixturesArr = this._sortFixtures(postFixturesArr, 'ASC', true)
+
         //if (__DEV__) console.log('preFixturesArr: ', preFixturesArr, preFixturesArr.length)
         //if (__DEV__) console.log('liveFixturesArr: ', liveFixturesArr)
         //if (__DEV__) console.log('postFixturesArr: ', postFixturesArr)
@@ -234,7 +259,7 @@ class PlayerFigure extends Component {
             // it means, there's a current live game
             // show live game
             this.setState({
-                fixture: liveFixturesArr[0].toJS(),
+                fixture: liveFixturesArr[0],
                 gameStatus: 'live',
                 isLoaded: true
             })
@@ -242,7 +267,7 @@ class PlayerFigure extends Component {
             // there's no current live game but there's upcoming fixture
             // show the the upcoming fixture
             this.setState({
-                fixture: preFixturesArr[0].toJS(),
+                fixture: preFixturesArr[0],
                 gameStatus: 'pre',
                 isLoaded: true
             })
@@ -250,11 +275,23 @@ class PlayerFigure extends Component {
             // there's no current live game and no upcoming fixture
             // show the last post game 
             let postLength = postFixturesArr.length
-            
+            let isLastFixture = true
+            let fixture = postFixturesArr[postLength - 1]
+
+            // get the last fixtures
+            // let sortedFixtures = this._sortFixtures(fixtures, 'DESC')
+            // let lastFixture = sortedFixtures[0]
+
+            // if(lastFixture.id === fixture.id) {
+            //     // isLastFixture = true
+            // }
+                
+
             this.setState({
-                fixture: postFixturesArr[postLength - 1].toJS(), // get the last post
+                fixture: fixture, // get the last post
                 gameStatus: 'post',
-                isLoaded: true
+                isLoaded: true,
+                isLastFixture
             })
         } else {
             // no 'pre', 'live', 'post'
@@ -262,45 +299,88 @@ class PlayerFigure extends Component {
         }
     }
 
-    _getAppropriateFixture(fixturesList) {
-        let fixturesLeft = []
-        let dateNow = new Date
-        //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
-        dateNow = Date.parse(dateNow)
-       
-        fixturesList.map(function(item, index) {
-            let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
-            //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
-            
-            if (dateSched > dateNow) {
-                fixturesLeft.push(item)
-            }
-        })
-
-        this.setState({
-            fixturesList: fixturesLeft,
-            fixturesLeft: limitArrayList(fixturesLeft, 1)
-        })
-    }
-
     _goToCoachBox = () => {
         this._drillDown('', 'coachBox')
+    }
+
+    _onCountDownEnd() {
+        if (__DEV__) console.log('COUNTDOWN END!!!!!!')
+        if (this.state.isTimerStarted === false) {
+            if (__DEV__) console.log('start timer')
+            this.setState({ isTimerStarted: true })
+
+            // if we never rerequested then start the timer
+            this._timer = setInterval(() => {
+                let seconds = this.state.seconds + 1
+                this.setState({ seconds })
+            }, 1000)
+        }
+
+        // re request to api to get the lates live data until no exceeds to 5 mins
+        if (this.state.seconds < this.state.maximumSeconds) {
+            this._reGetFixturesInfo()
+        } else {
+            clearInterval(this._timer)
+            if (__DEV__) console.log('CLEAR/END TIMER: ', this.state.seconds)
+        }
+    }
+
+    _reGetFixturesInfo(){
+        // send request every 5 seconds
+        setTimeout(() => {
+            service({
+                url: this.state.getFixtureInfoURL,
+                method: 'get',
+                onSuccess: (res) => {
+                    if (this.isUnMounted) return // return nothing if the component is already unmounted
+
+                    if(res.data) {
+                        let fixtureID = this.state.fixture.id // get the current fuxture id we targeted
+                        let item = findObjByID(res.data, fixtureID) // map the array and get specific object 
+                        
+                        if (__DEV__) console.log('REGET RES: ', fixtureID, res.data)
+                        if (__DEV__) console.log('REGET ITEM: ', fixtureID, item)
+                       
+                        if (item) {
+                            // check if the api is now updated to 'live' from 'pre'
+                            if (item.live) {
+                                // clear the timer
+                                clearInterval(this._timer) 
+
+                                // analyze the fixture and rerender the compoenents
+                                this._analyzeFixtures(res.data)
+                            } else {
+                                this._onCountDownEnd()
+                            }
+                        }
+                    }
+                }
+            })
+        }, 5000)
     }
 
     _gameMode(data) {
         let fixture = this.state.fixture
         let gameStatus = strToLower(this.state.gameStatus)
-        //if (__DEV__) console.log('gameStatus: ', gameStatus, fixture)
+        //if (__DEV__) console.log('_gameMode Status: ', gameStatus, fixture)
 
         switch (gameStatus) {
             case 'live':
-                return <LiveGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} pressCoachBox={this._goToCoachBox}/>
+                return <LiveGame data={fixture} 
+                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} 
+                            pressCoachBox={this._goToCoachBox}/>
                 break;
             case 'pre':
-                return <PreGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
+                return <PreGame 
+                            data={fixture} 
+                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}
+                            onCountDownEnd={() => this._onCountDownEnd()}/>
                 break;
             case 'post':
-                return <PostGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
+                return <PostGame 
+                            isLastFixture={this.state.isLastFixture}
+                            data={fixture} 
+                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
                 break;
             default:
                 return <View></View>
@@ -309,9 +389,11 @@ class PlayerFigure extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+        clearInterval(this._timer)
     }
 
     render() {
+        //if (__DEV__)  console.log('seconds', this.state.seconds)
         return (
             <View>
                 {
