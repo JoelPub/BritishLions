@@ -298,16 +298,13 @@ class MatchMan extends Component {
 	render() {
 		return (
 			<View>
-				<View style={styles.subject}>
-			      <Text style={styles.subjectText}>GAME-DAY TEAM</Text>
-			    </View>
 				{
 	                this.state.isLoaded?
 	                <View>
 		                <PositionTitle pos='FORWARDS' data={this.state.gameDayTeam.forwards}/>
 		                <Swiper
 		                height={styleVar.deviceWidth*0.63}
-                        loop={false}
+                        loop={true}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                         paginationStyle={styles.paginationBottom}>
@@ -334,7 +331,7 @@ class MatchMan extends Component {
 		                <PositionTitle pos='BACKS' data={this.state.gameDayTeam.backs}/>
 		                <Swiper
 		                height={styleVar.deviceWidth*0.63}
-                        loop={false}
+                        loop={true}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                         paginationStyle={styles.paginationBottom}>
