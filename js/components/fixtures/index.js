@@ -16,6 +16,8 @@ import EYSFooter from '../global/eySponsoredFooter'
 import { service } from '../utility/services'
 import StickyFooter from '../utility/stickyFooter'
 import loader from '../../themes/loader-position'
+import FixtureInfoModel from  '../../modes/Fixtures'
+import Immutable, { Map, List, Iterable } from 'immutable'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -30,6 +32,8 @@ class Fixtures extends Component {
          this._scrollView = ScrollView
 
          this.state = {
+            //getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
+            getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
             fixtures: [],
             isLoaded: false,
         }
@@ -49,7 +53,7 @@ class Fixtures extends Component {
 
     _getFixtures() {
         service({
-            url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo',
+            url: this.state.getFixtureInfoURL,
             method: 'get',
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -84,7 +88,9 @@ class Fixtures extends Component {
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
                                     {
-                                        this.state.fixtures.map(function(item) {
+                                        this.state.fixtures.map(function(fixtureInfo) {
+                                            let item = FixtureInfoModel.fromJS(fixtureInfo) 
+                                            
                                             return (
                                                     <ButtonFeedback 
                                                         key={item.id}

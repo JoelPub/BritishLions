@@ -96,7 +96,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     <View>
         <PageTitle title='GAME NOW LIVE' />
         
-        <LiveBox data={{}} inverse={true}/>
+        <LiveBox data={data} inverse={true}/>
         
         <Banner data={data} pressBanner={pressBanner}/>
         
@@ -143,9 +143,10 @@ class PlayerFigure extends Component {
         this.isUnMounted = false
 
         this.state = {
-            //getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
-            getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
+            getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
+            //getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
             fixture: FixtureInfoModel().toJS(),
+            gameStatus: null,
             isLoaded: false,
         }
 
@@ -192,17 +193,93 @@ class PlayerFigure extends Component {
 
                 //if (__DEV__) console.log('res', res.data)
                 if(res.data) {
-                    // intercept game status for debugging purposes
-                    //res.data[0].game_status = 'pre' 
-                    let fixtureInfo = FixtureInfoModel.fromJS(res.data[0]) // adding [0] in res.data is for debugging purposes
-                    this.setState({
-                        fixture: fixtureInfo.toJS(),
-                        isLoaded: true
-                    })
+                    this._analyzeFixtures(res.data)
                 } else {
                     this.setState({ isLoaded: true })
                 }
             }
+        })
+    }
+
+    _analyzeFixtures(fixtures) {
+        // logic: check if there's a 'live' then show it
+        // if no 'live', the show the first 'pre'
+        // if no 'live' and 'pre' then show the last 'post'
+
+        let preFixturesArr = []
+        let liveFixturesArr = []
+        let postFixturesArr = []
+        
+        fixtures.map(function(fixture, index){
+            let fixtureInfo = FixtureInfoModel.fromJS(fixture)
+
+            if (fixtureInfo.pre) {
+                preFixturesArr.push(fixtureInfo)
+            }
+            
+            if (fixtureInfo.live) {
+                liveFixturesArr.push(fixtureInfo)
+            }
+
+            if (fixtureInfo.post) {
+                postFixturesArr.push(fixtureInfo)
+            }
+        })
+
+        //if (__DEV__) console.log('preFixturesArr: ', preFixturesArr, preFixturesArr.length)
+        //if (__DEV__) console.log('liveFixturesArr: ', liveFixturesArr)
+        //if (__DEV__) console.log('postFixturesArr: ', postFixturesArr)
+
+        if (liveFixturesArr.length > 0) {
+            // it means, there's a current live game
+            // show live game
+            this.setState({
+                fixture: liveFixturesArr[0].toJS(),
+                gameStatus: 'live',
+                isLoaded: true
+            })
+        } else if (preFixturesArr.length > 0) {
+            // there's no current live game but there's upcoming fixture
+            // show the the upcoming fixture
+            this.setState({
+                fixture: preFixturesArr[0].toJS(),
+                gameStatus: 'pre',
+                isLoaded: true
+            })
+        } else if (postFixturesArr.length > 0) {
+            // there's no current live game and no upcoming fixture
+            // show the last post game 
+            let postLength = postFixturesArr.length
+            
+            this.setState({
+                fixture: postFixturesArr[postLength - 1].toJS(), // get the last post
+                gameStatus: 'post',
+                isLoaded: true
+            })
+        } else {
+            // no 'pre', 'live', 'post'
+            this.setState({ isLoaded: true })
+        }
+    }
+
+    _getAppropriateFixture(fixturesList) {
+        let fixturesLeft = []
+        let dateNow = new Date
+        //dateNow = 'Tue Jun 23 2017 14:25:22 GMT+0800 (PHT)'
+        dateNow = Date.parse(dateNow)
+       
+        fixturesList.map(function(item, index) {
+            let dateSched = Date.parse(new Date(`${item.date} ${item.time}`))
+            //if (__DEV__)console.log(dateSched, new Date(`${item.date} ${item.time}`))
+            
+            if (dateSched > dateNow) {
+                fixturesLeft.push(item)
+            }
+        })
+
+        this.setState({
+            fixturesList: fixturesLeft,
+            fixturesLeft: limitArrayList(fixturesLeft, 1)
         })
     }
 
@@ -211,17 +288,19 @@ class PlayerFigure extends Component {
     }
 
     _gameMode(data) {
-        let gameStatus = strToLower(data.game_status) || null
-        
+        let fixture = this.state.fixture
+        let gameStatus = strToLower(this.state.gameStatus)
+        //if (__DEV__) console.log('gameStatus: ', gameStatus, fixture)
+
         switch (gameStatus) {
             case 'live':
-                return <LiveGame data={data} pressBanner={()=> this._drillDown(data, 'fixtureDetails')} pressCoachBox={this._goToCoachBox}/>
+                return <LiveGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} pressCoachBox={this._goToCoachBox}/>
                 break;
             case 'pre':
-                return <PreGame data={data} pressBanner={()=> this._drillDown(data, 'fixtureDetails')}/>
+                return <PreGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
                 break;
             case 'post':
-                return <PostGame data={data} pressBanner={()=> this._drillDown(data, 'fixtureDetails')}/>
+                return <PostGame data={fixture} pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
                 break;
             default:
                 return <View></View>
@@ -237,7 +316,7 @@ class PlayerFigure extends Component {
             <View>
                 {
                     this.state.isLoaded?
-                        this._gameMode(this.state.fixture)
+                        this._gameMode()
                     :
                         <View style={locStyle.activityIndicatorWrapper}>
                             <ActivityIndicator size='small' /> 

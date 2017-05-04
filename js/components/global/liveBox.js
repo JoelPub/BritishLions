@@ -122,7 +122,9 @@ export default class LiveBox extends Component {
                     }
                 </View>
                 <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
-                    <Text style={{color:'rgb(255,255,255)',fontFamily: styleVar.fontGeorgia,fontSize:14,lineHeight:16,textAlign:'center'}}>Provincial Barbarians v British & Irish Lions</Text>
+                    <Text style={{color:'rgb(255,255,255)',fontFamily: styleVar.fontGeorgia,fontSize:14,lineHeight:16,textAlign:'center'}}>
+                        {this.props.data.title}
+                    </Text>
                 </View>
             </View>
         )
