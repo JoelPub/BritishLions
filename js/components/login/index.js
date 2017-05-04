@@ -169,8 +169,10 @@ class Login extends Component {
             })
             this._replaceRoute(this.props.jumpRoute)
             this.props.setJumpTo()
-        }else
+        }else{
             this._replaceRoute('myLions')
+        }
+
     }
     _createTokenByFB(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data

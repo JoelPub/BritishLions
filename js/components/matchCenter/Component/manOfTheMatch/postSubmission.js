@@ -11,55 +11,8 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayerListSlider from '../../../global/playerListSlider'
 import PlayersRankBox from '../../../global/playersRankBox'
 import loader from '../../../../themes/loader-position'
-
-// please remove this dummy data when api is availble
-let dummyPlayerData = [
-    {
-        id: '1',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '2',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '3',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-    {
-        id: '4',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '5',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '6',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-    {
-        id: '7',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '8',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '9',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-]
+import MatchMan from './matchMan'
+import Toast from 'react-native-root-toast'
 
 // please remove this dummy data when api is availble
 let dummyRankingData = [
@@ -92,6 +45,7 @@ class ManOfTheMatchPostSubission extends Component {
               isLoaded:false,
               bottomView:true
          }
+         this.selectedMan=null
     }
     
     // componentWillReceiveProps(nextProps) {
@@ -127,22 +81,38 @@ class ManOfTheMatchPostSubission extends Component {
             // }
         })
     }
-    _measureSlider(event) {
-        if (__DEV__)console.log('_measureSlider')
-        const { x, y, width, height, } = event.nativeEvent.layout
-        if (__DEV__)console.log('x',x)
-        if (__DEV__)console.log('y',y)
-        if (__DEV__)console.log('width',width)
-        if (__DEV__)console.log('height',height)
-        if(height>0) 
-            {
-                if(Platform.OS==='ios') this.setState({bottomView:false},()=>this.setState({isChanged:true,bottomView:true}))
-                else this.setState({isChanged:true})
-            }
-    }
 
-    _onPressPlayer(item) {
-        if (__DEV__)console.log('Callback: ', item)
+    _onPressPlayer(info) {
+        if (__DEV__)console.log('_onPressPlayer: ', info)
+        this.selectedMan=info
+        if (__DEV__)console.log('this.selectedMan: ', this.selectedMan)
+    }
+    _onPressSubmit(){
+        if(this.selectedMan===null) {
+            let toast = Toast.show('Choose Player', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            // calls on toast\`s hide animation start.
+                        }
+                    })
+        }
+        else {
+            this.props.setSubPage(2,this.selectedMan)
+        }
     }
     
     render() {
@@ -157,26 +127,19 @@ class ManOfTheMatchPostSubission extends Component {
                                 <View style={styles.desc}>
                                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                                 </View>
-
-                                <View onLayout={this._measureSlider.bind(this)}>
-                                    <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                    <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                </View>
+                                <MatchMan selectMan={this._onPressPlayer.bind(this)}/>
                                 <View style={styles.guther}>
                                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                                 </View>
 
                                 <View style={styles.roundButtonBg}>
-                                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this.props.setSubPage(3)}>
+                                    <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                                         <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
                                             RESUBMIT
                                         </Text>
                                     </ButtonFeedback>
                                 </View>
-                                {
-                                    this.state.bottomView&&
-                                    <View onLayout={this._measurePage.bind(this,'PostSubission')} />
-                                }
+                                <View onLayout={this._measurePage.bind(this,'PostSubission')} />
                                 
                             </View>
         )

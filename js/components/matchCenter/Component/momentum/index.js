@@ -110,7 +110,7 @@ class Momentum extends Component {
     render() {
         return (
                 <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
-                    <LiveBox data={{}} />
+                    <LiveBox data={{title:'Provincial Barbarians v British & Irish Lions'}} />
                     <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)',minHeight:styleVar.deviceHeight-270}}>
                         <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
                             <View style={{flex:1,flexDirection:'row'}}>

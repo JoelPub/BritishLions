@@ -100,7 +100,9 @@ export default class PickYourXV extends Component {
                 </Text> 
                 <ButtonFeedback 
                     rounded 
-                    style={[locStyle.roundButton]}>
+                    style={[locStyle.roundButton]}
+                    onPress={this.props.onPress}
+                >
                     <Icon name='md-people' style={locStyle.roundButtonIcon} />
                     <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
                         PICK YOUR XV

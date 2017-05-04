@@ -41,3 +41,8 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 export function getTimeLineLiveSummary () {
 
 }
+
+export const  actions = {
+  getGameSetPlays,
+  getGameOnFire,
+}
