@@ -10,6 +10,7 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayerListSlider from '../../../global/playerListSlider'
 import loader from '../../../../themes/loader-position'
+import MatchMan from './matchMan'
 
 // please remove this dummy data when api is availble
 let dummyPlayerData = [
@@ -132,8 +133,7 @@ class ManOfTheMatchLanding extends Component {
                                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                                 </View>
                                 <View onLayout={this._measureSlider.bind(this)}>
-                                    <PlayerListSlider title="FORWARDS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
-                                    <PlayerListSlider title="BACKS" data={dummyPlayerData} callbackPress={this._onPressPlayer.bind(this)} />
+                                    <MatchMan />
                                 </View>
                                 <View style={styles.guther}>
                                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
