@@ -219,6 +219,7 @@ class FixtureDetails extends Component {
   _isSignIn(route) {
     getRefreshToken().then((refreshToken) => {
       if(refreshToken){
+        this.props.setJumpTo(route)
         this._navigateTo(route)
       }
       else{

@@ -151,7 +151,8 @@ class MyLionsCompetitionCentre extends Component {
             this.props.setTeamData()
             this.props.setTeamToShow()            
         },1000)
-
+      console.log('***************')
+        console.log(this.props.jumpRoute)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -171,9 +172,18 @@ class MyLionsCompetitionCentre extends Component {
     _drillDown = (data) => {
         data.is_test_round?data.is_active?this.props.drillDown(data, 'myLionsTestRound'):this.props.drillDown(data,'myLionsTestRoundSubmit'):this.props.drillDown(data, 'myLionsCompetitionGameListing')
     }
+    measurePage = (event) => {
+        if (__DEV__)console.log('measurePage')
+        // if (__DEV__)console.log('event',event)
+        const { x, y, width, height, } = event.nativeEvent.layout
 
+
+            this._scrollView.scrollTo({ y: y, animated: true })
+
+    }
     render() {
         // if (__DEV__)console.log('render')
+        let inintTestRound = false
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
@@ -211,6 +221,16 @@ class MyLionsCompetitionCentre extends Component {
                                     <View style={styles.rounds}>
                                     {
                                         this.state.competitionInfo.map((value,index)=>{
+                                            if(!inintTestRound){
+                                                inintTestRound =   value.is_test_round ? true :false
+                                                return (
+                                                  <View onLayout={this.measurePage}>
+                                                      <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
+                                                          <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
+                                                      </ButtonFeedback>
+                                                  </View>
+                                                )
+                                            }
                                             return (
                                                 <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
                                                     <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
@@ -356,6 +376,7 @@ export default connect((state) => {
         a:user.a,
         bp:user.bp,
         pts:user.pts,
-        netWork: state.network
+        netWork: state.network,
+        jumpRoute: state.jump.jumpRoute,
     }
 },  bindAction)(MyLionsCompetitionCentre)
