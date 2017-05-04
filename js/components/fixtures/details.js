@@ -11,6 +11,8 @@ import styles from './styles'
 import LionsHeader from '../global/lionsHeader'
 import Countdown from '../global/countdown'
 import { drillDown } from '../../actions/content'
+import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { setJumpTo } from '../../actions/jump'
 import LionsFooter from '../global/lionsFooter'
 import LiveGame from './components/liveGame'
 import PreGame from './components/preGame'
@@ -23,7 +25,7 @@ import moment from 'moment'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import { strToLower } from '../utility/helper'
-
+import { getUserId,getRefreshToken } from '../utility/asyncStorageServices'
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import images from '../../../contents/fixtures/images'
@@ -196,23 +198,45 @@ class FixtureDetails extends Component {
 
     _gameMode() {
         let fixtureDetails = this.state.details
-        let gameStatus = strToLower(this.state.gameStatus)
-
-        switch (gameStatus) {
+       // let gameStatus = strToLower(this.state.gameStatus)
+          let gameStatus = 'pre'
+      switch (gameStatus) {
             case 'live':
                 return <LiveGame data={fixtureDetails} buttonOnPress={this.goToCoachBox}/>
                 break;
             case 'pre':
-                return <PreGame data={fixtureDetails} pressAddCalendar={()=>this.calendarAddEvent(this.props)}/>
+                return <PreGame data={fixtureDetails} pressAddCalendar={()=>this.calendarAddEvent(this.props)}
+                                onPress={this.pickYourXVClick}
+                />
                 break;
             case 'post':
-                return <PostGame data={fixtureDetails}/>
+                return <PostGame data={fixtureDetails} />
                 break;
             default:
                 return <View></View>
         }
     }
+  _isSignIn(route) {
+    getRefreshToken().then((refreshToken) => {
+      if(refreshToken){
+        this._navigateTo(route)
+      }
+      else{
+        this.props.setJumpTo(route)
+        this._navigateTo('login')
+      }
+    }).catch((error) => {
+      if (this.isUnMounted) return // return nothing if the component is already unmounted
+      this._navigateTo('login')
+    })
+  }
 
+  _navigateTo(route) {
+    this.props.pushNewRoute(route)
+  }
+    pickYourXVClick = () =>{
+      this._isSignIn('myLionsCompetitionCentre')
+    }
     _loadPreGame() {
         this.setState({
             isLoaded: true,
@@ -260,11 +284,13 @@ class FixtureDetails extends Component {
 function bindAction(dispatch) {
   return {
     drillDown: (data, route)=>dispatch(drillDown(data, route)),
+    pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+    setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
   }
 }
 
 export default connect((state) => {
     return {
-        details: state.content.drillDownItem
+        details: state.content.drillDownItem,
     }
 }, bindAction)(FixtureDetails)
