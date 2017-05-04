@@ -408,7 +408,10 @@ class MatchCenter extends Component {
                             </Swiper>
                         :
                             <ActivityIndicator style={loader.centered} size='large' />}
-                        <LionsFooter isLoaded={true}  />
+                            {
+
+                                !statusArray[0]&&<LionsFooter isLoaded={true}  />
+                            }
                     </ScrollView>
                   <SquadModal
                     modalVisible={this.state.modalInfo}
