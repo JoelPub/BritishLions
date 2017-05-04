@@ -144,7 +144,7 @@ export default class PlayersListSlider extends Component {
                     this.state.isLoad &&
                     <Swiper
                         height={styleVar.deviceWidth*0.63}
-                        loop={false}
+                        loop={true}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                         paginationStyle={{bottom: styleVar.deviceWidth/20}}>

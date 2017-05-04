@@ -45,7 +45,7 @@ class MatchSummary extends Component {
                     <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
                       <LiveBox data={{}} />
                     </View>
-                    <View style={{height:styleVar.deviceHeight-470,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >                    
+                    <View style={{height:styleVar.deviceHeight-245,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >                    
                           <Timeline
                             data={this.props.summaryData}
                             lineColor='rgb(216,217,218)'

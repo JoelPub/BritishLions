@@ -35,7 +35,7 @@ export default class DottedLine extends Component {
                     {
                         d.map((value,index)=>{
                             return(
-                                    <View key={index} style={{height:2,width:2,backgroundColor:'yellow',position:'absolute',left:value}} />
+                                    <View key={index} style={{height:2,width:2,backgroundColor:'rgb(255,204,40)',position:'absolute',left:value}} />
                                 )
                         })
                     }

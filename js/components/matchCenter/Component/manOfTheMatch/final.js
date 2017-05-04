@@ -92,22 +92,22 @@ class ManOfTheMatchFinal extends Component {
          }
     }
     
-    componentWillReceiveProps(nextProps) {
-        if (__DEV__)console.log('Final componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        if (__DEV__)console.log('Final componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if (__DEV__)console.log('Final componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
-        if (__DEV__)console.log('Final componentWillReceiveProps this.props.currentPage',this.props.currentPage)
-        if(nextProps.isActive&&!this.props.isActive||nextProps.isActive&&this.props.isActive&&nextProps.currentPage===3&&this.props.currentPage!==3) {
-            this.props.setHeight(this.state.h,'Final')
-             this.setState({isLoaded:true,isChanged:true})
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (__DEV__)console.log('Final componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+    //     if (__DEV__)console.log('Final componentWillReceiveProps this.props.isActive',this.props.isActive)
+    //     if (__DEV__)console.log('Final componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
+    //     if (__DEV__)console.log('Final componentWillReceiveProps this.props.currentPage',this.props.currentPage)
+    //     if(nextProps.isActive&&!this.props.isActive||nextProps.isActive&&this.props.isActive&&nextProps.currentPage===3&&this.props.currentPage!==3) {
+    //         this.props.setHeight(this.state.h,'Final')
+    //          this.setState({isLoaded:true,isChanged:true})
+    //     }
+    // }
     componentDidMount(){
 
-        if(this.props.currentPage===3) {
-            this.props.setHeight(this.state.h,'Final')
-            this.setState({isLoaded:true,isChanged:true})
-        }
+        // if(this.props.currentPage===3) {
+        //     this.props.setHeight(this.state.h,'Final')
+        //     this.setState({isLoaded:true,isChanged:true})
+        // }
 
     }
     _measurePage(page,event) {
@@ -119,10 +119,10 @@ class ManOfTheMatchFinal extends Component {
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
         this.setState({ h:y+50 },()=>{
-            if(this.state.isChanged&&this.props.isActive) {
+            // if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'Final')
-                this.setState({isChanged:false})
-            }
+            //     this.setState({isChanged:false})
+            // }
         })
     }
 
@@ -133,12 +133,6 @@ class ManOfTheMatchFinal extends Component {
     
     render() {
         return (
-            <View>
-            {
-                this.props.currentPage===3?
-                <View>
-                    {
-                        this.state.isLoaded&&this.props.isActive?
                            <View style={styles.wrapper}>
                                 <View style={styles.title}>
                                     <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
@@ -156,18 +150,6 @@ class ManOfTheMatchFinal extends Component {
                                 </View>
                                 <View onLayout={this._measurePage.bind(this,'Final')} />
                             </View>
-                        :
-                        <View>
-                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                            <View onLayout={this._measurePage.bind(this,'Final')} />
-                        </View>
-                    }
-                </View>
-                :
-                null
-
-            }
-            </View>
             
         )
     }
