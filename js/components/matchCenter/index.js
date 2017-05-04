@@ -30,18 +30,18 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS', 'MAN OF THE MATCH','ONFIRE']
+        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS','ONFIRE', 'MAN OF THE MATCH']
         this.state = {
-          index:this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
+          index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
           modalInfo:false,
           statusArray: [false,false,false,false,false],
           momentumData:{},
           summaryData:[],
-setPlayerData: [],
-
-          onFireData:null
+          setPlayerData: [],
+          onFireData:null,
+          subPage:1
         }
         this.subscription= null
         this.timer  = null
@@ -60,6 +60,10 @@ setPlayerData: [],
       this.setState({
         modalInfo: !this.state.modalInfo
       })
+    }
+    _setSubPage(n) {
+      if(__DEV__)console.log('_setSubPage',n)
+        this.setState({subPage:n})
     }
     processMomentumData(data){
         // if(__DEV__)console.log('processMomentumData')
@@ -279,20 +283,10 @@ setPlayerData: [],
 
       }
       if(this.state.index===3){
-        if (__DEV__)console.log('call man of the match Api')
-        setTimeout(()=>{
-          this.statusArray.fill(false)
-          this.statusArray[3]=true
-          this.setState({
-            statusArray: this.statusArray
-          })
-        },6000)
-      }
-      if(this.state.index===4){
         if (__DEV__)console.log('on fire Api')
         getGameOnFire('1',(json)=>{
           this.statusArray.fill(false)
-          this.statusArray[4]=true
+          this.statusArray[3]=true
           this.setState({
             onFireData:json.data,
             statusArray: this.statusArray
@@ -308,25 +302,34 @@ setPlayerData: [],
         //  })
         //},6000)
       }
+      if(this.state.index===4){
+        if (__DEV__)console.log('call man of the match Api')
+        setTimeout(()=>{
+          this.statusArray.fill(false)
+          this.statusArray[4]=true
+          this.setState({
+            statusArray: this.statusArray
+          })
+        },6000)
+      }
     }
     componentDidMount() {
         if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
           this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
             this.callApi()
-            this.timer = setInterval(this.callApi,30000)
+            if(this.state.index!==4) this.timer = setInterval(this.callApi,30000)
         })},500)
         
     }
     componentWillUnmount() {
-      this.isUnMounted = true
       this.subscription.remove();
     }
     swiperScrollEnd = (e, state, context) => {
       this.setState({index:state.index},()=>{        
         this.timer&&clearTimeout(this.timer)
         this.callApi()
-        this.timer = setInterval(this.callApi,10000)
+        if(this.state.index!==4) this.timer = setInterval(this.callApi,10000)
       })
     }
     render() {
@@ -380,8 +383,10 @@ setPlayerData: [],
                                     </View>
                               }
                               {
-                                statusArray[3]? <ManOfTheMatch isActive={this.state.index===3} setHeight={this._setHeight.bind(this)}/>
-
+                                statusArray[3]? <OnFire  isActive={this.state.index===3}
+                                                         setHeight={this._setHeight.bind(this)}
+                                                         on_fire={onFireData.on_fire}
+                                />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3&&
@@ -390,10 +395,8 @@ setPlayerData: [],
                                     </View>
                               }
                               {
-                                statusArray[4]? <OnFire  isActive={this.state.index===4}
-                                                         setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire}
-                                />
+                                statusArray[4]? <ManOfTheMatch setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
+
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4&&

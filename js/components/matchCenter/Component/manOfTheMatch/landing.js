@@ -71,22 +71,22 @@ class ManOfTheMatchLanding extends Component {
          }
     }
     
-    componentWillReceiveProps(nextProps) {
-        if (__DEV__)console.log('Landing componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-        if (__DEV__)console.log('Landing componentWillReceiveProps this.props.isActive',this.props.isActive)
-        if (__DEV__)console.log('Landing componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
-        if (__DEV__)console.log('Landing componentWillReceiveProps this.props.currentPage',this.props.currentPage)
-        if(nextProps.isActive&&!this.props.isActive) {
-            this.props.setHeight(this.state.h,'Landing')
-             this.setState({isLoaded:true,isChanged:true})
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (__DEV__)console.log('Landing componentWillReceiveProps nextProps.isActive',nextProps.isActive)
+    //     if (__DEV__)console.log('Landing componentWillReceiveProps this.props.isActive',this.props.isActive)
+    //     if (__DEV__)console.log('Landing componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
+    //     if (__DEV__)console.log('Landing componentWillReceiveProps this.props.currentPage',this.props.currentPage)
+    //     if(nextProps.isActive&&!this.props.isActive) {
+    //         this.props.setHeight(this.state.h,'Landing')
+    //          this.setState({isLoaded:true,isChanged:true})
+    //     }
+    // }
     componentDidMount(){
 
-        if(this.props.currentPage===1) {
-            this.props.setHeight(this.state.h,'Landing')
-            this.setState({isLoaded:true,isChanged:true})
-        }
+        // if(this.props.currentPage===1) {
+            // this.props.setHeight(this.state.h,'Landing')
+        //     this.setState({isLoaded:true,isChanged:true})
+        // }
 
     }
     _measurePage(page,event) {
@@ -98,10 +98,10 @@ class ManOfTheMatchLanding extends Component {
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
         this.setState({ h:y+50 },()=>{
-            if(this.state.isChanged&&this.props.isActive) {
+            // if(this.state.isChanged&&this.props.isActive) {
                 this.props.setHeight(this.state.h,'Landing')
-                this.setState({isChanged:false})
-            }
+            //     this.setState({isChanged:false})
+            // }
         })
     }
     _measureSlider(event) {
@@ -124,12 +124,6 @@ class ManOfTheMatchLanding extends Component {
     
     render() {
         return (
-            <View>
-            {
-                this.props.currentPage===1?
-                <View>
-                    {
-                        this.state.isLoaded&&this.props.isActive?
                            <View style={styles.wrapper}>
                                 <View style={styles.title}>
                                     <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
@@ -146,7 +140,7 @@ class ManOfTheMatchLanding extends Component {
                                 </View>
 
                                 <View style={styles.roundButtonBg}>
-                                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this.props.pressSubmit(2)}>
+                                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this.props.setSubPage(2)}>
                                         <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
                                             SUBMIT
                                         </Text>
@@ -157,18 +151,6 @@ class ManOfTheMatchLanding extends Component {
                                     <View onLayout={this._measurePage.bind(this,'Landing')} />
                                 }
                             </View>
-                        :
-                        <View>
-                            <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                            <View onLayout={this._measurePage.bind(this,'Landing')} />
-                        </View>
-                    }
-                </View>
-                :
-                null
-
-            }
-            </View>
             
         )
     }
