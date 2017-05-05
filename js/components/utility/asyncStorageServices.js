@@ -89,6 +89,16 @@ export async function setCurrentVersionNumber() {
     await AsyncStorage.setItem('CURRENT_VERSION_NUMBER', APP_VERSION)
 }
 
+export async function getMatchMan() {
+    return await AsyncStorage.getItem('MAN_OF_MATCH', (err, result) => {
+        return result
+    })
+}
+
+export async function setMatchMan(id) {
+    await AsyncStorage.setItem('MAN_OF_MATCH', id)
+}
+
 export async function setAddedToCalanderCheck() {
     await AsyncStorage.setItem('ADDED_EVNETS_TO_CALENDAR', "added")
 }

@@ -24,6 +24,7 @@ import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
+import { setMatchMan, getMatchMan } from '../utility/asyncStorageServices'
 
 class MatchCenter extends Component {
 
@@ -61,9 +62,12 @@ class MatchCenter extends Component {
         modalInfo: !this.state.modalInfo
       })
     }
-    _setSubPage(n) {
+    _setSubPage(n,playerid) {
       if(__DEV__)console.log('_setSubPage',n)
-        this.setState({subPage:n})
+      if(__DEV__)console.log('_setSubPage',playerid)
+        this.setState({subPage:n},()=>{
+          setMatchMan(playerid)
+        })
     }
     processMomentumData(data){
         // if(__DEV__)console.log('processMomentumData')
