@@ -138,6 +138,11 @@ class Login extends Component {
     _createTokenByPassword(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
+        NativeModules.One.sendInteraction('/signIn/button', {
+            emailAddress:this.state.email,
+            first_name:first_name,
+            last_name:last_name
+        })
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,this.state.password,'password')
@@ -179,6 +184,11 @@ class Login extends Component {
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
+        NativeModules.One.sendInteraction('/signIn/button', {
+            emailAddress:this.state.fbUser,
+            first_name:first_name,
+            last_name:last_name
+        })
         SaveUserNameAndPassword(this.state.email,'Test1','fb')
         this.setState({
             user: null,
@@ -213,6 +223,11 @@ class Login extends Component {
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
+        NativeModules.One.sendInteraction('/signIn/button', {
+            emailAddress:this.state.user,
+            first_name:first_name,
+            last_name:last_name
+        })
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,'Test1','google')
@@ -355,9 +370,7 @@ class Login extends Component {
                 submit: false
             }
         })
-        NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.email
-        });
+
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
