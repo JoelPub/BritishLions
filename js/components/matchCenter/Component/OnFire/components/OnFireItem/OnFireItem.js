@@ -11,19 +11,23 @@ import styles from './styles'
 import styleVar from '../../../../../../themes/variable'
 
 import { Grid, Col, Row } from 'react-native-easy-grid'
+import { getSoticFullPlayerList} from '../../../../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import {searchPlayer} from '../../../../../myLions/components/searchPlayer'
+import Data from '../../../../../../../contents/unions/data'
 
 
-
-const  TableCell = ({data}) => {
+const  TableCell = ({data,player}) => {
   let rank = data.rank + '.'
+  let playerName = player ? player.name : ''
+  let playerHeader = player ? player.image : ''
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
              resizeMode='contain'
-             source={{uri: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'}}
+             source={{uri:playerHeader}}
              style={styles.headerImage}  />
       <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>{rank}</Text>
-      <Text style={[styles.blackContentText,{left:70}]}>{data.player}</Text>
+      <Text style={[styles.blackContentText,{left:70}]}>{playerName}</Text>
       <Text  style={[styles.blackContentText,{right:10}]}>
         {data.game}
       </Text>
@@ -38,6 +42,9 @@ class OnFireItem extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      playerList: []
+    }
   }
   measureTab =(page,event)=> {
     const { x, width, height, } = event.nativeEvent.layout
@@ -51,7 +58,7 @@ class OnFireItem extends Component {
   }
   render() {
     let arr = [1,1,1]
-    let {isLastItem,title,data} = this.props
+    let {isLastItem,title,data,playerData} = this.props
 
     return (
       <View style={[styles.box,,isLastItem ? {borderBottomWidth:1}:{}]}>
@@ -67,13 +74,22 @@ class OnFireItem extends Component {
           </Text>
         </View>
         {data.map((item,index)=>{
+          let player = this.searchInfo(item.player)
+
           return (
-            <TableCell key={index} data={item}/>
+            <TableCell key={index} data={item} player={player}/>
           )
         })
         }
       </View>
     )
+  }
+  componentDidMount() {
+
+  }
+  searchInfo = (playerId) => {
+    let result = searchPlayer(this.props.playerData,'750',Data)
+    return  result
   }
 }
 
@@ -83,6 +99,8 @@ OnFireItem.propTypes = {
   title: PropTypes.string,
   on_fire:PropTypes.object,
   data: PropTypes.any,
+  playerData: PropTypes.any,
+
 }
 OnFireItem.defaultProps = {
   isLastItem:false,
