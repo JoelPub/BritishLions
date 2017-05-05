@@ -106,7 +106,7 @@ class Countdown extends Component {
 
     componentDidMount() {
         let dateNow = new Date
-        dateNow = '10 June 2017 15:34:57' // intercept
+        //dateNow = '10 June 2017 15:34:57' // intercept
         let dateEnd = new Date(this.props.endDate? this.props.endDate : dateNow)
         //dateNow = '27 October 2016 22:50:00'
         //dateEnd = '28 October 2016 22:50:03'
