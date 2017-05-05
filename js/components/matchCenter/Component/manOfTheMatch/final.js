@@ -11,104 +11,11 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayersRankBox from '../../../global/playersRankBox'
 import loader from '../../../../themes/loader-position'
 
-// please remove this dummy data when api is availble
-let dummyPlayerData = [
-    {
-        id: '1',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '2',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '3',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-    {
-        id: '4',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '5',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '6',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-    {
-        id: '7',
-        name: 'Rory Best',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '8',
-        name: 'Moren Ipsum Aber',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '9',
-        name: 'Lerom Dolor',
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    },
-]
-
-// please remove this dummy data when api is availble
-let dummyRankingData = [
-    {
-        id: '1',
-        name: 'Rory Best',
-        percentage: 40,
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/750.jpg'
-    },
-    {
-        id: '2',
-        name: 'Moren Ipsum Aber',
-        percentage: 24,
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'
-    },
-    {
-        id: '3',
-        name: 'Lerom Dolor',
-        percentage: 21,
-        image: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/90373.jpg'
-    }
-]
 
 class ManOfTheMatchFinal extends Component {
 
     constructor(props) {
          super(props)
-         this.state = {
-              h:0,
-              isLoaded:false,
-         }
-    }
-    
-    // componentWillReceiveProps(nextProps) {
-    //     if (__DEV__)console.log('Final componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-    //     if (__DEV__)console.log('Final componentWillReceiveProps this.props.isActive',this.props.isActive)
-    //     if (__DEV__)console.log('Final componentWillReceiveProps nextProps.currentPage',nextProps.currentPage)
-    //     if (__DEV__)console.log('Final componentWillReceiveProps this.props.currentPage',this.props.currentPage)
-    //     if(nextProps.isActive&&!this.props.isActive||nextProps.isActive&&this.props.isActive&&nextProps.currentPage===3&&this.props.currentPage!==3) {
-    //         this.props.setHeight(this.state.h,'Final')
-    //          this.setState({isLoaded:true,isChanged:true})
-    //     }
-    // }
-    componentDidMount(){
-
-        // if(this.props.currentPage===3) {
-        //     this.props.setHeight(this.state.h,'Final')
-        //     this.setState({isLoaded:true,isChanged:true})
-        // }
-
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('Final')
@@ -118,17 +25,7 @@ class ManOfTheMatchFinal extends Component {
         if (__DEV__)console.log('y',y)
         if (__DEV__)console.log('width',width)
         if (__DEV__)console.log('height',height)
-        this.setState({ h:y+50 },()=>{
-            // if(this.state.isChanged&&this.props.isActive) {
-                this.props.setHeight(this.state.h,'Final')
-            //     this.setState({isChanged:false})
-            // }
-        })
-    }
-
-
-    _onPressPlayer(item) {
-        if (__DEV__)console.log('Callback: ', item)
+        this.props.setHeight(y+50,'Final')
     }
     
     render() {
@@ -142,7 +39,7 @@ class ManOfTheMatchFinal extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
-                                    <PlayersRankBox data={dummyRankingData} />
+                                    <PlayersRankBox  />
                                 </View>
 
                                 <View style={styles.guther}>
