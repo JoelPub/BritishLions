@@ -71,7 +71,7 @@ export default class PreGame extends Component {
                 <Text style={locStyle.pageText}>{details.description}</Text>
                 
                 <PickYourXV onPress={this.props.onPress}/>
-                <GamedayTeam />
+                <GamedayTeam gameID={details.id} />
             </View>
         )
     }

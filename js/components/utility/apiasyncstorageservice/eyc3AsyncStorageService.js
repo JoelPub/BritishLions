@@ -27,6 +27,13 @@ export function removeEYC3OfficialSquad(){
       id: '1201'
     })
 }
+export function removeEYC3GameDayTeam(){
+    storage.remove({
+      key: 'EYC3GameDayTeam',
+      id: '1401'
+    })
+}
+
 export async function getEYC3OfficialSquad() {
   // if (__DEV__)console.log('getEYC3OfficialSquad')
   storage.sync = {
@@ -207,6 +214,62 @@ export async function getEYC3ExpertsSquads() {
                  return -1
           }
         })
+}
+
+
+export async function getEYC3GameDayTeam(gameID) {
+    console.log('gameID', gameID)
+    storage.sync = {
+        EYC3GameDayTeam(params) {
+          let { id, resolve, reject} = params
+          fetch(actionsApi.eyc3GetGameDayTeam, {
+              method: 'POST',
+              headers: {"content-Type":"application/json;charset=utf-8"},
+              body: JSON.stringify({
+                  id: gameID
+              })
+          })
+          .then(response=>{
+              if (__DEV__) console.log('response', response)
+              return response.json()
+          })
+          .then(json=>{
+              if (__DEV__) console.log('json', json)
+              if(json) {
+                  storage.save({
+                      key: 'EYC3GameDayTeam',
+                      expires: 1000*3600,
+                      id,
+                      rawData: json
+                  })
+                  resolve&&resolve(json)
+              }
+              else {
+                  reject&&reject(new Error('data parse error'))
+              }
+          })
+          .catch(err=>reject&&reject(err))
+        }
+    }
+
+    return await storage.load({
+        key: 'EYC3GameDayTeam',
+        autoSync: true,
+        id: '1401',
+        syncInBackground: true
+    })
+    .then(ret=>{
+        // if (__DEV__)console.log('ret',ret)
+        return ret
+    })
+    .catch(err=>{
+        switch(err.name){
+            case 'NotFoundError':
+              return 0
+            case 'ExpiredError':
+              return -1
+        }
+    })
 }
 
 

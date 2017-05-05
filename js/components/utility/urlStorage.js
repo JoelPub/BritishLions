@@ -1,10 +1,11 @@
 'use strict'
 
 
-const APP_VERSION_NO = '3' // release: 3
+const APP_VERSION_NO = '4' // release: 3
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const EYC3_BASE_URL_DUMMY= 'http://bilprod.azurewebsites.net'
+const EYC3_BASE_URL_R4_DUMMY= 'http://bilprod-r4dummyapi.azurewebsites.net'
 
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
@@ -65,6 +66,11 @@ const EYC3_GETUSERCUSTOMIZEDSQUAD_URL = '/GetUserCustomizedSquad'
 const EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL_NAME = 'EYC3SaveUserCustomizedSquad'
 const EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL = '/SaveUserCustomizedSquad'
 
+// R4
+const EYC3_GET_GAME_DAY_TEAM_URL_NAME = 'EYC3_GET_GAME_DAY_TEAM'
+const EYC3_GET_GAME_DAY_TEAM_URL = '/GetGameDayTeam'
+
+
 export function getAssembledUrl(urlName) {
     switch (urlName) {
         case SOTIC_GET_PLAYER_URL_NAME:
@@ -111,6 +117,10 @@ export function getAssembledUrl(urlName) {
             return EYC3_BASE_URL_DUMMY + EYC3_GETUSERCUSTOMIZEDSQUAD_URL
         case EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL_NAME:
             return EYC3_BASE_URL_DUMMY + EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL
+
+        // R4
+        case EYC3_GET_GAME_DAY_TEAM_URL_NAME:
+            return EYC3_BASE_URL_R4_DUMMY + EYC3_GET_GAME_DAY_TEAM_URL
     }
 }
 /*R3*/
@@ -172,6 +182,7 @@ export const actionsApi = {
     eyc3GetuserProfileSummary: getAssembledUrl(EYC3_GETUSERPROFILESUMMARY_URL_NAME),
     eyc3GetOnBoardingInfo: getAssembledUrl(EYC3_GETONBOARDINGINFO_URL_NAME),
     eyc3GetUserCustomizedSquad: getAssembledUrl(EYC3_GETUSERCUSTOMIZEDSQUAD_URL_NAME),
-    eyc3SaveUserCustomizedSquad: getAssembledUrl(EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL_NAME)
+    eyc3SaveUserCustomizedSquad: getAssembledUrl(EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL_NAME),
+    eyc3GetGameDayTeam: getAssembledUrl(EYC3_GET_GAME_DAY_TEAM_URL_NAME),
 }
 export const APP_VERSION = APP_VERSION_NO 

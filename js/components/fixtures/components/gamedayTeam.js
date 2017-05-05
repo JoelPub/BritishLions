@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import loader from '../../../themes/loader-position'
 import { drillDown } from '../../../actions/content'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getEYC3OfficialSquad,removeEYC3OfficialSquad} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import { getEYC3OfficialSquad,removeEYC3OfficialSquad, getEYC3GameDayTeam} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import {convertSquadToShow} from '../../myLions/components/gamedayTeamToShow'
 import GamedayTeamModel from  '../../../modes/Squad/gamedayTeamModel'
 import Data from '../../../../contents/unions/data'
@@ -18,7 +18,6 @@ import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper,splitName,mapJSON } from '../../utility/helper'
-
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -258,13 +257,15 @@ class GamedayTeam extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this._getSquad(), 600)
+        //setTimeout(() => this._getSquad(), 600) // OLD
+        setTimeout(() => this._getDayTeam(), 600) // R4
     }
 
     _getSquad(){
       if (__DEV__)console.log('_getSquad')
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
+              if (__DEV__)console.log('catchedFullPlayerList', catchedFullPlayerList)
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                   getEYC3OfficialSquad().then((catchedOfficialSquad) => {
                         if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
@@ -293,6 +294,42 @@ class GamedayTeam extends Component {
               })
           })
       })
+    }
+
+    _getDayTeam() {
+        let gameID = this.props.gameID || null
+
+        this.setState({ isLoaded: false }, () => {
+            getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                    getEYC3GameDayTeam(gameID).then((catchedGameDayTeam) => {
+                        if (__DEV__) console.log('catchedGameDayTeam', catchedGameDayTeam)
+
+                        if(catchedGameDayTeam !== null && catchedGameDayTeam !== 0 && catchedGameDayTeam !== -1) {
+                            let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
+                            
+                            if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+                            // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                            this.setState({gameDayTeam:showSquadFeed.toJS()}, ()=>{
+                                this.setState({isLoaded:true})
+                            })
+                            
+                        }
+                        else {
+                            this.setState({ isLoaded: true })
+                        }
+                    }).catch((error) => {
+                        this.setState({ isLoaded: true }, () => {
+                            this._showError(error) // prompt error
+                        })
+                    })
+                }
+            }).catch((error) => {
+                this.setState({ isLoaded: true }, () => {
+                        this._showError(error) // prompt error
+                })
+            })
+        })
     }
 
 	render() {

@@ -126,7 +126,7 @@ export default class LiveGame extends Component {
                     </View>
                 </View>
                 <Text style={locStyle.pageText}>{details.live.description}</Text>
-                <GamedayTeam />
+                <GamedayTeam gameID={details.id} />
             </View>
         )
     }
