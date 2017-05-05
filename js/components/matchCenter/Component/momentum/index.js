@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -106,7 +106,9 @@ class Momentum extends Component {
     //     this.props.setHeight(this.state.h,'momentum')
 
     // }
-    
+    iconPress = () =>{
+        DeviceEventEmitter.emit('matchCenter', 'moment');
+    }
     render() {
         return (
                 <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
@@ -120,7 +122,7 @@ class Momentum extends Component {
                             <View style={{flex:1,flexDirection:'row'}}>
                                 <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
                                 <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
-                                <ButtonFeedback >
+                                <ButtonFeedback onPress={this.iconPress} >
                                     <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
                                 </ButtonFeedback>
                             </View>
