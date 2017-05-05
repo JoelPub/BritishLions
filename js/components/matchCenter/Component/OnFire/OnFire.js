@@ -8,6 +8,10 @@ import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
+import { getSoticFullPlayerList} from '../../../utility/apiasyncstorageservice/soticAsyncStorageService'
+import {searchPlayer} from '../../../myLions/components/searchPlayer'
+import Data from '../../../../../contents/unions/data'
+
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import SetPlayerTabBar from  '../SetPlayer/Components/SetPlayerTabBar'
@@ -30,7 +34,8 @@ class OnFire extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      h:0
+      h:0,
+      playerList: []
     }
   }
 
@@ -57,6 +62,7 @@ class OnFire extends Component {
   }
   render() {
    let { on_fire } =this.props
+    let {playerList} =  this.state
     return (
       <View style={{marginTop:50,paddingTop:10,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
@@ -70,19 +76,19 @@ class OnFire extends Component {
           <View tabLabel='HALF-TIME'>
             <IconHeader onPress={this.iconPress} />
             <View style={{ padding: 20}}>
-              <OnFireItem title={'METRES'} data={on_fire.half_time.metres}/>
-              <OnFireItem title={'PASSES'} data={on_fire.half_time.passes}/>
-              <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks}/>
-              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.half_time.tackles}/>
+              <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
+              <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
+              <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks} playerData={playerList}/>
+              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.half_time.tackles} playerData={playerList}/>
             </View>
           </View>
           <View tabLabel='FULL-TIME'>
             <IconHeader />
             <View style={{ padding: 20}}>
-              <OnFireItem title={'METRES'} data={on_fire.full_time.metres}/>
-              <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} />
-              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks}/>
-              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} />
+              <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
+              <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
+              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList}/>
+              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} />
             </View>
           </View>
         </ScrollableTabView>
@@ -95,8 +101,15 @@ class OnFire extends Component {
     console.log('componentDidMount')
     console.log(height)
     this.props.setHeight(height+80+320,'OnFire')
-
+    getSoticFullPlayerList().then((playerList)=>{
+      console.log('**************************8')
+      console.log(playerList)
+      this.setState({
+        playerList:playerList
+      })
+    })
   }
+
   componentWillReceiveProps(nextProps) {
    // if (__DEV__)console.log('onFire componentWillReceiveProps nextProps.isActive',nextProps.isActive)
    // if (__DEV__)console.log('onFire componentWillReceiveProps this.props.isActive',this.props.isActive)
