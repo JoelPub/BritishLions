@@ -210,7 +210,7 @@ class FixtureDetails extends Component {
 
     _gameMode() {
         let fixtureDetails = this.state.details
-        //let gameStatus = this.state.gameStatus
+        let gameStatus = this.state.gameStatus
 
         switch (gameStatus) {
             case 'live':
