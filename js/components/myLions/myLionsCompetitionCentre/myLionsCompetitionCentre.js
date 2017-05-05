@@ -20,6 +20,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import loader from '../../../themes/loader-position'
 import { service } from '../../utility/services'
 import { setUserProfile } from '../../../actions/squad'
+import { setJumpTo } from '../../../actions/jump'
 import { getUserId, removeToken ,getAccessToken,getUserFullName} from '../../utility/asyncStorageServices'
 import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
@@ -176,9 +177,12 @@ class MyLionsCompetitionCentre extends Component {
         if (__DEV__)console.log('measurePage')
         // if (__DEV__)console.log('event',event)
         const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log(this.props.jumpRoute)
+      if(this.props.jumpRoute === 'isFixtures'){
+          this._scrollView.scrollTo({ y: y, animated: true })
+          this.props.setJumpTo()
+      }
 
-
-            this._scrollView.scrollTo({ y: y, animated: true })
 
     }
     render() {
@@ -216,21 +220,13 @@ class MyLionsCompetitionCentre extends Component {
                                 borderColor: styleVar.colorGrey2,
                                 borderTopWidth: 1,
                                 paddingTop: 30
-                            }}>
+                            }}
+                                  onLayout={this.measurePage}
+                            >
                                 <View style={styles.guther}>
-                                    <View style={styles.rounds}>
+                                    <View style={styles.rounds} >
                                     {
                                         this.state.competitionInfo.map((value,index)=>{
-                                            if(!inintTestRound){
-                                                inintTestRound =   value.is_test_round ? true :false
-                                                return (
-                                                  <View onLayout={this.measurePage}>
-                                                      <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
-                                                          <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
-                                                      </ButtonFeedback>
-                                                  </View>
-                                                )
-                                            }
                                             return (
                                                 <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
                                                     <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
@@ -361,6 +357,7 @@ function bindAction(dispatch) {
         setTeamDataTemp:(team)=>dispatch(setTeamDataTemp(team)),
         setTeamData:(team)=>dispatch(setTeamData(team)),
         setTeamToShow:(teamToShow)=>dispatch(setTeamToShow(teamToShow)),
+        setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
     }
 }
 
