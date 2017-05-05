@@ -11,12 +11,13 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayerListSlider from '../../../global/playerListSlider'
 import loader from '../../../../themes/loader-position'
 import MatchMan from './matchMan'
-
+import Toast from 'react-native-root-toast'
 
 class ManOfTheMatchLanding extends Component {
 
     constructor(props) {
          super(props)
+         this.selectedMan=null
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('_measurePage')
@@ -29,8 +30,37 @@ class ManOfTheMatchLanding extends Component {
         this.props.setHeight(y+50,'Landing')
     }
 
-    _onPressPlayer(item) {
-        if (__DEV__)console.log('Callback: ', item)
+    _onPressPlayer(info) {
+        if (__DEV__)console.log('_onPressPlayer: ', info)
+        this.selectedMan=info
+        if (__DEV__)console.log('this.selectedMan: ', this.selectedMan)
+    }
+    _onPressSubmit(){
+        if(this.selectedMan===null) {
+            let toast = Toast.show('Choose Player', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            // calls on toast\`s hide animation start.
+                        }
+                    })
+        }
+        else {
+            this.props.setSubPage(2,this.selectedMan)
+        }
     }
     
     render() {
@@ -42,13 +72,13 @@ class ManOfTheMatchLanding extends Component {
                                 <View style={styles.desc}>
                                     <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                                 </View>
-                                    <MatchMan />
+                                <MatchMan selectMan={this._onPressPlayer.bind(this)}/>
                                 <View style={styles.guther}>
                                     <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                                 </View>
 
                                 <View style={styles.roundButtonBg}>
-                                    <ButtonFeedback rounded style={styles.roundButton} onPress={() => this.props.setSubPage(2)}>
+                                    <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                                         <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
                                             SUBMIT
                                         </Text>
