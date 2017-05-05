@@ -1,13 +1,16 @@
 'use strict'
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Image, View, Text } from 'react-native'
+import { pushNewRoute } from '../../../actions/route'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import ButtonFeedback from '../../utility/buttonFeedback'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import TabBar from  './tabBar'
+import GamedayTeam from './gamedayTeam'
 
 const locStyle = styleSheetCreate({ 
     matchResults: {
@@ -118,11 +121,13 @@ const locStyle = styleSheetCreate({
             marginBottom: 8
         },
     },
+    gamedayTeamTab: {
+        paddingTop: 40
+    },
 
 
     summaryWrapper: {
         paddingVertical: 25,
-        paddingHorizontal: 20,
         backgroundColor: styleVar.colorGrey,
         borderBottomWidth: 1,
         borderBottomColor: styleVar.colorGrey2,
@@ -183,10 +188,17 @@ const locStyle = styleSheetCreate({
             marginTop: 4,
         }
     },
+    pageText: {
+        color: styleVar.colorText,
+        fontSize: styleVar.textFontSize,
+        lineHeight: styleVar.textLineHeight,
+        fontFamily: styleVar.fontGeorgia,
+        margin: 20
+    }
 })
 
 
-const Summary = () => (
+const Summary = ({opposition, bil}) => (
     <View style={locStyle.summaryContent}>
         <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
              <View style={locStyle.logo}>
@@ -202,63 +214,72 @@ const Summary = () => (
             </View>
         </View>
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ 12 }%</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.possession || 0  }%</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>POSSESSION</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ 20 }%</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.possession || 0  }%</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ 10 }</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.breaks || 0  }</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>BREAKS</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ 10 }</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.breaks || 0  }</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>00</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.metres || 0  }</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>METRES</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>00</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.metres || 0  }</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.scrums || 0 }</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>SCRUMS WON</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.scrums || 0 }</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.lione_outs || 0 }</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>LINE-OUTS WON</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.lione_outs || 0 }</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>%</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.pen_con }%</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>PEN/CON.</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>%</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.pen_con }%</Text>
         </View>
     </View>
 )
 
-export default class PostGame extends Component {
+class PostGame extends Component {
     constructor(props){
         super(props)
     }
 
+    _navigateTo(route) {
+        this.props.pushNewRoute(route)
+    }
+
     render() {
+        let details = this.props.details
+        let opposition = details.post.statics.opposition
+        let bil = details.post.statics.bil
+
         return (
             <View style={locStyle.matchResults}>
+                <Text style={locStyle.pageText}>{details.post.description}</Text>
                 <View style={locStyle.matchResultTitle}>
                     <Text style={locStyle.matchResultTitleText}>
                         MATCH RESULTS
@@ -268,7 +289,7 @@ export default class PostGame extends Component {
                     <View style={[locStyle.matchResultRow, {marginBottom: 15}]}>
                         <View style={locStyle.sideCol}>
                             <View style={locStyle.matchResultCircle}>
-                                <Text style={locStyle.matchResultCircleText}>{ 13}</Text>
+                                <Text style={locStyle.matchResultCircleText}>{ opposition.score || 0 }</Text>
                             </View>
                         </View>
                         <View style={locStyle.centerCol}>   
@@ -276,40 +297,40 @@ export default class PostGame extends Component {
                         </View>
                         <View style={locStyle.sideCol}>
                             <View style={locStyle.matchResultCircle}>
-                                <Text style={locStyle.matchResultCircleText}>{ 21 }</Text>
+                                <Text style={locStyle.matchResultCircleText}>{ bil.score || 0 }</Text>
                             </View>
                         </View>
                     </View>
                     <View style={locStyle.matchResultRow}>
-                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ opposition.tries || 0 }</Text>
                         <View style={locStyle.matchResultLabelWrapper}>
                             <Text style={locStyle.matchResultLabel}>TRIES</Text>
                         </View>
-                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ bil.tries || 0 }</Text>
                     </View>
 
                     <View style={locStyle.matchResultRow}>
-                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ opposition.conversions || 0 }</Text>
                         <View style={locStyle.matchResultLabelWrapper}>
                             <Text style={locStyle.matchResultLabel}>CONVERSIONS</Text>
                         </View>
-                        <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ bil.conversions || 0 }</Text>
                     </View>
 
                     <View style={locStyle.matchResultRow}>
-                        <Text style={locStyle.matchResultValue}>{ 3 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ opposition.penalties || 0 }</Text>
                         <View style={locStyle.matchResultLabelWrapper}>
                             <Text style={locStyle.matchResultLabel}>PENALTIES</Text>
                         </View>
-                        <Text style={locStyle.matchResultValue}>{ 2 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ bil.penalties || 0 }</Text>
                     </View>
 
                     <View style={locStyle.matchResultRow}>
-                        <Text style={locStyle.matchResultValue}>{ 3 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ opposition.dropped_goals || 0 }</Text>
                         <View style={locStyle.matchResultLabelWrapper}>
                             <Text style={locStyle.matchResultLabel}>DROP GOALS</Text>
                         </View>
-                        <Text style={locStyle.matchResultValue}>{ 1 }</Text>
+                        <Text style={locStyle.matchResultValue}>{ bil.dropped_goals || 0 }</Text>
                     </View>
                 </View>
 
@@ -322,10 +343,10 @@ export default class PostGame extends Component {
                         tabBarActiveTextColor={'black'}
                     >
                         <View tabLabel='SUMMARY'>
-                            <Summary />
+                            <Summary opposition={opposition} bil={bil} />
                         </View>
-                        <View tabLabel='GAME-DAY TEAM'>
-                            <Summary />
+                        <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab}>
+                            <GamedayTeam isHideTitle={true} />
                         </View>
                     </ScrollableTabView>
                 </View>
@@ -333,14 +354,25 @@ export default class PostGame extends Component {
                 <View style={locStyle.guther}>
                         <ButtonFeedback 
                             rounded 
-                            style={[locStyle.roundButton]}>
-                            <Icon name='md-analytics' style={locStyle.roundButtonIcon} />
-                            <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
-                                MATCH CENTRE RESULTS
-                            </Text>
+                            style={[locStyle.roundButton]}
+                            onPress={() => this._navigateTo('matchCenter') }>
+                                <Icon name='md-analytics' style={locStyle.roundButtonIcon} />
+                                <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
+                                    MATCH CENTRE RESULTS
+                                </Text>
                         </ButtonFeedback>
                 </View>
             </View>
         )
     }
 }
+
+
+function bindActions(dispatch) {
+    return {
+        pushNewRoute: (route)=>dispatch(pushNewRoute(route))
+    }
+}
+
+
+export default connect(null, bindActions)(PostGame)
