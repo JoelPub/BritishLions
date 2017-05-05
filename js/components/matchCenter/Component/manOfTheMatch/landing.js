@@ -8,7 +8,6 @@ import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
-import PlayerListSlider from '../../../global/playerListSlider'
 import loader from '../../../../themes/loader-position'
 import MatchMan from './matchMan'
 import Toast from 'react-native-root-toast'
@@ -41,26 +40,7 @@ class ManOfTheMatchLanding extends Component {
     }
     _onPressSubmit(){
         if(this.selectedMan===null) {
-            let toast = Toast.show('Choose Player', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                        delay: 0,
-                        onShow: () => {
-                            // calls on toast\`s appear animation start
-                        },
-                        onShown: () => {
-                            // calls on toast\`s appear animation end.
-                        },
-                        onHide: () => {
-                            // calls on toast\`s hide animation start.
-                        },
-                        onHidden: () => {
-                            // calls on toast\`s hide animation start.
-                        }
-                    })
+            this.props.setSubPage(2,'0')
         }
         else {
             this.props.setSubPage(2,this.selectedMan.id)

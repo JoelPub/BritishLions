@@ -288,7 +288,7 @@ class MatchCenter extends Component {
           this.setState({
             statusArray: this.statusArray
           })
-        },6000)
+        },2000)
       }
     }
     componentDidMount() {
