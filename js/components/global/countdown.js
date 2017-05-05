@@ -93,11 +93,20 @@ class Countdown extends Component {
             isCountDownEnd: true
         })
 
+        this._onCountDownEnd()
+
         this.props.setCountDownTimerEnd(true)
+    }
+
+    _onCountDownEnd() {
+        if (this.props.onCountDownEnd) {
+            this.props.onCountDownEnd()
+        }
     }
 
     componentDidMount() {
         let dateNow = new Date
+        //dateNow = '10 June 2017 15:34:57' // intercept
         let dateEnd = new Date(this.props.endDate? this.props.endDate : dateNow)
         //dateNow = '27 October 2016 22:50:00'
         //dateEnd = '28 October 2016 22:50:03'
@@ -120,16 +129,32 @@ class Countdown extends Component {
             this.setState({
                 isCountDownEnd: true
             })
+
+            this._onCountDownEnd()
         }
     }
 
     componentWillUnmount () {
         clearInterval(this._timer)
     }
+    
+    shouldComponentUpdate() {
+        return true
+    }
 
     render() {
+        let isShowUI = false
+
+        if (this.state.isCountDownEnd === false) {
+            isShowUI = true
+        }
+
+        if (this.props.isHideUI) {
+            isShowUI = false
+        }
+
         return (
-            this.state.isCountDownEnd? null :
+            isShowUI &&
                 <View style={styles.wrapper}>
                     <View style={[styles.col, styles.borderOff]}>
                         <Text style={styles.value}>{this.state.days}</Text>

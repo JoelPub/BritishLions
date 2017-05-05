@@ -183,66 +183,80 @@ class FixtureDetails extends Component {
     }
 
     _analyzeGameStatus() {
-        let gameStatus = strToLower(this.state.details.game_status) || null
+        let fixture = this.state.details
         
-        if (gameStatus === 'pre') {
-            this._loadPreGame()
-        } else if (gameStatus === 'live') {
-            
-        } else if (gameStatus === 'post') {
-
+        if (fixture.live) {
+            this.setState({
+                isLoaded: true,
+                gameStatus: 'live'
+            })
+        } else if (fixture.pre) {
+            this.setState({
+                isLoaded: true,
+                gameStatus: 'pre'
+            })
+        } else if (fixture.post) {
+            this.setState({
+                isLoaded: true,
+                gameStatus: 'post'
+            })
         } else {
-            this.setState({ isLoaded: true })
+            this.setState({
+                isLoaded: true,
+                gameStatus: null
+            })
         }
     }
 
     _gameMode() {
         let fixtureDetails = this.state.details
-       // let gameStatus = strToLower(this.state.gameStatus)
-          let gameStatus = 'pre'
-      switch (gameStatus) {
+        let gameStatus = this.state.gameStatus
+        
+        
+        console.log("ROYYYY: ", fixtureDetails, gameStatus)
+
+        switch (gameStatus) {
             case 'live':
-                return <LiveGame data={fixtureDetails} buttonOnPress={this.goToCoachBox}/>
+                return <LiveGame 
+                            data={fixtureDetails} 
+                            buttonOnPress={this.goToCoachBox}/>
                 break;
             case 'pre':
-                return <PreGame data={fixtureDetails} pressAddCalendar={()=>this.calendarAddEvent(this.props)}
-                                onPress={this.pickYourXVClick}
-                />
+                return <PreGame 
+                            data={fixtureDetails} 
+                            pressAddCalendar={()=>this.calendarAddEvent(this.props)}
+                            onPress={this.pickYourXVClick}/>
                 break;
             case 'post':
-                return <PostGame data={fixtureDetails} />
+                return <PostGame 
+                            data={fixtureDetails} />
                 break;
             default:
                 return <View></View>
         }
     }
-  _isSignIn(route) {
-    getRefreshToken().then((refreshToken) => {
-      if(refreshToken){
-        this.props.setJumpTo(route)
-        this._navigateTo(route)
-      }
-      else{
-        this.props.setJumpTo(route)
-        this._navigateTo('login')
-      }
-    }).catch((error) => {
-      if (this.isUnMounted) return // return nothing if the component is already unmounted
-      this._navigateTo('login')
-    })
-  }
 
-  _navigateTo(route) {
-    this.props.pushNewRoute(route)
-  }
-    pickYourXVClick = () =>{
-      this._isSignIn('myLionsCompetitionCentre')
-    }
-    _loadPreGame() {
-        this.setState({
-            isLoaded: true,
-            gameStatus: 'pre'
+    _isSignIn(route) {
+        getRefreshToken().then((refreshToken) => {
+            if(refreshToken){
+            this._navigateTo(route)
+            }
+            else{
+            this.props.setJumpTo(route)
+            this._navigateTo('login')
+            }
+        }).catch((error) => {
+            if (this.isUnMounted) return // return nothing if the component is already unmounted
+            this._navigateTo('login')
         })
+    }
+
+    _navigateTo(route) {
+        this.props.pushNewRoute(route)
+    }
+
+    pickYourXVClick = () =>{
+        this._isSignIn('myLionsCompetitionCentre')
     }
 
     goToCoachBox = () => {
