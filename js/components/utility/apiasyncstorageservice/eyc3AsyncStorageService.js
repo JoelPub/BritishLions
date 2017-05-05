@@ -218,7 +218,6 @@ export async function getEYC3ExpertsSquads() {
 
 
 export async function getEYC3GameDayTeam(gameID) {
-    console.log('gameID', gameID)
     storage.sync = {
         EYC3GameDayTeam(params) {
           let { id, resolve, reject} = params

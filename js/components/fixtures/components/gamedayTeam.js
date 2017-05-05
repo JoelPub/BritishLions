@@ -192,6 +192,45 @@ const styles = styleSheetCreate({
     },
     paginationBottom: {
         bottom: styleVar.deviceWidth/21
+    },
+    tag: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        left: 0,
+        top: 0
+    },
+    tagBG: {
+        
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+
+        borderRightWidth: 70,
+        borderTopWidth: 70,
+        borderRightColor: 'transparent',
+        borderTopColor: 'rgb(9, 127, 64)',
+    },
+    tagTextWrapper: {
+        position: 'absolute',
+        left: 9,
+        top: 9,
+        transform: [
+            {
+                rotate: '-45deg'
+            }
+        ]
+    },
+    tagText: {
+        backgroundColor: 'transparent',
+        color: '#FFF',
+        fontSize: 13,
+        lineHeight: 13,
+        textAlign: 'center',
+        fontFamily: styleVar.fontCondensed,
+    },
+    tagText2: {
+        marginTop: -2
     }
 })
 
@@ -212,8 +251,17 @@ const PlayerImgCell =({data,onPress}) =>(
                 <Text style={styles.playerNameText} numberOfLines={1}>{data.info.name&&data.info.name.toUpperCase().substring(data.info.name.lastIndexOf(" ")+1, data.info.name.length)}</Text>
             </View>
         </View>
+
+        <View style={styles.tag}>
+            <View style={styles.tagBG}></View>
+            <View style={styles.tagTextWrapper}>
+                <Text style={styles.tagText}>MATCH</Text>
+                <Text style={[styles.tagText, styles.tagText2]}>CAPTAIN</Text>
+            </View>
+        </View>
     </ButtonFeedback>
 )
+
 const PositionTitle =({pos,data}) =>(
     <View style={styles.posTitle}>
       <Text style={styles.posTitleCenter}>{pos.toUpperCase()}</Text>
@@ -261,40 +309,40 @@ class GamedayTeam extends Component {
         setTimeout(() => this._getDayTeam(), 600) // R4
     }
 
-    _getSquad(){
-      if (__DEV__)console.log('_getSquad')
-      this.setState({ isLoaded: false },()=>{
-          getSoticFullPlayerList().then((catchedFullPlayerList) => {
-              if (__DEV__)console.log('catchedFullPlayerList', catchedFullPlayerList)
-              if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  getEYC3OfficialSquad().then((catchedOfficialSquad) => {
-                        if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
-                        if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
-                            let showSquadFeed=convertSquadToShow(GamedayTeamModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
-                            if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
-                            // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                            this.setState({gameDayTeam:showSquadFeed.toJS()},()=>{
-                                this.setState({isLoaded:true})
-                            })
+    // _getSquad(){
+    //   if (__DEV__)console.log('_getSquad')
+    //   this.setState({ isLoaded: false },()=>{
+    //       getSoticFullPlayerList().then((catchedFullPlayerList) => {
+    //           if (__DEV__)console.log('catchedFullPlayerList', catchedFullPlayerList)
+    //           if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+    //               getEYC3OfficialSquad().then((catchedOfficialSquad) => {
+    //                     if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
+    //                     if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
+    //                         let showSquadFeed=convertSquadToShow(GamedayTeamModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
+    //                         if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+    //                         // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+    //                         this.setState({gameDayTeam:showSquadFeed.toJS()},()=>{
+    //                             this.setState({isLoaded:true})
+    //                         })
                             
-                        }
-                        else {
-                            this.setState({ isLoaded: true })
-                        }
-                  }).catch((error) => {
-                        this.setState({ isLoaded: true }, () => {
-                                this._showError(error) // prompt error
-                        })
-                  })
+    //                     }
+    //                     else {
+    //                         this.setState({ isLoaded: true })
+    //                     }
+    //               }).catch((error) => {
+    //                     this.setState({ isLoaded: true }, () => {
+    //                             this._showError(error) // prompt error
+    //                     })
+    //               })
 
-              }
-          }).catch((error) => {
-              this.setState({ isLoaded: true }, () => {
-                      this._showError(error) // prompt error
-              })
-          })
-      })
-    }
+    //           }
+    //       }).catch((error) => {
+    //           this.setState({ isLoaded: true }, () => {
+    //                   this._showError(error) // prompt error
+    //           })
+    //       })
+    //   })
+    // }
 
     _getDayTeam() {
         let gameID = this.props.gameID || null
@@ -311,23 +359,22 @@ class GamedayTeam extends Component {
                             if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
                             // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
                             this.setState({gameDayTeam:showSquadFeed.toJS()}, ()=>{
-                                this.setState({isLoaded:true})
+                                this.setState({isLoaded: true})
                             })
                             
-                        }
-                        else {
-                            this.setState({ isLoaded: true })
+                        } else {
+                            // this.setState({ isLoaded: true })
                         }
                     }).catch((error) => {
-                        this.setState({ isLoaded: true }, () => {
-                            this._showError(error) // prompt error
-                        })
+                        // this.setState({ isLoaded: true }, () => {
+                        //     this._showError(error) // prompt error
+                        // })
                     })
                 }
             }).catch((error) => {
-                this.setState({ isLoaded: true }, () => {
-                        this._showError(error) // prompt error
-                })
+                // this.setState({ isLoaded: true }, () => {
+                //     this._showError(error) // prompt error
+                // })
             })
         })
     }
@@ -428,7 +475,7 @@ class GamedayTeam extends Component {
 
 		            </View>
 	                :
-	                <ActivityIndicator style={loader.centered} size='large' />
+	                null
 	            }
 	         </View>
             )
