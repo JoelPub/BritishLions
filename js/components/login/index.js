@@ -161,14 +161,14 @@ class Login extends Component {
                  else
                  {
                     this._replaceRoute(this.props.jumpRoute)
-                    this.props.setJumpTo()
+                    this.props.setJumpTo('isFixtures')
                  }
             }).catch((error) => {
                  this._replaceRoute(this.props.jumpRoute)
-                 this.props.setJumpTo()
+                 this.props.setJumpTo('isFixtures')
             })
             this._replaceRoute(this.props.jumpRoute)
-            this.props.setJumpTo()
+            this.props.setJumpTo('isFixtures')
         }else{
             this._replaceRoute('myLions')
         }
@@ -199,14 +199,14 @@ class Login extends Component {
                 else
                 {
                    this._replaceRoute(this.props.jumpRoute)
-                   this.props.setJumpTo()
+                   this.props.setJumpTo('isFixtures')
                 }
            }).catch((error) => {
                 this._replaceRoute(this.props.jumpRoute)
-                this.props.setJumpTo()
+                this.props.setJumpTo('isFixtures')
            })
            this._replaceRoute(this.props.jumpRoute)
-           this.props.setJumpTo()
+           this.props.setJumpTo('isFixtures')
        }else
            this._replaceRoute('myLions')
     }
@@ -235,14 +235,14 @@ class Login extends Component {
                else
                {
                   this._replaceRoute(this.props.jumpRoute)
-                  this.props.setJumpTo()
+                  this.props.setJumpTo('isFixtures')
                }
           }).catch((error) => {
                this._replaceRoute(this.props.jumpRoute)
-               this.props.setJumpTo()
+               this.props.setJumpTo('isFixtures')
           })
           this._replaceRoute(this.props.jumpRoute)
-          this.props.setJumpTo()
+          this.props.setJumpTo('isFixtures')
         }else
            this._replaceRoute('myLions')
     }

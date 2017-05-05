@@ -15,13 +15,14 @@ import { Grid, Col, Row } from 'react-native-easy-grid'
 
 
 const  TableCell = ({data}) => {
+  let rank = data.rank + '.'
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
              resizeMode='contain'
              source={{uri: 'https://cdn.soticservers.net/tools/images/players/photos/2016/lions/4136/250x250/68811.jpg'}}
              style={styles.headerImage}  />
-      <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>1.</Text>
+      <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>{rank}</Text>
       <Text style={[styles.blackContentText,{left:70}]}>{data.player}</Text>
       <Text  style={[styles.blackContentText,{right:10}]}>
         {data.game}

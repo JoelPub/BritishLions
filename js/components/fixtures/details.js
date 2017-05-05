@@ -210,7 +210,7 @@ class FixtureDetails extends Component {
 
     _gameMode() {
         let fixtureDetails = this.state.details
-        let gameStatus = this.state.gameStatus
+        //let gameStatus = this.state.gameStatus
 
         switch (gameStatus) {
             case 'live':
@@ -237,6 +237,7 @@ class FixtureDetails extends Component {
         getRefreshToken().then((refreshToken) => {
             if(refreshToken){
             this._navigateTo(route)
+              this.props.setJumpTo('isFixtures')
             }
             else{
             this.props.setJumpTo(route)
