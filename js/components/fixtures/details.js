@@ -175,9 +175,9 @@ class FixtureDetails extends Component {
         let  reallyDate = dateNoSpace.toLowerCase()
 
         let  interaction = "/fixtures/" +reallyDate
-        if (__DEV__)console.log(interaction)
+        //if (__DEV__)console.log(interaction)
         NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
-        if (__DEV__)console.log('this.state.details',this.state.details)
+        //if (__DEV__)console.log('this.state.details',this.state.details)
 
         this._analyzeGameStatus()
     }
@@ -210,7 +210,7 @@ class FixtureDetails extends Component {
 
     _gameMode() {
         let fixtureDetails = this.state.details
-        //let gameStatus = this.state.gameStatus
+        let gameStatus = this.state.gameStatus
 
         switch (gameStatus) {
             case 'live':

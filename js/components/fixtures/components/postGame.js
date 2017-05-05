@@ -11,6 +11,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import TabBar from  './tabBar'
 import GamedayTeam from './gamedayTeam'
+import GameStatusDetailsModel from  '../../../modes/Fixtures/GameStatus'
 
 const locStyle = styleSheetCreate({ 
     matchResults: {
@@ -273,13 +274,14 @@ class PostGame extends Component {
     }
 
     render() {
-        let details = this.props.details
-        let opposition = details.post.statics.opposition
-        let bil = details.post.statics.bil
+        let fixtureDetails = GameStatusDetailsModel(this.props.details.post)
+        let details = fixtureDetails.toJS()
+        let opposition = details.statics.opposition
+        let bil = details.statics.bil
 
         return (
             <View style={locStyle.matchResults}>
-                <Text style={locStyle.pageText}>{details.post.description}</Text>
+                <Text style={locStyle.pageText}>{details.description}</Text>
                 <View style={locStyle.matchResultTitle}>
                     <Text style={locStyle.matchResultTitleText}>
                         MATCH RESULTS

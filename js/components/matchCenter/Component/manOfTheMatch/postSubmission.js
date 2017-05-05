@@ -111,7 +111,7 @@ class ManOfTheMatchPostSubission extends Component {
                     })
         }
         else {
-            this.props.setSubPage(2,this.selectedMan)
+            this.props.setSubPage(3,this.selectedMan.id)
         }
     }
     

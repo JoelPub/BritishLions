@@ -12,12 +12,16 @@ import PlayerListSlider from '../../../global/playerListSlider'
 import loader from '../../../../themes/loader-position'
 import MatchMan from './matchMan'
 import Toast from 'react-native-root-toast'
+import { setMatchMan, getMatchMan } from '../../../utility/asyncStorageServices'
 
 class ManOfTheMatchLanding extends Component {
 
     constructor(props) {
          super(props)
          this.selectedMan=null
+         this.state = {
+              savedMan:null,
+            }
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('_measurePage')
@@ -59,8 +63,14 @@ class ManOfTheMatchLanding extends Component {
                     })
         }
         else {
-            this.props.setSubPage(2,this.selectedMan)
+            this.props.setSubPage(2,this.selectedMan.id)
         }
+    }
+    componentDidMount(){
+        getMatchMan().then((playerid)=>{
+            if(__DEV__)console.log('playerid',playerid)
+            this.setState({savedMan:playerid})
+        })
     }
     
     render() {
@@ -80,7 +90,7 @@ class ManOfTheMatchLanding extends Component {
                                 <View style={styles.roundButtonBg}>
                                     <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                                         <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                            SUBMIT
+                                            {this.state.savedMan===null?'SUBMIT':'RESUBMIT'}
                                         </Text>
                                     </ButtonFeedback>
                                 </View>
