@@ -32,8 +32,8 @@ class Fixtures extends Component {
          this._scrollView = ScrollView
 
          this.state = {
-            //getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
-            getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
+            getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
+            //getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
             fixtures: [],
             isLoaded: false,
         }
@@ -58,7 +58,7 @@ class Fixtures extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                //if (__DEV__) console.log('res', res.data)
+                if (__DEV__) console.log('resssss', res.data)
                 if(res.data) {
                     this.setState({
                         fixtures: res.data,
@@ -95,7 +95,7 @@ class Fixtures extends Component {
                                                     <ButtonFeedback 
                                                         key={item.id}
                                                         style={styles.btn}
-                                                        onPress={() => this._drillDown(item)}>
+                                                        onPress={() => this._drillDown(item.toJS())}>
                                                         <ImagePlaceholder height={170}>
                                                             <Image
                                                                 resizeMode='cover' 
