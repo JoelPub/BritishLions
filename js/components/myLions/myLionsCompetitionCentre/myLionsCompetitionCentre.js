@@ -216,21 +216,13 @@ class MyLionsCompetitionCentre extends Component {
                                 borderColor: styleVar.colorGrey2,
                                 borderTopWidth: 1,
                                 paddingTop: 30
-                            }}>
+                            }}
+                                  onLayout={this.measurePage}
+                            >
                                 <View style={styles.guther}>
-                                    <View style={styles.rounds}>
+                                    <View style={styles.rounds} >
                                     {
                                         this.state.competitionInfo.map((value,index)=>{
-                                            if(!inintTestRound){
-                                                inintTestRound =   value.is_test_round ? true :false
-                                                return (
-                                                  <View onLayout={this.measurePage}>
-                                                      <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
-                                                          <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
-                                                      </ButtonFeedback>
-                                                  </View>
-                                                )
-                                            }
                                             return (
                                                 <ButtonFeedback disabled={!value.is_available} onPress={()=>{this._drillDown(value)}} key={index} style={{backgroundColor:'transparent'}}>
                                                     <Round title={strToUpper(value.name)} lock={!value.is_available} detail={value}/>
