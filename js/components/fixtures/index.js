@@ -58,7 +58,7 @@ class Fixtures extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                if (__DEV__) console.log('resssss', res.data)
+                //if (__DEV__) console.log('resssss', res.data)
                 if(res.data) {
                     this.setState({
                         fixtures: res.data,
