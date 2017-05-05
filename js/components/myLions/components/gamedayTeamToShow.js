@@ -10,12 +10,16 @@ export function convertSquadToShow(squad,fullPlayerList,uniondata) {
     tempFeed.forEach((value,index)=>{
         if (__DEV__)console.log('index',index)
             if(index==='captain') {
-                tempFeed=tempFeed.update(index,val=>{
-                        return searchPlayer(fullPlayerList,squad.get(index),uniondata)
-                    })
+                tempFeed = tempFeed.update(index,val=>{
+                    return searchPlayer(fullPlayerList, squad.get(index), uniondata)
+                })
                
-            }
-            else {
+            } else if(index==='kicker') {
+                tempFeed = tempFeed.update(index,val=>{
+                    return searchPlayer(fullPlayerList, squad.get(index), uniondata)
+                })
+               
+            } else {
                 tempFeed=tempFeed.set(index,new List())
                 squad.get(index).map((v,i)=>{
                     if(searchPlayer(fullPlayerList,v,uniondata)!==null) tempFeed=tempFeed.update(index,val=>{return val.push({name:v.name,info:searchPlayer(fullPlayerList,v,uniondata)})})

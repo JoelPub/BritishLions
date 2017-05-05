@@ -274,8 +274,9 @@ class PostGame extends Component {
     }
 
     render() {
-        let fixtureDetails = GameStatusDetailsModel(this.props.details.post)
-        let details = fixtureDetails.toJS()
+        let fixture = this.props.details
+        let postDetails = GameStatusDetailsModel(fixture.post)
+        let details = postDetails.toJS()
         let opposition = details.statics.opposition
         let bil = details.statics.bil
 
@@ -348,7 +349,7 @@ class PostGame extends Component {
                             <Summary opposition={opposition} bil={bil} />
                         </View>
                         <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab}>
-                            <GamedayTeam isHideTitle={true} />
+                            <GamedayTeam gameID={fixture.id} isHideTitle={true} />
                         </View>
                     </ScrollableTabView>
                 </View>
