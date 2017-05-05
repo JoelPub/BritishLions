@@ -56,10 +56,11 @@ export default class PreGame extends Component {
     }
 
     render() {
-        console.log('roy:', this.props)
+        let details = this.props.details
+
         return (
             <View>
-                <Countdown endDate={`${this.props.data.date} ${this.props.data.time}`}/> 
+                <Countdown endDate={`${details.date} ${details.time}`}/> 
                 <View style={locStyle.titleBarLink}>
                     <ButtonFeedback onPress={this.props.pressAddCalendar}>
                         <Text style={locStyle.titleBarLinkText}>
@@ -67,7 +68,7 @@ export default class PreGame extends Component {
                         </Text>
                     </ButtonFeedback>
                 </View>
-                <Text style={locStyle.pageText}>{this.props.data.description}</Text>
+                <Text style={locStyle.pageText}>{details.description}</Text>
                 
                 <PickYourXV onPress={this.props.onPress}/>
                 <GamedayTeam />

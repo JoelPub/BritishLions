@@ -211,25 +211,22 @@ class FixtureDetails extends Component {
     _gameMode() {
         let fixtureDetails = this.state.details
         let gameStatus = this.state.gameStatus
-        
-        
-        console.log("ROYYYY: ", fixtureDetails, gameStatus)
 
         switch (gameStatus) {
             case 'live':
                 return <LiveGame 
-                            data={fixtureDetails} 
+                            details={fixtureDetails} 
                             buttonOnPress={this.goToCoachBox}/>
                 break;
             case 'pre':
                 return <PreGame 
-                            data={fixtureDetails} 
+                            details={fixtureDetails} 
                             pressAddCalendar={()=>this.calendarAddEvent(this.props)}
                             onPress={this.pickYourXVClick}/>
                 break;
             case 'post':
                 return <PostGame 
-                            data={fixtureDetails} />
+                            details={fixtureDetails} />
                 break;
             default:
                 return <View></View>

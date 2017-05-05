@@ -298,9 +298,12 @@ class GamedayTeam extends Component {
 	render() {
 		return (
 			<View>
-				<View style={styles.subject}>
-			      <Text style={styles.subjectText}>GAME-DAY TEAM</Text>
-			    </View>
+                {
+                    this.props.isHideTitle? null :
+                        <View style={styles.subject}>
+                            <Text style={styles.subjectText}>GAME-DAY TEAM</Text>
+                        </View>
+                }
 				{
 	                this.state.isLoaded?
 	                <View>

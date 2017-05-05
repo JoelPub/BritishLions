@@ -97,6 +97,8 @@ export default class LiveGame extends Component {
         }
     }
     render() {
+        let details = this.props.details
+        
         return (
             <View>
                 <View style={locStyle.liveBox}>
@@ -123,7 +125,7 @@ export default class LiveGame extends Component {
                     </ButtonFeedback>
                     </View>
                 </View>
-                <Text style={locStyle.pageText}>please put the description here please put the description here</Text>
+                <Text style={locStyle.pageText}>{details.live.description}</Text>
                 <GamedayTeam />
             </View>
         )
