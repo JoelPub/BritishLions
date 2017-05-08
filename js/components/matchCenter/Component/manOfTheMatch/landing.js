@@ -40,7 +40,26 @@ class ManOfTheMatchLanding extends Component {
     }
     _onPressSubmit(){
         if(this.selectedMan===null) {
-            this.props.setSubPage(2,'0')
+            let toast = Toast.show('PLEASE SELECT PLAYER', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
         }
         else {
             this.props.setSubPage(2,this.selectedMan.id)
