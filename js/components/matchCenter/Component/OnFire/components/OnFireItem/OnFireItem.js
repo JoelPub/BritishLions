@@ -19,7 +19,8 @@ import Data from '../../../../../../../contents/unions/data'
 const  TableCell = ({data,player}) => {
   let rank = data.rank + '.'
   let playerName = player ? player.name : ''
-  let playerHeader = player ? player.image : ''
+  let playerHeader = player ? player.image : ' '
+
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
@@ -88,7 +89,7 @@ class OnFireItem extends Component {
 
   }
   searchInfo = (playerId) => {
-    let result = searchPlayer(this.props.playerData,'750',Data)
+    let result = searchPlayer(this.props.playerData,playerId,Data)
     return  result
   }
 }
