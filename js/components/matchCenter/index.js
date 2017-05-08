@@ -227,7 +227,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} momentumData={this.state.momentumData}/>
+                                statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1&&

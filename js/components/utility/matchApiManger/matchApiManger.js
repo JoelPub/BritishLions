@@ -11,10 +11,10 @@ export function getGameMomentum(onSuccess,OnError) {
       method: 'post',
       onSuccess: (json)=>{
             if(json.data) {
-                  if (__DEV__)console.log('json.data',json.data)
-                      let tmp=processMomentumData(json.data.momentum)
-                      if(__DEV__)console.log('tmp',tmp)
-                      onSuccess(tmp)
+                      if (__DEV__)console.log('json.data',json.data)
+                      json.data.momentum=processMomentumData(json.data.momentum)
+                      if(__DEV__)console.log('json.data',json.data)
+                      onSuccess(json.data)
               }
           },
       onError: OnError,

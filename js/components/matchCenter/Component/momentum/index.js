@@ -112,7 +112,7 @@ class Momentum extends Component {
     render() {
         return (
                 <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
-                    <LiveBox data={{title:'Provincial Barbarians v British & Irish Lions'}} />
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'},this.props.data)} />
                     <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)',minHeight:styleVar.deviceHeight-270}}>
                         <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
                             <View style={{flex:1,flexDirection:'row'}}>
@@ -129,7 +129,7 @@ class Momentum extends Component {
                         </View>
                         <View >
                             {
-                                this.props.momentumData.map((value,index)=>{
+                                this.props.data.momentum.map((value,index)=>{
                                     return (
                                         <View key={index} >
                                             {value!==null?

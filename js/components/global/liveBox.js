@@ -5,6 +5,7 @@ import { Image, View, Text } from 'react-native'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
+import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 
 let containerWidth = styleVar.deviceWidth
 
@@ -83,10 +84,35 @@ export default class LiveBox extends Component {
         super(props)
 
         this.state = {
-            inverse: true
+            inverse: true,
+            game_time:null,
+            bil_score:null,
+            op_score:null
         }
     }
+    callApi = () => {
+        if (__DEV__)console.log('call livebox Api')
+        apiActions.getGameMomentum((data)=>{
+                    this.setState({
+                      game_time: data.game_time,
+                      bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
+                      op_score: data.statics&&data.statics.opposition&&data.statics.opposition.score
+                    })
+        },(error)=>{
+        })
+    }
+    componentDidMount() {
+        if(this.props.data&&!this.props.data.feededData) {
+            this.callApi()
+            this.timer = setInterval(this.callApi,30000)
 
+        }
+            
+        
+    }
+    componentWillUnmount() {
+      this.timer&&clearTimeout(this.timer)
+    }
     render() {
        
         let inverse = this.props.inverse || false
@@ -105,13 +131,13 @@ export default class LiveBox extends Component {
                             </View>
                     }
                     <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>15</Text>
+                        <Text style={locStyle.circleText}>{this.props.data&&this.props.data.feededData?this.props.data.statics.opposition.score:this.state.op_score}</Text>
                     </View>
                     <View style={styleTime}>
-                        <Text style={locStyle.timeText}>00:00</Text>
+                        <Text style={locStyle.timeText}>{this.props.data&&this.props.data.feededData?this.props.data.game_time:this.state.game_time}</Text>
                     </View>
                     <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>47</Text>
+                        <Text style={locStyle.circleText}>{this.props.data&&this.props.data.feededData?this.props.data.statics.bil.score:this.state.bil_score}</Text>
                     </View>
                     {
                         !inverse &&
@@ -121,11 +147,14 @@ export default class LiveBox extends Component {
                             </View>
                     }
                 </View>
-                <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
-                    <Text style={{color:'rgb(255,255,255)',fontFamily: styleVar.fontGeorgia,fontSize:14,lineHeight:16,textAlign:'center'}}>
-                        {this.props.data.title}
-                    </Text>
-                </View>
+                {
+                    this.props.data&&this.props.data.hasTitle&&
+                    <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
+                        <Text style={{color:'rgb(255,255,255)',fontFamily: styleVar.fontGeorgia,fontSize:14,lineHeight:16,textAlign:'center'}}>
+                            {this.props.data.title}
+                        </Text>
+                    </View>
+                }
             </View>
         )
     }

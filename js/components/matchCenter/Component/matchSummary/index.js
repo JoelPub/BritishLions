@@ -43,7 +43,7 @@ class MatchSummary extends Component {
         return (
                 <ScrollView style={{marginTop:50}} scrollEnabled={false}>
                     <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
-                      <LiveBox data={{title:'Provincial Barbarians v British & Irish Lions'}} />
+                      <LiveBox data={{hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'}} />
                     </View>
                     <View style={{height:styleVar.deviceHeight-245,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >                    
                           <Timeline
