@@ -32,7 +32,7 @@ import { setTeamToShow } from '../../../actions/squad'
 
 import _fetch from '../../utility/fetch'
 
-const ShareHeaderView = ({detail}) => {
+const ShareHeaderView = ({success,message}) => {
   let height = 0
   if (styleVar.deviceWidth===320){
     height= styleVar.deviceWidth*0.45 + 20
@@ -41,8 +41,16 @@ const ShareHeaderView = ({detail}) => {
   }
   return(
     <View style={[styles.viewShareHeader,{height:height}]}>
+    {
+      success?
+      <View>
           <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
           <Text style={styles.headerText}>Here's my team selection for the next test!Download the Offical British & Lions app to select and submit your team.</Text>
+      </View>
+      :
+      <Text style={styles.headerTextBold}> {message}</Text>
+    }
+          
     </View>
   )}
 
@@ -106,7 +114,9 @@ class MyLionsTestRoundSubmit extends Component {
         super(props)
         this.state={
             isLoaded: false,
-            drillDownItem:this.props.drillDownItem
+            drillDownItem:this.props.drillDownItem,
+            isSuccess: true,
+            returnMessage:''
         }
         this.uniondata = Data
     }
@@ -136,8 +146,10 @@ class MyLionsTestRoundSubmit extends Component {
                         <View style={styles.pageTitle}>
                             <Text style={styles.pageTitleText}>TEAM SUBMITTED</Text>
                         </View>
-                        <ShareHeaderView />
-                        <View style={styles.smallContainer}>
+                        <ShareHeaderView success={this.state.isSuccess} message={this.state.returnMessage}/>
+                        {
+                          this.state.isSuccess&&
+                          <View style={styles.smallContainer}>
 
                             {
                               this.state.isLoaded?
@@ -179,6 +191,8 @@ class MyLionsTestRoundSubmit extends Component {
                               <ActivityIndicator style={loader.centered} size='large' />
                             }
                         </View>
+                        }
+                        
                             
                             
                         <View style={[styles.guther, styles.borderTop]}>
@@ -231,7 +245,13 @@ class MyLionsTestRoundSubmit extends Component {
                     onSuccess: (res) => {
                         if (__DEV__)console.log('res.data',res.data)
                         if(res.data&&(typeof res.data==='object')) {
-                            this.setTeam(TeamModel.fromJS(res.data))
+                            if(res.data.success&&res.data.success===false) {
+                                  this.setState({isSuccess:false,returnMessage:json.message})
+                              this.setTeam(TeamModel.fromJS({}))
+                            }
+                            else {
+                              this.setTeam(TeamModel.fromJS(res.data))                              
+                            }
                         }
                         else {
                             this.setTeam(TeamModel.fromJS({}))
@@ -246,7 +266,13 @@ class MyLionsTestRoundSubmit extends Component {
                 // _fetch({url:'https://api.myjson.com/bins/laaj1'}).then((json)=>{
                 //   if(__DEV__)console.log('json',json)
                 //       if(json) {
-                //               this.setTeam(TeamModel.fromJS(json))
+                //             if(json.success&&json.success==='false') {
+                //               this.setState({isSuccess:false,returnMessage:json.message})
+                //               this.setTeam(TeamModel.fromJS({}))
+                //             }
+                //             else {
+                //               this.setTeam(TeamModel.fromJS(json))                              
+                //             }
                 //       }
 
                 // })

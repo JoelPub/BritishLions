@@ -92,7 +92,7 @@ function processMomentumData(data){
             })
             if (i===0) momentum.isFirst=true
             if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
-            momentum.timeMark=i+10
+            momentum.timeMark=i
             result.push(momentum)
 
         }

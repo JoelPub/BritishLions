@@ -44,7 +44,7 @@ export default class MomentumTracker extends Component {
                                     <View key={index}>
                                     {
                                         strToLower(val.advantage_team)===(isHost?'bil':'opposition')?
-                                            <View style={[styles.column,{width:val.value,top:(h-2*radius)-(parseInt(val.time)+10-timeMark)*(h-2*radius)/10,right:0,}]} />
+                                            <View style={[styles.column,{width:val.value,top:(h-2*radius)-(parseInt(val.time)-timeMark)*(h-2*radius)/10,right:0,}]} />
                                             :
                                             null
                                     }                                   
@@ -52,14 +52,14 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5,backgroundColor:'transparent'}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5,backgroundColor:'transparent'}}>{timeMark===0?'':timeMark}</Text>
                     </View>
                     <View style={[{flex:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
                                 return(
-                                    <View key={index} style={{ height:(h-2*radius)*0.2*0.8,marginVertical:(h-2*radius)*0.2*0.1,position:'absolute',top:(h-radius)-(parseInt(val.time)+10-timeMark)*(h-2*radius)/10,left:w/32}}>
+                                    <View key={index} style={{ height:(h-2*radius)*0.2*0.8,marginVertical:(h-2*radius)*0.2*0.1,position:'absolute',top:(h-radius)-(parseInt(val.time)-timeMark)*(h-2*radius)/10,left:w/32}}>
                                         <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(0,0,0)',height:(h-2*radius)/5,fontSize:10,textAlign:'center'}}> {val.time} </Text>
                                     </View>
                                     )
@@ -74,7 +74,7 @@ export default class MomentumTracker extends Component {
                                     <View key={index}>
                                     {
                                          strToLower(val.advantage_team)===(isHost?'opposition':'bil')?
-                                            <View style={[styles.column,{width:val.value,top:(h-2*radius)-(parseInt(val.time)+10-timeMark)*(h-2*radius)/10,left:0,}]} />
+                                            <View style={[styles.column,{width:val.value,top:(h-2*radius)-(parseInt(val.time)-timeMark)*(h-2*radius)/10,left:0,}]} />
                                             :
                                             null
                                     }                                   
@@ -82,7 +82,7 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5,backgroundColor:'transparent'}}>{timeMark}</Text>
+                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5,backgroundColor:'transparent'}}>{timeMark===0?'':timeMark}</Text>
                     </View>
 
                     <View style={{top:0,left:isLast?cLeft-radius:cLeft,width:2*radius,height:isLast?2*radius:radius,borderTopLeftRadius:isLast?radius:0,borderTopRightRadius:isLast?radius:0,borderBottomLeftRadius:radius,borderBottomRightRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>

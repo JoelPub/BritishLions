@@ -114,16 +114,18 @@ class Momentum extends Component {
                 <View style={{marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                     <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'},this.props.data)} />
                     <View style={{paddingVertical:10,borderColor:'rgb(216, 217, 218)',minHeight:styleVar.deviceHeight-270}}>
-                        <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:20}}>
-                            <View style={{flex:1,flexDirection:'row'}}>
-                                <View style={{height:16,width:16,borderRadius:8,backgroundColor:'rgb(9,127,64)',marginTop:5}} />
-                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> SCORE ADVANTAGE</Text>
+                        <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:5}}>
+                            <View style={{flex:2,flexDirection:'row',alignItems:'center'}}>
+                                <View style={{height:14,width:14,borderRadius:7,backgroundColor:'rgb(9,127,64)'}} />
+                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:16,lineHeight:18}}> SCORE ADVANTAGE</Text>
                             </View>
-                            <View style={{flex:1,flexDirection:'row'}}>
-                                <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet,marginTop:5}} />
-                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',marginHorizontal:10}}> TEAM MOMENTUM </Text>
+                            <View style={{flex:2,flexDirection:'row',alignItems:'center'}}>
+                                <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet}} />
+                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:16,lineHeight:18}}> TEAM MOMENTUM </Text>
+                            </View>
+                            <View style={{flex:1,alignItems:'flex-end',paddingRight:10}}>
                                 <ButtonFeedback onPress={this.iconPress} >
-                                    <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
+                                    <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 24}} />
                                 </ButtonFeedback>
                             </View>
                         </View>
