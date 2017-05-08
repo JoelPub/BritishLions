@@ -70,6 +70,9 @@ const EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL = '/SaveUserCustomizedSquad'
 const EYC3_GET_GAME_DAY_TEAM_URL_NAME = 'EYC3_GET_GAME_DAY_TEAM'
 const EYC3_GET_GAME_DAY_TEAM_URL = '/GetGameDayTeam'
 
+const EYC3_GET_FIXTURE_INFO_URL_NAME = 'EYC3_GET_FIXTURE_INFO'
+const EYC3_GET_FIXTURE_INFO_URL = '/GetFixturesInfo'
+
 
 export function getAssembledUrl(urlName) {
     switch (urlName) {
@@ -121,6 +124,8 @@ export function getAssembledUrl(urlName) {
         // R4
         case EYC3_GET_GAME_DAY_TEAM_URL_NAME:
             return EYC3_BASE_URL_R4_DUMMY + EYC3_GET_GAME_DAY_TEAM_URL
+        case EYC3_GET_FIXTURE_INFO_URL_NAME:
+            return EYC3_BASE_URL_R4_DUMMY + EYC3_GET_FIXTURE_INFO_URL
     }
 }
 /*R3*/
@@ -183,6 +188,9 @@ export const actionsApi = {
     eyc3GetOnBoardingInfo: getAssembledUrl(EYC3_GETONBOARDINGINFO_URL_NAME),
     eyc3GetUserCustomizedSquad: getAssembledUrl(EYC3_GETUSERCUSTOMIZEDSQUAD_URL_NAME),
     eyc3SaveUserCustomizedSquad: getAssembledUrl(EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL_NAME),
+
+    // R4
     eyc3GetGameDayTeam: getAssembledUrl(EYC3_GET_GAME_DAY_TEAM_URL_NAME),
+    eyc3GetFixtureInfo: getAssembledUrl(EYC3_GET_FIXTURE_INFO_URL_NAME),
 }
 export const APP_VERSION = APP_VERSION_NO 

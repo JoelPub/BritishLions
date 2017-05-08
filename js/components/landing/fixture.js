@@ -9,6 +9,7 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import styles from './styles'
 import { limitArrayList, strToLower, strToUpper, findObjByID } from '../utility/helper'
+import { actionsApi} from '../utility/urlStorage'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import LinearGradient from 'react-native-linear-gradient'
@@ -148,8 +149,7 @@ class PlayerFigure extends Component {
         this.isUnMounted = false
         this._timer = null
         this.state = {
-            getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
-            //getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
+            getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo,
             fixture: FixtureInfoModel().toJS(),
             isLastFixture: false,
             gameStatus: null,

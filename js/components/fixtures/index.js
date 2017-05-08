@@ -15,6 +15,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import EYSFooter from '../global/eySponsoredFooter'
 import { service } from '../utility/services'
 import StickyFooter from '../utility/stickyFooter'
+import { actionsApi} from '../utility/urlStorage'
 import loader from '../../themes/loader-position'
 import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
@@ -32,8 +33,7 @@ class Fixtures extends Component {
          this._scrollView = ScrollView
 
          this.state = {
-            getFixtureInfoURL: 'http://bilprod-r4dummyapi.azurewebsites.net/GetFixturesInfo', // dummy
-            //getFixtureInfoURL: 'https://api.myjson.com/bins/qwn91', // dummy
+            getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo, 
             fixtures: [],
             isLoaded: false,
         }
