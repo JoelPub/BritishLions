@@ -18,6 +18,7 @@ import Swiper from 'react-native-swiper'
 import styleVar from '../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper,splitName,mapJSON } from '../../utility/helper'
+import { isEmptyObject } from '../../utility/helper'
 
 const styles = styleSheetCreate({    
     individaulPositionRow:{
@@ -213,13 +214,18 @@ const styles = styleSheetCreate({
     },
     tagTextWrapper: {
         position: 'absolute',
-        left: 9,
-        top: 9,
+        left: 8,
+        top: 10,
         transform: [
             {
                 rotate: '-45deg'
             }
-        ]
+        ],
+
+        android: {
+            top: 13,
+            left: 7
+        }
     },
     tagText: {
         backgroundColor: 'transparent',
@@ -234,7 +240,17 @@ const styles = styleSheetCreate({
     }
 })
 
-const PlayerImgCell =({data,onPress}) =>(
+const CaptainTag = () => (
+    <View style={styles.tag}>
+        <View style={styles.tagBG}></View>
+        <View style={styles.tagTextWrapper}>
+            <Text style={styles.tagText}>MATCH</Text>
+            <Text style={[styles.tagText, styles.tagText2]}>CAPTAIN</Text>
+        </View>
+    </View>
+)
+
+const PlayerImgCell =({data, onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
         <ImagePlaceholder 
             width = {styleVar.deviceWidth / 3}
@@ -251,14 +267,9 @@ const PlayerImgCell =({data,onPress}) =>(
                 <Text style={styles.playerNameText} numberOfLines={1}>{data.info.name&&data.info.name.toUpperCase().substring(data.info.name.lastIndexOf(" ")+1, data.info.name.length)}</Text>
             </View>
         </View>
-
-        <View style={styles.tag}>
-            <View style={styles.tagBG}></View>
-            <View style={styles.tagTextWrapper}>
-                <Text style={styles.tagText}>MATCH</Text>
-                <Text style={[styles.tagText, styles.tagText2]}>CAPTAIN</Text>
-            </View>
-        </View>
+        {
+            data.info.isMatchedCaptain && <CaptainTag/>
+        }
     </ButtonFeedback>
 )
 
@@ -355,10 +366,12 @@ class GamedayTeam extends Component {
 
                         if(catchedGameDayTeam !== null && catchedGameDayTeam !== 0 && catchedGameDayTeam !== -1) {
                             let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
-                            
-                            if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+                           
+                            //if (__DEV__)console.log('showSquadFeed', showSquadFeed)
+                            showSquadFeed = this._getMatchCaptianTag(showSquadFeed.toJS())
+
                             // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                            this.setState({gameDayTeam:showSquadFeed.toJS()}, ()=>{
+                            this.setState({gameDayTeam: showSquadFeed}, ()=>{
                                 this.setState({isLoaded: true})
                             })
                             
@@ -377,6 +390,44 @@ class GamedayTeam extends Component {
                 // })
             })
         })
+    }
+
+    _getMatchCaptianTag(squadList) {
+        // check if there's captain, then match captain tag
+        if (squadList.captain && !isEmptyObject(squadList.captain) && squadList.captain.id) {
+            let captainID = squadList.captain.id
+            // forwards
+            if (Array.isArray(squadList.forwards)) {
+                squadList.forwards.map((player, playerIndex) => {
+                    let info = player.info
+                    let playerID = info.id
+                    
+                    info.isMatchedCaptain = (playerID === captainID)? true : false
+                })
+            }
+
+            // backs
+            if (Array.isArray(squadList.backs)) {
+                squadList.backs.map((player, playerIndex) => {
+                    let info = player.info
+                    let playerID = info.id
+                    
+                    info.isMatchedCaptain = (playerID === captainID)? true : false
+                })
+            }
+
+            // reserves
+            if (Array.isArray(squadList.reserves)) {
+                squadList.reserves.map((player, playerIndex) => {
+                    let info = player.info
+                    let playerID = info.id
+                    
+                    info.isMatchedCaptain = (playerID === captainID)? true : false
+                })
+            }
+        } 
+        
+        return squadList
     }
 
 	render() {
