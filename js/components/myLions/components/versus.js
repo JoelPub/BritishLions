@@ -46,14 +46,14 @@ const locStyle = styleSheetCreate({
         marginBottom: 15
     },
     circle: {
-        width: styleVar.deviceWidth*0.27,
-        height: styleVar.deviceWidth*0.27,
+        width: 100,
+        height: 100,
         borderColor: 'rgb(255, 255, 255)',
         borderWidth: 2,
-        borderRadius: styleVar.deviceWidth*0.135,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: styleVar.deviceWidth*0.04
+        marginBottom: 16
     },
     circleText: {
         fontFamily: styleVar.fontCondensed,
@@ -102,6 +102,30 @@ const locStyle = styleSheetCreate({
         marginLeft: 5,
         color: 'rgb(175,0,30)'
     },
+
+
+    playerPic: {
+        alignSelf: 'center',
+        marginTop: 0,
+        marginBottom: 15,
+        width: 101,
+        height: 101,
+        borderRadius: 50.5
+    },
+    playerPicImg: {
+        width: 101,
+        height: 101,
+        position: 'absolute',
+        top: 0,
+        left: 0
+    },
+    playerPicCover: {
+        width: 101,
+        height: 101,
+        top: 0,
+        left: 0,
+        position: 'absolute',
+    },
 })
 
 export default class Versus extends Component {
@@ -114,13 +138,17 @@ export default class Versus extends Component {
 	render() {
         
 		return (
-            <LinearGradient  colors={['#af001e', '#820417']}>
+            <LinearGradient  colors={['#af001e', '#af001e']}>
                 <View style={locStyle.wrapper}>
                     <View style={locStyle.circleWrapper}>
-                        <Image 
+                        <View style={locStyle.playerPic}>
+                            <Image resizeMode='cover' source={{uri: this.props.gameData.image}} style={locStyle.playerPicImg}/>
+                            <Image source={require('../../../../images/redCircle.png')} style={locStyle.playerPicCover}/>
+                        </View>
+                        {/*<Image 
                             resizeMode='cover' 
                             source={{uri: this.props.gameData.image}} 
-                            style={[styles.imageCircle, locStyle.imageCircle]} />
+                            style={[styles.imageCircle, locStyle.imageCircle]} />*/}
                         <View>
                         {
                             splitName(this.props.gameData.title,' ',10).map((value,index)=>{
