@@ -317,14 +317,14 @@ export default class PlayersRankBox extends Component {
                     if(__DEV__)console.log('playerid',playerid)
                     let optionsInfo = {
                         url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchVoteResult',
-                        data: {id:1,man_of_match : playerid },
+                        data: {id:1,man_of_match : this.props.showModal?playerid:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
                         method: 'post',
                         onSuccess: (res) => {
                             // if (__DEV__)console.log('res',res)
                             if(res.data) {
-                                this._setModalVisible(true,'message','SUCCESS','ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi.\n\n Lorem ipsum dolor sit amet, consectetur adipiscing elit.','CLOSE')
+                                if(this.props.showModal) this._setModalVisible(true,'message','SUCCESS','ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi.\n\n Lorem ipsum dolor sit amet, consectetur adipiscing elit.','CLOSE')
                                 let players=[]
                                 let profiles=[]
                                 if (__DEV__)console.log('res.data',res.data)
@@ -387,7 +387,7 @@ export default class PlayersRankBox extends Component {
                             }
                         },
                         onError: ()=>{
-                            this._setModalVisible(true,'message','ERROR','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi. ','CLOSE')
+                            if(this.props.showModal)this._setModalVisible(true,'message','ERROR','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi. ','CLOSE')
                             this.setState({isLoaded:true})
                         },
                         isRequiredToken: false,
