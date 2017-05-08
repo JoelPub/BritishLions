@@ -117,11 +117,11 @@ class Momentum extends Component {
                         <View style={{flexDirection:'row',paddingLeft:20,alignItems:'center',marginBottom:5}}>
                             <View style={{flex:2,flexDirection:'row',alignItems:'center'}}>
                                 <View style={{height:14,width:14,borderRadius:7,backgroundColor:'rgb(9,127,64)'}} />
-                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:16,lineHeight:18}}> SCORE ADVANTAGE</Text>
+                                <Text style={styles.subjectText}> SCORE ADVANTAGE</Text>
                             </View>
                             <View style={{flex:2,flexDirection:'row',alignItems:'center'}}>
                                 <View style={{height:14,width:28,backgroundColor:styleVar.colorScarlet}} />
-                                <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:16,lineHeight:18}}> TEAM MOMENTUM </Text>
+                                <Text style={styles.subjectText}> TEAM MOMENTUM </Text>
                             </View>
                             <View style={{flex:1,alignItems:'flex-end',paddingRight:10}}>
                                 <ButtonFeedback onPress={this.iconPress} >

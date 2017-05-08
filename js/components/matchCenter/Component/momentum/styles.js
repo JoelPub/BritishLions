@@ -4,10 +4,15 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import styleVar from '../../../../themes/variable'
 
 module.exports = styleSheetCreate({
-    background: {
-        flex: 1,
-        width: null,
-        height: null,
-        backgroundColor: '#fff'
+    subjectText: {
+    	fontFamily: styleVar.fontCondensed,
+    	color:'rgb(132,136,139)',
+    	fontSize:16,
+    	lineHeight:18,
+    	marginTop:6,
+    	marginLeft:5,
+    	android: {
+            marginTop:2
+        }
     },
 })
