@@ -11,9 +11,9 @@ class ManOfTheMatch extends Component {
 
     constructor(props) {
          super(props)
-         // this.state = {
-         //      currentPage:0
-         // }
+         this.state = {
+              showModal:true
+         }
     }
     // pressSubmit(n) {
     //     this.setState({currentPage:n})
@@ -21,18 +21,17 @@ class ManOfTheMatch extends Component {
     componentDidMount(){
         if (__DEV__)console.log('index componentDidMount')
 
-        // this.setState({currentPage:1})
+       if(this.props.subPage!==1) this.setState({showModal:false})
 
     }
     
-    // componentWillReceiveProps(nextProps) {
-    //     if (__DEV__)console.log('index componentWillReceiveProps nextProps.isActive',nextProps.isActive)
-    //     if (__DEV__)console.log('index componentWillReceiveProps this.props.isActive',this.props.isActive)
-    //     if(nextProps.isActive&&!this.props.isActive) {
-    //     if (__DEV__)console.log('this.state.currentPage',this.state.currentPage)
-    //          this.setState({currentPage:this.state.currentPage===0?1:this.state.currentPage})
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (__DEV__)console.log('index componentWillReceiveProps nextProps.subPage',nextProps.subPage)
+        if (__DEV__)console.log('index componentWillReceiveProps this.props.subPage',this.props.subPage)
+        if(nextProps.subPage!==this.props.subPage) {
+             this.setState({showModal:true})
+        }
+    }
     
     
     render() {
@@ -42,10 +41,10 @@ class ManOfTheMatch extends Component {
                         this.props.subPage===1&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage}/>
                     }
                     {
-                        this.props.subPage===2&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage}/>
+                        this.props.subPage===2&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal}/>
                     }
                     {
-                        this.props.subPage===3&&<ManOfTheMatchFinal setHeight={this.props.setHeight}/>
+                        this.props.subPage===3&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal}/>
                     }
                     
                     

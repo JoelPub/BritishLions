@@ -217,7 +217,7 @@ class MatchMan extends Component {
                 i=info
             }
             this.setState({selectedPosition:p,selectedSequence:s},()=>{
-                this.props.selectMan(info)
+                this.props.selectMan(i)
             })
     }
 
@@ -242,7 +242,7 @@ class MatchMan extends Component {
 		                                        rowData.map((item,index)=>{
 		                                            return(
 		                                                    <View style={styles.posWrapper} key={index}>
-		                                                            <PlayerImgCell data={item} selected={this.state.selectedPosition==='forwards'&&this.state.selectedSequence===index} onPress = {() => this._selectMan('forwards',index,item.info)}/>
+		                                                            <PlayerImgCell data={item} selected={this.state.selectedPosition==='forwards'&&this.state.selectedSequence===(3*i+index)} onPress = {() => this._selectMan('forwards',(3*i+index),item.info)}/>
 		                                                    </View>
 		                                                )
 		                                        }, this)
@@ -269,7 +269,7 @@ class MatchMan extends Component {
 		                                        rowData.map((item,index)=>{
 		                                            return(
 		                                                <View style={styles.posWrapper} key={index}>
-		                                                        <PlayerImgCell data={item} selected={this.state.selectedPosition==='backs'&&this.state.selectedSequence===index} onPress = {() => this._selectMan('backs',index,item.info)}/>
+		                                                        <PlayerImgCell data={item} selected={this.state.selectedPosition==='backs'&&this.state.selectedSequence===(3*i+index)} onPress = {() => this._selectMan('backs',(3*i+index),item.info)}/>
 		                                                </View>
 		                                                )
 		                                        }, this)

@@ -10,6 +10,7 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayersRankBox from '../../../global/playersRankBox'
 import MatchMan from './matchMan'
+import Toast from 'react-native-root-toast'
 
 class ManOfTheMatchPostSubission extends Component {
 
@@ -35,7 +36,26 @@ class ManOfTheMatchPostSubission extends Component {
     }
     _onPressSubmit(){
         if(this.selectedMan===null) {
-            this.props.setSubPage(3,'0')
+            let toast = Toast.show('PLEASE SELECT PLAYER', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
         }
         else {
             this.props.setSubPage(3,this.selectedMan.id)
@@ -46,7 +66,7 @@ class ManOfTheMatchPostSubission extends Component {
         return (
                 <View style={styles.wrapper}>
                     <View style={styles.guther}>
-                        <PlayersRankBox title='CURRENT FAN FAVOURITES' />
+                        <PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}/>
                     </View>
                     <View style={styles.title}>
                         <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>

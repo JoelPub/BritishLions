@@ -39,7 +39,7 @@ class ManOfTheMatchFinal extends Component {
                                 </View>
 
                                 <View style={styles.guther}>
-                                    <PlayersRankBox  />
+                                    <PlayersRankBox  showModal={this.props.showModal}/>
                                 </View>
 
                                 <View style={styles.guther}>

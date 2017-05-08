@@ -47,7 +47,6 @@ class MatchCenter extends Component {
         this.subscription= null
         this.timer  = null
         this.statusArray=[false,false,false,false,false]
-        this.fullTime=80
 
     }
     iconPress = () => {
@@ -68,36 +67,6 @@ class MatchCenter extends Component {
         this.setState({subPage:n},()=>{
           setMatchMan(playerid)
         })
-    }
-    processMomentumData(data){
-        // if(__DEV__)console.log('processMomentumData')
-        let result=[]
-        for(let i=0;i<this.fullTime;i=i+10){
-            let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
-            // if(__DEV__)console.log('momentum',momentum)
-            if(data.team_momentum.findIndex(x=>{
-                return parseInt(x.time)>i&&parseInt(x.time)<=i+10
-            })>-1) {
-                momentum.team_momentum=data.team_momentum.filter(x=>{
-                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10
-                })
-                momentum.score_advantage=data.score_advantage.filter(x=>{
-                    return parseInt(x.time)===i||parseInt(x.time)===i+10
-                })
-                if (i===0) momentum.isFirst=true
-                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
-                momentum.timeMark=i+10
-                result.push(momentum)
-
-            }
-            else {
-                result.push(null)
-            }
-        }
-
-        // if(__DEV__)console.log('result',result)
-        return result.reverse()
-
     }
     processSummaryData(type,json){
       let result=[]
@@ -132,126 +101,41 @@ class MatchCenter extends Component {
     callApi = () => {
       if(this.state.index===0){
         if (__DEV__)console.log('call match summary Api')
+        let optionData={}
+        let type='init'
         if(!this.statusArray[0]) {
-          let optionsInfo = {
-            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
-            data: {id:1},
-            onAxiosStart: null,
-            onAxiosEnd: null,
-            method: 'post',
-            onSuccess: (res) => {
-                // if (__DEV__)console.log('res',res)
-                if(res.data) {
-                    if (__DEV__)console.log('res.data',res.data)
-                        this.statusArray.fill(false)
-                        this.statusArray[0]=true
-                        let tmp=this.processSummaryData('init',res.data)
-                        if(__DEV__)console.log('tmp',tmp)
-                        this.setState({
-                          statusArray: this.statusArray,
-                          summaryData:tmp
-                        })
-                }
-            },
-            onError: ()=>{
-            },
-            isRequiredToken: false,
-            channel: 'EYC3',
-            isQsStringify:false
-          }
-          service(optionsInfo) 
-          // _fetch({url:'https://api.myjson.com/bins/15poal'}).then((json)=>{
-          //   if(__DEV__)console.log('json',json)
-          //       if(json) {
-          //               this.statusArray.fill(false)
-          //               this.statusArray[0]=true
-          //               let tmp=this.processSummaryData('init',json)
-          //               if(__DEV__)console.log('tmp',tmp)
-          //               this.setState({
-          //                 statusArray: this.statusArray,
-          //                 summaryData:tmp
-          //               })
-          //       }
-
-          // })
+          optionData={id:1}
         }
         else {
-          let optionsInfo = {
-            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
-            data: {id:1,"sequenceId" : 20},
-            onAxiosStart: null,
-            onAxiosEnd: null,
-            method: 'post',
-            onSuccess: (res) => {
-                // if (__DEV__)console.log('res',res)
-                if(res.data) {
-                    if (__DEV__)console.log('res.data',res.data)
-                        let tmp=this.processSummaryData('refresh',res.data)
-                        if(__DEV__)console.log('tmp',tmp)
-                        this.setState({
-                          summaryData:tmp
-                        })
-                }
-            },
-            onError: ()=>{
-            },
-            isRequiredToken: false,
-            channel: 'EYC3',
-            isQsStringify:false
-          }
-          service(optionsInfo) 
-           // _fetch({url:'https://api.myjson.com/bins/nbdp9'}).then((json)=>{
-           //        if(__DEV__)console.log('json',json)
-           //        let tmp=this.processSummaryData('refresh',json)
-           //        if(__DEV__)console.log('tmp',tmp)
-           //        this.setState({
-           //          summaryData:tmp
-           //        })
-           //      })
+          optionData={id:1,"sequenceId" : 20}
+          type='refresh'
         }
+        apiActions.getTimeLineLiveSummary(optionData,(json)=>{
+            if(json.data) {
+                  if (__DEV__)console.log('json.data',json.data)
+                      this.statusArray.fill(false)
+                      this.statusArray[0]=true
+                      let tmp=this.processSummaryData(type,json.data)
+                      if(__DEV__)console.log('tmp',tmp)
+                      this.setState({
+                        statusArray: this.statusArray,
+                        summaryData:tmp
+                      })
+              }
+        },(error)=>{
+        })
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
-
-          let optionsInfo = {
-            url: 'http://bilprod-r4dummyapi.azurewebsites.net/getGameMomentum',
-            data: {id:1},
-            onAxiosStart: null,
-            onAxiosEnd: null,
-            method: 'post',
-            onSuccess: (res) => {
-                // if (__DEV__)console.log('res',res)
-                if(res.data) {
-                    if (__DEV__)console.log('res.data',res.data)
-                        this.statusArray.fill(false)
-                        this.statusArray[1]=true
-                        let tmp=this.processMomentumData(res.data.momentum)
-                        if(__DEV__)console.log('tmp',tmp)
-                        this.setState({
-                          statusArray: this.statusArray,
-                          momentumData:tmp
-                        })
-                }
-            },
-            onError: ()=>{
-            },
-            isRequiredToken: false,
-            channel: 'EYC3',
-            isQsStringify:false
-          }
-        if(!this.statusArray[1]) {
-          service(optionsInfo) 
-        }
-        else {
-           _fetch({url:'https://api.myjson.com/bins/9zfuh'}).then((json)=>{
-                  if(__DEV__)console.log('json',json)
-                  let tmp=this.processMomentumData(json.momentum)
-                  if(__DEV__)console.log('tmp',tmp)
-                  this.setState({
-                    momentumData:tmp
-                  })
-                })
-        }
+        apiActions.getGameMomentum((data)=>{
+                    this.statusArray.fill(false)
+                    this.statusArray[1]=true
+                    this.setState({
+                      statusArray: this.statusArray,
+                      momentumData:data
+                    })
+        },(error)=>{
+        })
       }
       if(this.state.index===2){
         if (__DEV__)console.log('call  set Play  Api')
