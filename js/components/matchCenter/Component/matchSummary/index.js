@@ -31,8 +31,8 @@ class MatchSummary extends Component {
     }
     _renderCircle(rowData,sectionID,rowID) {
       return (
-        <View style={{width:50,height:50,backgroundColor:'rgb(255,255,255)',position:'absolute',left:0,borderWidth:1,borderColor:'rgb(216,217,218)',borderRadius:25,justifyContent:'center'}}>
-        <Text style={{fontSize:17,fontFamily:styleVar.fontCondensed,color:'rgb(175,0,30)',textAlign: 'center'}}>{rowData.time}</Text>
+        <View style={styles.timeWrapper}>
+        <Text style={styles.timeText}>{rowData.time}</Text>
         </View>)
     }
     _onEndReached(){
@@ -41,17 +41,15 @@ class MatchSummary extends Component {
     }
     render() {
         return (
-                <ScrollView style={{marginTop:50}} scrollEnabled={false}>
-                    <View style={{backgroundColor:'rgb(255,255,255)',paddingTop:5}}>
-                      <LiveBox data={{hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'}} />
-                    </View>
-                    <View style={{height:styleVar.deviceHeight-245,paddingHorizontal:10,backgroundColor:'rgb(255,255,255)'}} >                    
+                <ScrollView style={styles.scroll} scrollEnabled={false}>
+                    <LiveBox data={{hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'}} />
+                    <View style={styles.timelineWrapper} >                    
                           <Timeline
                             data={this.props.summaryData}
                             lineColor='rgb(216,217,218)'
                             timeContainerStyle={{position:'absolute'}}
                             timeStyle={{width:0,height:0}}
-                            descriptionStyle={{color:'rgb(38,38,38)',fontSize:14,lineHeight:16,fontFamily:styleVar.fontGeorgia,marginLeft:20}}
+                            descriptionStyle={styles.descripton}
                             separator={false}
                             options={{
                               style:{paddingTop:5},

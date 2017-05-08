@@ -20,6 +20,28 @@ const styles = styleSheetCreate({
         backgroundColor:styleVar.colorScarlet,
         marginVertical:(h-2*radius)*0.2*0.1,
         position:'absolute'
+    },
+    grid:{
+        flex:8,
+        borderLeftWidth:1,
+        borderRightWidth:1,
+        borderTopWidth:1,
+        borderColor:'rgb(216, 217, 218)',
+        paddingVertical:radius
+    },
+    timeLine:{
+        fontFamily:styleVar.fontCondensed,
+        color:'rgb(132,136,139)',
+        fontSize:12,
+        position:'absolute',
+        bottom:0,
+        left:5,
+        backgroundColor:'transparent'
+    },
+    middleGrid:{
+        flex:1,
+        borderTopWidth:1,
+        borderColor:'rgb(216, 217, 218)'
     }
 })
 
@@ -36,7 +58,7 @@ export default class MomentumTracker extends Component {
 
         return (
                 <View style={[styles.trackerWrapper,{paddingTop:isLast?radius:0,paddingBottom:isFirst?radius:0,height:isLast&&isFirst?h+2*radius:(isLast||isFirst)?h+radius:h}]}>
-                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:2}]}>
+                    <View style={[styles.grid,isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -52,9 +74,9 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,left:5,backgroundColor:'transparent'}}>{timeMark===0?'':timeMark}</Text>
+                        <Text style={styles.timeLine}>{timeMark===0?'':timeMark}</Text>
                     </View>
-                    <View style={[{flex:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)'},isFirst&&{borderBottomWidth:2}]}>
+                    <View style={[styles.middleGrid,isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -66,7 +88,7 @@ export default class MomentumTracker extends Component {
                             })
                         }
                     </View>
-                    <View style={[{flex:8,borderLeftWidth:1,borderRightWidth:1,borderTopWidth:1,borderColor:'rgb(216, 217, 218)',paddingVertical:radius},isFirst&&{borderBottomWidth:2}]}>
+                    <View style={[styles.grid,isFirst&&{borderBottomWidth:2}]}>
                         {
                             data.team_momentum&&data.team_momentum.map((val,index)=>{
 
@@ -82,7 +104,7 @@ export default class MomentumTracker extends Component {
                                     )
                             })
                         }
-                        <Text style={{fontFamily:styleVar.fontCondensed,color:'rgb(132,136,139)',fontSize:12,position:'absolute',bottom:0,right:5,backgroundColor:'transparent'}}>{timeMark===0?'':timeMark}</Text>
+                        <Text style={styles.timeLine}>{timeMark===0?'':timeMark}</Text>
                     </View>
 
                     <View style={{top:0,left:isLast?cLeft-radius:cLeft,width:2*radius,height:isLast?2*radius:radius,borderTopLeftRadius:isLast?radius:0,borderTopRightRadius:isLast?radius:0,borderBottomLeftRadius:radius,borderBottomRightRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
