@@ -83,7 +83,7 @@ class OnFire extends Component {
             </View>
           </View>
           <View tabLabel='FULL-TIME'>
-            <IconHeader />
+            <IconHeader onPress={this.iconPress} />
             <View style={{ padding: 20}}>
               <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
