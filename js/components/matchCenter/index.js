@@ -25,6 +25,7 @@ import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 import { setMatchMan, getMatchMan } from '../utility/asyncStorageServices'
+import Toast from 'react-native-root-toast'
 
 class MatchCenter extends Component {
 
@@ -68,25 +69,13 @@ class MatchCenter extends Component {
           setMatchMan(playerid)
         })
     }
-    processSummaryData(type,json){
-      let result=[]
-      if(type==='init'||type==='refresh') {        
-        json.map((value,index)=>{
-          result.push({seq:index+1,time:value.gameTime,description:value.eventString})
-        })
-      }
-      if (type==='refresh'&&this.state.summaryData.length>0) {
-        this.state.summaryData.map((value,index)=>{
-          result.push({seq:json.length+index+1,time:value.time,description:value.description})
-        })
-      }
-      if (type==='extend') {
-          _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
+    pullHistorySummary(){
+      _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
             if(__DEV__)console.log('res',res)
                 if(res) {
                   let tmp=this.state.summaryData
                   res.map((value,index)=>{
-                    tmp.push({seq:tmp.length+1,time:value.gameTime,description:value.eventString})
+                    tmp.timeline.push({seq:tmp.timeline.length+1,time:value.gameTime,description:value.eventString})
                   })
                   if(__DEV__)console.log('tmp',tmp)
                   this.setState({
@@ -95,6 +84,38 @@ class MatchCenter extends Component {
                 }
 
           })
+    }
+    processSummaryData(type,json){
+      let result=[]
+      if(type==='init'||type==='refresh') {        
+        json.map((value,index)=>{
+          result.push({seq:index+1,time:value.gameTime,description:value.eventString})
+        })
+      }
+      if (type==='refresh'&&this.state.summaryData.timeline.length>0) {
+        this.state.summaryData.timeline.map((value,index)=>{
+          result.push({seq:json.length+index+1,time:value.time,description:value.description})
+        })
+        let toast = Toast.show('THERE ARE NEW MESSAGES', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
       }
       return result
     }
@@ -117,9 +138,12 @@ class MatchCenter extends Component {
                       this.statusArray[0]=true
                       let tmp=this.processSummaryData(type,json.data)
                       if(__DEV__)console.log('tmp',tmp)
-                      this.setState({
-                        statusArray: this.statusArray,
-                        summaryData:tmp
+                      apiActions.getGameMomentum((data)=>{                               
+                          this.setState({
+                            statusArray: this.statusArray,
+                            summaryData:Object.assign(data,{timeline:tmp})
+                          })     
+                      },(error)=>{
                       })
               }
         },(error)=>{
@@ -191,8 +215,11 @@ class MatchCenter extends Component {
     swiperScrollEnd = (e, state, context) => {
       this.setState({index:state.index},()=>{
         this.timer&&clearTimeout(this.timer)
-        this.callApi()
-        if(this.state.index!==4) this.timer = setInterval(this.callApi,10000)
+        setTimeout(()=>{
+          this.callApi()
+          if(this.state.index!==4) this.timer = setInterval(this.callApi,10000)
+        },1000)
+        
       })
     }
     render() {
@@ -218,7 +245,7 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
-                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.processSummaryData.bind(this)}/>
+                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.pullHistorySummary.bind(this)}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[0]&&this.state.index===0&&
