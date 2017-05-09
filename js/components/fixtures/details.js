@@ -26,6 +26,8 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import { strToLower } from '../utility/helper'
 import { getUserId,getRefreshToken } from '../utility/asyncStorageServices'
+import LinearGradient from 'react-native-linear-gradient'
+
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
 import images from '../../../contents/fixtures/images'
@@ -37,11 +39,13 @@ const Banner = ({data, gameStatus}) => (
             <Text style={[styles.dateText, styles.dateTextDetail]}>{strToUpper(data.date)}</Text>
             <Text style={[styles.teamText, styles.teamTextDetail]}>{data.title}</Text>
         </View>
-        <ImagePlaceholder height={170}>
-            <Image
-                resizeMode='cover' 
-                style={styles.fixtureImg}
-                source={images[data.id]} />
+        <ImagePlaceholder height={200}>
+            <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                <Image
+                    resizeMode='contain'
+                    style={styles.fixtureImg}
+                    source={images[data.id]} />
+            </LinearGradient>
         </ImagePlaceholder>
         <View style={styles.titleBar}>
             <Text style={styles.titleBarText}>{data.stadiumlocation}</Text>

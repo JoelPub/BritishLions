@@ -194,6 +194,9 @@ const styles = styleSheetCreate({
     paginationBottom: {
         bottom: styleVar.deviceWidth/21
     },
+    paginationBottomLast: {
+        bottom: styleVar.deviceWidth/23
+    },
     tag: {
         backgroundColor: 'transparent',
         position: 'absolute',
@@ -499,11 +502,11 @@ class GamedayTeam extends Component {
 		                
 		                <PositionTitle pos='RESERVES' data={this.state.gameDayTeam.reserves}/>
 		                <Swiper
-		                height={styleVar.deviceWidth*0.63}
+		                height={styleVar.deviceWidth*0.62}
                         loop={false}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
-                        paginationStyle={styles.paginationBottom}>
+                        paginationStyle={[styles.paginationBottom, styles.paginationBottomLast]}>
 		                    {
 		                        mapJSON(this.state.gameDayTeam.reserves,3).map((rowData,i)=>{
 		                            return(
