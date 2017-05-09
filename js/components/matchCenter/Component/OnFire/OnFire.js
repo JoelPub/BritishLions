@@ -69,7 +69,7 @@ class OnFire extends Component {
         <ScrollableTabView
           locked={true}
           initialPage={0}
-          renderTabBar={() => <SetPlayerTabBar />}
+          renderTabBar={() => <SetPlayerTabBar  style={{ paddingHorizontal:20}} />}
           tabBarActiveTextColor={'black'}
           onChangeTab = {this.onChangeTab}
         >

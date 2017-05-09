@@ -20,7 +20,8 @@ const  TableCell = ({data,player}) => {
   let rank = data.rank + '.'
   let playerName = player ? player.name : ''
   let playerHeader = player ? player.image : ' '
-
+  let game = data.game + 'M'
+  let  ave = data.average + 'M'
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
@@ -30,10 +31,10 @@ const  TableCell = ({data,player}) => {
       <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>{rank}</Text>
       <Text style={[styles.blackContentText,{left:70}]}>{playerName}</Text>
       <Text  style={[styles.blackContentText,{right:10}]}>
-        {data.game}
+        {game}
       </Text>
       <Text style={[styles.blackContentText,{right:60}]}>
-        {data.average}
+        {ave}
       </Text>
     </View>
   )
@@ -68,10 +69,10 @@ class OnFireItem extends Component {
             {title}
           </Text>
           <Text  style={[styles.gameAndAvgText,{right:10}]}>
-            GAME
+            AVG
           </Text>
           <Text style={[styles.gameAndAvgText,{right:60}]}>
-            AVG
+           GAME
           </Text>
         </View>
         {data.map((item,index)=>{
