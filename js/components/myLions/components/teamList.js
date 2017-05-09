@@ -150,6 +150,12 @@ const styles = styleSheetCreate({
         justifyContent:'center',
         alignItems:'center',
     },
+    triangle: {
+        marginTop: -1,
+        android: {
+            marginTop: 0,
+        }
+    }
 })
 
 const AddPlayerCell = ({pos,onPress})=>(
@@ -167,13 +173,13 @@ const AddPlayerCell = ({pos,onPress})=>(
             <Icon name='md-person-add' style={styles.addPlayerIcon} />
         </View>
         <View style={styles.playerNameTextWrapper}>
-            <View style={[shapes.triangle]} />
+            <View style={[shapes.triangle, styles.triangle]} />
             <View style={styles.titleBox}>
                 <Text style={styles.playerNameText}>ADD</Text>
                 <Text style={styles.playerNameText}>
                     { pos.toUpperCase() }
                 </Text>
-                </View>
+            </View>
         </View>
     </ButtonFeedback>
     )
