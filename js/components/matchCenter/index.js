@@ -280,11 +280,33 @@ class MatchCenter extends Component {
                     modalVisible={this.state.modalInfo}
                     callbackParent={this.iconPress}>
                     <ScrollView style={[styles.modalContent]}>
-                      <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                      <Text style={styles.modalContentText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse faucibus sapien ut turpis pretium, tempus dictum ante tincidunt. Proin scelerisque felis tortor. Phasellus blandit velit sem.</Text>
-                      <Text style={styles.modalContentText}>Nulla ex neque, mattis sed posuere vel, porttitor id lacus. Nam mauris arcu, commodo et iaculis eu, tristique nec nisi. Aliquam fermentum ligula magna, non rhoncus lorem pulvinar vel.</Text>
-                      <Text style={styles.modalContentText}>Suspendisse placerat nulla a sagittis tincidunt.
-                        Sed vehicula velit quis placerat dictum. Mauris enim eros, maximus vitae aliquet ac, lacinia eget sapien. Pellentesque iaculis elit imperdiet posuere gravida. Aliquam ut eleifend est. Curabitur eu eros erat. Proin scelerisque felis nec velit pellentesque, vitae sollicitudin justo dapibus. </Text>
+                      {
+                        this.state.index === 1 &&
+                          <View>  
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>The graph shows the two features for both teams. The left side will belong to the Lions, the right will be their opposition:</Text>
+                              <Text style={styles.modalContentText}>The Red bars indicate the score difference between the two teams.</Text>
+                              <Text style={styles.modalContentText}>The Yellow line indicates which team has the run of play based on features such as Territory, Possession, Metres made, Attacking plays in the opposition half.</Text>
+                          </View>
+                      }
+                      {   
+                        this.state.index === 2 &&
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
+                              <Text style={styles.modalContentText}>Kicks: Indicates where Conversions and Penalties were taken, and if they were successful.</Text>
+                              <Text style={styles.modalContentText}>Scrums: Displays where each team’s scrums have taken place on the pitch and if they were won.</Text>
+                              <Text style={styles.modalContentText}>Lineouts: Displays where each team’s lineouts have taken place on the pitch and if they were won.</Text>
+                          </View>
+                        
+                      }
+                      {
+                        this.state.index === 3 &&
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>These screens will be updated at half time and full time to show which British & Irish Lions are performing above their career averages based on key match statistics.</Text>
+                          </View>
+                      }
                     </ScrollView>
                   </SquadModal>
                     <EYSFooter />
