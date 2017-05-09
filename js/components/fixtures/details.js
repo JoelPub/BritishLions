@@ -31,7 +31,7 @@ import { getUserId,getRefreshToken } from '../utility/asyncStorageServices'
 import images from '../../../contents/fixtures/images'
 import { strToUpper, isEmptyObject } from '../utility/helper'
 
-const Banner = ({data}) => (
+const Banner = ({data, gameStatus}) => (
     <View>
         <View style={[styles.fixtureBanner, styles.fixtureBannerDetail]}>
             <Text style={[styles.dateText, styles.dateTextDetail]}>{strToUpper(data.date)}</Text>
@@ -45,7 +45,9 @@ const Banner = ({data}) => (
         </ImagePlaceholder>
         <View style={styles.titleBar}>
             <Text style={styles.titleBarText}>{data.stadiumlocation}</Text>
-            <Text style={[styles.titleBarText, styles.titleBarText2]}>{data.stadiumtime}</Text>
+            {
+                gameStatus !== 'live' && <Text style={[styles.titleBarText, styles.titleBarText2]}>{data.stadiumtime}</Text>
+            }
         </View>
     </View>
 )
@@ -276,7 +278,7 @@ class FixtureDetails extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
-                            <Banner data={this.state.details} />
+                            <Banner data={this.state.details} gameStatus={this.state.gameStatus} />
                             {
                                 this.state.isLoaded?
                                     this._gameMode()
