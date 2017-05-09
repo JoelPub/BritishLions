@@ -32,6 +32,7 @@ export default class ExternalLink extends Component {
               { emailAddress : "" });
         }
        if (this.isCorrectUrl(url)){
+          if (__DEV__)console.log('isCorrectUrl')
            One.sendInteractionForOutboundLink(url).catch(function(error) {
                if (__DEV__)console.log(error);
                alert(error);
@@ -39,6 +40,7 @@ export default class ExternalLink extends Component {
 
            One.getURLWithOneTid(url).then(function(urlWithOneTid) {
                if(urlWithOneTid){
+                    if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
                    Linking.canOpenURL(urlWithOneTid).then(supported => {
                        if (supported) {
                            Linking.openURL(urlWithOneTid)
@@ -67,7 +69,19 @@ export default class ExternalLink extends Component {
                }
            });
        }else {
-           if (__DEV__)console.log('it not a url ');
+          if (__DEV__)console.log('it not a url ')
+          if(url){
+                 Linking.canOpenURL(url).then(supported => {
+                     if (supported) {
+                         Linking.openURL(url)
+                     } else {
+                         Alert.alert(
+                           'Error',
+                           'This device doesnt support URI: ' + url
+                         )
+                     }
+                 })
+             }
        }
     }
 
