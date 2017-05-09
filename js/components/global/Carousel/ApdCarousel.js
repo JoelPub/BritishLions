@@ -77,7 +77,7 @@ export default class ApdCarousel extends Component {
           >
             <Icon name='md-analytics' style={styles.matchIcon} />
             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.matchText} >
-              COMPETITION CENTRE
+              Match CENTRE
             </Text>
           </ButtonFeedback>
         </ScrollView>

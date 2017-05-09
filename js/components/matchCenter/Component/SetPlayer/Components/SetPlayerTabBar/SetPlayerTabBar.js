@@ -33,9 +33,9 @@ class SetPlayerBar extends Component {
               <Triangle
                 width={24}
                 height={12}
-                color={this.props.activeTab === i ? 'rgb(38,38,38)' : styleVar.brandPrimary }
+                color={this.props.activeTab === i ? 'rgb(38,38,38)' : 'white'}
                 direction={'down'}
-                style={{marginTop:-1}}
+                style={{marginTop:0}}
               />
             </View>
           </TouchableOpacity>;

@@ -31,7 +31,7 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS','ONFIRE', 'MAN OF THE MATCH']
+        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
         this.state = {
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
