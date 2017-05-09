@@ -49,9 +49,24 @@ module.exports = styleSheetCreate({
             lineHeight: 18
         }
     },
-    fixtureImg: {
+    fixtureImgAtList: {
+        width: styleVar.deviceWidth,
+        height: 170,
+        alignSelf: 'center'
+    },
+    fixtureImgContainerAtList: {
         width: styleVar.deviceWidth,
         height: 170
+    },
+
+    fixtureImg: {
+        width: styleVar.deviceWidth,
+        height: 200,
+        alignSelf: 'center'
+    },
+    fixtureImgContainer: {
+        width: styleVar.deviceWidth,
+        height: 200
     },
     fixtureBannerDetail: {
         backgroundColor:'rgb(239,239,240)',

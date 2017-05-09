@@ -19,6 +19,7 @@ import { actionsApi} from '../utility/urlStorage'
 import loader from '../../themes/loader-position'
 import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
+import LinearGradient from 'react-native-linear-gradient'
 
 // For mapping a static image only, since require() is not working with concatenating a dynamic variable
 // should be delete this code once api is ready.
@@ -97,10 +98,12 @@ class Fixtures extends Component {
                                                         style={styles.btn}
                                                         onPress={() => this._drillDown(item.toJS())}>
                                                         <ImagePlaceholder height={170}>
-                                                            <Image
-                                                                resizeMode='cover' 
-                                                                style={styles.fixtureImg}
-                                                                source={images[item.id]} />
+                                                            <LinearGradient style={styles.fixtureImgContainerAtList} colors={['#d9d7d8', '#FFF']}>
+                                                                <Image
+                                                                    resizeMode='contain'
+                                                                    style={styles.fixtureImgAtList}
+                                                                    source={images[item.id]} />
+                                                            </LinearGradient>
                                                         </ImagePlaceholder>
                                                         <View style={[shapes.triangle, {marginTop: -11}]} />
                                                         <View style={styles.fixtureBanner} >
