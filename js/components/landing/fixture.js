@@ -226,7 +226,8 @@ class PlayerFigure extends Component {
             }
             
             if (fixtureInfo.live) {
-                liveFixturesArr.push(fixtureInfo)
+                // hide temporarily for QA able to test it
+                //liveFixturesArr.push(fixtureInfo) 
             }
 
             if (fixtureInfo.post) {
