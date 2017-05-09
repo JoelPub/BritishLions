@@ -463,11 +463,11 @@ class Landing extends Component {
                                 null
                         }
 
-                        <View style={styles.pageTitle}>
+                        {/*<View style={styles.pageTitle}>
                             <Text style={styles.pageTitleText}>
                                 MY LIONS
                             </Text>
-                        </View>
+                        </View>*/}
                         <View style={styles.guther}>
                             {
                                 this.props.isAccessGranted?
