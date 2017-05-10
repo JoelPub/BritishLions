@@ -36,6 +36,10 @@ import { globalNav } from '../../appNavigator'
 
 import Carousel from  '../global/Carousel'
 
+// For mapping a static image only, since require() is not working with concatenating a dynamic variable
+// should be delete this code once api is ready.
+import images from '../../../contents/fixtures/images'
+
 const locStyle = styleSheetCreate({
   bannerDesc: {
     paddingTop: 7
@@ -70,7 +74,21 @@ const locStyle = styleSheetCreate({
 })
 
 
-
+const Banner = ({data}) => (
+  <View style={styles.banner}>
+    <ImagePlaceholder height={200}>
+      <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+        <Image
+          resizeMode='contain'
+          style={styles.bannerImg}
+          source={images[data.id]} />
+      </LinearGradient>
+    </ImagePlaceholder>
+    <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
+      <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>{ data.stadiumlocation }</Text>
+    </View>
+  </View>
+)
 
 const  ShareButton = ({onPress}) => {
   return (
@@ -131,22 +149,9 @@ class CoachsBox extends Component {
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-            <View>
-              <ButtonFeedback
-                style={styles.banner}>
-                <ImagePlaceholder height={200}>
-                  <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
-                    <Image
-                      resizeMode='contain'
-                      style={styles.bannerImg}
-                      source={fixturesImages[1]} />
-                  </LinearGradient>
-                </ImagePlaceholder>
-                <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
-                  <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
-                </View>
-              </ButtonFeedback>
-            </View>
+           
+            <Banner data={this.props.details} />
+            
             <Carousel centerClick={this.goToMatch} />
             <LionsFooter isLoaded={true} />
           </ScrollView>
@@ -179,6 +184,7 @@ export default connect((state) => {
     route: state.route,
     userProfile:state.squad.userProfile,
     netWork: state.network,
+    details: state.content.drillDownItem,
   }
 }, bindAction)(CoachsBox)
 CoachsBox.defaultProps = {

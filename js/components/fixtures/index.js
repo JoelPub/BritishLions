@@ -60,9 +60,13 @@ class Fixtures extends Component {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
                 //if (__DEV__) console.log('resssss', res.data)
+                // Sort Fixture By Date
+                let fixtures = this._sortFixtures(res.data)
+
+                console.log('sorted: ', fixtures)
                 if(res.data) {
                     this.setState({
-                        fixtures: res.data,
+                        fixtures,
                         isLoaded: true
                     })
                 } else {
@@ -74,6 +78,15 @@ class Fixtures extends Component {
 
     componentWillUnmount() {
         this.isUnMounted = true
+    }
+
+    _sortFixtures(fixturesList, order = 'ASC') {
+        return fixturesList.sort(function(a, b){
+            if (order ===  'DESC')
+                return new Date(b.date) - new Date(a.date)
+            else
+                return new Date(a.date)  - new Date(b.date)
+        })
     }
 
     render() {
