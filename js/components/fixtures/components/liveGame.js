@@ -125,7 +125,9 @@ export default class LiveGame extends Component {
                     </ButtonFeedback>
                     </View>
                 </View>
-                <Text style={locStyle.pageText}>{details.live.description}</Text>
+                {
+                    details.live.description && <Text style={locStyle.pageText}>{details.live.description}</Text>
+                }
                 <GamedayTeam gameID={details.id} />
             </View>
         )

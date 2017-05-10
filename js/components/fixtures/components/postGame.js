@@ -282,7 +282,12 @@ class PostGame extends Component {
 
         return (
             <View style={locStyle.matchResults}>
-                <Text style={locStyle.pageText}>{details.description}</Text>
+                {
+                    details.description?
+                        <Text style={locStyle.pageText}>{details.description}</Text>
+                    :
+                        null
+                }
                 <View style={locStyle.matchResultTitle}>
                     <Text style={locStyle.matchResultTitleText}>
                         MATCH RESULTS

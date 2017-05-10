@@ -68,8 +68,12 @@ export default class PreGame extends Component {
                         </Text>
                     </ButtonFeedback>
                 </View>
-                <Text style={locStyle.pageText}>{details.description}</Text>
-                
+                {
+                    details.pre.description?
+                        <Text style={locStyle.pageText}>{details.pre.description}</Text>
+                    :
+                        null
+                }
                 <PickYourXV onPress={this.props.onPress}/>
                 <GamedayTeam gameID={details.id} />
             </View>

@@ -96,7 +96,7 @@ export default class PickYourXV extends Component {
             <View style={locStyle.liveBox}>
                 <View style={locStyle.liveBoxInfo}>
                 <Text style={locStyle.liveBoxDescText}>
-                    Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
+                    Which British & Irish Lions will be facing New Zealand in the next Test? Select your Starting XV and compare with your friends.
                 </Text> 
                 <ButtonFeedback 
                     rounded 
