@@ -3,10 +3,10 @@ import _fetch from '../../utility/fetch'
 import { service } from '../../utility/services'
 import Toast from 'react-native-root-toast'
 
-export function getGameMomentum(type,onSuccess,OnError) {
+export function getGameMomentum(type,gameID,onSuccess,OnError) {
     let optionsInfo = {
       url: 'http://bilprod-r4dummyapi.azurewebsites.net/getGameMomentum',
-      data: {id:1},
+      data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
       method: 'post',

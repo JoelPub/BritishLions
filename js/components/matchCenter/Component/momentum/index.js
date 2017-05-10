@@ -37,7 +37,7 @@ class Momentum extends Component {
     render() {
         return (
                 <View style={styles.wrapper}>
-                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'},this.props.data)} />
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:this.props.detail.title},this.props.data)} />
                     <View style={styles.container}>
                         <View style={styles.subjectWrapper}>
                             <View style={styles.subWrapper}>

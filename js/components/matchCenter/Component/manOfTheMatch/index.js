@@ -33,13 +33,13 @@ class ManOfTheMatch extends Component {
         return (
                 <View>
                     {
-                        this.props.subPage==='landing'&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage}/>
+                        this.props.subPage==='landing'&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} detail={this.props.detail} />
                     }
                     {
-                        this.props.subPage==='post'&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal}/>
+                        this.props.subPage==='post'&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal} detail={this.props.detail} />
                     }
                     {
-                        this.props.subPage==='final'&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal}/>
+                        this.props.subPage==='final'&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal} detail={this.props.detail} />
                     }
                     
                     

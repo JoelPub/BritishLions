@@ -275,6 +275,7 @@ export default class PlayersRankBox extends Component {
             modalVisible: false,
             players:[],            
             modalContent:this.getModalContent(),
+            gameID:this.props.detail.id
         }
     }
     _setModalVisible=(visible,mode,title,subtitle,btn) => {
@@ -318,7 +319,7 @@ export default class PlayersRankBox extends Component {
                     if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
                         url: player&&player.previous!==null?'http://bilprod-r4dummyapi.azurewebsites.net/resubmitManOfMatch':'http://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchVoteResult',
-                        data: player&&player.previous!==null?{id:1,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:1,man_of_match : this.props.showModal?player.current:'0' },
+                        data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal?player.current:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
                         method: 'post',

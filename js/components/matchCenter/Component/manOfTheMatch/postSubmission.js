@@ -77,7 +77,7 @@ class ManOfTheMatchPostSubission extends Component {
         return (
                 <View style={styles.wrapper}>
                     <View style={styles.guther}>
-                        <PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}/>
+                        <PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}  detail={this.props.detail}/>
                     </View>
                     <View style={styles.title}>
                         <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
@@ -85,7 +85,7 @@ class ManOfTheMatchPostSubission extends Component {
                     <View style={styles.desc}>
                         <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                     </View>
-                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}/>
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail}/>
                     <View style={styles.guther}>
                         <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                     </View>

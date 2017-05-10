@@ -146,7 +146,8 @@ class MatchMan extends Component {
 			    matchMan: {},
 			    isNetwork: true,
                 selectedPosition:null,
-                selectedSequence:null
+                selectedSequence:null,
+                gameID:this.props.detail.id
 
 			}
     }
@@ -199,7 +200,7 @@ class MatchMan extends Component {
 
                     let optionsInfo = {
                         url: 'https://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchInfo',
-                        data: {id:1},
+                        data: {id:this.state.gameID},
                         onAxiosStart: null,
                         onAxiosEnd: null,
                         method: 'post',

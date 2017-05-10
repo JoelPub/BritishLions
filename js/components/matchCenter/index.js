@@ -33,6 +33,7 @@ class MatchCenter extends Component {
         this._carousel=null
         this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
         this.state = {
+          detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
@@ -91,17 +92,17 @@ class MatchCenter extends Component {
         let optionData={}
         let type='init'
         if(!this.statusArray[0]) {
-          optionData={id:1}
+          optionData={id:this.state.detail.id}
         }
         else {
-          optionData={id:1,"sequenceId" : 20}
+          optionData={id:this.state.detail.id,"sequenceId" : 20}
           type='refresh'
         }
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
                       if (__DEV__)console.log('timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
-                      apiActions.getGameMomentum('time',(data)=>{                               
+                      apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               
                           this.setState({
                             statusArray: this.statusArray,
                             summaryData:Object.assign(data,{timeline:timelineData})
@@ -113,7 +114,7 @@ class MatchCenter extends Component {
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
-        apiActions.getGameMomentum('momentum',(data)=>{
+        apiActions.getGameMomentum('momentum',this.state.detail.id,(data)=>{
                     this.statusArray.fill(false)
                     this.statusArray[1]=true
                     this.setState({
@@ -162,7 +163,7 @@ class MatchCenter extends Component {
       }
     }
     componentDidMount() {
-        if(__DEV__)console.log('this.state.isLoaded',this.state.isLoaded)
+        if(__DEV__)console.log('matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
           this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
             this.callApi()
@@ -207,7 +208,7 @@ class MatchCenter extends Component {
                                 paginationStyle={{top:-1*(this.state.swiperHeight-75),position:'absolute'}}
                                 onMomentumScrollEnd={this.swiperScrollEnd}>
                               {
-                                statusArray[0]? <MatchSummary setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.pullHistorySummary.bind(this)}/>
+                                statusArray[0]? <MatchSummary detail={this.state.detail} setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.pullHistorySummary.bind(this)}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[0]&&this.state.index===0&&
@@ -216,7 +217,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[1] ? <Momentum  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
+                                statusArray[1] ? <Momentum detail={this.state.detail}  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1&&
@@ -225,7 +226,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[2]? <SetPlayer  isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                statusArray[2]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                                                  set_plays={setPlayerData.set_plays}/>
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
@@ -235,7 +236,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[3]? <OnFire  isActive={this.state.index===3}
+                                statusArray[3]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
                                                          setHeight={this._setHeight.bind(this)}
                                                          on_fire={onFireData.on_fire}
                                 />
@@ -247,7 +248,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[4]? <ManOfTheMatch setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
+                                statusArray[4]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
 
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {

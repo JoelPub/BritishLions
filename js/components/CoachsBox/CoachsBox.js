@@ -137,7 +137,7 @@ class CoachsBox extends Component {
   /* nav to  */
   goToMatch = (page) => {
     page = page ? page : 0
-    this.props.drillDown({page:page},'matchCenter');
+    this.props.drillDown(Object.assign({page:page},this.props.details),'matchCenter');
   }
   render() {
 

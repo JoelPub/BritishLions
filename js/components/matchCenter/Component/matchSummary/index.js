@@ -42,7 +42,7 @@ class MatchSummary extends Component {
     render() {
         return (
                 <ScrollView style={styles.scroll} scrollEnabled={false}>
-                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'},this.props.summaryData)}/>
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:this.props.detail.title},this.props.summaryData)}/>
                     <View style={styles.timelineWrapper} >                    
                           <Timeline
                             data={this.props.summaryData.timeline}
