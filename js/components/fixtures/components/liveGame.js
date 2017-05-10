@@ -110,7 +110,7 @@ export default class LiveGame extends Component {
 
                     <View style={locStyle.liveBoxInfo}>
                     <Text style={locStyle.liveBoxDescText}>
-                        Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
+                        Visit the British & Irish Lions Coach’s Box for live match coverage and statistics.
                     </Text> 
                     <ButtonFeedback 
                         rounded 
