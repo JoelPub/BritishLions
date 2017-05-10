@@ -33,6 +33,8 @@ class Scoreboard extends Component {
     let iconImage = !isDown ?  lionsCopyImage: barbarinasCopyImage
     let colorConversions = !isDown ? styleVar.brandPrimary : 'black'
     let colorPenalties = !isDown ? 'rgb(255,204,40)' : 'rgb(31,188,210)'
+    let deviveFiveStyle = styleVar.deviceWidth ===320 ? {fontSize: 14,lineHeight: 14} : {}
+
     return (
       <View style={ [styles.container]}>
         <View style={styles.titleView}>
@@ -41,7 +43,7 @@ class Scoreboard extends Component {
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
             <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
-            <Text style={[styles.scoreboardContentTitle]}>{titles[0]}</Text>
+            <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[0]}</Text>
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
