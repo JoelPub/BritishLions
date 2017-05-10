@@ -28,7 +28,7 @@ export function getGameMomentum(type,onSuccess,OnError) {
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
     url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameSetPlays',
-    data: {id:2},
+    data: {id:4},
     onAxiosStart: null,
     onAxiosEnd: null,
     method: 'post',

@@ -18,7 +18,7 @@ class SetPlayerBar extends Component {
   }
 
   render() {
-
+    let deviveFiveStyle = styleVar.deviceWidth ===320 ? {fontSize: 18,lineHeight: 18} : {}
     return (
       <View style={[styles.tabs, this.props.style, ]}>
         {this.props.tabs.map((tab, i) => {
@@ -26,7 +26,7 @@ class SetPlayerBar extends Component {
           return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
             <View style={styles.tabContainer} >
               <View style={[styles.tabTextView,colorStyle]}>
-                <Text style={styles.tabText}>
+                <Text style={[styles.tabText,deviveFiveStyle]}>
                   {tab}
                 </Text>
               </View>

@@ -59,7 +59,7 @@ class SetPlayer extends Component {
    let { kicks, scrums,line_outs} = this.props.set_plays
 
     return (
-      <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
+      <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
           locked={false}

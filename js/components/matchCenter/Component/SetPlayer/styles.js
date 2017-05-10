@@ -19,7 +19,7 @@ module.exports = styleSheetCreate({
   },
   itemContainer:{
     flexDirection:'row',
-    backgroundColor: styleVar.colorGrey,
+    backgroundColor: 'white',
     marginTop:5,
     paddingHorizontal:10
   },
