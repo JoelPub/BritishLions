@@ -40,7 +40,7 @@ export default class Timer extends Component {
         }
     }
     setTimer(type,game_time){
-        if (__DEV__)console.log('setTimer',type,game_time)
+        // if (__DEV__)console.log('setTimer',type,game_time)
         let min=0
         let sec=0
         if(type==='init'&&game_time!==null) {
@@ -55,8 +55,8 @@ export default class Timer extends Component {
             min=min+1
             sec=sec-60
         }
-        if (__DEV__)console.log('min',min)
-        if (__DEV__)console.log('sec',sec)
+        // if (__DEV__)console.log('min',min)
+        // if (__DEV__)console.log('sec',sec)
         this.setState({min:min<10?`0${min}`:min.toString(),sec:sec<10?`0${sec}`:sec.toString()})
     }
     componentWillReceiveProps(nextProps,nextState) {
