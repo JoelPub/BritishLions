@@ -25,7 +25,6 @@ import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 import { setMatchMan, getMatchMan } from '../utility/asyncStorageServices'
-import Toast from 'react-native-root-toast'
 
 class MatchCenter extends Component {
 
@@ -71,7 +70,7 @@ class MatchCenter extends Component {
     }
     pullHistorySummary(){
       _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
-            if(__DEV__)console.log('res',res)
+                if(__DEV__)console.log('res',res)
                 if(res) {
                   let tmp=this.state.summaryData
                   res.map((value,index)=>{
@@ -82,43 +81,9 @@ class MatchCenter extends Component {
                     summaryData:tmp
                   })
                 }
-
           })
     }
-    processSummaryData(type,json){
-      let result=[]
-      if(type==='init'||type==='refresh') {        
-        json.map((value,index)=>{
-          result.push({seq:index+1,time:value.gameTime,description:value.eventString})
-        })
-      }
-      if (type==='refresh'&&this.state.summaryData.timeline.length>0) {
-        this.state.summaryData.timeline.map((value,index)=>{
-          result.push({seq:json.length+index+1,time:value.time,description:value.description})
-        })
-        let toast = Toast.show('THERE ARE NEW MESSAGES', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                        delay: 0,
-                        onShow: () => {
-                            // calls on toast\`s appear animation start
-                        },
-                        onShown: () => {
-                            // calls on toast\`s appear animation end.
-                        },
-                        onHide: () => {
-                            // calls on toast\`s hide animation start.
-                        },
-                        onHidden: () => {
-                            
-                        }
-                    })
-      }
-      return result
-    }
+
     callApi = () => {
       if(this.state.index===0){
         if (__DEV__)console.log('call match summary Api')
@@ -131,27 +96,23 @@ class MatchCenter extends Component {
           optionData={id:1,"sequenceId" : 20}
           type='refresh'
         }
-        apiActions.getTimeLineLiveSummary(optionData,(json)=>{
-            if(json.data) {
-                  if (__DEV__)console.log('json.data',json.data)
+        apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
+                      if (__DEV__)console.log('timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
-                      let tmp=this.processSummaryData(type,json.data)
-                      if(__DEV__)console.log('tmp',tmp)
-                      apiActions.getGameMomentum((data)=>{                               
+                      apiActions.getGameMomentum('time',(data)=>{                               
                           this.setState({
                             statusArray: this.statusArray,
-                            summaryData:Object.assign(data,{timeline:tmp})
+                            summaryData:Object.assign(data,{timeline:timelineData})
                           })     
                       },(error)=>{
                       })
-              }
         },(error)=>{
         })
       }
       if(this.state.index===1){
         if (__DEV__)console.log('call momentum Api')
-        apiActions.getGameMomentum((data)=>{
+        apiActions.getGameMomentum('momentum',(data)=>{
                     this.statusArray.fill(false)
                     this.statusArray[1]=true
                     this.setState({
