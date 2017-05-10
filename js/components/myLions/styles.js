@@ -1107,6 +1107,7 @@ module.exports = styleSheetCreate({
         lineHeight: 24,
         paddingTop: 0,
         fontFamily: styleVar.fontCondensed,
+        marginTop: -4,
         android:{
             marginTop: -8
         }
