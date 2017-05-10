@@ -10,4 +10,8 @@ module.exports = styleSheetCreate({
     height: null,
     backgroundColor: '#fff',
   },
+  tabBarContent: {
+    paddingHorizontal: 20, 
+    paddingVertical: 5
+  }
 })
