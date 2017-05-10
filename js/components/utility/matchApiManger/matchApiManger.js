@@ -14,7 +14,7 @@ export function getGameMomentum(type,onSuccess,OnError) {
             if(json.data) {
                       if (__DEV__)console.log('json.data',json.data)
                       if(type==='momentum')json.data.momentum=processMomentumData(json.data.momentum)
-                      if(__DEV__)console.log('json.data',json.data)
+                      // if(__DEV__)console.log('json.data',json.data)
                       onSuccess(json.data)
               }
           },
@@ -114,7 +114,7 @@ function processSummaryData(type,data,summaryData){
   return result
 }
 function processMomentumData(data){
-    if(__DEV__)console.log('processMomentumData',data)
+    // if(__DEV__)console.log('processMomentumData',data)
     let result=[]
     let fullTime=80
     for(let i=0;i<fullTime;i=i+10){
