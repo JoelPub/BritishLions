@@ -209,6 +209,21 @@ class MatchMan extends Component {
                                                     let showSquadFeed=convertSquadToShow(MatchManModel(json.data),catchedFullPlayerList,this.uniondata)
                                                     if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
                                                     // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                                    if (__DEV__)console.log('this.props.preSelect',this.props.preSelect)
+                                                    if(this.props.preSelect) {
+                                                        showSquadFeed.forEach((value,index)=>{
+                                                            if (__DEV__)console.log('index',index)
+                                                            value.map((v,i)=>{
+                                                                if (__DEV__)console.log('i',i)
+                                                                if(v.info.id===this.props.preSelect) {
+                                                                    if (__DEV__)console.log('v',v)
+                                                                    this.setState({selectedPosition:index,selectedSequence:i},()=>{
+                                                                                        this.props.selectMan(v.info)
+                                                                                    })
+                                                                }
+                                                            })
+                                                        })                                                        
+                                                    }
                                                     this.setState({matchMan:showSquadFeed.toJS()},()=>{
                                                         this.setState({isLoaded:true})
                                                     })

@@ -313,11 +313,12 @@ export default class PlayersRankBox extends Component {
     componentDidMount(){
         this.setState({ isLoaded: false },()=>{
             getSoticFullPlayerList().then((catchedFullPlayerList) => {
-                getMatchMan().then((playerid)=>{
-                    if(__DEV__)console.log('playerid',playerid)
+                getMatchMan().then((data)=>{
+                    let player=JSON.parse(data)
+                    if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
-                        url: 'http://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchVoteResult',
-                        data: {id:1,man_of_match : this.props.showModal?playerid:'0' },
+                        url: player&&player.previous!==null?'http://bilprod-r4dummyapi.azurewebsites.net/resubmitManOfMatch':'http://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchVoteResult',
+                        data: player&&player.previous!==null?{id:1,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:1,man_of_match : this.props.showModal?player.current:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
                         method: 'post',

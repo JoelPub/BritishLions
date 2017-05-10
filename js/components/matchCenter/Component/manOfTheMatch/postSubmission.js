@@ -11,12 +11,16 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import PlayersRankBox from '../../../global/playersRankBox'
 import MatchMan from './matchMan'
 import Toast from 'react-native-root-toast'
+import { setMatchMan, getMatchMan } from '../../../utility/asyncStorageServices'
 
 class ManOfTheMatchPostSubission extends Component {
 
     constructor(props) {
          super(props)
          this.selectedMan=null
+         this.state = {
+              savedMan:null,
+            }
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('PostSubission')
@@ -58,8 +62,15 @@ class ManOfTheMatchPostSubission extends Component {
                     })
         }
         else {
-            this.props.setSubPage(3,this.selectedMan.id)
+            this.props.setSubPage('final',this.selectedMan.id,this.state.savedMan)
         }
+    }
+    componentDidMount(){
+        getMatchMan().then((data)=>{
+            let player=JSON.parse(data)
+            if(__DEV__)console.log('post getMatchMan player',player)
+            this.setState({savedMan:player.current})
+        })
     }
     
     render() {
@@ -74,7 +85,7 @@ class ManOfTheMatchPostSubission extends Component {
                     <View style={styles.desc}>
                         <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
                     </View>
-                    <MatchMan selectMan={this._onPressPlayer.bind(this)}/>
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}/>
                     <View style={styles.guther}>
                         <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
                     </View>

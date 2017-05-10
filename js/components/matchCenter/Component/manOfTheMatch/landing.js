@@ -62,39 +62,40 @@ class ManOfTheMatchLanding extends Component {
                     })
         }
         else {
-            this.props.setSubPage(2,this.selectedMan.id)
+            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
         }
     }
     componentDidMount(){
-        getMatchMan().then((playerid)=>{
-            if(__DEV__)console.log('playerid',playerid)
-            this.setState({savedMan:playerid})
+        getMatchMan().then((data)=>{
+            let player=JSON.parse(data)
+            if(__DEV__)console.log('landing getMatchMan player',player)
+            this.setState({savedMan:player&&player.current||null})
         })
     }
     
     render() {
         return (
-                           <View style={styles.wrapper}>
-                                <View style={styles.title}>
-                                    <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
-                                </View>
-                                <View style={styles.desc}>
-                                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
-                                </View>
-                                <MatchMan selectMan={this._onPressPlayer.bind(this)}/>
-                                <View style={styles.guther}>
-                                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
-                                </View>
+               <View style={styles.wrapper}>
+                    <View style={styles.title}>
+                        <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
+                    </View>
+                    <View style={styles.desc}>
+                        <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                    </View>
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)}/>
+                    <View style={styles.guther}>
+                        <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                    </View>
 
-                                <View style={styles.roundButtonBg}>
-                                    <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
-                                        <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                            {this.state.savedMan===null?'SUBMIT':'RESUBMIT'}
-                                        </Text>
-                                    </ButtonFeedback>
-                                </View>
-                                <View onLayout={this._measurePage.bind(this,'Landing')} />
-                            </View>
+                    <View style={styles.roundButtonBg}>
+                        <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
+                            <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
+                                {this.state.savedMan===null?'SUBMIT':'RESUBMIT'}
+                            </Text>
+                        </ButtonFeedback>
+                    </View>
+                    <View onLayout={this._measurePage.bind(this,'Landing')} />
+                </View>
             
         )
     }

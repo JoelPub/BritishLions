@@ -15,19 +15,14 @@ class ManOfTheMatch extends Component {
               showModal:true
          }
     }
-    // pressSubmit(n) {
-    //     this.setState({currentPage:n})
-    // }
     componentDidMount(){
-        if (__DEV__)console.log('index componentDidMount')
-
-       if(this.props.subPage!==1) this.setState({showModal:false})
-
+        // if (__DEV__)console.log('index componentDidMount')
+        if(this.props.subPage!=='landing') this.setState({showModal:false})
     }
     
     componentWillReceiveProps(nextProps) {
-        if (__DEV__)console.log('index componentWillReceiveProps nextProps.subPage',nextProps.subPage)
-        if (__DEV__)console.log('index componentWillReceiveProps this.props.subPage',this.props.subPage)
+        // if (__DEV__)console.log('index componentWillReceiveProps nextProps.subPage',nextProps.subPage)
+        // if (__DEV__)console.log('index componentWillReceiveProps this.props.subPage',this.props.subPage)
         if(nextProps.subPage!==this.props.subPage) {
              this.setState({showModal:true})
         }
@@ -38,13 +33,13 @@ class ManOfTheMatch extends Component {
         return (
                 <View>
                     {
-                        this.props.subPage===1&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage}/>
+                        this.props.subPage==='landing'&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage}/>
                     }
                     {
-                        this.props.subPage===2&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal}/>
+                        this.props.subPage==='post'&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal}/>
                     }
                     {
-                        this.props.subPage===3&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal}/>
+                        this.props.subPage==='final'&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal}/>
                     }
                     
                     

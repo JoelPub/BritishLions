@@ -90,13 +90,16 @@ export async function setCurrentVersionNumber() {
 }
 
 export async function getMatchMan() {
+    // if(__DEV__)console.log('getMatchMan')
     return await AsyncStorage.getItem('MAN_OF_MATCH', (err, result) => {
+        // if(__DEV__)console.log('result',result)
         return result
     })
 }
 
-export async function setMatchMan(id) {
-    await AsyncStorage.setItem('MAN_OF_MATCH', id)
+export async function setMatchMan(matchMan) {
+    // if(__DEV__)console.log('setMatchMan',matchMan)
+    await AsyncStorage.setItem('MAN_OF_MATCH', JSON.stringify(matchMan))
 }
 
 export async function setAddedToCalanderCheck() {

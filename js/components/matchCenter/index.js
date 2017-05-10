@@ -42,7 +42,7 @@ class MatchCenter extends Component {
           summaryData:[],
           setPlayerData: [],
           onFireData:null,
-          subPage:1
+          subPage:'landing'
         }
         this.subscription= null
         this.timer  = null
@@ -61,12 +61,13 @@ class MatchCenter extends Component {
         modalInfo: !this.state.modalInfo
       })
     }
-    _setSubPage(n,playerid) {
-      if(__DEV__)console.log('_setSubPage',n)
-      if(__DEV__)console.log('_setSubPage',playerid)
-        this.setState({subPage:n},()=>{
-          setMatchMan(playerid)
-        })
+    _setSubPage(page,selected,saved) {
+      if(__DEV__)console.log('_setSubPage',page)
+      if(__DEV__)console.log('selected',selected)
+      if(__DEV__)console.log('saved',saved)
+      setMatchMan({current:selected,previous:saved}).then(()=>{
+        this.setState({subPage:page})
+      })
     }
     pullHistorySummary(){
       _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{

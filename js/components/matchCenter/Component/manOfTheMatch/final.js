@@ -30,23 +30,23 @@ class ManOfTheMatchFinal extends Component {
     
     render() {
         return (
-                           <View style={styles.wrapper}>
-                                <View style={styles.title}>
-                                    <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
-                                </View>
-                                <View style={styles.desc}>
-                                    <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
-                                </View>
+               <View style={styles.wrapper}>
+                    <View style={styles.title}>
+                        <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
+                    </View>
+                    <View style={styles.desc}>
+                        <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                    </View>
 
-                                <View style={styles.guther}>
-                                    <PlayersRankBox  showModal={this.props.showModal}/>
-                                </View>
+                    <View style={styles.guther}>
+                        <PlayersRankBox  showModal={this.props.showModal}/>
+                    </View>
 
-                                <View style={styles.guther}>
-                                    <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
-                                </View>
-                                <View onLayout={this._measurePage.bind(this,'Final')} />
-                            </View>
+                    <View style={styles.guther}>
+                        <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                    </View>
+                    <View onLayout={this._measurePage.bind(this,'Final')} />
+                </View>
             
         )
     }
