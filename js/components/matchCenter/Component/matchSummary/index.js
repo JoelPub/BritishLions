@@ -37,15 +37,15 @@ class MatchSummary extends Component {
     }
     _onEndReached(){
       console.log('end reached')
-      this.props.setEndReached('extend')
+      this.props.setEndReached()
     }
     render() {
         return (
                 <ScrollView style={styles.scroll} scrollEnabled={false}>
-                    <LiveBox data={{hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'}} />
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:'Provincial Barbarians v British & Irish Lions'},this.props.summaryData)}/>
                     <View style={styles.timelineWrapper} >                    
                           <Timeline
-                            data={this.props.summaryData}
+                            data={this.props.summaryData.timeline}
                             lineColor='rgb(216,217,218)'
                             timeContainerStyle={{position:'absolute'}}
                             timeStyle={{width:0,height:0}}

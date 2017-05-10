@@ -222,11 +222,10 @@ class PlayerFigure extends Component {
             let fixtureInfo = FixtureInfoModel.fromJS(fixture)
 
             if (fixtureInfo.pre) {
-                preFixturesArr.push(fixtureInfo)
+                //preFixturesArr.push(fixtureInfo)
             }
             
             if (fixtureInfo.live) {
-                // hide temporarily for QA able to test it
                 //liveFixturesArr.push(fixtureInfo) 
             }
 

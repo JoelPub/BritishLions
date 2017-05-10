@@ -463,11 +463,14 @@ class Landing extends Component {
                                 null
                         }
 
-                        <View style={styles.pageTitle}>
-                            <Text style={styles.pageTitleText}>
-                                MY LIONS
-                            </Text>
-                        </View>
+                        {
+                            !this.props.isAccessGranted &&
+                                <View style={styles.pageTitle}>
+                                    <Text style={styles.pageTitleText}>
+                                        MY LIONS
+                                    </Text>
+                                </View>
+                        }
                         <View style={styles.guther}>
                             {
                                 this.props.isAccessGranted?
@@ -478,49 +481,6 @@ class Landing extends Component {
                                     :
                                         <View style={styles.squad}>
                                             <ProfileSummaryCard profile={this.props.userProfile}/>
-                                            {/*<SummaryCardWrapper>
-                                                {
-                                                    this.state.isFullPlayer? 
-                                                        <View>
-                                                            <View style={styles.squadCompleted}>
-                                                                
-                                                                {
-                                                                    parseInt(this.state.rating.fan_ranking) < 5?
-                                                                        <View>
-                                                                            <Text style={styles.squadText}>Your squad score is ranked in the</Text>
-                                                                            <Text style={styles.squadPercentage}>
-                                                                                TOP {this._toRating(this.state.rating.fan_ranking)}
-                                                                            </Text>
-                                                                        </View>
-                                                                    :
-                                                                        <View>
-                                                                            <Text style={styles.squadText}>There’s room to improve your squad!</Text>
-                                                                            <Text style={styles.squadPercentage}>
-                                                                                MORE THAN 50%
-                                                                            </Text>
-                                                                            <Text style={[styles.squadText, styles.squadText2]}>of scores are higher than yours.</Text>
-                                                                        </View>
-                                                                }
-                                                            </View> 
-                                                            <View style={styles.squadRating}> 
-                                                                <Text style={styles.squadRatingText}>OVERALL RATING</Text>
-                                                                <View style={styles.squadCircle}>
-                                                                    <Text style={styles.squadCircleText}>
-                                                                        { this.state.rating.overall_rating || 'N/A' }
-                                                                    </Text>
-                                                                </View>
-                                                            </View> 
-                                                        </View> 
-                                                    :    
-                                                        <View style={styles.padder}>
-                                                            <Text style={styles.squadTitleText}>MY SQUAD PLAYERS SELECTED</Text>
-                                                            <Text style={styles.squadCountText}>
-                                                                { this.state.totalPlayerSelected }/{this.totalPlayer}
-                                                            </Text>
-                                                            <Text style={styles.squadText}>Complete your full squad of {this.totalPlayer} players to receive a real-time squad rating from EY</Text>
-                                                        </View>
-                                                }
-                                            </SummaryCardWrapper>*/}
                                         </View>
                                 : 
                                     null

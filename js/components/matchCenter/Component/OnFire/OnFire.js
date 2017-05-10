@@ -20,7 +20,7 @@ import OnFireItem from  './components/OnFireItem'
 
 const  IconHeader = ({onPress}) => {
   return (
-    <View style={{flexDirection:'row-reverse',marginTop:5}} >
+    <View style={{flexDirection:'row-reverse', paddingHorizontal: 8,arginTop:5}}} >
       <ButtonFeedback style={{width:30}}
                       onPress={onPress}>
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
