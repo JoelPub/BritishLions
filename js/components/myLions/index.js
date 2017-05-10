@@ -200,24 +200,24 @@ class MyLions extends Component {
     }
 
     measurePage(page,event) {
-        // if (__DEV__)console.log('measurePage')
+        if (__DEV__)console.log('measurePage')
         if(this.pageWindow.length===this.state.totalPages) return
-        const { x, width, height, } = event.nativeEvent.layout
+        const { x, y,width, height, } = event.nativeEvent.layout
         let i=this.pageWindow.findIndex((value)=>value.index===page)
-        // if (__DEV__)console.log('page',page)
-        // if (__DEV__)console.log('i',i)
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('i',i)
         if (i>-1) {
-            this.pageWindow[i].size=height+70
+            this.pageWindow[i].size=y+120
         }
         else {
-            this.pageWindow.push({index:page,size:height + 70})
+            this.pageWindow.push({index:page,size:y+120})
         }
         if(page===this.state.currentPage) {
            this.setState({
-                swiperWindow: height + 70
+                swiperWindow: y+120
             })
         }
-        // if (__DEV__)console.log('this.pageWindow',this.pageWindow)
+        if (__DEV__)console.log('this.pageWindow',this.pageWindow)
     }
 
     scrollEnd(e, state, context){
@@ -536,11 +536,12 @@ class MyLions extends Component {
                                     activeDotColor='rgb(239,239,244)'
                                     showsButton={this.state.isLoaded}
                                     onMomentumScrollEnd={this.scrollEnd.bind(this)}
+                                    paginationStyle={{top:this.state.swiperWindow-50}}
                                     >
                                     {
                                         this.Data.map((item,index)=>{
                                             return(
-                                                <View  key={index} style={[styles.onboardingPage, (!this.state.isLoaded||this.state.currentPage!==index)&&{opacity:0}]} onLayout={this.measurePage.bind(this,index)}>
+                                                <View  key={index} style={[styles.onboardingPage, (!this.state.isLoaded||this.state.currentPage!==index)&&{opacity:0}]} >
                                                     {
                                                         item.description.map((desc,i)=>{
                                                             return(
@@ -551,7 +552,7 @@ class MyLions extends Component {
                                                     {
                                                         (index===this.state.totalPages-1)&&<ButtonFeedback rounded disabled={this.state.btnDisable} label='COMPETITION CENTRE' onPress={() => [this.props.pushNewRoute('myLionsCompetitionCentre'),this._setModalVisible(false)]} style={[styles.button, styles.btnonBoardSquard]}  />
                                                     }
-                                                    <View style={styles.onboardingPageBtns}>
+                                                    <View style={styles.onboardingPageBtns} onLayout={this.measurePage.bind(this,index)}>
                                                         {
                                                             index===0?
                                                             <ButtonFeedback rounded disabled={this.state.btnDisable} onPress={()=>this._setModalVisible(false)} label='SKIP' style={styles.btnSkipLeft} />
