@@ -221,8 +221,7 @@ class FixtureDetails extends Component {
         switch (gameStatus) {
             case 'live':
                 return <LiveGame 
-                            details={fixtureDetails} 
-                            buttonOnPress={this.goToCoachBox}/>
+                            details={fixtureDetails} />
                 break;
             case 'pre':
                 return <PreGame 
@@ -261,10 +260,6 @@ class FixtureDetails extends Component {
 
     pickYourXVClick = () =>{
         this._isSignIn('myLionsCompetitionCentre')
-    }
-
-    goToCoachBox = () => {
-        this.props.drillDown('', 'coachBox')
     }
 
     componentWillUnmount() {

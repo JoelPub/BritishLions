@@ -1,12 +1,14 @@
 'use strict'
 
 import React, { Component ,PropTypes} from 'react'
+import { connect } from 'react-redux'
+import GamedayTeam from './gamedayTeam'
 import { Image, View, Text } from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
 import ButtonFeedback from '../../utility/buttonFeedback'
-import GamedayTeam from './gamedayTeam'
+import { drillDown } from '../../../actions/content'
 
 const locStyle = styleSheetCreate({ 
     liveBox: {
@@ -86,7 +88,7 @@ const locStyle = styleSheetCreate({
     }
 })
 
-export default class LiveGame extends Component {
+class LiveGame extends Component {
     constructor(props){
         super(props)
     }
@@ -96,6 +98,11 @@ export default class LiveGame extends Component {
             this.props.buttonOnPress('coachBox')
         }
     }
+
+    _drillDown(item, route) {
+        this.props.drillDown(item, route)
+    }
+
     render() {
         let details = this.props.details
         
@@ -115,7 +122,7 @@ export default class LiveGame extends Component {
                     <ButtonFeedback 
                         rounded 
                         style={[locStyle.roundButton]}
-                        onPress={this.coachBoxOnpress}
+                        onPress={() => this._drillDown(details ,'coachBox')}
                     >
                         <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                         style={locStyle.logoIcon}/>
@@ -133,6 +140,16 @@ export default class LiveGame extends Component {
         )
     }
 }
+
 LiveGame.propTypes = {
     buttonOnPress: PropTypes.func,
 }
+
+
+function bindAction(dispatch) {
+    return {
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
+    }
+}
+
+export default connect(null, bindAction)(LiveGame)
