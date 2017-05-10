@@ -6,6 +6,7 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
+import Timer from './timer'
 
 let containerWidth = styleVar.deviceWidth
 
@@ -43,35 +44,6 @@ const locStyle = styleSheetCreate({
             marginTop: 5
         }
     },
-   
-    time: {
-        backgroundColor: '#FFF',
-        width: styleVar.deviceWidth*0.24,
-        height: styleVar.deviceWidth*0.13,
-        borderRadius: styleVar.deviceWidth*0.13,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: styleVar.deviceWidth*0.1
-    },
-    timeInverse: {
-        borderWidth: 1,
-        borderColor: styleVar.colorGrey2,
-        marginHorizontal: 15
-    },
-    timeText: {
-        color: styleVar.colorScarlet,
-        fontFamily: styleVar.fontCondensed,
-        backgroundColor: 'transparent',
-        fontSize: 24,
-        lineHeight: 24,
-        marginTop: 10,
-        android: {
-            marginTop: 3
-        }
-    },
-    logo: {
-
-    },
     logoIcon: {
         width: styleVar.deviceWidth*0.1,
         height: styleVar.deviceWidth*0.1,
@@ -107,8 +79,18 @@ export default class LiveBox extends Component {
             this.timer = setInterval(this.callApi,30000)
 
         }
-            
-        
+    }
+    componentWillReceiveProps(nextProps,nextState) {
+        // if (__DEV__)console.log('!!!liveBox componentWillReceiveProps')
+        // if (__DEV__)console.log('this.props.data',this.props.data)
+        // if (__DEV__)console.log('nextProps.data',nextProps.data)
+        if(nextProps.data.feededData) {
+            this.setState({
+                      game_time: nextProps.data.game_time,
+                      bil_score: nextProps.data.statics&&nextProps.data.statics.bil&&nextProps.data.statics.bil.score,
+                      op_score: nextProps.data.statics&&nextProps.data.statics.opposition&&nextProps.data.statics.opposition.score
+                    })
+        }
     }
     componentWillUnmount() {
       this.timer&&clearTimeout(this.timer)
@@ -117,7 +99,6 @@ export default class LiveBox extends Component {
        
         let inverse = this.props.inverse || false
         let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
-        let styleTime = inverse? [locStyle.time] : [locStyle.time, locStyle.timeInverse]
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
 
         return (
@@ -131,13 +112,11 @@ export default class LiveBox extends Component {
                             </View>
                     }
                     <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>{this.props.data&&this.props.data.feededData?this.props.data.statics.opposition.score:this.state.op_score}</Text>
+                        <Text style={locStyle.circleText}>{this.state.op_score}</Text>
                     </View>
-                    <View style={styleTime}>
-                        <Text style={locStyle.timeText}>{this.props.data&&this.props.data.feededData?this.props.data.game_time:this.state.game_time}</Text>
-                    </View>
+                    <Timer game_time={this.state.game_time} />
                     <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>{this.props.data&&this.props.data.feededData?this.props.data.statics.bil.score:this.state.bil_score}</Text>
+                        <Text style={locStyle.circleText}>{this.state.bil_score}</Text>
                     </View>
                     {
                         !inverse &&

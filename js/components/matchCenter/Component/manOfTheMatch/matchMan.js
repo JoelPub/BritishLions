@@ -18,6 +18,7 @@ import Swiper from 'react-native-swiper'
 import styleVar from '../../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper,splitName,mapJSON } from '../../../utility/helper'
+import { service } from '../../../utility/services'
 
 
 const styles = styleSheetCreate({
@@ -176,25 +177,57 @@ class MatchMan extends Component {
       this.setState({ isLoaded: false },()=>{
           getSoticFullPlayerList().then((catchedFullPlayerList) => {
               if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
-                  getEYC3OfficialSquad().then((catchedOfficialSquad) => {
-                        if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
-                        if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
-                            let showSquadFeed=convertSquadToShow(MatchManModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
-                            if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
-                            // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                            this.setState({matchMan:showSquadFeed.toJS()},()=>{
-                                this.setState({isLoaded:true})
-                            })
+                  // getEYC3OfficialSquad().then((catchedOfficialSquad) => {
+                  //       if (__DEV__)console.log('catchedOfficialSquad',catchedOfficialSquad)
+                  //       if(catchedOfficialSquad !== null && catchedOfficialSquad !== 0 && catchedOfficialSquad !== -1) {
+                  //           let showSquadFeed=convertSquadToShow(MatchManModel(catchedOfficialSquad),catchedFullPlayerList,this.uniondata)
+                  //           if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+                  //           // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                  //           this.setState({matchMan:showSquadFeed.toJS()},()=>{
+                  //               this.setState({isLoaded:true})
+                  //           })
                             
-                        }
-                        else {
-                            this.setState({ isLoaded: true })
-                        }
-                  }).catch((error) => {
-                        this.setState({ isLoaded: true }, () => {
-                                this._showError(error) // prompt error
-                        })
-                  })
+                  //       }
+                  //       else {
+                  //           this.setState({ isLoaded: true })
+                  //       }
+                  // }).catch((error) => {
+                  //       this.setState({ isLoaded: true }, () => {
+                  //               this._showError(error) // prompt error
+                  //       })
+                  // })
+
+                    let optionsInfo = {
+                        url: 'https://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchInfo',
+                        data: {id:1},
+                        onAxiosStart: null,
+                        onAxiosEnd: null,
+                        method: 'post',
+                        onSuccess: (json)=>{
+                                        if(json.data) {
+                                                    if (__DEV__)console.log('json.data',json.data)
+                                                    let showSquadFeed=convertSquadToShow(MatchManModel(json.data),catchedFullPlayerList,this.uniondata)
+                                                    if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+                                                    // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                                    this.setState({matchMan:showSquadFeed.toJS()},()=>{
+                                                        this.setState({isLoaded:true})
+                                                    })
+                                        }
+                                        else {
+                                            this.setState({ isLoaded: true })
+                                        }
+                                      },
+                        onError: (error) => {
+                                        this.setState({ isLoaded: true }, () => {
+                                                this._showError(error) // prompt error
+                                            })
+                                        },
+
+                        isRequiredToken: false,
+                        channel: 'EYC3',
+                        isQsStringify:false
+                      }
+                        service(optionsInfo)
 
               }
           }).catch((error) => {
@@ -229,7 +262,7 @@ class MatchMan extends Component {
 	                <View>
 		                <PositionTitle pos='FORWARDS' data={this.state.matchMan.forwards}/>
 		                <Swiper
-		                height={styleVar.deviceWidth*0.63}
+		                height={this.state.matchMan.forwards.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                         loop={true}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
@@ -256,7 +289,7 @@ class MatchMan extends Component {
 		                
 		                <PositionTitle pos='BACKS' data={this.state.matchMan.backs}/>
 		                <Swiper
-		                height={styleVar.deviceWidth*0.63}
+		                height={this.state.matchMan.backs.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                         loop={true}
                         dot={<View style={styles.paginationDot} />}
                         activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}

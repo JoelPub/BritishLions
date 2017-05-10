@@ -62,7 +62,7 @@ class SetPlayer extends Component {
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:5,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
-          locked={true}
+          locked={false}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           initialPage={0}
           renderTabBar={() => <SetPlayerTabBar />}

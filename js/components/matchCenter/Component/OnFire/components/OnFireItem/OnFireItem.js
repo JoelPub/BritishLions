@@ -16,12 +16,12 @@ import {searchPlayer} from '../../../../../myLions/components/searchPlayer'
 import Data from '../../../../../../../contents/unions/data'
 
 
-const  TableCell = ({data,player}) => {
+const  TableCell = ({data,player,isHaveM}) => {
   let rank = data.rank + '.'
   let playerName = player ? player.name : ''
   let playerHeader = player ? player.image : ' '
-  let game = data.game + 'M'
-  let  ave = data.average + 'M'
+  let game = isHaveM?  data.game + 'M' : data.game
+  let  ave = isHaveM? data.average + 'M' : data.average
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
@@ -61,7 +61,8 @@ class OnFireItem extends Component {
   render() {
     let arr = [1,1,1]
     let {isLastItem,title,data,playerData} = this.props
-
+    let isHaveM = false
+    isHaveM = title==='METRES' ? true : false
     return (
       <View style={[styles.box,,isLastItem ? {borderBottomWidth:1}:{}]}>
         <View style={ [styles.headerView,{ borderBottomWidth: 1}]}>
@@ -79,7 +80,7 @@ class OnFireItem extends Component {
           let player = this.searchInfo(item.player)
 
           return (
-            <TableCell key={index} data={item} player={player}/>
+            <TableCell key={index} data={item} player={player} isHaveM={isHaveM}/>
           )
         })
         }
