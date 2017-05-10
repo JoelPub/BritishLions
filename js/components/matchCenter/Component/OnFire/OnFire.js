@@ -20,7 +20,7 @@ import OnFireItem from  './components/OnFireItem'
 
 const  IconHeader = ({onPress}) => {
   return (
-    <View style={{flexDirection:'row-reverse', paddingHorizontal: 8}} >
+    <View style={{flexDirection:'row-reverse', paddingHorizontal: 8,marginTop:5}} >
       <ButtonFeedback style={{width:30}}
                       onPress={onPress}>
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
@@ -75,7 +75,7 @@ class OnFire extends Component {
         >
           <View tabLabel='HALF-TIME'>
             <IconHeader onPress={this.iconPress} />
-            <View style={styles.tabBarContent}>
+            <View style={{ padding: 20,paddingTop:3}}>
               <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
               <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks} playerData={playerList}/>
@@ -83,8 +83,8 @@ class OnFire extends Component {
             </View>
           </View>
           <View tabLabel='FULL-TIME'>
-            <IconHeader />
-            <View style={styles.tabBarContent}>
+            <IconHeader onPress={this.iconPress} />
+            <View style={{ padding: 20,paddingTop:3}}>
               <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
               <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList}/>
