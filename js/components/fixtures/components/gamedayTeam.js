@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import loader from '../../../themes/loader-position'
 import { drillDown } from '../../../actions/content'
 import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soticAsyncStorageService'
-import { getEYC3OfficialSquad,removeEYC3OfficialSquad, getEYC3GameDayTeam} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
+import { getEYC3OfficialSquad, removeEYC3OfficialSquad, getEYC3GameDayTeam, removeEYC3GameDayTeam} from '../../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import {convertSquadToShow} from '../../myLions/components/gamedayTeamToShow'
 import GamedayTeamModel from  '../../../modes/Squad/gamedayTeamModel'
 import Data from '../../../../contents/unions/data'
@@ -312,10 +312,10 @@ class GamedayTeam extends Component {
     }
 
     _showDetail(item, route,playerPos,max,seq) {
-			if (__DEV__)console.log('item',item)
-			if (__DEV__)console.log('route',route)
-			if (__DEV__)console.log('this.state.details',this.state.details)
-			this.props.drillDown(item, route)
+        if (__DEV__)console.log('item',item)
+        if (__DEV__)console.log('route',route)
+        if (__DEV__)console.log('this.state.details',this.state.details)
+        this.props.drillDown(item, route)
     }
 
     componentDidMount() {
@@ -358,30 +358,51 @@ class GamedayTeam extends Component {
     //   })
     // }
 
+    _callbackIsTeamAvailable(isAvailable) {
+        console.log('_callbackIsTeamAvailable: ', isAvailable)
+        if (this.props.isGameTeamAvailable) {
+            this.props.isGameTeamAvailable(isAvailable)
+        }
+    }
+
     _getDayTeam() {
         let gameID = this.props.gameID || null
 
         this.setState({ isLoaded: false }, () => {
             getSoticFullPlayerList().then((catchedFullPlayerList) => {
                 if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
+                    removeEYC3GameDayTeam()
                     getEYC3GameDayTeam(gameID).then((catchedGameDayTeam) => {
                         if (__DEV__) console.log('catchedGameDayTeam', catchedGameDayTeam)
 
                         if(catchedGameDayTeam !== null && catchedGameDayTeam !== 0 && catchedGameDayTeam !== -1) {
-                            let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
-                           
-                            //if (__DEV__)console.log('showSquadFeed', showSquadFeed)
-                            showSquadFeed = this._getMatchCaptianTag(showSquadFeed.toJS())
+                            // check if team is available or not
+                            if (catchedGameDayTeam.success && catchedGameDayTeam.success === 'false') {
+                                // set team availability
+                                this._callbackIsTeamAvailable(false)
+                            } else {
+                                let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
+                                //if (__DEV__)console.log('showSquadFeed', showSquadFeed)
 
-                            // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                            this.setState({gameDayTeam: showSquadFeed}, ()=>{
-                                this.setState({isLoaded: true})
-                            })
-                            
+                                // match captain tag
+                                showSquadFeed = this._getMatchCaptianTag(showSquadFeed.toJS())
+
+                                // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                this.setState({gameDayTeam: showSquadFeed}, ()=>{
+                                    this.setState({isLoaded: true})
+
+                                    // set team availability
+                                    this._callbackIsTeamAvailable(true)
+                                })
+                            }
                         } else {
-                            // this.setState({ isLoaded: true })
+                            // set team availability
+                            this._callbackIsTeamAvailable(false)
                         }
                     }).catch((error) => {
+                        // set team availability
+                        // this._callbackIsTeamAvailable(false)
+
                         // this.setState({ isLoaded: true }, () => {
                         //     this._showError(error) // prompt error
                         // })
@@ -436,100 +457,100 @@ class GamedayTeam extends Component {
 	render() {
 		return (
 			<View>
-                {
-                    this.props.isHideTitle? null :
-                        <View style={styles.subject}>
-                            <Text style={styles.subjectText}>GAME-DAY TEAM</Text>
-                        </View>
-                }
 				{
 	                this.state.isLoaded?
-	                <View>
-		                <PositionTitle pos='FORWARDS' data={this.state.gameDayTeam.forwards}/>
-		                <Swiper
-		                height={styleVar.deviceWidth*0.63}
-                        loop={false}
-                        dot={<View style={styles.paginationDot} />}
-                        activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
-                        paginationStyle={styles.paginationBottom}>
-		                    {
-		                        mapJSON(this.state.gameDayTeam.forwards,3).map((rowData,i)=>{
-		                            return(
-		                                <View style={styles.posSwiperRow} key={i}>
-		                                    {
-		                                        rowData.map((item,index)=>{
-		                                            return(
-		                                                    <View style={styles.posWrapper} key={index}>
-		                                                            <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
-		                                                    </View>
-		                                                )
-		                                        }, this)
-		                                    }
-		                                </View>
-		                            )
+                        <View>
+                            {
+                                this.props.isHideTitle? null :
+                                    <View style={styles.subject}>
+                                        <Text style={styles.subjectText}>GAME-DAY TEAM</Text>
+                                    </View>
+                            }
+                            <PositionTitle pos='FORWARDS' data={this.state.gameDayTeam.forwards}/>
+                            <Swiper
+                            height={styleVar.deviceWidth*0.63}
+                            loop={false}
+                            dot={<View style={styles.paginationDot} />}
+                            activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                            paginationStyle={styles.paginationBottom}>
+                                {
+                                    mapJSON(this.state.gameDayTeam.forwards,3).map((rowData,i)=>{
+                                        return(
+                                            <View style={styles.posSwiperRow} key={i}>
+                                                {
+                                                    rowData.map((item,index)=>{
+                                                        return(
+                                                                <View style={styles.posWrapper} key={index}>
+                                                                        <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
+                                                                </View>
+                                                            )
+                                                    }, this)
+                                                }
+                                            </View>
+                                        )
 
-		                        },this)
-		                    }
-		                </Swiper>
-		                
-		                <PositionTitle pos='BACKS' data={this.state.gameDayTeam.backs}/>
-		                <Swiper
-		                height={styleVar.deviceWidth*0.63}
-                        loop={false}
-                        dot={<View style={styles.paginationDot} />}
-                        activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
-                        paginationStyle={styles.paginationBottom}>
-		                    {
-		                        mapJSON(this.state.gameDayTeam.backs,3).map((rowData,i)=>{
-		                            return(
-		                                <View style={styles.posSwiperRow} key={i}>
-		                                    {
-		                                        rowData.map((item,index)=>{
-		                                            return(
-		                                                <View style={styles.posWrapper} key={index}>
-		                                                        <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
-		                                                </View>
-		                                                )
-		                                        }, this)
-		                                    }
-		                                </View>
-		                            )
+                                    },this)
+                                }
+                            </Swiper>
+                            
+                            <PositionTitle pos='BACKS' data={this.state.gameDayTeam.backs}/>
+                            <Swiper
+                            height={styleVar.deviceWidth*0.63}
+                            loop={false}
+                            dot={<View style={styles.paginationDot} />}
+                            activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                            paginationStyle={styles.paginationBottom}>
+                                {
+                                    mapJSON(this.state.gameDayTeam.backs,3).map((rowData,i)=>{
+                                        return(
+                                            <View style={styles.posSwiperRow} key={i}>
+                                                {
+                                                    rowData.map((item,index)=>{
+                                                        return(
+                                                            <View style={styles.posWrapper} key={index}>
+                                                                    <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
+                                                            </View>
+                                                            )
+                                                    }, this)
+                                                }
+                                            </View>
+                                        )
 
-		                        },this)
-		                    }
-		                </Swiper>
+                                    },this)
+                                }
+                            </Swiper>
 
-		                
-		                <PositionTitle pos='RESERVES' data={this.state.gameDayTeam.reserves}/>
-		                <Swiper
-		                height={styleVar.deviceWidth*0.62}
-                        loop={false}
-                        dot={<View style={styles.paginationDot} />}
-                        activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
-                        paginationStyle={[styles.paginationBottom, styles.paginationBottomLast]}>
-		                    {
-		                        mapJSON(this.state.gameDayTeam.reserves,3).map((rowData,i)=>{
-		                            return(
-		                                <View style={styles.posSwiperRow} key={i}>
-		                                    {
-		                                        rowData.map((item,index)=>{
-		                                            return(
-		                                                <View style={styles.posWrapper} key={index}>
-		                                                    <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
-		                                                </View>
-		                                            )
-		                                        }, this)
-		                                    }
-		                                </View>
-		                            )
+                            
+                            <PositionTitle pos='RESERVES' data={this.state.gameDayTeam.reserves}/>
+                            <Swiper
+                            height={styleVar.deviceWidth*0.62}
+                            loop={false}
+                            dot={<View style={styles.paginationDot} />}
+                            activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                            paginationStyle={[styles.paginationBottom, styles.paginationBottomLast]}>
+                                {
+                                    mapJSON(this.state.gameDayTeam.reserves,3).map((rowData,i)=>{
+                                        return(
+                                            <View style={styles.posSwiperRow} key={i}>
+                                                {
+                                                    rowData.map((item,index)=>{
+                                                        return(
+                                                            <View style={styles.posWrapper} key={index}>
+                                                                <PlayerImgCell data={item} onPress = {() => this._showDetail(item.info,'myLionsPlayerProfile')}/>
+                                                            </View>
+                                                        )
+                                                    }, this)
+                                                }
+                                            </View>
+                                        )
 
-		                        },this)
-		                    }
-		                </Swiper>
+                                    },this)
+                                }
+                            </Swiper>
 
-		            </View>
+                        </View>
 	                :
-	                null
+	                    null
 	            }
 	         </View>
             )

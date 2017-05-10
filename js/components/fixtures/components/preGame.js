@@ -53,6 +53,16 @@ const locStyle = styleSheetCreate({
 export default class PreGame extends Component {
     constructor(props){
         super(props)
+
+        this.state = {
+            isGameTeamAvailable: null
+        }
+    }
+
+    _isGameTeamAvailable = (isAvailable) => {
+        this.setState({
+            isGameTeamAvailable: isAvailable
+        })
     }
 
     render() {
@@ -74,8 +84,15 @@ export default class PreGame extends Component {
                     :
                         null
                 }
-                <PickYourXV onPress={this.props.onPress}/>
-                <GamedayTeam gameID={details.id} />
+
+                <GamedayTeam gameID={details.id} isGameTeamAvailable={this._isGameTeamAvailable} />
+
+                {
+                    (this.state.isGameTeamAvailable != null && this.state.isGameTeamAvailable === false)?
+                        <PickYourXV onPress={this.props.onPress}/>
+                    :
+                        null
+                }
             </View>
         )
     }
