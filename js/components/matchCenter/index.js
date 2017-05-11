@@ -143,6 +143,7 @@ class MatchCenter extends Component {
       if(this.state.index===3){
         if (__DEV__)console.log('call man of the match Api')
         setTimeout(()=>{
+          if (this.state.detail.post!==null) this.setState({subPage:'final'})
           this.statusArray.fill(false)
           this.statusArray[3]=true
           this.setState({

@@ -20,6 +20,7 @@ class ManOfTheMatchPostSubission extends Component {
          this.selectedMan=null
          this.state = {
               savedMan:null,
+              resubmit:false
             }
     }
     _measurePage(page,event) {
@@ -62,7 +63,10 @@ class ManOfTheMatchPostSubission extends Component {
                     })
         }
         else {
-            this.props.setSubPage('final',this.selectedMan.id,this.state.savedMan)
+            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
+            this.setState({resubmit:true,savedMan:this.selectedMan.id},()=>{
+                this.setState({resubmit:false})
+            })
         }
     }
     componentDidMount(){
@@ -77,7 +81,9 @@ class ManOfTheMatchPostSubission extends Component {
         return (
                 <View style={styles.wrapper}>
                     <View style={styles.guther}>
-                        <PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}  detail={this.props.detail}/>
+                        {
+                            !this.state.resubmit&&<PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}  detail={this.props.detail}/>
+                        }
                     </View>
                     <View style={styles.title}>
                         <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
