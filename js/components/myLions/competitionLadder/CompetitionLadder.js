@@ -448,7 +448,7 @@ class CompetitionLadder extends Component {
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>LEADERBOARD</Text>
-              <Text style={styles.modalContentText}>This Leaderboard lets you know how you rank against all the other users. Your rank and points will be displayed alongside the Global Top 5 users. If you are proud of your rank you can share this on social media.
+              <Text style={styles.modalContentText}>This Leaderboard lets you know how you rank against all the other users. Your rank and points will be displayed alongside the Global Top 5 users. Please note the rank will not refresh in real time. If you are proud of your rank you can share this on social media.
               </Text>
               <Text style={styles.modalContentText}>You can create a private league for just you and your friends by selecting “Create Private League” to get your personalised code. If you have received a join code from a friend or one of the Lions sponsors you can join their league by selecting “Join Private League”. You can see and access your private leagues at the bottom of this screen.</Text>
             </View>
