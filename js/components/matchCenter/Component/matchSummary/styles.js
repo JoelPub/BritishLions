@@ -7,18 +7,25 @@ module.exports = styleSheetCreate({
     timeWrapper: {
     	width:50,
     	height:50,
-    	backgroundColor:'rgb(255,255,255)',
+    	backgroundColor: 'rgb(255,255,255)',
     	position:'absolute',
-    	left:0,
+    	left: 1,
     	borderWidth:1,
     	borderColor:'rgb(216,217,218)',
     	borderRadius:25,
-    	justifyContent:'center'},
+    	justifyContent:'center'
+	},
     timeText:{
-    	fontSize:17,
+    	fontSize: 21,
+		lineHeight: 21,
     	fontFamily:styleVar.fontCondensed,
+		backgroundColor: 'transparent',
     	color:'rgb(175,0,30)',
-    	textAlign: 'center'
+    	textAlign: 'center',
+		marginTop: 9,
+		android: {
+			marginTop: 3
+		}
     },
     scroll:{marginTop:50},
     timelineWrapper:{
@@ -28,10 +35,14 @@ module.exports = styleSheetCreate({
     },
     descripton:{
     	color:'rgb(38,38,38)',
-    	fontSize:14,
-    	lineHeight:16,
+    	fontSize: 16,
+    	lineHeight: 21,
     	fontFamily:styleVar.fontGeorgia,
-    	marginLeft:20
+    	marginLeft:20,
+		marginTop: -11,
+		android: {
+			marginTop: -3
+		}
     }
 
 })

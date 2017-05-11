@@ -32,7 +32,7 @@ class MatchSummary extends Component {
     _renderCircle(rowData,sectionID,rowID) {
       return (
         <View style={styles.timeWrapper}>
-        <Text style={styles.timeText}>{rowData.time}</Text>
+          <Text style={styles.timeText}>{rowData.time}</Text>
         </View>)
     }
     _onEndReached(){
@@ -47,22 +47,21 @@ class MatchSummary extends Component {
                           <Timeline
                             data={this.props.summaryData.timeline}
                             lineColor='rgb(216,217,218)'
-                            timeContainerStyle={{position:'absolute'}}
-                            timeStyle={{width:0,height:0}}
+                            timeContainerStyle={{minWidth: 6}}
+                            timeStyle={{width:0, height:0}}
                             descriptionStyle={styles.descripton}
                             separator={false}
                             options={{
-                              style:{paddingTop:5},
-                              scrollEnabled:true,
-                              enableEmptySections:true,
+                              style:{paddingTop:25, marginLeft: 0},
+                              scrollEnabled: true,
+                              enableEmptySections: true,
                               onEndReached:this._onEndReached.bind(this),
-                              onEndReachedThreshold:30
+                              onEndReachedThreshold: 30
                             }}
                             renderCircle={this._renderCircle}
                           />            
                     </View>
                     <View onLayout={this.measurePage.bind(this,'matchSummary')} />
-
               </ScrollView>
         )
     }

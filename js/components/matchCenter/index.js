@@ -299,7 +299,7 @@ class MatchCenter extends Component {
                       }
                     </ScrollView>
                   </SquadModal>
-                    <EYSFooter />
+                  <EYSFooter />
                 </View>
             </Container>
         )
