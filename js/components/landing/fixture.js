@@ -20,11 +20,6 @@ import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
 import Countdown from '../global/countdown'
 
-// For mapping a static image only, since require() is not working with concatenating a dynamic variable
-// should be delete this code once api is ready.
-//import fixturesList from '../../../contents/fixtures/data.json'
-import fixturesImages from '../../../contents/fixtures/images'
-
 const locStyle = styleSheetCreate({ 
     activityIndicatorWrapper: {
         padding: 20
@@ -69,30 +64,25 @@ const PageTitle = ({title}) => (
     </View>
 )
 
-const Banner = ({data, pressBanner}) => {
-    // TEMPORARY: get image FROM LOCAL UNTIL API IS NOT DONE
-    let image = fixturesImages[data.id]
-    
-    return (
-        <ButtonFeedback
-            style={styles.banner}
-            onPress={pressBanner}>
-            <ImagePlaceholder height={200}>
-                <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
-                    <Image
-                        resizeMode='contain'
-                        style={styles.bannerImg}
-                        source={image} />
-                </LinearGradient>
-            </ImagePlaceholder>
-            <View style={[shapes.triangle, {marginTop: -12}]} />
-            <View style={styles.bannerDetails}>
-                <Text style={styles.bannerTitle}>{ strToUpper(data.date) }</Text>
-                <Text style={styles.bannerDesc}>{ data.title }</Text>
-            </View>
-        </ButtonFeedback>
-    )
-}
+const Banner = ({data, pressBanner}) => (
+    <ButtonFeedback
+        style={styles.banner}
+        onPress={pressBanner}>
+        <ImagePlaceholder height={200}>
+            <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
+                <Image
+                    resizeMode='contain'
+                    style={styles.bannerImg}
+                    source={{uri: data.banner}} />
+            </LinearGradient>
+        </ImagePlaceholder>
+        <View style={[shapes.triangle, {marginTop: -12}]} />
+        <View style={styles.bannerDetails}>
+            <Text style={styles.bannerTitle}>{ strToUpper(data.date) }</Text>
+            <Text style={styles.bannerDesc}>{ data.title }</Text>
+        </View>
+    </ButtonFeedback>
+)
 
 const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     <View>

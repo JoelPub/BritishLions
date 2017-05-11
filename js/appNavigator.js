@@ -198,7 +198,9 @@ class AppNavigator extends Component {
         global.storage = storage
 
         getCurrentVersionNumber().then((versionNumber)=>{
-            if(versionNumber === undefined || versionNumber !== '3'){
+            if(__DEV__)console.log('@@@versionNumber',versionNumber)
+            if(versionNumber === undefined || versionNumber !== '4'){
+                if(__DEV__)console.log('@@@clear')
                 AsyncStorage.clear()
                 setCurrentVersionNumber()
             }

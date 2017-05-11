@@ -120,70 +120,136 @@ export default [
         "banner": require("./banner/rhino.jpg"),
         "description": "<p>Rhino Rugby is both the official Supplier of Training Equipment and official Training Ball Licensee to the British & Irish Lions tour to New Zealand in 2017.</p><p>Rhino are moreover performing both roles, uniquely, for the third successive Lions tour, having done so for the tours to South Africa in 2009 and Australia in 2013.</p><p>Rhino is the world's leading supplier of technical training equipment for rugby, and in addition the group also owns Powa Products - New Zealand's leading brand and business in this sector.</p><p>In the rugby ball market, the Rhino Vortex Elite has been the match ball for the Guinness PRO12 competition for the last 4 years, and in rugby league for the European Super League, Ladbroke's Challenge Cup and the Kingstone Press Championship. The winners of the Rhino Golden Boot award for the best goalkicker in the PRO12 in recent seasons have included Jonathan Sexton, Leigh Halfpenny and Ian Madigan, all with success rates in the 85-90% range.</p><p>The full range of British & Irish Lions training and supporter balls can be found at the official Rhinos website.</p>"
     },
-     {
-         "id": "12",
-         "category": "charity",
-         "title": "Gosh",
-         "url": "",
-         "partner": "",
-         "label": "Gosh",
-         "image": require("./gosh.jpg"),
-         "banner": require("./banner/gosh.jpg"),
-         "description": "<p>Great Ormond Street Hospital is one of the world’s leading children’s hospitals with the broadest range of dedicated, children’s healthcare specialists under one roof in the UK.</p><p>The hospital’s pioneering research and treatment gives hope to children from across the UK with the rarest, most complex and often life-threatening conditions. Patients and families are central to everything we do – from the moment they come through the door and for as long as they need.</p><p>Great Ormond Street Hospital Children’s Charity needs to raise money to support the hospital to give children who need help the most, the best chance for life. The charity funds research into pioneering new treatments for children, provides the most up to date medical equipment, funds support services for children and their families and supports the essential rebuilding and refurbishment of the hospital. For more information visit <a href=\"http://www.gosh.org\">www.gosh.org</a></p>"
-     },
-     {
-         "id": "13",
-         "category": "charity",
-         "title": "Temple Street",
-         "url": "",
-         "partner": "",
-         "label": "Temple Street",
-         "image": require("./templestreet.jpg"),
-         "banner": require("./banner/templestreet.jpg"),
-         "description": "<p>Temple Street Foundation was established in 2000 and exists to raise funds to make Temple Street Children’s University Hospital a better place. Every year Temple Street relies on the generosity of donors to help raise funds to redevelop hospital wards, fund vital equipment & services and invest in research. Having access to state of the art facilities & equipment literally saves lives. To learn more visit <a href=\"http://templestreet.com\">www.templestreet.com</a></p>"
-     },
-     {
-         "id": "14",
-         "category": "charity",
-         "title": "Velindre",
-         "url": "",
-         "partner": "",
-         "label": "Velindre",
-         "image": require("./velindre.jpg"),
-         "banner": require("./banner/velindre.jpg"),
-         "description": "<p>Velindre Cancer Centre has been providing care, support and treatment to cancer patients and their families since 1956; in their 60th anniversary year they aspire to deliver the best cancer services in the world through care, quality and excellence.</p><p>They are the premier provider of radiotherapy and other specialised anti-cancer treatments in Wales. Access to radiotherapy is critical to improving patient outcomes for cancer: the evidence tells us that approximately 40% of patients with cancer would benefit from radiotherapy treatment, and recent advances at Velindre means that it can be delivered with remarkable precision.</p><p>Velindre support cancer patients and their families through difficult times, and their specially trained and highly committed staff strive every single day to make this time as comfortable as possible.</p><p>Money raised from the Victory over Cancer campaign will be used to fund ground breaking research and buy specialist equipment, so staff have access to the most up to date training and techniques available. The incidence of cancer is rising by 1% each year in Wales. By 2020 one in two people will be affected by cancer in Wales.</p><p>People in Wales living with cancer will increase by 80% between 2010 and 2030. However, cancer survival rates have doubled in the last 40 years, meaning that more people in Wales are surviving cancer because of better treatments and earlier detection.</p><p>People can show their support by visiting <a href=\"http://www.velindrefundraising.com\">www.velindrefundraising.com</a></p>"
-     },
-     {
-         "id": "15",
-         "category": "charity",
-         "title": "Cure Parkinson's",
-         "url": "",
-         "partner": "",
-         "label": "Cure Parkinson's",
-         "image": require("./tcpt.jpg"),
-         "banner": require("./banner/tcpt.jpg"),
-         "description": "<p>The Cure Parkinson’s Trust (CPT) was set up in 2005 by four people living with the condition. It has one bold aim to cure Parkinson’s. CPT funds innovative projects and inspirational scientists to slow, stop and reverse Parkinson’s. For further information see <a href=\"http://www.cureparkinsons.org\">www.cureparkinsons.org</a>.</p>"
-     },
-     {
-         "id": "16",
-         "category": "media",
-         "title": "Sky Sports",
-         "url": "",
-         "partner": "",
-         "label": "Sky Sports",
-         "image": require("./skysports.jpg"),
-         "banner": require("./banner/skysports.jpg"),
-         "description": "<p>Sky Sports is a group of sports television channels operated by the satellite pay-TV company Sky plc. Sky Sports is the dominant subscription television sports brand in the United Kingdom and Ireland. It has played a major role in the increased commercialisation of British sport since 1991.</p>"
-     },
-     {
-         "id": "17",
-         "category": "media",
-         "title": "The Telegraph",
-         "url": "",
-         "partner": "",
-         "label": "The Telegraph",
-         "image": require("./telegraph.jpg"),
-         "banner": require("./banner/telegraph.jpg"),
-         "description": "<p>Telegraph Media Group (TMG) is a multimedia business with a portfolio covering the world-renowned, agenda-setting titles The Daily Telegraph and The Sunday Telegraph, The Telegraph website and Telegraph Events, one of the leading events companies in the UK.</p><p>TMG publishes The Telegraph seven days a week, in print, online, tablet and mobile, reaching a global audience of over 102 million per month.</p>"
-     }  
+    {
+        "id": "12",
+        "category": "official suppliers",
+        "title": "Vivomed",
+        "url": "http://www.vivomed.com",
+        "partner": "",
+        "label": "Visit the Vivomed website",
+        "image": require("./vivomed.jpg"),
+        "banner": require("./banner/vivomed.jpg"),
+        "description": "<p>Vivomed is an Official Supplier for The British & Irish Lions 2017 Tour to New Zealand. They are supporting The British & Irish Lions on their Tour to New Zealand this summer by supplying all medical equipment required by the Team for the third successive Tour. A family owned and run company set up in 2000, Vivomed will be providing a high level of support and personalised service to The British & Irish Lions and working closely with the medical team to ensure that all of the needs of the squad are met. With one of the widest ranges of sports medicine supplies in the UK and Ireland and can deliver worldwide, Vivomed is a one stop shop for sports teams. They are the only sports medicine supply company in UK & Ireland that has an in house licensed pharmacy meaning they can supply everything that the Doctors and Physiotherapists may need from a roll of tape or plasters to prescription medication and defibrillators. For more information, please visit: <a href=\"http://www.vivomed.com\">www.vivomed.com</a>.</p>"
+    },
+    {
+        "id": "13",
+        "category": "official suppliers",
+        "title": "Whyte & Mackay",
+        "url": "http://www.whyteandmackay.com",
+        "partner": "",
+        "label": "Visit the Whyte & Mackay website",
+        "image": require("./whiteandmackay.jpg"),
+        "banner": require("./banner/whiteandmackay.jpg"),
+        "description": "<p>Whyte & Mackay are proud partners of The British & Irish Lions New Zealand Tour 2017.  Bearing its iconic double lion on its logo for more than 170 years, the similarities between the award-winning blended Scotch whisky and The British & Irish Lions, established in 1888 don't stop there. The most unique touring team in world sport, the Lions are the best of the best, selected from Scotland, England, Ireland and Wales - much like Whyte & Mackay's blending process which brings the finest single malts from the Highland and Speyside regions of Scotland, together with grain whisky in a unique triple maturation process. Since 1844 Whyte & Mackay has been creating its award-winning blended Scotch whisky with a surprisingly smooth, rich taste. Keep an eye out for special partnership branded promotions from the Whyte & Mackay across the UK. Learn more about Whyte & Mackay at <a href=\"http://www.whyteandmackay.com\">http://www.whyteandmackay.com</a>.</p>"
+    },
+    {
+        "id": "14",
+        "category": "official suppliers",
+        "title": "PAS",
+        "url": "http://www.pas-nutrition.co.uk",
+        "partner": "",
+        "label": "Visit the PAS website",
+        "image": require("./pas.jpg"),
+        "banner": require("./banner/pas.jpg"),
+        "description": "<p>Pro Athlete Supplementation Ltd (PAS) is a sports nutrition company based in Wales that has been supplying athletes and teams for the last 11 years. Formed by Jon Williams, Performance Nutritionist and Darren Campbell, former Olympic sprinter in 2006 with the aim to supply research based sports nutrition to improve performance in athletes while being batch screened for safety.  PAS was fully committed to the Informed Sport testing procedure from when they first set up and puts athlete safety at the forefront of their priorities. Since they started they have built a prestigious profile of teams and athletes, they are official suppliers to the Current Premier League Champions Leicester City FC, the Welsh Rugby Union and the Welsh FA. Their products are utilized with athletes at the prestigious sports medicine centre Aspetar in Qatar and their ambassador list contains many high profile athletes. Learn more here: <a href=\"http://www.pas-nutrition.co.uk\">www.pas-nutrition.co.uk</a>.</p>"
+    },
+    {
+        "id": "15",
+        "category": "official suppliers",
+        "title": "Spirit of Harrogate",
+        "url": "https://wslingsby.co.uk/lions/",
+        "partner": "",
+        "label": "Visit Spirit of Harrogate website",
+        "image": require("./slingsby.jpg"),
+        "banner": require("./banner/slingsby.jpg"),
+        "description": "<p>Slingsby Gin’s vision is to capture the essence of Harrogate in a bottle, drawing on the town’s natural assets. Complementing water drawn from the world renowned Harrogate aquifer, the key ingredients of Slingsby Gin are hand-grown local plants which are synonymous with the beautiful and restorative nature of Harrogate. Launched in September 2015 by co-founders Marcus Black and Mike Carthy, Slingsby Gin is made with only the finest natural and locally sourced botanicals, Harrogate aquifer water and pure single grain spirit. The key botanicals are locally-grown plants that are synonymous with the beautiful and restorative nature of Harrogate and half of Slingsby Gin’s 24 botanicals have been grown in Harrogate’s Rudding Park Hotel kitchen garden. Learn more here: <a href=\"https://wslingsby.co.uk/lions\">https://wslingsby.co.uk/lions</a>.</p>"
+    },
+    {
+        "id": "16",
+        "category": "regional partners",
+        "title": "DOOM BAR (sharps brewery) ",
+        "url": "https://www.sharpsbrewery.co.uk/",
+        "partner": "",
+        "label": "Visit DOOM BAR (sharps brewery) website",
+        "image": require("./sharpsbrewery.jpg"),
+        "banner": require("./banner/sharpsbrewery.jpg"),
+        "description": ""
+    },
+    {
+        "id": "17",
+        "category": "regional partners",
+        "title": "GUINNESS",
+        "url": "https://www.lionco.com/about-us/our-business/beer-spirits-wine-new-zealand",
+        "partner": "",
+        "label": "Visit GUINNESS website",
+        "image": require("./guinness.jpg"),
+        "banner": require("./banner/guinness.jpg"),
+        "description": ""
+    },
+    {
+        "id": "18",
+        "category": "charity",
+        "title": "Gosh",
+        "url": "",
+        "partner": "",
+        "label": "Gosh",
+        "image": require("./gosh.jpg"),
+        "banner": require("./banner/gosh.jpg"),
+        "description": "<p>Great Ormond Street Hospital is one of the world’s leading children’s hospitals with the broadest range of dedicated, children’s healthcare specialists under one roof in the UK.</p><p>The hospital’s pioneering research and treatment gives hope to children from across the UK with the rarest, most complex and often life-threatening conditions. Patients and families are central to everything we do – from the moment they come through the door and for as long as they need.</p><p>Great Ormond Street Hospital Children’s Charity needs to raise money to support the hospital to give children who need help the most, the best chance for life. The charity funds research into pioneering new treatments for children, provides the most up to date medical equipment, funds support services for children and their families and supports the essential rebuilding and refurbishment of the hospital. For more information visit <a href=\"http://www.gosh.org\">www.gosh.org</a></p>"
+    },
+    {
+        "id": "19",
+        "category": "charity",
+        "title": "Temple Street",
+        "url": "",
+        "partner": "",
+        "label": "Temple Street",
+        "image": require("./templestreet.jpg"),
+        "banner": require("./banner/templestreet.jpg"),
+        "description": "<p>Temple Street Foundation was established in 2000 and exists to raise funds to make Temple Street Children’s University Hospital a better place. Every year Temple Street relies on the generosity of donors to help raise funds to redevelop hospital wards, fund vital equipment & services and invest in research. Having access to state of the art facilities & equipment literally saves lives. To learn more visit <a href=\"http://templestreet.com\">www.templestreet.com</a></p>"
+    },
+    {
+        "id": "20",
+        "category": "charity",
+        "title": "Velindre",
+        "url": "",
+        "partner": "",
+        "label": "Velindre",
+        "image": require("./velindre.jpg"),
+        "banner": require("./banner/velindre.jpg"),
+        "description": "<p>Velindre Cancer Centre has been providing care, support and treatment to cancer patients and their families since 1956; in their 60th anniversary year they aspire to deliver the best cancer services in the world through care, quality and excellence.</p><p>They are the premier provider of radiotherapy and other specialised anti-cancer treatments in Wales. Access to radiotherapy is critical to improving patient outcomes for cancer: the evidence tells us that approximately 40% of patients with cancer would benefit from radiotherapy treatment, and recent advances at Velindre means that it can be delivered with remarkable precision.</p><p>Velindre support cancer patients and their families through difficult times, and their specially trained and highly committed staff strive every single day to make this time as comfortable as possible.</p><p>Money raised from the Victory over Cancer campaign will be used to fund ground breaking research and buy specialist equipment, so staff have access to the most up to date training and techniques available. The incidence of cancer is rising by 1% each year in Wales. By 2020 one in two people will be affected by cancer in Wales.</p><p>People in Wales living with cancer will increase by 80% between 2010 and 2030. However, cancer survival rates have doubled in the last 40 years, meaning that more people in Wales are surviving cancer because of better treatments and earlier detection.</p><p>People can show their support by visiting <a href=\"http://www.velindrefundraising.com\">www.velindrefundraising.com</a></p>"
+    },
+    {
+        "id": "21",
+        "category": "charity",
+        "title": "Cure Parkinson's",
+        "url": "",
+        "partner": "",
+        "label": "Cure Parkinson's",
+        "image": require("./tcpt.jpg"),
+        "banner": require("./banner/tcpt.jpg"),
+        "description": "<p>The Cure Parkinson’s Trust (CPT) was set up in 2005 by four people living with the condition. It has one bold aim to cure Parkinson’s. CPT funds innovative projects and inspirational scientists to slow, stop and reverse Parkinson’s. For further information see <a href=\"http://www.cureparkinsons.org\">www.cureparkinsons.org</a>.</p>"
+    },
+    {
+        "id": "22",
+        "category": "media",
+        "title": "Sky Sports",
+        "url": "",
+        "partner": "",
+        "label": "Sky Sports",
+        "image": require("./skysports.jpg"),
+        "banner": require("./banner/skysports.jpg"),
+        "description": "<p>Sky Sports is a group of sports television channels operated by the satellite pay-TV company Sky plc. Sky Sports is the dominant subscription television sports brand in the United Kingdom and Ireland. It has played a major role in the increased commercialisation of British sport since 1991.</p>"
+    },
+    {
+        "id": "23",
+        "category": "media",
+        "title": "The Telegraph",
+        "url": "",
+        "partner": "",
+        "label": "The Telegraph",
+        "image": require("./telegraph.jpg"),
+        "banner": require("./banner/telegraph.jpg"),
+        "description": "<p>Telegraph Media Group (TMG) is a multimedia business with a portfolio covering the world-renowned, agenda-setting titles The Daily Telegraph and The Sunday Telegraph, The Telegraph website and Telegraph Events, one of the leading events companies in the UK.</p><p>TMG publishes The Telegraph seven days a week, in print, online, tablet and mobile, reaching a global audience of over 102 million per month.</p>"
+    }
 ]

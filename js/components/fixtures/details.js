@@ -19,7 +19,6 @@ import PreGame from './components/preGame'
 import PostGame from './components/postGame'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import data from '../../../contents/fixtures/data.json'
 import {getAddedToCalanderCheck,setAddedToCalanderCheck} from '../utility/asyncStorageServices'
 import moment from 'moment'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
@@ -27,10 +26,6 @@ import styleVar from '../../themes/variable'
 import { strToLower } from '../utility/helper'
 import { getUserId,getRefreshToken } from '../utility/asyncStorageServices'
 import LinearGradient from 'react-native-linear-gradient'
-
-// For mapping a static image only, since require() is not working with concatenating a dynamic variable
-// should be delete this code once api is ready.
-import images from '../../../contents/fixtures/images'
 import { strToUpper, isEmptyObject } from '../utility/helper'
 
 const Banner = ({data, gameStatus}) => (
@@ -44,7 +39,7 @@ const Banner = ({data, gameStatus}) => (
                 <Image
                     resizeMode='contain'
                     style={styles.fixtureImg}
-                    source={images[data.id]} />
+                    source={{uri: data.banner}} />
             </LinearGradient>
         </ImagePlaceholder>
         <View style={styles.titleBar}>
