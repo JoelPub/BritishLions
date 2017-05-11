@@ -327,7 +327,7 @@ export default class PlayersRankBox extends Component {
                         onSuccess: (res) => {
                             // if (__DEV__)console.log('res',res)
                             if(res.data) {
-                                if(this.props.showModal) this._setModalVisible(true,'message','SUCCESS','ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi.\n\n Lorem ipsum dolor sit amet, consectetur adipiscing elit.','CLOSE')
+                                if(this.props.showModal) this._setModalVisible(true,'message','SUCCESS', 'Your vote for Man of the Match has been recorded. Check back to see if other fans agree. You can also come back any time prior to the end of the match to change your vote.', 'CLOSE')
                                 let players=[]
                                 let profiles=[]
                                 if (__DEV__)console.log('res.data',res.data)
@@ -390,7 +390,7 @@ export default class PlayersRankBox extends Component {
                             }
                         },
                         onError: ()=>{
-                            if(this.props.showModal)this._setModalVisible(true,'message','ERROR','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida mauris ac tincidunt interdum. Duis et urna nec mi commodo efficitur ut at nisi. ','CLOSE')
+                            if(this.props.showModal)this._setModalVisible(true,'message','ERROR','Sorry something went wrong, please try again.','CLOSE')
                             this.setState({isLoaded:true})
                         },
                         isRequiredToken: false,
