@@ -80,6 +80,7 @@ export default StyleSheet.create({
     marginTop: 6,
     color: 'white',
     fontSize: 14,
+    lineHeight: 20,
     textAlign: 'center',
     fontFamily: styleVar.fontGeorgia,
   },

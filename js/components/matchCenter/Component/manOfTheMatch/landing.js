@@ -80,11 +80,11 @@ class ManOfTheMatchLanding extends Component {
                         <Text style={styles.titleText}>WHO'S YOUR MAN OF THE MATCH?</Text>
                     </View>
                     <View style={styles.desc}>
-                        <Text style={styles.descText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt asperiores officiis reprehenderit atque illum itaque, maxime ducimus esse enim.</Text>
+                        <Text style={styles.descText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
                     </View>
-                    <MatchMan selectMan={this._onPressPlayer.bind(this)} detail={this.props.detail} />
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan} detail={this.props.detail} />
                     <View style={styles.guther}>
-                        <Text style={styles.noteText}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab reprehenderit iste aliquid, ullam velit ut temporibus repellendus totam earum facere id, nam omnis accusamus asperiores ipsum, placeat hic laudantium distinctio.</Text>
+                        <Text style={styles.noteText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
                     </View>
 
                     <View style={styles.roundButtonBg}>

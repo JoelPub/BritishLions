@@ -38,7 +38,7 @@ export default class SliderEntry extends Component {
         </View>
         <View style={[styles.textContainer]}>
           { uppercaseTitle }
-          <Text style={[styles.subtitle]} numberOfLines={2}>{ subtitle }</Text>
+          <Text style={[styles.subtitle]} numberOfLines={3}>{ subtitle }</Text>
         </View>
       </TouchableOpacity>
     );

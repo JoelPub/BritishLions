@@ -31,7 +31,7 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','MOMENTUM','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
+        this.subjects=['MATCH SUMMARY','RUN OF PLAY','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
@@ -299,7 +299,7 @@ class MatchCenter extends Component {
                       }
                     </ScrollView>
                   </SquadModal>
-                    <EYSFooter />
+                  <EYSFooter />
                 </View>
             </Container>
         )
