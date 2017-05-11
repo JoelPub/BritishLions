@@ -88,6 +88,7 @@ class MatchCenter extends Component {
 
     callApi = () => {
       if(this.state.index===0){
+        this.setState({swiperHeight:styleVar.deviceHeight-120})
         if (__DEV__)console.log('call match summary Api')
         let optionData={}
         let type='init'
@@ -105,7 +106,7 @@ class MatchCenter extends Component {
                       apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               
                           this.setState({
                             statusArray: this.statusArray,
-                            summaryData:Object.assign(data,{timeline:timelineData})
+                            summaryData:Object.assign(data,this.state.detail,{timeline:timelineData})
                           })     
                       },(error)=>{
                       })

@@ -74,11 +74,18 @@ export default class LiveBox extends Component {
         })
     }
     componentDidMount() {
+        if (__DEV__)console.log('livebox componentDidMount',this.props.data)
         if(this.props.data&&!this.props.data.feededData) {
-            if (__DEV__)console.log('livebox componentDidMount',this.props.data)
             this.callApi()
             this.timer = setInterval(this.callApi,30000)
 
+        }
+        else {
+            this.setState({
+                      game_time: this.props.data.game_time,
+                      bil_score: this.props.data.statics&&this.props.data.statics.bil&&this.props.data.statics.bil.score,
+                      op_score: this.props.data.statics&&this.props.data.statics.opposition&&this.props.data.statics.opposition.score
+                    })
         }
     }
     componentWillReceiveProps(nextProps,nextState) {
@@ -101,31 +108,37 @@ export default class LiveBox extends Component {
         let inverse = this.props.inverse || false
         let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
-
+        console.log('this.props.data.opposition_image',this.props.data.opposition_image)
         return (
             <View>
                 <View style={styleLiveBox}>
-                    {
-                        !inverse &&
-                            <View style={locStyle.logo}>
-                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                                    style={locStyle.logoIcon}/>
-                            </View>
-                    }
-                    <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>{this.state.op_score}</Text>
+                    <View style={{flex:3,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                        {
+                            !inverse &&
+                                <View style={locStyle.logo}>
+                                    <Image resizeMode='contain' source={{uri: this.props.data.opposition_image}}
+                                                        style={locStyle.logoIcon}/>
+                                </View>
+                        }
+                        <View style={styleCircle}>
+                            <Text style={locStyle.circleText}>{this.state.op_score}</Text>
+                        </View>
                     </View>
-                    <Timer game_time={this.state.game_time} />
-                    <View style={styleCircle}>
-                        <Text style={locStyle.circleText}>{this.state.bil_score}</Text>
+                    <View style={{flex:2,alignItems:'center'}}>
+                        <Timer game_time={this.state.game_time} />
                     </View>
-                    {
-                        !inverse &&
-                            <View style={locStyle.logo}>
-                                <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
-                                                    style={locStyle.logoIcon}/>
-                            </View>
-                    }
+                    <View style={{flex:3,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                        <View style={styleCircle}>
+                            <Text style={locStyle.circleText}>{this.state.bil_score}</Text>
+                        </View>
+                        {
+                            !inverse &&
+                                <View style={locStyle.logo}>
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                                        style={locStyle.logoIcon}/>
+                                </View>
+                        }
+                    </View>
                 </View>
                 {
                     this.props.data&&this.props.data.hasTitle&&
