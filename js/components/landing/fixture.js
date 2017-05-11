@@ -88,7 +88,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     <View>
         <PageTitle title='GAME NOW LIVE' />
         
-        <LiveBox data={data} inverse={true}/>
+        <LiveBox data={Object.assign({feededData:false,hasTitle:true,title:data.title},data)} inverse={true}/>
         
         <Banner data={data} pressBanner={pressBanner}/>
         
@@ -289,8 +289,8 @@ class PlayerFigure extends Component {
         }
     }
 
-    _goToCoachBox = () => {
-        this._drillDown('', 'coachBox')
+    _goToCoachBox = (data) => {
+        this._drillDown(data, 'coachBox')
     }
 
     _onCountDownEnd() {
@@ -358,7 +358,7 @@ class PlayerFigure extends Component {
             case 'live':
                 return <LiveGame data={fixture} 
                             pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} 
-                            pressCoachBox={this._goToCoachBox}/>
+                            pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':
                 return <PreGame 
