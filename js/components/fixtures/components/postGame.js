@@ -266,10 +266,24 @@ const Summary = ({opposition, bil, oppositionImage}) => (
 class PostGame extends Component {
     constructor(props){
         super(props)
+        this.state={
+            tabHeight:1000,
+            page:0
+        }
     }
 
     _navigateTo(route) {
         this.props.pushNewRoute(route)
+    }
+    measurePage(page,event) {
+        const { x, y, width, height, } = event.nativeEvent.layout
+        if (__DEV__)console.log('page',page)
+        if (__DEV__)console.log('x',x)
+        if (__DEV__)console.log('y',y)
+        if (__DEV__)console.log('width',width)
+        if (__DEV__)console.log('height',height)
+        if(page===this.state.page) this.setState({tabHeight:height+150})
+        
     }
 
     render() {
@@ -342,19 +356,25 @@ class PostGame extends Component {
                     </View>
                 </View>
 
-                <View style={locStyle.summaryWrapper}>
+                <View style={[locStyle.summaryWrapper,{height:this.state.tabHeight}]}>
                     <ScrollableTabView
                         locked={true}
                         tabBarUnderlineStyle={locStyle.tabBarUnderlineStyle}
                         initialPage={0}
                         renderTabBar={() => <TabBar />}
                         tabBarActiveTextColor={'black'}
+                        onChangeTab ={(data)=>{this.setState({page:data.i})}}
                     >
-                        <View tabLabel='SUMMARY'>
-                            <Summary opposition={opposition} bil={bil} oppositionImage={oppositionImage}/>
+
+                        <View tabLabel='SUMMARY' onLayout={this.measurePage.bind(this,0)}>
+                        {
+                            this.state.page===0&&<Summary opposition={opposition} bil={bil} oppositionImage={oppositionImage}/>
+                        }
                         </View>
-                        <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab}>
-                            <GamedayTeam gameID={fixture.id} isHideTitle={true} />
+                        <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab} onLayout={this.measurePage.bind(this,1)}>
+                        {
+                            this.state.page===1&&<GamedayTeam gameID={fixture.id} isHideTitle={true} />
+                        }
                         </View>
                     </ScrollableTabView>
                 </View>

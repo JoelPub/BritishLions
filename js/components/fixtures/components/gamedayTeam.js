@@ -468,7 +468,7 @@ class GamedayTeam extends Component {
                             }
                             <PositionTitle pos='FORWARDS' data={this.state.gameDayTeam.forwards}/>
                             <Swiper
-                            height={styleVar.deviceWidth*0.63}
+                            height={this.state.gameDayTeam.forwards.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                             loop={false}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
@@ -495,7 +495,7 @@ class GamedayTeam extends Component {
                             
                             <PositionTitle pos='BACKS' data={this.state.gameDayTeam.backs}/>
                             <Swiper
-                            height={styleVar.deviceWidth*0.63}
+                            height={this.state.gameDayTeam.backs.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                             loop={false}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
@@ -523,7 +523,7 @@ class GamedayTeam extends Component {
                             
                             <PositionTitle pos='RESERVES' data={this.state.gameDayTeam.reserves}/>
                             <Swiper
-                            height={styleVar.deviceWidth*0.62}
+                            height={this.state.gameDayTeam.reserves.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                             loop={false}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
