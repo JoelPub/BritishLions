@@ -170,6 +170,7 @@ const locStyle = styleSheetCreate({
         paddingHorizontal:28,
         marginVertical:54,
         backgroundColor:'transparent',
+        alignItems:'center'
     },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
@@ -204,7 +205,7 @@ const locStyle = styleSheetCreate({
     },
     modalConfirmBtn:{
         height: 45,
-        marginHorizontal:100,
+        width:styleVar.deviceWidth*0.352,
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20

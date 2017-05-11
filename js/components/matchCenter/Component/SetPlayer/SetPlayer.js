@@ -91,7 +91,7 @@ class SetPlayer extends Component {
            </View>
          </View>
          <View tabLabel='SCRUMS'>
-           <IconHeader />
+           <IconHeader onPress={this.iconPress} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ scrums.opposition.won.details}
@@ -113,7 +113,7 @@ class SetPlayer extends Component {
             </View>
          </View>
           <View tabLabel='LINEOUTS'>
-            <IconHeader />
+            <IconHeader onPress={this.iconPress} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ line_outs.opposition.won.details}
