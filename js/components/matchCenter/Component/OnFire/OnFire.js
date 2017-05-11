@@ -108,6 +108,8 @@ class OnFire extends Component {
         playerList:playerList
       })
     })
+
+    console.log('ROY OF FIRE:', on_fire)
   }
 
   componentWillReceiveProps(nextProps) {

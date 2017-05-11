@@ -50,9 +50,20 @@ module.exports = styleSheetCreate({
     position: 'absolute',
     top: 4
   },
+  blackContentStarText: {
+    right: 10,
+    marginTop: -2,
+    android: {
+      marginTop: -4
+    }
+  },
   headerImage:{
     width: 49,
     height: 49
+  },
+  star: {
+    color: styleVar.colorScarlet,
+    fontSize: 25,
   }
 })
 
