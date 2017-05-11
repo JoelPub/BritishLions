@@ -115,7 +115,7 @@ class MatchCenter extends Component {
       if(this.state.index===1){
         if (__DEV__)console.log('call  set Play  Api')
         if (__DEV__)console.log(apiActions)
-        apiActions.getGameSetPlays('1',(json)=>{
+        apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
             this.statusArray.fill(false)
             this.statusArray[1]=true
             this.setState({
@@ -127,7 +127,7 @@ class MatchCenter extends Component {
       }
       if(this.state.index===2){
         if (__DEV__)console.log('on fire Api')
-        apiActions.getGameOnFire('1',(json)=>{
+        apiActions.getGameOnFire(this.state.detail.id,(json)=>{
           this.statusArray.fill(false)
           this.statusArray[2]=true
           this.setState({
