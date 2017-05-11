@@ -31,14 +31,14 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','RUN OF PLAY','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
+        this.subjects=['MATCH SUMMARY','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
           modalInfo:false,
-          statusArray: [false,false,false,false,false],
+          statusArray: [false,false,false,false],
           momentumData:{},
           summaryData:[],
           setPlayerData: [],
@@ -47,7 +47,7 @@ class MatchCenter extends Component {
         }
         this.subscription= null
         this.timer  = null
-        this.statusArray=[false,false,false,false,false]
+        this.statusArray=[false,false,false,false]
 
     }
     iconPress = () => {
@@ -113,23 +113,11 @@ class MatchCenter extends Component {
         })
       }
       if(this.state.index===1){
-        if (__DEV__)console.log('call momentum Api')
-        apiActions.getGameMomentum('momentum',this.state.detail.id,(data)=>{
-                    this.statusArray.fill(false)
-                    this.statusArray[1]=true
-                    this.setState({
-                      statusArray: this.statusArray,
-                      momentumData:data
-                    })
-        },(error)=>{
-        })
-      }
-      if(this.state.index===2){
         if (__DEV__)console.log('call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays('1',(json)=>{
             this.statusArray.fill(false)
-            this.statusArray[2]=true
+            this.statusArray[1]=true
             this.setState({
               setPlayerData:json.data,
               statusArray: this.statusArray
@@ -137,11 +125,11 @@ class MatchCenter extends Component {
         },(error)=>{
         })
       }
-      if(this.state.index===3){
+      if(this.state.index===2){
         if (__DEV__)console.log('on fire Api')
         apiActions.getGameOnFire('1',(json)=>{
           this.statusArray.fill(false)
-          this.statusArray[3]=true
+          this.statusArray[2]=true
           this.setState({
             onFireData:json.data,
             statusArray: this.statusArray
@@ -151,11 +139,11 @@ class MatchCenter extends Component {
         })
 
       }
-      if(this.state.index===4){
+      if(this.state.index===3){
         if (__DEV__)console.log('call man of the match Api')
         setTimeout(()=>{
           this.statusArray.fill(false)
-          this.statusArray[4]=true
+          this.statusArray[3]=true
           this.setState({
             statusArray: this.statusArray
           })
@@ -167,7 +155,7 @@ class MatchCenter extends Component {
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
           this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
             this.callApi()
-            if(this.state.index!==4) this.timer = setInterval(this.callApi,30000)
+            if(this.state.index!==3) this.timer = setInterval(this.callApi,30000)
         })},500)
         
     }
@@ -180,7 +168,7 @@ class MatchCenter extends Component {
         this.timer&&clearTimeout(this.timer)
         setTimeout(()=>{
           this.callApi()
-          if(this.state.index!==4) this.timer = setInterval(this.callApi,10000)
+          if(this.state.index!==3) this.timer = setInterval(this.callApi,10000)
         },1000)
         
       })
@@ -217,8 +205,9 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[1] ? <Momentum detail={this.state.detail}  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
-                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                statusArray[1]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}
+                                                                 set_plays={setPlayerData.set_plays}/>
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -226,9 +215,11 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[2]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
-                                                                 set_plays={setPlayerData.set_plays}/>
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                statusArray[2]? <OnFire  detail={this.state.detail} isActive={this.state.index===2}
+                                                         setHeight={this._setHeight.bind(this)}
+                                                         on_fire={onFireData.on_fire}
+                                />
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[2]&&this.state.index===2&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -236,23 +227,11 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[3]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
-                                                         setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire}
-                                />
-                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
-                                      {
-                                        !statusArray[3]&&this.state.index===3&&
-                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                                      }
-                                    </View>
-                              }
-                              {
-                                statusArray[4]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
+                                statusArray[3]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
 
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[4]&&this.state.index===4&&
+                                        !statusArray[3]&&this.state.index===3&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
                                       }
                                     </View>
@@ -270,17 +249,8 @@ class MatchCenter extends Component {
                     modalVisible={this.state.modalInfo}
                     callbackParent={this.iconPress}>
                     <ScrollView style={[styles.modalContent]}>
-                      {
-                        this.state.index === 1 &&
-                          <View>  
-                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>The graph shows the two features for both teams. The left side will belong to the Lions, the right will be their opposition:</Text>
-                              <Text style={styles.modalContentText}>The Red bars indicate the score difference between the two teams.</Text>
-                              <Text style={styles.modalContentText}>The Yellow line indicates which team has the run of play based on features such as Territory, Possession, Metres made, Attacking plays in the opposition half.</Text>
-                          </View>
-                      }
                       {   
-                        this.state.index === 2 &&
+                        this.state.index === 1 &&
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
                               <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
@@ -291,7 +261,7 @@ class MatchCenter extends Component {
                         
                       }
                       {
-                        this.state.index === 3 &&
+                        this.state.index === 2 &&
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
                               <Text style={styles.modalContentText}>These screens will be updated at half time and full time to show which British & Irish Lions are performing above their career averages based on key match statistics.</Text>
