@@ -88,7 +88,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     <View>
         <PageTitle title='GAME NOW LIVE' />
         
-        <LiveBox data={data} inverse={true}/>
+        <LiveBox data={Object.assign({feededData:false,hasTitle:true,title:data.title},data)} inverse={true}/>
         
         <Banner data={data} pressBanner={pressBanner}/>
         
