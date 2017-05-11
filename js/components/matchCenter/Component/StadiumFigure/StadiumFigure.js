@@ -26,6 +26,16 @@ class StadiumFigure extends Component {
     this.state = {
     }
   }
+  countPoint = (point,extraHeight) => {
+    let newX = point.x *202 /50
+    let newY = point.y *(416-extraHeight*2) /100
+    let newPoint = {
+      x : newX,
+      y :newY+extraHeight
+    }
+    return newPoint
+  }
+
 
   render() {
     let {redPoints, blackPoints, orangePoints, bluePoints ,titles} = this.props
@@ -35,9 +45,10 @@ class StadiumFigure extends Component {
         <Image style={styles.image} source={stadiumImage} >
           {
             redPoints.map((item,index)=>{
+              let newItem = this.countPoint(item,30)
               let loactionStyle = {
-                left:item.x+7,
-                top:item.y+7
+                left:newItem.x+7,
+                top:416-(newItem.y+7)
               }
               return(
                 <View
@@ -49,9 +60,10 @@ class StadiumFigure extends Component {
           }
           {
             blackPoints.map((item,index)=>{
+              let newItem = this.countPoint(item,30)
               let loactionStyle = {
-                left:item.x+7,
-                top:item.y+7
+                left:newItem.x+7,
+                top:416-(newItem.y+7)
               }
               return(
                 <View
@@ -63,9 +75,10 @@ class StadiumFigure extends Component {
           }
           {
             orangePoints.map((item,index)=>{
+              let newItem = this.countPoint(item,30)
               let loactionStyle = {
-                left:item.x+7,
-                top:item.y+7
+                left:newItem.x+7,
+                top:416-(newItem.y+7)
               }
               return(
                 <Triangle
@@ -80,9 +93,10 @@ class StadiumFigure extends Component {
           }
           {
             bluePoints.map((item,index)=>{
+              let newItem = this.countPoint(item,30)
               let loactionStyle = {
-                left:item.x+7,
-                top:item.y+7
+                left:newItem.x+7,
+                top:416-(newItem.y+7)
               }
               return(
                 <Triangle
