@@ -29,16 +29,11 @@ import {getUserFullName} from  '../utility/asyncStorageServices'
 import { getAccessToken} from '../utility/asyncStorageServices'
 import {actionsApi} from  '../utility/urlStorage'
 import { service } from '../utility/services'
-import fixturesImages from '../../../contents/fixtures/images'
 
 import { drillDown } from '../../actions/content'
 import { globalNav } from '../../appNavigator'
 
 import Carousel from  '../global/Carousel'
-
-// For mapping a static image only, since require() is not working with concatenating a dynamic variable
-// should be delete this code once api is ready.
-import images from '../../../contents/fixtures/images'
 
 const locStyle = styleSheetCreate({
   bannerDesc: {
@@ -81,7 +76,7 @@ const Banner = ({data}) => (
         <Image
           resizeMode='contain'
           style={styles.bannerImg}
-          source={images[data.id]} />
+          source={{uri: data.banner}} />
       </LinearGradient>
     </ImagePlaceholder>
     <View style={[styles.bannerDetails, locStyle.bannerDetails]}>

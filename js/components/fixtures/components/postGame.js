@@ -199,12 +199,11 @@ const locStyle = styleSheetCreate({
 })
 
 
-const Summary = ({opposition, bil}) => (
+const Summary = ({opposition, bil, oppositionImage}) => (
     <View style={locStyle.summaryContent}>
         <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
              <View style={locStyle.logo}>
-                <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
-                                        style={locStyle.logoIcon}/> 
+                <Image resizeMode='contain' source={{uri: oppositionImage}}/> 
             </View>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}> </Text>
@@ -279,7 +278,8 @@ class PostGame extends Component {
         let details = postDetails.toJS()
         let opposition = details.statics.opposition
         let bil = details.statics.bil
-
+        let oppositionImage = fixture.opposition_image
+        
         return (
             <View style={locStyle.matchResults}>
                 {
@@ -351,7 +351,7 @@ class PostGame extends Component {
                         tabBarActiveTextColor={'black'}
                     >
                         <View tabLabel='SUMMARY'>
-                            <Summary opposition={opposition} bil={bil} />
+                            <Summary opposition={opposition} bil={bil} oppositionImage={oppositionImage}/>
                         </View>
                         <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab}>
                             <GamedayTeam gameID={fixture.id} isHideTitle={true} />

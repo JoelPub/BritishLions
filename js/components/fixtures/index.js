@@ -21,11 +21,6 @@ import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
 import LinearGradient from 'react-native-linear-gradient'
 
-// For mapping a static image only, since require() is not working with concatenating a dynamic variable
-// should be delete this code once api is ready.
-import data from '../../../contents/fixtures/data.json'
-import images from '../../../contents/fixtures/images'
-
 class Fixtures extends Component {
     constructor(props) {
          super(props)
@@ -115,7 +110,7 @@ class Fixtures extends Component {
                                                                 <Image
                                                                     resizeMode='contain'
                                                                     style={styles.fixtureImgAtList}
-                                                                    source={images[item.id]} />
+                                                                    source={{uri: item.banner}} />
                                                             </LinearGradient>
                                                         </ImagePlaceholder>
                                                         <View style={[shapes.triangle, {marginTop: -11}]} />
