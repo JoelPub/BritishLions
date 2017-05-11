@@ -28,7 +28,7 @@ export function getGameMomentum(type,gameID,onSuccess,OnError) {
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
     url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameSetPlays',
-    data: {id:4},
+    data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
     method: 'post',
@@ -46,7 +46,7 @@ export function GetManOfMatchInfo  () {
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
     url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameOnFire',
-    data: {id:1},
+    data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
     method: 'post',
