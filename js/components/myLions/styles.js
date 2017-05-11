@@ -1109,7 +1109,7 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         marginTop: -4,
         android:{
-            marginTop: -8
+            marginTop: -9
         }
     },
     modalTitle:{
