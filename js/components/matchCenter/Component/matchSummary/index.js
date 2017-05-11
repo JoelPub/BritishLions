@@ -18,17 +18,6 @@ class MatchSummary extends Component {
     constructor(props) {
          super(props)
     }
-    measurePage(page,event) {
-        // if (__DEV__)console.log('measurePage')
-        const { x, y, width, height, } = event.nativeEvent.layout
-        // if (__DEV__)console.log('page',page)
-        // if (__DEV__)console.log('x',x)
-        // if (__DEV__)console.log('y',y)
-        // if (__DEV__)console.log('width',width)
-        // if (__DEV__)console.log('height',height)
-        this.props.setHeight(y,'match summary')
-        
-    }
     _renderCircle(rowData,sectionID,rowID) {
       return (
         <View style={styles.timeWrapper}>
@@ -42,7 +31,7 @@ class MatchSummary extends Component {
     render() {
         return (
                 <ScrollView style={styles.scroll} scrollEnabled={false}>
-                    <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:this.props.detail.title},this.props.summaryData)}/>
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true},this.props.summaryData)}/>
                     <View style={styles.timelineWrapper} >                    
                           <Timeline
                             data={this.props.summaryData.timeline}
@@ -61,7 +50,6 @@ class MatchSummary extends Component {
                             renderCircle={this._renderCircle}
                           />            
                     </View>
-                    <View onLayout={this.measurePage.bind(this,'matchSummary')} />
               </ScrollView>
         )
     }
