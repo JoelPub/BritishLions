@@ -64,7 +64,7 @@ export default class LiveBox extends Component {
     }
     callApi = () => {
         if (__DEV__)console.log('call livebox Api')
-        apiActions.getGameMomentum((data)=>{
+        apiActions.getGameMomentum('time',this.props.data.id,(data)=>{
                     this.setState({
                       game_time: data.game_time,
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
@@ -75,6 +75,7 @@ export default class LiveBox extends Component {
     }
     componentDidMount() {
         if(this.props.data&&!this.props.data.feededData) {
+            if (__DEV__)console.log('livebox componentDidMount',this.props.data)
             this.callApi()
             this.timer = setInterval(this.callApi,30000)
 

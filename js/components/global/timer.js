@@ -17,6 +17,7 @@ const locStyle = styleSheetCreate({
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: styleVar.colorGrey2,
+        marginHorizontal:styleVar.deviceWidth*0.1
     },
     timeText: {
         color: styleVar.colorScarlet,
