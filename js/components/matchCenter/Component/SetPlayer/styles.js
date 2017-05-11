@@ -21,7 +21,11 @@ module.exports = styleSheetCreate({
     flexDirection:'row',
     backgroundColor: 'white',
     marginTop:5,
-    paddingHorizontal:10
+    paddingHorizontal:10,
+    android:{
+      paddingHorizontal:5,
+
+    }
   },
   rightContainer: {
     width:styleVar.deviceWidth-202-30,
@@ -29,6 +33,4 @@ module.exports = styleSheetCreate({
     borderColor:'rgb(216,217,218)',
     borderLeftWidth:0
   }
-
-
 })
