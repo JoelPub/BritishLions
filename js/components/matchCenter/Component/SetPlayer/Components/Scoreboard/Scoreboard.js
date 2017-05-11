@@ -61,7 +61,7 @@ class Scoreboard extends Component {
               height={14}
               color={colorPenalties}
             />
-            <Text style={[styles.scoreboardContentTitle]}>{titles[1]}</Text>
+            <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
