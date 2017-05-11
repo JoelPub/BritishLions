@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Text } from 'react-native'
 import { pushNewRoute } from '../../../actions/route'
+import { drillDown } from '../../../actions/content'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import styleVar from '../../../themes/variable'
@@ -273,7 +274,10 @@ class PostGame extends Component {
     }
 
     _navigateTo(route) {
-        this.props.pushNewRoute(route)
+        let details = this.props.details
+        console.log("*******************8")
+        console.log(details)
+        this.props.drillDown(details, route)
     }
     measurePage(page,event) {
         const { x, y, width, height, } = event.nativeEvent.layout
@@ -398,7 +402,8 @@ class PostGame extends Component {
 
 function bindActions(dispatch) {
     return {
-        pushNewRoute: (route)=>dispatch(pushNewRoute(route))
+        pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
+        drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
 
