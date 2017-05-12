@@ -316,7 +316,11 @@ export default class PlayersRankBox extends Component {
         this.setState({ isLoaded: false },()=>{
             getSoticFullPlayerList().then((catchedFullPlayerList) => {
                 getMatchMan().then((data)=>{
-                    let player=JSON.parse(data)
+                    let player=null
+                    if(Array.isArray(JSON.parse(data))) {
+                        player=JSON.parse(data).find(v=>v.id===this.state.gameID)
+                    }
+                    
                     if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
                         url: player&&player.previous!==null?'http://bilprod-r4dummyapi.azurewebsites.net/resubmitManOfMatch':'http://bilprod-r4dummyapi.azurewebsites.net/GetManOfMatchVoteResult',

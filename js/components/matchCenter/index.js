@@ -62,13 +62,9 @@ class MatchCenter extends Component {
         modalInfo: !this.state.modalInfo
       })
     }
-    _setSubPage(page,selected,saved) {
-      if(__DEV__)console.log('_setSubPage',page)
-      if(__DEV__)console.log('selected',selected)
-      if(__DEV__)console.log('saved',saved)
-      setMatchMan({current:selected,previous:saved}).then(()=>{
-        this.setState({subPage:page})
-      })
+    _setSubPage(page) {
+      if(__DEV__)console.log('_setSubPage',page)      
+      this.setState({subPage:page})
     }
     pullHistorySummary(){
       _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
@@ -156,13 +152,24 @@ class MatchCenter extends Component {
             getMatchMan().then((data)=>{
               let player=JSON.parse(data)
               if(__DEV__)console.log('index getMatchMan player',player)
-              if(player.current!==null) this.setState({subPage:'post'},()=>{              
-              this.statusArray.fill(false)
-              this.statusArray[3]=true
-              this.setState({
-                statusArray: this.statusArray
-              })
-            })
+              let subPage=this.state.subPage
+              if(__DEV__)console.log('subPage',subPage)
+              if(__DEV__)console.log('find',player.findIndex(v=>v.id===this.state.detail.id&&v.current!==null))
+              if(Array.isArray(player)&&(player.findIndex(v=>v.id===this.state.detail.id&&v.current!==null)>-1)) {
+                subPage='post'
+              }
+              else {
+                subPage='landing'
+              }
+              if(__DEV__)console.log('subPage',subPage)
+              this.setState({subPage:subPage},()=>{              
+                  this.statusArray.fill(false)
+                  this.statusArray[3]=true
+                  this.setState({
+                    statusArray: this.statusArray
+                  })
+                })
+
             })
           }
         },2000)
