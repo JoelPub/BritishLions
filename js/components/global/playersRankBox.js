@@ -442,11 +442,7 @@ export default class PlayersRankBox extends Component {
                                     let contentStyle = isLastItem? [locStyle.content, locStyle.contentLast] : [locStyle.content]
                                     let isShowBorderTop = !title && index === 0? true : false
                                     let figureData = this.state.isOn_tour ? item.profileListOn_tour : item.profileListHistorical
-                                    console.log('我要下班')
-                                    console.log(item)
-                                    console.log(item.profileListOn_tour)
-                                    console.log(figureData)
-                                    console.log(JSON.stringify(figureData))
+
                                     return (
                                         <Accordion
                                             key={index}
