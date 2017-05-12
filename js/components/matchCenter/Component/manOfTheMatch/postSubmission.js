@@ -20,6 +20,7 @@ class ManOfTheMatchPostSubission extends Component {
          this.selectedMan=null
          this.state = {
               savedMan:null,
+              resubmit:false
             }
     }
     _measurePage(page,event) {
@@ -62,7 +63,10 @@ class ManOfTheMatchPostSubission extends Component {
                     })
         }
         else {
-            this.props.setSubPage('final',this.selectedMan.id,this.state.savedMan)
+            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
+            this.setState({resubmit:true,savedMan:this.selectedMan.id},()=>{
+                this.setState({resubmit:false})
+            })
         }
     }
     componentDidMount(){
@@ -77,7 +81,9 @@ class ManOfTheMatchPostSubission extends Component {
         return (
                 <View style={styles.wrapper}>
                     <View style={styles.guther}>
-                        <PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}  detail={this.props.detail}/>
+                        {
+                            !this.state.resubmit&&<PlayersRankBox title='CURRENT FAN FAVOURITES' showModal={this.props.showModal}  detail={this.props.detail}/>
+                        }
                     </View>
                     <View style={styles.title}>
                         <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
@@ -87,7 +93,7 @@ class ManOfTheMatchPostSubission extends Component {
                     </View>
                     <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail}/>
                     <View style={styles.guther}>
-                        <Text style={styles.noteText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
+                        <Text style={styles.noteText}>You get one vote for man of the match. But you may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
 
                     <View style={styles.roundButtonBg}>

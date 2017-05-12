@@ -88,6 +88,7 @@ class MatchCenter extends Component {
 
     callApi = () => {
       if(this.state.index===0){
+        this.setState({swiperHeight:styleVar.deviceHeight-120})
         if (__DEV__)console.log('call match summary Api')
         let optionData={}
         let type='init'
@@ -105,7 +106,7 @@ class MatchCenter extends Component {
                       apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               
                           this.setState({
                             statusArray: this.statusArray,
-                            summaryData:Object.assign(data,{timeline:timelineData})
+                            summaryData:Object.assign(data,this.state.detail,{timeline:timelineData})
                           })     
                       },(error)=>{
                       })
@@ -142,11 +143,28 @@ class MatchCenter extends Component {
       if(this.state.index===3){
         if (__DEV__)console.log('call man of the match Api')
         setTimeout(()=>{
-          this.statusArray.fill(false)
-          this.statusArray[3]=true
-          this.setState({
-            statusArray: this.statusArray
-          })
+          if (this.state.detail.post!==null) {
+            this.setState({subPage:'final'},()=>{              
+              this.statusArray.fill(false)
+              this.statusArray[3]=true
+              this.setState({
+                statusArray: this.statusArray
+              })
+            })
+          }
+          else {
+            getMatchMan().then((data)=>{
+              let player=JSON.parse(data)
+              if(__DEV__)console.log('index getMatchMan player',player)
+              if(player.current!==null) this.setState({subPage:'post'},()=>{              
+              this.statusArray.fill(false)
+              this.statusArray[3]=true
+              this.setState({
+                statusArray: this.statusArray
+              })
+            })
+            })
+          }
         },2000)
       }
     }

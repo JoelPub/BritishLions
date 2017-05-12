@@ -22,6 +22,8 @@ const  TableCell = ({data,player,isHaveM}) => {
   let playerHeader = player ? player.image : ' '
   let game = isHaveM?  data.game + 'M' : data.game
   let  ave = isHaveM? data.average + 'M' : data.average
+  let isAboveAve = data.average > 38? true : false
+
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
       <Image transparent
@@ -30,11 +32,11 @@ const  TableCell = ({data,player,isHaveM}) => {
              style={styles.headerImage}  />
       <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>{rank}</Text>
       <Text style={[styles.blackContentText,{left:70}]}>{playerName}</Text>
-      <Text  style={[styles.blackContentText,{right:10}]}>
-        {game}
+      <Text  style={[styles.blackContentText, styles.blackContentStarText]}>
+          { isAboveAve && <Icon name='ios-star' style={styles.star} /> }
       </Text>
       <Text style={[styles.blackContentText,{right:60}]}>
-        {ave}
+        {game}
       </Text>
     </View>
   )
@@ -66,15 +68,9 @@ class OnFireItem extends Component {
     return (
       <View style={[styles.box,,isLastItem ? {borderBottomWidth:1}:{}]}>
         <View style={ [styles.headerView,{ borderBottomWidth: 1}]}>
-          <Text style={styles.tabText}>
-            {title}
-          </Text>
-          <Text  style={[styles.gameAndAvgText,{right:10}]}>
-            AVG
-          </Text>
-          <Text style={[styles.gameAndAvgText,{right:60}]}>
-           GAME
-          </Text>
+          <Text style={styles.tabText}>{title}</Text>
+          <Text  style={[styles.gameAndAvgText,{right:10}]}> </Text>
+          <Text style={[styles.gameAndAvgText,{right:60}]}>GAME</Text>
         </View>
         {data.map((item,index)=>{
           let player = this.searchInfo(item.player)

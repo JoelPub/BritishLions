@@ -43,7 +43,7 @@ class ManOfTheMatchFinal extends Component {
                     </View>
 
                     <View style={styles.guther}>
-                        <Text style={styles.noteText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
+                        <Text style={styles.noteText}>You get one vote for man of the match. But you may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
                     <View onLayout={this._measurePage.bind(this,'Final')} />
                 </View>

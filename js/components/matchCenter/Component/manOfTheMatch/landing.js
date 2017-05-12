@@ -18,9 +18,6 @@ class ManOfTheMatchLanding extends Component {
     constructor(props) {
          super(props)
          this.selectedMan=null
-         this.state = {
-              savedMan:null,
-            }
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('_measurePage')
@@ -62,15 +59,8 @@ class ManOfTheMatchLanding extends Component {
                     })
         }
         else {
-            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
+            this.props.setSubPage('post',this.selectedMan.id,null)
         }
-    }
-    componentDidMount(){
-        getMatchMan().then((data)=>{
-            let player=JSON.parse(data)
-            if(__DEV__)console.log('landing getMatchMan player',player)
-            this.setState({savedMan:player&&player.current||null})
-        })
     }
     
     render() {
@@ -84,13 +74,13 @@ class ManOfTheMatchLanding extends Component {
                     </View>
                     <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan} detail={this.props.detail} />
                     <View style={styles.guther}>
-                        <Text style={styles.noteText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
+                        <Text style={styles.noteText}>You get one vote for man of the match. But you may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
 
                     <View style={styles.roundButtonBg}>
                         <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                {this.state.savedMan===null?'SUBMIT':'RESUBMIT'}
+                                'SUBMIT'
                             </Text>
                         </ButtonFeedback>
                     </View>
