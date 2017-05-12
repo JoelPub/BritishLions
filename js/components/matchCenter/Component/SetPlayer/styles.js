@@ -32,5 +32,25 @@ module.exports = styleSheetCreate({
     borderWidth:1,
     borderColor:'rgb(216,217,218)',
     borderLeftWidth:0
-  }
+  },
+  modalContent: {
+      paddingHorizontal: 28,
+      marginTop: 60
+  },
+  modalContentTitleText: {
+      fontFamily: styleVar.fontCondensed,
+      fontSize: 28,
+      lineHeight: 28,
+      color: '#FFF'
+  },
+  modalContentText: {
+      fontFamily: 'Helvetica Neue',
+      fontSize: 16,
+      lineHeight: 22,
+      color: '#FFF',
+      marginBottom: 20,
+      android: {
+          lineHeight: 26
+      }
+  },
 })

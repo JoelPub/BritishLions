@@ -10,9 +10,7 @@ import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import StadiumFigure from '../StadiumFigure'
-
-
-
+import SquadModal from '../../../global/squadModal'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Scoreboard from './Components/Scoreboard'
 import SetPlayerTabBar from  './Components/SetPlayerTabBar'
@@ -34,8 +32,17 @@ class SetPlayer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      h:0
+          modalInfo:false,
+          h:0
     }
+  }
+  iconPress = () => {
+      this.setState({modalInfo: !this.state.modalInfo})
+  }
+  updateMadal = () =>{
+    this.setState({
+      modalInfo: !this.state.modalInfo
+    })
   }
 
   SortingData = (kicks) => {
@@ -47,9 +54,6 @@ class SetPlayer extends Component {
     }
     kicks.opposition.conversions.details
 
-  }
-  iconPress = () =>{
-    DeviceEventEmitter.emit('matchCenter', 'setPlayer');
   }
   callApi = () =>{
    console.log('setPlayerCallApi')
@@ -134,6 +138,19 @@ class SetPlayer extends Component {
             </View>
           </View>
         </ScrollableTabView>
+                  <SquadModal
+                    modalVisible={this.state.modalInfo}
+                    callbackParent={this.iconPress}>
+                    <ScrollView style={[styles.modalContent]}>
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
+                              <Text style={styles.modalContentText}>Kicks: Indicates where Conversions and Penalties were taken, and if they were successful.</Text>
+                              <Text style={styles.modalContentText}>Scrums: Displays where each team’s scrums have taken place on the pitch and if they were won.</Text>
+                              <Text style={styles.modalContentText}>Lineouts: Displays where each team’s lineouts have taken place on the pitch and if they were won.</Text>
+                          </View>
+                    </ScrollView>
+                  </SquadModal>
       </View>
     )
   }

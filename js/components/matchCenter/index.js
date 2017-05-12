@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Platform, PanResponder,TouchableOpacity,
-  ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
+  ActivityIndicator, ScrollView,NativeModules} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -13,7 +13,6 @@ import LionsHeader from '../global/lionsHeader'
 import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ButtonFeedback from '../utility/buttonFeedback'
-import SquadModal from '../global/squadModal'
 import MatchSummary from './Component/matchSummary'
 import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
@@ -37,7 +36,6 @@ class MatchCenter extends Component {
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
-          modalInfo:false,
           statusArray: [false,false,false,false],
           momentumData:{},
           summaryData:[],
@@ -45,22 +43,13 @@ class MatchCenter extends Component {
           onFireData:null,
           subPage:'landing'
         }
-        this.subscription= null
         this.timer  = null
         this.statusArray=[false,false,false,false]
 
     }
-    iconPress = () => {
-        this.setState({modalInfo: !this.state.modalInfo})
-    }
     _setHeight(h,source) {
         if (__DEV__)console.log(source,'_setHeight',h)
         this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
-    }
-    updateMadal = () =>{
-      this.setState({
-        modalInfo: !this.state.modalInfo
-      })
     }
     _setSubPage(page) {
       if(__DEV__)console.log('_setSubPage',page)      
@@ -178,14 +167,12 @@ class MatchCenter extends Component {
     componentDidMount() {
         if(__DEV__)console.log('matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
-          this.subscription = DeviceEventEmitter.addListener('matchCenter',this.updateMadal)
             this.callApi()
             if(this.state.index!==3) this.timer = setInterval(this.callApi,30000)
         })},500)
         
     }
     componentWillUnmount() {
-      this.subscription.remove();
       this.timer&&clearTimeout(this.timer)
     }
     swiperScrollEnd = (e, state, context) => {
@@ -270,30 +257,6 @@ class MatchCenter extends Component {
                                 !statusArray[0]&&<LionsFooter isLoaded={true}  />
                             }
                     </ScrollView>
-                  <SquadModal
-                    modalVisible={this.state.modalInfo}
-                    callbackParent={this.iconPress}>
-                    <ScrollView style={[styles.modalContent]}>
-                      {   
-                        this.state.index === 1 &&
-                          <View>
-                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
-                              <Text style={styles.modalContentText}>Kicks: Indicates where Conversions and Penalties were taken, and if they were successful.</Text>
-                              <Text style={styles.modalContentText}>Scrums: Displays where each team’s scrums have taken place on the pitch and if they were won.</Text>
-                              <Text style={styles.modalContentText}>Lineouts: Displays where each team’s lineouts have taken place on the pitch and if they were won.</Text>
-                          </View>
-                        
-                      }
-                      {
-                        this.state.index === 2 &&
-                          <View>
-                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>These screens will be updated at half time and full time to show which British & Irish Lions are performing above their career averages based on key match statistics.</Text>
-                          </View>
-                      }
-                    </ScrollView>
-                  </SquadModal>
                   <EYSFooter />
                 </View>
             </Container>
