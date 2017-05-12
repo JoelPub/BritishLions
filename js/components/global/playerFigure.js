@@ -108,13 +108,16 @@ const styles = styleSheetCreate({
     },
     playerFigureView:{
         backgroundColor:'rgb(255,255,255)',
-        paddingTop: 30,
+        paddingTop: 0,
         paddingBottom: 20,
-        paddingHorizontal:10,
+        paddingHorizontal:0,
         borderRadius:5,
+        borderWidth:0.5,
+        borderColor: styleVar.colorGrey
     },
     playerFigureTypeView:{
-        flexDirection:'row'
+        flexDirection:'row',
+        marginTop:0
     },
     playerFigureType:{
         flex:1,
@@ -235,6 +238,12 @@ const styles = styleSheetCreate({
     pagination: {
         bottom: 0
     },
+    titleBorder1: {
+        borderTopLeftRadius:5,
+    },
+    titleBorder2: {
+        borderTopRightRadius:5,
+    },
     statisticsText: {
         fontFamily: styleVar.fontGeorgia,
         fontSize:16,
@@ -251,6 +260,7 @@ export default class PlayerFigure extends Component {
             tabStatus: [],
             tabSubjects: ['Attack','Defense','Kicking'],
             profile:this.props.profile.first(),
+            titleActiveIndex:0
         }
         this.currentPage = 0
     }
@@ -323,55 +333,51 @@ export default class PlayerFigure extends Component {
             this.setState({profile:profile.toJS()})
         }
     }
+    titleClick = (page) =>{
+       this.setState({
+           titleActiveIndex:page
+       })
+      if(this.props.onTitleClick){
+          let titleStatus = page===0 ? true: false
+          this.props.onTitleClick(titleStatus)
+      }
+    }
 
     render() {
         let wideLayoutStyle = this.props.wideLayout? [] : [styles.detailsGridColFull,styles.playerCardWrapper]
+        let mainTitles = ['On TOUR','HISTORICAL']
+
         return (
             <View>
                     <View style={wideLayoutStyle}>
                         <View style={styles.fullCard}>
                             <View style={styles.playerOverallRating}>
-                                {/*<Text style={styles.ratingTitle}>OVERALL RATING</Text>
-                                <View style={styles.ratingScore}>
-                                    <Text style={styles.ratingScorePoint}>
-                                        { this.state.profile.overall_score || 'NA' }
-                                    </Text>
-                                </View>*/}
                             </View>
-
-                           {/* <View style={styles.playerPerfromanceWrapper}>
-                                <View style={styles.playerPerfromance} >
-                                    <Text style={styles.performanceText}>RECENT PERFORMANCE</Text>
-                                    <Text style={[styles.performanceText, styles.performanceText2]}>PERFORMANCE</Text>
-                                    <Text style={styles.summaryTextHighLight}>
-                                        { this.state.profile.performance_score || 'N/A' }
-                                    </Text>
-                                </View>
-                                <View style={styles.playerPerfromance}>
-                                    <Text style={[styles.performanceText, styles.consitencyText]}>TREND</Text>
-                                    {
-                                        this.state.profile.player_consistency == 1&&
-                                        <Icon name='md-trending-up' style={styles.playerPerformanceTrend}/>
-                                    }
-                                    {
-                                        this.state.profile.player_consistency == 2&&
-                                        <Icon name='md-arrow-forward' style={styles.playerPerformanceTrend}/>
-                                    }
-                                    {
-
-                                        this.state.profile.player_consistency == 3&&
-                                        <Icon name='md-trending-down' style={styles.playerPerformanceTrend}/>
-                                    }
-                                    { 
-                                        this.state.profile.player_consistency === ''&& 
-                                        <Text style={[styles.summaryTextHighLight, styles.summaryTextHighLight2]}>N/A</Text>
-                                    }
-                                </View>
-                            </View>*/}
                             <View style={styles.playerFigureWrapper}>
                             {!isEmptyObject(this.state.profile)?
                                 <View style={styles.playerFigureView}>
+
                                     <View style={styles.playerFigureTypeView}>
+                                        {
+                                            mainTitles.map((title, page)=>{
+                                                title = title.toUpperCase()
+                                                let cornerStyle  = page=== 0 ? { borderTopLeftRadius:5 } : {borderTopRightRadius:5}
+                                                return (
+                                                  <ButtonFeedback
+                                                    style={[styles.playerFigureType,{backgroundColor:page!=this.state.titleActiveIndex ? styleVar.colorTextDarkGrey:'white'},cornerStyle]}
+                                                    onPress={()=>this.titleClick(page)}
+                                                    key={page}>
+                                                      <Text
+                                                        style={[styles.playerFigureTypeText,{color:page===this.state.titleActiveIndex ? styleVar.colorTextDarkGrey:'white',paddingTop: 8},]}
+                                                        onLayout={this.measureTab.bind(this,page)}>
+                                                          { title }
+                                                      </Text>
+                                                  </ButtonFeedback>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                    <View style={[styles.playerFigureTypeView,{marginTop:20}]}>
                                     {
                                         this.state.tabSubjects.map((node, page)=>{
                                             node = node.toUpperCase()

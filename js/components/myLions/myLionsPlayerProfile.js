@@ -47,9 +47,11 @@ class MyLionsPlayerProfile extends Component {
         this.state = {
             modalVisible: false,
             isLoaded: false,
-            profile: ProfileListModel.fromJS([new ProfileModel()]),
+            profileHistorical: ProfileListModel.fromJS([new ProfileModel()]),
+            profileOn_tour: ProfileListModel.fromJS([new ProfileModel()]),
             modalContent:this.getModalContent(),
-            removePlayer:false
+            removePlayer:false,
+            isOn_tour:true
         }
     }
 
@@ -167,31 +169,32 @@ class MyLionsPlayerProfile extends Component {
     getPlayerProfile() {
         let optionsPlayerProfile = {
             // url: this.PlayersProfileUrl,
-            url: 'http://bilprod.azurewebsites.net/getOfficialSquadPlayerProfile',
-            data:{player_id:this.playerid},
+            url: 'https://bilprod-r4dummyapi.azurewebsites.net/getTourPlayerProfile',
+            data:{id:this.playerid},
             onAxiosStart: () => {},
+            method: 'post',
+            isQsStringify:false,
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })
             },
             isRequiredToken: false,
             onSuccess: (res) => {
                 if (__DEV__)console.log('profile res.data',res.data)
-                let profile = ProfileListModel.fromJS([new ProfileModel()])
+                console.log('什么鬼1')
+                let profileListOn_tour = ProfileListModel.fromJS([new ProfileModel()])
+                let profileListHistorical = ProfileListModel.fromJS([new ProfileModel()])
+                //console.log('什么鬼2')
 
                 if (res.data instanceof Array  && res.data.length!==0) {
                     if (__DEV__)console.log('valid')
-                    profile=ProfileListModel.fromJS(res.data)
-                } 
-                // else {
-                //     if (__DEV__)console.log('invalid')
-                //     profile = profile.update(0,value=>{
-                //         return value=value.update('Attack',v=>{
-                //             return v=FigureListModel.fromJS([new FigureModel()])
-                //         })
-                //     })
-                // }
+                    profileListOn_tour=ProfileListModel.fromJS([res.data[0].on_tour])
+                    profileListHistorical=ProfileListModel.fromJS([res.data[0].historical])
+                }
 
-                this.setState({ profile, isLoaded: true })
+                this.setState({
+                    profileHistorical:profileListHistorical,
+                    profileOn_tour:profileListOn_tour,
+                    isLoaded: true })
             },
             onError: (res) => {
                 let profile = ProfileListModel.fromJS([new ProfileModel()])
@@ -217,6 +220,12 @@ class MyLionsPlayerProfile extends Component {
       let newHtml =  html.replace(/<\/p>\r\n/g, "</p>")
          return newHtml
      }
+     onTiltleClick = (titleStatus) => {
+
+        this.setState({
+            isOn_tour: titleStatus
+          })
+     }
     render() {
         let logo = ''
         let name = this.props.detail.name ? this.props.detail.name.toUpperCase() : ''
@@ -224,8 +233,10 @@ class MyLionsPlayerProfile extends Component {
             logo = String(this.props.detail.logo)
         }
 
-
-         return (
+        let figureData = this.state.isOn_tour ? this.state.profileOn_tour : this.state.profileHistorical
+        console.log('*********************')
+        console.log(JSON.stringify(figureData))
+        return (
             <Container theme={theme}>
                 <View style={styles.container}>
                     <LionsHeader
@@ -299,7 +310,7 @@ class MyLionsPlayerProfile extends Component {
                                 null
 
                         }
-                        {this.state.isLoaded&&<PlayerFigure profile={this.state.profile} pressInfo={this._setModalVisible.bind(this)}/>}
+                        {this.state.isLoaded&&<PlayerFigure profile={figureData} pressInfo={this._setModalVisible.bind(this)} onTitleClick={this.onTiltleClick}/>}
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
                     < EYSFooter mySquadBtn={true} />
