@@ -148,6 +148,7 @@ class SetPlayer extends Component {
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
                               <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
+                              <Text style={styles.modalContentText}>The Lions will always be running towards the top of the pitch graphic.</Text>
                               <Text style={styles.modalContentText}>Kicks: Indicates where Conversions and Penalties were taken, and if they were successful.</Text>
                               <Text style={styles.modalContentText}>Scrums: Displays where each team’s scrums have taken place on the pitch and if they were won.</Text>
                               <Text style={styles.modalContentText}>Lineouts: Displays where each team’s lineouts have taken place on the pitch and if they were won.</Text>
