@@ -391,7 +391,7 @@ class PostGame extends Component {
 
                     <ScrollableTabView
                         locked={true}
-                        scrollWithoutAnimation={false}
+                        scrollWithoutAnimation={true}
                         tabBarUnderlineStyle={locStyle.tabBarUnderlineStyle}
                         initialPage={this.state.page}
                         renderTabBar={() => <TabBar />}
