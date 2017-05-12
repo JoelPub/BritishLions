@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import {Image, View, Text, ActivityIndicator} from 'react-native'
+import {Image, View, Text, ActivityIndicator, Platform} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import { strToUpper , isEmptyObject} from '../utility/helper'
@@ -364,7 +364,18 @@ export default class PlayerFigure extends Component {
                                         {
                                             mainTitles.map((title, page)=>{
                                                 title = title.toUpperCase()
-                                                let cornerStyle  = page=== 0 ? { borderTopLeftRadius:5 } : {borderTopRightRadius:5}
+                                                let cornerStyle  = {}
+
+                                                if (page=== 0) {
+                                                    cornerStyle  = {borderTopLeftRadius:5 }
+                                                } else {
+                                                    if (Platform.OS === 'android') {
+                                                        cornerStyle  = {borderTopRightRadius:5, borderRightWidth: 1 }
+                                                    } else {
+                                                        cornerStyle  = {borderTopRightRadius:5 }
+                                                    }
+                                                }
+
                                                 return (
                                                   <ButtonFeedback
                                                     style={[styles.playerFigureType,{backgroundColor:page!=this.state.titleActiveIndex ? styleVar.colorTextDarkGrey:'white'},cornerStyle]}
