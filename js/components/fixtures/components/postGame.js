@@ -213,7 +213,7 @@ const Summary = ({opposition, bil, oppositionImage}) => (
     <View style={locStyle.summaryContent}>
         <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
              <View style={locStyle.logo}>
-                <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoIcon}/> 
+                 <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoIcon}/> 
             </View>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}> </Text>
@@ -306,6 +306,7 @@ class PostGame extends Component {
         let opposition = details.statics.opposition
         let bil = details.statics.bil
         let oppositionImage = fixture.opposition_image
+        console.log(oppositionImage)
         
         return (
             <View style={locStyle.matchResults}>

@@ -11,8 +11,7 @@ import ButtonFeedback from '../../../utility/buttonFeedback'
 import { getSoticFullPlayerList} from '../../../utility/apiasyncstorageservice/soticAsyncStorageService'
 import {searchPlayer} from '../../../myLions/components/searchPlayer'
 import Data from '../../../../../contents/unions/data'
-
-
+import SquadModal from '../../../global/squadModal'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import SetPlayerTabBar from  '../SetPlayer/Components/SetPlayerTabBar'
 
@@ -34,13 +33,18 @@ class OnFire extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      h:0,
-      playerList: []
+          modalInfo:false,
+          h:0,
+          playerList: []
     }
   }
-
-  iconPress = () =>{
-    DeviceEventEmitter.emit('matchCenter', 'onFire');
+  iconPress = () => {
+      this.setState({modalInfo: !this.state.modalInfo})
+  }
+  updateMadal = () =>{
+    this.setState({
+      modalInfo: !this.state.modalInfo
+    })
   }
   mathHeight = (half_time,full_time,index) => {
    let  countHalf =  half_time.metres.length + half_time.passes.length + half_time.breaks.length + half_time.breaks.length
@@ -92,6 +96,16 @@ class OnFire extends Component {
             </View>
           </View>
         </ScrollableTabView>
+                  <SquadModal
+                    modalVisible={this.state.modalInfo}
+                    callbackParent={this.iconPress}>
+                    <ScrollView style={[styles.modalContent]}>
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>These screens will be updated at half time and full time to show which British & Irish Lions are performing above their career averages based on key match statistics.</Text>
+                          </View>
+                    </ScrollView>
+                  </SquadModal>
       </View>
     )
   }

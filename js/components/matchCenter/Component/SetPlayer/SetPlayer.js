@@ -10,19 +10,20 @@ import styles from './styles'
 import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import StadiumFigure from '../StadiumFigure'
-
-
-
+import SquadModal from '../../../global/squadModal'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Scoreboard from './Components/Scoreboard'
 import SetPlayerTabBar from  './Components/SetPlayerTabBar'
 
 
-const  IconHeader = ({onPress}) => {
+const  IconHeader = ({onPress,modalAble}) => {
   return (
     <View style={{flexDirection:'row-reverse'}} >
       <ButtonFeedback style={{width:30}}
-                      onPress={onPress}>
+                      onPress={onPress}
+                      disabled={!modalAble}
+      >
+
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
       </ButtonFeedback>
     </View>
@@ -34,8 +35,17 @@ class SetPlayer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      h:0
+          modalInfo:false,
+          h:0
     }
+  }
+  iconPress = () => {
+      this.setState({modalInfo: !this.state.modalInfo})
+  }
+  updateMadal = () =>{
+    this.setState({
+      modalInfo: !this.state.modalInfo
+    })
   }
 
   SortingData = (kicks) => {
@@ -48,14 +58,11 @@ class SetPlayer extends Component {
     kicks.opposition.conversions.details
 
   }
-  iconPress = () =>{
-    DeviceEventEmitter.emit('matchCenter', 'setPlayer');
-  }
   callApi = () =>{
    console.log('setPlayerCallApi')
   }
   render() {
-    let {isActive} = this.props
+    let {isActive,modalAble} = this.props
    let { kicks, scrums,line_outs} = this.props.set_plays
 
     return (
@@ -69,7 +76,7 @@ class SetPlayer extends Component {
           tabBarActiveTextColor={'black'}
         >
          <View tabLabel='KICKS'>
-           <IconHeader onPress={this.iconPress} />
+           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
            <View style={styles.itemContainer}  >
              <StadiumFigure
                redPoints={ kicks.opposition.conversions.details}
@@ -91,7 +98,7 @@ class SetPlayer extends Component {
            </View>
          </View>
          <View tabLabel='SCRUMS'>
-           <IconHeader onPress={this.iconPress} />
+           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ scrums.opposition.won.details}
@@ -113,7 +120,7 @@ class SetPlayer extends Component {
             </View>
          </View>
           <View tabLabel='LINEOUTS'>
-            <IconHeader onPress={this.iconPress} />
+            <IconHeader onPress={this.iconPress}  modalAble={modalAble} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ line_outs.opposition.won.details}
@@ -134,6 +141,19 @@ class SetPlayer extends Component {
             </View>
           </View>
         </ScrollableTabView>
+                  <SquadModal
+                    modalVisible={this.state.modalInfo}
+                    callbackParent={this.iconPress}>
+                    <ScrollView style={[styles.modalContent]}>
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>These screens will update every 2-5 minutes to indicate where various plays take place around the pitch.</Text>
+                              <Text style={styles.modalContentText}>Kicks: Indicates where Conversions and Penalties were taken, and if they were successful.</Text>
+                              <Text style={styles.modalContentText}>Scrums: Displays where each team’s scrums have taken place on the pitch and if they were won.</Text>
+                              <Text style={styles.modalContentText}>Lineouts: Displays where each team’s lineouts have taken place on the pitch and if they were won.</Text>
+                          </View>
+                    </ScrollView>
+                  </SquadModal>
       </View>
     )
   }
@@ -154,6 +174,7 @@ export default SetPlayer
 SetPlayer.propTypes = {
   isActive:PropTypes.bool,
   set_plays:PropTypes.object,
+  modalAble: PropTypes.bool,
 }
 SetPlayer.defaultProps = {
   set_plays: {},
