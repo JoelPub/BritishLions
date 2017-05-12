@@ -259,7 +259,7 @@ const Player = ({item, index, isLastItem, isShowBorderTop}) => {
                     </View>
                     <View style={locStyle.scoreWrapper}>
                         <View style={locStyle.score}>
-                                <Text style={locStyle.scoreText}>{item.value*100}%</Text>
+                                <Text style={locStyle.scoreText}>{Math.round(item.value*100)}%</Text>
                         </View>
                     </View>
                 </View>
