@@ -550,7 +550,7 @@ class GamedayTeam extends Component {
 
                         </View>
 	                :
-	                    null
+	                    <ActivityIndicator style={[loader.centered,{height:2*styleVar.deviceWidth}]} size='small' />
 	            }
 	         </View>
             )

@@ -56,19 +56,19 @@ class MatchCenter extends Component {
       this.setState({subPage:page})
     }
     pullHistorySummary(){
-      _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
-                if(__DEV__)console.log('res',res)
-                if(res) {
-                  let tmp=this.state.summaryData
-                  res.map((value,index)=>{
-                    tmp.timeline.push({seq:tmp.timeline.length+1,time:value.gameTime,description:value.eventString})
-                  })
-                  if(__DEV__)console.log('tmp',tmp)
-                  this.setState({
-                    summaryData:tmp
-                  })
-                }
-          })
+      // _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
+      //           if(__DEV__)console.log('res',res)
+      //           if(res) {
+      //             let tmp=this.state.summaryData
+      //             res.map((value,index)=>{
+      //               tmp.timeline.push({seq:tmp.timeline.length+1,time:value.gameTime,description:value.eventString})
+      //             })
+      //             if(__DEV__)console.log('tmp',tmp)
+      //             this.setState({
+      //               summaryData:tmp
+      //             })
+      //           }
+      //     })
     }
 
     callApi = () => {
