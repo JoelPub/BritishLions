@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, ActivityIndicator } from 'react-native'
 import { pushNewRoute } from '../../../actions/route'
 import { drillDown } from '../../../actions/content'
 import { Icon } from 'native-base'
@@ -13,6 +13,7 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import TabBar from  './tabBar'
 import GamedayTeam from './gamedayTeam'
 import GameStatusDetailsModel from  '../../../modes/Fixtures/GameStatus'
+import loader from '../../../themes/loader-position'
 
 const locStyle = styleSheetCreate({ 
     matchResults: {
@@ -277,8 +278,9 @@ class PostGame extends Component {
     constructor(props){
         super(props)
         this.state={
-            tabHeight:1000,
-            page:0
+            tabHeight:300,
+            page:0,
+            isLoaded:true
         }
     }
 
@@ -386,26 +388,43 @@ class PostGame extends Component {
                 </View>
 
                 <View style={[locStyle.summaryWrapper,{height:this.state.tabHeight}]}>
+                {
+                    this.state.isLoaded?
                     <ScrollableTabView
                         locked={true}
                         tabBarUnderlineStyle={locStyle.tabBarUnderlineStyle}
-                        initialPage={0}
+                        initialPage={this.state.page}
                         renderTabBar={() => <TabBar />}
                         tabBarActiveTextColor={'black'}
-                        onChangeTab ={(data)=>{this.setState({page:data.i})}}
+                        onChangeTab ={(data)=>
+                                this.setState({isLoaded:false},()=>{
+                                    setTimeout(()=>{                                   
+                                            this.setState({page:data.i},()=>{
+                                                this.setState({isLoaded:true})
+                                            })
+                                    },1000)                                
+                                })                          
+                        }
                     >
-
-                        <View tabLabel='SUMMARY' onLayout={this.measurePage.bind(this,0)}>
-                        {
-                            this.state.page===0&&<Summary opposition={opposition} bil={bil} oppositionImage={oppositionImage}/>
-                        }
-                        </View>
-                        <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab} onLayout={this.measurePage.bind(this,1)}>
-                        {
-                            this.state.page===1&&<GamedayTeam gameID={fixture.id} isHideTitle={true} />
-                        }
-                        </View>
+                        
+                            <View tabLabel='SUMMARY' onLayout={this.measurePage.bind(this,0)}>
+                            {
+                                this.state.page===0&&
+                                <Summary opposition={opposition} bil={bil} oppositionImage={oppositionImage}/>                                
+                            }
+                            </View>
+                            <View tabLabel='GAME-DAY TEAM' style={locStyle.gamedayTeamTab} onLayout={this.measurePage.bind(this,1)}>
+                            {
+                                this.state.page===1&&
+                                <GamedayTeam gameID={fixture.id} isHideTitle={true} />
+                            }
+                            </View>
+                        
                     </ScrollableTabView>
+                    :
+                    <ActivityIndicator style={[loader.centered,{height:300}]} size='small' />
+                }
+                    
                 </View>
 
                 <View style={locStyle.guther}>
