@@ -121,8 +121,11 @@ const styles = styleSheetCreate({
     },
     playerFigureType:{
         flex:1,
-        height:40,
+        height:53,
         alignItems:'center',
+        paddingTop:10,
+        paddingBottom:10
+
     },
     playerFigureTypeText:{
         fontFamily: styleVar.fontCondensed,
