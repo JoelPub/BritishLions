@@ -18,9 +18,6 @@ class ManOfTheMatchLanding extends Component {
     constructor(props) {
          super(props)
          this.selectedMan=null
-         this.state = {
-              savedMan:null,
-            }
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('_measurePage')
@@ -62,15 +59,8 @@ class ManOfTheMatchLanding extends Component {
                     })
         }
         else {
-            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
+            this.props.setSubPage('post',this.selectedMan.id,null)
         }
-    }
-    componentDidMount(){
-        getMatchMan().then((data)=>{
-            let player=JSON.parse(data)
-            if(__DEV__)console.log('landing getMatchMan player',player)
-            this.setState({savedMan:player&&player.current||null})
-        })
     }
     
     render() {
@@ -90,7 +80,7 @@ class ManOfTheMatchLanding extends Component {
                     <View style={styles.roundButtonBg}>
                         <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                {this.state.savedMan===null?'SUBMIT':'RESUBMIT'}
+                                'SUBMIT'
                             </Text>
                         </ButtonFeedback>
                     </View>
