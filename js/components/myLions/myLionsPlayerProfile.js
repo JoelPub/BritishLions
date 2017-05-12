@@ -194,7 +194,8 @@ class MyLionsPlayerProfile extends Component {
                 this.setState({
                     profileHistorical:profileListHistorical,
                     profileOn_tour:profileListOn_tour,
-                    isLoaded: true })
+                    isLoaded: true
+                })
             },
             onError: (res) => {
                 let profile = ProfileListModel.fromJS([new ProfileModel()])
@@ -232,7 +233,6 @@ class MyLionsPlayerProfile extends Component {
         if (this.props.detail) {
             logo = String(this.props.detail.logo)
         }
-
         let figureData = this.state.isOn_tour ? this.state.profileOn_tour : this.state.profileHistorical
         console.log('*********************')
         console.log(JSON.stringify(figureData))
