@@ -6,7 +6,6 @@ import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import ImagePlaceholder from '../utility/imagePlaceholder'
-import Accordion from './accordion'
 import PlayerFigure from './playerFigure'
 import ProfileListModel from  'modes/Players'
 import ProfileModel from 'modes/Players/Profile'
@@ -17,6 +16,7 @@ import Data from '../../../contents/unions/data'
 import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { searchPlayer } from '../myLions/components/searchPlayer'
 import loader from '../../themes/loader-position'
+import Accordion from 'react-native-collapsible/Accordion';
 
 const locStyle = styleSheetCreate({ 
     listNoTitle: {
@@ -170,7 +170,6 @@ const locStyle = styleSheetCreate({
         paddingHorizontal:28,
         marginVertical:54,
         backgroundColor:'transparent',
-        alignItems:'center'
     },
     modalTitleText:{
         fontFamily: styleVar.fontCondensed,
@@ -209,7 +208,7 @@ const locStyle = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20
-    },
+    }, 
 })
 
 const LineGraph = (data) => {
@@ -228,46 +227,6 @@ const LineGraph = (data) => {
         </View>
     )
 }
-
-const Player = ({item, index, isLastItem, isShowBorderTop}) => {
-    let listRowStyle = isLastItem? [locStyle.listRow, locStyle.listRowLast] : [locStyle.listRow]
-    
-    if (isShowBorderTop) {
-        listRowStyle = listRowStyle.concat([locStyle.listRowWithBorderTop])
-    }
-    
-    return (
-        <View style={listRowStyle}>
-            <View style={locStyle.listRowImage}>
-                <ImagePlaceholder 
-                    width={50}
-                    height={50}>
-                    <Image transparent
-                        resizeMode='contain'
-                        source={{uri: item.info.thumb}}
-                        style={locStyle.listRowPlayerImage} />
-                </ImagePlaceholder>
-            </View>
-            <View style={locStyle.listRowContent}>
-                <View style={locStyle.detailRow}>
-                    <View style={locStyle.detail}> 
-                        <View style={locStyle.labels}>
-                            <Text style={locStyle.order}>{item.rank}.</Text>
-                            <Text style={locStyle.name}>{item.info.name}</Text>
-                        </View>
-                        <LineGraph value={item.value}/>
-                    </View>
-                    <View style={locStyle.scoreWrapper}>
-                        <View style={locStyle.score}>
-                                <Text style={locStyle.scoreText}>{Math.round(item.value*100)}%</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </View>
-    )
-}
-
 export default class PlayersRankBox extends Component {
     constructor(props){
         super(props)
@@ -277,7 +236,9 @@ export default class PlayersRankBox extends Component {
             players:[],            
             modalContent:this.getModalContent(),
             gameID:this.props.detail.id,
-            isOn_tour:true
+            isOn_tour:true,
+            title:this.props.title,
+            activeSection: false
         }
     }
     _setModalVisible=(visible,mode,title,subtitle,btn) => {
@@ -420,9 +381,69 @@ export default class PlayersRankBox extends Component {
             })
         })
     }
-    render() {
+_renderHeader(section,i) {
+    let isShowBorderTop=((!(this.state.title || false)) && (i === 0))? true : false
+    let isLastItem=(i===this.state.players.length-1)? true : false
+    let listRowStyle = isLastItem? [locStyle.listRow, locStyle.listRowLast] : [locStyle.listRow]
+    if (isShowBorderTop) {
+        listRowStyle = listRowStyle.concat([locStyle.listRowWithBorderTop])
+    }
+    
+    return (
+        <View style={listRowStyle}>
+            <View style={locStyle.listRowImage}>
+                <ImagePlaceholder 
+                    width={50}
+                    height={50}>
+                    <Image transparent
+                        resizeMode='contain'
+                        source={{uri: section.info.thumb}}
+                        style={locStyle.listRowPlayerImage} />
+                </ImagePlaceholder>
+            </View>
+            <View style={locStyle.listRowContent}>
+                <View style={locStyle.detailRow}>
+                    <View style={locStyle.detail}> 
+                        <View style={locStyle.labels}>
+                            <Text style={locStyle.order}>{section.rank}.</Text>
+                            <Text style={locStyle.name}>{section.info.name}</Text>
+                        </View>
+                        <LineGraph value={section.value}/>
+                    </View>
+                    <View style={locStyle.scoreWrapper}>
+                        <View style={locStyle.score}>
+                                <Text style={locStyle.scoreText}>{Math.round(section.value*100)}%</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </View>
+    )
+  }
+ 
+  _renderContent(section,i) {
+    let figureData = this.state.isOn_tour ? section.profileListOn_tour : section.profileListHistorical
+    return (
+        <View style={(i===this.state.players.length-1)?[locStyle.content, locStyle.contentLast] : [locStyle.content]}>
+        {
+            this.state.activeSection===i?
+            <PlayerFigure 
+                pressInfo={this._setModalVisible.bind(this)}
+                wideLayout={true} 
+                profile={figureData}
+                onTitleClick={this.onTiltleClick}/>
+            :
+            null
+        }
+        </View>
+    )
+  }
+   _setSection(section) {
+    if(__DEV__)console.log('section',section)
+    this.setState({ activeSection: section });
+  }
+      render() {
         let title = this.props.title || false
-
         return (
             <View>
                 {
@@ -436,31 +457,17 @@ export default class PlayersRankBox extends Component {
                             </View>
                         }
                         <View style={locStyle.list}>
-                            {
-                                this.state.players.map((item, index)=>{
-                                    let isLastItem = this.state.players.length === (index + 1)? true : false
-                                    let contentStyle = isLastItem? [locStyle.content, locStyle.contentLast] : [locStyle.content]
-                                    let isShowBorderTop = !title && index === 0? true : false
-                                    let figureData = this.state.isOn_tour ? item.profileListOn_tour : item.profileListHistorical
-
-                                    return (
-                                        <Accordion
-                                            key={index}
-                                            header={<Player item={item} isShowBorderTop={isShowBorderTop} key={index} index={index} isLastItem={isLastItem}/>}
-                                        >
-                                            <View style={contentStyle}>
-                                                <PlayerFigure 
-                                                    pressInfo={this._setModalVisible.bind(this)}
-                                                    wideLayout={true} 
-                                                    profile={figureData}
-                                                    onTitleClick={this.onTiltleClick}
-                                                />
-                                            </View>
-                                        </Accordion>
-                                    )
-                                }, this)
-                            }
+                            <Accordion
+                                sections={this.state.players}
+                                renderHeader={this._renderHeader.bind(this)}
+                                renderContent={this._renderContent.bind(this)}
+                                underlayColor={'rgb(230, 231, 232)'}
+                                duration={1000}
+                                activeSection={this.state.activeSection}
+                                onChange={this._setSection.bind(this)}
+                              />
                         </View>
+                        
                         <SquadModal
                             modalVisible={this.state.modalVisible}
                             callbackParent={this._setModalVisible}>
