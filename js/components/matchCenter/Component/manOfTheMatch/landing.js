@@ -18,6 +18,10 @@ class ManOfTheMatchLanding extends Component {
     constructor(props) {
          super(props)
          this.selectedMan=null
+         this.savedVote=null
+         this.state={
+            savedMan:null
+         }
     }
     _measurePage(page,event) {
         if (__DEV__)console.log('_measurePage')
@@ -59,8 +63,37 @@ class ManOfTheMatchLanding extends Component {
                     })
         }
         else {
-            this.props.setSubPage('post',this.selectedMan.id,null)
+            
+
+            if(Array.isArray(this.savedVote)){
+                let i=this.savedVote.findIndex(v=>v.id===this.props.detail.id)
+                if(i<0) {
+                    this.savedVote.push({id:this.props.detail.id,current:this.selectedMan.id,previous:null})
+                }
+                else{
+                    this.savedVote[i].current=this.selectedMan.id
+                }
+            }
+            else {
+                this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:null}]
+            }
+
+            setMatchMan(this.savedVote).then(()=>{
+                this.props.setSubPage('post')
+              })
         }
+    }
+
+    componentDidMount(){
+        getMatchMan().then((data)=>{
+            this.savedVote=JSON.parse(data)
+            if(__DEV__)console.log('landing getMatchMan player',this.savedVote)
+                if(Array.isArray(this.savedVote)) {
+                    this.setState({
+                        savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)
+                    })
+                }            
+        })
     }
     
     render() {
@@ -80,7 +113,7 @@ class ManOfTheMatchLanding extends Component {
                     <View style={styles.roundButtonBg}>
                         <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
-                                'SUBMIT'
+                                SUBMIT
                             </Text>
                         </ButtonFeedback>
                     </View>

@@ -63,17 +63,36 @@ class ManOfTheMatchPostSubission extends Component {
                     })
         }
         else {
-            this.props.setSubPage('post',this.selectedMan.id,this.state.savedMan)
-            this.setState({resubmit:true,savedMan:this.selectedMan.id},()=>{
-                this.setState({resubmit:false})
+            if(Array.isArray(this.savedVote)){
+                let i=this.savedVote.findIndex(v=>v.id===this.props.detail.id)
+                if(i<0) {
+                    this.savedVote.push({id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.id})
+                }
+                else{
+                    this.savedVote[i].current=this.selectedMan.id
+                    this.savedVote[i].previous=this.state.savedMan.id
+                }
+            }
+            else {
+                this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.id}]
+            }
+
+            setMatchMan(this.savedVote).then(()=>{
+                this.setState({resubmit:true,savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)},()=>{
+                    this.setState({resubmit:false})
+                })
             })
         }
     }
     componentDidMount(){
         getMatchMan().then((data)=>{
-            let player=JSON.parse(data)
-            if(__DEV__)console.log('post getMatchMan player',player)
-            this.setState({savedMan:player.current})
+            this.savedVote=JSON.parse(data)
+            if(__DEV__)console.log('post getMatchMan player',this.savedVote)
+                if(Array.isArray(this.savedVote)) {
+                    this.setState({
+                        savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)
+                    })
+                }            
         })
     }
     
