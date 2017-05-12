@@ -12,6 +12,7 @@ import PlayersRankBox from '../../../global/playersRankBox'
 import MatchMan from './matchMan'
 import Toast from 'react-native-root-toast'
 import { setMatchMan, getMatchMan } from '../../../utility/asyncStorageServices'
+import ButtonNetwork from '../../../utility/buttonNetwork'
 
 class ManOfTheMatchPostSubission extends Component {
 
@@ -116,11 +117,11 @@ class ManOfTheMatchPostSubission extends Component {
                     </View>
 
                     <View style={styles.roundButtonBg}>
-                        <ButtonFeedback rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
+                        <ButtonNetwork rounded style={styles.roundButton} onPress={this._onPressSubmit.bind(this)}>
                             <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel}>
                                 RESUBMIT
                             </Text>
-                        </ButtonFeedback>
+                        </ButtonNetwork>
                     </View>
                     <View onLayout={this._measurePage.bind(this,'PostSubission')} />
                     

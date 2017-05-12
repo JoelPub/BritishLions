@@ -52,8 +52,8 @@ class ButtonNetwork extends Component {
 
     render() {
         return (
-            <View>
-                <ButtonFeedback {...this.props} disabled = {this.state.btnDisable} style={this.state.btnDisable&&{backgroundColor: styleVar.brandSecondary}}>
+            <View style={this.state.btnDisable&&{opacity:0.6}}>
+                <ButtonFeedback {...this.props} disabled = {this.state.btnDisable}>
                     {this.props.children}
                 </ButtonFeedback>
             </View>
