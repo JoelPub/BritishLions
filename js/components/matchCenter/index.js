@@ -143,7 +143,6 @@ class MatchCenter extends Component {
               if(__DEV__)console.log('index getMatchMan player',player)
               let subPage=this.state.subPage
               if(__DEV__)console.log('subPage',subPage)
-              if(__DEV__)console.log('find',player.findIndex(v=>v.id===this.state.detail.id&&v.current!==null))
               if(Array.isArray(player)&&(player.findIndex(v=>v.id===this.state.detail.id&&v.current!==null)>-1)) {
                 subPage='post'
               }
