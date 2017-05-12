@@ -211,12 +211,12 @@ class MatchMan extends Component {
                                                     if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
                                                     // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
                                                     if (__DEV__)console.log('this.props.preSelect',this.props.preSelect)
-                                                    if(this.props.preSelect) {
+                                                    if(this.props.preSelect&&this.props.preSelect.current) {
                                                         showSquadFeed.forEach((value,index)=>{
                                                             if (__DEV__)console.log('index',index)
                                                             value.map((v,i)=>{
                                                                 if (__DEV__)console.log('i',i)
-                                                                if(v.info.id===this.props.preSelect) {
+                                                                if(v.info.id===this.props.preSelect.current) {
                                                                     if (__DEV__)console.log('v',v)
                                                                     this.setState({selectedPosition:index,selectedSequence:i},()=>{
                                                                                         this.props.selectMan(v.info)
