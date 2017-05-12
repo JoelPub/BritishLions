@@ -17,7 +17,7 @@ const styles = styleSheetCreate({
     width:202,
     height:416,
     position:'absolute',
-
+    resizeMode: 'stretch'
   }
 })
 class StadiumFigure extends Component {
