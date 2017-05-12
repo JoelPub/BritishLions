@@ -86,12 +86,13 @@ class SetPlayer extends Component {
              />
              <View style={styles.rightContainer}>
                <Scoreboard isWithProportion={true}
-                           oppositionScore = {kicks.opposition.conversions}
-                           bilScore = {kicks.opposition.penalties}
-               />
-               <Scoreboard isWithProportion={true} isDown={true}
                            oppositionScore = {kicks.bil.conversions}
                            bilScore = {kicks.bil.penalties}
+               />
+               <Scoreboard isWithProportion={true} isDown={true}
+                           oppositionScore = {kicks.opposition.conversions}
+                           bilScore = {kicks.opposition.penalties}
+
 
                />
              </View>

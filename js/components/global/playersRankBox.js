@@ -259,7 +259,7 @@ const Player = ({item, index, isLastItem, isShowBorderTop}) => {
                     </View>
                     <View style={locStyle.scoreWrapper}>
                         <View style={locStyle.score}>
-                                <Text style={locStyle.scoreText}>{item.value*100}%</Text>
+                                <Text style={locStyle.scoreText}>{Math.round(item.value*100)}%</Text>
                         </View>
                     </View>
                 </View>
@@ -276,7 +276,8 @@ export default class PlayersRankBox extends Component {
             modalVisible: false,
             players:[],            
             modalContent:this.getModalContent(),
-            gameID:this.props.detail.id
+            gameID:this.props.detail.id,
+            isOn_tour:true
         }
     }
     _setModalVisible=(visible,mode,title,subtitle,btn) => {
@@ -311,7 +312,11 @@ export default class PlayersRankBox extends Component {
                 )
         }
     }
-
+    onTiltleClick = (titleStatus) => {
+        this.setState({
+            isOn_tour: titleStatus
+        })
+    }
     componentDidMount(){
         this.setState({ isLoaded: false },()=>{
             getSoticFullPlayerList().then((catchedFullPlayerList) => {
@@ -353,20 +358,27 @@ export default class PlayersRankBox extends Component {
                                 if(players.length>0) {
                                     players.map((value,index)=>{
                                         let optionsPlayerProfile = {
-                                                    url: 'http://bilprod.azurewebsites.net/getOfficialSquadPlayerProfile',
-                                                    data:{player_id:value.player_id},
+                                                    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getTourPlayerProfile',
+                                                    data:{id:value.player_id},
                                                     isRequiredToken: false,
+                                                    method: 'post',
+                                                    isQsStringify:false,
                                                     onSuccess: (res) => {
                                                         if (__DEV__)console.log('profile res.data',res.data)
-                                                        let profile = ProfileListModel.fromJS([new ProfileModel()])
+                                                        let profileListOn_tour = ProfileListModel.fromJS([new ProfileModel()])
+                                                        let profileListHistorical = ProfileListModel.fromJS([new ProfileModel()])
+
                                                         if (res.data instanceof Array  && res.data.length!==0) {
                                                             if (__DEV__)console.log('valid')
-                                                            profile=ProfileListModel.fromJS(res.data)
+                                                            profileListOn_tour=ProfileListModel.fromJS([res.data[0].on_tour])
+                                                            profileListHistorical=ProfileListModel.fromJS([res.data[0].historical])
                                                         }
-                                                        profiles.push({seq:index,profile:profile})
+                                                        profiles.push({     seq:index,
+                                                                            profileListOn_tour:profileListOn_tour,
+                                                                            profileListHistorical:profileListHistorical})
                                                         if(profiles.length===players.length) {
                                                             profiles.map((v,i)=>{
-                                                                players[v.seq]=Object.assign(players[v.seq],{profile:v.profile})
+                                                                players[v.seq]=Object.assign(players[v.seq],{profileListOn_tour:v.profileListOn_tour,profileListHistorical:v.profileListHistorical})
                                                             })
                                                             this.setState({isLoaded:true,players:players})
                                                         }
@@ -429,6 +441,7 @@ export default class PlayersRankBox extends Component {
                                     let isLastItem = this.state.players.length === (index + 1)? true : false
                                     let contentStyle = isLastItem? [locStyle.content, locStyle.contentLast] : [locStyle.content]
                                     let isShowBorderTop = !title && index === 0? true : false
+                                    let figureData = this.state.isOn_tour ? item.profileListOn_tour : item.profileListHistorical
 
                                     return (
                                         <Accordion
@@ -439,7 +452,9 @@ export default class PlayersRankBox extends Component {
                                                 <PlayerFigure 
                                                     pressInfo={this._setModalVisible.bind(this)}
                                                     wideLayout={true} 
-                                                    profile={item.profile}/>
+                                                    profile={figureData}
+                                                    onTitleClick={this.onTiltleClick}
+                                                />
                                             </View>
                                         </Accordion>
                                     )
