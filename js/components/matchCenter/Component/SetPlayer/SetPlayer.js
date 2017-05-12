@@ -18,11 +18,14 @@ import Scoreboard from './Components/Scoreboard'
 import SetPlayerTabBar from  './Components/SetPlayerTabBar'
 
 
-const  IconHeader = ({onPress}) => {
+const  IconHeader = ({onPress,modalAble}) => {
   return (
     <View style={{flexDirection:'row-reverse'}} >
       <ButtonFeedback style={{width:30}}
-                      onPress={onPress}>
+                      onPress={onPress}
+                      disabled={!modalAble}
+      >
+
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
       </ButtonFeedback>
     </View>
@@ -55,7 +58,7 @@ class SetPlayer extends Component {
    console.log('setPlayerCallApi')
   }
   render() {
-    let {isActive} = this.props
+    let {isActive,modalAble} = this.props
    let { kicks, scrums,line_outs} = this.props.set_plays
 
     return (
@@ -69,7 +72,7 @@ class SetPlayer extends Component {
           tabBarActiveTextColor={'black'}
         >
          <View tabLabel='KICKS'>
-           <IconHeader onPress={this.iconPress} />
+           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
            <View style={styles.itemContainer}  >
              <StadiumFigure
                redPoints={ kicks.opposition.conversions.details}
@@ -91,7 +94,7 @@ class SetPlayer extends Component {
            </View>
          </View>
          <View tabLabel='SCRUMS'>
-           <IconHeader onPress={this.iconPress} />
+           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ scrums.opposition.won.details}
@@ -113,7 +116,7 @@ class SetPlayer extends Component {
             </View>
          </View>
           <View tabLabel='LINEOUTS'>
-            <IconHeader onPress={this.iconPress} />
+            <IconHeader onPress={this.iconPress}  modalAble={modalAble} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ line_outs.opposition.won.details}
@@ -154,6 +157,7 @@ export default SetPlayer
 SetPlayer.propTypes = {
   isActive:PropTypes.bool,
   set_plays:PropTypes.object,
+  modalAble: PropTypes.bool,
 }
 SetPlayer.defaultProps = {
   set_plays: {},
