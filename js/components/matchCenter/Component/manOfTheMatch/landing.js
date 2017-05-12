@@ -78,7 +78,7 @@ class ManOfTheMatchLanding extends Component {
             else {
                 this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:null}]
             }
-
+            this.props.setShowModal(true)
             setMatchMan(this.savedVote).then(()=>{
                 this.props.setSubPage('post')
               })

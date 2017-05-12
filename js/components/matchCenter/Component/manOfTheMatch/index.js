@@ -27,16 +27,18 @@ class ManOfTheMatch extends Component {
              this.setState({showModal:true})
         }
     }
-    
+    setShowModal(v){
+        this.setState({showModal:v})
+    }
     
     render() {
         return (
                 <View>
                     {
-                        this.props.subPage==='landing'&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} detail={this.props.detail} />
+                        this.props.subPage==='landing'&&<ManOfTheMatchLanding setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} detail={this.props.detail} setShowModal={this.setShowModal.bind(this)}/>
                     }
                     {
-                        this.props.subPage==='post'&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal} detail={this.props.detail} />
+                        this.props.subPage==='post'&&<ManOfTheMatchPostSubission setHeight={this.props.setHeight} setSubPage={this.props.setSubPage} showModal={this.state.showModal} detail={this.props.detail} setShowModal={this.setShowModal.bind(this)}/>
                     }
                     {
                         this.props.subPage==='final'&&<ManOfTheMatchFinal setHeight={this.props.setHeight} showModal={this.state.showModal} detail={this.props.detail} />

@@ -205,6 +205,7 @@ const locStyle = styleSheetCreate({
     modalConfirmBtn:{
         height: 45,
         width:styleVar.deviceWidth*0.352,
+        marginLeft:styleVar.deviceWidth*0.25,
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20

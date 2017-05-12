@@ -77,6 +77,8 @@ class ManOfTheMatchPostSubission extends Component {
             else {
                 this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.id}]
             }
+            
+            this.props.setShowModal(true)
 
             setMatchMan(this.savedVote).then(()=>{
                 this.setState({resubmit:true,savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)},()=>{
