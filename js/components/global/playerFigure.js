@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import {Image, View, Text, ActivityIndicator, Platform} from 'react-native'
+import {Image, View, Text, ActivityIndicator, Platform, StyleSheet} from 'react-native'
 import { Icon } from 'native-base'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import { strToUpper , isEmptyObject} from '../utility/helper'
@@ -148,15 +148,11 @@ const styles = styleSheetCreate({
     playerFigureUnit:{
         alignItems:'center',
         marginBottom: 30,
-        width: styleVar.deviceWidth/3,
-        //backgroundColor: 'green',
-        //borderLeftWidth: 1,
-        //borderLeftColor: '#CCC',
+        width: styleVar.deviceWidth/3
     },
     playerFigureUnit2: {
         flexDirection: 'column',
-        width: styleVar.deviceWidth/2,
-        //backgroundColor: 'pink',
+        width: styleVar.deviceWidth/2
     },
     playerFigureUpperText:{
         color:'rgb(95,96,98)',
@@ -236,7 +232,7 @@ const styles = styleSheetCreate({
     },
     playerFigureWrapper:{
         paddingVertical: 25,
-        paddingHorizontal: 20,
+        paddingHorizontal: 20
     },
     pagination: {
         bottom: 0
@@ -364,18 +360,8 @@ export default class PlayerFigure extends Component {
                                         {
                                             mainTitles.map((title, page)=>{
                                                 title = title.toUpperCase()
-                                                let cornerStyle  = {}
-
-                                                if (page=== 0) {
-                                                    cornerStyle  = {borderTopLeftRadius:5 }
-                                                } else {
-                                                    if (Platform.OS === 'android') {
-                                                        cornerStyle  = {borderTopRightRadius:5, borderRightWidth: 1 }
-                                                    } else {
-                                                        cornerStyle  = {borderTopRightRadius:5 }
-                                                    }
-                                                }
-
+                                                let cornerStyle  = page === 0? {borderTopLeftRadius: 5} : {borderTopRightRadius: 5, borderRightColor: '#FFF', borderRightWidth: StyleSheet.hairlineWidth}
+                                                
                                                 return (
                                                   <ButtonFeedback
                                                     style={[styles.playerFigureType,{backgroundColor:page!=this.state.titleActiveIndex ? styleVar.colorTextDarkGrey:'white'},cornerStyle]}
