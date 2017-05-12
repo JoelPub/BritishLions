@@ -42,7 +42,7 @@ const styles = styleSheetCreate({
   },
   contentView:{
     marginTop: 25,
-    marginLeft:25,
+    marginLeft: styleVar.deviceWidth === 320? 15 : 25,
     marginBottom: 20,
   },
   subTitleView:{
@@ -160,10 +160,10 @@ const  Header = ({addStyle}) => {
       <View style={[styles.LTextTop,addStyle]}>
         <Text style={styles.subTitleText}>D</Text>
       </View>
-      <View style={[styles.LTextTop,addStyle]}>
+      <View style={[styles.LTextTop]}>
         <Text style={styles.subTitleText}>F</Text>
       </View>
-      <View style={[styles.LTextTop,addStyle]}>
+      <View style={[styles.LTextTop]}>
         <Text style={styles.subTitleText}>A</Text>
       </View>
       <View style={[styles.LTextTop,addStyle]}>
@@ -196,10 +196,10 @@ const  Content = ({data,index,addStyle}) => {
       <View style={[styles.LText,addStyle]}>
         <Text style={styles.subContentText}>{data.d}</Text>
       </View>
-      <View style={[styles.LText,addStyle]}>
+      <View style={[styles.LText]}>
         <Text style={styles.subContentText}>{data.f}</Text>
       </View>
-      <View style={[styles.LText,addStyle]}>
+      <View style={[styles.LText]}>
         <Text style={styles.subContentText}>{data.a}</Text>
       </View>
       <View style={[styles.LText,addStyle]}>
