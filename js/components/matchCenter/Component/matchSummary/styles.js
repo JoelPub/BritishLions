@@ -35,6 +35,8 @@ module.exports = styleSheetCreate({
     },
     descripton:{
     	color:'rgb(38,38,38)',
+		minHeight: 45,
+		backgroundColor: 'transparent',
     	fontSize: 16,
     	lineHeight: 21,
     	fontFamily:styleVar.fontGeorgia,
