@@ -214,7 +214,7 @@ const Summary = ({opposition, bil, oppositionImage}) => (
     <View style={locStyle.summaryContent}>
         <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
              <View style={locStyle.logo}>
-                 <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoIcon}/> 
+                 <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoIcon}/>
             </View>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}> </Text>
@@ -388,10 +388,10 @@ class PostGame extends Component {
                 </View>
 
                 <View style={[locStyle.summaryWrapper,{height:this.state.tabHeight}]}>
-                {
-                    this.state.isLoaded?
+
                     <ScrollableTabView
                         locked={true}
+                        scrollWithoutAnimation={true}
                         tabBarUnderlineStyle={locStyle.tabBarUnderlineStyle}
                         initialPage={this.state.page}
                         renderTabBar={() => <TabBar />}
@@ -421,9 +421,7 @@ class PostGame extends Component {
                             </View>
                         
                     </ScrollableTabView>
-                    :
-                    <ActivityIndicator style={[loader.centered,{height:300}]} size='small' />
-                }
+
                     
                 </View>
 
