@@ -147,14 +147,23 @@ const locStyle = styleSheetCreate({
         alignItems: 'center'
     },
     logoIcon: {
-        width: 30,
+        width: 50,
+        height: 50,
         backgroundColor: 'transparent',
         marginTop: -5,
         android: {
             marginTop: 0
         }
     },
-
+    logoBigIcon: {
+        width: 100,
+        height: 100,
+        backgroundColor: 'transparent',
+        marginTop: -5,
+        android: {
+            marginTop: 0
+        }
+    },
     guther: {
         padding: 20
     },
@@ -204,14 +213,14 @@ const Summary = ({opposition, bil, oppositionImage}) => (
     <View style={locStyle.summaryContent}>
         <View style={[locStyle.matchResultRow, {marginBottom: 20}]}>
              <View style={locStyle.logo}>
-                <Image resizeMode='contain' source={{uri: oppositionImage}}/> 
+                <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoIcon}/> 
             </View>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}> </Text>
             </View>
             <View style={locStyle.logo}>
                 <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
-                                    style={locStyle.logoIcon}/>
+                                    style={[locStyle.logoIcon, {width: 45, height: 45}]}/>
             </View>
         </View>
         <View style={locStyle.matchResultRow}>
@@ -312,6 +321,21 @@ class PostGame extends Component {
                     </Text>
                 </View>
                 <View style={locStyle.matchResultGuther}>
+                    <View style={[locStyle.matchResultRow, {marginBottom: 15}]}>
+                        <View style={locStyle.sideCol}>
+                            <Image resizeMode='contain' source={{uri: oppositionImage}} style={locStyle.logoBigIcon}/> 
+                        </View>
+                        <View style={locStyle.centerCol}>   
+                            
+                        </View>
+                        <View style={locStyle.sideCol}>
+                            <Image 
+                                resizeMode='contain' 
+                                source={require('../../../../contents/my-lions/lions-logo.png')}
+                                style={[locStyle.logoBigIcon, {width: 90, height: 90}]}/>
+                        </View>
+                    </View>
+
                     <View style={[locStyle.matchResultRow, {marginBottom: 15}]}>
                         <View style={locStyle.sideCol}>
                             <View style={locStyle.matchResultCircle}>
