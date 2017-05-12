@@ -6,14 +6,15 @@ import styleVar from '../../../../../../themes/variable'
 module.exports = styleSheetCreate({
 
   tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    //flex: 1,
     paddingBottom: 10,
+    marginHorizontal: 3
   },
   tabs: {
     height: 70,
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 0,
     android:{
       height: 80,
@@ -22,6 +23,8 @@ module.exports = styleSheetCreate({
   tabContainer:{
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 0,
+    padding: 0
   },
   tabText:{
     fontFamily: styleVar.fontCondensed,
@@ -38,7 +41,6 @@ module.exports = styleSheetCreate({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop:10,
-
   },
 })
 
