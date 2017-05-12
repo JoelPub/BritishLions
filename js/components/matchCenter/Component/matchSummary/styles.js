@@ -1,7 +1,10 @@
 'use strict'
 
 import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
+import { Platform } from 'react-native'
 import styleVar from '../../../../themes/variable'
+
+let timelineWrapperHeightMinus = Platform.OS === 'android'?  280 : 260
 
 module.exports = styleSheetCreate({
     timeWrapper: {
@@ -29,13 +32,14 @@ module.exports = styleSheetCreate({
     },
     scroll:{marginTop:50},
     timelineWrapper:{
-    	height:styleVar.deviceHeight-245,
+    	height: styleVar.deviceHeight -  timelineWrapperHeightMinus,
     	paddingHorizontal:10,
-    	backgroundColor:'rgb(255,255,255)'
+    	backgroundColor:'rgb(255,255,255)',
+		//backgroundColor: 'green'
     },
     descripton:{
     	color:'rgb(38,38,38)',
-		minHeight: 45,
+		minHeight: 60,
 		backgroundColor: 'transparent',
     	fontSize: 16,
     	lineHeight: 21,

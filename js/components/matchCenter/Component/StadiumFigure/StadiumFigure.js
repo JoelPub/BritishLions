@@ -45,10 +45,12 @@ class StadiumFigure extends Component {
         <Image style={styles.image} source={stadiumImage} >
           {
             redPoints.map((item,index)=>{
-              let newItem = this.countPoint(item,30)
+              let newItem = this.countPoint(item,45)
               let loactionStyle = {
-                left:newItem.x+7,
-                top:416-(newItem.y+7)
+                left:newItem.x-7,
+                top:416-(newItem.y+7),
+                position:'absolute'
+
               }
               return(
                 <View
@@ -60,10 +62,11 @@ class StadiumFigure extends Component {
           }
           {
             blackPoints.map((item,index)=>{
-              let newItem = this.countPoint(item,30)
+              let newItem = this.countPoint(item,45)
               let loactionStyle = {
-                left:newItem.x+7,
-                top:416-(newItem.y+7)
+                left:newItem.x-7,
+                top:416-(newItem.y+7),
+                position:'absolute'
               }
               return(
                 <View
@@ -75,10 +78,11 @@ class StadiumFigure extends Component {
           }
           {
             orangePoints.map((item,index)=>{
-              let newItem = this.countPoint(item,30)
+              let newItem = this.countPoint(item,45)
               let loactionStyle = {
-                left:newItem.x+7,
-                top:416-(newItem.y+7)
+                left:newItem.x-7,
+                top:416-(newItem.y+7),
+                position:'absolute'
               }
               return(
                 <Triangle
@@ -93,10 +97,11 @@ class StadiumFigure extends Component {
           }
           {
             bluePoints.map((item,index)=>{
-              let newItem = this.countPoint(item,30)
+              let newItem = this.countPoint(item,45)
               let loactionStyle = {
-                left:newItem.x+7,
-                top:416-(newItem.y+7)
+                left:newItem.x-7,
+                top:416-(newItem.y+7),
+                position:'absolute'
               }
               return(
                 <Triangle
