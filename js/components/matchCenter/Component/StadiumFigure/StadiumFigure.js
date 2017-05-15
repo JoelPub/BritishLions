@@ -16,7 +16,6 @@ const styles = styleSheetCreate({
   image: {
     width:202,
     height:416,
-    position:'absolute',
     resizeMode: 'stretch'
   }
 })
@@ -26,8 +25,9 @@ class StadiumFigure extends Component {
     this.state = {
     }
   }
-  countPoint = (point,extraHeight) => {
-    let newX = point.x *202 /50
+  countPoint = (point,extraHeight,imageWith) => {
+
+    let newX = point.x *imageWith /50
     let newY = point.y *(416-extraHeight*2) /100
     let newPoint = {
       x : newX,
@@ -38,14 +38,15 @@ class StadiumFigure extends Component {
 
 
   render() {
-    let {redPoints, blackPoints, orangePoints, bluePoints ,titles} = this.props
+    let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith} = this.props
     let pointWidth = 14
+    let extraHeight = 45
     return (
-      <View style={[styles.container]} >
-        <Image style={styles.image} source={stadiumImage} >
+      <View style={[styles.container,{width:imageWith}]} >
+        <Image style={[styles.image,{width:imageWith}]} source={stadiumImage} >
           {
             redPoints.map((item,index)=>{
-              let newItem = this.countPoint(item,45)
+              let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
                 top:416-(newItem.y+7),
@@ -62,7 +63,7 @@ class StadiumFigure extends Component {
           }
           {
             blackPoints.map((item,index)=>{
-              let newItem = this.countPoint(item,45)
+              let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
                 top:416-(newItem.y+7),
@@ -78,7 +79,7 @@ class StadiumFigure extends Component {
           }
           {
             orangePoints.map((item,index)=>{
-              let newItem = this.countPoint(item,45)
+              let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
                 top:416-(newItem.y+7),
@@ -97,7 +98,7 @@ class StadiumFigure extends Component {
           }
           {
             bluePoints.map((item,index)=>{
-              let newItem = this.countPoint(item,45)
+              let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
                 top:416-(newItem.y+7),
@@ -126,8 +127,10 @@ StadiumFigure.propTypes = {
   orangePoints: PropTypes.array,
   bluePoints: PropTypes.array,
   titles:PropTypes.array,
+  imageWidth: PropTypes.number,
 }
 StadiumFigure.defaultProps = {
+  imageWidth: 202,
   redPoints: [
     {
     x: 100,
