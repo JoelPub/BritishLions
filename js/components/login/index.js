@@ -88,13 +88,14 @@ class Login extends Component {
         // isAccessGranted flag is set to false when 
         // user is in the login page
         NativeModules.One.sendInteraction('/signInView',
-          null);
+          '');
         setTimeout(() => {
             removeToken() 
             this.props.setAccessGranted(false)
+            this._setupGoogleSignin()
+            this.ReLogin()
         }, 400)
-        this._setupGoogleSignin()
-        this.ReLogin()
+
     }
     ReLogin = () =>{
         getReloginInfo().then((result)=>{
