@@ -265,11 +265,11 @@ const Summary = ({opposition, bil, oppositionImage}) => (
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ opposition.pen_con }%</Text>
+            <Text style={locStyle.matchResultValue}>{ Math.round(parseFloat(opposition.pen_con)*100) }%</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>PEN/CON.</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ bil.pen_con }%</Text>
+            <Text style={locStyle.matchResultValue}>{ Math.round(parseFloat(bil.pen_con)*100) }%</Text>
         </View>
     </View>
 )
