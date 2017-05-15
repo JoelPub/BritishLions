@@ -132,10 +132,34 @@ function processSummaryData(type,data,summaryData){
                     }
                 })
   }
-  else if(type==='extend'&&data.length>0){
-    data.map((value,index)=>{
-      result.push({seq:value.sequenceId,time:value.gameTime,description:value.eventString})
-    })
+  else if(type==='extend'){
+    if(data.length>0) {      
+      data.map((value,index)=>{
+        result.push({seq:value.sequenceId,time:value.gameTime,description:value.eventString})
+      })
+    }
+    else {
+          let toast = Toast.show('NO MORE MESSAGES', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    delay: 0,
+                    onShow: () => {
+                        // calls on toast\`s appear animation start
+                    },
+                    onShown: () => {
+                        // calls on toast\`s appear animation end.
+                    },
+                    onHide: () => {
+                        // calls on toast\`s hide animation start.
+                    },
+                    onHidden: () => {
+                        
+                    }
+                })
+    }
   }
   if (__DEV__)console.log('result',result)
   return result
