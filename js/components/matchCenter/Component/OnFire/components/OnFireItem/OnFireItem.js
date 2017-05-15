@@ -22,7 +22,7 @@ const  TableCell = ({data,player,isHaveM}) => {
   let playerHeader = player ? player.image : ' '
   let game = isHaveM?  data.game + 'M' : data.game
   let  ave = isHaveM? data.average + 'M' : data.average
-  let isAboveAve = data.average > 38? true : false
+  let isAboveAve = data.onfireflag && data.onfireflag == 1? true : false
 
   return (
     <View style={ [styles.headerView,styles.whiteBk]}>
