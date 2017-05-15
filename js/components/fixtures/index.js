@@ -58,7 +58,7 @@ class Fixtures extends Component {
                 // Sort Fixture By Date
                 let fixtures = this._sortFixtures(res.data)
 
-                console.log('sorted: ', fixtures)
+                if(__DEV__)console.log('sorted: ', fixtures)
                 if(res.data) {
                     this.setState({
                         fixtures,

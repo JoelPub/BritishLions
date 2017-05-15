@@ -180,7 +180,7 @@ class MyLionsPlayerProfile extends Component {
             isRequiredToken: false,
             onSuccess: (res) => {
                 if (__DEV__)console.log('profile res.data',res.data)
-                console.log('什么鬼1')
+                if(__DEV__)console.log('什么鬼1')
                 let profileListOn_tour = ProfileListModel.fromJS([new ProfileModel()])
                 let profileListHistorical = ProfileListModel.fromJS([new ProfileModel()])
                 //console.log('什么鬼2')
@@ -234,8 +234,8 @@ class MyLionsPlayerProfile extends Component {
             logo = String(this.props.detail.logo)
         }
         let figureData = this.state.isOn_tour ? this.state.profileOn_tour : this.state.profileHistorical
-        console.log('*********************')
-        console.log(JSON.stringify(figureData))
+        if(__DEV__)console.log('*********************')
+        if(__DEV__)console.log(JSON.stringify(figureData))
         return (
             <Container theme={theme}>
                 <View style={styles.container}>

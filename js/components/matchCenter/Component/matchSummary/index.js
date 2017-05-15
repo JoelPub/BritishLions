@@ -26,7 +26,7 @@ class MatchSummary extends Component {
         </View>)
     }
     _onEndReached(){
-      console.log('end reached')
+      if(__DEV__)console.log('end reached')
       this.props.setEndReached()
     }
     render() {

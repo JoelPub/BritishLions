@@ -59,7 +59,7 @@ class SetPlayer extends Component {
 
   }
   callApi = () =>{
-   console.log('setPlayerCallApi')
+   if(__DEV__)console.log('setPlayerCallApi')
   }
   render() {
     let {isActive,modalAble} = this.props

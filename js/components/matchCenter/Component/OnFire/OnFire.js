@@ -112,18 +112,18 @@ class OnFire extends Component {
   componentDidMount() {
     let { on_fire } =this.props
     let height = this.mathHeight(on_fire.half_time,on_fire.full_time,0)
-    console.log('componentDidMount')
-    console.log(height)
+    if(__DEV__)console.log('componentDidMount')
+    if(__DEV__)console.log(height)
     this.props.setHeight(height+80+320,'OnFire')
     getSoticFullPlayerList().then((playerList)=>{
-      console.log('**************************8')
-      console.log(playerList)
+      if(__DEV__)console.log('**************************8')
+      if(__DEV__)console.log(playerList)
       this.setState({
         playerList:playerList
       })
     })
 
-    console.log('ROY OF FIRE:', on_fire)
+    if(__DEV__)console.log('ROY OF FIRE:', on_fire)
   }
 
   componentWillReceiveProps(nextProps) {
