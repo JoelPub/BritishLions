@@ -64,7 +64,7 @@ const PageTitle = ({title}) => (
     </View>
 )
 
-const Banner = ({data, pressBanner}) => (
+const Banner = ({data, pressBanner, gameStatus}) => (
     <ButtonFeedback
         style={styles.banner}
         onPress={pressBanner}>
@@ -76,21 +76,27 @@ const Banner = ({data, pressBanner}) => (
                     source={{uri: data.banner}} />
             </LinearGradient>
         </ImagePlaceholder>
-        <View style={[shapes.triangle, {marginTop: -12}]} />
-        <View style={styles.bannerDetails}>
-            <Text style={styles.bannerTitle}>{ strToUpper(data.date) }</Text>
-            <Text style={styles.bannerDesc}>{ data.title }</Text>
-        </View>
+        
+        {
+            gameStatus !== 'live' &&
+            <View>
+                <View style={[shapes.triangle, {marginTop: -12}]} />
+                <View style={styles.bannerDetails}>
+                    <Text style={styles.bannerTitle}>{ strToUpper(data.date) }</Text>
+                    <Text style={styles.bannerDesc}>{ data.title }</Text>
+                </View>
+            </View>
+        }
     </ButtonFeedback>
 )
 
-const LiveGame = ({data, pressCoachBox, pressBanner}) => (
+const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
     <View>
         <PageTitle title='GAME NOW LIVE' />
         
         <LiveBox data={Object.assign({feededData:false,hasTitle:false,title:data.title},data)} inverse={true}/>
         
-        <Banner data={data} pressBanner={pressBanner}/>
+        <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
         
         <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
             <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
@@ -114,10 +120,10 @@ const LiveGame = ({data, pressCoachBox, pressBanner}) => (
     </View>
 )
 
-const PreGame = ({data, pressBanner, onCountDownEnd}) => (
+const PreGame = ({data, pressBanner, onCountDownEnd, gameStatus}) => (
     <View>
         <PageTitle title='UPCOMING FIXTURE' />
-        <Banner data={data} pressBanner={pressBanner}/>
+        <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
         <Countdown 
             isHideUI={true}
             endDate={`${data.date} ${data.time}`} 
@@ -125,10 +131,10 @@ const PreGame = ({data, pressBanner, onCountDownEnd}) => (
     </View>
 )
 
-const PostGame = ({data, pressBanner, isLastFixture}) => (
+const PostGame = ({data, pressBanner, isLastFixture, gameStatus}) => (
     <View>
         <PageTitle title={isLastFixture? 'LAST FIXTURE' : 'UPCOMING FIXTURE'} />
-        <Banner data={data} pressBanner={pressBanner}/>
+        <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
     </View>
 )
 
@@ -356,18 +362,22 @@ class PlayerFigure extends Component {
 
         switch (gameStatus) {
             case 'live':
-                return <LiveGame data={fixture} 
+                return <LiveGame
+                            gameStatus={gameStatus}
+                            data={fixture} 
                             pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} 
                             pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':
                 return <PreGame 
+                            gameStatus={gameStatus}
                             data={fixture} 
                             pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
                 break;
             case 'post':
                 return <PostGame 
+                            gameStatus={gameStatus}
                             isLastFixture={this.state.isLastFixture}
                             data={fixture} 
                             pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
