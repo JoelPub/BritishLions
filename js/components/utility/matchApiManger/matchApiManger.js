@@ -95,7 +95,7 @@ function processSummaryData(type,data,summaryData){
   if (type==='init'&&data.length>0&&(result.length===0||(result.length>0&&data[0].sequenceId>result[0].seq))) {
     if(result.length===0) {
       data.map((value,index)=>{
-        result.push({seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+        result.push({seq:value.sequenceId,time:value.gameTime,description:value.eventString})
       })
     }
     else {
@@ -105,7 +105,7 @@ function processSummaryData(type,data,summaryData){
           if (__DEV__)console.log('value.sequenceId',value.sequenceId)
           if (__DEV__)console.log('result[i].seq',result[i].seq)
           if(value.sequenceId>result[i].seq) {
-            result.splice(i,0,{seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+            result.splice(i,0,{seq:value.sequenceId,time:value.gameTime,description:value.eventString})
             i++
           }
         })
@@ -134,7 +134,7 @@ function processSummaryData(type,data,summaryData){
   }
   else if(type==='extend'&&data.length>0){
     data.map((value,index)=>{
-      result.push({seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+      result.push({seq:value.sequenceId,time:value.gameTime,description:value.eventString})
     })
   }
   if (__DEV__)console.log('result',result)

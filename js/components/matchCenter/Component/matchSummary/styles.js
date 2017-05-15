@@ -19,16 +19,24 @@ module.exports = styleSheetCreate({
     	justifyContent:'center'
 	},
     timeText:{
-    	fontSize: 21,
-		lineHeight: 21,
-    	fontFamily:styleVar.fontCondensed,
-		backgroundColor: 'transparent',
-    	color:'rgb(175,0,30)',
-    	textAlign: 'center',
-		marginTop: 9,
-		android: {
-			marginTop: 3
-		}
+        fontSize: 21,
+        lineHeight: 21,
+        fontFamily:styleVar.fontCondensed,
+        backgroundColor: 'transparent',
+        color:'rgb(175,0,30)',
+        textAlign: 'center',
+        marginTop: 9,
+        android: {
+            marginTop: 3
+        }
+    },
+    minText:{
+        fontSize: 14,
+        lineHeight: 14,
+        fontFamily:styleVar.fontCondensed,
+        backgroundColor: 'transparent',
+        color:'rgb(175,0,30)',
+        textAlign: 'center',
     },
     scroll:{marginTop:50},
     timelineWrapper:{
