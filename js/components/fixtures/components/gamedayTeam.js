@@ -359,7 +359,7 @@ class GamedayTeam extends Component {
     // }
 
     _callbackIsTeamAvailable(isAvailable) {
-        console.log('_callbackIsTeamAvailable: ', isAvailable)
+        if(__DEV__)console.log('_callbackIsTeamAvailable: ', isAvailable)
         if (this.props.isGameTeamAvailable) {
             this.props.isGameTeamAvailable(isAvailable)
         }

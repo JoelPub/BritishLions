@@ -22,10 +22,11 @@ class MatchSummary extends Component {
       return (
         <View style={styles.timeWrapper}>
           <Text style={styles.timeText}>{rowData.time}</Text>
+          <Text style={styles.minText}>MIN</Text>
         </View>)
     }
     _onEndReached(){
-      console.log('end reached')
+      if(__DEV__)console.log('end reached')
       this.props.setEndReached()
     }
     render() {
@@ -45,7 +46,7 @@ class MatchSummary extends Component {
                               scrollEnabled: true,
                               enableEmptySections: true,
                               onEndReached:this._onEndReached.bind(this),
-                              onEndReachedThreshold: 30
+                              onEndReachedThreshold: 15
                             }}
                             renderCircle={this._renderCircle}
                           />            

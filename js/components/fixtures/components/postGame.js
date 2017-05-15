@@ -286,8 +286,8 @@ class PostGame extends Component {
 
     _navigateTo(route) {
         let details = this.props.details
-        console.log("*******************8")
-        console.log(details)
+        if(__DEV__)console.log("*******************8")
+        if(__DEV__)console.log(details)
         this.props.drillDown(details, route)
     }
     measurePage(page,event) {
@@ -308,7 +308,7 @@ class PostGame extends Component {
         let opposition = details.statics.opposition
         let bil = details.statics.bil
         let oppositionImage = fixture.opposition_image
-        console.log(oppositionImage)
+        if(__DEV__)console.log(oppositionImage)
         
         return (
             <View style={locStyle.matchResults}>

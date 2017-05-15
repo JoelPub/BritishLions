@@ -67,15 +67,15 @@ class ManOfTheMatchPostSubission extends Component {
             if(Array.isArray(this.savedVote)){
                 let i=this.savedVote.findIndex(v=>v.id===this.props.detail.id)
                 if(i<0) {
-                    this.savedVote.push({id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.id})
+                    this.savedVote.push({id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.current})
                 }
                 else{
                     this.savedVote[i].current=this.selectedMan.id
-                    this.savedVote[i].previous=this.state.savedMan.id
+                    this.savedVote[i].previous=this.state.savedMan.current
                 }
             }
             else {
-                this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.id}]
+                this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.current}]
             }
             
             this.props.setShowModal(true)

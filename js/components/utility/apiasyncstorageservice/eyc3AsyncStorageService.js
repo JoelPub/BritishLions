@@ -218,7 +218,7 @@ export async function getEYC3ExpertsSquads() {
 
 
 export async function getEYC3GameDayTeam(gameID) {
-    if (__DEV__) console.log('gameID: ', gameID)
+    if (__DEV__)console.log('gameID: ', gameID)
     storage.sync = {
         EYC3GameDayTeam(params) {
           let { id, resolve, reject} = params
@@ -230,11 +230,11 @@ export async function getEYC3GameDayTeam(gameID) {
               })
           })
           .then(response=>{
-              if (__DEV__) console.log('response', response)
+              if (__DEV__)console.log('response', response)
               return response.json()
           })
           .then(json=>{
-              if (__DEV__) console.log('json', json)
+              if (__DEV__)console.log('json', json)
               if(json) {
                   storage.save({
                       key: 'EYC3GameDayTeam',

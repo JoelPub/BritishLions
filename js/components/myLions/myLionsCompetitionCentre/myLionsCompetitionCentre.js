@@ -152,8 +152,8 @@ class MyLionsCompetitionCentre extends Component {
             this.props.setTeamData()
             this.props.setTeamToShow()            
         },1000)
-      console.log('***************')
-        console.log(this.props.jumpRoute)
+      if(__DEV__)console.log('***************')
+        if(__DEV__)console.log(this.props.jumpRoute)
     }
 
     componentWillReceiveProps(nextProps) {

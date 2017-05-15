@@ -38,7 +38,7 @@ class MatchCenter extends Component {
           isLoaded:false,
           statusArray: [false,false,false,false],
           momentumData:{},
-          summaryData:[],
+          summaryData:{timeline:[]},
           setPlayerData: [],
           onFireData:null,
           subPage:'landing'
@@ -69,23 +69,44 @@ class MatchCenter extends Component {
       //             })
       //           }
       //     })
+        let optionData={}
+        let type='extend'
+        // if(!this.statusArray[0]) {
+        optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        // }
+        // else {
+        //   optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        //   type='refresh'
+        // }
+        apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
+                      if (__DEV__)console.log('extend timelineData',timelineData)
+                      this.statusArray.fill(false)
+                      this.statusArray[0]=true
+                      let summaryData=this.state.summaryData
+                      summaryData.timeline=timelineData
+                      this.setState({
+                        statusArray: this.statusArray,
+                        summaryData:summaryData
+                      })
+        },(error)=>{
+        })
     }
 
     callApi = () => {
       if(this.state.index===0){
         this.setState({swiperHeight:styleVar.deviceHeight-120})
-        if (__DEV__)console.log('call match summary Api')
+        if (__DEV__)console.log('@@@call match summary Api',this.state.summaryData)
         let optionData={}
         let type='init'
-        if(!this.statusArray[0]) {
-          optionData={id:this.state.detail.id}
-        }
-        else {
-          optionData={id:this.state.detail.id,"sequenceId" : 20}
-          type='refresh'
-        }
+        // if(!this.statusArray[0]) {
+        optionData={id:this.state.detail.id}
+        // }
+        // else {
+        //   optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        //   type='refresh'
+        // }
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
-                      if (__DEV__)console.log('timelineData',timelineData)
+                      if (__DEV__)console.log('init timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
                       apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               
@@ -99,7 +120,7 @@ class MatchCenter extends Component {
         })
       }
       if(this.state.index===1){
-        if (__DEV__)console.log('call  set Play  Api')
+        if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
             this.statusArray.fill(false)
@@ -112,7 +133,7 @@ class MatchCenter extends Component {
         })
       }
       if(this.state.index===2){
-        if (__DEV__)console.log('on fire Api')
+        if (__DEV__)console.log('@@@on fire Api')
         apiActions.getGameOnFire(this.state.detail.id,(json)=>{
           this.statusArray.fill(false)
           this.statusArray[2]=true
@@ -126,7 +147,7 @@ class MatchCenter extends Component {
 
       }
       if(this.state.index===3){
-        if (__DEV__)console.log('call man of the match Api')
+        if (__DEV__)console.log('@@@call man of the match Api')
         setTimeout(()=>{
           if (this.state.detail.post!==null) {
             this.setState({subPage:'final'},()=>{              
@@ -164,7 +185,7 @@ class MatchCenter extends Component {
       }
     }
     componentDidMount() {
-        if(__DEV__)console.log('matchCenter componentDidMount this.state.detail',this.state.detail)
+        if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
             if(this.state.index!==3) this.timer = setInterval(this.callApi,30000)
@@ -175,12 +196,21 @@ class MatchCenter extends Component {
       this.timer&&clearTimeout(this.timer)
     }
     swiperScrollEnd = (e, state, context) => {
+      if(__DEV__)console.log('@@@matchCenter swiperScrollEnd')
+      this.timer&&clearTimeout(this.timer)
       this.setState({index:state.index},()=>{
-        this.timer&&clearTimeout(this.timer)
+        let i=this.state.index
         setTimeout(()=>{
-          this.callApi()
-          if(this.state.index!==3) this.timer = setInterval(this.callApi,10000)
-        },1000)
+          if(__DEV__)console.log('@@@i',i)
+          if(__DEV__)console.log('@@@this.state.index',this.state.index)
+          if(i===this.state.index) {
+            this.callApi()
+            if(this.state.index!==3) this.timer = setInterval(this.callApi,10000)
+          }
+          else {
+            this.timer&&clearTimeout(this.timer)
+          }
+        },2000)
         
       })
     }
@@ -271,7 +301,7 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-  console.log(state.content.drillDownItem)
+  if(__DEV__)console.log(state.content.drillDownItem)
   return {
     drillDownItem: state.content.drillDownItem,
     netWork: state.network
