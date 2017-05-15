@@ -64,8 +64,11 @@ class SetPlayer extends Component {
   render() {
     let {isActive,modalAble} = this.props
    let { kicks, scrums,line_outs} = this.props.set_plays
-
-    return (
+    let Widefield = styleVar.deviceWidth===320 ? 180 : 202
+    let rightPartWidth = {
+      width: styleVar.deviceWidth-Widefield-40,
+    }
+     return (
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
@@ -77,14 +80,15 @@ class SetPlayer extends Component {
         >
          <View tabLabel='KICKS'>
            <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
-           <View style={styles.itemContainer}  >
+           <View style={[styles.itemContainer]}  >
              <StadiumFigure
                redPoints={ kicks.opposition.conversions.details}
                orangePoints = {kicks.opposition.penalties.details}
                blackPoints = {kicks.bil.conversions.details}
                bluePoints = {kicks.bil.penalties.details}
+               imageWith = {Widefield}
              />
-             <View style={styles.rightContainer}>
+             <View style={[styles.rightContainer,rightPartWidth]}>
                <Scoreboard isWithProportion={true}
                            oppositionScore = {kicks.bil.conversions}
                            bilScore = {kicks.bil.penalties}
@@ -106,9 +110,10 @@ class SetPlayer extends Component {
                 orangePoints = {scrums.opposition.lost.details}
                 blackPoints = {scrums.bil.won.details}
                 bluePoints = {scrums.bil.lost.details}
+                imageWith = {Widefield}
 
               />
-              <View style={styles.rightContainer}>
+              <View style={[styles.rightContainer,rightPartWidth]}>
                 <Scoreboard   titles={['WON','LOST']}
                               oppositionScore = { scrums.opposition.won}
                               bilScore =  {scrums.opposition.lost}
@@ -128,8 +133,9 @@ class SetPlayer extends Component {
                 orangePoints = {line_outs.opposition.lost.details}
                 blackPoints = {line_outs.bil.won.details}
                 bluePoints = {line_outs.bil.lost.details}
+                imageWith = {Widefield}
               />
-              <View style={styles.rightContainer}>
+              <View style={[styles.rightContainer,rightPartWidth]}>
                 <Scoreboard titles={['WON','LOST']}
                             oppositionScore = { line_outs.opposition.won}
                             bilScore =  {line_outs.opposition.lost}

@@ -28,7 +28,7 @@ module.exports = styleSheetCreate({
     }
   },
   rightContainer: {
-    width:styleVar.deviceWidth-202-30,
+    width:styleVar.deviceWidth-202-40,
     borderWidth:1,
     borderColor:'rgb(216,217,218)',
     borderLeftWidth:0
