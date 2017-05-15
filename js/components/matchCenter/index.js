@@ -198,7 +198,8 @@ class MatchCenter extends Component {
     swiperScrollEnd = (e, state, context) => {
       if(__DEV__)console.log('@@@matchCenter swiperScrollEnd')
       this.timer&&clearTimeout(this.timer)
-      this.setState({index:state.index},()=>{
+      this.statusArray.fill(false)
+      this.setState({index:state.index,statusArray: this.statusArray},()=>{
         let i=this.state.index
         setTimeout(()=>{
           if(__DEV__)console.log('@@@i',i)
@@ -241,8 +242,10 @@ class MatchCenter extends Component {
                                 statusArray[0]? <MatchSummary detail={this.state.detail} setHeight={this._setHeight.bind(this)} summaryData={this.state.summaryData} setEndReached={this.pullHistorySummary.bind(this)}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[0]&&this.state.index===0&&
+                                        !statusArray[0]&&this.state.index===0?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
                                       }
                                     </View>
                               }
@@ -251,8 +254,10 @@ class MatchCenter extends Component {
                                                                  set_plays={setPlayerData.set_plays} modalAble={modalAble}/>
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[1]&&this.state.index===1&&
+                                        !statusArray[1]&&this.state.index===1?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
                                       }
                                     </View>
                               }
@@ -263,8 +268,10 @@ class MatchCenter extends Component {
                                 />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[2]&&this.state.index===2&&
+                                        !statusArray[2]&&this.state.index===2?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
                                       }
                                     </View>
                               }
@@ -273,8 +280,10 @@ class MatchCenter extends Component {
 
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[3]&&this.state.index===3&&
+                                        !statusArray[3]&&this.state.index===3?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
                                       }
                                     </View>
                               }
