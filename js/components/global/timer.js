@@ -38,9 +38,11 @@ export default class Timer extends Component {
             min:'00',
             sec:'00'
         }
+        this.unMounted=false
     }
     setTimer(type,game_time){
-        // if (__DEV__)console.log('setTimer',type,game_time)
+        // if (__DEV__)console.log('!!!setTimer',type,game_time)
+        if(this.unMounted) return
         let min=0
         let sec=0
         if(type==='init'&&game_time!==null) {
@@ -55,18 +57,20 @@ export default class Timer extends Component {
             min=min+1
             sec=sec-60
         }
-        // if (__DEV__)console.log('min',min)
-        // if (__DEV__)console.log('sec',sec)
+        // if (__DEV__)console.log('!!!min',min)
+        // if (__DEV__)console.log('!!!sec',sec)
+        // if (__DEV__)console.log('!!!this.state.min',this.state.min)
+        // if (__DEV__)console.log('!!!this.state.sec',this.state.sec)
         this.setState({min:min<10?`0${min}`:min.toString(),sec:sec<10?`0${sec}`:sec.toString()})
     }
     componentWillReceiveProps(nextProps,nextState) {
-        if (__DEV__)console.log('!!!Timer componentWillReceiveProps')
+        // if (__DEV__)console.log('!!!Timer componentWillReceiveProps')
         // if (__DEV__)console.log('this.props',this.props)
         // if (__DEV__)console.log('nextProps',nextProps)
         // if (__DEV__)console.log('nextState',nextState)
         // if (__DEV__)console.log('this.state',this.state)
-        if (__DEV__)console.log('this.props.game_time',this.props.game_time)
-        if (__DEV__)console.log('nextProps.game_time',nextProps.game_time)
+        // if (__DEV__)console.log('this.props.game_time',this.props.game_time)
+        // if (__DEV__)console.log('nextProps.game_time',nextProps.game_time)
         // if (__DEV__)console.log('this.state.min',this.state.min)
         // if (__DEV__)console.log('this.state.sec',this.state.sec)
         if(nextProps.game_time!==this.props.game_time) {
@@ -78,7 +82,9 @@ export default class Timer extends Component {
         }
     }
     componentWillUnmount() {
-      this.timer&&clearTimeout(this.timer)
+        // if (__DEV__)console.log('!!!Timer componentWillUnmount')
+        this.unMounted=true
+        this.timer&&clearTimeout(this.timer)
     }
     render() {
         return (
