@@ -22,6 +22,7 @@ class MatchSummary extends Component {
       return (
         <View style={styles.timeWrapper}>
           <Text style={styles.timeText}>{rowData.time}</Text>
+          <Text style={styles.minText}>MIN</Text>
         </View>)
     }
     _onEndReached(){
