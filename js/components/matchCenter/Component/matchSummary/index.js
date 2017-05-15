@@ -45,7 +45,7 @@ class MatchSummary extends Component {
                               scrollEnabled: true,
                               enableEmptySections: true,
                               onEndReached:this._onEndReached.bind(this),
-                              onEndReachedThreshold: 30
+                              onEndReachedThreshold: 15
                             }}
                             renderCircle={this._renderCircle}
                           />            

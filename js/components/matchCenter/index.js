@@ -38,7 +38,7 @@ class MatchCenter extends Component {
           isLoaded:false,
           statusArray: [false,false,false,false],
           momentumData:{},
-          summaryData:[],
+          summaryData:{timeline:[]},
           setPlayerData: [],
           onFireData:null,
           subPage:'landing'
@@ -69,23 +69,44 @@ class MatchCenter extends Component {
       //             })
       //           }
       //     })
+        let optionData={}
+        let type='extend'
+        // if(!this.statusArray[0]) {
+        optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        // }
+        // else {
+        //   optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        //   type='refresh'
+        // }
+        apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
+                      if (__DEV__)console.log('extend timelineData',timelineData)
+                      this.statusArray.fill(false)
+                      this.statusArray[0]=true
+                      let summaryData=this.state.summaryData
+                      summaryData.timeline=timelineData
+                      this.setState({
+                        statusArray: this.statusArray,
+                        summaryData:summaryData
+                      })
+        },(error)=>{
+        })
     }
 
     callApi = () => {
       if(this.state.index===0){
         this.setState({swiperHeight:styleVar.deviceHeight-120})
-        if (__DEV__)console.log('call match summary Api')
+        if (__DEV__)console.log('call match summary Api',this.state.summaryData)
         let optionData={}
         let type='init'
-        if(!this.statusArray[0]) {
-          optionData={id:this.state.detail.id}
-        }
-        else {
-          optionData={id:this.state.detail.id,"sequenceId" : 20}
-          type='refresh'
-        }
+        // if(!this.statusArray[0]) {
+        optionData={id:this.state.detail.id}
+        // }
+        // else {
+        //   optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        //   type='refresh'
+        // }
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
-                      if (__DEV__)console.log('timelineData',timelineData)
+                      if (__DEV__)console.log('init timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
                       apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               

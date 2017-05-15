@@ -11,11 +11,14 @@ export function getGameMomentum(type,gameID,onSuccess,OnError) {
       onAxiosEnd: null,
       method: 'post',
       onSuccess: (json)=>{
-            if(json.data) {
-                      if (__DEV__)console.log('json.data',json.data)
-                      if(type==='momentum')json.data.momentum=processMomentumData(json.data.momentum)
-                      // if(__DEV__)console.log('json.data',json.data)
-                      onSuccess(json.data)
+              if(json.data) {
+                if (__DEV__)console.log('json.data',json.data)
+                if(type==='momentum')json.data.momentum=processMomentumData(json.data.momentum)
+                // if(__DEV__)console.log('json.data',json.data)
+                onSuccess(json.data)
+              }
+              else {
+                onError(json)
               }
           },
       onError: OnError,
@@ -58,19 +61,22 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
   }
    service(optionsInfo)
 }
-export function getTimeLineLiveSummary (serviceData, type, summaryData, onSuccess, onError) {
+export function getTimeLineLiveSummary (options, type, summaryData, onSuccess, onError) {
   let optionsInfo = {
     url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
-    data: serviceData,
+    data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
     method: 'post',
     onSuccess: (json)=>{
-                if(json.data) {
-                          if (__DEV__)console.log('json.data',json.data)
-                          json.data=processSummaryData(type,json.data,summaryData)
-                          if(__DEV__)console.log('json.data',json.data)
-                          onSuccess(json.data)
+                  if(json.data) {
+                    if (__DEV__)console.log('json.data',json.data)
+                    json.data=processSummaryData(type,json.data,summaryData)
+                    if(__DEV__)console.log('json.data',json.data)
+                    onSuccess(json.data)
+                  }
+                  else {
+                    onError(json)
                   }
               },
     onError: onError,
@@ -82,14 +88,29 @@ export function getTimeLineLiveSummary (serviceData, type, summaryData, onSucces
 
 }
 function processSummaryData(type,data,summaryData){
-  let result=[]
-  data.map((value,index)=>{
-    result.push({seq:index+1,time:value.gameTime,description:value.eventString})
-  })
-  if (type==='refresh'&&summaryData.timeline.length>0) {
-    summaryData.timeline.map((value,index)=>{
-      result.push({seq:data.length+index+1,time:value.time,description:value.description})
-    })
+  if (__DEV__)console.log('processSummaryData',type)
+  if (__DEV__)console.log('data',data)
+  if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
+  let result=summaryData.timeline
+  if (type==='init'&&data.length>0&&(result.length===0||(result.length>0&&data[0].sequenceId>result[0].seq))) {
+    if(result.length===0) {
+      data.map((value,index)=>{
+        result.push({seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+      })
+    }
+    else {
+        let i=0
+        data.map((value,index)=>{
+          if (__DEV__)console.log('i',i)
+          if (__DEV__)console.log('value.sequenceId',value.sequenceId)
+          if (__DEV__)console.log('result[i].seq',result[i].seq)
+          if(value.sequenceId>result[i].seq) {
+            result.splice(i,0,{seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+            i++
+          }
+        })
+    }
+    
     let toast = Toast.show('THERE ARE NEW MESSAGES', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.BOTTOM,
@@ -111,6 +132,12 @@ function processSummaryData(type,data,summaryData){
                     }
                 })
   }
+  else if(type==='extend'&&data.length>0){
+    data.map((value,index)=>{
+      result.push({seq:value.sequenceId,time:`${value.gameTime} MIN`,description:value.eventString})
+    })
+  }
+  if (__DEV__)console.log('result',result)
   return result
 }
 function processMomentumData(data){

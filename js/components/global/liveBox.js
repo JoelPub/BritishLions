@@ -63,7 +63,7 @@ export default class LiveBox extends Component {
         }
     }
     callApi = () => {
-        if (__DEV__)console.log('call livebox Api')
+        if (__DEV__)console.log('call livebox Api(self extract)')
         apiActions.getGameMomentum('time',this.props.data.id,(data)=>{
                     this.setState({
                       game_time: data.game_time,
@@ -108,7 +108,7 @@ export default class LiveBox extends Component {
         let inverse = this.props.inverse || false
         let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
-        console.log('this.props.data.opposition_image',this.props.data.opposition_image)
+        // if (__DEV__)console.logconsole.log('this.props.data.opposition_image',this.props.data.opposition_image)
         return (
             <View>
                 <View style={styleLiveBox}>
