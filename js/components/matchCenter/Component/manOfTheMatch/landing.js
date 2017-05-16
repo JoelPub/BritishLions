@@ -96,6 +96,9 @@ class ManOfTheMatchLanding extends Component {
                 }            
         })
     }
+    componentWillUnmount() {
+      if(__DEV__)console.log('@@@landing componentWillUnmount')
+    }
     
     render() {
         return (

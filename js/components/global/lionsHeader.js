@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { popRoute, pushNewRoute, popToRoute } from '../../actions/route'
+import { popRoute, pushNewRoute, popToRoute,replaceOrPushRoute } from '../../actions/route'
 import { openDrawer } from '../../actions/drawer'
 import { Image } from 'react-native'
 import { Header, Text, Icon } from 'native-base'
@@ -103,7 +103,7 @@ class LionsHeader extends Component {
         if (this.props.title === 'LANDING') {
             this.scrollToTop()
         } else {
-            this.pushNewRoute('landing')
+            this.props.replaceOrPushRoute('landing')
         }
     }
 
@@ -166,6 +166,7 @@ function bindAction(dispatch) {
         openDrawer: ()=>dispatch(openDrawer()),
         pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
         popRoute: ()=>dispatch(popRoute()),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
         popToRoute: (route)=>dispatch(popToRoute(route))
     }
 }

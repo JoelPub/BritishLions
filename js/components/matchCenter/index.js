@@ -196,6 +196,7 @@ class MatchCenter extends Component {
         
     }
     componentWillUnmount() {
+      if(__DEV__)console.log('@@@matchCenter componentWillUnmount')
       this.timer&&clearTimeout(this.timer)
     }
     swiperScrollEnd = (e, state, context) => {

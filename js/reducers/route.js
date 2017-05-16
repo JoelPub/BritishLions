@@ -44,10 +44,9 @@ export default function (state:State = initialState, action:Action): State {
   // For sidebar navigation
   if (action.type === REPLACE_OR_PUSH_ROUTE) {
     let routes = state.routes
-
-    if(routes[routes.length - 1] == 'home') {
+    if(routes[routes.length - 1] == 'landing') {
       // If top route is home and user navigates to a route other than home, then push
-      if(action.route != 'home')
+      if(action.route != 'landing')
         globalNav.navigator.push({id: action.route})
 
       // If top route is home and user navigates to home, do nothing
@@ -56,12 +55,12 @@ export default function (state:State = initialState, action:Action): State {
     }
 
     else {
-      if(action.route == 'home') {
-        globalNav.navigator.resetTo({id: 'home'})
+      if(action.route == 'landing') {
+        globalNav.navigator.resetTo({id: 'landing'})
         routes = []
       }
       else {
-        globalNav.navigator.replaceWithAnimation({id: action.route})
+        globalNav.navigator.resetTo({id: action.route})
         routes.pop()
       }
 

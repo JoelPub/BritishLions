@@ -175,6 +175,7 @@ class CoachsBox extends Component {
     })
   }
   componentWillUnmount() {
+    if(__DEV__)console.log('@@@coachsbox componentWillUnmount')
     this.isUnMounted = true
   }
 }
