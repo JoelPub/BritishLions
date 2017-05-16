@@ -231,7 +231,7 @@ class MatchCenter extends Component {
             <Container theme={theme}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        back={false} 
+                        back={true} 
                         title={this.subjects[this.state.index]}
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
