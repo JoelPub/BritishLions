@@ -56,7 +56,7 @@ class StadiumFigure extends Component {
               }
               return(
                 <View
-                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'red'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'rgb(208,7,41)'},loactionStyle]}
                   key={index}
                 />
                 )
