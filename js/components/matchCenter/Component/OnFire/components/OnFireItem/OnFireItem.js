@@ -65,6 +65,7 @@ class OnFireItem extends Component {
     let {isLastItem,title,data,playerData} = this.props
     let isHaveM = false
     isHaveM = title==='METRES' ? true : false
+    if (!data) data= []
     return (
       <View style={[styles.box,,isLastItem ? {borderBottomWidth:1}:{}]}>
         <View style={ [styles.headerView,{ borderBottomWidth: 1}]}>
