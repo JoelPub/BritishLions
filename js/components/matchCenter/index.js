@@ -94,6 +94,8 @@ class MatchCenter extends Component {
     }
 
     callApi = () => {
+      if (__DEV__)console.log('gameID',this.state.detail.id)
+
       if(this.state.index===0){
         this.setState({swiperHeight:styleVar.deviceHeight-120})
         if (__DEV__)console.log('@@@call match summary Api',this.state.summaryData)
