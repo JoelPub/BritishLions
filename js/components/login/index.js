@@ -88,7 +88,7 @@ class Login extends Component {
         // isAccessGranted flag is set to false when 
         // user is in the login page
         NativeModules.One.sendInteraction('/signInView',
-          '');
+          {});
         setTimeout(() => {
             removeToken() 
             this.props.setAccessGranted(false)
