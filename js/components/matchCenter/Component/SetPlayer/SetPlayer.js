@@ -82,10 +82,10 @@ class SetPlayer extends Component {
            <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
            <View style={[styles.itemContainer]}  >
              <StadiumFigure
-               redPoints={ kicks.opposition.conversions.details}
-               orangePoints = {kicks.opposition.penalties.details}
-               blackPoints = {kicks.bil.conversions.details}
-               bluePoints = {kicks.bil.penalties.details}
+               redPoints={ kicks.bil.conversions.details}
+               orangePoints = {kicks.bil.penalties.details}
+               blackPoints = {kicks.opposition.conversions.details}
+               bluePoints = {kicks.opposition.penalties.details}
                imageWith = {Widefield}
              />
              <View style={[styles.rightContainer,rightPartWidth]}>
@@ -96,8 +96,6 @@ class SetPlayer extends Component {
                <Scoreboard isWithProportion={true} isDown={true}
                            oppositionScore = {kicks.opposition.conversions}
                            bilScore = {kicks.opposition.penalties}
-
-
                />
              </View>
            </View>
@@ -106,10 +104,10 @@ class SetPlayer extends Component {
            <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
             <View style={styles.itemContainer}  >
               <StadiumFigure
-                redPoints={ scrums.opposition.won.details}
-                orangePoints = {scrums.opposition.lost.details}
-                blackPoints = {scrums.bil.won.details}
-                bluePoints = {scrums.bil.lost.details}
+                redPoints={ scrums.bil.won.details}
+                orangePoints = {scrums.bil.lost.details}
+                blackPoints = {scrums.opposition.won.details}
+                bluePoints = {scrums.opposition.lost.details}
                 imageWith = {Widefield}
 
               />
@@ -129,10 +127,10 @@ class SetPlayer extends Component {
             <IconHeader onPress={this.iconPress}  modalAble={modalAble} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
-                redPoints={ line_outs.opposition.won.details}
-                orangePoints = {line_outs.opposition.lost.details}
-                blackPoints = {line_outs.bil.won.details}
-                bluePoints = {line_outs.bil.lost.details}
+                redPoints={ line_outs.bil.won.details}
+                orangePoints = {line_outs.bil.lost.details}
+                blackPoints = {line_outs.opposition.won.details}
+                bluePoints = {line_outs.opposition.lost.details}
                 imageWith = {Widefield}
               />
               <View style={[styles.rightContainer,rightPartWidth]}>
