@@ -131,8 +131,19 @@ class CoachsBox extends Component {
 
   /* nav to  */
   goToMatch = (page) => {
+    // if (__DEV__)console.log('page',page)
+    // if (__DEV__)console.log('this.props.details',this.props.details)
     page = page ? page : 0
-    this.props.drillDown(Object.assign({page:page},this.props.details),'matchCenter');
+    let details=this.props.details
+    // if (__DEV__)console.log('details.page',details.page)
+    if(details.page!==undefined) {
+      details.page=page
+    }
+    else {
+      details=Object.assign({page:page},details)
+    }
+    // if (__DEV__)console.log('details',details)
+    this.props.drillDown(details,'matchCenter');
   }
   render() {
 

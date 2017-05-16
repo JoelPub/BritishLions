@@ -12,7 +12,9 @@ export function getGameMomentum(type,gameID,onSuccess,OnError) {
       method: 'post',
       onSuccess: (json)=>{
               if(json.data) {
-                if (__DEV__)console.log('json.data',json.data)
+                if (__DEV__)console.log('json.data.game_time',json.data.game_time)
+                if (__DEV__)console.log('json.data.statics',json.data.statics)
+                if (__DEV__)console.log('json.data.momentum',json.data.momentum)
                 if(type==='momentum')json.data.momentum=processMomentumData(json.data.momentum)
                 // if(__DEV__)console.log('json.data',json.data)
                 onSuccess(json.data)

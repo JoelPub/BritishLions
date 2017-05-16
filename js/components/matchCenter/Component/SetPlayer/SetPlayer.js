@@ -135,12 +135,12 @@ class SetPlayer extends Component {
               />
               <View style={[styles.rightContainer,rightPartWidth]}>
                 <Scoreboard titles={['WON','LOST']}
-                            oppositionScore = { line_outs.opposition.won}
-                            bilScore =  {line_outs.opposition.lost}
-                />
-                <Scoreboard isDown={true} titles={['WON','LOST']}
                             oppositionScore = { line_outs.bil.won}
                             bilScore =  {line_outs.bil.lost}
+                />
+                <Scoreboard isDown={true} titles={['WON','LOST']}
+                            oppositionScore = { line_outs.opposition.won}
+                            bilScore =  {line_outs.opposition.lost}
                 />
               </View>
             </View>
