@@ -40,12 +40,13 @@ class StadiumFigure extends Component {
   render() {
     let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith} = this.props
     let pointWidth = 14
-    let extraHeight = 45
+    let extraHeight = 90
     return (
       <View style={[styles.container,{width:imageWith}]} >
         <Image style={[styles.image,{width:imageWith}]} source={stadiumImage} >
           {
             redPoints.map((item,index)=>{
+              if(item.x===null || item.y===null) return null
               let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
@@ -63,6 +64,8 @@ class StadiumFigure extends Component {
           }
           {
             blackPoints.map((item,index)=>{
+              if(item.x===null || item.y===null) return null
+
               let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
@@ -79,6 +82,8 @@ class StadiumFigure extends Component {
           }
           {
             orangePoints.map((item,index)=>{
+              if(item.x===null || item.y===null) return null
+
               let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
@@ -98,6 +103,8 @@ class StadiumFigure extends Component {
           }
           {
             bluePoints.map((item,index)=>{
+              if(item.x===null || item.y===null) return null
+
               let newItem = this.countPoint(item,extraHeight,imageWith)
               let loactionStyle = {
                 left:newItem.x-7,
