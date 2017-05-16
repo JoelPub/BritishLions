@@ -47,8 +47,18 @@ class OnFire extends Component {
     })
   }
   mathHeight = (half_time,full_time,index) => {
-   let  countHalf =  half_time.metres.length + half_time.passes.length + half_time.breaks.length + half_time.breaks.length
-   let  countFull =  full_time.metres.length + full_time.passes.length + full_time.breaks.length + full_time.breaks.length
+    let halfLength  = half_time.metres ? half_time.metres.length : 0
+    let halfLength2  = half_time.passes ? half_time.passes.length : 0
+    let halfLength3  = half_time.breaks ? half_time.breaks.length : 0
+    let halfLength4  = half_time.tackles ? half_time.tackles.length : 0
+
+    let fullLength  = full_time.metres ? full_time.metres.length : 0
+    let fullLength2  = full_time.passes ? full_time.passes.length : 0
+    let fullLength3  = full_time.breaks ? full_time.breaks.length : 0
+    let fullLength4  = full_time.tackles ? full_time.tackles.length : 0
+
+   let  countHalf =  halfLength + halfLength2  + halfLength3+halfLength4
+   let  countFull =  fullLength+  + fullLength2 + fullLength3+fullLength4
    //let  realyCount =  countHalf>= countFull ? countHalf : countFull
     let realCount = index ===0 ? countHalf : countFull
     return  realCount*50
@@ -157,18 +167,7 @@ OnFire.defaultProps = {
       ],
     },
     full_time: {
-      metres: [
 
-      ],
-      passes:[
-
-      ],
-      breaks:[
-
-      ],
-      tackles:[
-
-      ],
     }
   }
 }
