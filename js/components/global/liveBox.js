@@ -77,7 +77,7 @@ export default class LiveBox extends Component {
         if (__DEV__)console.log('livebox componentDidMount',this.props.data)
         if(this.props.data&&!this.props.data.feededData) {
             this.callApi()
-            this.timer = setInterval(this.callApi,30000)
+            this.timer = setInterval(this.callApi,120000)
 
         }
         else {
