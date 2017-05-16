@@ -31,7 +31,7 @@ class Scoreboard extends Component {
    let {isWithProportion,isDown ,titles,oppositionScore,bilScore} = this.props
    let  proportionMargin =  isWithProportion ? {marginLeft :10} : {}
     let iconImage = !isDown ?  lionsCopyImage: barbarinasCopyImage
-    let colorConversions = !isDown ? styleVar.brandPrimary : 'black'
+    let colorConversions = !isDown ? 'rgb(208,7,41)' : 'black'
     let colorPenalties = !isDown ? 'rgb(255,204,40)' : 'rgb(31,188,210)'
     let deviveFiveStyle = styleVar.deviceWidth ===320 ? {fontSize: 14,lineHeight: 14} : {}
 
