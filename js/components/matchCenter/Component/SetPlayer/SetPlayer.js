@@ -183,6 +183,108 @@ SetPlayer.propTypes = {
   modalAble: PropTypes.bool,
 }
 SetPlayer.defaultProps = {
-  set_plays: {},
+  set_plays: {
+    kicks: {
+      opposition: {
+        conversions: {
+           value : '',
+           percentage : '',
+           details : [
+
+          ]
+        },
+         penalties : {
+           value : '',
+           percentage : '',
+           details : [
+
+          ]
+        }
+      },
+       bil : {
+         conversions : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        },
+         penalties : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        }
+      }
+    },
+     scrums : {
+       opposition : {
+         won : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        },
+         lost : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        }
+      },
+       bil : {
+         won : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        },
+         lost : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        }
+      }
+    },
+     line_outs : {
+       opposition : {
+         won : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        },
+         lost : {
+           value :  '' ,
+           percentage :  '' ,
+           details : [
+
+          ]
+        }
+      },
+       bil : {
+         won : {
+           value :  '' ,
+           percentage :  '',
+           details : [
+
+          ]
+        },
+         lost : {
+           value :'',
+           percentage : '' ,
+           details : [
+          ]
+        }
+      }
+    }
+  },
   isActive:false
 }
