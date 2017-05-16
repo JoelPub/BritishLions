@@ -189,7 +189,7 @@ class MatchCenter extends Component {
         if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
-            if(this.state.index!==3) this.timer = setInterval(this.callApi,30000)
+            if(this.state.index!==3) this.timer = setInterval(this.callApi,120000)
         })},500)
         
     }
@@ -214,7 +214,7 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if(this.state.index!==3) this.timer = setInterval(this.callApi,10000)              
+              if(this.state.index!==3) this.timer = setInterval(this.callApi,120000)              
             })
           }
           else {
