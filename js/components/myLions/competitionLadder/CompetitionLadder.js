@@ -448,9 +448,10 @@ class CompetitionLadder extends Component {
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>LEADERBOARD</Text>
-              <Text style={styles.modalContentText}>This Leaderboard lets you know how you rank against all the other users. Your rank and points will be displayed alongside the Global Top 5 users. Please note the rank will not refresh in real time. If you are proud of your rank you can share this on social media.
-              </Text>
-              <Text style={styles.modalContentText}>You can create a private league for just you and your friends by selecting “Create Private League” to get your personalised code. If you have received a join code from a friend or one of the Lions sponsors you can join their league by selecting “Join Private League”. You can see and access your private leagues at the bottom of this screen.</Text>
+              <Text style={styles.modalContentText}>This Leaderboard displays your rank against all other users. Your rank and point score will be displayed alongside the Top 5 Global users. Please note the rank will not refresh in real time.</Text>
+              <Text style={styles.modalContentText}>Share your rank on social media using the ‘Share’ button.</Text>
+              <Text style={styles.modalContentText}>Create a private league for you and your friends by selecting “Create Private League” to receive a personalised code to share. If you have received a join code from a friend or one of the Lions sponsors you can join their league by selecting “Join Private League.”</Text>
+              <Text style={styles.modalContentText}>Access your private leagues at the bottom of this screen.</Text>
             </View>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>

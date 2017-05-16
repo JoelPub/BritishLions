@@ -102,7 +102,7 @@ class OnFire extends Component {
                     <ScrollView style={[styles.modalContent]}>
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>These screens will be updated at half time and full time to show which British & Irish Lions are performing above their career averages based on key match statistics.</Text>
+                              <Text style={styles.modalContentText}>On-fire displays the top three players from the Lions team based on their performance in the following categories; Metres gained, Successful passes, Successful breaks, and Tackles made. A player who is performing above their historical average is marked with a red star.</Text>
                           </View>
                     </ScrollView>
                   </SquadModal>

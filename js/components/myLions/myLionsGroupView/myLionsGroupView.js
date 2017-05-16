@@ -249,8 +249,8 @@ class MyLionsGroupView extends Component {
             callbackParent={this.iconPress}>
             <View style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>PRIVATE LEAGUES</Text>
-              <Text style={styles.modalContentText}>You are now in one of your private leagues, you will be able to see your rank and points, alongside the top 20 members in the private league. Please note the rank will not refresh in real time.</Text>
-              <Text style={styles.modalContentText}>You can invite others to the league by using the selecting “Invite Code” and sharing it with your friends. If you no longer want to be part of this league you can leave it by selecting “Leave League”.</Text>
+              <Text style={styles.modalContentText}>You are now part of a private league. Your rank and point score will be displayed alongside the top 20 members in your private league. Please note the rank will not refresh in real time.</Text>
+              <Text style={styles.modalContentText}>Invite others to join your league by selecting “Invite Code” and sharing it with your friends. If you no longer want to be part of the league you can leave it by selecting “Leave League”.</Text>
             </View>
           </SquadModal>
           <ModalInviteCode modalVisible = {modalInviteCode } callbackParent ={this.hideInviteCodeView}
