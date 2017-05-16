@@ -49,6 +49,32 @@ class ButtonNetwork extends Component {
         }
         
     }
+    componentDidMount(){
+        if (__DEV__)console.log('componentDidMount this.props.connectionInfo',this.props.connectionInfo)
+        if(this.props.connectionInfo===null||strToUpper(this.props.connectionInfo)==='NONE'){
+            let toast = Toast.show('Please make sure that you\'re connected to the network.', {
+                duration: Toast.durations.LONG,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                onShow: () => {
+                    // calls on toast\`s appear animation start
+                },
+                onShown: () => {
+                    // calls on toast\`s appear animation end.
+                },
+                onHide: () => {
+                    // calls on toast\`s hide animation start.
+                },
+                onHidden: () => {
+                    // calls on toast\`s hide animation end.
+                }
+            })
+            this.setState({btnDisable:true})
+        }
+    }
 
     render() {
         return (
