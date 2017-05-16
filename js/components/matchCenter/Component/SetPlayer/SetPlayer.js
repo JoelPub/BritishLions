@@ -113,12 +113,12 @@ class SetPlayer extends Component {
               />
               <View style={[styles.rightContainer,rightPartWidth]}>
                 <Scoreboard   titles={['WON','LOST']}
-                              oppositionScore = { scrums.opposition.won}
-                              bilScore =  {scrums.opposition.lost}
+                              oppositionScore = { scrums.bil.won}
+                              bilScore =  {scrums.bil.lost}
                 />
                 <Scoreboard isDown={true} titles={['WON','LOST']}
-                            oppositionScore = { scrums.bil.won}
-                            bilScore =  {scrums.bil.lost}
+                            oppositionScore = { scrums.opposition.won}
+                            bilScore =  {scrums.opposition.lost}
                 />
               </View>
             </View>
