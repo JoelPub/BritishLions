@@ -32,6 +32,7 @@ import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.magus.fblogin.FacebookLoginPackage;
 import com.facebook.FacebookSdk;
 import com.facebook.applinks.AppLinkData;
+import com.facebook.appevents.AppEventsLogger;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -70,6 +71,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     FacebookSdk.sdkInitialize(getApplicationContext());
+    AppEventsLogger.activateApp(this);
     AppLinkData.fetchDeferredAppLinkData(this,
             new AppLinkData.CompletionHandler() {
               @Override

@@ -100,5 +100,11 @@
             android:name="io.fabric.ApiKey"
             android:value="f24f58d836dd1c903684d78430cc1bf20184d114"
         />
+
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider251610908595186"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"
+        />
     </application>
 </manifest>
