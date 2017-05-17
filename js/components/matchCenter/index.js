@@ -228,8 +228,7 @@ class MatchCenter extends Component {
       })
     }
     render() {
-      let { statusArray ,setPlayerData,onFireData,modalInfo} = this.state
-      let modalAble = !modalInfo
+      let { statusArray ,setPlayerData,onFireData} = this.state
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
@@ -264,7 +263,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[1]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}
-                                                                 set_plays={setPlayerData.set_plays} modalAble={modalAble}/>
+                                                                 set_plays={setPlayerData.set_plays} />
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[1]&&this.state.index===1?

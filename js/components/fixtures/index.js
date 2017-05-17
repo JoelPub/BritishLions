@@ -72,6 +72,7 @@ class Fixtures extends Component {
     }
 
     componentWillUnmount() {
+        if(__DEV__)console.log('@@@fixtures componentWillUnmount')
         this.isUnMounted = true
     }
 

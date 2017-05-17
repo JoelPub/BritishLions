@@ -17,11 +17,12 @@ import SetPlayerTabBar from  '../SetPlayer/Components/SetPlayerTabBar'
 
 import OnFireItem from  './components/OnFireItem'
 
-const  IconHeader = ({onPress}) => {
+const  IconHeader = ({onPress,modalAble}) => {
   return (
     <View style={{flexDirection:'row-reverse', paddingHorizontal: 8,marginTop:5}} >
-      <ButtonFeedback style={{width:30}}
-                      onPress={onPress}>
+      <ButtonFeedback style={{width:30,backgroundColor:'transparent'}}
+                      onPress={onPress}
+                      disabled={!modalAble}>
         <Icon name='ios-information-circle-outline' style={{color: styleVar.colorScarlet,fontSize: 22,lineHeight: 22}} />
       </ButtonFeedback>
     </View>
@@ -35,11 +36,14 @@ class OnFire extends Component {
     this.state = {
           modalInfo:false,
           h:0,
-          playerList: []
+          playerList: [],
+          modalAble:true
     }
   }
   iconPress = () => {
-      this.setState({modalInfo: !this.state.modalInfo})
+      this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
+        setTimeout(()=>this.setState({modalAble:true}),500)
+      })
   }
   updateMadal = () =>{
     this.setState({
@@ -88,7 +92,7 @@ class OnFire extends Component {
           onChangeTab = {this.onChangeTab}
         >
           <View tabLabel='HALF-TIME'>
-            <IconHeader onPress={this.iconPress} />
+            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
             <View style={{ padding: 20,paddingTop:3}}>
               <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
@@ -97,7 +101,7 @@ class OnFire extends Component {
             </View>
           </View>
           <View tabLabel='FULL-TIME'>
-            <IconHeader onPress={this.iconPress} />
+            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
             <View style={{ padding: 20,paddingTop:3}}>
               <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
@@ -134,6 +138,10 @@ class OnFire extends Component {
     })
 
     if(__DEV__)console.log('ROY OF FIRE:', on_fire)
+  }
+  componentWillUnmount() {
+      if(__DEV__)console.log('@@@OnFire componentWillUnmount')
+
   }
 
   componentWillReceiveProps(nextProps) {

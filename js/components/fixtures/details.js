@@ -258,6 +258,7 @@ class FixtureDetails extends Component {
     }
 
     componentWillUnmount() {
+        if(__DEV__)console.log('@@@fixturedetail componentWillUnmount')
         this.isUnMounted = true
     }
 

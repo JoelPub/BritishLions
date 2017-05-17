@@ -19,7 +19,7 @@ import SetPlayerTabBar from  './Components/SetPlayerTabBar'
 const  IconHeader = ({onPress,modalAble}) => {
   return (
     <View style={{flexDirection:'row-reverse'}} >
-      <ButtonFeedback style={{width:30}}
+      <ButtonFeedback style={{width:30,backgroundColor:'transparent'}}
                       onPress={onPress}
                       disabled={!modalAble}
       >
@@ -36,11 +36,14 @@ class SetPlayer extends Component {
     super(props)
     this.state = {
           modalInfo:false,
-          h:0
+          h:0,
+          modalAble:true
     }
   }
   iconPress = () => {
-      this.setState({modalInfo: !this.state.modalInfo})
+      this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
+        setTimeout(()=>this.setState({modalAble:true}),500)
+      })
   }
   updateMadal = () =>{
     this.setState({
@@ -62,8 +65,8 @@ class SetPlayer extends Component {
    if(__DEV__)console.log('setPlayerCallApi')
   }
   render() {
-    let {isActive,modalAble} = this.props
-   let { kicks, scrums,line_outs} = this.props.set_plays
+    let {isActive} = this.props
+    let { kicks, scrums,line_outs} = this.props.set_plays
     let Widefield = styleVar.deviceWidth===320 ? 180 : 202
     let rightPartWidth = {
       width: styleVar.deviceWidth-Widefield-40,
@@ -79,7 +82,7 @@ class SetPlayer extends Component {
           tabBarActiveTextColor={'black'}
         >
          <View tabLabel='KICKS'>
-           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
+           <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
            <View style={[styles.itemContainer]}  >
              <StadiumFigure
                redPoints={ kicks.bil.conversions.details}
@@ -101,7 +104,7 @@ class SetPlayer extends Component {
            </View>
          </View>
          <View tabLabel='SCRUMS'>
-           <IconHeader onPress={this.iconPress} modalAble={modalAble}/>
+           <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ scrums.bil.won.details}
@@ -124,7 +127,7 @@ class SetPlayer extends Component {
             </View>
          </View>
           <View tabLabel='LINEOUTS'>
-            <IconHeader onPress={this.iconPress}  modalAble={modalAble} />
+            <IconHeader onPress={this.iconPress}  modalAble={this.state.modalAble} />
             <View style={styles.itemContainer}  >
               <StadiumFigure
                 redPoints={ line_outs.bil.won.details}
@@ -172,6 +175,7 @@ class SetPlayer extends Component {
 
   }
   componentWillUnmount() {
+      if(__DEV__)console.log('@@@SetPlayers componentWillUnmount')
 
   }
 }
