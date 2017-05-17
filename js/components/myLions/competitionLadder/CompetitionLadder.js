@@ -446,13 +446,13 @@ class CompetitionLadder extends Component {
           <SquadModal
             modalVisible={this.state.modalInfo}
             callbackParent={this.iconPress}>
-            <View style={[styles.modalContent]}>
+            <ScrollView style={[styles.modalContent]}>
               <Text style={styles.modalContentTitleText}>LEADERBOARD</Text>
               <Text style={styles.modalContentText}>This Leaderboard displays your rank against all other users. Your rank and point score will be displayed alongside the Top 5 Global users. Please note the rank will not refresh in real time.</Text>
               <Text style={styles.modalContentText}>Share your rank on social media using the ‘Share’ button.</Text>
               <Text style={styles.modalContentText}>Create a private league for you and your friends by selecting “Create Private League” to receive a personalised code to share. If you have received a join code from a friend or one of the Lions sponsors you can join their league by selecting “Join Private League.”</Text>
               <Text style={styles.modalContentText}>Access your private leagues at the bottom of this screen.</Text>
-            </View>
+            </ScrollView>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
