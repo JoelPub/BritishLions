@@ -61,11 +61,15 @@ class OnFire extends Component {
     let fullLength3  = full_time.breaks ? full_time.breaks.length : 0
     let fullLength4  = full_time.tackles ? full_time.tackles.length : 0
 
-   let  countHalf =  halfLength + halfLength2  + halfLength3+halfLength4
-   let  countFull =  fullLength+  + fullLength2 + fullLength3+fullLength4
+   let  countHalf =  this.dellLength(halfLength) + this.dellLength(halfLength2) +this.dellLength(halfLength3)+this.dellLength(halfLength4)
+   let  countFull =  this.dellLength(fullLength)+  + this.dellLength(fullLength2) + this.dellLength(fullLength3) + this.dellLength(fullLength4)
    //let  realyCount =  countHalf>= countFull ? countHalf : countFull
     let realCount = index ===0 ? countHalf : countFull
     return  realCount*50
+  }
+  dellLength = (length) =>{
+    let realLength = length === 0 ? 1 : length
+    return realLength
   }
   onChangeTab = (item) =>{
     let { on_fire } =this.props

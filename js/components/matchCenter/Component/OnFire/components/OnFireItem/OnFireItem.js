@@ -33,7 +33,7 @@ const  TableCell = ({data,player,isHaveM}) => {
       <Text style={[styles.blackContentText,{left:55,color:styleVar.colorScarlet}]}>{rank}</Text>
       <Text style={[styles.blackContentText,{left:70}]}>{playerName}</Text>
       <Text  style={[styles.blackContentText, styles.blackContentStarText]}>
-          { isAboveAve && <Icon name='ios-star' style={styles.star} /> }
+        { isAboveAve && <Icon name='ios-star' style={styles.star} /> }
       </Text>
       <Text style={[styles.blackContentText,{right:60}]}>
         {game}
@@ -41,7 +41,16 @@ const  TableCell = ({data,player,isHaveM}) => {
     </View>
   )
 }
-
+const  BlankCell = ({title}) => {
+  let text = 'There is no player available yet for ' + title + ' .'
+  return (
+    <View style={ [styles.noDataBackgroundView,styles.whiteBk]}>
+      <Text style={[styles.noDataText]}>
+        {text}
+      </Text>
+    </View>
+  )
+}
 class OnFireItem extends Component {
 
   constructor(props) {
@@ -73,14 +82,14 @@ class OnFireItem extends Component {
           <Text  style={[styles.gameAndAvgText,{right:10}]}> </Text>
           <Text style={[styles.gameAndAvgText,{right:60}]}>GAME</Text>
         </View>
+        {data.length===0 ? <BlankCell title={title} /> :null}
         {data.map((item,index)=>{
           let player = this.searchInfo(item.player)
 
           return (
             <TableCell key={index} data={item} player={player} isHaveM={isHaveM}/>
           )
-        })
-        }
+        })}
       </View>
     )
   }
