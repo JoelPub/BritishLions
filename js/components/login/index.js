@@ -186,7 +186,7 @@ class Login extends Component {
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.fbUser,
+            emailAddress:this.state.email,
             first_name:first_name,
             last_name:last_name
         })
@@ -225,7 +225,7 @@ class Login extends Component {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
         NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.user,
+            emailAddress:this.state.user.email,
             first_name:first_name,
             last_name:last_name
         })
@@ -481,6 +481,9 @@ class Login extends Component {
                 )
             }
             if(isFormValidate&&json.email) {
+                this.setState({
+                    email:json.email
+                })
                 let options = {
                     url: 'https://www.api-ukchanges2.co.uk/api/users',
                     data: {
@@ -503,7 +506,8 @@ class Login extends Component {
                         // if (__DEV__)console.log(res)
                         this.setState({
                             customMessages: res,
-                            customMessagesType: 'error'
+                            customMessagesType: 'error',
+                            email:json.email
                         })
 
                         this.refs._scrollView.scrollToPosition(0,0,false)
