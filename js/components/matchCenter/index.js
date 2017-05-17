@@ -30,13 +30,13 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
+        this.subjects=['MATCH SUMMARY','RUN OF PLAY','SET PLAYS','ON FIRE', 'MAN OF THE MATCH']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
-          statusArray: [false,false,false,false],
+          statusArray: [false,false,false,false,false],
           momentumData:{},
           summaryData:{timeline:[]},
           setPlayerData: [],
@@ -45,7 +45,7 @@ class MatchCenter extends Component {
           scrollEnabled:true
         }
         this.timer  = null
-        this.statusArray=[false,false,false,false]
+        this.statusArray=[false,false,false,false,false]
 
     }
     _setHeight(h,source) {
@@ -57,28 +57,9 @@ class MatchCenter extends Component {
       this.setState({subPage:page})
     }
     pullHistorySummary(){
-      // _fetch({url:'https://api.myjson.com/bins/q1z31'}).then((res)=>{
-      //           if(__DEV__)console.log('res',res)
-      //           if(res) {
-      //             let tmp=this.state.summaryData
-      //             res.map((value,index)=>{
-      //               tmp.timeline.push({seq:tmp.timeline.length+1,time:value.gameTime,description:value.eventString})
-      //             })
-      //             if(__DEV__)console.log('tmp',tmp)
-      //             this.setState({
-      //               summaryData:tmp
-      //             })
-      //           }
-      //     })
         let optionData={}
         let type='extend'
-        // if(!this.statusArray[0]) {
         optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
-        // }
-        // else {
-        //   optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
-        //   type='refresh'
-        // }
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
                       if (__DEV__)console.log('extend timelineData',timelineData)
                       this.statusArray.fill(false)
@@ -123,11 +104,23 @@ class MatchCenter extends Component {
         })
       }
       if(this.state.index===1){
+        if (__DEV__)console.log('call momentum Api')
+        apiActions.getGameMomentum('momentum',this.state.detail.id,(data)=>{
+                    this.statusArray.fill(false)
+                    this.statusArray[1]=true
+                    this.setState({
+                      statusArray: this.statusArray,
+                      momentumData:Object.assign(data,this.state.detail)
+                    })
+        },(error)=>{
+        })
+      }
+      if(this.state.index===2){
         if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
             this.statusArray.fill(false)
-            this.statusArray[1]=true
+            this.statusArray[2]=true
             this.setState({
               setPlayerData:json.data,
               statusArray: this.statusArray
@@ -135,11 +128,11 @@ class MatchCenter extends Component {
         },(error)=>{
         })
       }
-      if(this.state.index===2){
+      if(this.state.index===3){
         if (__DEV__)console.log('@@@on fire Api')
         apiActions.getGameOnFire(this.state.detail.id,(json)=>{
           this.statusArray.fill(false)
-          this.statusArray[2]=true
+          this.statusArray[3]=true
           this.setState({
             onFireData:json.data,
             statusArray: this.statusArray
@@ -149,13 +142,13 @@ class MatchCenter extends Component {
         })
 
       }
-      if(this.state.index===3){
+      if(this.state.index===4){
         if (__DEV__)console.log('@@@call man of the match Api')
         setTimeout(()=>{
           if (this.state.detail.post!==null) {
             this.setState({subPage:'final'},()=>{              
               this.statusArray.fill(false)
-              this.statusArray[3]=true
+              this.statusArray[4]=true
               this.setState({
                 statusArray: this.statusArray
               })
@@ -176,7 +169,7 @@ class MatchCenter extends Component {
               if(__DEV__)console.log('subPage',subPage)
               this.setState({subPage:subPage},()=>{              
                   this.statusArray.fill(false)
-                  this.statusArray[3]=true
+                  this.statusArray[4]=true
                   this.setState({
                     statusArray: this.statusArray
                   })
@@ -191,7 +184,7 @@ class MatchCenter extends Component {
         if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
-            if(this.state.index!==3) this.timer = setInterval(this.callApi,120000)
+            if(this.state.index!==4) this.timer = setInterval(this.callApi,120000)
         })},500)
         
     }
@@ -217,7 +210,7 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if(this.state.index!==3) this.timer = setInterval(this.callApi,120000)              
+              if(this.state.index!==4) this.timer = setInterval(this.callApi,120000)              
             })
           }
           else {
@@ -262,23 +255,18 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[1]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===1} setHeight={this._setHeight.bind(this)}
-                                                                 set_plays={setPlayerData.set_plays} />
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                statusArray[1] ? <Momentum detail={this.state.detail}  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[1]&&this.state.index===1?
+                                        !statusArray[1]&&this.state.index===1&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                                        :
-                                        null
                                       }
                                     </View>
                               }
                               {
-                                statusArray[2]? <OnFire  detail={this.state.detail} isActive={this.state.index===2}
-                                                         setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire}
-                                />
-                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                statusArray[2]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                                                 set_plays={setPlayerData.set_plays} />
+                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[2]&&this.state.index===2?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -288,11 +276,25 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[3]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
-
+                                statusArray[3]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
+                                                         setHeight={this._setHeight.bind(this)}
+                                                         on_fire={onFireData.on_fire}
+                                />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3?
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
+                                      }
+                                    </View>
+                              }
+                              {
+                                statusArray[4]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
+
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[4]&&this.state.index===4?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
                                         :
                                         null

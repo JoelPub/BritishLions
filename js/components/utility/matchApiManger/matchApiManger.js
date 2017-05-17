@@ -170,28 +170,31 @@ function processMomentumData(data){
     // if(__DEV__)console.log('processMomentumData',data)
     let result=[]
     let fullTime=80
-    for(let i=0;i<fullTime;i=i+10){
-        let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
-        // if(__DEV__)console.log('momentum',momentum)
-        if(data.team_momentum.findIndex(x=>{
-            return parseInt(x.time)>i&&parseInt(x.time)<=i+10
-        })>-1) {
-            momentum.team_momentum=data.team_momentum.filter(x=>{
+    if(data&&data.team_momentum&&data.score_advantage) {
+        for(let i=0;i<fullTime;i=i+10){
+            let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
+            // if(__DEV__)console.log('momentum',momentum)
+            if(data.team_momentum.findIndex(x=>{
                 return parseInt(x.time)>i&&parseInt(x.time)<=i+10
-            })
-            momentum.score_advantage=data.score_advantage.filter(x=>{
-                return parseInt(x.time)===i||parseInt(x.time)===i+10
-            })
-            if (i===0) momentum.isFirst=true
-            if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
-            momentum.timeMark=i
-            result.push(momentum)
+            })>-1) {
+                momentum.team_momentum=data.team_momentum.filter(x=>{
+                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10
+                })
+                momentum.score_advantage=data.score_advantage.filter(x=>{
+                    return parseInt(x.time)===i||parseInt(x.time)===i+10
+                })
+                if (i===0) momentum.isFirst=true
+                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
+                momentum.timeMark=i
+                result.push(momentum)
 
-        }
-        else {
-            result.push(null)
-        }
+            }
+            else {
+                result.push(null)
+            }
+        }      
     }
+
 
     // if(__DEV__)console.log('result',result)
     return result.reverse()

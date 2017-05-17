@@ -7,8 +7,8 @@ module.exports = styleSheetCreate({
     subjectText: {
     	fontFamily: styleVar.fontCondensed,
     	color:'rgb(132,136,139)',
-    	fontSize:16,
-    	lineHeight:18,
+    	fontSize:18,
+    	lineHeight:20,
     	marginTop:6,
     	marginLeft:5,
     	android: {
@@ -28,7 +28,7 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         paddingLeft:20,
         alignItems:'center',
-        marginBottom:5
+        marginBottom:15,
     },
     subWrapper:{
         flex:2,
@@ -41,9 +41,9 @@ module.exports = styleSheetCreate({
         paddingRight:10
     },
     scoreSign:{
-        height:14,
-        width:14,
-        borderRadius:7,
+        height:styleVar.deviceWidth*0.038,
+        width:styleVar.deviceWidth*0.038,
+        borderRadius:styleVar.deviceWidth*0.019,
         backgroundColor:'rgb(9,127,64)'
     },
     momentumSign:{
@@ -52,8 +52,8 @@ module.exports = styleSheetCreate({
         backgroundColor:styleVar.colorScarlet
     },
     icon:{
-        color: styleVar.colorScarlet,
-        fontSize: 22,
-        lineHeight: 24
+        color: 'rgb(208,7,42)',
+        fontSize: 28,
+        lineHeight: 30,
     }
 })
