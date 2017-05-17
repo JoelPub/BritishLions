@@ -29,7 +29,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.magus.fblogin.FacebookLoginPackage; //
+import com.magus.fblogin.FacebookLoginPackage;
+import com.facebook.FacebookSdk;
+import com.facebook.applinks.AppLinkData;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -63,6 +65,20 @@ public class MainApplication extends Application implements ReactApplication {
       );
     }
   };
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    FacebookSdk.sdkInitialize(getApplicationContext());
+    AppLinkData.fetchDeferredAppLinkData(this,
+            new AppLinkData.CompletionHandler() {
+              @Override
+              public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                // Process app link data
+              }
+            }
+    );
+  }
 
   @Override
   public ReactNativeHost getReactNativeHost() {

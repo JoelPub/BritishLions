@@ -22,6 +22,9 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
+#import <Bolts/Bolts.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -52,6 +55,17 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   // return YES;
+  //Deferred Deep Linking with App Links
+    if (launchOptions[UIApplicationLaunchOptionsURLKey] == nil) {
+      [FBSDKAppLinkUtility fetchDeferredAppLink:^(NSURL *url, NSError *error) {
+        if (error) {
+          NSLog(@"Received error while fetching deferred app link %@", error);
+        }
+        if (url) {
+          [[UIApplication sharedApplication] openURL:url];
+        }
+      }];
+    }
   return [[FBSDKApplicationDelegate sharedInstance] application:application
                                   didFinishLaunchingWithOptions:launchOptions];
 }
@@ -111,6 +125,5 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   [FBSDKAppEvents activateApp];
 }
-
 
 @end

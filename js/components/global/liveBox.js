@@ -49,6 +49,27 @@ const locStyle = styleSheetCreate({
         height: styleVar.deviceWidth*0.1,
         backgroundColor: 'transparent'
     },
+    time: {
+        backgroundColor: '#FFF',
+        width: styleVar.deviceWidth*0.24,
+        height: styleVar.deviceWidth*0.13,
+        borderRadius: styleVar.deviceWidth*0.13,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: styleVar.colorGrey2
+    },
+    timeText: {
+        color: styleVar.colorScarlet,
+        fontFamily: styleVar.fontCondensed,
+        backgroundColor: 'transparent',
+        fontSize: 24,
+        lineHeight: 24,
+        marginTop: 10,
+        android: {
+            marginTop: 3
+        }
+    },
 })
 
 export default class LiveBox extends Component {
@@ -128,7 +149,14 @@ export default class LiveBox extends Component {
                         </View>
                     </View>
                     <View style={{flex:2,alignItems:'center'}}>
+                    {
+                        this.props.data.live===null?
+                        <View style={locStyle.time}>
+                            <Text style={locStyle.timeText}>{this.state.game_time}</Text>
+                        </View>
+                        :
                         <Timer game_time={this.state.game_time} />
+                    }
                     </View>
                     <View style={{flex:3,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
                         <View style={styleCircle}>
