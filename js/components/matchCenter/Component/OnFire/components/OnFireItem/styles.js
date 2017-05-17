@@ -64,6 +64,23 @@ module.exports = styleSheetCreate({
   star: {
     color: styleVar.colorScarlet,
     fontSize: 25,
+  },
+  noDataBackgroundView: {
+    flexDirection: 'row',
+    height:50,
+    backgroundColor: styleVar.colorGrey,
+    borderWidth: 0,
+    borderColor: styleVar.colorGrey2,
+    justifyContent:'center',
+    alignSelf: 'center',
+    paddingTop:17
+  },
+  noDataText: {
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 14,
+    lineHeight: 14,
+    color: 'black',
+    textAlign:'center',
   }
 })
 
