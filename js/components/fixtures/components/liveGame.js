@@ -135,7 +135,7 @@ class LiveGame extends Component {
                 {
                     details.live.description && <Text style={locStyle.pageText}>{details.live.description}</Text>
                 }
-                <GamedayTeam gameID={9} />
+                <GamedayTeam gameID={details.id} />
             </View>
         )
     }

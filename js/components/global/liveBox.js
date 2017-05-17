@@ -108,9 +108,12 @@ export default class LiveBox extends Component {
         let inverse = this.props.inverse || false
         let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
+        let {game_time,bil_score,op_score} = this.state
         // if (__DEV__)console.logconsole.log('this.props.data.opposition_image',this.props.data.opposition_image)
         return (
             <View>
+            {
+                (game_time!==undefined&&bil_score!==undefined&&op_score!==undefined)&&
                 <View style={styleLiveBox}>
                     <View style={{flex:3,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
                         {
@@ -140,6 +143,8 @@ export default class LiveBox extends Component {
                         }
                     </View>
                 </View>
+            }
+                
                 {
                     this.props.data&&this.props.data.hasTitle&&
                     <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
