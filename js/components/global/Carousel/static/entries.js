@@ -5,6 +5,11 @@ export const ENTRIES1 = [
     illustration: 'http://i.imgur.com/UYiroysl.jpg'
   },
   {
+    title: 'RUN OF PLAY',
+    subtitle: 'See which team is dominating play based on match statistics compared to the score difference.',
+    illustration: 'http://i.imgur.com/UPrs1EWl.jpg'
+  },
+  {
     title: 'SET PLAYS',
     subtitle: 'See where on the pitch Set Plays are taking place.',
     illustration: 'http://i.imgur.com/MABUbpDl.jpg'
