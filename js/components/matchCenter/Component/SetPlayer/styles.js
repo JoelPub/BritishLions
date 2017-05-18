@@ -24,7 +24,6 @@ module.exports = styleSheetCreate({
     paddingHorizontal:10,
     android:{
       paddingHorizontal:5,
-
     }
   },
   rightContainer: {

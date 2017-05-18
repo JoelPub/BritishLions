@@ -68,8 +68,9 @@ class SetPlayer extends Component {
     let {isActive} = this.props
     let { kicks, scrums,line_outs} = this.props.set_plays
     let Widefield = styleVar.deviceWidth===320 ? 180 : 202
+    let horizontalWidth = Platform.OS === 'android' ? 30 : 40
     let rightPartWidth = {
-      width: styleVar.deviceWidth-Widefield-40,
+      width: styleVar.deviceWidth-Widefield-horizontalWidth,
     }
      return (
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
