@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, Platform, Alert } from 'react-native'
+import { Image, View, Text, Platform, Alert, ActivityIndicator } from 'react-native'
 import { Container, Icon } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../../themes/lions-stylesheet'
@@ -19,6 +19,7 @@ import { setTeamToShow,setTeamStatus,setTeamData } from '../../../actions/squad'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { actionsApi } from '../../utility/urlStorage'
+import loader from '../../../themes/loader-position'
 
 const locStyle = styleSheetCreate({
     btnBg: {
@@ -74,48 +75,56 @@ class TeamWidget extends Component {
         this.state = {
             fullTeam:false,            
             isNetwork: true,
+            isLoaded:false
     	}
     }
 
 	render() {
 		return (
-        <View>
-        {
-            this.state.fullTeam&&this.props.tactics!==null?
-                <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
-                     <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
-                        <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
-                            <Icon name='md-checkmark' style={locStyle.icon} /> 
-                        </View>
-                        <View style={locStyle.titleText}>
-                            <Text style={[locStyle.btnText,{color:'rgb(10, 127, 64)'}]}>
-                                {this.props.text}
-                            </Text>
-                        </View>
-                    </ButtonFeedback>
-                </View>
-                :
-                <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
-                     <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress}>
-                     {
-                        this.state.fullTeam?
-                        <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
-                            <Icon name='md-checkmark' style={locStyle.icon} /> 
+            <View>
+            {
+            this.state.isLoaded?
+                <View>
+                {
+                    this.state.fullTeam&&this.props.tactics!==null?
+                        <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress} disabled={!this.state.isLoaded}>
+                                <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
+                                    <Icon name='md-checkmark' style={locStyle.icon} /> 
+                                </View>
+                                <View style={locStyle.titleText}>
+                                    <Text style={[locStyle.btnText,{color:'rgb(10, 127, 64)'}]}>
+                                        {this.props.text}
+                                    </Text>
+                                </View>
+                            </ButtonFeedback>
                         </View>
                         :
-                        <View style={locStyle.btnCircle}>
-                            <Text style={locStyle.iconText}>{this.props.iconText}</Text>
-                        </View>
-                     }                        
-                        <View style={locStyle.titleText}>
-                            <Text style={locStyle.btnText}>
-                                 {this.props.text}
-                            </Text>
-                        </View>
-                    </ButtonFeedback>
-                </LinearGradient>
-        }
-        </View>
+                        <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress} disabled={!this.state.isLoaded}>
+                             {
+                                this.state.fullTeam?
+                                <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
+                                    <Icon name='md-checkmark' style={locStyle.icon} /> 
+                                </View>
+                                :
+                                <View style={locStyle.btnCircle}>
+                                    <Text style={locStyle.iconText}>{this.props.iconText}</Text>
+                                </View>
+                             }                        
+                                <View style={locStyle.titleText}>
+                                    <Text style={locStyle.btnText}>
+                                         {this.props.text}
+                                    </Text>
+                                </View>
+                            </ButtonFeedback>
+                        </LinearGradient>
+                }
+                </View>
+                :
+                <ActivityIndicator style={loader.centered} size='small'/>
+            }
+          </View>
                 
 		)
 	}
@@ -167,6 +176,9 @@ class TeamWidget extends Component {
                         }
                         
                     },
+                    onError: ()=>{
+                        this.setState({isLoaded:true})
+                    },
                     isRequiredToken: true,
                     channel: 'EYC3',
                     isQsStringify:false
@@ -174,7 +186,9 @@ class TeamWidget extends Component {
                 service(optionsTeam)
             }
         }).catch((error) => {
-                this._showError(error) 
+                this.setState({isLoaded:true},()=>{
+                    this._showError(error) 
+                })
         })
     }
     componentWillReceiveProps(nextProps) {
@@ -196,7 +210,7 @@ class TeamWidget extends Component {
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
-            this.setState({fullTeam:fullFeed})
+            this.setState({fullTeam:fullFeed,isLoaded:true})
             this.props.setTeamStatus(fullFeed)
         
 
