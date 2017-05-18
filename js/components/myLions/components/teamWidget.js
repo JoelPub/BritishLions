@@ -122,7 +122,7 @@ class TeamWidget extends Component {
                 }
                 </View>
                 :
-                <ActivityIndicator style={loader.centered} size='small'/>
+                <ActivityIndicator style={[loader.centered,{marginTop:0,height:50}]} size='small'/>
             }
           </View>
                 
