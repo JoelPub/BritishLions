@@ -13,7 +13,7 @@ const GameStatusDetailsModel = Record({
             'breaks': 0,
             'metres': 0,
             'scrums': 0,
-            'lione_outs': 0,
+            'line_outs': 0,
             'pen_con': 0
         },
         'bil': {
@@ -26,7 +26,7 @@ const GameStatusDetailsModel = Record({
             'breaks': 0,
             'metres': 0,
             'scrums': 0,
-            'lione_outs': 0,
+            'line_outs': 0,
             'pen_con': 0
         }
     }
