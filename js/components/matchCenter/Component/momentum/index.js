@@ -18,6 +18,15 @@ class Momentum extends Component {
 
     constructor(props) {
          super(props)
+         this.state={
+            config:{
+                isHost:false,
+                radius:22,
+                dotWidth:2,
+                dotLen:4  
+            }
+            
+        }
     }
     measurePage(page,event) {
         // if (__DEV__)console.log('momentum')
@@ -27,7 +36,7 @@ class Momentum extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        let h=y+530>styleVar.deviceHeight-345?y+530:styleVar.deviceHeight-345
+        let h=y+310>styleVar.deviceHeight-345?y+310:styleVar.deviceHeight-345
         this.props.setHeight(h,'momentum')
         
     }
@@ -52,29 +61,29 @@ class Momentum extends Component {
                         </View>
                         <View style={styles.subjectWrapper}>
                             <View style={styles.subWrapper}>
-                                    <View style={{height:50,width:50,borderWidth:1,borderColor:'rgb(216,217,218)',}}>
-                                        <Image resizeMode='contain'  source={require('../../../../../contents/my-lions/squadLogo.png')} style={{width:40,height:40,margin:5}}/>
+                                    <View style={styles.logoWrapper}>
+                                        <Image resizeMode='contain'  source={this.state.config.isHost?require('../../../../../contents/my-lions/squadLogo.png'):{uri: this.props.data.opposition_image}} style={styles.logoImg}/>
                                     </View>
-                                    <View style={{height:50,width:100,backgroundColor:'rgb(175,0,30)',justifyContent:'center'}}>
-                                        <Text style={{fontSize:18,lineHeight:20,fontFamily:styleVar.fontCondensed,textAlign:'center'}}>RUN OF PLAY</Text>
+                                    <View style={[styles.textWrapper,this.state.config.isHost?styles.redBgc:styles.blackBgc]}>
+                                        <Text style={styles.logoText}>RUN OF PLAY</Text>
                                     </View>
                             </View>
                             <View style={styles.subWrapper}>
-                                    <View style={{height:50,width:100,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>
-                                        <Text style={{fontSize:18,lineHeight:20,fontFamily:styleVar.fontCondensed,textAlign:'center'}}>RUN OF PLAY</Text>
+                                    <View style={[styles.textWrapper,this.state.config.isHost?styles.blackBgc:styles.redBgc]}>
+                                        <Text style={styles.logoText}>RUN OF PLAY</Text>
                                     </View>
-                                    <View style={{height:50,width:50,borderWidth:1,borderColor:'rgb(216,217,218)'}}>
-                                        <Image resizeMode='contain' source={{uri: this.props.data.opposition_image}}  style={{width:40,height:40,margin:5}}/>
+                                    <View style={styles.logoWrapper}>
+                                        <Image resizeMode='contain' source={this.state.config.isHost?{uri: this.props.data.opposition_image}:require('../../../../../contents/my-lions/squadLogo.png')}  style={styles.logoImg}/>
                                     </View>
                             </View>
                         </View>
-                        <View style={{borderTopWidth:1,borderColor:'rgb(216,217,218)'}}>
+                        <View style={{paddingBottom:this.state.config.radius}}>
                             {
                                 this.props.data.momentum.map((value,index)=>{
                                     return (
                                         <View key={index} >
                                             {value!==null?
-                                                <MomentumTracker data={value} isHost={false}/>
+                                                <MomentumTracker data={value} config={this.state.config}/>
                                                 :
                                                 null
                                             }

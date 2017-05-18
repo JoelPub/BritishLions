@@ -55,5 +55,31 @@ module.exports = styleSheetCreate({
         color: 'rgb(208,7,42)',
         fontSize: 28,
         lineHeight: 30,
+    },
+    logoWrapper:{
+        height:styleVar.deviceWidth*0.13,
+        width:styleVar.deviceWidth*0.13,
+        borderWidth:1,
+        borderColor:'rgb(216,217,218)'
+    },
+    textWrapper:{
+        height:styleVar.deviceWidth*0.13,
+        width:styleVar.deviceWidth*0.26,
+        justifyContent:'center'
+    },
+    redBgc:{backgroundColor:'rgb(175,0,30)'},
+    blackBgc:{backgroundColor:'rgb(0,0,0)'},
+    logoText:{
+        fontSize:18,
+        lineHeight:20,
+        fontFamily:styleVar.fontCondensed,
+        textAlign:'center'
+    },
+    logoImg:{
+        width:styleVar.deviceWidth*0.1,
+        height:styleVar.deviceWidth*0.1,
+        margin:5
     }
+
+
 })

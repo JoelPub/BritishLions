@@ -167,24 +167,28 @@ function processSummaryData(type,data,summaryData){
   return result
 }
 function processMomentumData(data){
-    // if(__DEV__)console.log('processMomentumData',data)
+    if(__DEV__)console.log('@@@@processMomentumData',data)
     let result=[]
     let fullTime=80
     if(data&&data.team_momentum&&data.score_advantage) {
         for(let i=0;i<fullTime;i=i+10){
-            let momentum={score_advantage:[],team_momentum:[],isFirst:false,isLast:false,timeMark:0}
+            let momentum={score_advantage:[],team_momentum:[],isFirst:false,finished:false,integrity:false,timeMark:0}
             // if(__DEV__)console.log('momentum',momentum)
             if(data.team_momentum.findIndex(x=>{
                 return parseInt(x.time)>i&&parseInt(x.time)<=i+10
             })>-1) {
                 momentum.team_momentum=data.team_momentum.filter(x=>{
-                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10
-                })
+                    return parseInt(x.time)>i&&parseInt(x.time)<=i+10&&(parseInt(x.time)%2===0)
+                }).sort((a,b)=>parseInt(b.time)-parseInt(a.time))
                 momentum.score_advantage=data.score_advantage.filter(x=>{
                     return parseInt(x.time)===i||parseInt(x.time)===i+10
-                })
+                }).sort((a,b)=>parseInt(a.time)-parseInt(b.time))
                 if (i===0) momentum.isFirst=true
-                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10&&parseInt(x.time)<=i+20})===-1) momentum.isLast=true
+                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10})>=-1&&momentum.team_momentum.length>0) {
+                  momentum.finished=true
+                  if(momentum.score_advantage&&momentum.score_advantage.length&&momentum.score_advantage.length>1) momentum.integrity=true
+                }
+
                 momentum.timeMark=i
                 result.push(momentum)
 
@@ -196,7 +200,7 @@ function processMomentumData(data){
     }
 
 
-    // if(__DEV__)console.log('result',result)
+    if(__DEV__)console.log('@@@@result',result)
     return result.reverse()
 
 }

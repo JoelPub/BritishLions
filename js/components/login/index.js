@@ -144,6 +144,7 @@ class Login extends Component {
             first_name:first_name,
             last_name:last_name
         })
+        console.log('password',this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,this.state.password,'password')
@@ -180,16 +181,47 @@ class Login extends Component {
         }
 
     }
+    _fbGlassBoxSender = (first_name,last_name) =>{
+        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+this.state.fbUser.token
+
+        fetch(httpUrl.toString())
+          .then((response) => response.json())
+          .then( (json) => {
+              // if (__DEV__)console.log('json: ', JSON.stringify(json))
+              if(!json.email) {
+                  Alert.alert(
+                    'Sorry',
+                    'Sign up with Facebook is not yet supported, please sign up with a valid email address',
+                    [
+                        {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
+                    ]
+                  )
+              }
+              if(json.email) {
+                  this.setState({
+                      email:json.email
+                  })
+                  NativeModules.One.sendInteraction('/signIn/button', {
+                      emailAddress:json.email,
+                      first_name:first_name,
+                      last_name:last_name
+                  })
+              } else {
+              }
+              return json
+          }).catch((error)=>{
+            console.log(error)
+
+        })
+    }
     _createTokenByFB(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
-        NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.email,
-            first_name:first_name,
-            last_name:last_name
-        })
+
+        this._fbGlassBoxSender(first_name,last_name,access_token)
+
         SaveUserNameAndPassword(this.state.email,'Test1','fb')
         this.setState({
             user: null,
@@ -229,6 +261,7 @@ class Login extends Component {
             first_name:first_name,
             last_name:last_name
         })
+       // console.log('google',this.state.user.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,'Test1','google')
@@ -596,7 +629,8 @@ class Login extends Component {
               this.setState({
                fbUser:data.credentials
               })
-
+               console.log('FBUSER')
+              console.log(this.state.fbUser)
                this._SignInWithFB(true)
            } else {
                 // if (__DEV__)console.log(error, data);
