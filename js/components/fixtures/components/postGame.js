@@ -257,11 +257,11 @@ const Summary = ({opposition, bil, oppositionImage}) => (
         </View>
 
         <View style={locStyle.matchResultRow}>
-            <Text style={locStyle.matchResultValue}>{ opposition.lione_outs || 0 }</Text>
+            <Text style={locStyle.matchResultValue}>{ opposition.line_outs || 0 }</Text>
             <View style={locStyle.matchResultLabelWrapper}>
                 <Text style={locStyle.matchResultLabel}>LINE-OUTS WON</Text>
             </View>
-            <Text style={locStyle.matchResultValue}>{ bil.lione_outs || 0 }</Text>
+            <Text style={locStyle.matchResultValue}>{ bil.line_outs || 0 }</Text>
         </View>
 
         <View style={locStyle.matchResultRow}>
