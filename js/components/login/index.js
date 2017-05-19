@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from '../../actions/token'
 import { updateToken, removeToken ,SaveUserNameAndPassword,getReloginInfo, isFirstLogIn} from '../utility/asyncStorageServices'
-import { Keyboard, Dimensions,Image, PanResponder, NativeModules, Alert} from 'react-native'
+import { Keyboard, Dimensions,Image, PanResponder, NativeModules, Alert,Platform} from 'react-native'
 import { pushNewRoute, replaceRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { Container, Content, Text, Input, Icon, View } from 'native-base'
@@ -144,6 +144,9 @@ class Login extends Component {
             first_name:first_name,
             last_name:last_name
         })
+        if(Platform.OS === 'android') {
+            NativeModules.GlassBoxManger.reportEvent('/signIn/password',this.state.email)
+        }
         console.log('password',this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
@@ -206,6 +209,9 @@ class Login extends Component {
                       first_name:first_name,
                       last_name:last_name
                   })
+                  if(Platform.OS === 'android') {
+                      NativeModules.GlassBoxManger.reportEvent('/signIn/facebook',json.email)
+                  }
               } else {
               }
               return json
@@ -261,6 +267,9 @@ class Login extends Component {
             first_name:first_name,
             last_name:last_name
         })
+        if(Platform.OS === 'android') {
+            NativeModules.GlassBoxManger.reportEvent('/signIn/google',this.state.user.email)
+        }
        // console.log('google',this.state.user.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
