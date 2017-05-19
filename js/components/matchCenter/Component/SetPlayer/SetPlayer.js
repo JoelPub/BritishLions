@@ -39,7 +39,7 @@ class SetPlayer extends Component {
           h:0,
           modalAble:true
     }
-        this.currentPosition=0
+    this.currentPosition=0
   }
   iconPress = () => {
       this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
@@ -77,42 +77,36 @@ class SetPlayer extends Component {
         
       })
   }
-
-
-
   _handleStartShouldSetPanResponderCapture(e, gestureState) {
      if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)     
      if (__DEV__)console.log('return true')
         return true
   }
-
   _handlePanResponderMove(e, gestureState) {
        if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
        if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
             this.currentPosition=this.currentPosition-gestureState.dy/10
             if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
-            this.props.s.scrollTo({y:this.currentPosition,animated:true})
+            this.props.scrollView.scrollTo({y:this.currentPosition,animated:true})
        }
        if (__DEV__)console.log('return true')
         return true
     }
-
-
-    _handlePanResponderEnd(e, gestureState) {
-       if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-       if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
-       //      let index = this._findID(this._items, this.props.article.id)
-            // let rtl=gestureState.dx<0?false:true
-            // if (__DEV__)console.log('rtl',rtl)
-            this.props.changePage(gestureState.dx<0?1:-1)
-       //      let item = rtl?this._items[index - 1]:this._items[index+1]
-       //      if(item) {
-       //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
-       //      }  
-       }
-       if (__DEV__)console.log('return true')
-        return true
-    }
+  _handlePanResponderEnd(e, gestureState) {
+     if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
+     if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
+     //      let index = this._findID(this._items, this.props.article.id)
+          // let rtl=gestureState.dx<0?false:true
+          // if (__DEV__)console.log('rtl',rtl)
+          this.props.changePage(gestureState.dx<0?1:-1)
+     //      let item = rtl?this._items[index - 1]:this._items[index+1]
+     //      if(item) {
+     //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
+     //      }  
+     }
+     if (__DEV__)console.log('return true')
+      return true
+  }
   render() {
     let {isActive} = this.props
     let { kicks, scrums,line_outs} = this.props.set_plays
@@ -125,7 +119,7 @@ class SetPlayer extends Component {
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
-          locked={false}
+          locked={true}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           initialPage={0}
           renderTabBar={() => <SetPlayerTabBar />}

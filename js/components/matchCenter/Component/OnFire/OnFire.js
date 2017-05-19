@@ -39,6 +39,7 @@ class OnFire extends Component {
           playerList: [],
           modalAble:true
     }
+    this.currentPosition=0
   }
   iconPress = () => {
       this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
@@ -89,7 +90,7 @@ class OnFire extends Component {
       <View style={{marginTop:50,paddingTop:10,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
         <ScrollableTabView
-          locked={false}
+          locked={true}
           initialPage={0}
           renderTabBar={() => <SetPlayerTabBar  style={{ paddingHorizontal:20}} />}
           tabBarActiveTextColor={'black'}
@@ -97,7 +98,7 @@ class OnFire extends Component {
         >
           <View tabLabel='HALF-TIME'>
             <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={{ padding: 20,paddingTop:3}}>
+            <View style={{ padding: 20,paddingTop:3}}    {...this._panResponder.panHandlers}>
               <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
               <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks} playerData={playerList}/>
@@ -106,7 +107,7 @@ class OnFire extends Component {
           </View>
           <View tabLabel='FULL-TIME'>
             <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={{ padding: 20,paddingTop:3}}>
+            <View style={{ padding: 20,paddingTop:3}}    {...this._panResponder.panHandlers}>
               <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
               <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
               <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList}/>
@@ -142,6 +143,48 @@ class OnFire extends Component {
     })
 
     if(__DEV__)console.log('ROY OF FIRE:', on_fire)
+  }
+  componentWillMount() {
+      this._panResponder = PanResponder.create({
+        onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+        // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+        // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+        // onPanResponderGrant: this._handlePanResponderGrant,
+        onPanResponderMove: this._handlePanResponderMove.bind(this),
+        onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+        onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+        
+      })
+  }
+  _handleStartShouldSetPanResponderCapture(e, gestureState) {
+     if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)     
+     if (__DEV__)console.log('return true')
+        return true
+  }
+  _handlePanResponderMove(e, gestureState) {
+       if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
+       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
+            this.currentPosition=this.currentPosition-gestureState.dy/10
+            if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
+            this.props.scrollView.scrollTo({y:this.currentPosition,animated:true})
+       }
+       if (__DEV__)console.log('return true')
+        return true
+    }
+  _handlePanResponderEnd(e, gestureState) {
+     if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
+     if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
+     //      let index = this._findID(this._items, this.props.article.id)
+          // let rtl=gestureState.dx<0?false:true
+          // if (__DEV__)console.log('rtl',rtl)
+          this.props.changePage(gestureState.dx<0?1:-1)
+     //      let item = rtl?this._items[index - 1]:this._items[index+1]
+     //      if(item) {
+     //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
+     //      }  
+     }
+     if (__DEV__)console.log('return true')
+      return true
   }
   componentWillUnmount() {
       if(__DEV__)console.log('@@@OnFire componentWillUnmount')
