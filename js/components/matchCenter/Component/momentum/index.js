@@ -79,7 +79,7 @@ class Momentum extends Component {
                         </View>
                         <View style={{paddingBottom:this.state.config.radius}}>
                             {
-                                this.props.data.momentum.map((value,index)=>{
+                                Array.isArray(this.props.data.momentum)&&this.props.data.momentum.map((value,index)=>{
                                     return (
                                         <View key={index} >
                                             {value!==null?
