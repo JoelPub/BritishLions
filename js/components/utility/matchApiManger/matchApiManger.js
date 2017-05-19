@@ -12,6 +12,7 @@ export function getGameMomentum(type,gameID,onSuccess,OnError) {
       method: 'post',
       onSuccess: (json)=>{
               if(json.data) {
+                if (__DEV__)console.log('json.data.is_full_time',json.data.is_full_time)
                 if (__DEV__)console.log('json.data.game_time',json.data.game_time)
                 if (__DEV__)console.log('json.data.statics',json.data.statics)
                 if (__DEV__)console.log('json.data.momentum',json.data.momentum)

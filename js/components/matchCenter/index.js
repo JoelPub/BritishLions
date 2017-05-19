@@ -24,6 +24,7 @@ import { service } from '../utility/services'
 import _fetch from '../utility/fetch'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 import { setMatchMan, getMatchMan } from '../utility/asyncStorageServices'
+import { strToLower } from '../utility/helper'
 
 class MatchCenter extends Component {
 
@@ -97,6 +98,9 @@ class MatchCenter extends Component {
                           this.setState({
                             statusArray: this.statusArray,
                             summaryData:Object.assign(data,this.state.detail,{timeline:timelineData})
+                          },()=>{
+                            if(__DEV__)console.log('data.is_full_time',data.is_full_time)
+                            if(strToLower(data.is_full_time)==='true') this.timer&&clearTimeout(this.timer)
                           })     
                       },(error)=>{
                       })
@@ -111,7 +115,11 @@ class MatchCenter extends Component {
                     this.setState({
                       statusArray: this.statusArray,
                       momentumData:Object.assign(data,this.state.detail)
-                    })
+                    },()=>{
+                            if(__DEV__)console.log('data.is_full_time',data.is_full_time)
+                            if(strToLower(data.is_full_time)==='true') this.timer&&clearTimeout(this.timer)
+                          }
+                        )
         },(error)=>{
         })
       }

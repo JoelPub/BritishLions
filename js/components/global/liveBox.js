@@ -7,6 +7,7 @@ import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
 import  { actions  as apiActions } from '../utility/matchApiManger/matchApiManger'
 import Timer from './timer'
+import { strToLower } from '../utility/helper'
 
 let containerWidth = styleVar.deviceWidth
 
@@ -90,7 +91,11 @@ export default class LiveBox extends Component {
                       game_time: data.game_time,
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
                       op_score: data.statics&&data.statics.opposition&&data.statics.opposition.score
-                    })
+                    },()=>{
+                            if(__DEV__)console.log('data.is_full_time',data.is_full_time)
+                            if(strToLower(data.is_full_time==='true')) this.timer&&clearTimeout(this.timer)
+                          }
+                      )
         },(error)=>{
         })
     }
@@ -150,7 +155,7 @@ export default class LiveBox extends Component {
                     </View>
                     <View style={{flex:2,alignItems:'center'}}>
                     {
-                        this.props.data.live===null?
+                        (this.props.data.live===null||strToLower(this.props.data.is_full_time)==='true')?
                         <View style={locStyle.time}>
                             <Text style={locStyle.timeText}>{this.state.game_time}</Text>
                         </View>
