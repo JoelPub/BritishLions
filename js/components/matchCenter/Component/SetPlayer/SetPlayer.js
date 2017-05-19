@@ -46,11 +46,6 @@ class SetPlayer extends Component {
         setTimeout(()=>this.setState({modalAble:true}),500)
       })
   }
-  updateMadal = () =>{
-    this.setState({
-      modalInfo: !this.state.modalInfo
-    })
-  }
 
   SortingData = (kicks) => {
     let points = {

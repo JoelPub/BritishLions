@@ -13,12 +13,14 @@ import Fixture from '../../../utility/fixture'
 import LiveBox from '../../../global/liveBox'
 import loader from '../../../../themes/loader-position'
 import _fetch from '../../../utility/fetch'
+import SquadModal from '../../../global/squadModal'
 
 class Momentum extends Component {
 
     constructor(props) {
          super(props)
          this.state={
+            modalInfo:false,
             config:{
                 isHost:false,
                 radius:22,
@@ -41,7 +43,9 @@ class Momentum extends Component {
         
     }
     iconPress = () =>{
-        DeviceEventEmitter.emit('matchCenter', 'moment');
+        this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
+            setTimeout(()=>this.setState({modalAble:true}),500)
+          })
     }
     render() {
         return (
@@ -95,6 +99,18 @@ class Momentum extends Component {
                             <View onLayout={this.measurePage.bind(this,'momentum')} />
                         </View>
                     </View>
+                  <SquadModal
+                    modalVisible={this.state.modalInfo}
+                    callbackParent={this.iconPress}>
+                    <ScrollView style={[styles.modalContent]}>
+                          <View>
+                              <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
+                              <Text style={styles.modalContentText}>The graph shows the two features for both teams. The left side will belong to the Lions, the right will be their opposition:</Text>
+                              <Text style={styles.modalContentText}>The Red bars indicate the score difference between the two teams.</Text>
+                              <Text style={styles.modalContentText}>The Yellow line indicates which team has the run of play based on features such as Territory, Possession, Metres made, Attacking plays in the opposition half.</Text>
+                          </View>
+                    </ScrollView>
+                  </SquadModal>
                 </View>
         )
     }

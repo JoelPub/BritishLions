@@ -46,11 +46,6 @@ class OnFire extends Component {
         setTimeout(()=>this.setState({modalAble:true}),500)
       })
   }
-  updateMadal = () =>{
-    this.setState({
-      modalInfo: !this.state.modalInfo
-    })
-  }
   mathHeight = (half_time,full_time,index) => {
     let halfLength  = half_time.metres ? half_time.metres.length : 0
     let halfLength2  = half_time.passes ? half_time.passes.length : 0
