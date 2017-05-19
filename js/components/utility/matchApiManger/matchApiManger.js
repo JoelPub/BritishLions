@@ -184,7 +184,7 @@ function processMomentumData(data){
                     return parseInt(x.time)===i||parseInt(x.time)===i+10
                 }).sort((a,b)=>parseInt(a.time)-parseInt(b.time))
                 if (i===0) momentum.isFirst=true
-                if(data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10})>=-1&&momentum.team_momentum.length>0) {
+                if((data.team_momentum.findIndex(x=>{return parseInt(x.time)>i+10})>-1&&momentum.team_momentum.length>0) ||(momentum.team_momentum.length>0&&parseInt(momentum.team_momentum[0].time)===i+10) ){
                   momentum.finished=true
                   if(momentum.score_advantage&&momentum.score_advantage.length&&momentum.score_advantage.length>1) momentum.integrity=true
                 }
