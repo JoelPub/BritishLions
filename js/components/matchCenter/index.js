@@ -45,6 +45,7 @@ class MatchCenter extends Component {
           subPage:'landing',
           scrollEnabled:true
         }
+        this._scrollView = ScrollView
         this.timer  = null
         this.statusArray=[false,false,false,false,false]
 
@@ -228,6 +229,12 @@ class MatchCenter extends Component {
         
       })
     }
+    changePage(n) {
+      if(__DEV__)console.log('changePage',n)
+      this.setState({index:this.state.index+n},()=>{
+        this.refs['swiper'].scrollBy(n,true)
+      })
+    }
     render() {
       let { statusArray ,setPlayerData,onFireData} = this.state
         return (
@@ -273,7 +280,7 @@ class MatchCenter extends Component {
                               }
                               {
                                 statusArray[2]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
-                                                                 set_plays={setPlayerData.set_plays} />
+                                                                 set_plays={setPlayerData.set_plays} s={this._scrollView} changePage={this.changePage.bind(this)}/>
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[2]&&this.state.index===2?

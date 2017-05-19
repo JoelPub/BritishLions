@@ -39,6 +39,7 @@ class SetPlayer extends Component {
           h:0,
           modalAble:true
     }
+        this.currentPosition=0
   }
   iconPress = () => {
       this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
@@ -64,6 +65,54 @@ class SetPlayer extends Component {
   callApi = () =>{
    if(__DEV__)console.log('setPlayerCallApi')
   }
+  componentWillMount() {
+      this._panResponder = PanResponder.create({
+        onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
+        // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+        // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+        // onPanResponderGrant: this._handlePanResponderGrant,
+        onPanResponderMove: this._handlePanResponderMove.bind(this),
+        onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+        onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+        
+      })
+  }
+
+
+
+  _handleStartShouldSetPanResponderCapture(e, gestureState) {
+     if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)     
+     if (__DEV__)console.log('return true')
+        return true
+  }
+
+  _handlePanResponderMove(e, gestureState) {
+       if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
+       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
+            this.currentPosition=this.currentPosition-gestureState.dy/10
+            if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
+            this.props.s.scrollTo({y:this.currentPosition,animated:true})
+       }
+       if (__DEV__)console.log('return true')
+        return true
+    }
+
+
+    _handlePanResponderEnd(e, gestureState) {
+       if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
+       if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
+       //      let index = this._findID(this._items, this.props.article.id)
+            // let rtl=gestureState.dx<0?false:true
+            // if (__DEV__)console.log('rtl',rtl)
+            this.props.changePage(gestureState.dx<0?1:-1)
+       //      let item = rtl?this._items[index - 1]:this._items[index+1]
+       //      if(item) {
+       //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
+       //      }  
+       }
+       if (__DEV__)console.log('return true')
+        return true
+    }
   render() {
     let {isActive} = this.props
     let { kicks, scrums,line_outs} = this.props.set_plays
@@ -84,7 +133,7 @@ class SetPlayer extends Component {
         >
          <View tabLabel='KICKS'>
            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-           <View style={[styles.itemContainer]}  >
+           <View style={[styles.itemContainer]}  {...this._panResponder.panHandlers}>
              <StadiumFigure
                redPoints={ kicks.bil.conversions.details}
                orangePoints = {kicks.bil.penalties.details}
@@ -106,7 +155,7 @@ class SetPlayer extends Component {
          </View>
          <View tabLabel='SCRUMS'>
            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={styles.itemContainer}  >
+            <View style={styles.itemContainer}   {...this._panResponder.panHandlers}>
               <StadiumFigure
                 redPoints={ scrums.bil.won.details}
                 orangePoints = {scrums.bil.lost.details}
@@ -129,7 +178,7 @@ class SetPlayer extends Component {
          </View>
           <View tabLabel='LINEOUTS'>
             <IconHeader onPress={this.iconPress}  modalAble={this.state.modalAble} />
-            <View style={styles.itemContainer}  >
+            <View style={styles.itemContainer}   {...this._panResponder.panHandlers}>
               <StadiumFigure
                 redPoints={ line_outs.bil.won.details}
                 orangePoints = {line_outs.bil.lost.details}
