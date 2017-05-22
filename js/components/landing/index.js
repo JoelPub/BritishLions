@@ -523,7 +523,7 @@ class Landing extends Component {
                                     <Image
                                         resizeMode='cover' 
                                         style={styles.bannerImg}
-                                        source={{uri: 'https://bileurostoraged001.blob.core.windows.net/expertimages/SquadPhoto.jpg'}} />
+                                        source={require('../../../contents/landing/landing-squad.png')} />
                                 </ImagePlaceholder>
                                 <View style={[shapes.triangle, {marginTop: -12}]} />
                                 <View style={styles.bannerDetails}>
