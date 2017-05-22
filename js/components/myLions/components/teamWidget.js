@@ -88,7 +88,7 @@ class TeamWidget extends Component {
                 {
                     this.state.fullTeam&&this.props.tactics!==null?
                         <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
-                             <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress} disabled={!this.state.isLoaded}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={!this.state.isLoaded}>
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
                                     <Icon name='md-checkmark' style={locStyle.icon} /> 
                                 </View>
@@ -101,7 +101,7 @@ class TeamWidget extends Component {
                         </View>
                         :
                         <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
-                             <ButtonFeedback style={locStyle.btn} onPress={this.props.onPress} disabled={!this.state.isLoaded}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={!this.state.isLoaded}>
                              {
                                 this.state.fullTeam?
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
@@ -128,6 +128,14 @@ class TeamWidget extends Component {
                 
 		)
 	}
+    pressBtn = () => {
+        this.setState({isLoaded:false},()=>{
+            this.props.onPress()
+            setTimeout(()=>{
+                this.setState({isLoaded:true})
+            },600)
+        })
+    }
     componentDidMount() {
         // if (__DEV__)console.log('teamWidget componentDidmount')
             this._getTeam()
