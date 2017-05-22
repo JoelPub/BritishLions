@@ -10,6 +10,30 @@ const w=styleVar.deviceWidth*0.5
 const headerHeight=styleVar.deviceWidth*0.08
 const gridHeight=styleVar.deviceWidth*0.1
 const styles = styleSheetCreate({
+    headerWrapper: {
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingHorizontal:10,
+        alignItems:'center',
+        borderTopWidth:1,
+        borderColor:'rgb(216,217,218)',
+        ios: {
+            paddingTop:5
+        }
+    },
+    headerText: {
+        fontFamily: styleVar.fontCondensed,
+        color:'rgb(38,38,38)',
+        fontSize:18
+    },
+    nodeText: {
+        fontFamily: styleVar.fontCondensed,
+        color:'rgb(255,255,255)',
+        fontSize:18,
+        ios: {
+            marginTop:5
+        }
+    }
 })
 
 export default class MomentumTracker extends Component {
@@ -33,9 +57,9 @@ export default class MomentumTracker extends Component {
                 <View style={{height:outerHeight}}>                    
                     {
                         finished&&
-                        <View style={{height:headerHeight,flexDirection:'row',justifyContent:'space-between',paddingHorizontal:10,alignItems:'center',borderTopWidth:1,borderColor:'rgb(216,217,218)',}}>
-                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(38,38,38)',fontSize:18,}}>{timeMark+10}MIN</Text>
-                            <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(38,38,38)',fontSize:18,}}>{timeMark+10}MIN</Text>
+                        <View style={[{height:headerHeight},styles.headerWrapper]}>
+                            <Text style={styles.headerText}>{timeMark+10}MIN</Text>
+                            <Text style={styles.headerText}>{timeMark+10}MIN</Text>
                         </View>
                     }
                     {
@@ -43,10 +67,10 @@ export default class MomentumTracker extends Component {
                             return(
                                 <View key={index} style={{flex:1,flexDirection:'row'}}>
                                     <View style={{height:gridHeight,left:0,backgroundColor:isHost?'rgb(175,0,30)':'rgb(0,0,0)',width:strToLower(val.advantage_team)===(isHost?'bil':'oppositon')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(255,255,255)',fontSize:18,marginLeft:10,textAlign:'left'}}>{val.time}</Text>
+                                        <Text style={[styles.nodeText,{textAlign:'left',marginLeft:10,}]}>{val.time}</Text>
                                     </View>
                                     <View style={{height:gridHeight,right:0,backgroundColor:isHost?'rgb(0,0,0)':'rgb(175,0,30)',width:strToLower(val.advantage_team)===(isHost?'oppositon':'bil')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
-                                        <Text style={{fontFamily: styleVar.fontCondensed,color:'rgb(255,255,255)',fontSize:18,marginRight:10,textAlign:'right'}}>{val.time}</Text>
+                                        <Text style={[styles.nodeText,{textAlign:'right',marginRight:10,}]}>{val.time}</Text>
                                     </View>
                                 </View>
                             )

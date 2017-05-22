@@ -65,7 +65,10 @@ module.exports = styleSheetCreate({
     textWrapper:{
         height:styleVar.deviceWidth*0.13,
         width:styleVar.deviceWidth*0.26,
-        justifyContent:'center'
+        justifyContent:'center',
+        ios:{
+            paddingTop:5
+        }
     },
     redBgc:{backgroundColor:'rgb(175,0,30)'},
     blackBgc:{backgroundColor:'rgb(0,0,0)'},
