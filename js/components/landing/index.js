@@ -98,7 +98,9 @@ class Landing extends Component {
                 this._latestUpdate('news', json.data, 1)
             },
             onError: (res) => {
-                //this._showError(res)
+                this.setState({isLoaded:true},()=>{
+                    this._showError(res)
+                })
             }
         }
 

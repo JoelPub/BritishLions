@@ -200,6 +200,9 @@ class PlayerFigure extends Component {
                 } else {
                     this.setState({ isLoaded: true })
                 }
+            },
+            onError: (res) => {
+                this.setState({isLoaded:true})
             }
         })
     }
