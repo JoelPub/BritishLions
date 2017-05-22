@@ -151,7 +151,7 @@ class CoachsBox extends Component {
       <Container theme={theme}>
         <View style={styles.container} >
           <LionsHeader
-            title="COACH'S BOX"
+            title="COACHES' BOX"
             contentLoaded={true}
             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true })}} />
           <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>

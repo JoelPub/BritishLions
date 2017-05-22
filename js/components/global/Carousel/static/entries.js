@@ -1,6 +1,6 @@
 export const ENTRIES1 = [
   {
-    title: 'MATCH SUMMARY',
+    title: 'LIVE COMMENTARY',
     subtitle: 'Live commentary for the current match.',
     illustration: 'http://i.imgur.com/UYiroysl.jpg'
   },

@@ -159,6 +159,10 @@ class LionsSidebar extends Component {
         return (
             <Container style={styles.background}>
                 <Content style={styles.drawerContent}>
+                    <ButtonFeedback onPress={() => this.navigateTo('landing')} style={styles.links}>
+                        <Icon name='md-home' style={styles.icon} />
+                        <Text style={styles.linkText}>Home</Text>
+                    </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('news')} style={styles.links}>
                         <Icon name='md-planet' style={styles.icon} />
                         <Text style={styles.linkText}>NEWS</Text>

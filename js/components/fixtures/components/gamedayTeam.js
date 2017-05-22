@@ -521,7 +521,7 @@ class GamedayTeam extends Component {
                             </Swiper>
 
                             
-                            <PositionTitle pos='RESERVES' data={this.state.gameDayTeam.reserves}/>
+                            <PositionTitle pos='REPLACEMENTS' data={this.state.gameDayTeam.reserves}/>
                             <Swiper
                             height={this.state.gameDayTeam.reserves.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                             loop={false}
