@@ -28,7 +28,7 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         paddingLeft:20,
         alignItems:'center',
-        marginBottom:15,
+        paddingBottom:15,
     },
     subWrapper:{
         flex:2,

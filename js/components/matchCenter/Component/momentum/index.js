@@ -63,7 +63,7 @@ class Momentum extends Component {
                                 </ButtonFeedback>
                             </View>
                         </View>
-                        <View style={styles.subjectWrapper}>
+                        <View style={[styles.subjectWrapper,{borderBottomWidth:1,borderColor:'rgb(216,217,218)'}]}>
                             <View style={styles.subWrapper}>
                                     <View style={styles.logoWrapper}>
                                         <Image resizeMode='contain'  source={this.state.config.isHost?require('../../../../../contents/my-lions/squadLogo.png'):{uri: this.props.data.opposition_image}} style={styles.logoImg}/>

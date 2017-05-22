@@ -15,8 +15,6 @@ const styles = styleSheetCreate({
         justifyContent:'space-between',
         paddingHorizontal:10,
         alignItems:'center',
-        borderTopWidth:1,
-        borderColor:'rgb(216,217,218)',
         ios: {
             paddingTop:5
         }
