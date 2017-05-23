@@ -1,5 +1,5 @@
 import React, { Component ,PropTypes } from 'react';
-import { View, ScrollView, Text, StatusBar } from 'react-native';
+import { View, ScrollView, Text, StatusBar,Image } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from './styles/SliderEntry.style';
 import SliderEntry from './components/SliderEntry';
@@ -62,8 +62,7 @@ export default class ApdCarousel extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.colorsContainer}>
-          <View style={styles.color1} />
-          <View style={styles.color2} />
+          <Image source={require('../../../../images/coachesBox/BIL_pitch.jpg')} style={styles.backgroundImage} />
         </View>
         <ScrollView
           style={styles.scrollview}
