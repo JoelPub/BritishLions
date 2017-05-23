@@ -281,7 +281,9 @@ class Landing extends Component {
                     })
                 }
             },
-            onError: null,
+            onError: (res) => {
+                this.setState({isProfileSummaryLoaded:true})
+            },
             onAuthorization: () => {
                 this._signInRequired()
             },
