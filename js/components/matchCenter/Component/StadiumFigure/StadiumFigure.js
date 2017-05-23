@@ -6,17 +6,21 @@ import {Image, View, Text, ActivityIndicator, ScrollView} from 'react-native'
 import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import stadiumImage from './stadium.png'
 import Triangle from '../../../../components/global/Triangle'
+import styleVar from '../../../../themes/variable'
 const styles = styleSheetCreate({
   container: {
     flex: 1,
     width: 202,
     height: 416,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+
   },
   image: {
     width:202,
     height:416,
-    resizeMode: 'stretch'
+    resizeMode: 'stretch',
+    borderWidth:1,
+    borderColor:styleVar.colorGrey2
   }
 })
 class StadiumFigure extends Component {
@@ -26,11 +30,11 @@ class StadiumFigure extends Component {
     }
   }
   countPoint = (point,extraHeight,imageWith) => {
-
-    let newX = point.x *imageWith /50
+    let extraWidth = imageWith*0.04
+    let newX = point.x *(imageWith-extraWidth*2) /50
     let newY = point.y *(416-extraHeight*2) /100
     let newPoint = {
-      x : newX,
+      x : newX+extraWidth,
       y :newY+extraHeight
     }
     return newPoint
@@ -40,7 +44,8 @@ class StadiumFigure extends Component {
   render() {
     let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith} = this.props
     let pointWidth = 14
-    let extraHeight = 90
+    let extraHeight = 98
+
     return (
       <View style={[styles.container,{width:imageWith}]} >
         <Image style={[styles.image,{width:imageWith}]} source={stadiumImage} >
