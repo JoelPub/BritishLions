@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import GamedayTeam from '../../../fixtures/components/gamedayTeam'
+import styleVar from '../../../../themes/variable'
+import styles from './styles'
 
 class Team extends Component {
 
@@ -29,11 +31,23 @@ class Team extends Component {
     //     this.setState({showModal:v})
     // }
     
+    measurePage(page,event) {
+        // if (__DEV__)console.log('momentum')
+        const { x, y, width, height, } = event.nativeEvent.layout
+        // if (__DEV__)console.log('page',page)
+        // if (__DEV__)console.log('x',x)
+        // if (__DEV__)console.log('y',y)
+        // if (__DEV__)console.log('width',width)
+        // if (__DEV__)console.log('height',height)
+        let h=y+55>styleVar.deviceHeight-345?y+55:styleVar.deviceHeight-345
+        this.props.setHeight(h,'team')
+        
+    }
     render() {
         return (
-                <View>
+                <View  style={styles.wrapper}>
                     <GamedayTeam gameID={this.props.detail.id} isHideTitle={true} />
-                    
+                    <View onLayout={this.measurePage.bind(this,'team')} />
                 </View>
         )
     }
