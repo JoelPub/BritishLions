@@ -38,6 +38,8 @@ export default StyleSheet.create({
   image: {
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'cover',
+    width: itemWidth-16,
+    height: slideHeight-120,
     borderRadius: Platform.OS === 'ios' ? entryBorderRadius : 0,
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius

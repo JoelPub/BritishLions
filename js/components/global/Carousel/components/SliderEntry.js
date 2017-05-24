@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from '../styles/SliderEntry.style';
 
+
 export default class SliderEntry extends Component {
 
   static propTypes = {
@@ -17,7 +18,7 @@ export default class SliderEntry extends Component {
     }
   }
   render () {
-    const { title, subtitle, illustration, even } = this.props;
+    const { title, subtitle, illustration, even ,page} = this.props;
 
     const uppercaseTitle = title ? (
       <Text style={[styles.title]} numberOfLines={2}>{ title.toUpperCase() }</Text>
@@ -31,7 +32,7 @@ export default class SliderEntry extends Component {
       >
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           <Image
-            source={{ uri: illustration }}
+            source={this.props.image}
             style={styles.image}
           />
           <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
@@ -46,7 +47,8 @@ export default class SliderEntry extends Component {
 }
 SliderEntry.propTypes = {
   itemPress: PropTypes.func,
-  page: PropTypes.any
+  page: PropTypes.any,
 }
 SliderEntry.defaultProps = {
+  page: 0,
 }

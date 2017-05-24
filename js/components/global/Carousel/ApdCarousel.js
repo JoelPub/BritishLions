@@ -9,6 +9,13 @@ import { ENTRIES1, ENTRIES2 } from './static/entries';
 import ButtonFeedback from '../../utility/buttonFeedback'
 import { Icon } from 'native-base'
 
+const img_arr = [require('./static/images/matchSummary.jpg'),
+  require('./static/images/setPlays.jpg'),
+  require('./static/images/topLions.jpg'),
+  require('./static/images/manOfTheMatch.jpg'),
+  require('./static/images/gameDayTeam.jpg'),
+]
+
 export default class ApdCarousel extends Component {
 
   getSlides (entries , onPress) {
@@ -24,6 +31,8 @@ export default class ApdCarousel extends Component {
           page={index}
           itemPress = {onPress}
           {...entry}
+          image = {img_arr[index]}
+
         />
       );
     });
