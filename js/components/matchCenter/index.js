@@ -61,7 +61,14 @@ class MatchCenter extends Component {
     pullHistorySummary(){
         let optionData={}
         let type='extend'
-        optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        if(__DEV__)console.log('pullHistorySummary')
+        if(this.state.summaryData.timeline&&this.state.summaryData.timeline.length>0) {
+          optionData={id:this.state.detail.id,"sequenceId" : this.state.summaryData.timeline[this.state.summaryData.timeline.length-1].seq}
+        }
+        else {
+          optionData={id:this.state.detail.id}
+        }
+        
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
                       if (__DEV__)console.log('extend timelineData',timelineData)
                       this.statusArray.fill(false)

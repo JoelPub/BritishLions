@@ -7,13 +7,13 @@ export function ucWords(str) {
 }
 
 export function strToUpper(str) {
-    if (str)
+    if (typeof str==='string')
     	return str.toUpperCase()
 
     return str
 }
 export function strToLower(str) {
-    if (str)
+    if (typeof str==='string')
     	return str.toLowerCase()
 
     return str

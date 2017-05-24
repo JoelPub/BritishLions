@@ -98,7 +98,9 @@ class Landing extends Component {
                 this._latestUpdate('news', json.data, 1)
             },
             onError: (res) => {
-                //this._showError(res)
+                this.setState({isLoaded:true},()=>{
+                    this._showError(res)
+                })
             }
         }
 
@@ -279,7 +281,9 @@ class Landing extends Component {
                     })
                 }
             },
-            onError: null,
+            onError: (res) => {
+                this.setState({isProfileSummaryLoaded:true})
+            },
             onAuthorization: () => {
                 this._signInRequired()
             },
@@ -521,7 +525,7 @@ class Landing extends Component {
                                 onPress={() => this._isSignIn('myLionsOfficialSquad')}>
                                 <ImagePlaceholder height={200}>
                                     <Image
-                                        resizeMode='cover' 
+                                        resizeMode='stretch' 
                                         style={styles.bannerImg}
                                         source={require('../../../contents/landing/landing-squad.png')} />
                                 </ImagePlaceholder>

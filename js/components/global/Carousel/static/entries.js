@@ -15,7 +15,7 @@ export const ENTRIES1 = [
     illustration: 'http://i.imgur.com/MABUbpDl.jpg'
   },
   {
-    title: 'ON FIRE',
+    title: 'TOP LIONS',
     subtitle: 'See what Players are performing above their career averages.',
     illustration: 'http://i.imgur.com/KZsmUi2l.jpg'
   },

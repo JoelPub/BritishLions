@@ -4,6 +4,7 @@ import { NetInfo, Alert } from 'react-native'
 import { getAccessToken } from './asyncStorageServices'
 import axios from 'axios'
 import qs from 'qs'
+import { strToUpper } from './helper'
 
 
 function errorSlice(errObj) {
@@ -93,8 +94,8 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 	}
 
 	NetInfo.fetch().done((connectionInfo) => {
-		let netInfos = connectionInfo.toLowerCase()
-		if(netInfos === 'unknown' || netInfos === 'none') {
+		let netInfos = strToUpper(connectionInfo)
+		if(netInfos === 'UNKNOW' || netInfos === 'NONE') {
 			// No internet connection
 
 			if (opt.onAxiosEnd) {

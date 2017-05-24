@@ -23,7 +23,7 @@ class Momentum extends Component {
             modalInfo:false,
             config:{
                 isHost:false,
-                radius:22,
+                radius:styleVar.deviceWidth*0.06,
                 dotWidth:2,
                 dotLen:4  
             }
@@ -63,7 +63,7 @@ class Momentum extends Component {
                                 </ButtonFeedback>
                             </View>
                         </View>
-                        <View style={styles.subjectWrapper}>
+                        <View style={[styles.subjectWrapper,{borderBottomWidth:1,borderColor:'rgb(216,217,218)'}]}>
                             <View style={styles.subWrapper}>
                                     <View style={styles.logoWrapper}>
                                         <Image resizeMode='contain'  source={this.state.config.isHost?require('../../../../../contents/my-lions/squadLogo.png'):{uri: this.props.data.opposition_image}} style={styles.logoImg}/>
@@ -105,7 +105,7 @@ class Momentum extends Component {
                     <ScrollView style={[styles.modalContent]}>
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>The graph shows the two features for both teams. The left side will belong to the Lions, the right will be their opposition:</Text>
+                              <Text style={styles.modalContentText}>The graph shows the two features for both teams. The right side will belong to the Lions, the left will be their opposition:</Text>
                               <Text style={styles.modalContentText}>The Red bars indicate the score difference between the two teams.</Text>
                               <Text style={styles.modalContentText}>The Yellow line indicates which team has the run of play based on features such as Territory, Possession, Metres made, Attacking plays in the opposition half.</Text>
                           </View>
