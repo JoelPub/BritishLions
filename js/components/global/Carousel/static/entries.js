@@ -6,7 +6,7 @@ import image4 from './images/ manOfTheMatch.jpg'
 import image5 from './images/gameDayTeam.jpg'
 export const ENTRIES1 = [
   {
-    title: 'LIVE COMMENTARY',
+    title: 'MATCH SUMMARY',
     subtitle: 'Live commentary for the current match.',
     illustration: image1
   },
