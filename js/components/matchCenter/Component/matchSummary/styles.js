@@ -4,7 +4,7 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import { Platform } from 'react-native'
 import styleVar from '../../../../themes/variable'
 
-let timelineWrapperHeightMinus = Platform.OS === 'android'?  280 : 260
+let timelineWrapperHeightMinus = Platform.OS === 'android'?  350 : 330
 
 module.exports = styleSheetCreate({
     timeWrapper: {
@@ -43,6 +43,7 @@ module.exports = styleSheetCreate({
     	height: styleVar.deviceHeight -  timelineWrapperHeightMinus,
     	paddingHorizontal:10,
     	backgroundColor:'rgb(255,255,255)',
+        paddingBottom:20,
 		//backgroundColor: 'green'
     },
     descripton:{
@@ -57,6 +58,66 @@ module.exports = styleSheetCreate({
 		android: {
 			marginTop: -3
 		}
+    },
+    leftCol:{
+        flex:1,
+        color:'rgb(175,0,30)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:30,
+        textAlign:'right'
+    },
+    midCol:{
+        flex:2,
+        color:'rgb(0,0,0)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:22,
+        lineHeight:24,
+        textAlign:'center'
+    },
+    rightCol:{
+        flex:1,
+        color:'rgb(175,0,30)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:28,
+        lineHeight:30,
+        textAlign:'left'
+    },
+    tabBtnWrapper:{
+        flexDirection:'row',
+        padding:10,
+        backgroundColor:'rgb(255,255,255)',
+        justifyContent:'space-between'
+    },
+    tabBtnPos:{
+        alignItems:'center'
+    },
+    tabBtn:{
+        width:styleVar.deviceWidth*0.44,
+        height:styleVar.deviceWidth*0.133,
+        borderRadius:styleVar.deviceWidth*0.08,
+        justifyContent:'center'
+    },
+    activeBtn:{
+        backgroundColor:'rgb(38,38,38)'
+    },
+    inactiveBtn:{
+        backgroundColor:styleVar.colorScarlet
+    },
+    btnText:{
+        color:'rgb(255,255,255)',
+        fontFamily: styleVar.fontCondensed,
+        fontSize:22,
+        lineHeight:24,
+        textAlign:'center'
+    },
+    statWrapper:{
+        paddingHorizontal:10
+    },
+    statEntry:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginVertical:5
     }
 
 })

@@ -64,10 +64,10 @@ export default class MomentumTracker extends Component {
                         team_momentum&&team_momentum.map((val,index)=>{
                             return(
                                 <View key={index} style={{flex:1,flexDirection:'row'}}>
-                                    <View style={{height:gridHeight,left:0,backgroundColor:isHost?'rgb(175,0,30)':'rgb(0,0,0)',width:strToLower(val.advantage_team)===(isHost?'bil':'oppositon')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
+                                    <View style={{height:gridHeight,left:0,backgroundColor:isHost?'rgb(175,0,30)':'rgb(0,0,0)',width:strToLower(val.advantage_team)===(isHost?'bil':'opposition')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
                                         <Text style={[styles.nodeText,{textAlign:'left',marginLeft:10,}]}>{val.time}</Text>
                                     </View>
-                                    <View style={{height:gridHeight,right:0,backgroundColor:isHost?'rgb(0,0,0)':'rgb(175,0,30)',width:strToLower(val.advantage_team)===(isHost?'oppositon':'bil')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
+                                    <View style={{height:gridHeight,right:0,backgroundColor:isHost?'rgb(0,0,0)':'rgb(175,0,30)',width:strToLower(val.advantage_team)===(isHost?'opposition':'bil')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
                                         <Text style={[styles.nodeText,{textAlign:'right',marginRight:10,}]}>{val.time}</Text>
                                     </View>
                                 </View>
