@@ -525,7 +525,7 @@ class Landing extends Component {
                                 onPress={() => this._isSignIn('myLionsOfficialSquad')}>
                                 <ImagePlaceholder height={200}>
                                     <Image
-                                        resizeMode='cover' 
+                                        resizeMode='stretch' 
                                         style={styles.bannerImg}
                                         source={require('../../../contents/landing/landing-squad.png')} />
                                 </ImagePlaceholder>

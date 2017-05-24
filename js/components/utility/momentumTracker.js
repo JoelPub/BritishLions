@@ -75,7 +75,7 @@ export default class MomentumTracker extends Component {
                         })
                     }
                     {
-                        integrity&&<View style={{top:radius-headerHeight,left:cLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
+                        integrity&&<View style={{top:headerHeight/2-radius,left:cLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
                     }
                     {
                         integrity&&<View style={isFirst&&{top:outerHeight-radius,left:fLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
