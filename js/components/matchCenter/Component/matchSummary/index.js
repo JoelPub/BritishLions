@@ -12,11 +12,16 @@ import Timeline from 'react-native-timeline-listview'
 import LiveBox from '../../../global/liveBox'
 import _fetch from '../../../utility/fetch'
 import loader from '../../../../themes/loader-position'
+import Triangle from '../../..//global/Triangle'
 
 class MatchSummary extends Component {
 
     constructor(props) {
          super(props)
+         this.state={
+          page:0,
+          isHost:false
+         }
     }
     _renderCircle(rowData,sectionID,rowID) {
       return (
@@ -30,12 +35,44 @@ class MatchSummary extends Component {
       this.props.setEndReached()
     }
     render() {
+        let {summaryData}=this.props
+        let {timeline, statics}=summaryData
+        let {opposition,bil}=statics
+        let {isHost}=this.state
         return (
-                <ScrollView style={styles.scroll} scrollEnabled={false}>
-                    <LiveBox data={Object.assign({feededData:true,hasTitle:true},this.props.summaryData)}/>
-                    <View style={styles.timelineWrapper} >                    
+                <View style={styles.scroll} scrollEnabled={false}>
+                    <LiveBox data={Object.assign({feededData:true,hasTitle:true},summaryData)}/>
+                    <View style={styles.tabBtnWrapper}>
+                      <View style={styles.tabBtnPos}>
+                        <ButtonFeedback style={[this.state.page===0?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:0})}>
+                          <Text style={styles.btnText}> LIVE COMMENTARY</Text>
+                        </ButtonFeedback>
+                        <Triangle
+                          width={24}
+                          height={12}
+                          color={this.state.page===0? 'rgb(38,38,38)' : 'transparent'}
+                          direction={'down'}
+                          style={{marginTop:-1}}
+                        />
+                      </View>
+                      <View style={styles.tabBtnPos}>
+                        <ButtonFeedback style={[this.state.page===1?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:1})}>
+                          <Text style={styles.btnText}> MATCH STATISTICS</Text>
+                        </ButtonFeedback>
+                        <Triangle
+                          width={24}
+                          height={12}
+                          color={this.state.page===1? 'rgb(38,38,38)' : 'transparent'}
+                          direction={'down'}
+                          style={{marginTop:-1}}
+                        />
+                      </View>
+                    </View>
+                    <View style={styles.timelineWrapper} >
+                    {
+                      this.state.page===0?
                           <Timeline
-                            data={this.props.summaryData.timeline}
+                            data={timeline}
                             lineColor='rgb(216,217,218)'
                             timeContainerStyle={{minWidth: 6}}
                             timeStyle={{width:0, height:0}}
@@ -49,9 +86,73 @@ class MatchSummary extends Component {
                               onEndReachedThreshold: 15
                             }}
                             renderCircle={this._renderCircle}
-                          />            
+                          />
+                          :
+                          <ScrollView style={styles.statWrapper}>
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.tries:opposition&&opposition.tries}</Text>
+                                <Text style={styles.midCol}>TRIES</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.tries}</Text>
+                            </View>
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.conversions:opposition&&opposition.conversions}</Text>
+                                <Text style={styles.midCol}>CONVERSIONS</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.conversions}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.penalties:opposition&&opposition.penalties}</Text>
+                                <Text style={styles.midCol}>PENALTIES</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.penalties}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.dropped_goals:opposition&&opposition.dropped_goals}</Text>
+                                <Text style={styles.midCol}>DROP GOALS</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.dropped_goals}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.possession:opposition&&opposition.possession}%</Text>
+                                <Text style={styles.midCol}>POSSESSION</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.possession}%</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.breaks:opposition&&opposition.breaks}</Text>
+                                <Text style={styles.midCol}>BREAKS</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.breaks}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.metres:opposition&&opposition.metres}</Text>
+                                <Text style={styles.midCol}>METRES</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.metres}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.scrums:opposition&&opposition.scrums}</Text>
+                                <Text style={styles.midCol}>SCRUMS WON</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.scrums}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.line_outs:opposition&&opposition.line_outs}</Text>
+                                <Text style={styles.midCol}>LINE_OUTS WON</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.line_outs}</Text>
+                            </View>
+
+                            <View style={styles.statEntry}>
+                                <Text style={styles.leftCol}>{isHost?bil&&bil.pen_con:opposition&&opposition.pen_con}%</Text>
+                                <Text style={styles.midCol}>PEN/CON</Text>
+                                <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.pen_con}%</Text>
+                            </View>
+
+                          </ScrollView>    
+                    }                    
+                                  
                     </View>
-              </ScrollView>
+              </View>
         )
     }
 }
