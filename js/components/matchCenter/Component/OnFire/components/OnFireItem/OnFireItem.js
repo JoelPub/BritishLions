@@ -97,6 +97,7 @@ class OnFireItem extends Component {
 
   }
   searchInfo = (playerId) => {
+    if(!playerId) playerId=''
     let result = searchPlayer(this.props.playerData,playerId,Data)
     return  result
   }
