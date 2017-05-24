@@ -103,9 +103,9 @@ class OnFire extends Component {
           <View tabLabel='FULL-TIME'>
             <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
             <View style={{ padding: 20,paddingTop:3}}    {...this._panResponder.panHandlers}>
-              <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList}/>
-              <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList}/>
-              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList}/>
+              <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList} isHalfTime={false}/>
+              <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList} isHalfTime={false}/>
+              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList} isHalfTime={false}/>
               <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} />
             </View>
           </View>

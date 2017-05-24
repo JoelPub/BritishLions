@@ -41,8 +41,8 @@ const  TableCell = ({data,player,isHaveM}) => {
     </View>
   )
 }
-const  BlankCell = ({title}) => {
-  let text = 'There is no player available yet for ' + title + ' .'
+const  BlankCell = ({isHalfTime}) => {
+  let text = isHalfTime ? 'This will be available at Half-Time.' : 'This will be available at Full-Time.'
   return (
     <View style={ [styles.noDataBackgroundView,styles.whiteBk]}>
       <Text style={[styles.noDataText]}>
@@ -71,7 +71,7 @@ class OnFireItem extends Component {
   }
   render() {
     let arr = [1,1,1]
-    let {isLastItem,title,data,playerData} = this.props
+    let {isLastItem,title,data,playerData,isHalfTime} = this.props
     let isHaveM = false
     isHaveM = title==='METRES' ? true : false
     if (!data) data= []
@@ -82,7 +82,7 @@ class OnFireItem extends Component {
           <Text  style={[styles.gameAndAvgText,{right:10}]}> </Text>
           <Text style={[styles.gameAndAvgText,{right:60}]}>GAME</Text>
         </View>
-        {data.length===0 ? <BlankCell title={title} /> :null}
+        {data.length===0 ? <BlankCell isHalfTime={isHalfTime} /> :null}
         {data.map((item,index)=>{
           let player = this.searchInfo(item.player)
 
@@ -110,10 +110,12 @@ OnFireItem.propTypes = {
   on_fire:PropTypes.object,
   data: PropTypes.any,
   playerData: PropTypes.any,
+  isHalfTime:PropTypes.bool,
 
 }
 OnFireItem.defaultProps = {
   isLastItem:false,
   title: '',
+  isHalfTime:true,
   data: []
 }
