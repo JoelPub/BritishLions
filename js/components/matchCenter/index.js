@@ -18,6 +18,7 @@ import Momentum from './Component/momentum'
 import StadiumFigure from './Component/StadiumFigure'
 import SetPlayer from './Component/SetPlayer'
 import ManOfTheMatch from './Component/manOfTheMatch'
+import Team from './Component/team'
 import OnFire from './Component/OnFire'
 import loader from '../../themes/loader-position'
 import { service } from '../utility/services'
@@ -31,13 +32,13 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['LIVE COMMENTARY','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH']
+        this.subjects=['LIVE COMMENTARY','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH','TEAM']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
           swiperHeight:styleVar.deviceHeight-270,
           isLoaded:false,
-          statusArray: [false,false,false,false,false],
+          statusArray: [false,false,false,false,false,false],
           momentumData:{},
           summaryData:{timeline:[]},
           setPlayerData: [],
@@ -47,7 +48,7 @@ class MatchCenter extends Component {
         }
         this._scrollView = ScrollView
         this.timer  = null
-        this.statusArray=[false,false,false,false,false]
+        this.statusArray=[false,false,false,false,false,false]
 
     }
     _setHeight(h,source) {
@@ -195,12 +196,22 @@ class MatchCenter extends Component {
           }
         },2000)
       }
+      if(this.state.index===5){
+        if (__DEV__)console.log('@@@call team Api')
+        setTimeout(()=>{
+              this.statusArray.fill(false)
+              this.statusArray[5]=true
+              this.setState({
+                statusArray: this.statusArray
+              })
+        },2000)
+      }
     }
     componentDidMount() {
         if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
-            if(this.state.index!==4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
+            if(this.state.index<4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
         })},500)
         
     }
@@ -226,7 +237,7 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if(this.state.index!==4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)              
+              if(this.state.index<4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)              
             })
           }
           else {
@@ -317,6 +328,18 @@ class MatchCenter extends Component {
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4?
+                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                        :
+                                        null
+                                      }
+                                    </View>
+                              }
+                              {
+                                statusArray[5]? <Team detail={this.state.detail} setHeight={this._setHeight.bind(this)}/>
+
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                      {
+                                        !statusArray[5]&&this.state.index===5?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
                                         :
                                         null
