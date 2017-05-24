@@ -329,6 +329,32 @@ class MatchMan extends Component {
 		                        },this)
 		                    }
 		                </Swiper>
+                    <PositionTitle pos='REPLACEMENT' data={this.state.matchMan.backs}/>
+                    <Swiper
+                      height={this.state.matchMan.replacements.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
+                      loop={true}
+                      dot={<View style={styles.paginationDot} />}
+                      activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
+                      paginationStyle={styles.paginationBottom}>
+                      {
+                        mapJSON(this.state.matchMan.replacements,3).map((rowData,i)=>{
+                          return(
+                            <View style={styles.posSwiperRow} key={i}>
+                              {
+                                rowData.map((item,index)=>{
+                                  return(
+                                    <View style={styles.posWrapper} key={index}>
+                                      <PlayerImgCell data={item} selected={this.state.selectedPosition==='replacements'&&this.state.selectedSequence===(3*i+index)} onPress = {() => this._selectMan('replacements',(3*i+index),item.info)}/>
+                                    </View>
+                                  )
+                                }, this)
+                              }
+                            </View>
+                          )
+
+                        },this)
+                      }
+                    </Swiper>
 		            </View>
 	                :
 	                <ActivityIndicator style={loader.centered} size='large' />
