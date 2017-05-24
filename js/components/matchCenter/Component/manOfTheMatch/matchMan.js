@@ -329,7 +329,7 @@ class MatchMan extends Component {
 		                        },this)
 		                    }
 		                </Swiper>
-                    <PositionTitle pos='REPLACEMENT' data={this.state.matchMan.backs}/>
+                    <PositionTitle pos='REPLACEMENT' data={this.state.matchMan.replacements}/>
                     <Swiper
                       height={this.state.matchMan.replacements.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                       loop={true}
