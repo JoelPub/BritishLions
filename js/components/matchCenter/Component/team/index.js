@@ -39,15 +39,14 @@ class Team extends Component {
         // if (__DEV__)console.log('y',y)
         // if (__DEV__)console.log('width',width)
         // if (__DEV__)console.log('height',height)
-        let h=y+55>styleVar.deviceHeight-345?y+55:styleVar.deviceHeight-345
+        let h=height+55>styleVar.deviceHeight-345?height+55:styleVar.deviceHeight-345
         this.props.setHeight(h,'team')
         
     }
     render() {
         return (
-                <View  style={styles.wrapper}>
+                <View  style={styles.wrapper} onLayout={this.measurePage.bind(this,'team')} >
                     <GamedayTeam gameID={this.props.detail.id} isHideTitle={true} />
-                    <View onLayout={this.measurePage.bind(this,'team')} />
                 </View>
         )
     }
