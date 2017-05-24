@@ -75,7 +75,8 @@ class TeamWidget extends Component {
         this.state = {
             fullTeam:false,            
             isNetwork: true,
-            isLoaded:false
+            isLoaded:false,
+            disabled:true
     	}
     }
 
@@ -88,7 +89,7 @@ class TeamWidget extends Component {
                 {
                     this.state.fullTeam&&this.props.tactics!==null?
                         <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
-                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={!this.state.isLoaded}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={this.state.disabled}>
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
                                     <Icon name='md-checkmark' style={locStyle.icon} /> 
                                 </View>
@@ -101,7 +102,7 @@ class TeamWidget extends Component {
                         </View>
                         :
                         <LinearGradient style={locStyle.btnBg} colors={['#af001e', '#820417']}>
-                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={!this.state.isLoaded}>
+                             <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={this.state.disabled}>
                              {
                                 this.state.fullTeam?
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
@@ -129,10 +130,10 @@ class TeamWidget extends Component {
 		)
 	}
     pressBtn = () => {
-        this.setState({isLoaded:false},()=>{
+        this.setState({disabled:true},()=>{
             this.props.onPress()
             setTimeout(()=>{
-                this.setState({isLoaded:true})
+                this.setState({disabled:false})
             },600)
         })
     }
@@ -185,7 +186,7 @@ class TeamWidget extends Component {
                         
                     },
                     onError: ()=>{
-                        this.setState({isLoaded:true})
+                        this.setState({isLoaded:true,disabled:false})
                     },
                     isRequiredToken: true,
                     channel: 'EYC3',
@@ -194,7 +195,7 @@ class TeamWidget extends Component {
                 service(optionsTeam)
             }
         }).catch((error) => {
-                this.setState({isLoaded:true},()=>{
+                this.setState({isLoaded:true,disabled:false},()=>{
                     this._showError(error) 
                 })
         })
@@ -218,7 +219,7 @@ class TeamWidget extends Component {
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
-            this.setState({fullTeam:fullFeed,isLoaded:true})
+            this.setState({fullTeam:fullFeed,isLoaded:true,disabled:false})
             this.props.setTeamStatus(fullFeed)
         
 
