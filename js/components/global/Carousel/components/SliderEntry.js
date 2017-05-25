@@ -34,8 +34,9 @@ export default class SliderEntry extends Component {
           <Image
             source={this.props.image}
             style={styles.image}
+            resizeMode= 'stretch'
           />
-          <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
+
         </View>
         <View style={[styles.textContainer]}>
           { uppercaseTitle }

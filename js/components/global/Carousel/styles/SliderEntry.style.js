@@ -22,24 +22,24 @@ const entryBorderRadius = 8;
 export default StyleSheet.create({
   slideInnerContainer: {
     width: itemWidth,
-    height: slideHeight,
+    height: slideHeight + 80,
     paddingHorizontal: itemHorizontalMargin,
     paddingBottom: 18 // needed for shadow
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    //backgroundColor: 'white',
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius
   },
   imageContainerEven: {
-    backgroundColor: colors.black
+    //backgroundColor: colors.black
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
-    width: itemWidth-16,
-    height: slideHeight-120,
+
+    width: itemWidth- itemHorizontalMargin * 2,
+    height: (itemWidth- itemHorizontalMargin * 2)*427/640,
     borderRadius: Platform.OS === 'ios' ? entryBorderRadius : 0,
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius
@@ -51,10 +51,10 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     height: entryBorderRadius,
-    backgroundColor: 'white'
+    //backgroundColor: 'white'
   },
   radiusMaskEven: {
-    backgroundColor: colors.black
+    //backgroundColor: colors.black
   },
   textContainer: {
     justifyContent: 'center',
@@ -66,7 +66,7 @@ export default StyleSheet.create({
     borderBottomRightRadius: entryBorderRadius
   },
   textContainerEven: {
-    backgroundColor: colors.black
+    //backgroundColor: colors.black
   },
   title: {
     color: 'white',
@@ -83,6 +83,7 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 14,
     lineHeight: 20,
+    minHeight:60,
     textAlign: 'center',
     fontFamily: styleVar.fontGeorgia,
   },
