@@ -23,7 +23,7 @@ class Momentum extends Component {
             modalInfo:false,
             config:{
                 isHost:false,
-                radius:styleVar.deviceWidth*0.06,
+                radius:styleVar.deviceWidth*0.04,
                 dotWidth:2,
                 dotLen:4  
             }
@@ -81,7 +81,7 @@ class Momentum extends Component {
                                     </View>
                             </View>
                         </View>
-                        <View style={{paddingBottom:this.state.config.radius}}>
+                        <View style={styles.momentumWrapper}>
                             {
                                 Array.isArray(this.props.data.momentum)&&this.props.data.momentum.map((value,index)=>{
                                     return (

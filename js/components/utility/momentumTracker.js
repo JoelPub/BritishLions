@@ -65,10 +65,10 @@ export default class MomentumTracker extends Component {
                             return(
                                 <View key={index} style={{flex:1,flexDirection:'row'}}>
                                     <View style={{height:gridHeight,left:0,backgroundColor:isHost?'rgb(175,0,30)':'rgb(0,0,0)',width:strToLower(val.advantage_team)===(isHost?'bil':'opposition')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
-                                        <Text style={[styles.nodeText,{textAlign:'left',marginLeft:10,}]}>{val.time}</Text>
+                                        <Text style={[styles.nodeText,{textAlign:'left',marginLeft:10,}]}>{strToLower(val.advantage_team)===(isHost?'bil':'opposition')?50+parseInt(val.value):50-parseInt(val.value)}</Text>
                                     </View>
                                     <View style={{height:gridHeight,right:0,backgroundColor:isHost?'rgb(0,0,0)':'rgb(175,0,30)',width:strToLower(val.advantage_team)===(isHost?'opposition':'bil')?w*(50+parseInt(val.value))/50:w*(50-parseInt(val.value))/50,borderBottomWidth:1,borderColor:'rgb(255,255,255)',position:'absolute',justifyContent:'center'}}>
-                                        <Text style={[styles.nodeText,{textAlign:'right',marginRight:10,}]}>{val.time}</Text>
+                                        <Text style={[styles.nodeText,{textAlign:'right',marginRight:10,}]}>{strToLower(val.advantage_team)===(isHost?'opposition':'bil')?50+parseInt(val.value):50-parseInt(val.value)}</Text>
                                     </View>
                                 </View>
                             )
@@ -81,7 +81,7 @@ export default class MomentumTracker extends Component {
                         integrity&&<View style={isFirst&&{top:outerHeight-radius,left:fLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
                     }
                     {
-                        integrity&&<DottedLine radius={radius} cLeft={cLeft-radius}  fLeft={fLeft-radius} isFirst={isFirst}  h={innerHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth}/>
+                        integrity&&<DottedLine radius={radius} cLeft={cLeft-radius}  fLeft={fLeft-radius} isFirst={isFirst}  h={innerHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth} num={team_momentum.length||0}/>
                     }
                         
                         

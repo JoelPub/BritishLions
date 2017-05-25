@@ -103,6 +103,9 @@ module.exports = styleSheetCreate({
           lineHeight: 26
       }
     },
+    momentumWrapper:{
+        paddingBottom:50
+    }
 
 
 })
