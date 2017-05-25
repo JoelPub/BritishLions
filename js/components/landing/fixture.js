@@ -113,7 +113,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
                 <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                     style={locStyle.logoIcon}/>
                 <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
-                    COACH'S BOX
+                    COACHES' BOX
                 </Text>
             </ButtonFeedback>
         </View>
