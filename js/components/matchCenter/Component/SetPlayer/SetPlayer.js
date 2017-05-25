@@ -11,9 +11,8 @@ import styleVar from '../../../../themes/variable'
 import ButtonFeedback from '../../../utility/buttonFeedback'
 import StadiumFigure from '../StadiumFigure'
 import SquadModal from '../../../global/squadModal'
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Scoreboard from './Components/Scoreboard'
-import SetPlayerTabBar from  './Components/SetPlayerTabBar'
+import Triangle from '../../..//global/Triangle'
 
 
 const  IconHeader = ({onPress,modalAble}) => {
@@ -37,7 +36,8 @@ class SetPlayer extends Component {
     this.state = {
           modalInfo:false,
           h:0,
-          modalAble:true
+          modalAble:true,
+          page:0,
     }
     this.currentPosition=0
   }
@@ -60,48 +60,6 @@ class SetPlayer extends Component {
   callApi = () =>{
    if(__DEV__)console.log('setPlayerCallApi')
   }
-  componentWillMount() {
-      this._panResponder = PanResponder.create({
-        onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
-        // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
-        // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
-        // onPanResponderGrant: this._handlePanResponderGrant,
-        onPanResponderMove: this._handlePanResponderMove.bind(this),
-        onPanResponderRelease: this._handlePanResponderEnd.bind(this),
-        onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
-        
-      })
-  }
-  _handleStartShouldSetPanResponderCapture(e, gestureState) {
-     if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)     
-     if (__DEV__)console.log('return true')
-        return true
-  }
-  _handlePanResponderMove(e, gestureState) {
-       if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
-       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
-            this.currentPosition=this.currentPosition-gestureState.dy/10
-            if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
-            this.props.scrollView.scrollTo({y:this.currentPosition,animated:true})
-       }
-       if (__DEV__)console.log('return true')
-        return true
-    }
-  _handlePanResponderEnd(e, gestureState) {
-     if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-     if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
-     //      let index = this._findID(this._items, this.props.article.id)
-          // let rtl=gestureState.dx<0?false:true
-          // if (__DEV__)console.log('rtl',rtl)
-          this.props.changePage(gestureState.dx<0?1:-1)
-     //      let item = rtl?this._items[index - 1]:this._items[index+1]
-     //      if(item) {
-     //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
-     //      }  
-     }
-     if (__DEV__)console.log('return true')
-      return true
-  }
   render() {
     let {isActive} = this.props
     let { kicks, scrums,line_outs} = this.props.set_plays
@@ -113,81 +71,122 @@ class SetPlayer extends Component {
      return (
       <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
-        <ScrollableTabView
-          locked={true}
-          tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-          initialPage={0}
-          renderTabBar={() => <SetPlayerTabBar />}
-          tabBarActiveTextColor={'black'}
-        >
-         <View tabLabel='KICKS'>
-           <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-           <View style={[styles.itemContainer]}  {...this._panResponder.panHandlers}>
-             <StadiumFigure
-               redPoints={ kicks.bil.conversions.details}
-               orangePoints = {kicks.bil.penalties.details}
-               blackPoints = {kicks.opposition.conversions.details}
-               bluePoints = {kicks.opposition.penalties.details}
-               imageWith = {Widefield}
-             />
-             <View style={[styles.rightContainer,rightPartWidth]}>
-               <Scoreboard isWithProportion={true}
-                           oppositionScore = {kicks.bil.conversions}
-                           bilScore = {kicks.bil.penalties}
-               />
-               <Scoreboard isWithProportion={true} isDown={true}
-                           oppositionScore = {kicks.opposition.conversions}
-                           bilScore = {kicks.opposition.penalties}
-               />
-             </View>
-           </View>
-         </View>
-         <View tabLabel='SCRUMS'>
-           <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={styles.itemContainer}   {...this._panResponder.panHandlers}>
-              <StadiumFigure
-                redPoints={ scrums.bil.won.details}
-                orangePoints = {scrums.bil.lost.details}
-                blackPoints = {scrums.opposition.won.details}
-                bluePoints = {scrums.opposition.lost.details}
-                imageWith = {Widefield}
-
+         <View style={styles.tabBtnWrapper}>
+            <View style={styles.tabBtnPos}>
+              <ButtonFeedback style={[this.state.page===0?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:0})}>
+                <Text style={styles.btnText}> KICKS</Text>
+              </ButtonFeedback>
+              <Triangle
+                width={24}
+                height={12}
+                color={this.state.page===0? 'rgb(38,38,38)' : 'transparent'}
+                direction={'down'}
+                style={{marginTop:-1}}
               />
-              <View style={[styles.rightContainer,rightPartWidth]}>
-                <Scoreboard   titles={['WON','LOST']}
-                              oppositionScore = { scrums.bil.won}
-                              bilScore =  {scrums.bil.lost}
-                />
-                <Scoreboard isDown={true} titles={['WON','LOST']}
-                            oppositionScore = { scrums.opposition.won}
-                            bilScore =  {scrums.opposition.lost}
-                />
-              </View>
             </View>
-         </View>
-          <View tabLabel='LINEOUTS'>
-            <IconHeader onPress={this.iconPress}  modalAble={this.state.modalAble} />
-            <View style={styles.itemContainer}   {...this._panResponder.panHandlers}>
-              <StadiumFigure
-                redPoints={ line_outs.bil.won.details}
-                orangePoints = {line_outs.bil.lost.details}
-                blackPoints = {line_outs.opposition.won.details}
-                bluePoints = {line_outs.opposition.lost.details}
-                imageWith = {Widefield}
+            <View style={styles.tabBtnPos}>
+              <ButtonFeedback style={[this.state.page===1?styles.activeBtn:styles.inactiveBtn,styles.tabBtnWide]} onPress={()=>this.setState({page:1})}>
+                <Text style={styles.btnText}> SCRUMS</Text>
+              </ButtonFeedback>
+              <Triangle
+                width={24}
+                height={12}
+                color={this.state.page===1? 'rgb(38,38,38)' : 'transparent'}
+                direction={'down'}
+                style={{marginTop:-1}}
               />
-              <View style={[styles.rightContainer,rightPartWidth]}>
-                <Scoreboard titles={['WON','LOST']}
-                            oppositionScore = { line_outs.bil.won}
-                            bilScore =  {line_outs.bil.lost}
-                />
-                <Scoreboard isDown={true} titles={['WON','LOST']}
-                            oppositionScore = { line_outs.opposition.won}
-                            bilScore =  {line_outs.opposition.lost}
-                />
-              </View>
+            </View>
+            <View style={styles.tabBtnPos}>
+              <ButtonFeedback style={[this.state.page===2?styles.activeBtn:styles.inactiveBtn,styles.tabBtnWide]} onPress={()=>this.setState({page:2})}>
+                <Text style={styles.btnText}> LINEOUTS</Text>
+              </ButtonFeedback>
+              <Triangle
+                width={24}
+                height={12}
+                color={this.state.page===2? 'rgb(38,38,38)' : 'transparent'}
+                direction={'down'}
+                style={{marginTop:-1}}
+              />
             </View>
           </View>
-        </ScrollableTabView>
+          {
+            this.state.page===0&&
+            <View tabLabel='KICKS'>
+               <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+               <View style={[styles.itemContainer]}>
+                 <StadiumFigure
+                   redPoints={ kicks.bil.conversions.details}
+                   orangePoints = {kicks.bil.penalties.details}
+                   blackPoints = {kicks.opposition.conversions.details}
+                   bluePoints = {kicks.opposition.penalties.details}
+                   imageWith = {Widefield}
+                 />
+                 <View style={[styles.rightContainer,rightPartWidth]}>
+                   <Scoreboard isWithProportion={true}
+                               oppositionScore = {kicks.bil.conversions}
+                               bilScore = {kicks.bil.penalties}
+                   />
+                   <Scoreboard isWithProportion={true} isDown={true}
+                               oppositionScore = {kicks.opposition.conversions}
+                               bilScore = {kicks.opposition.penalties}
+                   />
+                 </View>
+               </View>
+             </View>
+          }
+         
+         {
+            this.state.page===1&&
+            <View tabLabel='SCRUMS'>
+             <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+              <View style={styles.itemContainer}>
+                <StadiumFigure
+                  redPoints={ scrums.bil.won.details}
+                  orangePoints = {scrums.bil.lost.details}
+                  blackPoints = {scrums.opposition.won.details}
+                  bluePoints = {scrums.opposition.lost.details}
+                  imageWith = {Widefield}
+
+                />
+                <View style={[styles.rightContainer,rightPartWidth]}>
+                  <Scoreboard   titles={['WON','LOST']}
+                                oppositionScore = { scrums.bil.won}
+                                bilScore =  {scrums.bil.lost}
+                  />
+                  <Scoreboard isDown={true} titles={['WON','LOST']}
+                              oppositionScore = { scrums.opposition.won}
+                              bilScore =  {scrums.opposition.lost}
+                  />
+                </View>
+              </View>
+            </View>
+          }
+         
+         {
+            this.state.page===2&&            
+            <View tabLabel='LINEOUTS'>
+              <IconHeader onPress={this.iconPress}  modalAble={this.state.modalAble} />
+              <View style={styles.itemContainer}>
+                <StadiumFigure
+                  redPoints={ line_outs.bil.won.details}
+                  orangePoints = {line_outs.bil.lost.details}
+                  blackPoints = {line_outs.opposition.won.details}
+                  bluePoints = {line_outs.opposition.lost.details}
+                  imageWith = {Widefield}
+                />
+                <View style={[styles.rightContainer,rightPartWidth]}>
+                  <Scoreboard titles={['WON','LOST']}
+                              oppositionScore = { line_outs.bil.won}
+                              bilScore =  {line_outs.bil.lost}
+                  />
+                  <Scoreboard isDown={true} titles={['WON','LOST']}
+                              oppositionScore = { line_outs.opposition.won}
+                              bilScore =  {line_outs.opposition.lost}
+                  />
+                </View>
+              </View>
+            </View>
+          }
                   <SquadModal
                     modalVisible={this.state.modalInfo}
                     callbackParent={this.iconPress}>

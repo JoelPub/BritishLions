@@ -34,4 +34,33 @@ module.exports = styleSheetCreate({
           lineHeight: 26
       }
   },
+  tabBtnWrapper:{
+      flexDirection:'row',
+      paddingVertical:10,
+      backgroundColor:'rgb(255,255,255)',
+      justifyContent:'center'
+  },
+  tabBtnPos:{
+      alignItems:'center',
+      marginHorizontal:10,
+  },
+  tabBtn:{
+      width:styleVar.deviceWidth*0.344,
+      height:styleVar.deviceWidth*0.133,
+      borderRadius:styleVar.deviceWidth*0.08,
+      justifyContent:'center'
+  },
+  activeBtn:{
+      backgroundColor:'rgb(38,38,38)'
+  },
+  inactiveBtn:{
+      backgroundColor:'rgb(208,7,41)'
+  },
+  btnText:{
+      color:'rgb(255,255,255)',
+      fontFamily: styleVar.fontCondensed,
+      fontSize:22,
+      lineHeight:24,
+      textAlign:'center'
+  },
 })

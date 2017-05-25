@@ -102,7 +102,7 @@ module.exports = styleSheetCreate({
         backgroundColor:'rgb(38,38,38)'
     },
     inactiveBtn:{
-        backgroundColor:styleVar.colorScarlet
+        backgroundColor:'rgb(208,7,41)'
     },
     btnText:{
         color:'rgb(255,255,255)',

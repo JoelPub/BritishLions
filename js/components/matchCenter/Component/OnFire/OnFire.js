@@ -12,9 +12,7 @@ import { getSoticFullPlayerList} from '../../../utility/apiasyncstorageservice/s
 import {searchPlayer} from '../../../myLions/components/searchPlayer'
 import Data from '../../../../../contents/unions/data'
 import SquadModal from '../../../global/squadModal'
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-import SetPlayerTabBar from  '../SetPlayer/Components/SetPlayerTabBar'
-
+import Triangle from '../../..//global/Triangle'
 import OnFireItem from  './components/OnFireItem'
 
 const  IconHeader = ({onPress,modalAble}) => {
@@ -37,7 +35,8 @@ class OnFire extends Component {
           modalInfo:false,
           h:0,
           playerList: [],
-          modalAble:true
+          modalAble:true,
+          page:0,
     }
     this.currentPosition=0
   }
@@ -84,32 +83,57 @@ class OnFire extends Component {
     return (
       <View style={{marginTop:50,paddingTop:10,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
-        <ScrollableTabView
-          locked={true}
-          initialPage={0}
-          renderTabBar={() => <SetPlayerTabBar  style={{ paddingHorizontal:20}} />}
-          tabBarActiveTextColor={'black'}
-          onChangeTab = {this.onChangeTab}
-        >
-          <View tabLabel='HALF-TIME'>
-            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={{ padding: 20,paddingTop:3}}    {...this._panResponder.panHandlers}>
-              <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
-              <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
-              <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks} playerData={playerList}/>
-              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.half_time.tackles} playerData={playerList}/>
+          <View style={styles.tabBtnWrapper}>
+            <View style={styles.tabBtnPos}>
+              <ButtonFeedback style={[this.state.page===0?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:0})}>
+                <Text style={styles.btnText}> HALF-TIME</Text>
+              </ButtonFeedback>
+              <Triangle
+                width={24}
+                height={12}
+                color={this.state.page===0? 'rgb(38,38,38)' : 'transparent'}
+                direction={'down'}
+                style={{marginTop:-1}}
+              />
+            </View>
+            <View style={styles.tabBtnPos}>
+              <ButtonFeedback style={[this.state.page===1?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:1})}>
+                <Text style={styles.btnText}> FULL-TIME</Text>
+              </ButtonFeedback>
+              <Triangle
+                width={24}
+                height={12}
+                color={this.state.page===1? 'rgb(38,38,38)' : 'transparent'}
+                direction={'down'}
+                style={{marginTop:-1}}
+              />
             </View>
           </View>
-          <View tabLabel='FULL-TIME'>
-            <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
-            <View style={{ padding: 20,paddingTop:3}}    {...this._panResponder.panHandlers}>
-              <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList} isHalfTime={false}/>
-              <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList} isHalfTime={false}/>
-              <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList} isHalfTime={false}/>
-              <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} />
+          
+          {
+            this.state.page===0&&
+            <View tabLabel='HALF-TIME'>
+              <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+              <View style={{ padding: 20,paddingTop:3}}>
+                <OnFireItem title={'METRES'} data={on_fire.half_time.metres} playerData={playerList}/>
+                <OnFireItem title={'PASSES'} data={on_fire.half_time.passes} playerData={playerList}/>
+                <OnFireItem title={'BREAKS'} data={on_fire.half_time.breaks} playerData={playerList}/>
+                <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.half_time.tackles} playerData={playerList}/>
+              </View>
             </View>
-          </View>
-        </ScrollableTabView>
+          }         
+          {
+            this.state.page===1&&            
+            <View tabLabel='FULL-TIME'>
+              <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+              <View style={{ padding: 20,paddingTop:3}}>
+                <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList} isHalfTime={false}/>
+                <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList} isHalfTime={false}/>
+                <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList} isHalfTime={false}/>
+                <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} />
+              </View>
+            </View>
+          }
                   <SquadModal
                     modalVisible={this.state.modalInfo}
                     callbackParent={this.iconPress}>
@@ -138,48 +162,6 @@ class OnFire extends Component {
     })
 
     if(__DEV__)console.log('ROY OF FIRE:', on_fire)
-  }
-  componentWillMount() {
-      this._panResponder = PanResponder.create({
-        onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
-        // onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
-        // onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
-        // onPanResponderGrant: this._handlePanResponderGrant,
-        onPanResponderMove: this._handlePanResponderMove.bind(this),
-        onPanResponderRelease: this._handlePanResponderEnd.bind(this),
-        onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
-        
-      })
-  }
-  _handleStartShouldSetPanResponderCapture(e, gestureState) {
-     if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)     
-     if (__DEV__)console.log('return true')
-        return true
-  }
-  _handlePanResponderMove(e, gestureState) {
-       if (__DEV__)console.log('@@@@@_handlePanResponderMove gestureState',gestureState)
-       if(Math.abs(gestureState.dy)>0&&Platform.OS==='android') {
-            this.currentPosition=this.currentPosition-gestureState.dy/10
-            if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
-            this.props.scrollView.scrollTo({y:this.currentPosition,animated:true})
-       }
-       if (__DEV__)console.log('return true')
-        return true
-    }
-  _handlePanResponderEnd(e, gestureState) {
-     if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-     if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
-     //      let index = this._findID(this._items, this.props.article.id)
-          // let rtl=gestureState.dx<0?false:true
-          // if (__DEV__)console.log('rtl',rtl)
-          this.props.changePage(gestureState.dx<0?1:-1)
-     //      let item = rtl?this._items[index - 1]:this._items[index+1]
-     //      if(item) {
-     //          this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
-     //      }  
-     }
-     if (__DEV__)console.log('return true')
-      return true
   }
   componentWillUnmount() {
       if(__DEV__)console.log('@@@OnFire componentWillUnmount')
