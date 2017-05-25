@@ -21,6 +21,20 @@ import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
 import LinearGradient from 'react-native-linear-gradient'
 
+
+const  TitleCell = ({status}) => {
+  let  title = 'GAME FINISHED'
+  if (status==='live')  title = 'GAME NOW LIVE'
+  if (status==='post')  title = 'GAME FINISHED'
+  let greenBackgroundColor =  (status==='live')  ? {
+    backgroundColor:'rgb(9,127,64)'
+  } : {}
+  return (
+    <View style={[styles.titleView,greenBackgroundColor]}>
+      <Text style={[styles.titleText]}>{title}</Text>
+    </View>
+  )
+}
 class Fixtures extends Component {
     constructor(props) {
          super(props)
@@ -87,7 +101,12 @@ class Fixtures extends Component {
                 return new Date(a.date)  - new Date(b.date)
         })
     }
-
+    judgeStatus = (item) => {
+      if (item.live!== null)  return 'live'
+      if (item.post!== null)  return 'post'
+      if (item.pre!== null)   return 'pre'
+      return 'pre'
+    }
     render() {
         return (
             <Container theme={theme} style={styles.container}>
@@ -103,12 +122,13 @@ class Fixtures extends Component {
                                     {
                                         this.state.fixtures.map(function(fixtureInfo) {
                                             let item = FixtureInfoModel.fromJS(fixtureInfo) 
-                                            
+                                            let status = this.judgeStatus(item)
                                             return (
                                                     <ButtonFeedback 
                                                         key={item.id}
                                                         style={styles.btn}
                                                         onPress={() => this._drillDown(item.toJS())}>
+                                                       {status!=='pre'? <TitleCell status ={status}/> : null}
                                                         <ImagePlaceholder height={170}>
                                                             <LinearGradient style={styles.fixtureImgContainerAtList} colors={['#d9d7d8', '#FFF']}>
                                                                 <Image
