@@ -80,15 +80,7 @@ export default class ApdCarousel extends Component {
           scrollEventThrottle={200}
         >
           { this.carousel }
-          <ButtonFeedback rounded
-                          style={[styles.matchButtonView]}
-                          onPress={this.onPress}
-          >
-            <Icon name='md-analytics' style={styles.matchIcon} />
-            <Text ellipsizeMode='tail' numberOfLines={1} style={styles.matchText} >
-              MATCH CENTRE
-            </Text>
-          </ButtonFeedback>
+
         </ScrollView>
       </View>
     );

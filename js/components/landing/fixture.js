@@ -360,7 +360,8 @@ class PlayerFigure extends Component {
 
     _gameMode(data) {
         let fixture = this.state.fixture
-        let gameStatus = strToLower(this.state.gameStatus)
+        let gameStatus = 'live'
+        //strToLower(this.state.gameStatus)
         //if (__DEV__) console.log('_gameMode Status: ', gameStatus, fixture)
 
         switch (gameStatus) {

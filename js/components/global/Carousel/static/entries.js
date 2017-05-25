@@ -28,7 +28,7 @@ export const ENTRIES1 = [
   },
   {
       title: 'GAME DAY TEAM',
-      subtitle: 'Vote for your Man of the Match.',
+      subtitle: 'Some text here',
       illustration: '../static/images/gameDayTeam.jpg'
     },
 ];

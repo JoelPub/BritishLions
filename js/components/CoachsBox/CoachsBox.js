@@ -16,7 +16,7 @@ import shapes from '../../themes/shapes'
 import styleVar from '../../themes/variable'
 import loader from '../../themes/loader-position'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
-
+import LiveBox from '../global/liveBox'
 
 import LoginRequire from '../global/loginRequire'
 import LionsHeader from '../global/lionsHeader'
@@ -71,14 +71,7 @@ const locStyle = styleSheetCreate({
 
 const Banner = ({data}) => (
   <View style={styles.banner}>
-    <ImagePlaceholder height={200}>
-      <LinearGradient style={styles.fixtureImgContainer} colors={['#d9d7d8', '#FFF']}>
-        <Image
-          resizeMode='contain'
-          style={styles.bannerImg}
-          source={{uri: data.banner}} />
-      </LinearGradient>
-    </ImagePlaceholder>
+    <LiveBox data={Object.assign({feededData:false,hasTitle:false,title:data.title},data)}/>
     <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
       <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>{ data.stadiumlocation }</Text>
     </View>
