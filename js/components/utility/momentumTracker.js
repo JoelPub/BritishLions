@@ -44,9 +44,9 @@ export default class MomentumTracker extends Component {
         let {isFirst,timeMark,score_advantage,team_momentum,finished,integrity}=data
         let {isHost,radius,dotLen,dotWidth}=config
         let cVal=score_advantage&&score_advantage.length&&score_advantage.length>1&&score_advantage[score_advantage.length-1].value?parseInt(score_advantage[score_advantage.length-1].value)*w/50:0
-        let cLeft=(cVal===0)?w:strToLower(score_advantage[score_advantage.length-1].advantage_team)===(isHost?'bil':'opposition')?w-cVal:w+cVal
+        let cLeft=(cVal===0)?w:strToLower(score_advantage[score_advantage.length-1].advantage_team)===(isHost?'bil':'opposition')?w+cVal:w-cVal
         let fVal=score_advantage&&score_advantage.length&&score_advantage.length>0&&score_advantage[0].value?parseInt(score_advantage[0].value)*w/50:0
-        let fLeft=(fVal===0)?w:strToLower(score_advantage[0].advantage_team)===(isHost?'bil':'opposition')?w-fVal:w+fVal
+        let fLeft=(fVal===0)?w:strToLower(score_advantage[0].advantage_team)===(isHost?'bil':'opposition')?w+fVal:w-fVal
         let innerHeight=gridHeight*(team_momentum.length||0)
         let outerHeight=finished?innerHeight+headerHeight:innerHeight
         console.log('data',data)
