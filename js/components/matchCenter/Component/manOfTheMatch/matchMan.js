@@ -329,15 +329,15 @@ class MatchMan extends Component {
 		                        },this)
 		                    }
 		                </Swiper>
-                    <PositionTitle pos='REPLACEMENT' data={this.state.matchMan.replacements}/>
+                    <PositionTitle pos='REPLACEMENT' data={this.state.matchMan.reserves}/>
                     <Swiper
-                      height={this.state.matchMan.replacements.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
+                      height={this.state.matchMan.reserves.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
                       loop={true}
                       dot={<View style={styles.paginationDot} />}
                       activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                       paginationStyle={styles.paginationBottom}>
                       {
-                        mapJSON(this.state.matchMan.replacements,3).map((rowData,i)=>{
+                        mapJSON(this.state.matchMan.reserves,3).map((rowData,i)=>{
                           return(
                             <View style={styles.posSwiperRow} key={i}>
                               {
