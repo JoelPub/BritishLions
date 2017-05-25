@@ -4,29 +4,14 @@ import  { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 
 import styleVar from '../../../../themes/variable'
 
-export const colors = {
-  black: '#1a1917',
-  gray: '#888888',
-  background1: 'hsl(15, 55%, 50%)',
-  background2: 'hsl(230, 30%, 45%)'
-};
 
 export default styleSheetCreate({
   container: {
     flex: 1,
-    backgroundColor: colors.background1
   },
   colorsContainer: {
     ...StyleSheet.absoluteFillObject,
     flexDirection: 'row'
-  },
-  color1: {
-    flex: 1,
-    backgroundColor: colors.background1
-  },
-  color2: {
-    flex: 1,
-    backgroundColor: colors.background2
   },
   scrollview: {
     flex: 1,
@@ -87,5 +72,8 @@ export default styleSheetCreate({
     android:{
       marginTop: -7,
     }
+  },
+  backgroundImage: {
+    opacity:0.5
   }
 });

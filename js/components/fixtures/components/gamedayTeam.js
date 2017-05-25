@@ -469,7 +469,7 @@ class GamedayTeam extends Component {
                             <PositionTitle pos='FORWARDS' data={this.state.gameDayTeam.forwards}/>
                             <Swiper
                             height={this.state.gameDayTeam.forwards.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
-                            loop={false}
+                            loop={true}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                             paginationStyle={styles.paginationBottom}>
@@ -496,7 +496,7 @@ class GamedayTeam extends Component {
                             <PositionTitle pos='BACKS' data={this.state.gameDayTeam.backs}/>
                             <Swiper
                             height={this.state.gameDayTeam.backs.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
-                            loop={false}
+                            loop={true}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                             paginationStyle={styles.paginationBottom}>
@@ -524,7 +524,7 @@ class GamedayTeam extends Component {
                             <PositionTitle pos='REPLACEMENTS' data={this.state.gameDayTeam.reserves}/>
                             <Swiper
                             height={this.state.gameDayTeam.reserves.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
-                            loop={false}
+                            loop={true}
                             dot={<View style={styles.paginationDot} />}
                             activeDot={<View style={[styles.paginationDot, styles.paginationDotActive]} />}
                             paginationStyle={[styles.paginationBottom, styles.paginationBottomLast]}>
@@ -550,7 +550,7 @@ class GamedayTeam extends Component {
 
                         </View>
 	                :
-	                    null
+	                    <ActivityIndicator style={loader.centered} size='large' />
 	            }
 	         </View>
             )
