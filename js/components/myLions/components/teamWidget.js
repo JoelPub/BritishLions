@@ -28,7 +28,8 @@ const locStyle = styleSheetCreate({
         paddingLeft:10,
     },
     btn: {
-        paddingTop:20,
+        height: 80,
+        borderRadius:40,
         flexDirection:'row',
     },
     btnText: {
@@ -57,13 +58,14 @@ const locStyle = styleSheetCreate({
         borderRadius:30,
         backgroundColor:'rgb(208,7,41)',
         paddingTop:15,
-        marginTop:-10,
+        marginTop:10,
     },
     titleText: {
         flex:1,
         alignItems:'center',
         justifyContent:'center',
         marginLeft:-60,
+        marginTop:10,
         backgroundColor:'transparent'
     }
 })
@@ -75,16 +77,12 @@ class TeamWidget extends Component {
         this.state = {
             fullTeam:false,            
             isNetwork: true,
-            isLoaded:false,
             disabled:true
     	}
     }
 
 	render() {
 		return (
-            <View>
-            {
-            this.state.isLoaded?
                 <View>
                 {
                     this.state.fullTeam&&this.props.tactics!==null?
@@ -122,10 +120,6 @@ class TeamWidget extends Component {
                         </LinearGradient>
                 }
                 </View>
-                :
-                <ActivityIndicator style={[loader.centered,{marginTop:0,height:50}]} size='small'/>
-            }
-          </View>
                 
 		)
 	}
@@ -186,7 +180,7 @@ class TeamWidget extends Component {
                         
                     },
                     onError: ()=>{
-                        this.setState({isLoaded:true,disabled:false})
+                        this.setState({disabled:false})
                     },
                     isRequiredToken: true,
                     channel: 'EYC3',
@@ -195,7 +189,7 @@ class TeamWidget extends Component {
                 service(optionsTeam)
             }
         }).catch((error) => {
-                this.setState({isLoaded:true,disabled:false},()=>{
+                this.setState({disabled:false},()=>{
                     this._showError(error) 
                 })
         })
@@ -219,7 +213,7 @@ class TeamWidget extends Component {
             this.props.setTeamData(team.toJS())
             this.props.setTeamToShow(showTeamFeed.toJS())
          }
-            this.setState({fullTeam:fullFeed,isLoaded:true,disabled:false})
+            this.setState({fullTeam:fullFeed,disabled:false})
             this.props.setTeamStatus(fullFeed)
         
 
