@@ -76,14 +76,14 @@ class FixtureDetails extends Component {
 
         let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`) // UTC Format
         let isDyLightSaving = moment.utc(dateOfEvent).isDST()
-        console.warn("dateOfEvent",dateOfEvent)
-        console.warn("isDyLightSaving",isDyLightSaving)
-        dateOfEvent = moment.utc(dateOfEvent).local().format("YYYY-MM-DD HH:mm:ss")
-        console.warn("datessssss",dateOfEvent)
+       // console.warn("dateOfEvent",dateOfEvent)
+        //console.warn("isDyLightSaving",isDyLightSaving)
+        //dateOfEvent = moment.utc(dateOfEvent).local().format("YYYY-MM-DD HH:mm:ss")
+        //console.warn("datessssss",dateOfEvent)
         //   let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
         //   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
         //   let endTime = endDateOfEvent.toISOString() // UTC Format
-        console.warn("dddddd", dateOfEvent)
+        //console.warn("dddddd", dateOfEvent)
 
         if (Platform.OS === 'android') {
             // Used third party for Calendar Event
@@ -96,49 +96,46 @@ class FixtureDetails extends Component {
                     alertBox('Warning','You have added the events to the calendar')
                 } else{ 
                     let addedSuccess = true
-                    data.map(function(item) {
-                        let errorcode = 0
-                        let params = {}
-                        params.details = item
-                        let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
-                        let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
-                        endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
-                        let endTime = endDateOfEvent.toISOString() // UTC Format
+                  let errorcode = 0
+                  let params = {}
+                  params.details = this.state.details
+                  let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
+                  let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
+                  endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
+                  let endTime = endDateOfEvent.toISOString() // UTC Format
 
-                        // Used Native Module access for iOS
-                        NativeModules.CalendarManager.authorizeEventStore()
-                                .then(status => {
-                                    // handle status
-                                    if (status === 'authorized') {
-                                        NativeModules.CalendarManager.saveEvent(params.details.title, {
-                                            location: params.details.stadium,
-                                            notes: params.details.description,
-                                            startDate: dateOfEvent,
-                                            endDate: endTime
-                                        })
-                                        .then(id => {
-                                            // handle success
-                                            //alertBox('Success','Saved to Calendar')
-                                        })
-                                        .catch(error => {
-                                            // handle error
-                                            addedSuccess = false
-                                            errorcode = 1
-                                            alertBox('Error','Event cannot be saved to Calendar. Please try again later')
-                                        })
-                                    }else{
-                                        addedSuccess = false
-                                        errorcode = 2
-                                        alertBox('No Access','Please authorize Calendar Access in the Device Settings')
-                                    }
-                                })
-                                .catch(error => {
-                                    // handle error
-                                    addedSuccess = false
-                                    errorcode = 2
-                                    alertBox('No Access','Please authorize Calendar Access in the Device Settings')
-                                })
-
+                  // Used Native Module access for iOS
+                  NativeModules.CalendarManager.authorizeEventStore()
+                    .then(status => {
+                      // handle status
+                      if (status === 'authorized') {
+                        NativeModules.CalendarManager.saveEvent(params.details.title, {
+                            location: params.details.stadium,
+                            notes: params.details.description,
+                            startDate: dateOfEvent,
+                            endDate: endTime
+                          })
+                          .then(id => {
+                            // handle success
+                            //alertBox('Success','Saved to Calendar')
+                          })
+                          .catch(error => {
+                            // handle error
+                            addedSuccess = false
+                            errorcode = 1
+                            alertBox('Error','Event cannot be saved to Calendar. Please try again later')
+                          })
+                      }else{
+                        addedSuccess = false
+                        errorcode = 2
+                        alertBox('No Access','Please authorize Calendar Access in the Device Settings')
+                      }
+                    })
+                    .catch(error => {
+                      // handle error
+                      addedSuccess = false
+                      errorcode = 2
+                      alertBox('No Access','Please authorize Calendar Access in the Device Settings')
                     })
 
                     if(addedSuccess){
