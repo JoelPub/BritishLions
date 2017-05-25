@@ -346,7 +346,7 @@ class MyLions extends Component {
             onAxiosEnd: null,
             method: 'post',
             onSuccess: (res) => {
-                // if (__DEV__)console.log('res',res)
+                // if (__DEV__)console.log('res',r es)
                 // if (__DEV__)console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
                 // if (__DEV__)console.log('this.state.userID',this.state.userID)
                 this.setState({onBordingModalVisible:false})
