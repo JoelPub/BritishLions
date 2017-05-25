@@ -109,7 +109,8 @@ module.exports = styleSheetCreate({
         fontFamily: styleVar.fontCondensed,
         fontSize:22,
         lineHeight:24,
-        textAlign:'center'
+        textAlign:'center',
+        backgroundColor:'transparent'
     },
     statWrapper:{
         paddingHorizontal:10
