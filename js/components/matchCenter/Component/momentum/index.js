@@ -81,7 +81,7 @@ class Momentum extends Component {
                                     </View>
                             </View>
                         </View>
-                        <View style={{paddingBottom:50}}>
+                        <View style={styles.momentumWrapper}>
                             {
                                 Array.isArray(this.props.data.momentum)&&this.props.data.momentum.map((value,index)=>{
                                     return (
