@@ -32,7 +32,7 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['LIVE COMMENTARY','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH','TEAM']
+        this.subjects=['MATCH SUMMARY','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH','TEAM']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,

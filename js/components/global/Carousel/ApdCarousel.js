@@ -10,6 +10,7 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import { Icon } from 'native-base'
 
 const img_arr = [require('./static/images/matchSummary.jpg'),
+  require('./static/images/runOfPlay.jpg'),
   require('./static/images/setPlays.jpg'),
   require('./static/images/topLions.jpg'),
   require('./static/images/manOfTheMatch.jpg'),
@@ -79,15 +80,7 @@ export default class ApdCarousel extends Component {
           scrollEventThrottle={200}
         >
           { this.carousel }
-          <ButtonFeedback rounded
-                          style={[styles.matchButtonView]}
-                          onPress={this.onPress}
-          >
-            <Icon name='md-analytics' style={styles.matchIcon} />
-            <Text ellipsizeMode='tail' numberOfLines={1} style={styles.matchText} >
-              MATCH CENTRE
-            </Text>
-          </ButtonFeedback>
+
         </ScrollView>
       </View>
     );

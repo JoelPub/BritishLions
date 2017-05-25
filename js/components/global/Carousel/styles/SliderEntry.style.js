@@ -22,7 +22,7 @@ const entryBorderRadius = 8;
 export default StyleSheet.create({
   slideInnerContainer: {
     width: itemWidth,
-    height: slideHeight + 80,
+    height: (itemWidth- itemHorizontalMargin * 2)*427/640 + 147,
     paddingHorizontal: itemHorizontalMargin,
     paddingBottom: 18 // needed for shadow
   },
