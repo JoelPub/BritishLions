@@ -3,7 +3,7 @@ import Immutable, { Record} from 'immutable'
 const MatchManModel = Record({
   'backs': [],
   'forwards': [],
-  'replacements': [],
+  'reserves': [],
 })
 
 export default MatchManModel
