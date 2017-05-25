@@ -145,5 +145,23 @@ module.exports = styleSheetCreate({
     },
     activityIndicatorWrapper: {
         paddingVertical: 20
+    },
+    titleView: {
+     backgroundColor: 'black',
+     height:50,
+     justifyContent: 'center'
+    },
+    titleText: {
+        fontSize: 18,
+        lineHeight: 18,
+        paddingTop: 8,
+        fontFamily: styleVar.fontCondensed,
+        paddingLeft: 20,
+        paddingRight: 20,
+        textAlign: 'center',
+        android: {
+            lineHeight: 28,
+            marginBottom: 15
+        }
     }
 })
