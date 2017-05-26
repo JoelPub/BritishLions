@@ -25,7 +25,6 @@ const locStyle = styleSheetCreate({
     btnBg: {
         height: 80,
         borderRadius:40,
-        paddingLeft:10,
     },
     btn: {
         height: 80,
@@ -59,6 +58,7 @@ const locStyle = styleSheetCreate({
         backgroundColor:'rgb(208,7,41)',
         paddingTop:15,
         marginTop:10,
+        marginLeft:10
     },
     titleText: {
         flex:1,

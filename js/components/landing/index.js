@@ -7,7 +7,7 @@ import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert ,Nati
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
 import { limitArrayList } from '../utility/helper'
-import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { resetRoute, replaceRoute } from '../../actions/route'
 import { setUserProfile } from '../../actions/squad'
 import { setAccessGranted } from '../../actions/token'
 import { setJumpTo } from '../../actions/jump'
@@ -79,7 +79,7 @@ class Landing extends Component {
     }
 
     _navigateTo(route) {
-        this.props.pushNewRoute(route)
+        this.props.resetRoute(route)
     }
 
     _drillDown(data, route) {
@@ -493,10 +493,10 @@ class Landing extends Component {
                                 <ButtonFeedback 
                                     rounded 
                                     style={[styles.roundButton]} 
-                                    onPress={() => this._isSignIn('myLionsCompetitionCentre')}>
-                                    <Icon name='md-analytics' style={styles.roundButtonIcon} />
+                                    onPress={() => this._isSignIn('myLions')}>
+                                    <Icon name='md-heart' style={styles.roundButtonIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
-                                        COMPETITION CENTRE
+                                        MY LIONS
                                     </Text>
                                 </ButtonFeedback>
                                 {/*<ButtonFeedback 
@@ -565,7 +565,7 @@ class Landing extends Component {
 
 function bindAction(dispatch) {
     return {
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        resetRoute:(route)=>dispatch(resetRoute(route)),
         drillDown: (data, route)=>dispatch(drillDown(data, route)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
