@@ -71,6 +71,10 @@ class News extends Component {
                     imgStr=item.article.substr(imgPos,imgStrLen)
                     if(__DEV__)console.log('imgStr',imgStr)
 
+                    if(imgStr.match(/width="/ig)===null&&imgStr.match(/width:/ig)===null) {
+                        imgStr=imgStr.replace('/>',`width="${parseInt(styleVar.deviceWidth)-50}"/>`)
+                    }
+
                     imgStylePos=0
                     styleLen=0
                     orgWidth=0
