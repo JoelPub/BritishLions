@@ -28,7 +28,7 @@ export const ENTRIES1 = [
   },
   {
       title: 'TEAM',
-      subtitle: 'Some text here',
+      subtitle: 'View the Game Day Team',
       illustration: '../static/images/gameDayTeam.jpg'
     },
 ];
