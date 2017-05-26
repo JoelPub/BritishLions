@@ -100,7 +100,7 @@ class MatchCenter extends Component {
         //   type='refresh'
         // }
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
-                      if (__DEV__)console.log('init timelineData',timelineData)
+                      // if (__DEV__)console.log('init timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
                       apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               

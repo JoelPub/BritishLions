@@ -127,7 +127,7 @@ class LiveGame extends Component {
                         <Image resizeMode='contain' source={require('../../../../contents/my-lions/squadLogo.png')}
                                         style={locStyle.logoIcon}/>
                         <Text ellipsizeMode='tail' numberOfLines={1} style={locStyle.roundButtonLabel} >
-                            COACH'S BOX
+                            COACHES' BOX
                         </Text>
                     </ButtonFeedback>
                     </View>
