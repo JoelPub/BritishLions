@@ -126,7 +126,7 @@ export default class LiveBox extends Component {
         if (__DEV__)console.log('nextProps.data.game_time',nextProps.data.game_time)
         if (__DEV__)console.log('nextProps.data.statics',nextProps.data.statics)
         if (__DEV__)console.log('nextProps.data.is_full_time',nextProps.data.is_full_time)
-        if(nextProps.data.feededData&&nextProps.data.game_time!==this.props.data.game_time) {
+        if(nextProps.data.feededData) {
         if (__DEV__)console.log('update')
             this.setState({
                       game_time: nextProps.data.game_time,

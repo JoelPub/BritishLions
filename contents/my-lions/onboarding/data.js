@@ -6,7 +6,7 @@ export default [
             "It’s on! The British & Irish Lions will play 10 matches in New Zealand for the 2017 Tour.",
             "Whether you are travelling to NZ or watching from home, the Lions app is your one stop shop for the latest News, Statistics, Merchandise and Tour Information.",
             "Pre- match, try your hand at our Fantasy Rugby game or learn about the upcoming fixtures.",
-            "During matches, enter the Coaches Box to view Statistics about the match and vote for your Man of the Match.",
+            "During matches, enter the Coaches' Box to view Statistics about the match and vote for your Man of the Match.",
             "Post-match, review statistics and match reports."
         ]
     },
@@ -14,7 +14,7 @@ export default [
         "id": "2",
         "description": [
             "WELCOME TO THE TOUR",
-            "The Coaches’ Box enhances your live game experience. You will be able to view live commentary, see which players are performing above their career averages, where set plays are happening, what team is dominating and vote for your Man of the Match."
+            "The Coaches' Box enhances your live game experience. You will be able to view live commentary, see which players are performing above their career averages, where set plays are happening, what team is dominating and vote for your Man of the Match."
         ]
     },
     {
