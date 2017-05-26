@@ -28,7 +28,7 @@ export const ENTRIES1 = [
   },
   {
       title: 'TEAM',
-      subtitle: 'View the Game Day Team',
+      subtitle: 'View the Lions Game Day Team',
       illustration: '../static/images/gameDayTeam.jpg'
     },
 ];
