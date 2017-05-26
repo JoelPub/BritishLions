@@ -48,7 +48,7 @@ export default class MomentumTracker extends Component {
         let fVal=score_advantage&&score_advantage.length&&score_advantage.length>0&&score_advantage[0].value?parseInt(score_advantage[0].value)*w/50:0
         let fLeft=(fVal===0)?w:strToLower(score_advantage[0].advantage_team)===(isHost?'bil':'opposition')?w+fVal:w-fVal
         let innerHeight=gridHeight*(team_momentum.length||0)
-        let outerHeight=finished?innerHeight+headerHeight:innerHeight
+        let outerHeight=finished?isFirst?innerHeight+2*headerHeight:innerHeight+headerHeight:isFirst?innerHeight+headerHeight:innerHeight
         console.log('data',data)
         return (
                 
@@ -78,12 +78,18 @@ export default class MomentumTracker extends Component {
                         integrity&&<View style={{top:headerHeight/2-radius,left:cLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute',}}/>
                     }
                     {
-                        integrity&&<View style={isFirst&&{top:outerHeight-radius,left:fLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
+                        integrity&&<View style={isFirst&&{top:outerHeight-headerHeight,left:fLeft-radius,width:2*radius,height:2*radius,borderRadius:radius,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
                     }
                     {
                         integrity&&<DottedLine radius={radius} cLeft={cLeft-radius}  fLeft={fLeft-radius} isFirst={isFirst}  h={innerHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth} num={team_momentum.length||0}/>
                     }
-                        
+                    {
+                        isFirst&&
+                        <View style={[{height:headerHeight},styles.headerWrapper]}>
+                            <Text style={styles.headerText}>{timeMark}MIN</Text>
+                            <Text style={styles.headerText}>{timeMark}MIN</Text>
+                        </View>
+                    }    
                         
                         
                     

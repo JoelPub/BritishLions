@@ -63,7 +63,7 @@ class Momentum extends Component {
                                 </ButtonFeedback>
                             </View>
                         </View>
-                        <View style={[styles.subjectWrapper,{borderBottomWidth:1,borderColor:'rgb(216,217,218)'}]}>
+                        <View style={[styles.subjectWrapper,styles.topLine]}>
                             <View style={styles.subWrapper}>
                                     <View style={styles.logoWrapper}>
                                         <Image resizeMode='contain'  source={this.state.config.isHost?require('../../../../../contents/my-lions/squadLogo.png'):{uri: this.props.data.opposition_image}} style={styles.logoImg}/>
@@ -96,7 +96,7 @@ class Momentum extends Component {
                                     })
                             }
                             
-                            <View onLayout={this.measurePage.bind(this,'momentum')} />
+                            <View style={styles.bottomLine} onLayout={this.measurePage.bind(this,'momentum')} />
                         </View>
                     </View>
                   <SquadModal

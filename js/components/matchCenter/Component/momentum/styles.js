@@ -105,6 +105,14 @@ module.exports = styleSheetCreate({
     },
     momentumWrapper:{
         paddingBottom:50
+    },
+    topLine:{
+        borderBottomWidth:1,
+        borderColor:'rgb(216,217,218)'
+    },
+    bottomLine: {
+        borderTopWidth:1,
+        borderColor:'rgb(216,217,218)'
     }
 
 
