@@ -82,7 +82,6 @@ export default class LiveBox extends Component {
             game_time:null,
             bil_score:null,
             op_score:null,
-            live:null,
             is_full_time:'false'
         }
     }
@@ -93,10 +92,11 @@ export default class LiveBox extends Component {
                       game_time: data.game_time,
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
                       op_score: data.statics&&data.statics.opposition&&data.statics.opposition.score,
-                      live: data.live,
                       is_full_time: data.is_full_time
                     },()=>{
-                            if(__DEV__)console.log('data.is_full_time',data.is_full_time)
+                            if(__DEV__)console.log('this.state.game_time',this.state.game_time)
+                            if(__DEV__)console.log('this.state.bil_score',this.state.bil_score)
+                            if(__DEV__)console.log('this.state.is_full_time',this.state.is_full_time)
                             if(strToLower(data.is_full_time==='true')) this.timer&&clearTimeout(this.timer)
                           }
                       )
@@ -115,22 +115,24 @@ export default class LiveBox extends Component {
                       game_time: this.props.data.game_time,
                       bil_score: this.props.data.statics&&this.props.data.statics.bil&&this.props.data.statics.bil.score,
                       op_score: this.props.data.statics&&this.props.data.statics.opposition&&this.props.data.statics.opposition.score,
-                      live: this.props.data.live,
                       is_full_time: this.props.data.is_full_time
                     })
         }
     }
     componentWillReceiveProps(nextProps,nextState) {
         if (__DEV__)console.log('!!!liveBox componentWillReceiveProps')
-        if (__DEV__)console.log('this.props.data',this.props.data)
-        if (__DEV__)console.log('nextProps.data',nextProps.data)
-        if(nextProps.data) {
+        // if (__DEV__)console.log('this.props.data',this.props.data)
+        if (__DEV__)console.log('nextProps.data.feededData',nextProps.data.feededData)
+        if (__DEV__)console.log('nextProps.data.game_time',nextProps.data.game_time)
+        if (__DEV__)console.log('nextProps.data.statics',nextProps.data.statics)
+        if (__DEV__)console.log('nextProps.data.is_full_time',nextProps.data.is_full_time)
+        if(nextProps.data.feededData&&nextProps.data.game_time!==this.props.data.game_time) {
+        if (__DEV__)console.log('update')
             this.setState({
                       game_time: nextProps.data.game_time,
                       bil_score: nextProps.data.statics&&nextProps.data.statics.bil&&nextProps.data.statics.bil.score,
                       op_score: nextProps.data.statics&&nextProps.data.statics.opposition&&nextProps.data.statics.opposition.score,
-                      live: this.props.data.live,
-                      is_full_time: this.props.data.is_full_time
+                      is_full_time: nextProps.data.is_full_time
                     })
         }
     }
@@ -163,7 +165,7 @@ export default class LiveBox extends Component {
                     </View>
                     <View style={{flex:2,alignItems:'center'}}>
                     {
-                        (this.state.live===null||strToLower(this.state.is_full_time)==='true')?
+                        (this.props.data.live===null||strToLower(this.state.is_full_time)==='true')?
                         <View style={locStyle.time}>
                             <Text style={locStyle.timeText}>{this.state.game_time}</Text>
                         </View>

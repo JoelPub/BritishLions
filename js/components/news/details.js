@@ -18,7 +18,7 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
 import loader from '../../themes/loader-position'
 import { drillReplace } from '../../actions/content'
-
+var One = NativeModules.One;
 
 class NewsDetails extends Component {
     constructor(props) {
@@ -39,16 +39,55 @@ class NewsDetails extends Component {
             this.goToURL(e.url)
         }
     }
+    bindingTID(url){
+       One.sendInteractionForOutboundLink(url).catch(function(error) {
+           if (__DEV__)console.log(error);
+           alert(error);
+       });
+
+       One.getURLWithOneTid(url).then(function(urlWithOneTid) {
+           if(urlWithOneTid){
+                if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
+               Linking.canOpenURL(urlWithOneTid).then(supported => {
+                   if (supported) {
+                       Linking.openURL(urlWithOneTid)
+                   } else {
+                       Alert.alert(
+                         'Error',
+                         'This device doesnt support URI: ' + urlWithOneTid
+                       )
+                   }
+               })
+           }
+       },function(error) {
+           if (__DEV__)console.log('error');
+           if (__DEV__)console.log(error);
+           if(url){
+               Linking.canOpenURL(url).then(supported => {
+                   if (supported) {
+                       Linking.openURL(url)
+                   } else {
+                       Alert.alert(
+                         'Error',
+                         'This device doesnt support URI: ' + url
+                       )
+                   }
+               })
+           }
+       });
+    }
     goToURL(url) {
         // if (__DEV__)console.log('gotoURL',url)
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
-              if(Platform.OS === 'android'){
-                NativeModules.One.getURLWithOneTid(url)
-                NativeModules.One.sendInteractionForOutboundLink(url)
-              }
+//              if(Platform.OS === 'android'){
+//                NativeModules.One.getURLWithOneTid(url)
+//                NativeModules.One.sendInteractionForOutboundLink(url)
+//
+//              }
                 this.webview.stopLoading()
-                Linking.openURL(url)
+//                Linking.openURL(url)
+                this.bindingTID(url)
             } else {
                 if (__DEV__)console.log('This device doesnt support URI: ' + url)
             }

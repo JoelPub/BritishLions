@@ -73,9 +73,9 @@ export function getTimeLineLiveSummary (options, type, summaryData, onSuccess, o
     method: 'post',
     onSuccess: (json)=>{
                   if(json.data) {
-                    if (__DEV__)console.log('json.data',json.data)
+                    // if (__DEV__)console.log('json.data',json.data)
                     json.data=processSummaryData(type,json.data,summaryData)
-                    if(__DEV__)console.log('json.data',json.data)
+                    // if(__DEV__)console.log('json.data',json.data)
                     onSuccess(json.data)
                   }
                   else {
@@ -91,9 +91,9 @@ export function getTimeLineLiveSummary (options, type, summaryData, onSuccess, o
 
 }
 function processSummaryData(type,data,summaryData){
-  if (__DEV__)console.log('processSummaryData',type)
-  if (__DEV__)console.log('data',data)
-  if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
+  // if (__DEV__)console.log('processSummaryData',type)
+  // if (__DEV__)console.log('data',data)
+  // if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
   let result=summaryData.timeline
   if (type==='init'&&data.length>0&&(result.length===0||(result.length>0&&data[0].sequenceId>result[0].seq))) {
     if(result.length===0) {
@@ -104,9 +104,9 @@ function processSummaryData(type,data,summaryData){
     else {
         let i=0
         data.map((value,index)=>{
-          if (__DEV__)console.log('i',i)
-          if (__DEV__)console.log('value.sequenceId',value.sequenceId)
-          if (__DEV__)console.log('result[i].seq',result[i].seq)
+          // if (__DEV__)console.log('i',i)
+          // if (__DEV__)console.log('value.sequenceId',value.sequenceId)
+          // if (__DEV__)console.log('result[i].seq',result[i].seq)
           if(value.sequenceId>result[i].seq) {
             result.splice(i,0,{seq:value.sequenceId,time:value.gameTime,description:value.eventString})
             i++
@@ -164,7 +164,7 @@ function processSummaryData(type,data,summaryData){
                 })
     }
   }
-  if (__DEV__)console.log('result',result)
+  // if (__DEV__)console.log('result',result)
   return result
 }
 function processMomentumData(data){
