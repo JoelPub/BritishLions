@@ -89,7 +89,7 @@ class MatchCenter extends Component {
 
       if(this.state.index===0){
         this.setState({swiperHeight:styleVar.deviceHeight-120})
-        if (__DEV__)console.log('@@@call match summary Api',this.state.summaryData)
+        if (__DEV__)console.log('@@@call match summary Api')
         let optionData={}
         let type='init'
         // if(!this.statusArray[0]) {
