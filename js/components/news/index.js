@@ -37,10 +37,10 @@ class News extends Component {
     processArticle(dataFeed){
         dataFeed.map((item,index)=>{
             item.article=item.article.replace(/\n/ig,'')
-            handleImg(item)
-            handleImgStyle(item)
             handleInlineScript(item)
             handleVideo(item)
+            handleImg(item)
+            handleImgStyle(item)
 
         })
             
@@ -52,18 +52,156 @@ class News extends Component {
             item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)                
         }
         function handleImgStyle(item) {
+            if(__DEV__)console.log('article',item.article)
+            let imgPos=0
+            let imgStr=null
+            let imgStrLen=0
             let imgStylePos=0
-            if(item.article.match(/width:/ig)!==null) {
-                 item.article.match(/width:/ig).map((value,index)=>{
-                    imgStylePos=item.article.toLowerCase().indexOf('width:',imgStylePos)
-                    let styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos)-imgStylePos
-                    let strStyle=item.article.toLowerCase().substr(imgStylePos,styleLen)
-                    let orgWidth=strStyle.substring(6,strStyle.indexOf('px'))
-                    let orgHeight=strStyle.indexOf('height:')===-1?'210':strStyle.substring(strStyle.indexOf('height:')+7,strStyle.indexOf('px',strStyle.indexOf('height')))
-                    item.article=item.article.substring(0,imgStylePos)+`width: ${parseInt(styleVar.deviceWidth)-50}px; height: ${(parseInt(styleVar.deviceWidth)-50)*parseInt(orgHeight)/parseInt(orgWidth)}px;`+item.article.substring(item.article.indexOf('\"',imgStylePos))
-                    imgStylePos=item.article.indexOf('\"',imgStylePos)
+            let styleLen=0
+            let orgWidth=0
+            let orgHeight=0
+            let ratio=[]
+            if(item.article.match(/<img /ig)!==null) {
+                 item.article.match(/<img /ig).map((value,index)=>{
+                    if(__DEV__)console.log('imgPos',imgPos)
+                    imgPos=item.article.toLowerCase().indexOf('<img ',imgPos)
+                    if(__DEV__)console.log('imgPos',imgPos)
+                    imgStrLen=item.article.toLowerCase().indexOf('/>',imgPos)+2-imgPos
+                    if(__DEV__)console.log('imgStrLen',imgStrLen)
+                    imgStr=item.article.substr(imgPos,imgStrLen)
+                    if(__DEV__)console.log('imgStr',imgStr)
+
+                    imgStylePos=0
+                    styleLen=0
+                    orgWidth=0
+                    orgHeight=0
+                    ratio=[]
+                    if(imgStr.match(/width="/ig)!==null) {
+                         imgStr.match(/width="/ig).map((value,index)=>{
+                            imgStylePos=imgStr.toLowerCase().indexOf('width="',imgStylePos)
+                            styleLen=imgStr.toLowerCase().indexOf('\"',imgStylePos+7)-(imgStylePos+7)
+                            orgWidth=imgStr.toLowerCase().substr(imgStylePos+7,styleLen)
+                            if(__DEV__)console.log('orgWidth',orgWidth)
+                            imgStr=imgStr.substring(0,imgStylePos)+`width="${parseInt(styleVar.deviceWidth)-50}`+imgStr.substring(imgStr.indexOf('\"',imgStylePos+7+styleLen))
+                            if(__DEV__)console.log('imgStr',imgStr)
+                            ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
+                            imgStylePos=imgStr.indexOf('\"',imgStylePos+7+styleLen)
+                        })           
+                    }                
+                    imgStylePos=0
+                    styleLen=0
+                    orgWidth=0
+                    orgHeight=0
+                    if(imgStr.match(/height="/ig)!==null) {
+                         imgStr.match(/height="/ig).map((value,index)=>{
+                            imgStylePos=imgStr.toLowerCase().indexOf('height="',imgStylePos)
+                            styleLen=imgStr.toLowerCase().indexOf('\"',imgStylePos+8)-(imgStylePos+8)
+                            orgHeight=imgStr.toLowerCase().substr(imgStylePos+8,styleLen)
+                            if(__DEV__)console.log('orgHeight',orgHeight)
+                            imgStr=imgStr.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+imgStr.substring(imgStr.indexOf('\"',imgStylePos+8+styleLen))
+                            if(__DEV__)console.log('imgStr',imgStr)
+                            imgStylePos=imgStr.indexOf('\"',imgStylePos+8+styleLen)
+                        })           
+                    }
+
+                    imgStylePos=0
+                    styleLen=0
+                    orgWidth=0
+                    orgHeight=0
+                    ratio=[]
+                    if(imgStr.match(/width:/ig)!==null) {
+                         imgStr.match(/width:/ig).map((value,index)=>{
+                            imgStylePos=imgStr.toLowerCase().indexOf('width:',imgStylePos)
+                            styleLen=imgStr.toLowerCase().indexOf('px',imgStylePos+6)-(imgStylePos+6)
+                            orgWidth=imgStr.toLowerCase().substr(imgStylePos+6,styleLen)
+                            if(__DEV__)console.log('orgWidth',orgWidth)
+                            imgStr=imgStr.substring(0,imgStylePos)+`width:${parseInt(styleVar.deviceWidth)-50}`+imgStr.substring(imgStr.indexOf('px',imgStylePos+6+styleLen))
+                            if(__DEV__)console.log('imgStr',imgStr)
+                            ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
+                            imgStylePos=imgStr.indexOf('px',imgStylePos+6+styleLen)
+                        })           
+                    }                
+                    imgStylePos=0
+                    styleLen=0
+                    orgWidth=0
+                    orgHeight=0
+                    if(imgStr.match(/height:/ig)!==null) {
+                         imgStr.match(/height:/ig).map((value,index)=>{
+                            imgStylePos=imgStr.toLowerCase().indexOf('height:',imgStylePos)
+                            styleLen=imgStr.toLowerCase().indexOf('px',imgStylePos+7)-(imgStylePos+7)
+                            orgHeight=imgStr.toLowerCase().substr(imgStylePos+7,styleLen)
+                            if(__DEV__)console.log('orgHeight',orgHeight)
+                            imgStr=imgStr.substring(0,imgStylePos)+`height:${parseInt(orgHeight)*ratio[index]}`+imgStr.substring(imgStr.indexOf('px',imgStylePos+7+styleLen))
+                            if(__DEV__)console.log('imgStr',imgStr)
+                            imgStylePos=imgStr.indexOf('px',imgStylePos+7+styleLen)
+                        })           
+                    }        
+                    item.article=item.article.substring(0,imgPos)+imgStr+item.article.substring(imgPos+imgStrLen)
+                    if(__DEV__)console.log('item.article',item.article)
+                    imgPos=imgPos+imgStrLen
                 })           
-            }               
+            }
+
+            // if(item.article.match(/width:/ig)!==null) {
+            //      item.article.match(/width:/ig).map((value,index)=>{
+            //         imgStylePos=item.article.toLowerCase().indexOf('width:',imgStylePos)
+            //         styleLen=item.article.toLowerCase().indexOf(';',imgStylePos+6)-(imgStylePos+6)
+            //         orgWidth=item.article.toLowerCase().substr(imgStylePos+6,styleLen)
+            //         // orgHeight=strStyle.indexOf('height:')===-1?'210':strStyle.substring(strStyle.indexOf('height:')+7,strStyle.indexOf('px',strStyle.indexOf('height')))
+            //         if(__DEV__)console.log('orgWidth',orgWidth)
+            //         item.article=item.article.substring(0,imgStylePos)+`width: ${parseInt(styleVar.deviceWidth)-50}px;`+item.article.substring(item.article.indexOf('\"',imgStylePos+6+styleLen))
+            //         if(__DEV__)console.log('article',item.article)
+            //         ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
+            //         imgStylePos=item.article.indexOf('\"',imgStylePos+6+styleLen)
+            //     })           
+            // }                
+            // imgStylePos=0
+            // styleLen=0
+            // orgWidth=0
+            // orgHeight=0
+            // if(item.article.match(/height:/ig)!==null) {
+            //      item.article.match(/height="/ig).map((value,index)=>{
+            //         imgStylePos=item.article.toLowerCase().indexOf('height="',imgStylePos)
+            //         styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos+8)-(imgStylePos+8)
+            //         orgHeight=item.article.toLowerCase().substr(imgStylePos+8,styleLen)
+            //         if(__DEV__)console.log('orgHeight',orgHeight)
+            //         item.article=item.article.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+item.article.substring(item.article.indexOf('\"',imgStylePos+8+styleLen))
+            //         if(__DEV__)console.log('article',item.article)
+            //         imgStylePos=item.article.indexOf('\"',imgStylePos+8+styleLen)
+            //     })           
+            // }  
+            // imgStylePos=0
+            // styleLen=0
+            // orgWidth=0
+            // orgHeight=0
+            // ratio=[]
+            // if(item.article.match(/width="/ig)!==null) {
+            //      item.article.match(/width="/ig).map((value,index)=>{
+            //         imgStylePos=item.article.toLowerCase().indexOf('width="',imgStylePos)
+            //         styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos+7)-(imgStylePos+7)
+            //         orgWidth=item.article.toLowerCase().substr(imgStylePos+7,styleLen)
+            //         if(__DEV__)console.log('orgWidth',orgWidth)
+            //         item.article=item.article.substring(0,imgStylePos)+`width="${parseInt(styleVar.deviceWidth)-50}`+item.article.substring(item.article.indexOf('\"',imgStylePos+7+styleLen))
+            //         if(__DEV__)console.log('article',item.article)
+            //         ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
+            //         imgStylePos=item.article.indexOf('\"',imgStylePos+7+styleLen)
+            //     })           
+            // }                
+            // imgStylePos=0
+            // styleLen=0
+            // orgWidth=0
+            // orgHeight=0
+            // if(item.article.match(/height="/ig)!==null) {
+            //      item.article.match(/height="/ig).map((value,index)=>{
+            //         imgStylePos=item.article.toLowerCase().indexOf('height="',imgStylePos)
+            //         styleLen=item.article.toLowerCase().indexOf('\"',imgStylePos+8)-(imgStylePos+8)
+            //         orgHeight=item.article.toLowerCase().substr(imgStylePos+8,styleLen)
+            //         if(__DEV__)console.log('orgHeight',orgHeight)
+            //         item.article=item.article.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+item.article.substring(item.article.indexOf('\"',imgStylePos+8+styleLen))
+            //         if(__DEV__)console.log('article',item.article)
+            //         imgStylePos=item.article.indexOf('\"',imgStylePos+8+styleLen)
+            //     })           
+            // }               
         }
         function handleInlineScript(item) {
             let scriptPos=0
