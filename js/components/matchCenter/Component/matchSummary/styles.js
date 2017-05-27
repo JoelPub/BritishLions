@@ -107,10 +107,13 @@ module.exports = styleSheetCreate({
     btnText:{
         color:'rgb(255,255,255)',
         fontFamily: styleVar.fontCondensed,
-        fontSize:22,
-        lineHeight:24,
+        fontSize:20,
+        lineHeight:22,
         textAlign:'center',
-        backgroundColor:'transparent'
+        backgroundColor:'transparent',
+        ios:{
+            marginTop:5
+        }
     },
     statWrapper:{
         paddingHorizontal:10
