@@ -23,7 +23,7 @@ class Momentum extends Component {
             modalInfo:false,
             config:{
                 isHost:false,
-                radius:styleVar.deviceWidth*0.04,
+                sRadius:styleVar.deviceWidth*0.04,
                 dotWidth:2,
                 dotLen:4  
             }
