@@ -204,11 +204,11 @@ class Login extends Component {
                   this.setState({
                       email:json.email
                   })
-                  NativeModules.One.sendInteraction('/signIn/button', {
-                      emailAddress:json.email,
-                      first_name:first_name,
-                      last_name:last_name
-                  })
+                  //NativeModules.One.sendInteraction('/signIn/button', {
+                  //    emailAddress:json.email,
+                  //    first_name:first_name,
+                  //    last_name:last_name
+                  //})
                   if(Platform.OS === 'android') {
                       NativeModules.GlassBoxManger.reportEvent('/signIn/facebook',json.email)
                   }
@@ -262,11 +262,11 @@ class Login extends Component {
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
-        NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.user.email,
-            first_name:first_name,
-            last_name:last_name
-        })
+        //NativeModules.One.sendInteraction('/signIn/button', {
+        //    emailAddress:this.state.user.email,
+        //    first_name:first_name,
+        //    last_name:last_name
+        //})
         if(Platform.OS === 'android') {
             NativeModules.GlassBoxManger.reportEvent('/signIn/google',this.state.user.email)
         }
