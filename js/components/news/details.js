@@ -80,14 +80,14 @@ class NewsDetails extends Component {
         // if (__DEV__)console.log('gotoURL',url)
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
-//              if(Platform.OS === 'android'){
-//                NativeModules.One.getURLWithOneTid(url)
-//                NativeModules.One.sendInteractionForOutboundLink(url)
-//
-//              }
+              if(Platform.OS === 'android'){
+                NativeModules.One.getURLWithOneTid(url)
+                NativeModules.One.sendInteractionForOutboundLink(url)
+
+              }
                 this.webview.stopLoading()
-//                Linking.openURL(url)
-                this.bindingTID(url)
+                Linking.openURL(url)
+                //this.bindingTID(url)
             } else {
                 if (__DEV__)console.log('This device doesnt support URI: ' + url)
             }

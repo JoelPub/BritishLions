@@ -79,18 +79,18 @@ class Login extends Component {
     componentWillMount() {
         this._panResponder = PanResponder.create({
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
-          
+
         })
     }
 
     componentDidMount () {
         // just to make sure that token was removed and
-        // isAccessGranted flag is set to false when 
+        // isAccessGranted flag is set to false when
         // user is in the login page
         NativeModules.One.sendInteraction('/signInView',
           {});
         setTimeout(() => {
-            removeToken() 
+            removeToken()
             this.props.setAccessGranted(false)
             this._setupGoogleSignin()
             this.ReLogin()
@@ -431,7 +431,7 @@ class Login extends Component {
                 },
                 onSuccess: this._createTokenByPassword.bind(this),
                 onError: (res) => {
-                    this.setState({ 
+                    this.setState({
                         customMessages: res,
                         customMessagesType: 'error'
                     })
@@ -440,7 +440,7 @@ class Login extends Component {
             }
 
             service(options)
-        } 
+        }
         else {
             this._scrollToMessages()
         }
@@ -573,7 +573,7 @@ class Login extends Component {
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
         if(e._targetInst._currentElement.props===undefined) {
             Keyboard.dismiss(0)
-        } 
+        }
         else if(e._targetInst._currentElement.props.placeholder===undefined||e._targetInst._currentElement.props.placeholder!=='Email' || e._targetInst._currentElement.props.placeholder!=='Password') {
             Keyboard.dismiss(0)
         }
@@ -587,7 +587,7 @@ class Login extends Component {
 
     focusMessage(event) {
         this.msgboxPosX=event.nativeEvent.layout.x
-        this.msgboxPosY=event.nativeEvent.layout.y     
+        this.msgboxPosY=event.nativeEvent.layout.y
     }
     /* google sign in func */
     async _setupGoogleSignin() {
@@ -666,7 +666,7 @@ class Login extends Component {
     render() {
         return (
             <Container>
-                <View theme={theme} 
+                <View theme={theme}
                     {...this._panResponder.panHandlers}>
                     <Image source={require('../../../images/bg.jpg')} style={styles.background}>
                         <KeyboardAwareScrollView style={styles.main} ref='_scrollView'>
@@ -677,8 +677,8 @@ class Login extends Component {
                                     style={styles.pageLogo} />
 
                                 <View style={styles.guther} onLayout={(event)=>this.focusMessage(event)}>
-                                    <CustomMessages 
-                                        messages = {this.state.customMessages} 
+                                    <CustomMessages
+                                        messages = {this.state.customMessages}
                                         errorType = {this.state.customMessagesType} />
 
                                     <ErrorHandler
@@ -699,15 +699,15 @@ class Login extends Component {
                                         <Input placeholder='Password' defaultValue={this.state.password} secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         disabled = {this.state.isFormSubmitting}
-                                        label = {this.state.isFormSubmitting? 'SIGNING IN..' : 'SIGN IN'} 
+                                        label = {this.state.isFormSubmitting? 'SIGNING IN..' : 'SIGN IN'}
                                         onPress = {() => {
                                             this.setState({
                                                 errorCheck: {
                                                     email: this.state.email,
-                                                    password: this.state.password, 
+                                                    password: this.state.password,
                                                     submit: true
                                                 },
                                                 customMessages: ''
@@ -717,7 +717,7 @@ class Login extends Component {
                                 </View>
                             </View>
                         </KeyboardAwareScrollView>
-                
+
                         <ButtonFeedback style={styles.pageClose} onPress={() => this._replaceRoute('landing')}>
                             <Icon name='md-close' style={styles.pageCloseIcon} />
                         </ButtonFeedback>
