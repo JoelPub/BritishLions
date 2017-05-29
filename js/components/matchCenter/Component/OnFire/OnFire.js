@@ -130,7 +130,7 @@ class OnFire extends Component {
                 <OnFireItem title={'METRES'} data={on_fire.full_time.metres} playerData={playerList} isHalfTime={false}/>
                 <OnFireItem title={'PASSES'} data={on_fire.full_time.passes} playerData={playerList} isHalfTime={false}/>
                 <OnFireItem title={'BREAKS'} data={on_fire.full_time.breaks} playerData={playerList} isHalfTime={false}/>
-                <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} />
+                <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.full_time.tackles} playerData={playerList} isHalfTime={false}/>
               </View>
             </View>
           }
