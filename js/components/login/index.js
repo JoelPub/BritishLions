@@ -19,8 +19,8 @@ import { APP_VERSION, actionsApi } from '../utility/urlStorage'
 import { setJumpTo } from '../../actions/jump'
 import { debounce } from 'lodash'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
-import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import ButtonNetwork from '../utility/buttonNetwork'
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin'
 
 var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 //import fetch from '../utility/fetch'
@@ -699,7 +699,7 @@ class Login extends Component {
                                         <Input placeholder='Password' defaultValue={this.state.password} secureTextEntry={true} style={styles.input} onChange={(event) => this.setState({password:event.nativeEvent.text})} />
                                     </View>
 
-                                    <ButtonFeedback
+                                    <ButtonNetwork
                                         rounded
                                         disabled = {this.state.isFormSubmitting}
                                         label = {this.state.isFormSubmitting? 'SIGNING IN..' : 'SIGN IN'}

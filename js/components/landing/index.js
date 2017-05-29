@@ -7,7 +7,7 @@ import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert ,Nati
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
 import { limitArrayList } from '../utility/helper'
-import { resetRoute, replaceRoute, pushNewRoute } from '../../actions/route'
+import { replaceOrPushRoute, replaceRoute, pushNewRoute } from '../../actions/route'
 import { setUserProfile } from '../../actions/squad'
 import { setAccessGranted } from '../../actions/token'
 import { setJumpTo } from '../../actions/jump'
@@ -79,7 +79,7 @@ class Landing extends Component {
     }
 
     _navigateTo(route) {
-        this.props.pushNewRoute(route)
+        this.props.replaceOrPushRoute(route)
     }
 
     _drillDown(data, route) {
@@ -571,6 +571,7 @@ function bindAction(dispatch) {
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         setUserProfile:(profile)=>dispatch(setUserProfile(profile)),
         setJumpTo:(jumpRoute)=>dispatch(setJumpTo(jumpRoute)),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
     }
 }
 

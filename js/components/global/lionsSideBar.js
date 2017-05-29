@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Alert,NativeModules } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
-import { replaceOrPushRoute, resetRoute } from '../../actions/route'
+import { replaceOrPushRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
 import { Container, Content, Footer, View, Text, Button, Icon } from 'native-base'
 import { removeToken } from '../utility/asyncStorageServices'
@@ -112,13 +112,6 @@ class LionsSidebar extends Component {
     navigateTo(route) {
         setTimeout(() => {
           this.props.replaceOrPushRoute(route)
-        }, 400)
-        this.props.closeDrawer()
-    }
-
-    resetRoute(route) {
-        setTimeout(() => {
-          this.props.resetRoute(route)
         }, 400)
         this.props.closeDrawer()
     }
@@ -245,7 +238,6 @@ function bindActions(dispatch) {
     return {
         closeDrawer: ()=>dispatch(closeDrawer()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
-        resetRoute:(route)=>dispatch(resetRoute(route)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted))
     }
 }
