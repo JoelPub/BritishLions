@@ -86,6 +86,9 @@ module.exports = styleSheetCreate({
       fontSize:22,
       lineHeight:24,
       textAlign:'center',
-      backgroundColor:'transparent'
+      backgroundColor:'transparent',
+      ios:{
+        marginTop:10
+      }
   },
 })
