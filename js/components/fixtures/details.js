@@ -59,14 +59,14 @@ class FixtureDetails extends Component {
         this.isUnMounted = false
 
         this.state = {
-            details: this.props.details,
+            data: this.props.details,
             isLoaded: false,
             gameStatus: null
         }
     }
 
    calendarAddEvent(params) {
-        let  {date} = this.state.details
+        let  {date} = this.state.data.details
         let dateNoSpace   = date.replace(/\s+/g, '')
         let  reallyDate = dateNoSpace.toLowerCase()
 
@@ -84,7 +84,7 @@ class FixtureDetails extends Component {
         //   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
         //   let endTime = endDateOfEvent.toISOString() // UTC Format
         //console.warn("dddddd", dateOfEvent)
-
+        console.warn("dddddadarataattatatatatdd@@@@@@@:", this.state.data.list)
         if (Platform.OS === 'android') {
             // Used third party for Calendar Event
             // On Function Params : String eventTitle, String descEvent, String locationEvent, String dateOfEvent
@@ -95,10 +95,12 @@ class FixtureDetails extends Component {
                 if (status && status === "added") {
                     alertBox('Warning','You have added the events to the calendar')
                 } else{ 
-                    let addedSuccess = true
+                  let addedSuccess = true
+
+                  this.state.data.list.map(function(item) {
                   let errorcode = 0
                   let params = {}
-                  params.details = this.state.details
+                  params.details = item
                   let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`).toISOString() // UTC Format
                   let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
                   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 1 hour for Event, to provide time range display
@@ -153,7 +155,9 @@ class FixtureDetails extends Component {
                             break;
                         }
                     }
+                    })
                 }
+
             })
         }
     }
@@ -168,7 +172,7 @@ class FixtureDetails extends Component {
     }
 
     componentDidMount() {
-        let  {date} = this.state.details
+        let  {date} = this.state.data.details
         let dateNoSpace   = date.replace(/\s+/g, '')
         let  reallyDate = dateNoSpace.toLowerCase()
 
@@ -181,7 +185,7 @@ class FixtureDetails extends Component {
     }
 
     _analyzeGameStatus() {
-        let fixture = this.state.details
+        let fixture = this.state.data.details
         
         if (fixture.live) {
             this.setState({
@@ -207,7 +211,7 @@ class FixtureDetails extends Component {
     }
 
     _gameMode() {
-        let fixtureDetails = this.state.details
+        let fixtureDetails = this.state.data.details
         let gameStatus = this.state.gameStatus
 
         switch (gameStatus) {
@@ -218,7 +222,7 @@ class FixtureDetails extends Component {
             case 'pre':
                 return <PreGame 
                             details={fixtureDetails} 
-                            pressAddCalendar={()=>this.calendarAddEvent(this.props)}
+                            pressAddCalendar={()=>this.calendarAddEvent(this.props.details)}
                             onPress={this.pickYourXVClick}/>
                 break;
             case 'post':
@@ -270,7 +274,7 @@ class FixtureDetails extends Component {
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.content}>
-                            <Banner data={this.state.details} gameStatus={this.state.gameStatus} />
+                            <Banner data={this.state.data.details} gameStatus={this.state.gameStatus} />
                             {
                                 this.state.isLoaded?
                                     this._gameMode()

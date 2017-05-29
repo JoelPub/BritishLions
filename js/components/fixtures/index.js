@@ -127,7 +127,7 @@ class Fixtures extends Component {
                                                     <ButtonFeedback 
                                                         key={item.id}
                                                         style={styles.btn}
-                                                        onPress={() => this._drillDown(item.toJS())}>
+                                                        onPress={() => this._drillDown({details:item.toJS(), list:this.state.fixtures})}>
                                                        {status!=='pre'? <TitleCell status ={status}/> : null}
                                                         <ImagePlaceholder height={170}>
                                                             <LinearGradient style={styles.fixtureImgContainerAtList} colors={['#d9d7d8', '#FFF']}>
