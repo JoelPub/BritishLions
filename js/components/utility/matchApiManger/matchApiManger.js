@@ -5,7 +5,7 @@ import Toast from 'react-native-root-toast'
 
 export function getGameMomentum(type,gameID,onSuccess,OnError) {
     let optionsInfo = {
-      url: 'http://bilprod-r4dummyapi.azurewebsites.net/getGameMomentum',
+      url: 'http://bilprod.azurewebsites.net/getGameMomentum',
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
@@ -66,7 +66,7 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 }
 export function getTimeLineLiveSummary (options, type, summaryData, onSuccess, onError) {
   let optionsInfo = {
-    url: 'http://bilprod-r4dummyapi.azurewebsites.net/getTimelineLiveSummary',
+    url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,

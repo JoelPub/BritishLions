@@ -216,14 +216,14 @@ class AppNavigator extends Component {
             if(this.props.store.getState().drawer.drawerState == 'closed')
                 this._drawer.close()
         })
-        NativeModules.One.init(
-            "ONE-X1Q7UKTXW6-4730",
-            "lions", 
-            "7c9a6a65-3569-4338-94e0-589a64457784", 
-            "ce32efd4-7d0d-4c4f-bd11-b45f3f727739", 
-            "api@lionsrugby",
-            false,
-            "eu2.thunderhead.com");
+//        NativeModules.One.init(
+//            "ONE-X1Q7UKTXW6-4730",
+//            "lions",
+//            "7c9a6a65-3569-4338-94e0-589a64457784",
+//            "ce32efd4-7d0d-4c4f-bd11-b45f3f727739",
+//            "api@lionsrugby",
+//            false,
+//            "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
             // if (__DEV__)console.log('this._navigator',this._navigator)
             // if (__DEV__)console.log('globalNav.navigator',globalNav.navigator)

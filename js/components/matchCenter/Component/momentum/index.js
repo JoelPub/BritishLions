@@ -23,7 +23,7 @@ class Momentum extends Component {
             modalInfo:false,
             config:{
                 isHost:false,
-                sRadius:styleVar.deviceWidth*0.04,
+                sRadius:0,
                 dotWidth:2,
                 dotLen:4  
             }
@@ -110,7 +110,7 @@ class Momentum extends Component {
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
                               <Text style={styles.modalContentText}>The graph shows the two features for both teams. The right side will belong to the Lions, the left will be their opposition:</Text>
                               <Text style={styles.modalContentText}>The Red bars indicate the score difference between the two teams.</Text>
-                              <Text style={styles.modalContentText}>The Yellow line indicates which team has the run of play based on features such as Territory, Possession, Metres made, Attacking plays in the opposition half.</Text>
+                              <Text style={styles.modalContentText}>Run of Play is calculated based on features such as territory, possession, metres made and attacking plays in the opposition half. If the row has more red than black, the Lions are considered to have the run of play at that time. The yellow line indicates the score difference between the two teams.</Text>
                           </View>
                     </ScrollView>
                   </SquadModal>

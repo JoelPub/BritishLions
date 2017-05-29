@@ -59,10 +59,10 @@ export default class MomentumTracker extends Component {
                 <View style={{height:outerHeight}}>                    
                     {
                         finished&&
-                        <View style={[{height:headerHeight},styles.headerWrapper]}>
-                            <Text style={styles.headerText}>{timeMark+10}MIN</Text>
-                            <Text style={styles.headerText}>{timeMark+10}MIN</Text>
-                        </View>
+                            <View style={[{height:headerHeight},styles.headerWrapper]}>
+                                <Text style={styles.headerText}>{timeMark+10}MIN</Text>
+                                <Text style={styles.headerText}>{timeMark+10}MIN</Text>
+                            </View>
                     }
                     {
                         team_momentum&&team_momentum.map((val,index)=>{        
@@ -86,7 +86,7 @@ export default class MomentumTracker extends Component {
                             fLeft=index+1<score_advantage.length?(fVal===0)?w:strToLower(score_advantage[index+1].advantage_team)===(isHost?'bil':'opposition')?w+fVal:w-fVal:w
         
                             return(
-                                <DottedLine key={index} index={index} radius={radius} sRadius={sRadius} cLeft={cLeft-sRadius}  fLeft={fLeft-sRadius} isFirst={isFirst}  h={(integrity&&index===0)?gridHeight+headerHeight:gridHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth} num={score_advantage.length||0} integrity={integrity}/>
+                                <DottedLine key={index} index={index} radius={radius} sRadius={sRadius} cLeft={cLeft-sRadius}  fLeft={fLeft-sRadius} isFirst={isFirst}  h={(integrity&&index===0)?gridHeight+headerHeight:gridHeight} gridHeight={gridHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth} num={score_advantage.length||0} integrity={integrity}/>
                             )
                         })
                     }
@@ -96,13 +96,20 @@ export default class MomentumTracker extends Component {
                     {
                         integrity&&isFirst&&<View style={{top:outerHeight-headerHeight,left:fSLeft-sRadius,width:2*sRadius,height:2*sRadius,borderRadius:sRadius,backgroundColor:'rgb(9,127,64)',position:'absolute'}}/>
                     }
-                    
+                    {
+                        finished&&
+                            <View style={{width:6,left:w-3,height:headerHeight+1,top:-1,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
+                    }
                     {
                         isFirst&&
-                        <View style={[{height:headerHeight},styles.headerWrapper]}>
-                            <Text style={styles.headerText}>{timeMark}MIN</Text>
-                            <Text style={styles.headerText}>{timeMark}MIN</Text>
+                        <View>
+                            <View style={[{height:headerHeight},styles.headerWrapper]}>
+                                <Text style={styles.headerText}>{timeMark}MIN</Text>
+                                <Text style={styles.headerText}>{timeMark}MIN</Text>
+                            </View>
+                            <View style={{width:6,left:w-3,height:headerHeight,top:0,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
                         </View>
+
                     }    
                         
                         

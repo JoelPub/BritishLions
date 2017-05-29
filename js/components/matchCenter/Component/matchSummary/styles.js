@@ -112,7 +112,7 @@ module.exports = styleSheetCreate({
         textAlign:'center',
         backgroundColor:'transparent',
         ios:{
-            marginTop:5
+            marginTop:10
         }
     },
     statWrapper:{

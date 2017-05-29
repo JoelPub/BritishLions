@@ -117,10 +117,20 @@ class MatchCenter extends Component {
         })
       }
       if(this.state.index===1){
+        if (__DEV__)console.log('@@@call team Api')
+        setTimeout(()=>{
+              this.statusArray.fill(false)
+              this.statusArray[1]=true
+              this.setState({
+                statusArray: this.statusArray
+              })
+        },2000)
+      }
+      if(this.state.index===2){
         if (__DEV__)console.log('call momentum Api')
         apiActions.getGameMomentum('momentum',this.state.detail.id,(data)=>{
                     this.statusArray.fill(false)
-                    this.statusArray[1]=true
+                    this.statusArray[2]=true
                     this.setState({
                       statusArray: this.statusArray,
                       momentumData:Object.assign(data,this.state.detail)
@@ -132,12 +142,12 @@ class MatchCenter extends Component {
         },(error)=>{
         })
       }
-      if(this.state.index===2){
+      if(this.state.index===3){
         if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
             this.statusArray.fill(false)
-            this.statusArray[2]=true
+            this.statusArray[3]=true
             this.setState({
               setPlayerData:json.data,
               statusArray: this.statusArray
@@ -145,11 +155,11 @@ class MatchCenter extends Component {
         },(error)=>{
         })
       }
-      if(this.state.index===3){
+      if(this.state.index===4){
         if (__DEV__)console.log('@@@on fire Api')
         apiActions.getGameOnFire(this.state.detail.id,(json)=>{
           this.statusArray.fill(false)
-          this.statusArray[3]=true
+          this.statusArray[4]=true
           this.setState({
             onFireData:json.data,
             statusArray: this.statusArray
@@ -159,13 +169,13 @@ class MatchCenter extends Component {
         })
 
       }
-      if(this.state.index===4){
+      if(this.state.index===5){
         if (__DEV__)console.log('@@@call man of the match Api')
         setTimeout(()=>{
           if (this.state.detail.post!==null) {
             this.setState({subPage:'final'},()=>{              
               this.statusArray.fill(false)
-              this.statusArray[4]=true
+              this.statusArray[5]=true
               this.setState({
                 statusArray: this.statusArray
               })
@@ -186,7 +196,7 @@ class MatchCenter extends Component {
               if(__DEV__)console.log('subPage',subPage)
               this.setState({subPage:subPage},()=>{              
                   this.statusArray.fill(false)
-                  this.statusArray[4]=true
+                  this.statusArray[5]=true
                   this.setState({
                     statusArray: this.statusArray
                   })
@@ -196,22 +206,12 @@ class MatchCenter extends Component {
           }
         },2000)
       }
-      if(this.state.index===5){
-        if (__DEV__)console.log('@@@call team Api')
-        setTimeout(()=>{
-              this.statusArray.fill(false)
-              this.statusArray[5]=true
-              this.setState({
-                statusArray: this.statusArray
-              })
-        },2000)
-      }
     }
     componentDidMount() {
         if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
-            if(this.state.index<4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
+            if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
         })},500)
         
     }
@@ -237,7 +237,7 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if(this.state.index<4&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)              
+              if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)              
             })
           }
           else {
