@@ -138,13 +138,13 @@ class MatchSummary extends Component {
 
                             <View style={styles.statEntry}>
                                 <Text style={styles.leftCol}>{isHost?bil&&bil.line_outs:opposition&&opposition.line_outs}</Text>
-                                <Text style={styles.midCol}>LINE_OUTS WON</Text>
+                                <Text style={styles.midCol}>LINE-OUTS WON</Text>
                                 <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.line_outs}</Text>
                             </View>
 
                             <View style={styles.statEntry}>
                                 <Text style={styles.leftCol}>{isHost?bil&&bil.pen_con:opposition&&opposition.pen_con}%</Text>
-                                <Text style={styles.midCol}>PEN/CON</Text>
+                                <Text style={styles.midCol}>PEN/CON.</Text>
                                 <Text style={styles.rightCol}>{isHost?opposition&&opposition.tries:bil&&bil.pen_con}%</Text>
                             </View>
 
