@@ -81,9 +81,9 @@ export default class MomentumTracker extends Component {
                     {
                         score_advantage&&score_advantage.map((val,index)=>{
                             cVal=score_advantage&&score_advantage.length&&score_advantage.length>1&&score_advantage[index].value?parseInt(score_advantage[index].value)*w/50:0
-                            cLeft=(cVal===0)?w:strToLower(score_advantage[index].advantage_team)===(isHost?'bil':'opposition')?w+cVal:w-cVal
+                            cLeft=(cVal===0)?w:strToLower(score_advantage[index].advantage_team)===(isHost?'bil':'opposition')?w-cVal:w+cVal
                             fVal=index+1<score_advantage.length?score_advantage&&score_advantage.length&&score_advantage.length>1&&score_advantage[index+1].value?parseInt(score_advantage[index+1].value)*w/50:0:0
-                            fLeft=index+1<score_advantage.length?(fVal===0)?w:strToLower(score_advantage[index+1].advantage_team)===(isHost?'bil':'opposition')?w+fVal:w-fVal:w
+                            fLeft=index+1<score_advantage.length?(fVal===0)?w:strToLower(score_advantage[index+1].advantage_team)===(isHost?'bil':'opposition')?w-fVal:w+fVal:w
         
                             return(
                                 <DottedLine key={index} index={index} radius={radius} sRadius={sRadius} cLeft={cLeft-sRadius}  fLeft={fLeft-sRadius} isFirst={isFirst}  h={(integrity&&index===0)?gridHeight+headerHeight:gridHeight} gridHeight={gridHeight} headerHeight={headerHeight} dotLen={dotLen} dotWidth={dotWidth} num={score_advantage.length||0} integrity={integrity}/>
