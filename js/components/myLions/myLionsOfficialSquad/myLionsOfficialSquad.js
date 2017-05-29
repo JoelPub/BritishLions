@@ -139,9 +139,12 @@ class MyLionsOfficialSquad extends Component {
 
     componentDidMount() {
         //setTimeout(() => this._getSquad(), 600)
+
+      setTimeout(()=>{
         let {userProfile} = this.props
         this._getSquad(userProfile.userID)
         this._getCoachAndStaffData()
+      },2000)
     }
     
     _replaceRoute(route) {
