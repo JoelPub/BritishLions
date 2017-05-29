@@ -10,11 +10,11 @@ import ButtonFeedback from '../../utility/buttonFeedback'
 import { Icon } from 'native-base'
 
 const img_arr = [require('./static/images/matchSummary.jpg'),
+  require('./static/images/gameDayTeam.jpg'),
   require('./static/images/runOfPlay.jpg'),
   require('./static/images/setPlays.jpg'),
   require('./static/images/topLions.jpg'),
   require('./static/images/manOfTheMatch.jpg'),
-  require('./static/images/gameDayTeam.jpg'),
 ]
 
 export default class ApdCarousel extends Component {
@@ -80,7 +80,6 @@ export default class ApdCarousel extends Component {
           scrollEventThrottle={200}
         >
           { this.carousel }
-
         </ScrollView>
       </View>
     );

@@ -32,7 +32,7 @@ class MatchCenter extends Component {
     constructor(props) {
         super(props)
         this._carousel=null
-        this.subjects=['MATCH SUMMARY','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH','TEAM']
+        this.subjects=['MATCH SUMMARY','TEAM','RUN OF PLAY','SET PLAYS','TOP LIONS', 'MAN OF THE MATCH']
         this.state = {
           detail:this.props.drillDownItem,
           index:this.props.drillDownItem&&this.props.drillDownItem.page ? this.props.drillDownItem.page: 0 ,
@@ -282,32 +282,31 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[1] ? <Momentum detail={this.state.detail}  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
+                                statusArray[1]? <Team detail={this.state.detail} setHeight={this._setHeight.bind(this)}/>
+
+                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  {
+                                    !statusArray[1]&&this.state.index===1?
+                                      <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
+                                      :
+                                      null
+                                  }
+                                </View>
+                              }
+
+                              {
+                                statusArray[2] ? <Momentum detail={this.state.detail}  setHeight={this._setHeight.bind(this)} data={this.state.momentumData}/>
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
-                                        !statusArray[1]&&this.state.index===1&&
+                                        !statusArray[2]&&this.state.index===2&&
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
                                       }
                                     </View>
                               }
                               {
-                                statusArray[2]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
+                                statusArray[3]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                                                  set_plays={setPlayerData.set_plays} />
                                   : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
-                                      {
-                                        !statusArray[2]&&this.state.index===2?
-                                        <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
-                                        :
-                                        null
-                                      }
-                                    </View>
-                              }
-                              {
-                                statusArray[3]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
-                                                         setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire} 
-                                />
-                                  : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />
@@ -317,8 +316,10 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[4]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
-
+                                statusArray[4]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
+                                                         setHeight={this._setHeight.bind(this)}
+                                                         on_fire={onFireData.on_fire} 
+                                />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[4]&&this.state.index===4?
@@ -329,7 +330,7 @@ class MatchCenter extends Component {
                                     </View>
                               }
                               {
-                                statusArray[5]? <Team detail={this.state.detail} setHeight={this._setHeight.bind(this)}/>
+                                statusArray[5]? <ManOfTheMatch detail={this.state.detail} setHeight={this._setHeight.bind(this)} subPage={this.state.subPage} setSubPage={this._setSubPage.bind(this)}/>
 
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {

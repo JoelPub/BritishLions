@@ -7,6 +7,11 @@ export const ENTRIES1 = [
     illustration: '../static/images/matchSummary.jpg'
   },
   {
+    title: 'TEAM',
+    subtitle: 'View the Lions Game Day Team',
+    illustration: '../static/images/gameDayTeam.jpg'
+  },
+  {
     title: 'RUN OF PLAY',
     subtitle: 'See which team is dominating play based on match statistics compared to the score difference.',
     illustration: '../static/images/runOfPlay.jpg'
@@ -26,9 +31,4 @@ export const ENTRIES1 = [
     subtitle: 'Vote for your Man of the Match.',
     illustration: '../static/images/manOfTheMatch.jpg'
   },
-  {
-      title: 'TEAM',
-      subtitle: 'View the Lions Game Day Team',
-      illustration: '../static/images/gameDayTeam.jpg'
-    },
 ];
