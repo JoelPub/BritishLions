@@ -12,10 +12,10 @@ export default class DottedLine extends Component {
 	}
     
     render() {
-        let {cLeft,fLeft,radius,isFirst,h,headerHeight,dotLen,dotWidth,num,index,sRadius,integrity}=this.props
+        let {cLeft,fLeft,radius,isFirst,h,headerHeight,dotLen,dotWidth,num,index,sRadius,integrity,gridHeight}=this.props
         let w=(index<num-1)?Math.sqrt(Math.pow(cLeft-fLeft,2)+Math.pow(h,2)):0
         // if (__DEV__)console.log('w',w)
-        let t=index*h+(integrity&&index===0?headerHeight*1.5:headerHeight*2)
+        let t=(index)*h+(integrity&&index===0?(headerHeight*0.5+gridHeight):(headerHeight+gridHeight))-(integrity?0:h)
         let l=(cLeft+fLeft)/2-w/2+sRadius
         // if (__DEV__)console.log('t',t)
         // if (__DEV__)console.log('l',l)
