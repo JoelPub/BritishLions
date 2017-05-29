@@ -98,7 +98,7 @@ export default class MomentumTracker extends Component {
                     }
                     {
                         finished&&
-                            <View style={{width:10,left:w-5,height:headerHeight+1,top:-1,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
+                            <View style={{width:6,left:w-3,height:headerHeight+1,top:-1,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
                     }
                     {
                         isFirst&&
@@ -107,7 +107,7 @@ export default class MomentumTracker extends Component {
                                 <Text style={styles.headerText}>{timeMark}MIN</Text>
                                 <Text style={styles.headerText}>{timeMark}MIN</Text>
                             </View>
-                            <View style={{width:10,left:w-5,height:headerHeight,top:0,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
+                            <View style={{width:6,left:w-3,height:headerHeight,top:0,position:'absolute',backgroundColor:'rgb(0,0,0)'}}/>
                         </View>
 
                     }    
