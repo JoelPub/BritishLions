@@ -164,7 +164,8 @@ class PlayerFigure extends Component {
     }
 
     _drillDown(data, route) {
-        this.props.drillDown(data, route)
+        let item = {details: data}
+        this.props.drillDown(item, route)
     }
 
     _sortFixtures(fixturesList, order = 'ASC', isImmutable = false) {
