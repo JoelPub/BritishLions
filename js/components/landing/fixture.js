@@ -164,8 +164,7 @@ class PlayerFigure extends Component {
     }
 
     _drillDown(data, route) {
-        let item = {details: data}
-        this.props.drillDown(item, route)
+        this.props.drillDown(data, route)
     }
 
     _sortFixtures(fixturesList, order = 'ASC', isImmutable = false) {
@@ -368,15 +367,15 @@ class PlayerFigure extends Component {
             case 'live':
                 return <LiveGame
                             gameStatus={gameStatus}
-                            data={fixture} 
-                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')} 
+                            data={fixture}
+                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}
                             pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':
                 return <PreGame 
                             gameStatus={gameStatus}
                             data={fixture} 
-                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}
+                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
                 break;
             case 'post':
@@ -384,7 +383,7 @@ class PlayerFigure extends Component {
                             gameStatus={gameStatus}
                             isLastFixture={this.state.isLastFixture}
                             data={fixture} 
-                            pressBanner={()=> this._drillDown(fixture, 'fixtureDetails')}/>
+                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}/>
                 break;
             default:
                 return <View></View>
