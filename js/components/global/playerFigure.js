@@ -399,7 +399,7 @@ export default class PlayerFigure extends Component {
                                     </View>
                                     <Swiper
                                         ref='swiper'
-                                        height={350}
+                                        height={500}
                                         width={styleVar.deviceWidth-100}
                                         loop={false}
                                         paginationStyle={styles.pagination}
