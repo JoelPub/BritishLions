@@ -44,7 +44,7 @@ module.exports = styleSheetCreate({
         height:styleVar.deviceWidth*0.038,
         width:styleVar.deviceWidth*0.038,
         borderRadius:styleVar.deviceWidth*0.019,
-        backgroundColor:'rgb(9,127,64)'
+        backgroundColor:'rgb(255,204,40)'
     },
     momentumSign:{
         height:14,
