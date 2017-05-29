@@ -39,10 +39,11 @@ class Galleries extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.galleriesFeed&&nextProps.galleriesFeed[0]&&nextProps.galleriesFeed[0].thumb50) {
+        if(nextProps.galleriesFeed&&nextProps.galleriesFeed[0]) {
+
             this.setState({
                 isLoaded: nextProps.isLoaded,
-                galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed)
+                galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed.filter(x=>x.images.length>0))
             })           
         }
     }
