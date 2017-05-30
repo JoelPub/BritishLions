@@ -103,7 +103,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
         </View>
         <View style={locStyle.infoBox}>
             <Text style={locStyle.infoBoxText}>
-                Visit the British & Irish Lions Coaches' Box for live match coverage and statistics.
+                Visit The British & Irish Lions Coaches' Box for live match coverage and statistics.
             </Text>
             <ButtonFeedback 
                 rounded 
@@ -147,6 +147,7 @@ class PlayerFigure extends Component {
         this.state = {
             getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo,
             fixture: FixtureInfoModel().toJS(),
+            fixturesList:[],
             isLastFixture: false,
             gameStatus: null,
             isLoaded: false,
@@ -196,6 +197,9 @@ class PlayerFigure extends Component {
 
                 //if (__DEV__) console.log('res', res.data)
                 if(res.data) {
+                    this.setState({
+                        fixturesList:res.data
+                    })
                     this._analyzeFixtures(res.data)
                 } else {
                     this.setState({ isLoaded: true })
@@ -375,7 +379,7 @@ class PlayerFigure extends Component {
                 return <PreGame 
                             gameStatus={gameStatus}
                             data={fixture} 
-                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}
+                            pressBanner={()=> this._drillDown({details: fixture, list: this.state.fixturesList }, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
                 break;
             case 'post':

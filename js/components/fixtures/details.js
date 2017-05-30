@@ -57,7 +57,6 @@ class FixtureDetails extends Component {
         super(props)
         this._scrollView = ScrollView
         this.isUnMounted = false
-
         this.state = {
             data: this.props.details,
             isLoaded: false,
