@@ -103,7 +103,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
         </View>
         <View style={locStyle.infoBox}>
             <Text style={locStyle.infoBoxText}>
-                Visit the British & Irish Lions Coach's Box for live match coverage and statistics.
+                Visit the British & Irish Lions Coaches' Box for live match coverage and statistics.
             </Text>
             <ButtonFeedback 
                 rounded 

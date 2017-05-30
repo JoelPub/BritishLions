@@ -291,6 +291,8 @@ class GamedayTeam extends Component {
 			    isLoaded: false,
 			    gameDayTeam: {},
 			    isNetwork: true,
+			    teamAvaliable : true,
+			    message:''
 			}
     }
 
@@ -373,31 +375,38 @@ class GamedayTeam extends Component {
                 if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                     removeEYC3GameDayTeam()
                     getEYC3GameDayTeam(gameID).then((catchedGameDayTeam) => {
-                        if (__DEV__) console.log('catchedGameDayTeam', catchedGameDayTeam)
+                        if(catchedGameDayTeam.success === "false"){
+                            this.setState({
+                                teamAvaliable:false,
+                                message:catchedGameDayTeam.message
+                            })
+                        }else{
+                                if (__DEV__) console.log('catchedGameDayTeam', catchedGameDayTeam)
 
-                        if(catchedGameDayTeam !== null && catchedGameDayTeam !== 0 && catchedGameDayTeam !== -1) {
-                            // check if team is available or not
-                            if (catchedGameDayTeam.success && catchedGameDayTeam.success === 'false') {
-                                // set team availability
-                                this._callbackIsTeamAvailable(false)
-                            } else {
-                                let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
-                                //if (__DEV__)console.log('showSquadFeed', showSquadFeed)
+                                if(catchedGameDayTeam !== null && catchedGameDayTeam !== 0 && catchedGameDayTeam !== -1) {
+                                    // check if team is available or not
+                                    if (catchedGameDayTeam.success && catchedGameDayTeam.success === 'false') {
+                                        // set team availability
+                                        this._callbackIsTeamAvailable(false)
+                                    } else {
+                                        let showSquadFeed = convertSquadToShow(GamedayTeamModel(catchedGameDayTeam),catchedFullPlayerList,this.uniondata)
+                                        //if (__DEV__)console.log('showSquadFeed', showSquadFeed)
 
-                                // match captain tag
-                                showSquadFeed = this._getMatchCaptianTag(showSquadFeed.toJS())
+                                        // match captain tag
+                                        showSquadFeed = this._getMatchCaptianTag(showSquadFeed.toJS())
 
-                                // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                                this.setState({gameDayTeam: showSquadFeed}, ()=>{
-                                    this.setState({isLoaded: true})
+                                        // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                        this.setState({gameDayTeam: showSquadFeed}, ()=>{
+                                            this.setState({isLoaded: true})
 
+                                            // set team availability
+                                            this._callbackIsTeamAvailable(true)
+                                        })
+                                    }
+                                } else {
                                     // set team availability
-                                    this._callbackIsTeamAvailable(true)
-                                })
-                            }
-                        } else {
-                            // set team availability
-                            this._callbackIsTeamAvailable(false)
+                                    this._callbackIsTeamAvailable(false)
+                                }
                         }
                     }).catch((error) => {
                         // set team availability
@@ -456,6 +465,9 @@ class GamedayTeam extends Component {
 
 	render() {
 		return (
+		<View>
+		{
+		    this.state.teamAvaliable ?
 			<View>
 				{
 	                this.state.isLoaded?
@@ -553,7 +565,11 @@ class GamedayTeam extends Component {
 	                    <ActivityIndicator style={loader.centered} size='large' />
 	            }
 	         </View>
-            )
+	         :
+	         null
+         }
+         </View>
+        )
 	}
 }
 

@@ -112,7 +112,7 @@ class Fixtures extends Component {
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        title='FIXTURES AND SCORES'
+                        title='FIXTURES'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {

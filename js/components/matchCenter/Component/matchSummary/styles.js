@@ -116,7 +116,8 @@ module.exports = styleSheetCreate({
         }
     },
     statWrapper:{
-        paddingHorizontal:10
+        paddingHorizontal:10,
+        marginBottom:20
     },
     statEntry:{
         flexDirection:'row',

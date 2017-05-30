@@ -19,7 +19,7 @@ class MatchSummary extends Component {
     constructor(props) {
          super(props)
          this.state={
-          page:1,
+          page:0,
           isHost:false
          }
     }
@@ -45,7 +45,7 @@ class MatchSummary extends Component {
                     <View style={styles.tabBtnWrapper}>
                       <View style={styles.tabBtnPos}>
                         <ButtonFeedback style={[this.state.page===0?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:0})}>
-                          <Text style={styles.btnText}> LIVE COMMENTARY</Text>
+                          <Text style={styles.btnText}> MATCH STATISTICS</Text>
                         </ButtonFeedback>
                         <Triangle
                           width={24}
@@ -57,7 +57,7 @@ class MatchSummary extends Component {
                       </View>
                       <View style={styles.tabBtnPos}>
                         <ButtonFeedback style={[this.state.page===1?styles.activeBtn:styles.inactiveBtn,styles.tabBtn]} onPress={()=>this.setState({page:1})}>
-                          <Text style={styles.btnText}> MATCH STATISTICS</Text>
+                          <Text style={styles.btnText}> LIVE COMMENTARY</Text>
                         </ButtonFeedback>
                         <Triangle
                           width={24}
@@ -70,7 +70,7 @@ class MatchSummary extends Component {
                     </View>
                     <View style={styles.timelineWrapper} >
                     {
-                      this.state.page===0?
+                      this.state.page===1?
                           <Timeline
                             data={timeline}
                             lineColor='rgb(216,217,218)'

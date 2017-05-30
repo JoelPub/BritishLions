@@ -140,7 +140,8 @@ class OnFire extends Component {
                     <ScrollView style={[styles.modalContent]}>
                           <View>
                               <Text style={styles.modalContentTitleText}>MORE INFORMATION</Text>
-                              <Text style={styles.modalContentText}>On-fire displays the top three players from the Lions team based on their performance in the following categories; Metres gained, Successful passes, Successful breaks, and Tackles made. A player who is performing above their historical average is marked with a red star.</Text>
+                              <Text style={styles.modalContentText}>Top Lions displays the top three players from the Lions team based on their performance in the following categories; Metres gained, Successful passes, Successful breaks and tackles made.</Text>
+                              <Text style={styles.modalContentText}>A player who is performing above their historical average is marked with a red star. This will be displayed at half time and full time.</Text>
                           </View>
                     </ScrollView>
                   </SquadModal>
