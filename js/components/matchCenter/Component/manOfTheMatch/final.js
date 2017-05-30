@@ -35,16 +35,13 @@ class ManOfTheMatchFinal extends Component {
                         <Text style={styles.titleText}>WHO WAS YOUR MAN OF THE MATCH?</Text>
                     </View>
                     <View style={styles.desc}>
-                        <Text style={styles.descText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
+                        <Text style={styles.descText}>The Lions Man of the Match as voted by you.</Text>
                     </View>
 
                     <View style={styles.guther}>
                         <PlayersRankBox  showModal={this.props.showModal}   detail={this.props.detail}/>
                     </View>
 
-                    <View style={styles.guther}>
-                        <Text style={styles.noteText}>You get one vote for man of the match. But you may change your vote by resubmitting up until the end of the match.</Text>
-                    </View>
                     <View onLayout={this._measurePage.bind(this,'Final')} />
                 </View>
             

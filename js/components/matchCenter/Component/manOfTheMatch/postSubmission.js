@@ -113,7 +113,7 @@ class ManOfTheMatchPostSubission extends Component {
                         <Text style={styles.titleText}>ARE YOU HAPPY WITH YOUR MAN OF THE MATCH?</Text>
                     </View>
                     <View style={styles.desc}>
-                        <Text style={styles.descText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
+                        <Text style={styles.descText}>The Lions Man of the Match as voted by you.</Text>
                     </View>
                     <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail}/>
                     <View style={styles.guther}>

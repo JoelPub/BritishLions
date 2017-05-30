@@ -82,21 +82,28 @@ export default class LiveBox extends Component {
             game_time:null,
             bil_score:null,
             op_score:null,
-            is_full_time:'false'
+            is_full_time:'false',
+            is_parse_time:false,
+            previous_time:0
         }
     }
     callApi = () => {
         if (__DEV__)console.log('call livebox Api(self extract)')
         apiActions.getGameMomentum('time',this.props.data.id,(data)=>{
+                    if(__DEV__)console.log('this.state.previous_time1',this.state.previous_time)
                     this.setState({
                       game_time: data.game_time,
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
                       op_score: data.statics&&data.statics.opposition&&data.statics.opposition.score,
-                      is_full_time: data.is_full_time
+                      is_full_time: data.is_full_time,
+                      is_parse_time : (this.state.game_time === this.state.previous_time),
+                      previous_time : data.game_time
                     },()=>{
-                            if(__DEV__)console.log('this.state.game_time',this.state.game_time)
-                            if(__DEV__)console.log('this.state.bil_score',this.state.bil_score)
-                            if(__DEV__)console.log('this.state.is_full_time',this.state.is_full_time)
+                            console.log('this.state.previous_time2',this.state.previous_time)
+                            console.log('this.state.game_time',this.state.game_time)
+                            console.log('this.state.is_parse_time',this.state.is_parse_time)
+                            console.log('this.state.bil_score',this.state.bil_score)
+                            console.log('this.state.is_full_time',this.state.is_full_time)
                             if(strToLower(data.is_full_time==='true')) this.timer&&clearTimeout(this.timer)
                           }
                       )
@@ -104,7 +111,8 @@ export default class LiveBox extends Component {
         })
     }
     componentDidMount() {
-        if (__DEV__)console.log('livebox componentDidMount',this.props.data)
+        //if (__DEV__)
+        console.log('livebox componentDidMount',this.props.data)
         if(this.props.data&&!this.props.data.feededData) {
             this.callApi()
             this.timer = setInterval(this.callApi,120000)
@@ -115,7 +123,8 @@ export default class LiveBox extends Component {
                       game_time: this.props.data.game_time,
                       bil_score: this.props.data.statics&&this.props.data.statics.bil&&this.props.data.statics.bil.score,
                       op_score: this.props.data.statics&&this.props.data.statics.opposition&&this.props.data.statics.opposition.score,
-                      is_full_time: this.props.data.is_full_time
+                      is_full_time: this.props.data.is_full_time,
+                      previous_time : this.props.data.game_time
                     })
         }
     }
@@ -132,7 +141,8 @@ export default class LiveBox extends Component {
                       game_time: nextProps.data.game_time,
                       bil_score: nextProps.data.statics&&nextProps.data.statics.bil&&nextProps.data.statics.bil.score,
                       op_score: nextProps.data.statics&&nextProps.data.statics.opposition&&nextProps.data.statics.opposition.score,
-                      is_full_time: nextProps.data.is_full_time
+                      is_full_time: nextProps.data.is_full_time,
+                      previous_time : nextProps.data.game_time
                     })
         }
     }
@@ -165,7 +175,7 @@ export default class LiveBox extends Component {
                     </View>
                     <View style={{flex:2,alignItems:'center'}}>
                     {
-                        (this.props.data.live===null||strToLower(this.state.is_full_time)==='true')?
+                        (this.props.data.live===null||this.state.is_parse_time ===true||strToLower(this.state.is_full_time)==='true')?
                         <View style={locStyle.time}>
                             <Text style={locStyle.timeText}>{this.state.game_time}</Text>
                         </View>
