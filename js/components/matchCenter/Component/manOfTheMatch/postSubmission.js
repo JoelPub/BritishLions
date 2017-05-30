@@ -117,7 +117,7 @@ class ManOfTheMatchPostSubission extends Component {
                     </View>
                     <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail}/>
                     <View style={styles.guther}>
-                        <Text style={styles.noteText}>You get one vote for man of the match. But you may change your vote by resubmitting up until the end of the match.</Text>
+                        <Text style={styles.noteText}>Vote for your man of the match now! You may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
 
                     <View style={styles.roundButtonBg}>
