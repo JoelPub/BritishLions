@@ -1,0 +1,2 @@
+import myLionsSelectPlayerListing from  './myLionsSelectPlayerListing'
+export default myLionsSelectPlayerListing

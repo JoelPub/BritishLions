@@ -1,0 +1,2 @@
+import CompetitionLadderShare from './CompetitionLadderShare'
+export default CompetitionLadderShare
