@@ -163,5 +163,8 @@ module.exports = styleSheetCreate({
             lineHeight: 28,
             marginBottom: 15
         }
+    },
+    blackView: {
+        height: 200
     }
 })

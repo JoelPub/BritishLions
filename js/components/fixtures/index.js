@@ -20,7 +20,7 @@ import loader from '../../themes/loader-position'
 import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
 import LinearGradient from 'react-native-linear-gradient'
-
+import styleVar from '../../themes/variable'
 
 const  TitleCell = ({status}) => {
   let  title = 'GAME FINISHED'
@@ -32,6 +32,13 @@ const  TitleCell = ({status}) => {
   return (
     <View style={[styles.titleView,greenBackgroundColor]}>
       <Text style={[styles.titleText]}>{title}</Text>
+    </View>
+  )
+}
+const  BlackView = () => {
+  return(
+    <View style={[styles.blackView]}>
+      
     </View>
   )
 }
@@ -55,7 +62,6 @@ class Fixtures extends Component {
 
     componentDidMount() {
         NativeModules.One.sendInteraction("/fixtures", { emailAddress : "" })
-
         setTimeout(() => {
             this._getFixtures()
         }, 600)
@@ -108,23 +114,29 @@ class Fixtures extends Component {
       return 'pre'
     }
     render() {
+        let titleStyle = styleVar.deviceWidth<=320 ? {fontSize:24,lineHeight:24} : {}
+
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        title='FIXTURES'
+                        title='FIXTURES AND SCORES'
                         contentLoaded={true}
+                        titleStyle={titleStyle}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
                                     {
+                                      this.state.fixtures.size===0  ? <BlackView/> : null
+                                    }
+                                    {
                                         this.state.fixtures.map(function(fixtureInfo) {
-                                            let item = FixtureInfoModel.fromJS(fixtureInfo) 
+                                            let item = FixtureInfoModel.fromJS(fixtureInfo)
                                             let status = this.judgeStatus(item)
                                             return (
-                                                    <ButtonFeedback 
+                                                    <ButtonFeedback
                                                         key={item.id}
                                                         style={styles.btn}
                                                         onPress={() => this._drillDown({details:item.toJS(), list:this.state.fixtures})}>
@@ -167,5 +179,4 @@ function bindAction(dispatch) {
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
-
 export default connect(null, bindAction)(Fixtures)
