@@ -35,6 +35,13 @@ const  TitleCell = ({status}) => {
     </View>
   )
 }
+const  BlackView = () => {
+  return(
+    <View style={[styles.blackView]}>
+      
+    </View>
+  )
+}
 class Fixtures extends Component {
     constructor(props) {
          super(props)
@@ -55,7 +62,6 @@ class Fixtures extends Component {
 
     componentDidMount() {
         NativeModules.One.sendInteraction("/fixtures", { emailAddress : "" })
-
         setTimeout(() => {
             this._getFixtures()
         }, 600)
@@ -109,6 +115,7 @@ class Fixtures extends Component {
     }
     render() {
         let titleStyle = styleVar.deviceWidth<=320 ? {fontSize:24,lineHeight:24} : {}
+
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
@@ -122,11 +129,14 @@ class Fixtures extends Component {
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
                                     {
+                                      this.state.fixtures.size===0  ? <BlackView/> : null
+                                    }
+                                    {
                                         this.state.fixtures.map(function(fixtureInfo) {
-                                            let item = FixtureInfoModel.fromJS(fixtureInfo) 
+                                            let item = FixtureInfoModel.fromJS(fixtureInfo)
                                             let status = this.judgeStatus(item)
                                             return (
-                                                    <ButtonFeedback 
+                                                    <ButtonFeedback
                                                         key={item.id}
                                                         style={styles.btn}
                                                         onPress={() => this._drillDown({details:item.toJS(), list:this.state.fixtures})}>
@@ -169,5 +179,4 @@ function bindAction(dispatch) {
         drillDown: (data, route)=>dispatch(drillDown(data, route))
     }
 }
-
 export default connect(null, bindAction)(Fixtures)
