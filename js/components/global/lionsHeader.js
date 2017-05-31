@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { popRoute, pushNewRoute, popToRoute,replaceOrPushRoute } from '../../actions/route'
 import { openDrawer } from '../../actions/drawer'
@@ -132,7 +132,7 @@ class LionsHeader extends Component {
         if (this.props.scrollToTop && this.props.contentLoaded) {
             return (
                 <ButtonFeedback style={styles.textHeaderBtn} onPress={this.scrollToTop}>
-                    <Text style={[styles.textHeader, styles.textHeader2]}>{title}</Text>
+                    <Text style={[styles.textHeader, styles.textHeader2,this.props.titleStyle]}>{title}</Text>
                 </ButtonFeedback>
             )
         }
@@ -167,8 +167,14 @@ function bindAction(dispatch) {
         pushNewRoute: (route)=>dispatch(pushNewRoute(route)),
         popRoute: ()=>dispatch(popRoute()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
-        popToRoute: (route)=>dispatch(popToRoute(route))
+        popToRoute: (route)=>dispatch(popToRoute(route)),
     }
 }
 
 export default connect(null, bindAction)(LionsHeader)
+LionsHeader.propTypes = {
+    titleStyle:PropTypes.object,
+}
+LionsHeader.defaultProps = {
+    titleStyle: {},
+}
