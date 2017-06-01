@@ -485,7 +485,7 @@ class SignUp extends Component {
                                             </Col>
                                             <Col>
                                                 <Text style={styles.switchLabelText}>
-                                                    I am happy to recieve news and information on Lions Supporters Tours and events
+                                                    I am happy to receive news and information on Lions Supporters Tours and events
                                                 </Text>
                                             </Col>
                                         </Grid>
