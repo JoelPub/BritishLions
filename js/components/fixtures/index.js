@@ -115,7 +115,8 @@ class Fixtures extends Component {
     }
     render() {
         let titleStyle = styleVar.deviceWidth<=320 ? {fontSize:24,lineHeight:24} : {}
-
+      console.log('iiiiiiiiii')
+      console.log(this.state.fixtures)
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
@@ -128,9 +129,6 @@ class Fixtures extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <StickyFooter>
-                                    {
-                                      this.state.fixtures.size===0  ? <BlackView/> : null
-                                    }
                                     {
                                         this.state.fixtures.map(function(fixtureInfo) {
                                             let item = FixtureInfoModel.fromJS(fixtureInfo)
@@ -157,6 +155,9 @@ class Fixtures extends Component {
                                                     </ButtonFeedback>
                                                 )
                                         }, this)
+                                    }
+                                    {
+                                    this.state.fixtures.length===0  ? <BlackView/> : null
                                     }
                                     <Image
                                         source={require('../../../images/footer/fixturesfooter.png')}
