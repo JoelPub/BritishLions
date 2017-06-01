@@ -101,7 +101,7 @@ android {
         applicationId "com.lionsofficial"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 12
+        versionCode 14
         versionName "4.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
