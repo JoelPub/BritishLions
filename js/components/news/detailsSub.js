@@ -147,14 +147,14 @@ class NewsDetailsSub extends Component {
 
             }
             else {
-              if(this.currentPosition-gestureState.dy/10<0) {
+              if(this.currentPosition-gestureState.dy/7.5<0) {
                 this.currentPosition=0
               }
-              else if(this.currentPosition-gestureState.dy/10>this.state.height+200){
+              else if(this.currentPosition-gestureState.dy/7.5>this.state.height+200){
               this.currentPosition=this.state.height+200
             }
             else {
-                this.currentPosition=this.currentPosition-gestureState.dy/10
+                this.currentPosition=this.currentPosition-gestureState.dy/7.5
             }
                 if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
                 if (__DEV__)console.log('@@@@@this.state.height',this.state.height)
