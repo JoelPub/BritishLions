@@ -320,7 +320,7 @@ export default class PlayersRankBox extends Component {
                                 if(players.length>0) {
                                     players.map((value,index)=>{
                                         let optionsPlayerProfile = {
-                                                    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getTourPlayerProfile',
+                                                    url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
                                                     data:{id:value.player_id},
                                                     isRequiredToken: false,
                                                     method: 'post',

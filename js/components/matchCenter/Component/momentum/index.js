@@ -47,9 +47,6 @@ class Momentum extends Component {
         this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
             setTimeout(()=>this.setState({modalAble:true}),500)
           })
-    }    
-    componentWillReceiveProps(nextProps,nextState) {
-        if (__DEV__)console.log('!!!momentum componentWillReceiveProps')
     }
     render() {
         return (
