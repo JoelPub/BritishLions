@@ -35,7 +35,7 @@ export function getGameMomentum(type,gameID,handleSuccess,handleError) {
 }
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameSetPlays',
+    url: 'https://bilprod.azurewebsites.net/getGameSetPlays',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -53,7 +53,7 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameOnFire',
+    url: 'https://bilprod.azurewebsites.net/getGameOnFire',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
