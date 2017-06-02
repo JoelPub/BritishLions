@@ -114,6 +114,15 @@ class MatchCenter extends Component {
                       },(error)=>{
                       })
         },(error)=>{
+          if(__DEV__)console.log('match summary error',error)
+            this.statusArray.fill(false)
+            this.statusArray[0]=true
+            this.setState({
+              statusArray: this.statusArray,
+              summaryData:{timeline:{},statics:{opposition:null,bil:null}}
+            },()=>{
+              this.timer&&clearTimeout(this.timer)
+            })
         })
       }
       if(this.state.index===1){
@@ -140,6 +149,16 @@ class MatchCenter extends Component {
                           }
                         )
         },(error)=>{
+          if(__DEV__)console.log('momentum api error',error)
+          this.statusArray.fill(false)
+                    this.statusArray[2]=true
+                    this.setState({
+                      statusArray: this.statusArray,
+                      momentumData:this.state.detail
+                    },()=>{
+                            this.timer&&clearTimeout(this.timer)
+                          }
+                        )
         })
       }
       if(this.state.index===3){

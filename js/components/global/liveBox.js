@@ -96,7 +96,7 @@ export default class LiveBox extends Component {
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
                       op_score: data.statics&&data.statics.opposition&&data.statics.opposition.score,
                       is_full_time: data.is_full_time,
-                      is_parse_time : (data.game_time.toString() === this.state.previous_time.toString()),
+                      is_parse_time : (data.game_time!==undefined&&this.state.previous_time!==undefined)?(data.game_time.toString() === this.state.previous_time.toString()):this.state.is_parse_time,
                       previous_time : data.game_time
                     },()=>{
                             console.log('this.state.previous_time2',this.state.previous_time)
