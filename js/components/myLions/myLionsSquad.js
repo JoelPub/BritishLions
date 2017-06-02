@@ -28,7 +28,7 @@ import { service } from '../utility/services'
 import Data from '../../../contents/unions/data'
 import { globalNav } from '../../appNavigator'
 import SquadModal from '../global/squadModal'
-import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getSoticFullPlayerListR2} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import { getUserCustomizedSquad, removeUserCustomizedSquad } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { setPositionToAdd,setPositionToRemove } from '../../actions/position'
@@ -201,8 +201,8 @@ class MyLionsSquad extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         backRoute={backRoute}
                         title='MY LIONS'
                         contentLoaded={true}
@@ -246,7 +246,7 @@ class MyLionsSquad extends Component {
 
     componentDidMount() {
         //if (__DEV__)console.log('!!!mySquad componentDidMount')
-        setTimeout(() => this._getSquad(), 600)        
+        setTimeout(() => this._getSquad(), 600)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -258,15 +258,15 @@ class MyLionsSquad extends Component {
         //if (__DEV__)console.log('!!!nextProps.squadData',nextProps.squadData)
         // if (__DEV__)console.log('!!!this.props.squadData=nextProps.squadData',this.props.squadData===nextProps.squadData?'true':'false')
         // let routes = globalNav.navigator.getCurrentRoutes()
-        
+
         // re render after 'back nav' pressed
             // if (!this.isUnMounted && nextProps.route.routes[nextProps.route.routes.length-1]==='myLionsSquad') {
             // if (__DEV__)console.log('!!!!!',nextProps.route.routes)
                 // if(JSON.stringify(nextProps.squadToShow)!=='{}'&&nextProps.squadData!==null&&(!Map(this.props.squadToShow).equals(Map(nextProps.squadToShow))||this.props.squadData!==nextProps.squadData)) {
                 if(nextProps.squadData!==null) {
                     // if (__DEV__)console.log('pass')
-                    this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))  
-                }                
+                    this.setSquadData(SquadModel.format(eval(`(${nextProps.squadData})`)))
+                }
             // }
             // else {
             //     this.setState({
@@ -277,7 +277,7 @@ class MyLionsSquad extends Component {
             // }
         // }
     }
-    
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
@@ -293,7 +293,7 @@ class MyLionsSquad extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
@@ -315,9 +315,9 @@ class MyLionsSquad extends Component {
                     this._showError(catchedSquad.error)
                 })
             }else{
-                getSoticFullPlayerList().then((catchedFullPlayerList) => {
+                getSoticFullPlayerListR2().then((catchedFullPlayerList) => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
-                        
+
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
@@ -329,7 +329,7 @@ class MyLionsSquad extends Component {
                     })
                 })
             }
-        })      
+        })
     }
 
     setSquadData(squad,isPop){
@@ -437,7 +437,7 @@ class MyLionsSquad extends Component {
             //if (__DEV__)console.log('!!!squad equal')
             service(optionsSaveList)
         }
-        
+
 
     }
 
@@ -477,7 +477,7 @@ class MyLionsSquad extends Component {
         })
     }
 
-    clearSelection() {        
+    clearSelection() {
         this._setModalVisible(false)
         this.setState({
             isLoaded:false
@@ -518,7 +518,7 @@ class MyLionsSquad extends Component {
                         isLoaded: true,
                         isScoreLoaded:true,
                         rating
-                    },()=>{                            
+                    },()=>{
                             removeUserCustomizedSquad()
                     })
             },
@@ -531,7 +531,7 @@ class MyLionsSquad extends Component {
             isRequiredToken: true,
             channel: 'EYC3'
         }
-        service(optionsSquadRating)        
+        service(optionsSquadRating)
     }
 }
 
@@ -557,4 +557,3 @@ export default connect((state) => {
         netWork: state.network
     }
 }, bindAction)(MyLionsSquad)
-

@@ -27,7 +27,7 @@ import { service } from '../utility/services'
 import { ucWords } from '../utility/helper'
 import LionsFooter from '../global/lionsFooter'
 import MyLionsPlayerListFilter from '../myLions/myLionsPlayerListFilter'
-import { getSoticFullPlayerList} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { getSoticFullPlayerListR2} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
 import { getGoodFormFavoritePlayerList, removeGoodFormFavoritePlayerList } from '../utility/apiasyncstorageservice/goodFormAsyncStorageService'
 import { getEYC3FullPlayerList, removeEYC3FullPlayerList } from '../utility/apiasyncstorageservice/eyc3AsyncStorageService'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
@@ -63,20 +63,20 @@ class MyLionsPlayerList extends Component {
     _renderRow(rowData, sectionID, rowID, highlightRow) {
         let styleGridBoxImgWrapper = (rowID%2 === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
         let styleGridBoxTitle = (rowID %2 ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-        
+
         return (
             <View style={styles.gridBoxCol} key={rowID}>
-                <ButtonFeedback 
+                <ButtonFeedback
                     style={styles.gridBoxTouchable}
                     onPress={() => this._showDetail(rowData,'myLionsPlayerProfile')}>
                     <View style={styles.gridBoxTouchableView}>
                         <View style={styleGridBoxImgWrapper}>
-                            <ImagePlaceholder 
+                            <ImagePlaceholder
                                 width = {styleVar.deviceWidth / 2}
                                 height = {styleVar.deviceWidth / 2}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={{uri:rowData.image}} 
+                                    source={{uri:rowData.image}}
                                     style={styles.gridBoxImg}
                                     key={rowID}/>
                             </ImagePlaceholder>
@@ -89,7 +89,7 @@ class MyLionsPlayerList extends Component {
                         </View>
                     </View>
                 </ButtonFeedback>
-            </View> 
+            </View>
         )
     }
 
@@ -143,7 +143,7 @@ class MyLionsPlayerList extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
@@ -199,7 +199,7 @@ class MyLionsPlayerList extends Component {
         players.map((item,index)=>{
             let image = item.image
             Object.assign(item, {
-                logo: this.union.image, 
+                logo: this.union.image,
                 country: this.union.displayname.toUpperCase(),
                 countryid: this.union.id,
                 isFav: (this.state.favoritePlayers.indexOf(item.id)!==-1)
@@ -207,7 +207,7 @@ class MyLionsPlayerList extends Component {
             if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8') players[index].position='Back Row'
             if(strToUpper(item.position)==='Utility Back') players[index].position='Full Back'
 
-            
+
         })
         return players
     }
@@ -278,8 +278,8 @@ class MyLionsPlayerList extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
                 let favoritePlayers = (res.data === '')? [] : res.data.split('|')
-                
-                this.setState({ 
+
+                this.setState({
                     playerListFeeds: this.ds.cloneWithRows(this.playerListFeeds),
                     favoritePlayers:favoritePlayers
                 })
@@ -315,7 +315,7 @@ class MyLionsPlayerList extends Component {
             transparent:visible
         })
     }
-    
+
     onCloseFilter = () => {
         this.setState({
             modalVisible:false,
@@ -331,7 +331,7 @@ class MyLionsPlayerList extends Component {
         let strSearch = keywords.replace(/[^A-Za-z\^\s]/g,'').toLowerCase()
         let strArr = strSearch.split(' ')
         let tempArr = this.playerListFeeds.slice()
-       
+
         function filterName(player) {
             let nameArr = player.name.toLowerCase().split(' ')
             let result = false
@@ -354,17 +354,17 @@ class MyLionsPlayerList extends Component {
         if (strSearch.trim() !== '') {
             //search exactly same name
             searchResult = searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())===0) )
-            
+
             //split words
             if(strArr.length>0) {
                 strArr.map((item,index)=>{
-                    this.nameFilter=item            
+                    this.nameFilter=item
                     searchResult=searchResult.concat(
                         this.playerListFeeds.filter(filterName.bind(this))
                     )
                 })
             }
-            
+
 
             //name contain keywords
             searchResult=searchResult.concat(this.playerListFeeds.filter((player)=>player.name.toLowerCase().indexOf(strSearch.trim().toLowerCase())!==-1) )
@@ -394,7 +394,7 @@ class MyLionsPlayerList extends Component {
             for (let i=0;i<strSearch.length;i++ ) {
                 if(strSearch.charAt(i).match(/[A-Z]/gi)) {
                     tempArr=tempArr.filter((player)=>player.name.toLowerCase().indexOf(strSearch.charAt(i).toLowerCase())!==-1)
-                }               
+                }
             }
 
             if (tempArr.length>0) {
@@ -404,7 +404,7 @@ class MyLionsPlayerList extends Component {
             //remove duplicate
             searchResult.map((item,index)=>{
                 let arr=[]
-                for(let j=index+1; j<searchResult.length; j++) {                    
+                for(let j=index+1; j<searchResult.length; j++) {
                     if(item.id===searchResult[j].id){
                         arr=arr.concat(j)
                     }
@@ -416,7 +416,7 @@ class MyLionsPlayerList extends Component {
                 }
             })
 
-            searchResult.length > 0?  
+            searchResult.length > 0?
                 this.setState({
                     resultVisible: true,
                     transparent: false,
@@ -439,7 +439,7 @@ class MyLionsPlayerList extends Component {
             })
         }
     }
-    
+
     _mapJSON(data, colMax = 2) {
         let i = 0
         let k = 0
@@ -461,7 +461,7 @@ class MyLionsPlayerList extends Component {
 
     _getPlayersListByUnion(){
         this.setState({ isLoaded: false })
-        getSoticFullPlayerList().then((catchedFullPlayerList) => {
+        getSoticFullPlayerListR2().then((catchedFullPlayerList) => {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 //this._getFavoritePlayers(catchedFullPlayerList[this.unionFeed.unionId])
@@ -515,8 +515,8 @@ class MyLionsPlayerList extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />

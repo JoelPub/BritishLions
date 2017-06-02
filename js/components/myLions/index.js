@@ -18,7 +18,7 @@ import EYSFooter from '../global/eySponsoredFooter'
 import LionsFooter from '../global/lionsFooter'
 import ImagePlaceholder from '../utility/imagePlaceholder'
 import ButtonFeedback from '../utility/buttonFeedback'
-import { pushNewRoute, replaceRoute } from '../../actions/route'
+import { pushNewRoute, replaceRoute,replaceOrPushRoute } from '../../actions/route'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import IosUtilityHeaderBackground from '../utility/iosUtilityHeaderBackground'
@@ -166,10 +166,10 @@ class MyLions extends Component {
                 swiperWindow: this.pageWindow.find((element)=>element.index===this.state.currentPage-1).size,
                 currentPage:this.state.currentPage-1
             },()=>{
-                this.setState({currentPage:this.state.currentPage-1},()=>{this.refs['swiper'].scrollBy(-1,true)})                
-            }) 
+                this.setState({currentPage:this.state.currentPage-1},()=>{this.refs['swiper'].scrollBy(-1,true)})
+            })
         })
-        
+
     }
 
     next(){
@@ -178,10 +178,10 @@ class MyLions extends Component {
                 swiperWindow:this.pageWindow.find((element)=>element.index===this.state.currentPage+1).size,
                 currentPage:this.state.currentPage+1
             },()=>{
-                this.setState({currentPage:this.state.currentPage+1},()=>{this.refs['swiper'].scrollBy(1,true)})                
+                this.setState({currentPage:this.state.currentPage+1},()=>{this.refs['swiper'].scrollBy(1,true)})
             })
         })
-        
+
     }
 
     _setModalVisible=(visible) => {
@@ -222,17 +222,17 @@ class MyLions extends Component {
 
     scrollEnd(e, state, context){
         // if (__DEV__)console.log('scrollEnd')
-       
+
             this.setState({
                 currentPage:state.index,
                 swiperWindow:this.pageWindow.find((element)=>element.index===state.index).size
             },()=>{
                 setTimeout(()=>this.setState({btnDisable:false}),100)
-            })   
+            })
     }
 
     // _updateFavPlayers() {
-    //     removeGoodFormFavoritePlayerList() 
+    //     removeGoodFormFavoritePlayerList()
     //     getGoodFormFavoritePlayerList()
     // }
 
@@ -242,7 +242,7 @@ class MyLions extends Component {
         })
     }
     componentDidMount() {
-        // if (__DEV__)console.log('onBordingModalVisible true')      
+        // if (__DEV__)console.log('onBordingModalVisible true')
         this.setState({onBordingModalVisible:true},()=>{
             this.Data=[]
             Data.map((value,index)=>{
@@ -324,9 +324,9 @@ class MyLions extends Component {
                                 }
                                 else {
                                     this.getRating(isFirst,false,squadData,userName,firstName,lastName,initName)
-                                }                                    
-                            }).catch((error) => {this.getRating(false,false,squadData,userName,firstName,lastName,initName)})                        
-                        }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})                    
+                                }
+                            }).catch((error) => {this.getRating(false,false,squadData,userName,firstName,lastName,initName)})
+                        }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})
                     })
                 }).catch((error) => {this.setState({onBordingModalVisible:false},()=>this._signInRequired())})
 
@@ -365,9 +365,9 @@ class MyLions extends Component {
                                 ]
                             })
                         }
-                        
+
                         this.setState({totalPages:this.Data.length,modalVisible:true},()=>this.props.setVisitedOnboarding({id:this.state.userID}))
-                        
+
                 }
                 this.getProfile(userName,firstName,lastName,initName)
             },
@@ -383,7 +383,7 @@ class MyLions extends Component {
             channel: 'EYC3',
             isQsStringify:false
         }
-        service(optionsSquadRating)        
+        service(optionsSquadRating)
     }
 
     getProfile(userName,firstName,lastName,initName){
@@ -415,7 +415,7 @@ class MyLions extends Component {
             },
             isRequiredToken: true
         }
-        service(optionsUserProfile)        
+        service(optionsUserProfile)
     }
     privateLeagues(){
         NativeModules.One.sendInteraction("/myLions/privateLeagues",
@@ -442,7 +442,7 @@ class MyLions extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
@@ -458,6 +458,12 @@ class MyLions extends Component {
         this.props.pushNewRoute('competitionLadder')
     }
 
+    navigateTo(route) {
+        setTimeout(() => {
+          this.props.replaceOrPushRoute(route)
+        }, 400)
+    }
+
     render() {
 
         return (
@@ -471,7 +477,7 @@ class MyLions extends Component {
                                 <ActivityIndicator style={loader.centered} size='small' />
                             </View>
                     </Modal>
-                        <LionsHeader 
+                        <LionsHeader
                             title='MY LIONS'
                             contentLoaded={true}
                             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -484,7 +490,7 @@ class MyLions extends Component {
 
                             <View style={styles.btnsLanding}>
                                 <ButtonFeedback style={locStyle.buttonBig} onPress={() => this._officialSquad()}>
-                                    <LinearGradient style={locStyle.buttonBigGradient} colors={['#af001e', '#820417']}>    
+                                    <LinearGradient style={locStyle.buttonBigGradient} colors={['#af001e', '#820417']}>
                                         <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
                                             style={locStyle.buttonBigIcon}>
                                         </Image>
@@ -513,6 +519,40 @@ class MyLions extends Component {
                                     </Image>
                                     <Text style={[styles.btnFavouritesLabel, locStyle.btnPrivateLeagesLabel]}>
                                         PRIVATE LEAGUES
+                                    </Text>
+                                </ButtonFeedback>
+                              </View>
+
+                              <View style={styles.btnsLanding}>
+
+                                <ButtonFeedback style={locStyle.buttonBig} onPress={() => this.navigateTo('myLionsSquad')}>
+                                    <LinearGradient style={locStyle.buttonBigGradient} colors={['#af001e', '#820417']}>
+                                        <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                            style={locStyle.buttonBigIcon}>
+                                        </Image>
+                                        <Text style={locStyle.buttonBigLabel}>
+                                            MY SQUAD
+                                        </Text>
+                                    </LinearGradient>
+                                </ButtonFeedback>
+                                <ButtonFeedback rounded style={[styles.button, styles.btnExpert, locStyle.button]} onPress={() => this.navigateTo('myLionsUnionsList')}>
+                                    <Icon name='md-analytics' style={styles.btnFavouritesIcon} />
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.btnExpertLabel} >
+                                        UNION LIST
+                                    </Text>
+                                </ButtonFeedback>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnExpert, locStyle.button]} onPress={() => this.navigateTo('myLionsExpertsList')}>
+                                    <Icon name='md-trophy' style={styles.btnFavouritesIcon} />
+                                    <Text style={styles.btnFavouritesLabel}>
+                                        EXPERT LIST
+                                    </Text>
+                                </ButtonFeedback>
+                                <ButtonFeedback rounded style={[styles.button,styles.btnFavourites, locStyle.buttonBlack]} onPress={() => this.navigateTo('myLionsFavoriteList')} >
+                                    <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
+                                        style={locStyle.logoIcon}>
+                                    </Image>
+                                    <Text style={[styles.btnFavouritesLabel, locStyle.btnPrivateLeagesLabel]}>
+                                        FAVORITE LIST
                                     </Text>
                                 </ButtonFeedback>
                             </View>
@@ -587,7 +627,7 @@ class MyLions extends Component {
                             <ScrollView style={styles.modalViewWrapper}>
                                 <Text style={styles.modalTitleText}>Overall Rating</Text>
                                 <Text style={styles.modalText}>To provide an overall player rating EY have taken the results of more than 700 international and top tier club rugby games started by players in the 2015/16 & 2016/17 seasons. As new games are played, including the 2017 RBS 6 Nations Championship, a player’s rating will be updated based on their performance.</Text>
-                                
+
                                 <Text style={[styles.modalText, styles.modalTextMTop]}>There are over 150 performance features collected and analysed per game. Using advanced analytical techniques, EY identified the 30 most influential factors in a team winning a game. These factors are split into Defensive and Attacking attributes and weighted by position. i.e. a fullback doesn’t have influence in scrums being won or lost but does contribute to team metres gained.</Text>
 
                                 <Text style={styles.modalTitleText}>Recent Performance</Text>
@@ -619,6 +659,7 @@ function bindAction(dispatch) {
         setVisitedOnboarding:(visitedOnboarding)=>dispatch(setVisitedOnboarding(visitedOnboarding)),
         setAccessGranted:(isAccessGranted)=>dispatch(setAccessGranted(isAccessGranted)),
         replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
     }
 }
 
