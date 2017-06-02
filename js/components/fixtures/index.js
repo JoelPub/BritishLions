@@ -115,13 +115,11 @@ class Fixtures extends Component {
     }
     render() {
         let titleStyle = styleVar.deviceWidth<=320 ? {fontSize:24,lineHeight:24} : {}
-      console.log('iiiiiiiiii')
-      console.log(this.state.fixtures)
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
                     <LionsHeader 
-                        title='FIXTURES'
+                        title='FIXTURES AND SCORES'
                         contentLoaded={true}
                         titleStyle={titleStyle}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
