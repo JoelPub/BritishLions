@@ -200,6 +200,22 @@ class LionsSidebar extends Component {
                         <Icon name='md-mail' style={styles.icon} />
                         <Text style={styles.linkText}>CONTACT US</Text>
                     </ButtonFeedback>
+                    <ButtonFeedback onPress={() => this.navigateTo('myLionsFavoriteList')} style={styles.links}>
+                        <Icon name='md-planet' style={styles.icon} />
+                        <Text style={styles.linkText}>myLionsFavoriteList</Text>
+                    </ButtonFeedback>
+                    <ButtonFeedback onPress={() => this.navigateTo('myLionsUnionsList')} style={styles.links}>
+                        <Icon name='md-american-football' style={styles.icon} />
+                        <Text style={styles.linkText}>myLionsUnionsList</Text>
+                    </ButtonFeedback>
+                    <ButtonFeedback onPress={() => this.navigateTo('myLionsSquad')} style={styles.links}>
+                        <Icon name='md-play' style={styles.icon} />
+                        <Text style={styles.linkText}>myLionsSquad</Text>
+                    </ButtonFeedback>
+                    <ButtonFeedback onPress={() => this.navigateTo('myLionsExpertsList')} style={styles.links}>
+                        <Icon name='md-image' style={styles.icon} />
+                        <Text style={styles.linkText}>myLionsExpertsList</Text>
+                    </ButtonFeedback>
                 </Content>
                 <Footer style={styles.footer}>
                     <View style={styles.footerWrapper}>
