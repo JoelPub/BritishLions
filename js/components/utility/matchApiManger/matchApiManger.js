@@ -53,7 +53,7 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameOnFire',
+    url: 'http://bilprod.azurewebsites.net/getGameOnFire',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
