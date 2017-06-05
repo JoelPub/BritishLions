@@ -40,7 +40,7 @@ class MatchCenter extends Component {
           isLoaded:false,
           statusArray: [false,false,false,false,false,false],
           momentumData:{},
-          summaryData:{timeline:[]},
+          summaryData:{timeline:[],statics:{opposition:null,bil:null}},
           setPlayerData: [],
           onFireData:{onFire:null},
           subPage:'landing',
@@ -114,6 +114,15 @@ class MatchCenter extends Component {
                       },(error)=>{
                       })
         },(error)=>{
+          if(__DEV__)console.log('match summary error',error)
+            this.statusArray.fill(false)
+            this.statusArray[0]=true
+            this.setState({
+              statusArray: this.statusArray,
+              summaryData: this.state.summaryData
+            },()=>{
+              this.timer&&clearTimeout(this.timer)
+            })
         })
       }
       if(this.state.index===1){
@@ -140,6 +149,16 @@ class MatchCenter extends Component {
                           }
                         )
         },(error)=>{
+          if(__DEV__)console.log('momentum api error',error)
+          this.statusArray.fill(false)
+                    this.statusArray[2]=true
+                    this.setState({
+                      statusArray: this.statusArray,
+                      momentumData:this.state.detail
+                    },()=>{
+                            this.timer&&clearTimeout(this.timer)
+                          }
+                        )
         })
       }
       if(this.state.index===3){
@@ -318,7 +337,8 @@ class MatchCenter extends Component {
                               {
                                 statusArray[4]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
                                                          setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire} 
+                                                         on_fire={onFireData.on_fire}
+                                                         is_full_time = {onFireData.is_full_time}
                                 />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {

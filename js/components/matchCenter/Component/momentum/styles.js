@@ -26,12 +26,12 @@ module.exports = styleSheetCreate({
     },
     subjectWrapper:{
         flexDirection:'row',
-        paddingLeft:20,
+        paddingLeft:5,
         alignItems:'center',
         paddingBottom:15,
     },
     subWrapper:{
-        flex:2,
+        flex:3,
         flexDirection:'row',
         alignItems:'center'
     },
@@ -41,10 +41,11 @@ module.exports = styleSheetCreate({
         paddingRight:10
     },
     scoreSign:{
-        height:styleVar.deviceWidth*0.038,
-        width:styleVar.deviceWidth*0.038,
-        borderRadius:styleVar.deviceWidth*0.019,
-        backgroundColor:'rgb(255,204,40)'
+        height:styleVar.deviceWidth*0.012,
+        width:styleVar.deviceWidth*0.012,
+        borderRadius:styleVar.deviceWidth*0.006,
+        backgroundColor:'rgb(255,204,40)',
+        marginLeft:3
     },
     momentumSign:{
         height:14,
@@ -113,6 +114,17 @@ module.exports = styleSheetCreate({
     bottomLine: {
         borderTopWidth:1,
         borderColor:'rgb(216,217,218)'
+    },
+    momentumColorGrid: {
+        height:25,
+        width:styleVar.deviceWidth*0.1,
+        padding:styleVar.deviceWidth*0.01
+    },
+    momentumColorText:{
+        fontFamily:styleVar.fontCondensed,
+        fontSize:14,
+        color:'rgb(255,255,255)',
+        textAlign:'center'
     }
 
 

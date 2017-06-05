@@ -106,7 +106,7 @@ android {
         targetSdkVersion 25
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
-        versionCode 12
+        versionCode 14
         versionName "4.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"

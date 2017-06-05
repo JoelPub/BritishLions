@@ -3,28 +3,30 @@ import _fetch from '../../utility/fetch'
 import { service } from '../../utility/services'
 import Toast from 'react-native-root-toast'
 
-export function getGameMomentum(type,gameID,onSuccess,OnError) {
+export function getGameMomentum(type,gameID,handleSuccess,handleError) {
     let optionsInfo = {
-      url: 'http://bilprod.azurewebsites.net/getGameMomentum',
+      url: 'http://bilprod-livedev.azurewebsites.net/getGameMomentum',
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
       method: 'post',
       onSuccess: (json)=>{
-              if(json.data) {
+              if (__DEV__)console.log('json',json)
+              if (__DEV__)console.log('typeof json.data',typeof json.data)
+              if(json.data&& (typeof json.data!=='string')) {
                 if (__DEV__)console.log('json.data.is_full_time',json.data.is_full_time)
                 if (__DEV__)console.log('json.data.game_time',json.data.game_time)
                 if (__DEV__)console.log('json.data.statics',json.data.statics)
                 if (__DEV__)console.log('json.data.momentum',json.data.momentum)
                 if(type==='momentum')json.data.momentum=processMomentumData(json.data.momentum)
                 // if(__DEV__)console.log('json.data',json.data)
-                onSuccess(json.data)
+                handleSuccess(json.data)
               }
               else {
-                onError(json)
+                handleError(json)
               }
           },
-      onError: OnError,
+      onError: handleError,
       isRequiredToken: false,
       channel: 'EYC3',
       isQsStringify:false
@@ -33,7 +35,7 @@ export function getGameMomentum(type,gameID,onSuccess,OnError) {
 }
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameSetPlays',
+    url: 'https://bilprod-livedev.azurewebsites.net/getGameSetPlays',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -51,7 +53,7 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-r4dummyapi.azurewebsites.net/getGameOnFire',
+    url: 'http://bilprod-livedev.azurewebsites.net/getGameOnFire',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -64,25 +66,27 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
   }
    service(optionsInfo)
 }
-export function getTimeLineLiveSummary (options, type, summaryData, onSuccess, onError) {
+export function getTimeLineLiveSummary (options, type, summaryData, handleSuccess, handleError) {
   let optionsInfo = {
-    url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
+    url: 'http://bilprod-livedev.azurewebsites.net/getTimelineLiveSummary',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
     method: 'post',
     onSuccess: (json)=>{
-                  if(json.data) {
+              if (__DEV__)console.log('json',json)
+              if (__DEV__)console.log('typeof json.data',typeof json.data)
+                  if(json.data&& (typeof json.data!=='string')) {
                     // if (__DEV__)console.log('json.data',json.data)
                     json.data=processSummaryData(type,json.data,summaryData)
                     // if(__DEV__)console.log('json.data',json.data)
-                    onSuccess(json.data)
+                    handleSuccess(json.data)
                   }
                   else {
-                    onError(json)
+                    handleError(json)
                   }
               },
-    onError: onError,
+    onError: handleError,
     isRequiredToken: false,
     channel: 'EYC3',
     isQsStringify:false

@@ -157,7 +157,7 @@ export default class ProfileSummaryCard extends Component {
                             <View style={styles.cardName}>
                                 <Text style={styles.cardNameText}>{strToUpper(this.props.profile.userName)}</Text>
                             </View>
-                            <Text style={[styles.cardNameText, styles.yellowText]}>{strToUpper(this.props.profile.selector_rating)}</Text>
+                            <Text style={[styles.cardNameText, styles.yellowText]}>{strToUpper(this.props.profile.selectorRating)}</Text>
                         </Col>
                     </Grid>
                     <Grid style={styles.cardRow}>

@@ -503,7 +503,7 @@ class SignUp extends Component {
                                             </Col>
                                             <Col>
                                                 <Text style={styles.switchLabelText}>
-                                                    I am happy to recieve news and information from carefully selected partners of Lions Rugby
+                                                    I am happy to receive news and information from carefully selected partners of Lions Rugby
                                                 </Text>
                                             </Col>
                                         </Grid>

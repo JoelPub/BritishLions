@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
-import { Container, Header, Text, Button, Icon } from 'native-base'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,Text,DeviceEventEmitter} from 'react-native'
+import { Container, Header,  Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../themes/variable'
@@ -14,6 +14,7 @@ import LiveBox from '../../../global/liveBox'
 import loader from '../../../../themes/loader-position'
 import _fetch from '../../../utility/fetch'
 import SquadModal from '../../../global/squadModal'
+import { strToUpper } from '../../../utility/helper'
 
 class Momentum extends Component {
 
@@ -46,11 +47,18 @@ class Momentum extends Component {
         this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
             setTimeout(()=>this.setState({modalAble:true}),500)
           })
-    }    
-    componentWillReceiveProps(nextProps,nextState) {
-        if (__DEV__)console.log('!!!momentum componentWillReceiveProps')
     }
     render() {
+        let initName = ''
+        if(typeof this.props.data.opposition==='string') {
+            let u=this.props.data.opposition.trim().replace(/\s+/g,' ')
+            // if (__DEV__)console.log('userName',userName)
+            initName = ''
+            u.split(' ').map((value, index)=>{
+                initName = initName + value[0]
+            })
+            // if (__DEV__)console.log('initName',initName)
+        }
         return (
                 <View style={styles.wrapper}>
                     <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:this.props.detail.title},this.props.data)} />
@@ -58,30 +66,24 @@ class Momentum extends Component {
                         <View style={styles.subjectWrapper}>
                             <View style={styles.subWrapper}>
                                 <View style={styles.scoreSign} />
-                                <Text style={styles.subjectText}> SCORE ADVANTAGE</Text>
+                                <View style={styles.scoreSign} />
+                                <View style={styles.scoreSign} />
+                                <Text ellipsizeMode='tail' numberOfLines={1} style={styles.subjectText}> SCORE ADVANTAGE</Text>
                             </View>
+                            <View style={styles.subWrapper}>
+                                <View style={[styles.momentumColorGrid,this.state.config.isHost?styles.redBgc:styles.blackBgc]}>
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?'LIONS':strToUpper(initName) }</Text>
+                                </View>
+                                <View style={[styles.momentumColorGrid,this.state.config.isHost?styles.blackBgc:styles.redBgc]}>
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?strToUpper(initName):'LIONS'}</Text>
+                                </View>
+                                <Text ellipsizeMode='tail' numberOfLines={1} style={styles.subjectText}> RUN OF PLAY</Text>
+                            </View>
+
                             <View style={styles.iconWrapper}>
                                 <ButtonFeedback onPress={this.iconPress} >
                                     <Icon name='ios-information-circle-outline' style={styles.icon} />
                                 </ButtonFeedback>
-                            </View>
-                        </View>
-                        <View style={[styles.subjectWrapper,styles.topLine]}>
-                            <View style={styles.subWrapper}>
-                                    <View style={styles.logoWrapper}>
-                                        <Image resizeMode='contain'  source={this.state.config.isHost?require('../../../../../contents/my-lions/squadLogo.png'):{uri: this.props.data.opposition_image}} style={styles.logoImg}/>
-                                    </View>
-                                    <View style={[styles.textWrapper,this.state.config.isHost?styles.redBgc:styles.blackBgc]}>
-                                        <Text style={styles.logoText}>RUN OF PLAY</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.subWrapper}>
-                                    <View style={[styles.textWrapper,this.state.config.isHost?styles.blackBgc:styles.redBgc]}>
-                                        <Text style={styles.logoText}>RUN OF PLAY</Text>
-                                    </View>
-                                    <View style={styles.logoWrapper}>
-                                        <Image resizeMode='contain' source={this.state.config.isHost?{uri: this.props.data.opposition_image}:require('../../../../../contents/my-lions/squadLogo.png')}  style={styles.logoImg}/>
-                                    </View>
                             </View>
                         </View>
                         <View style={styles.momentumWrapper}>
