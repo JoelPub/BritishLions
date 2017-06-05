@@ -337,7 +337,8 @@ class MatchCenter extends Component {
                               {
                                 statusArray[4]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
                                                          setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire} 
+                                                         on_fire={onFireData.on_fire}
+                                                         is_full_time = {onFireData.is_full_time}
                                 />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
