@@ -47,11 +47,18 @@ class Momentum extends Component {
         this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
             setTimeout(()=>this.setState({modalAble:true}),500)
           })
-    }    
-    componentWillReceiveProps(nextProps,nextState) {
-        if (__DEV__)console.log('!!!momentum componentWillReceiveProps')
     }
     render() {
+        let initName = ''
+        if(typeof this.props.data.opposition==='string') {
+            let u=this.props.data.opposition.trim().replace(/\s+/g,' ')
+            // if (__DEV__)console.log('userName',userName)
+            initName = ''
+            u.split(' ').map((value, index)=>{
+                initName = initName + value[0]
+            })
+            // if (__DEV__)console.log('initName',initName)
+        }
         return (
                 <View style={styles.wrapper}>
                     <LiveBox data={Object.assign({feededData:true,hasTitle:true,title:this.props.detail.title},this.props.data)} />
@@ -65,10 +72,10 @@ class Momentum extends Component {
                             </View>
                             <View style={styles.subWrapper}>
                                 <View style={[styles.momentumColorGrid,this.state.config.isHost?styles.redBgc:styles.blackBgc]}>
-                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?'LIONS':strToUpper(this.props.data.opposition) }</Text>
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?'LIONS':strToUpper(initName) }</Text>
                                 </View>
                                 <View style={[styles.momentumColorGrid,this.state.config.isHost?styles.blackBgc:styles.redBgc]}>
-                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?strToUpper(this.props.data.opposition):'LIONS'}</Text>
+                                    <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?strToUpper(initName):'LIONS'}</Text>
                                 </View>
                                 <Text ellipsizeMode='tail' numberOfLines={1} style={styles.subjectText}> RUN OF PLAY</Text>
                             </View>

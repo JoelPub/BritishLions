@@ -123,7 +123,8 @@ module.exports = styleSheetCreate({
     momentumColorText:{
         fontFamily:styleVar.fontCondensed,
         fontSize:14,
-        color:'rgb(255,255,255)'
+        color:'rgb(255,255,255)',
+        textAlign:'center'
     }
 
 

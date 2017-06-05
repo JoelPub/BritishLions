@@ -40,7 +40,7 @@ class MatchCenter extends Component {
           isLoaded:false,
           statusArray: [false,false,false,false,false,false],
           momentumData:{},
-          summaryData:{timeline:[]},
+          summaryData:{timeline:[],statics:{opposition:null,bil:null}},
           setPlayerData: [],
           onFireData:{onFire:null},
           subPage:'landing',
@@ -119,7 +119,7 @@ class MatchCenter extends Component {
             this.statusArray[0]=true
             this.setState({
               statusArray: this.statusArray,
-              summaryData:{timeline:{},statics:{opposition:null,bil:null}}
+              summaryData: this.state.summaryData
             },()=>{
               this.timer&&clearTimeout(this.timer)
             })
