@@ -2,10 +2,10 @@ apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 
 
-apply plugin: 'com.archinamon.aspectj'
-aspectj {
-       includeAspectsFromJar 'one_aspects'
-    }
+//apply plugin: 'com.archinamon.aspectj'
+//aspectj {
+//    includeAspectsFromJar 'one_aspects'
+//}
 
 
 import com.android.build.OutputFile
@@ -92,18 +92,18 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     repositories{ flatDir{
         dirs 'libs'
-        }
+    }
     }
 
     defaultConfig {
         applicationId "com.lionsofficial"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 25
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         versionCode 12
@@ -186,7 +186,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:25.3.1"
     compile "com.facebook.react:react-native:+" // From node_modules
     compile project(':RCTYouTube') // From node_modules
-    compile project(':react-native-linear-gradient') 
+    compile project(':react-native-linear-gradient')
     compile project(':react-native-push-notification')
     compile ('com.google.android.gms:play-services-gcm:9.0.0') {
         force = true;
@@ -201,18 +201,18 @@ dependencies {
     compile project(':react-native-facebook-login')
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.clarisite.mobile:climobile@aar'
-        // If your app supports Android versions before Ice Cream Sandwich (API level 14)
-      compile 'com.facebook.fresco:animated-base-support:0.11.0'
+    // If your app supports Android versions before Ice Cream Sandwich (API level 14)
+    compile 'com.facebook.fresco:animated-base-support:0.11.0'
 
-      // For animated GIF support
-      compile 'com.facebook.fresco:animated-gif:0.11.0'
+    // For animated GIF support
+    compile 'com.facebook.fresco:animated-gif:0.11.0'
 
-      // For WebP support, including animated WebP
-      compile 'com.facebook.fresco:animated-webp:0.11.0'
-      compile 'com.facebook.fresco:webpsupport:0.11.0'
+    // For WebP support, including animated WebP
+    compile 'com.facebook.fresco:animated-webp:0.11.0'
+    compile 'com.facebook.fresco:webpsupport:0.11.0'
 
-      // For WebP support, without animations
-      compile 'com.facebook.fresco:webpsupport:0.11.0'
+    // For WebP support, without animations
+    compile 'com.facebook.fresco:webpsupport:0.11.0'
 
     compile 'org.aspectj:aspectjrt:1.8.9'
     compile project(':react-native-one')
