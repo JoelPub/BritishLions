@@ -91,4 +91,31 @@ module.exports = styleSheetCreate({
         marginTop:10
       }
   },
+  headerWrapper: {
+    flexDirection:'row',
+    paddingHorizontal:10,
+    justifyContent:'space-between'
+  },
+  rect:{
+    width:14,
+    height:14,
+    backgroundColor:'rgb(132,136,139)',
+    marginHorizontal:3
+  },
+  transRect:{
+    width:14,
+    height:14,
+    borderWidth:1,
+    backgroundColor:'transparent',
+    borderColor:'rgb(132,136,139)',
+    marginHorizontal:3
+  },
+  headerText:{
+    fontFamily: styleVar.fontCondensed,
+    fontSize: 16,
+    lineHeight: 18,
+    textAlign: 'center',
+    color:'rgb(132,136,139)',
+    marginHorizontal:3
+  }
 })

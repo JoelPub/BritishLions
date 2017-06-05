@@ -165,6 +165,7 @@ class MatchCenter extends Component {
         if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
+            if (__DEV__)console.log('set Play  Api',json.data)
             this.statusArray.fill(false)
             this.statusArray[3]=true
             this.setState({

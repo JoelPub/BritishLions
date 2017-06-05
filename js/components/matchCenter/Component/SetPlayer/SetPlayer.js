@@ -28,7 +28,33 @@ const  IconHeader = ({onPress,modalAble}) => {
     </View>
   )
 }
+const SliderHeader=({onPress,modalAble}) => {
+  return (
+      <View style={styles.headerWrapper}>
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.rect}></View>
+            <Triangle
+              width={14}
+              height={14}
+              color={'rgb(132,136,139)'}
+            />
+            <Text style={styles.headerText}>SUCCESSFUL</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.transRect}></View>
+            <Triangle
+              width={14}
+              height={14}
+              color={'rgb(132,136,139)'}
+              trans={true}
+            />
+            <Text style={styles.headerText}>SUCCESSFUL</Text>
+          </View>
+          <IconHeader onPress={onPress} modalAble={modalAble}/>
+        </View>
 
+    )
+}
 class SetPlayer extends Component {
 
   constructor(props) {
@@ -112,7 +138,7 @@ class SetPlayer extends Component {
           {
             this.state.page===0&&
             <View tabLabel='KICKS'>
-               <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+                <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
                <View style={[styles.itemContainer]}>
                  <StadiumFigure
                    redPoints={ kicks.bil.conversions.details}
@@ -138,7 +164,7 @@ class SetPlayer extends Component {
          {
             this.state.page===1&&
             <View tabLabel='SCRUMS'>
-             <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+             <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
               <View style={styles.itemContainer}>
                 <StadiumFigure
                   redPoints={ scrums.bil.won.details}
@@ -165,7 +191,7 @@ class SetPlayer extends Component {
          {
             this.state.page===2&&            
             <View tabLabel='LINEOUTS'>
-              <IconHeader onPress={this.iconPress}  modalAble={this.state.modalAble} />
+              <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
               <View style={styles.itemContainer}>
                 <StadiumFigure
                   redPoints={ line_outs.bil.won.details}
