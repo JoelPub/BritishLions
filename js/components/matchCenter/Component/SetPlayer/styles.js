@@ -94,7 +94,8 @@ module.exports = styleSheetCreate({
   headerWrapper: {
     flexDirection:'row',
     paddingHorizontal:10,
-    justifyContent:'space-between'
+    justifyContent:'space-between',
+    alignItems:'center'
   },
   rect:{
     width:14,
