@@ -48,7 +48,7 @@ const SliderHeader=({onPress,modalAble}) => {
               color={'rgb(132,136,139)'}
               trans={true}
             />
-            <Text style={styles.headerText}>SUCCESSFUL</Text>
+            <Text style={styles.headerText}>UNSUCCESSFUL</Text>
           </View>
           <IconHeader onPress={onPress} modalAble={modalAble}/>
         </View>
