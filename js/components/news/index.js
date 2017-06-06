@@ -45,11 +45,16 @@ class News extends Component {
         })
             
         function handleImg(item) {
-            let imgPathArr=item.image.split('/')
-            imgPathArr.pop()
-            let imgPath=imgPathArr.join('/')
+            let imgPathArr=[]
+            let imgPath=''
+            if(item.image!==null) {             
+                imgPathArr=item.image.split('/')
+                imgPathArr.pop()
+                imgPath=imgPathArr.join('/')   
+            }
             item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
-            item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)                
+            item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)
+            // item.article=item.article.replace(/https:\/\/www.lionsrugby.com\/learning-with-the-lions\/pick-of-the-pride\/pick-of-the-pride-ambassadors\//ig,'click link')               
         }
         function handleImgStyle(item) {
             if(__DEV__)console.log('article',item.article)
@@ -217,6 +222,24 @@ class News extends Component {
                     scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
                 })           
             }
+            // scriptPos=0
+            // if(item.article.match(/\[caption/ig)!==null) {
+            //      item.article.match(/\[caption/ig).map((value,index)=>{
+            //         scriptPos=item.article.toLowerCase().indexOf('\[caption',scriptPos)
+            //         let styleLen=item.article.toLowerCase().indexOf('caption\]',scriptPos)-scriptPos
+            //         item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('caption\]',scriptPos)+8)
+            //         scriptPos=item.article.toLowerCase().indexOf('\[caption',scriptPos)
+            //     })           
+            // }
+            // scriptPos=0
+            // if(item.article.match(/<blockquote/ig)!==null) {
+            //      item.article.match(/<blockquote/ig).map((value,index)=>{
+            //         scriptPos=item.article.toLowerCase().indexOf('<blockquote',scriptPos)
+            //         let styleLen=item.article.toLowerCase().indexOf('blockquote>',scriptPos)-scriptPos
+            //         item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('blockquote>',scriptPos)+11)
+            //         scriptPos=item.article.toLowerCase().indexOf('<blockquote',scriptPos)
+            //     })           
+            // }
 
         }
         function handleVideo(item) {
@@ -235,6 +258,7 @@ class News extends Component {
     }
 
     _fetchContent(){
+        if(__DEV__)console.log('_fetchContent')
         this.props.fetchContent(this.state.apiUrl)
         this.setState({ isFetchContent: true })
     }
@@ -245,6 +269,7 @@ class News extends Component {
     }
 
     componentDidMount() {
+        if(__DEV__)console.log('news compnentdidmount')
       NativeModules.One.sendInteraction("/news",
         { emailAddress : "" });
         setTimeout(() => {
@@ -253,6 +278,7 @@ class News extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if(__DEV__)console.log('news componentWillReceiveProps')
         if (this.state.isFetchContent) {
             this.setState({
                 isLoaded: nextProps.isLoaded,

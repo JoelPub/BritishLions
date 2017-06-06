@@ -7,6 +7,7 @@ import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import { strToUpper } from '../utility/helper'
 import styleVar from '../../themes/variable'
+import {getNetinfo} from '../utility/network'
 
 
 class ButtonNetwork extends Component {
@@ -49,10 +50,10 @@ class ButtonNetwork extends Component {
     //     }
         
     // }
-    _onPress() {
-        if (__DEV__)console.log('_onPress this.props.connectionInfo',this.props.connectionInfo)
-        if(this.props.connectionInfo===null||strToUpper(this.props.connectionInfo)==='NONE') {
-            if (__DEV__)console.log('!!!!!network lost')
+    _callBack(connectionInfo) {
+        if (__DEV__)console.log('@@##_callBack',connectionInfo)
+        if(connectionInfo===null||strToUpper(connectionInfo)==='NONE') {
+            if (__DEV__)console.log('@@##!!!!!network lost')
             let toast = Toast.show('Please make sure that you\'re connected to the network.', {
                 duration: Toast.durations.LONG,
                 position: Toast.positions.CENTER,
@@ -73,6 +74,18 @@ class ButtonNetwork extends Component {
                     // calls on toast\`s hide animation end.
                 }
             })
+            
+        }
+        else {            
+            this.props.onPress()
+        }
+    }
+    _onPress() {
+        if (__DEV__)console.log('@@##_onPress this.props.connectionInfo',this.props.connectionInfo)
+        if(this.props.connectionInfo===null||strToUpper(this.props.connectionInfo)==='NONE') {
+            if (__DEV__)console.log('@@##!!!!!network lost')
+            getNetinfo(this._callBack.bind(this))
+            
         }
         else {            
             this.props.onPress()

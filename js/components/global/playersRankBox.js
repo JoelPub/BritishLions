@@ -290,7 +290,7 @@ export default class PlayersRankBox extends Component {
                     
                     if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
-                        url: player&&player.previous!==null?'http://bilprod.azurewebsites.net/resubmitManOfMatch':'http://bilprod.azurewebsites.net/GetManOfMatchVoteResult',
+                        url: player&&player.previous!==null?'http://bilprod-livedev.azurewebsites.net/resubmitManOfMatch':'http://bilprod-livedev.azurewebsites.net/GetManOfMatchVoteResult',
                         data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal?player.current:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
@@ -320,7 +320,7 @@ export default class PlayersRankBox extends Component {
                                 if(players.length>0) {
                                     players.map((value,index)=>{
                                         let optionsPlayerProfile = {
-                                                    url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
+                                                    url: 'https://bilprod-livedev.azurewebsites.net/getTourPlayerProfile',
                                                     data:{id:value.player_id},
                                                     isRequiredToken: false,
                                                     method: 'post',

@@ -162,7 +162,7 @@ class LionsSidebar extends Component {
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('fixtures')} style={styles.links}>
                         <Icon name='md-american-football' style={styles.icon} />
-                        <Text style={styles.linkText}>FIXTURES</Text>
+                        <Text style={styles.linkText}>FIXTURES AND SCORES</Text>
                     </ButtonFeedback>
                     <ButtonFeedback onPress={() => this.navigateTo('lionsTv')} style={styles.links}>
                         <Icon name='md-play' style={styles.icon} />

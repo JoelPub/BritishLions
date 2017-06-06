@@ -36,7 +36,7 @@ class OnFire extends Component {
           h:0,
           playerList: [],
           modalAble:true,
-          page:0,
+          page:0
     }
     this.currentPosition=0
   }
@@ -80,6 +80,7 @@ class OnFire extends Component {
   render() {
    let { on_fire } =this.props
     let {playerList} =  this.state
+
     return (
       <View style={{marginTop:50,paddingTop:10,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
       >
@@ -149,7 +150,7 @@ class OnFire extends Component {
     )
   }
   componentDidMount() {
-    let { on_fire } =this.props
+    let { on_fire, is_full_time } =this.props
     let height = this.mathHeight(on_fire.half_time,on_fire.full_time,0)
     if(__DEV__)console.log('componentDidMount')
     if(__DEV__)console.log(height)
@@ -160,6 +161,11 @@ class OnFire extends Component {
       this.setState({
         playerList:playerList
       })
+    })
+    if(__DEV__)console.log("Props:::????::", is_full_time)
+
+    this.setState({
+       page:is_full_time == null ? 0: (is_full_time === "true" ? 1:0),
     })
 
     if(__DEV__)console.log('ROY OF FIRE:', on_fire)

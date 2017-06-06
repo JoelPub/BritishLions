@@ -165,6 +165,7 @@ class MatchCenter extends Component {
         if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
+            if (__DEV__)console.log('set Play  Api',json.data)
             this.statusArray.fill(false)
             this.statusArray[3]=true
             this.setState({
@@ -337,7 +338,8 @@ class MatchCenter extends Component {
                               {
                                 statusArray[4]? <OnFire  detail={this.state.detail} isActive={this.state.index===3}
                                                          setHeight={this._setHeight.bind(this)}
-                                                         on_fire={onFireData.on_fire} 
+                                                         on_fire={onFireData.on_fire}
+                                                         is_full_time = {onFireData.is_full_time}
                                 />
                                   : <View style={{height:this.state.swiperHeight,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
