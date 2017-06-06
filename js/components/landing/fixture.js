@@ -372,7 +372,7 @@ class PlayerFigure extends Component {
                 return <LiveGame
                             gameStatus={gameStatus}
                             data={fixture}
-                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}
+                            pressBanner={()=> this._goToCoachBox(fixture)}
                             pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':
