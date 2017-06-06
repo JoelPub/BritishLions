@@ -26,7 +26,8 @@ class NewsDetailsSub extends Component {
          super(props)
         this.state={
           height:0,
-          isLoaded:false
+          isLoaded:false,
+          startLoad:false
         }
          this._scrollView = ScrollView
         this.webview = WebView
@@ -117,10 +118,16 @@ class NewsDetailsSub extends Component {
           
         })
     }
-  componentDidMount() {
-    NativeModules.One.sendInteraction("/news",
+    componentDidMount() {
+      NativeModules.One.sendInteraction("/news",
       { emailAddress : "" });
-  }
+      setTimeout(()=>{
+        this.setState({startLoad:true})
+      },1000)
+    }
+    componentWillUnmount() {
+      this.setState({startLoad:false})
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
        // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)
        // for(let node in e) {
@@ -173,7 +180,7 @@ class NewsDetailsSub extends Component {
 
     _handlePanResponderEnd(e, gestureState) {
        if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-       if(Math.abs(gestureState.dx)/3>Math.abs(gestureState.dy)) {
+       if(Math.abs(gestureState.dx)/3>Math.abs(gestureState.dy)&&this.state.isLoaded) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
             if (__DEV__)console.log('rtl',rtl)
@@ -206,12 +213,13 @@ class NewsDetailsSub extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-
                     <LionsHeader 
                         back={true} 
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                {
+                  this.state.startLoad?
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} onScroll={this.handleScroll.bind(this)}>
                         <View  {...this._panResponder.panHandlers}>
                         <ImagePlaceholder height={270}>
@@ -273,6 +281,9 @@ class NewsDetailsSub extends Component {
                         <LionsFooter isLoaded={true} />
                         </View>
                     </ScrollView>
+                    :
+                    <ActivityIndicator style={loader.centered} size='large' />
+                }
                     <EYSFooter/>
                 </View>
 
