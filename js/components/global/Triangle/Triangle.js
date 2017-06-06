@@ -21,7 +21,7 @@ import {
         borderBottomWidth:1,
         borderBottomColor:this.props.color,
         width:this.props.width,
-        height:this.props.height+1,
+        height:this.props.height+2,
         backgroundColor:'transparent',
         top:-1
       }
