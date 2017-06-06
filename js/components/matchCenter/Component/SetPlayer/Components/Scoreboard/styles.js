@@ -37,6 +37,8 @@ module.exports = styleSheetCreate({
   contentContainerWithBox:{
     flexDirection:'row',
     marginTop: 8,
+    justifyContent:'center',
+    paddingHorizontal:5
 
   },
   scoreboardContentTitle: {
@@ -45,7 +47,7 @@ module.exports = styleSheetCreate({
     lineHeight: 18,
     textAlign: 'center',
     color: styleVar.colorText,
-    marginLeft:10
+    flex:5
   },
   proportionTextView:{
     height: 30,

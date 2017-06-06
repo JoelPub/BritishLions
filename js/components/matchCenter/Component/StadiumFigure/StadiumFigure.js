@@ -7,6 +7,7 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import stadiumImage from './stadium.png'
 import Triangle from '../../../../components/global/Triangle'
 import styleVar from '../../../../themes/variable'
+import {strToLower} from '../../../utility/helper'
 const styles = styleSheetCreate({
   container: {
     flex: 1,
@@ -61,7 +62,7 @@ class StadiumFigure extends Component {
               }
               return(
                 <View
-                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'rgb(208,7,41)'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(208,7,41)'},item.is_successful&&strToLower(item.is_successful)==='true'&&{backgroundColor:'rgb(208,7,41)'},loactionStyle]}
                   key={index}
                 />
                 )
@@ -79,7 +80,7 @@ class StadiumFigure extends Component {
               }
               return(
                 <View
-                  style={[{width:pointWidth,height:pointWidth,backgroundColor:'black'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(0,0,0)'},item.is_successful&&strToLower(item.is_successful)==='true'&&{backgroundColor:'rgb(0,0,0)'},loactionStyle]}
                   key={index}
                 />
               )
@@ -102,6 +103,7 @@ class StadiumFigure extends Component {
                   color={'rgb(255,204,40)'}
                   style={[loactionStyle]}
                   key={index}
+                  trans={item.is_successful&&strToLower(item.is_successful)==='true'}
                 />
               )
             })
@@ -123,6 +125,7 @@ class StadiumFigure extends Component {
                   color={'rgb(31,188,210)'}
                   style={[loactionStyle]}
                   key={index}
+                  trans={item.is_successful&&strToLower(item.is_successful)==='true'}
                 />
               )
             })

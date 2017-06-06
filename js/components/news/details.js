@@ -18,7 +18,8 @@ import ButtonFeedback from '../utility/buttonFeedback'
 import PaginationButton from '../utility/paginationButton'
 import loader from '../../themes/loader-position'
 import { drillReplace } from '../../actions/content'
-var One = NativeModules.One;
+import { debounce } from 'lodash'
+var One = NativeModules.One
 
 class NewsDetails extends Component {
     constructor(props) {
@@ -32,6 +33,8 @@ class NewsDetails extends Component {
         this.stopPost=false
         this._items = this.props.json
         this.currentPosition=0
+        // debounce
+        this._handlePanResponderMove = debounce(this._handlePanResponderMove, 75, {leading: true, maxWait: 0, trailing: false})
     }
     onLoadRequest(e){
         // if (__DEV__)console.log('onLoadRequest')
@@ -114,10 +117,10 @@ class NewsDetails extends Component {
           
         })
     }
-  componentDidMount() {
-    NativeModules.One.sendInteraction("/news",
-      { emailAddress : "" });
-  }
+    componentDidMount() {
+      NativeModules.One.sendInteraction("/news",
+        { emailAddress : "" });
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
        // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)
        // for(let node in e) {
@@ -147,14 +150,14 @@ class NewsDetails extends Component {
 
             }
             else {
-              if(this.currentPosition-gestureState.dy/7.5<0) {
+              if(this.currentPosition-gestureState.dy*Math.abs(gestureState.vy)<0) {
                 this.currentPosition=0
               }
-              else if(this.currentPosition-gestureState.dy/7.5>this.state.height+200){
+              else if(this.currentPosition-gestureState.dy*Math.abs(gestureState.vy)>this.state.height+200){
                 this.currentPosition=this.state.height+200
               }
               else {
-                this.currentPosition=this.currentPosition-gestureState.dy/7.5
+                this.currentPosition=this.currentPosition-gestureState.dy*Math.abs(gestureState.vy)
               }
                 if (__DEV__)console.log('@@@@@this.currentPosition',this.currentPosition)
                 if (__DEV__)console.log('@@@@@this.state.height',this.state.height)
@@ -170,7 +173,7 @@ class NewsDetails extends Component {
 
     _handlePanResponderEnd(e, gestureState) {
        if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-       if(Math.abs(gestureState.dx)>Math.abs(gestureState.dy)) {
+       if(Math.abs(gestureState.dx)/3>Math.abs(gestureState.dy)) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
             if (__DEV__)console.log('rtl',rtl)
