@@ -5,7 +5,7 @@ import Toast from 'react-native-root-toast'
 
 export function getGameMomentum(type,gameID,handleSuccess,handleError) {
     let optionsInfo = {
-      url: 'http://bilprod-livedev.azurewebsites.net/getGameMomentum',
+      url: 'http://bilprod.azurewebsites.net/getGameMomentum',
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
@@ -35,7 +35,7 @@ export function getGameMomentum(type,gameID,handleSuccess,handleError) {
 }
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-livedev.azurewebsites.net/getGameSetPlays',
+    url: 'https://bilprod.azurewebsites.net/getGameSetPlays',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -53,7 +53,7 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'http://bilprod-livedev.azurewebsites.net/getGameOnFire',
+    url: 'http://bilprod.azurewebsites.net/getGameOnFire',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -68,7 +68,7 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 }
 export function getTimeLineLiveSummary (options, type, summaryData, handleSuccess, handleError) {
   let optionsInfo = {
-    url: 'http://bilprod-livedev.azurewebsites.net/getTimelineLiveSummary',
+    url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
