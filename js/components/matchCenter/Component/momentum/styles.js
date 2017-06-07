@@ -118,13 +118,19 @@ module.exports = styleSheetCreate({
     momentumColorGrid: {
         height:25,
         width:styleVar.deviceWidth*0.1,
-        padding:styleVar.deviceWidth*0.01
+        padding:styleVar.deviceWidth*0.01,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
     },
     momentumColorText:{
         fontFamily:styleVar.fontCondensed,
         fontSize:14,
         color:'rgb(255,255,255)',
-        textAlign:'center'
+        textAlign:'center',
+        ios:{
+            paddingTop:4
+        }
     }
 
 
