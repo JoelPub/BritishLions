@@ -43,8 +43,9 @@ class Scoreboard extends Component {
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
             <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
+            <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions,marginLeft:3}}></View>
+
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[0]}</Text>
-            <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions}}></View>
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?
@@ -62,13 +63,15 @@ class Scoreboard extends Component {
               height={14}
               color={colorPenalties}
             />
-            <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
             <Triangle
               width={14}
               height={14}
               color={colorPenalties}
               trans={true}
+              style={{marginLeft:3, marginTop:-1}}
             />
+            <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
+
           </View>
           <View style={{flexDirection:'row',marginTop:4}}>
             {this.props.isWithProportion ?

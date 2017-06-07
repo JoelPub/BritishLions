@@ -33,7 +33,8 @@ module.exports = styleSheetCreate({
     subWrapper:{
         flex:3,
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        paddingLeft:3
     },
     iconWrapper:{
         flex:1,

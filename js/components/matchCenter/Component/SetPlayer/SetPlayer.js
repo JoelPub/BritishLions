@@ -47,6 +47,7 @@ const SliderHeader=({onPress,modalAble}) => {
               height={14}
               color={'rgb(132,136,139)'}
               trans={true}
+              style={{ marginTop:-1}}
             />
             <Text style={styles.headerText}>UNSUCCESSFUL</Text>
           </View>
