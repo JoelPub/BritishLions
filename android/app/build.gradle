@@ -178,44 +178,75 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-fetch-blob')
-    compile project(':react-native-view-shot')
-    compile project(':react-native-share')
-    compile project(':react-native-vector-icons')
+    compile(project(':react-native-fetch-blob')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-view-shot')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-share')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-vector-icons')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':RCTYouTube')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-linear-gradient')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-push-notification')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-google-analytics-bridge')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-facebook-login')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-one')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-google-analytics-bridge')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-google-analytics-bridge')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+    compile(project(':react-native-google-analytics-bridge')) {
+		exclude group: 'com.facebook.react', module: 'react-native'
+	}
+	
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:25.3.1"
-    compile "com.facebook.react:react-native:+" // From node_modules
-    compile project(':RCTYouTube') // From node_modules
-    compile project(':react-native-linear-gradient')
-    compile project(':react-native-push-notification')
+    compile "com.android.support:appcompat-v7:23.0.1"
+    compile project(':ReactAndroid')
     compile ('com.google.android.gms:play-services-gcm:9.0.0') {
         force = true;
     }
-    compile project(':react-native-google-analytics-bridge')
     compile("com.google.android.gms:play-services-analytics:9.0.0"){
         force = true
     }
     compile(project(":react-native-google-signin")){
         exclude group: "com.google.android.gms" // very important
+		exclude group: 'com.facebook.react', module: 'react-native'
     }
-    compile project(':react-native-facebook-login')
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.clarisite.mobile:climobile@aar'
-    // If your app supports Android versions before Ice Cream Sandwich (API level 14)
-    compile 'com.facebook.fresco:animated-base-support:0.11.0'
+        // If your app supports Android versions before Ice Cream Sandwich (API level 14)
+      compile 'com.facebook.fresco:animated-base-support:0.11.0'
 
-    // For animated GIF support
-    compile 'com.facebook.fresco:animated-gif:0.11.0'
+      // For animated GIF support
+      compile 'com.facebook.fresco:animated-gif:0.11.0'
 
-    // For WebP support, including animated WebP
-    compile 'com.facebook.fresco:animated-webp:0.11.0'
-    compile 'com.facebook.fresco:webpsupport:0.11.0'
+      // For WebP support, including animated WebP
+      compile 'com.facebook.fresco:animated-webp:0.11.0'
+      compile 'com.facebook.fresco:webpsupport:0.11.0'
 
-    // For WebP support, without animations
-    compile 'com.facebook.fresco:webpsupport:0.11.0'
+      // For WebP support, without animations
+      compile 'com.facebook.fresco:webpsupport:0.11.0'
 
     compile 'org.aspectj:aspectjrt:1.8.9'
-    compile project(':react-native-one')
     compile 'com.android.support:multidex:1.0.0'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
