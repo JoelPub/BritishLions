@@ -109,7 +109,7 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 				}
 				else
 				{
-				    opt.onError('Please make sure that you\'re connected to the network.')
+				    opt.onError('Service is not available now, please try again later')
 				}
 			}
 		} else {
@@ -200,7 +200,7 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 					}
 
 					if (opt.onError) {
-						opt.onError('Please make sure that you\'re connected to the network.')
+						opt.onError('Please make sure that you\'re connected to the network.', )
 					}
 				}
 			}, 60000)
