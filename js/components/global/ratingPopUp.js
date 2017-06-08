@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component ,PropTypes} from 'react'
-import {View, Modal, Text } from 'react-native'
+import {Image,View, Modal, Text } from 'react-native'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
@@ -31,6 +31,39 @@ const styles = styleSheetCreate({
         fontSize:24,
         textAlign:'center'
     },
+    logoImg:{
+        height: styleVar.deviceWidth*0.4, 
+        width: styleVar.deviceWidth*0.4,
+        marginBottom:10
+    },
+    subjectText:{
+        fontFamily: 'Helvetica Neue',
+        color:'rgb(255,255,255)',
+        fontSize:18,
+        lineHeight:24,
+        marginBottom:10
+    },
+    descText: {
+        fontFamily: styleVar.fontGeorgia,
+        color:'rgb(255,255,255)',
+        fontSize:14,
+        lineHeight:16
+    },
+    btn:{
+        borderColor:'rgb(255,255,255)',
+        borderWidth:2,
+        borderRadius:styleVar.deviceWidth*0.1,
+        width:styleVar.deviceWidth*0.6,
+        padding:10,
+        marginVertical:10
+    },
+    btnText:{
+        fontFamily: 'Helvetica Neue',
+        color:'rgb(255,255,255)',
+        fontSize:14,
+        lineHeight:16,
+        textAlign:'center'
+    }
 })
 
 export default class RatingPopUp extends Component{
@@ -83,14 +116,20 @@ export default class RatingPopUp extends Component{
                 transparent={true}
                 onRequestClose={()=>this._setModalVisible(false)}>
                     <View style={styles.onboarding}>
-                        <LinearGradient colors={['#AF001E', '#81071C']} >
-                                <ButtonFeedback onPress={()=>this.buttonClick('rate')}>
+                        <LinearGradient colors={['#AF001E', '#81071C']} style={{alignItems:'center',padding:styleVar.deviceWidth*0.1}}>
+                                <Image
+                                  source={require('../../../images/logo.png')}
+                                  resizeMode='contain'
+                                  style={styles.logoImg} />
+                                <Text style={styles.subjectText}> RATE THE APP </Text>
+                                <Text style={styles.descText}> If you're enjoying the Official Lions app, would you mind taking a moment to rate us?</Text>
+                                <ButtonFeedback onPress={()=>this.buttonClick('rate')} style={styles.btn}>
                                     <Text style={styles.btnText}> OKAY, SURE</Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback onPress={()=>this.buttonClick('dismiss')}>
+                                <ButtonFeedback onPress={()=>this.buttonClick('dismiss')} style={styles.btn}>
                                     <Text style={styles.btnText}> NO, THANK YOU</Text>
                                 </ButtonFeedback>
-                                <ButtonFeedback onPress={()=>this.buttonClick('later')}>
+                                <ButtonFeedback onPress={()=>this.buttonClick('later')} style={styles.btn}>
                                     <Text style={styles.btnText}> MAYBE LATER</Text>
                                 </ButtonFeedback>
                         </LinearGradient>
