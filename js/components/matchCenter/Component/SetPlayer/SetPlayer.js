@@ -100,7 +100,6 @@ class SetPlayer extends Component {
     let rightPartWidth = {
       width: styleVar.deviceWidth-Widefield-horizontalWidth,
     }
-    console.log('detail',detail)
      return (
       <View style={styles.wrapper}
       >
