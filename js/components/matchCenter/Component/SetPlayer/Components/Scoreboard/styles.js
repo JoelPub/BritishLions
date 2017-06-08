@@ -29,7 +29,7 @@ module.exports = styleSheetCreate({
   },
   contentContainer:{
     flexDirection:'column',
-    alignItems:'flex-start',
+    alignItems:'center',
     marginTop: 5,
     backgroundColor:'#FFF',
     height:207-66
