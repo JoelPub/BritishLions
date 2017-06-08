@@ -345,8 +345,8 @@ class TacticsManger extends Component {
           <SquadModal
             modalVisible={this.state.modalResults}
             callbackParent={this.iconPress}>
-            <ScrollView  >
-            <View style={[styles.modalContent]}>
+            <ScrollView  style={[styles.modalContent]}>
+            <View >
               <Text style={styles.modalContentTitleText}>SELECT TACTICS</Text>
               
               <Text style={styles.modalContentText}>Select your tactics to best defeat your opponent.</Text>
