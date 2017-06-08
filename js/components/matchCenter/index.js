@@ -326,7 +326,7 @@ class MatchCenter extends Component {
                               {
                                 statusArray[3]? <SetPlayer  detail={this.state.detail} isActive={this.state.index===2} setHeight={this._setHeight.bind(this)}
                                                                  set_plays={setPlayerData.set_plays} />
-                                  : <View style={{height:styleVar.deviceHeight-270,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
+                                  : <View style={{height:styleVar.deviceHeight-120,marginTop:50,backgroundColor:'rgb(255,255,255)'}}>
                                       {
                                         !statusArray[3]&&this.state.index===3?
                                         <ActivityIndicator style={[loader.centered,{height:100}]} size='small' />

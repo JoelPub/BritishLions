@@ -4,6 +4,14 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import styleVar from '../../../../themes/variable'
 
 module.exports = styleSheetCreate({
+  wrapper:{
+    marginTop:50,
+    paddingTop:10,
+    marginHorizontal:10,
+    borderRadius:0,
+    backgroundColor:'rgb(255,255,255)',  
+    flex: 1,
+  },
   background: {
     flex: 1,
     width: null,

@@ -29,7 +29,7 @@ module.exports = styleSheetCreate({
   },
   contentContainer:{
     flexDirection:'column',
-    alignItems:'center',
+    alignItems:'flex-start',
     marginTop: 5,
     backgroundColor:'#FFF',
     height:207-66
@@ -37,17 +37,17 @@ module.exports = styleSheetCreate({
   contentContainerWithBox:{
     flexDirection:'row',
     marginTop: 8,
-    justifyContent:'center',
-    paddingHorizontal:5
+    justifyContent:'flex-start',
+    paddingHorizontal:2
 
   },
   scoreboardContentTitle: {
     fontFamily: styleVar.fontCondensed,
     fontSize: 18,
     lineHeight: 18,
-    textAlign: 'center',
+    textAlign: 'left',
     color: styleVar.colorText,
-    flex:5
+    marginLeft:3
   },
   proportionTextView:{
     height: 30,

@@ -96,7 +96,7 @@ class SetPlayer extends Component {
       width: styleVar.deviceWidth-Widefield-horizontalWidth,
     }
      return (
-      <View style={{marginTop:50,paddingTop:10,marginHorizontal:10,borderRadius:0,backgroundColor:'rgb(255,255,255)',  flex: 1,}}
+      <View style={styles.wrapper}
       >
          <View style={styles.tabBtnWrapper}>
             <View style={styles.tabBtnPos}>

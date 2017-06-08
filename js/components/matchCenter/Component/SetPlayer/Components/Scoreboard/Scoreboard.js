@@ -47,7 +47,7 @@ class Scoreboard extends Component {
 
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[0]}</Text>
           </View>
-          <View style={{flexDirection:'row',marginTop:4}}>
+          <View style={{flexDirection:'row',marginTop:4,alignSelf:'center'}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>{oppositionScore.value}</Text>
@@ -73,7 +73,7 @@ class Scoreboard extends Component {
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
 
           </View>
-          <View style={{flexDirection:'row',marginTop:4}}>
+          <View style={{flexDirection:'row',marginTop:4,alignSelf:'center'}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>{bilScore.value}</Text>
