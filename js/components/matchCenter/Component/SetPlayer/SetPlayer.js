@@ -28,29 +28,34 @@ const  IconHeader = ({onPress,modalAble}) => {
     </View>
   )
 }
-const SliderHeader=({onPress,modalAble}) => {
+const SliderHeader=({onPress,isDisplayDescription,modalAble}) => {
   return (
       <View style={styles.headerWrapper}>
-          <View style={{flexDirection:'row'}}>
-            <View style={styles.rect}></View>
-            <Triangle
-              width={14}
-              height={14}
-              color={'rgb(132,136,139)'}
-            />
-            <Text style={styles.headerText}>SUCCESSFUL</Text>
+      {
+          isDisplayDescription === true &&
+          <View style={styles.headerWrapper}>
+              <View style={{flexDirection:'row'}}>
+                <View style={styles.rect}></View>
+                <Triangle
+                  width={14}
+                  height={14}
+                  color={'rgb(132,136,139)'}
+                />
+                <Text style={styles.headerText}>SUCCESSFUL</Text>
+              </View>
+              <View style={{flexDirection:'row'}}>
+                <View style={styles.transRect}></View>
+                <Triangle
+                  width={14}
+                  height={14}
+                  color={'rgb(132,136,139)'}
+                  trans={true}
+                  style={{ marginTop:-1}}
+                />
+                <Text style={styles.headerText}>UNSUCCESSFUL</Text>
+              </View>
           </View>
-          <View style={{flexDirection:'row'}}>
-            <View style={styles.transRect}></View>
-            <Triangle
-              width={14}
-              height={14}
-              color={'rgb(132,136,139)'}
-              trans={true}
-              style={{ marginTop:-1}}
-            />
-            <Text style={styles.headerText}>UNSUCCESSFUL</Text>
-          </View>
+      }
           <IconHeader onPress={onPress} modalAble={modalAble}/>
         </View>
 
@@ -140,7 +145,7 @@ class SetPlayer extends Component {
           {
             this.state.page===0&&
             <View tabLabel='KICKS'>
-                <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+                <SliderHeader onPress={this.iconPress} isDisplayDescription={true} modalAble={this.state.modalAble}/>
                <View style={[styles.itemContainer]}>
                  <StadiumFigure
                    redPoints={ kicks.bil.conversions.details}
@@ -148,17 +153,20 @@ class SetPlayer extends Component {
                    blackPoints = {kicks.opposition.conversions.details}
                    bluePoints = {kicks.opposition.penalties.details}
                    imageWith = {Widefield}
+                   isDrawFullPoint = {false}
                  />
                  <View style={[styles.rightContainer,rightPartWidth]}>
                    <Scoreboard isWithProportion={true}
                                oppositionScore = {kicks.bil.conversions}
                                bilScore = {kicks.bil.penalties}
                                detail={detail}
+                               isKick = {true}
                    />
                    <Scoreboard isWithProportion={true} isDown={true}
                                oppositionScore = {kicks.opposition.conversions}
                                bilScore = {kicks.opposition.penalties}
                                detail={detail}
+                               isKick = {true}
                    />
                  </View>
                </View>
@@ -168,7 +176,7 @@ class SetPlayer extends Component {
          {
             this.state.page===1&&
             <View tabLabel='SCRUMS'>
-             <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+             <SliderHeader onPress={this.iconPress} isDisplayDescription={false} modalAble={this.state.modalAble}/>
               <View style={styles.itemContainer}>
                 <StadiumFigure
                   redPoints={ scrums.bil.won.details}
@@ -176,18 +184,20 @@ class SetPlayer extends Component {
                   blackPoints = {scrums.opposition.won.details}
                   bluePoints = {scrums.opposition.lost.details}
                   imageWith = {Widefield}
-
+                  isDrawFullPoint = {true}
                 />
                 <View style={[styles.rightContainer,rightPartWidth]}>
                   <Scoreboard   titles={['WON','LOST']}
                                 oppositionScore = { scrums.bil.won}
                                 bilScore =  {scrums.bil.lost}
                                 detail={detail}
+                                isKick = {false}
                   />
                   <Scoreboard isDown={true} titles={['WON','LOST']}
                               oppositionScore = { scrums.opposition.won}
                               bilScore =  {scrums.opposition.lost}
                               detail={detail}
+                              isKick = {false}
                   />
                 </View>
               </View>
@@ -195,9 +205,9 @@ class SetPlayer extends Component {
           }
          
          {
-            this.state.page===2&&            
+            this.state.page===2&&
             <View tabLabel='LINEOUTS'>
-              <SliderHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
+              <SliderHeader onPress={this.iconPress} isDisplayDescription={false} modalAble={this.state.modalAble}/>
               <View style={styles.itemContainer}>
                 <StadiumFigure
                   redPoints={ line_outs.bil.won.details}
@@ -205,17 +215,20 @@ class SetPlayer extends Component {
                   blackPoints = {line_outs.opposition.won.details}
                   bluePoints = {line_outs.opposition.lost.details}
                   imageWith = {Widefield}
+                  isDrawFullPoint = {true}
                 />
                 <View style={[styles.rightContainer,rightPartWidth]}>
                   <Scoreboard titles={['WON','LOST']}
                               oppositionScore = { line_outs.bil.won}
                               bilScore =  {line_outs.bil.lost}
                               detail={detail}
+                              isKick = {false}
                   />
                   <Scoreboard isDown={true} titles={['WON','LOST']}
                               oppositionScore = { line_outs.opposition.won}
                               bilScore =  {line_outs.opposition.lost}
                               detail={detail}
+                              isKick = {false}
                   />
                 </View>
               </View>

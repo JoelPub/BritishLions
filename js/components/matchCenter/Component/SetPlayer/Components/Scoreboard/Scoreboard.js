@@ -26,7 +26,7 @@ class Scoreboard extends Component {
     this.updateStyle(page)
   }
   render() {
-   let {isWithProportion,isDown ,titles,oppositionScore,bilScore,detail} = this.props
+   let {isWithProportion,isDown ,titles,oppositionScore,bilScore,detail,isKick} = this.props
    let  proportionMargin =  isWithProportion ? {marginLeft :10} : {}
     let colorConversions = !isDown ? 'rgb(208,7,41)' : 'black'
     let colorPenalties = !isDown ? 'rgb(255,204,40)' : 'rgb(31,188,210)'
@@ -45,7 +45,10 @@ class Scoreboard extends Component {
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
             <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
-            <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions,marginLeft:3}}></View>
+            {
+                isKick &&
+                <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions,marginLeft:3}}></View>
+            }
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[0]}</Text>
           </View>
           <View style={{flexDirection:'row',marginTop:4,alignSelf:'center'}}>
@@ -64,13 +67,16 @@ class Scoreboard extends Component {
               height={14}
               color={colorPenalties}
             />
-            <Triangle
-              width={14}
-              height={14}
-              color={colorPenalties}
-              trans={true}
-              style={{marginLeft:3, marginTop:-1}}
-            />
+             {
+                isKick &&
+                <Triangle
+                  width={14}
+                  height={14}
+                  color={colorPenalties}
+                  trans={true}
+                  style={{marginLeft:3, marginTop:-1}}
+                />
+            }
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
 
           </View>
