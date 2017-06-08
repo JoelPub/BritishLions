@@ -95,9 +95,10 @@ export function getTimeLineLiveSummary (options, type, summaryData, handleSucces
 
 }
 function processSummaryData(type,data,summaryData){
-  // if (__DEV__)console.log('processSummaryData',type)
-  // if (__DEV__)console.log('data',data)
-  // if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
+  if (__DEV__)console.log('processSummaryData',type)
+  if (__DEV__)console.log('data',data)
+  if (__DEV__)console.log('summaryData.live',summaryData.live)
+  if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
   let result=summaryData.timeline
   if (type==='init'&&data.length>0&&(result.length===0||(result.length>0&&data[0].sequenceId>result[0].seq))) {
     if(result.length===0) {
@@ -117,27 +118,30 @@ function processSummaryData(type,data,summaryData){
           }
         })
     }
+    if(summaryData.live!==undefined&&summaryData.live!==null) {
+      let toast = Toast.show('THERE ARE NEW MESSAGES', {
+                      duration: Toast.durations.SHORT,
+                      position: Toast.positions.BOTTOM,
+                      shadow: true,
+                      animation: true,
+                      hideOnPress: true,
+                      delay: 0,
+                      onShow: () => {
+                          // calls on toast\`s appear animation start
+                      },
+                      onShown: () => {
+                          // calls on toast\`s appear animation end.
+                      },
+                      onHide: () => {
+                          // calls on toast\`s hide animation start.
+                      },
+                      onHidden: () => {
+                          
+                      }
+                  })      
+    }
     
-    let toast = Toast.show('THERE ARE NEW MESSAGES', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                    delay: 0,
-                    onShow: () => {
-                        // calls on toast\`s appear animation start
-                    },
-                    onShown: () => {
-                        // calls on toast\`s appear animation end.
-                    },
-                    onHide: () => {
-                        // calls on toast\`s hide animation start.
-                    },
-                    onHidden: () => {
-                        
-                    }
-                })
+
   }
   else if(type==='extend'){
     if(data.length>0) {      

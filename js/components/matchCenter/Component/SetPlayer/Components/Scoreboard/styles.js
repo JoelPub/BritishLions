@@ -56,11 +56,11 @@ module.exports = styleSheetCreate({
   },
   proportionText:{
     fontFamily: styleVar.fontCondensed,
-    fontSize: 24,
-    lineHeight: 24,
+    fontSize: 22,
+    lineHeight: 22,
     textAlign: 'center',
     color: styleVar.colorText,
-    paddingTop: 4
+    paddingTop: 6
   },
   ratioTestView:{
     width: 50,
@@ -78,5 +78,10 @@ module.exports = styleSheetCreate({
     textAlign: 'center',
     color: styleVar.colorText,
     paddingTop: 6
-  }
+  },
+  iconImg:{
+        width: styleVar.deviceWidth*0.15,
+        height: styleVar.deviceWidth*0.15,
+        backgroundColor: 'transparent'
+    }
 })

@@ -101,7 +101,7 @@ module.exports = styleSheetCreate({
   },
   headerWrapper: {
     flexDirection:'row',
-    paddingHorizontal:10,
+    paddingLeft:10,
     justifyContent:'space-between',
     alignItems:'center'
   },

@@ -88,13 +88,14 @@ class SetPlayer extends Component {
    if(__DEV__)console.log('setPlayerCallApi')
   }
   render() {
-    let {isActive} = this.props
+    let {isActive,detail} = this.props
     let { kicks, scrums,line_outs} = this.props.set_plays
     let Widefield = styleVar.deviceWidth===320 ? 180 : 202
     let horizontalWidth = Platform.OS === 'android' ? 30 : 40
     let rightPartWidth = {
       width: styleVar.deviceWidth-Widefield-horizontalWidth,
     }
+    console.log('detail',detail)
      return (
       <View style={styles.wrapper}
       >
@@ -152,10 +153,12 @@ class SetPlayer extends Component {
                    <Scoreboard isWithProportion={true}
                                oppositionScore = {kicks.bil.conversions}
                                bilScore = {kicks.bil.penalties}
+                               detail={detail}
                    />
                    <Scoreboard isWithProportion={true} isDown={true}
                                oppositionScore = {kicks.opposition.conversions}
                                bilScore = {kicks.opposition.penalties}
+                               detail={detail}
                    />
                  </View>
                </View>
@@ -179,10 +182,12 @@ class SetPlayer extends Component {
                   <Scoreboard   titles={['WON','LOST']}
                                 oppositionScore = { scrums.bil.won}
                                 bilScore =  {scrums.bil.lost}
+                                detail={detail}
                   />
                   <Scoreboard isDown={true} titles={['WON','LOST']}
                               oppositionScore = { scrums.opposition.won}
                               bilScore =  {scrums.opposition.lost}
+                              detail={detail}
                   />
                 </View>
               </View>
@@ -205,10 +210,12 @@ class SetPlayer extends Component {
                   <Scoreboard titles={['WON','LOST']}
                               oppositionScore = { line_outs.bil.won}
                               bilScore =  {line_outs.bil.lost}
+                              detail={detail}
                   />
                   <Scoreboard isDown={true} titles={['WON','LOST']}
                               oppositionScore = { line_outs.opposition.won}
                               bilScore =  {line_outs.opposition.lost}
+                              detail={detail}
                   />
                 </View>
               </View>
