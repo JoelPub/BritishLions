@@ -44,6 +44,7 @@ import PlayerScore from '../../global/playerScore'
 import fetch from '../../utility/fetch'
 import { shareTextWithTitle } from '../../utility/socialShare'
 import { setPrivateLeagues} from '../../../actions/squad'
+import RatingPopUp from '../../global/ratingPopUp'
 
 
 
@@ -146,9 +147,11 @@ class CompetitionLadder extends Component {
       isNetwork: true,
       modalData: null,
       joinModalData:null,
-      modalInfo: false
+      modalInfo: false,
+      modalRate: false
     }
     this.subscription = null
+    this.subscriptionRate = null
   }
   _showError(error) {
     if(!this.state.isNetwork) return
@@ -242,6 +245,9 @@ class CompetitionLadder extends Component {
   }
   iconPress = () => {
     this.setState({modalInfo: !this.state.modalInfo})
+  }
+  iconRatePress = () => {
+    this.setState({modalRate: !this.state.modalRate})
   }
   /*modelInActions*/
   createGroupApi = (aceess_token,userID,group_name) => {
@@ -454,6 +460,7 @@ class CompetitionLadder extends Component {
               <Text style={styles.modalContentText}>Access your private leagues at the bottom of this screen.</Text>
             </ScrollView>
           </SquadModal>
+          <RatingPopUp modalVisible={this.state.modalRate} callbackParent={this.iconRatePress}/>
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
                            createButtonClick = {this.createButtonClick} errorBackButtonClick={this.errorBackButtonClick}
@@ -482,11 +489,13 @@ class CompetitionLadder extends Component {
       if (__DEV__)console.log(token)
        this.fetchData(token,userProfile.userID)
     })
-    this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updateDataAndUI);
+    this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updateDataAndUI)
+    this.subscriptionRate = DeviceEventEmitter.addListener('ratingpopup',this.iconRatePress)
   }
   componentWillUnmount() {
     this.isUnMounted = true
-    this.subscription.remove();
+    this.subscription.remove()
+    this.subscriptionRate.remove()
   }
 }
 function bindAction(dispatch) {
