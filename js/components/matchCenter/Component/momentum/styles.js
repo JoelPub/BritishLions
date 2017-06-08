@@ -7,8 +7,8 @@ module.exports = styleSheetCreate({
     subjectText: {
     	fontFamily: styleVar.fontCondensed,
     	color:'rgb(132,136,139)',
-    	fontSize:18,
-    	lineHeight:20,
+    	fontSize:16,
+    	lineHeight:18,
     	marginTop:6,
     	marginLeft:5,
     	android: {
@@ -26,7 +26,6 @@ module.exports = styleSheetCreate({
     },
     subjectWrapper:{
         flexDirection:'row',
-        paddingLeft:5,
         alignItems:'center',
         paddingBottom:15,
     },
@@ -34,7 +33,6 @@ module.exports = styleSheetCreate({
         flex:3,
         flexDirection:'row',
         alignItems:'center',
-        paddingLeft:3
     },
     iconWrapper:{
         flex:1,
@@ -42,11 +40,11 @@ module.exports = styleSheetCreate({
         paddingRight:10
     },
     scoreSign:{
-        height:styleVar.deviceWidth*0.012,
-        width:styleVar.deviceWidth*0.012,
-        borderRadius:styleVar.deviceWidth*0.006,
+        height:styleVar.deviceWidth*0.01,
+        width:styleVar.deviceWidth*0.01,
+        borderRadius:styleVar.deviceWidth*0.005,
         backgroundColor:'rgb(255,204,40)',
-        marginLeft:3
+        marginLeft:styleVar.deviceWidth*0.005
     },
     momentumSign:{
         height:14,
@@ -118,11 +116,9 @@ module.exports = styleSheetCreate({
     },
     momentumColorGrid: {
         height:25,
-        width:styleVar.deviceWidth*0.1,
-        padding:styleVar.deviceWidth*0.01,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     momentumColorText:{
         fontFamily:styleVar.fontCondensed,
