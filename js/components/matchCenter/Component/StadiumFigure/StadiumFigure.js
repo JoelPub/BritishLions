@@ -46,8 +46,6 @@ class StadiumFigure extends Component {
     let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith,isDrawFullPoint} = this.props
     let pointWidth = 14
     let extraHeight = 98
-
-   console.warn(JSON.stringify(isDrawFullPoint))
     return (
       <View style={[styles.container,{width:imageWith}]} >
         <Image style={[styles.image,{width:imageWith}]} source={stadiumImage} >
