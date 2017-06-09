@@ -22,6 +22,7 @@ import { service } from '../../utility/services'
 import {  getUserId } from '../../utility/asyncStorageServices'
 import loader from '../../../themes/loader-position'
 import { strToUpper,strToLower } from '../../utility/helper'
+import RatingPopUp from '../../global/ratingPopUp'
 
 const locStyle = styleSheetCreate({
     gridBoxWrapper: {
@@ -110,9 +111,11 @@ class MyLionsCompetitionGameListing extends Component {
             userID:'',
             gameList: this.ds.cloneWithRows([]),
             isNetwork: true,
-            drillDownItem:this.props.drillDownItem
+            drillDownItem:this.props.drillDownItem,
+            modalRate: false
         }
         this.subscription = null
+        this.subscriptionRate = null
     }
 
     componentWillMount() {
@@ -253,6 +256,7 @@ class MyLionsCompetitionGameListing extends Component {
                     }
                         
                     <EYSFooter mySquadBtn={true}/>
+                    {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
                     <LoginRequire/>
                 </View>
             </Container>
@@ -262,12 +266,26 @@ class MyLionsCompetitionGameListing extends Component {
     componentDidMount() {
         setTimeout(() => this._getList(), 600)
 
-        this.subscription = DeviceEventEmitter.addListener('_getList',this.updateList);
+        this.subscription = DeviceEventEmitter.addListener('_getList',this.updateList)
+        this.subscriptionRate = DeviceEventEmitter.addListener('listratingpopup',this.popupRating)
 
     }
     componentWillUnmount() {
         this.isUnMounted = true
-        this.subscription.remove();
+        this.subscription.remove()
+        this.subscriptionRate.remove()
+    }
+    popupRating = (v) => {
+        if(__DEV__)console.log('popupRating',v)
+        if(v===false) {
+          this.setState({modalRate:false})
+        }
+        else if(v===true) {
+          this.setState({modalRate:false},()=>{
+
+            this.setState({modalRate:true})
+          })
+        }
     }
     updateList =(round_id)=> {
         if (__DEV__)console.log('updateList')

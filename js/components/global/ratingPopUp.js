@@ -1,12 +1,13 @@
 'use strict'
 
 import React, { Component ,PropTypes} from 'react'
-import {Image,View, Modal, Text } from 'react-native'
+import {Image,View, Modal, Text,Linking } from 'react-native'
 import ButtonFeedback from '../utility/buttonFeedback'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import LinearGradient from 'react-native-linear-gradient'
 import {Icon} from 'native-base'
+import { setVote, getVote } from '../utility/asyncStorageServices'
 const styles = styleSheetCreate({
     onboarding: {
         flex:1,
@@ -72,41 +73,65 @@ export default class RatingPopUp extends Component{
         this.state = {
               modalVisible: false,
         }
+        this.savedVote=null
     }
 
-    _setModalVisible=(visible) => {
-        console.log('visible',visible)
-        this.setState({
-            modalVisible:visible
+    componentWillMount() {
+        getVote().then((data)=>{
+            this.savedVote=JSON.parse(data)
+            if(__DEV__)console.log('savedvote',this.savedVote)
+            if(this.savedVote===null) {
+                this.setState({
+                    modalVisible:true
+                })
+            }
+            else {
+                if(this.savedVote.type==='later') {
+                    let gap=new Date()-new Date(this.savedVote.time)
+                    if(__DEV__)console.log('time gap',gap/3600000)
+                    if(gap/3600000>(1/60)) this.setState({modalVisible:true})
+                }
+            }
         })
-        if(!visible) {
-            this.props.callbackParent(visible)
-        }
     }
-
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.modalVisible!==this.state.modalVisible) {
-            this.setState({
-                modalVisible: nextProps.modalVisible
+    goToURL(url) {
+        Linking.canOpenURL(url).then(supported => {
+                if (supported) {
+                    Linking.openURL(url)
+                } else {
+                    if (__DEV__)console.log('This device doesnt support URI: ' + url)
+                }
             })
-        }   
     }
 
     buttonClick(name){
-        switch(name){
-            case 'rate':
-            return
+        this.savedVote={type:name,time:new Date()}
+        setVote(this.savedVote).then(()=>{
+            this.setState({modalVisible:false},()=>{                    
+                switch(name){
+                    case 'rate':
+                        if(Platform.OS==='android') {
+                            this.goToURL('https://play.google.com/store/apps/details?id=com.lionsofficial')
+                        }
+                        else if(PlatformOS==='ios') {
+                            this.goToURL('https://itunes.apple.com/ie/app/british-irish-lions-official/id1166469622?mt=8')
+                        }
+                    return
 
-            case 'dismiss':
-            return
+                    case 'dismiss':
+                    return
 
-            case 'later':
-            return
+                    case 'later':
+                    return
 
-            default:
-            return
+                    default:
+                    return
 
-        }
+                }
+                this.props.callbackParent(false)
+            })
+        })
+        
     }
     render() {
         return (
@@ -114,7 +139,7 @@ export default class RatingPopUp extends Component{
                 animationType={"slide"}
                 visible={this.state.modalVisible}
                 transparent={true}
-                onRequestClose={()=>this._setModalVisible(false)}>
+                onRequestClose={()=>this.buttonClick('later')}>
                     <View style={styles.onboarding}>
                         <LinearGradient colors={['#AF001E', '#81071C']} style={{alignItems:'center',padding:styleVar.deviceWidth*0.1}}>
                                 <Image
@@ -133,7 +158,7 @@ export default class RatingPopUp extends Component{
                                     <Text style={styles.btnText}> MAYBE LATER</Text>
                                 </ButtonFeedback>
                         </LinearGradient>
-                        <ButtonFeedback onPress={()=>this._setModalVisible(false)}  style={styles.btnClose}>
+                        <ButtonFeedback onPress={()=>this.buttonClick('later')}  style={styles.btnClose}>
                             <Icon name='md-close' style={styles.btnCloseIcon}/>
                         </ButtonFeedback>
                         

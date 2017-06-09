@@ -246,8 +246,16 @@ class CompetitionLadder extends Component {
   iconPress = () => {
     this.setState({modalInfo: !this.state.modalInfo})
   }
-  iconRatePress = () => {
-    this.setState({modalRate: !this.state.modalRate})
+  popupRating = (v) => {
+    if(__DEV__)console.log('popupRating',v)
+    if(v===false) {
+      this.setState({modalRate:false})
+    }
+    else if(v===true){
+      this.setState({modalRate:false},()=>{
+        this.setState({modalRate:true})
+      })
+    }
   }
   /*modelInActions*/
   createGroupApi = (aceess_token,userID,group_name) => {
@@ -460,7 +468,7 @@ class CompetitionLadder extends Component {
               <Text style={styles.modalContentText}>Access your private leagues at the bottom of this screen.</Text>
             </ScrollView>
           </SquadModal>
-          <RatingPopUp modalVisible={this.state.modalRate} callbackParent={this.iconRatePress}/>
+          {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
           <EYSFooter mySquadBtn={true}/>
           <CreateWithModal modalVisible = {isCreating } callbackParent ={this.dissMissModel} modalType={createType}
                            createButtonClick = {this.createButtonClick} errorBackButtonClick={this.errorBackButtonClick}
@@ -490,7 +498,7 @@ class CompetitionLadder extends Component {
        this.fetchData(token,userProfile.userID)
     })
     this.subscription = DeviceEventEmitter.addListener('leaveLeague',this.updateDataAndUI)
-    this.subscriptionRate = DeviceEventEmitter.addListener('ratingpopup',this.iconRatePress)
+    this.subscriptionRate = DeviceEventEmitter.addListener('ladderratingpopup',this.popupRating)
   }
   componentWillUnmount() {
     this.isUnMounted = true
