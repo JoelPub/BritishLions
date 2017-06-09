@@ -2,10 +2,11 @@
 
 
 const APP_VERSION_NO = '4' // release: 3
+const LOCAL_APP_VERSION_NO = '5'
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
-const EYC3_BASE_URL_DUMMY= 'http://bilprod-livedev.azurewebsites.net'
-const EYC3_BASE_URL_R4_DUMMY= 'http://bilprod-livedev.azurewebsites.net'
+const EYC3_BASE_URL_DUMMY= 'http://bilwebapp.azurewebsites.net'
+const EYC3_BASE_URL_R4_DUMMY= 'http://bilwebapp.azurewebsites.net'
 
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
@@ -194,3 +195,4 @@ export const actionsApi = {
     eyc3GetFixtureInfo: getAssembledUrl(EYC3_GET_FIXTURE_INFO_URL_NAME),
 }
 export const APP_VERSION = APP_VERSION_NO 
+export const LOCAL_APP_VERSION = LOCAL_APP_VERSION_NO

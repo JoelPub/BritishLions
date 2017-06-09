@@ -200,7 +200,7 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 					}
 
 					if (opt.onError) {
-						opt.onError('Please make sure that you\'re connected to the network.', )
+						opt.onError('Service is temporarily unavailable, please try again later', )
 					}
 				}
 			}, 60000)
