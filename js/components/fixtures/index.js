@@ -22,7 +22,7 @@ import Immutable, { Map, List, Iterable } from 'immutable'
 import LinearGradient from 'react-native-linear-gradient'
 import styleVar from '../../themes/variable'
 
-const  TitleCell = ({status}) => {
+const  TitleCell = ({status,onPress}) => {
   let  title = 'GAME FINISHED'
   if (status==='live')  title = 'GAME NOW LIVE'
   if (status==='post')  title = 'GAME FINISHED'
@@ -30,9 +30,9 @@ const  TitleCell = ({status}) => {
     backgroundColor:'rgb(9,127,64)'
   } : {}
   return (
-    <View style={[styles.titleView,greenBackgroundColor]}>
+    <ButtonFeedback style={[styles.titleView,greenBackgroundColor]} onPress={onPress}>
       <Text style={[styles.titleText]}>{title}</Text>
-    </View>
+    </ButtonFeedback>
   )
 }
 const  BlackView = () => {
@@ -113,6 +113,13 @@ class Fixtures extends Component {
       if (item.pre!== null)   return 'pre'
       return 'pre'
     }
+    gameLivePress = (data,status) => {
+
+      if (status==='live')  {
+
+        this.props.drillDown(data, 'coachBox')
+      }
+    }
     render() {
         let titleStyle = styleVar.deviceWidth<=320 ? {fontSize:24,lineHeight:24} : {}
         return (
@@ -136,7 +143,7 @@ class Fixtures extends Component {
                                                         key={item.id}
                                                         style={styles.btn}
                                                         onPress={() => this._drillDown({details:item.toJS(), list:this.state.fixtures})}>
-                                                       {status!=='pre'? <TitleCell status ={status}/> : null}
+                                                       {status!=='pre'? <TitleCell status ={status}  onPress={()=>this.gameLivePress(item.toJS(),status)}/> : null}
                                                         <ImagePlaceholder height={170}>
                                                             <LinearGradient style={styles.fixtureImgContainerAtList} colors={['#d9d7d8', '#FFF']}>
                                                                 <Image
