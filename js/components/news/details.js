@@ -222,17 +222,19 @@ class NewsDetails extends Component {
                   this.state.startLoad?
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} onScroll={this.handleScroll.bind(this)}>
                             <View  {...this._panResponder.panHandlers}>
-                            <ImagePlaceholder height={270}>
-                                <Image source={{uri: this.props.article.image}} style={styles.banner}>
-                                    <Image 
-                                        transparent
-                                        resizeMode='cover'
-                                        source={require('../../../images/shadows/rectangle.png')}
-                                        style={styles.newsPosterContent}>
+                            <View>
+                              <ImagePlaceholder height={270}>
+                                  <Image source={{uri: this.props.article.image}} style={styles.banner}>
+                                      <Image 
+                                          transparent
+                                          resizeMode='cover'
+                                          source={require('../../../images/shadows/rectangle.png')}
+                                          style={styles.newsPosterContent}>
 
-                                    </Image>
-                                </Image>
-                            </ImagePlaceholder>
+                                      </Image>
+                                  </Image>
+                              </ImagePlaceholder>
+                            </View>
 
                             <View>
                                 <Text numberOfLines={3} style={styles.newsPosterHeader}>

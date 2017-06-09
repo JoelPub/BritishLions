@@ -60,7 +60,7 @@ module.exports = styleSheetCreate({
     lineHeight: 22,
     textAlign: 'center',
     color: styleVar.colorText,
-    paddingTop: 6
+    paddingTop: 8
   },
   ratioTestView:{
     width: 50,
