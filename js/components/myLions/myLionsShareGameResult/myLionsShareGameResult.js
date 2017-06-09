@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator, Platform} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator, Platform,DeviceEventEmitter} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import theme from '../../../themes/base-theme'
@@ -104,14 +104,11 @@ class MyLionsShareGameResult extends Component {
 
      }else {
        if ( strToUpper(this.props.data.resultInfo.is_won) ==='TRUE'){
-           if (__DEV__)console.log('赢')
            describe= 'I just won my match against ' +this.props.data.gameData.title + ' ! Download the Official Lions App to play against the experts!#LionsNZ2017'
        }else {
-         if (__DEV__)console.log('输')
          describe= ''
        }
      }
-     if (__DEV__)console.log('描述')
      if (__DEV__)console.log(describe)
      return  describe
    }
@@ -121,6 +118,9 @@ class MyLionsShareGameResult extends Component {
       this.shareSnapshot(this.getShareDescribe() ,this.callback)
     },2000)
 
+  }
+  componentWillUnmount() {
+    DeviceEventEmitter.emit('resultratingpopup', true)
   }
   shareSnapshot = (context,callback) => {
     this.setState({

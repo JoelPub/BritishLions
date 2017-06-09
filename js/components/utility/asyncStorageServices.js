@@ -101,6 +101,15 @@ export async function setMatchMan(matchMan) {
     // if(__DEV__)console.log('setMatchMan',matchMan)
     await AsyncStorage.setItem('MAN_OF_MATCH', JSON.stringify(matchMan))
 }
+export async function getVote() {
+    return await AsyncStorage.getItem('VOTE_RECORD', (err, result) => {
+        return result
+    })
+}
+
+export async function setVote(voteRecord) {
+    await AsyncStorage.setItem('VOTE_RECORD', JSON.stringify(voteRecord))
+}
 
 export async function setAddedToCalanderCheck() {
     await AsyncStorage.setItem('ADDED_EVNETS_TO_CALENDAR', "added")

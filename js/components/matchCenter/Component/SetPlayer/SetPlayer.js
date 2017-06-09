@@ -33,7 +33,7 @@ const SliderHeader=({onPress,isDisplayDescription,modalAble}) => {
       <View style={styles.headerWrapper}>
       {
           isDisplayDescription === true &&
-          <View style={styles.headerWrapper}>
+          <View style={styles.indicatorWrapper}>
               <View style={{flexDirection:'row'}}>
                 <View style={styles.rect}></View>
                 <Triangle
@@ -56,7 +56,7 @@ const SliderHeader=({onPress,isDisplayDescription,modalAble}) => {
               </View>
           </View>
       }
-          <IconHeader onPress={onPress} modalAble={modalAble}/>
+          <IconHeader styles ={{justifyContent:'flex-end'}} onPress={onPress} modalAble={modalAble}/>
         </View>
 
     )

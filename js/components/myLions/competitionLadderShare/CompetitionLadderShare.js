@@ -143,7 +143,7 @@ class CompetitionLadderShare extends Component {
   }
   componentWillUnmount() {
     this.isUnMounted = true
-    DeviceEventEmitter.emit('ratingpopup', '')
+    DeviceEventEmitter.emit('ladderratingpopup', true)
   }
   componentDidMount() {
     setTimeout(()=>{

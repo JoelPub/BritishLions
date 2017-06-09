@@ -101,10 +101,18 @@ module.exports = styleSheetCreate({
   },
   headerWrapper: {
     flexDirection:'row',
-    paddingLeft:10,
-    justifyContent:'space-between',
-    alignItems:'center'
+    //paddingLeft:10,
+    justifyContent:'flex-end',
+    alignItems:'center',
   },
+    indicatorWrapper: {
+      flexDirection:'row',
+      paddingLeft:(styleVar.deviceWidth-320)/15,
+      paddingRight:styleVar.deviceWidth/13,
+      justifyContent:'space-between',
+      alignItems:'center',
+      width:styleVar.deviceWidth - 80
+    },
   rect:{
     width:14,
     height:14,

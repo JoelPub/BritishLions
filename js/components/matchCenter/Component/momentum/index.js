@@ -70,7 +70,7 @@ class Momentum extends Component {
                                 <View style={styles.scoreSign} />
                                 <Text ellipsizeMode='tail' numberOfLines={1} style={styles.subjectText}> SCORE ADVANTAGE</Text>
                             </View>
-                            <View style={styles.subWrapper}>
+                            <View style={styles.subWrapperOne}>
                                 <View style={[styles.momentumColorGrid,this.state.config.isHost?styles.redBgc:styles.blackBgc]}>
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.momentumColorText}>{this.state.config.isHost?'LIONS':strToUpper(initName) }</Text>
                                 </View>

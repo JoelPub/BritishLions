@@ -33,6 +33,12 @@ module.exports = styleSheetCreate({
         flex:3,
         flexDirection:'row',
         alignItems:'center',
+        paddingLeft:(styleVar.deviceWidth-300)/10
+    },
+     subWrapperOne:{
+        flex:3,
+        flexDirection:'row',
+        alignItems:'center',
     },
     iconWrapper:{
         flex:1,
