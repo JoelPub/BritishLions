@@ -43,7 +43,7 @@ module.exports = styleSheetCreate({
     	height: styleVar.deviceHeight -  timelineWrapperHeightMinus,
     	paddingHorizontal:10,
     	backgroundColor:'rgb(255,255,255)',
-        paddingBottom:20,
+      paddingBottom:20,
 		//backgroundColor: 'green'
     },
     descripton:{
@@ -87,7 +87,8 @@ module.exports = styleSheetCreate({
         flexDirection:'row',
         padding:10,
         backgroundColor:'rgb(255,255,255)',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        height: 80
     },
     tabBtnPos:{
         alignItems:'center'
@@ -108,7 +109,7 @@ module.exports = styleSheetCreate({
         color:'rgb(255,255,255)',
         fontFamily: styleVar.fontCondensed,
         fontSize:20,
-        lineHeight:22,
+        lineHeight:20,
         textAlign:'center',
         backgroundColor:'transparent',
         ios:{
