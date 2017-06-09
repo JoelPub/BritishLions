@@ -45,6 +45,7 @@ import defaultData from './defaultData'
 
 import { drillDown } from '../../../actions/content'
 import { globalNav } from '../../../appNavigator'
+import Toast from 'react-native-root-toast'
 const ButtonWithIcon = (props) => {
   let {iconName,title,style,onPress} = props
   let styleMore = style ? style : null
@@ -76,11 +77,26 @@ class MyLionsGroupView extends Component {
   }
 
   _showError(error) {
-    Alert.alert(
-      'An error occured',
-      error,
-      [{text: 'Dismiss'}]
-    )
+        let toast = Toast.show('An error occured', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                
+            }
+        })
   }
   _showSuccess(message) {
     Alert.alert(

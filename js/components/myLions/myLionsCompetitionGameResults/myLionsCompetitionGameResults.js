@@ -326,11 +326,6 @@ class MyLionsCompetitionGameResults extends Component {
          isPop:true
         })
         this.props.popToRoute('myLionsCompetitionGameListing')
-        if(strToUpper(this.state.resultInfo.is_won)==='TRUE') {
-            setTimeout(()=>{
-                DeviceEventEmitter.emit('listratingpopup', true)
-            },2000)
-        }
     }
     popToCenter = () => {
         this.props.popToRoute('myLionsCompetitionCentre')
@@ -468,6 +463,11 @@ class MyLionsCompetitionGameResults extends Component {
 
             setTimeout(() => DeviceEventEmitter.emit('_getList', this.state.drillDownItem.round_id), 600)
             this.subscriptionRate.remove()
+            if(strToUpper(this.state.resultInfo.is_won)==='TRUE') {
+                setTimeout(()=>{
+                    DeviceEventEmitter.emit('listratingpopup', true)
+                },2000)
+            }
         
 
 

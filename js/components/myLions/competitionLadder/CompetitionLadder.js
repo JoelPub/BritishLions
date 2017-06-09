@@ -45,6 +45,7 @@ import fetch from '../../utility/fetch'
 import { shareTextWithTitle } from '../../utility/socialShare'
 import { setPrivateLeagues} from '../../../actions/squad'
 import RatingPopUp from '../../global/ratingPopUp'
+import Toast from 'react-native-root-toast'
 
 
 
@@ -161,13 +162,26 @@ class CompetitionLadder extends Component {
         isNetwork: false
       })
     }
-    if(error !== ''){
-      Alert.alert(
-        'An error occured',
-        error,
-        [{text: 'Dismiss'}]
-      )
-    }
+    let toast = Toast.show('An error occured', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        onShow: () => {
+            // calls on toast\`s appear animation start
+        },
+        onShown: () => {
+            // calls on toast\`s appear animation end.
+        },
+        onHide: () => {
+            // calls on toast\`s hide animation start.
+        },
+        onHidden: () => {
+            
+        }
+    })
   }
   /*get Data*/
   fetchData = (aceess_token,userID) => {

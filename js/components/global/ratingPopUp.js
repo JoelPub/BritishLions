@@ -89,7 +89,7 @@ export default class RatingPopUp extends Component{
                 if(this.savedVote.type==='later') {
                     let gap=new Date()-new Date(this.savedVote.time)
                     if(__DEV__)console.log('time gap',gap/3600000)
-                    if(gap/3600000>(1/60)) this.setState({modalVisible:true})
+                    if(gap/3600000>1/60) this.setState({modalVisible:true})
                 }
             }
         })
@@ -147,7 +147,7 @@ export default class RatingPopUp extends Component{
                                   resizeMode='contain'
                                   style={styles.logoImg} />
                                 <Text style={styles.subjectText}> RATE THE APP </Text>
-                                <Text style={styles.descText}> If you're enjoying the Official Lions app, would you mind taking a moment to rate us?</Text>
+                                <Text style={styles.descText}>If you're enjoying the Official Lions app, would you mind taking a moment to rate us?</Text>
                                 <ButtonFeedback onPress={()=>this.buttonClick('rate')} style={styles.btn}>
                                     <Text style={styles.btnText}> OKAY, SURE</Text>
                                 </ButtonFeedback>

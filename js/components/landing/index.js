@@ -34,6 +34,7 @@ import { getUserId, removeToken, getUserFullName,getRefreshToken } from '../util
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 import { actionsApi } from '../utility/urlStorage'
+import Toast from 'react-native-root-toast'
 
 class Landing extends Component {
     constructor(props) {
@@ -171,11 +172,26 @@ class Landing extends Component {
                 isNetwork: false
             })
         }
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+        let toast = Toast.show('An error occured', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
     }
 
     _replaceRoute(route) {

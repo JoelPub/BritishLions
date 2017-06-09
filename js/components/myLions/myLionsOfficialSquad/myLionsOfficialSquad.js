@@ -39,6 +39,7 @@ import OfficialSquadList from '../components/officialSquadList'
 import {convertSquadToShow} from '../components/officialSquadToShow'
 import { strToUpper,isEmptyObject } from '../../utility/helper'
 import _fetch from '../../utility/fetch'
+import Toast from 'react-native-root-toast'
 
 class MyLionsOfficialSquad extends Component {
 
@@ -67,13 +68,26 @@ class MyLionsOfficialSquad extends Component {
                isNetwork: false
            })
        }
-        if(error !== ''){
-            Alert.alert(
-                'An error occured',
-                error,
-                [{text: 'Dismiss'}]
-            )
-        }
+        let toast = Toast.show('An error occured', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                
+            }
+        })
     }
 
     _isSignIn(route) {

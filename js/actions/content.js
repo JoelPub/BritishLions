@@ -3,7 +3,7 @@
 import { NetInfo } from 'react-native'
 import type { Action } from './types'
 import { pushNewRoute, replaceRoute} from './route'
-import { alertBox } from './../components/utility/alertBox'
+import Toast from 'react-native-root-toast'
 
 import axios from 'axios'
 
@@ -23,12 +23,26 @@ export function fetchContent(url):Action {
                     dispatch(setContent({
                         payload: []
                     }))
-
-                    alertBox(
-                      'An Error Occured',
-                      'Please make sure that you\'re connected to the network.',
-                      'Dismiss'
-                    )
+                    let toast = Toast.show('Please make sure that you\'re connected to the network.', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
                 } else {
                     axios({
                         method: 'get',
@@ -42,11 +56,26 @@ export function fetchContent(url):Action {
                     })
                     // Handling error (status > 300) -> default
                     .catch(function(error) {
-                        alertBox(
-                          'An Error Occured',
-                          'Something went wrong with your request. Please check your internet and try again later.',
-                          'Dismiss'
-                        )
+                        let toast = Toast.show('Please make sure that you\'re connected to the network.', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                            delay: 0,
+                            onShow: () => {
+                                // calls on toast\`s appear animation start
+                            },
+                            onShown: () => {
+                                // calls on toast\`s appear animation end.
+                            },
+                            onHide: () => {
+                                // calls on toast\`s hide animation start.
+                            },
+                            onHidden: () => {
+                                
+                            }
+                        })
                     })
                 }
             })
