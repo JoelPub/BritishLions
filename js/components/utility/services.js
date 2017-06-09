@@ -109,7 +109,7 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 				}
 				else
 				{
-				    opt.onError('Service is not available now, please try again later')
+				    opt.onError('Service is temporarily unavailable, please try again later')
 				}
 			}
 		} else {
