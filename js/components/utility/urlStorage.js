@@ -5,8 +5,8 @@ const APP_VERSION_NO = '4' // release: 3
 const LOCAL_APP_VERSION_NO = '5'
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
-const EYC3_BASE_URL_DUMMY= 'http://bilwebapp.azurewebsites.net'
-const EYC3_BASE_URL_R4_DUMMY= 'http://bilwebapp.azurewebsites.net'
+const EYC3_BASE_URL_DUMMY= 'http://bilprod.azurewebsites.net'
+const EYC3_BASE_URL_R4_DUMMY= 'http://bilprod.azurewebsites.net'
 
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'

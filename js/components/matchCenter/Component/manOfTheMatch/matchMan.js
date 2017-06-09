@@ -199,7 +199,7 @@ class MatchMan extends Component {
                   // })
 
                     let optionsInfo = {
-                        url: 'https://bilwebapp.azurewebsites.net/GetManOfMatchInfo',
+                        url: 'https://bilprod.azurewebsites.net/GetManOfMatchInfo',
                         data: {id:this.state.gameID},
                         onAxiosStart: null,
                         onAxiosEnd: null,
