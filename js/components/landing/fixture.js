@@ -303,6 +303,7 @@ class PlayerFigure extends Component {
     }
 
     _goToCoachBox = (data) => {
+        console.log(data)
         this._drillDown(data, 'coachBox')
     }
 
