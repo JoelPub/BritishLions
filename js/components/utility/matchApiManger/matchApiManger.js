@@ -178,7 +178,7 @@ function processSummaryData(type,data,summaryData){
 function processMomentumData(data){
     if(__DEV__)console.log('@@@@processMomentumData',data)
     let result=[]
-    let fullTime=80
+    let fullTime=160
     if(data&&data.team_momentum&&data.score_advantage) {
         for(let i=0;i<fullTime;i=i+10){
             let momentum={score_advantage:[],team_momentum:[],isFirst:false,finished:false,integrity:false,timeMark:0}
