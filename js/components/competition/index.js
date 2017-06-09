@@ -60,7 +60,7 @@ class Competition extends Component {
                             }
                         </ImagePlaceholder>
                         <View style={styles.linkWrapper}>
-                            <ExternalLink url='http://www.lionsrugby.com/fanzone/competitions.php#.V9ozFJh96rM'>
+                            <ExternalLink url='https://www.lionsrugby.com/competitions/'>
                                 <Text style={styles.pageLinkText}>
                                      <Icon name='md-open' style={styles.pageLinkIcon} /> COMPETITIONS LINK
                                 </Text>
