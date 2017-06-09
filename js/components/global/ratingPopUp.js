@@ -113,7 +113,7 @@ export default class RatingPopUp extends Component{
                         if(Platform.OS==='android') {
                             this.goToURL('https://play.google.com/store/apps/details?id=com.lionsofficial')
                         }
-                        else if(PlatformOS==='ios') {
+                        else if(Platform.OS==='ios') {
                             this.goToURL('https://itunes.apple.com/ie/app/british-irish-lions-official/id1166469622?mt=8')
                         }
                     return
