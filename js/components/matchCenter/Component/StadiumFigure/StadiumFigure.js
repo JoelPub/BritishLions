@@ -102,7 +102,7 @@ class StadiumFigure extends Component {
                   color={'rgb(255,204,40)'}
                   style={[loactionStyle]}
                   key={index}
-                  trans={isDrawFullPoint || item.is_successful&&strToLower(item.is_successful)==='false'}
+                  trans={!isDrawFullPoint && item.is_successful&&strToLower(item.is_successful)==='false'}
                 />
               )
             })
@@ -124,7 +124,7 @@ class StadiumFigure extends Component {
                   color={'rgb(31,188,210)'}
                   style={[loactionStyle]}
                   key={index}
-                  trans={isDrawFullPoint || item.is_successful&&strToLower(item.is_successful)==='false'}
+                  trans={!isDrawFullPoint && item.is_successful&&strToLower(item.is_successful)==='false'}
                 />
               )
             })
