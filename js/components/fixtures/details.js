@@ -82,15 +82,12 @@ class FixtureDetails extends Component {
         //   let endDateOfEvent = new Date(`${params.details.date} ${params.details.time}`)
         //   endDateOfEvent.setHours(endDateOfEvent.getHours() + 2) // Add 2 hour for Event, to provide time range display
         //   let endTime = endDateOfEvent.toISOString() // UTC Format
-        //console.warn("dddddd", dateOfEvent)
-        console.warn("dddddadarataattatatatatdd@@@@@@@:", this.state.data.list)
         if (Platform.OS === 'android') {
             // Used third party for Calendar Event
             // On Function Params : String eventTitle, String descEvent, String locationEvent, String dateOfEvent
             NativeModules.CalendarMAndroid.addCalendarEvent(params.details.title, params.details.description, params.details.stadium, dateOfEvent)
         } else{
             getAddedToCalanderCheck().then((status) =>{
-            console.warn("status", status)
                 if (status && status === "added") {
                     alertBox('Warning','You have added the events to the calendar')
                 } else{ 
