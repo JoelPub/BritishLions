@@ -1,7 +1,7 @@
 'use strict'
 
 import { Alert, AsyncStorage } from 'react-native'
-import {APP_VERSION} from './urlStorage'
+import {LOCAL_APP_VERSION} from './urlStorage'
 const ACCESS_TOKEN = 'lionsOfficialAccessToken'
 const REFRESH_TOKEN = 'lionsOfficialRefreshToken'
 
@@ -86,7 +86,7 @@ export async function getCurrentVersionNumber() {
 }
 
 export async function setCurrentVersionNumber() {
-    await AsyncStorage.setItem('CURRENT_VERSION_NUMBER', APP_VERSION)
+    await AsyncStorage.setItem('CURRENT_VERSION_NUMBER', LOCAL_APP_VERSION)
 }
 
 export async function getMatchMan() {
@@ -100,6 +100,15 @@ export async function getMatchMan() {
 export async function setMatchMan(matchMan) {
     // if(__DEV__)console.log('setMatchMan',matchMan)
     await AsyncStorage.setItem('MAN_OF_MATCH', JSON.stringify(matchMan))
+}
+export async function getVote() {
+    return await AsyncStorage.getItem('VOTE_RECORD', (err, result) => {
+        return result
+    })
+}
+
+export async function setVote(voteRecord) {
+    await AsyncStorage.setItem('VOTE_RECORD', JSON.stringify(voteRecord))
 }
 
 export async function setAddedToCalanderCheck() {

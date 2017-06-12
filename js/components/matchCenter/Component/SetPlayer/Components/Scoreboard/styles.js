@@ -37,17 +37,17 @@ module.exports = styleSheetCreate({
   contentContainerWithBox:{
     flexDirection:'row',
     marginTop: 8,
-    justifyContent:'center',
-    paddingHorizontal:5
+    justifyContent:'flex-start',
+    paddingHorizontal:2
 
   },
   scoreboardContentTitle: {
     fontFamily: styleVar.fontCondensed,
     fontSize: 18,
     lineHeight: 18,
-    textAlign: 'center',
+    textAlign: 'left',
     color: styleVar.colorText,
-    flex:5
+    marginLeft:3
   },
   proportionTextView:{
     height: 30,
@@ -56,11 +56,11 @@ module.exports = styleSheetCreate({
   },
   proportionText:{
     fontFamily: styleVar.fontCondensed,
-    fontSize: 24,
-    lineHeight: 24,
+    fontSize: 22,
+    lineHeight: 22,
     textAlign: 'center',
     color: styleVar.colorText,
-    paddingTop: 4
+    paddingTop: 8
   },
   ratioTestView:{
     width: 50,
@@ -78,5 +78,10 @@ module.exports = styleSheetCreate({
     textAlign: 'center',
     color: styleVar.colorText,
     paddingTop: 6
-  }
+  },
+  iconImg:{
+        width: styleVar.deviceWidth*0.15,
+        height: styleVar.deviceWidth*0.15,
+        backgroundColor: 'transparent'
+    }
 })

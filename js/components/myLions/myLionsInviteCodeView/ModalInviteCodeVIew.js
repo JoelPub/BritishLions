@@ -9,6 +9,7 @@ import { shareTextWithTitle } from '../../utility/socialShare'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from '../styles'
+import RatingPopUp from '../../global/ratingPopUp'
 
 const ShareButton = ({onPress,close}) => (
   <View style={styles.createGroupFooter}>
@@ -29,8 +30,10 @@ class ModalInviteCodeVIew extends Component {
     super(props)
     this._scrollView = KeyboardAwareScrollView
     this.state = {
-      modalType: 'success'
-    };
+            modalType: 'success',
+            modalRate: false,
+            showModal: true
+    }
   }
   callbackParent = ()=> {
     this.props.callbackParent()
@@ -52,8 +55,20 @@ class ModalInviteCodeVIew extends Component {
     let { data} = this.props
     let invitation_code = data ? data.invitationCode : ''
     let deccribe = 'I’ve joined a private league on the Lions Official App. Use this code: '+invitation_code+' to join! #LionsNZ2017'
-    shareTextWithTitle(deccribe,'')
+    shareTextWithTitle(deccribe,'',this.popupRating(true))
   }
+  popupRating = (v) => {
+      if(__DEV__)console.log('popupRating',v)
+      if(v===false) {
+        this.setState({modalRate:false})
+      }
+      else if(v===true) {
+        this.setState({modalRate:false,showModal:false},()=>{
+          this.setState({modalRate:true,showModal:true})
+        })
+      }
+  }
+
   render() {
     let { modalType ,data,groupName} = this.props
     let { title, contentText, subTitle, subContentText } =  this.getDetail(modalType,data,groupName)
@@ -64,12 +79,15 @@ class ModalInviteCodeVIew extends Component {
 
     return(
       <KeyboardAwareScrollView  ref={(scrollView) => { this._scrollView = scrollView }}>
-        <SquadModal modalVisible={this.props.modalVisible} callbackParent = {this.callbackParent} >
-          <View style={[styles.modalViewWrapper,styles.modalGropp]}>
-            <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
-            <Text style={subTitleStyle}>{subTitle}</Text>
-            <Text style={styles.modalCreateGroupContent}>{subContentText}</Text>
-            <ShareButton onPress={this.shareClick } close = {this.callbackParent} />
+        <SquadModal modalVisible={this.props.modalVisible&&this.state.showModal} callbackParent = {this.callbackParent} >
+          <View>
+            {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
+            <View style={[styles.modalViewWrapper,styles.modalGropp]}>
+              <Text style={styles.modalCreateGroupContent}>{contentText}</Text>
+              <Text style={subTitleStyle}>{subTitle}</Text>
+              <Text style={styles.modalCreateGroupContent}>{subContentText}</Text>
+              <ShareButton onPress={this.shareClick } close = {this.callbackParent} />
+            </View>
           </View>
         </SquadModal>
       </KeyboardAwareScrollView>

@@ -240,6 +240,7 @@ class News extends Component {
             //         scriptPos=item.article.toLowerCase().indexOf('<blockquote',scriptPos)
             //     })           
             // }
+            item.article=item.article.replace(/blockquote/ig,'div')
 
         }
         function handleVideo(item) {

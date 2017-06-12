@@ -38,6 +38,7 @@ import TeamList from '../components/teamList'
 import TeamSaveBtn from '../components/teamSaveBtn'
 import {convertTeamToShow} from '../components/teamToShow'
 import Versus from '../components/versus'
+import Toast from 'react-native-root-toast'
 
 class MyLionsManageTeam extends Component {
 
@@ -63,13 +64,26 @@ class MyLionsManageTeam extends Component {
                isNetwork: false
            })
        }
-        if(error !== ''){
-            Alert.alert(
-                'An error occured',
-                error,
-                [{text: 'Dismiss'}]
-            )
-        }
+        let toast = Toast.show('An error occured', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                
+            }
+        })
     }
     _showDetail(item, route,playerPos) {
         this.props.setPositionToAdd(null)

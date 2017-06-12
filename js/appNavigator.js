@@ -6,7 +6,7 @@ import { setAccessGranted } from './actions/token'
 import { getAccessToken, getRefreshToken, updateToken, removeToken, getCurrentVersionNumber, setCurrentVersionNumber } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
-import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage } from 'react-native'
+import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage,NativeModules } from 'react-native'
 import { closeDrawer } from './actions/drawer'
 import { popRoute } from './actions/route'
 import { statusBarColor } from './themes/base-theme'
@@ -199,7 +199,7 @@ class AppNavigator extends Component {
 
         getCurrentVersionNumber().then((versionNumber)=>{
             if(__DEV__)console.log('@@@versionNumber',versionNumber)
-            if(versionNumber === undefined || versionNumber !== '4'){
+            if(versionNumber === undefined || versionNumber !== '5'){
                 if(__DEV__)console.log('@@@clear')
                 AsyncStorage.clear()
                 setCurrentVersionNumber()
@@ -216,14 +216,14 @@ class AppNavigator extends Component {
             if(this.props.store.getState().drawer.drawerState == 'closed')
                 this._drawer.close()
         })
-//        NativeModules.One.init(
-//            "ONE-X1Q7UKTXW6-4730",
-//            "lions",
-//            "7c9a6a65-3569-4338-94e0-589a64457784",
-//            "ce32efd4-7d0d-4c4f-bd11-b45f3f727739",
-//            "api@lionsrugby",
-//            false,
-//            "eu2.thunderhead.com");
+        NativeModules.One.init(
+            "ONE-X1Q7UKTXW6-4730",
+            "lions",
+            "7c9a6a65-3569-4338-94e0-589a64457784",
+            "ce32efd4-7d0d-4c4f-bd11-b45f3f727739",
+            "api@lionsrugby",
+            false,
+            "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
             // if (__DEV__)console.log('this._navigator',this._navigator)
             // if (__DEV__)console.log('globalNav.navigator',globalNav.navigator)

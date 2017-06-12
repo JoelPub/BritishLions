@@ -9,8 +9,6 @@ import theme from '../../../../../../themes/base-theme'
 import styles from './styles'
 import styleVar from '../../../../../../themes/variable'
 import Triangle from '../../../../../../components/global/Triangle'
-import lionsCopyImage from  './images/lionsCopy2.png'
-import barbarinasCopyImage from  './images/barbariansCopy.png'
 
 class Scoreboard extends Component {
 
@@ -28,9 +26,8 @@ class Scoreboard extends Component {
     this.updateStyle(page)
   }
   render() {
-   let {isWithProportion,isDown ,titles,oppositionScore,bilScore} = this.props
+   let {isWithProportion,isDown ,titles,oppositionScore,bilScore,detail,isKick} = this.props
    let  proportionMargin =  isWithProportion ? {marginLeft :10} : {}
-    let iconImage = !isDown ?  lionsCopyImage: barbarinasCopyImage
     let colorConversions = !isDown ? 'rgb(208,7,41)' : 'black'
     let colorPenalties = !isDown ? 'rgb(255,204,40)' : 'rgb(31,188,210)'
     let deviveFiveStyle = styleVar.deviceWidth ===320 ? {fontSize: 14,lineHeight: 14} : {}
@@ -38,15 +35,23 @@ class Scoreboard extends Component {
     return (
       <View style={ [styles.container]}>
         <View style={styles.titleView}>
-          <Image   source={iconImage}/>
+          {
+            isDown?
+            <Image source={{uri: detail&&detail.opposition_image}} resizeMode='contain' style={styles.iconImg}/>
+            :
+            <Image source={require('./images/lionsCopy2.png')} />
+          }
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.contentContainerWithBox}>
             <View style={{width:14,height:14,backgroundColor:colorConversions}}></View>
+            {
+                isKick &&
+                <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions,marginLeft:3}}></View>
+            }
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[0]}</Text>
-            <View style={{width:14,height:14,borderWidth:1,backgroundColor:'transparent',borderColor:colorConversions}}></View>
           </View>
-          <View style={{flexDirection:'row',marginTop:4}}>
+          <View style={{flexDirection:'row',marginTop:4,alignSelf:'center'}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>{oppositionScore.value}</Text>
@@ -62,15 +67,20 @@ class Scoreboard extends Component {
               height={14}
               color={colorPenalties}
             />
+             {
+                isKick &&
+                <Triangle
+                  width={14}
+                  height={14}
+                  color={colorPenalties}
+                  trans={true}
+                  style={{marginLeft:3, marginTop:-1}}
+                />
+            }
             <Text style={[styles.scoreboardContentTitle,deviveFiveStyle]}>{titles[1]}</Text>
-            <Triangle
-              width={14}
-              height={14}
-              color={colorPenalties}
-              trans={true}
-            />
+
           </View>
-          <View style={{flexDirection:'row',marginTop:4}}>
+          <View style={{flexDirection:'row',marginTop:4,alignSelf:'center'}}>
             {this.props.isWithProportion ?
               <View style={styles.proportionTextView}>
                 <Text style={[styles.proportionText]}>{bilScore.value}</Text>

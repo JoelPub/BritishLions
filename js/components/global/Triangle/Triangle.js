@@ -23,7 +23,7 @@ import {
         width:this.props.width,
         height:this.props.height+2,
         backgroundColor:'transparent',
-        top:-1
+        top:-1,
       }
     }
     else {

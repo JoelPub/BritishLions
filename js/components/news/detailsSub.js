@@ -26,7 +26,8 @@ class NewsDetailsSub extends Component {
          super(props)
         this.state={
           height:0,
-          isLoaded:false
+          isLoaded:false,
+          startLoad:false
         }
          this._scrollView = ScrollView
         this.webview = WebView
@@ -83,14 +84,14 @@ class NewsDetailsSub extends Component {
         // if (__DEV__)console.log('gotoURL',url)
     Linking.canOpenURL(url).then(supported => {
             if (supported) {
-               if(Platform.OS === 'android'){
-                 NativeModules.One.getURLWithOneTid(url)
-                 NativeModules.One.sendInteractionForOutboundLink(url)
-
-               }
+//               if(Platform.OS === 'android'){
+//                 NativeModules.One.getURLWithOneTid(url)
+//                 NativeModules.One.sendInteractionForOutboundLink(url)
+//
+//               }
                  this.webview.stopLoading()
-                 Linking.openURL(url)
-             //this.bindingTID(url)
+//                 Linking.openURL(url)
+                 this.bindingTID(url)
             } else {
                 if (__DEV__)console.log('This device doesnt support URI: ' + url)
             }
@@ -117,10 +118,16 @@ class NewsDetailsSub extends Component {
           
         })
     }
-  componentDidMount() {
-    NativeModules.One.sendInteraction("/news",
+    componentDidMount() {
+      NativeModules.One.sendInteraction("/news",
       { emailAddress : "" });
-  }
+      setTimeout(()=>{
+        this.setState({startLoad:true})
+      },1000)
+    }
+    componentWillUnmount() {
+      this.setState({startLoad:false})
+    }
     _handleStartShouldSetPanResponderCapture(e, gestureState) {
        // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture e',e.target)
        // for(let node in e) {
@@ -173,7 +180,7 @@ class NewsDetailsSub extends Component {
 
     _handlePanResponderEnd(e, gestureState) {
        if (__DEV__)console.log('_handlePanResponderEnd gestureState',gestureState)
-       if(Math.abs(gestureState.dx)/3>Math.abs(gestureState.dy)) {
+       if(Math.abs(gestureState.dx)/3>Math.abs(gestureState.dy)&&this.state.isLoaded) {
             let index = this._findID(this._items, this.props.article.id)
             let rtl=gestureState.dx<0?false:true
             if (__DEV__)console.log('rtl',rtl)
@@ -206,25 +213,28 @@ class NewsDetailsSub extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-
                     <LionsHeader 
                         back={true} 
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
+                {
+                  this.state.startLoad?
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }} onScroll={this.handleScroll.bind(this)}>
                         <View  {...this._panResponder.panHandlers}>
-                        <ImagePlaceholder height={270}>
-                            <Image source={{uri: this.props.article.image}} style={styles.banner}>
-                                <Image 
-                                    transparent
-                                    resizeMode='cover'
-                                    source={require('../../../images/shadows/rectangle.png')}
-                                    style={styles.newsPosterContent}>
+                        <View>
+                          <ImagePlaceholder height={270}>
+                              <Image source={{uri: this.props.article.image}} style={styles.banner}>
+                                  <Image 
+                                      transparent
+                                      resizeMode='cover'
+                                      source={require('../../../images/shadows/rectangle.png')}
+                                      style={styles.newsPosterContent}>
 
-                                </Image>
-                            </Image>
-                        </ImagePlaceholder>
+                                  </Image>
+                              </Image>
+                          </ImagePlaceholder>
+                        </View>
 
                         <View>
                             <Text numberOfLines={3} style={styles.newsPosterHeader}>
@@ -273,6 +283,9 @@ class NewsDetailsSub extends Component {
                         <LionsFooter isLoaded={true} />
                         </View>
                     </ScrollView>
+                    :
+                    <ActivityIndicator style={loader.centered} size='large' />
+                }
                     <EYSFooter/>
                 </View>
 

@@ -5,7 +5,7 @@ import Toast from 'react-native-root-toast'
 
 export function getGameMomentum(type,gameID,handleSuccess,handleError) {
     let optionsInfo = {
-      url: 'http://bilprod-livedev.azurewebsites.net/getGameMomentum',
+      url: 'http://bilprod.azurewebsites.net/getGameMomentum',
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
@@ -35,7 +35,7 @@ export function getGameMomentum(type,gameID,handleSuccess,handleError) {
 }
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'https://bilprod-livedev.azurewebsites.net/getGameSetPlays',
+    url: 'http://bilprod.azurewebsites.net/getGameSetPlays',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -53,7 +53,7 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'http://bilprod-livedev.azurewebsites.net/getGameOnFire',
+    url: 'http://bilprod.azurewebsites.net/getGameOnFire',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -68,7 +68,7 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 }
 export function getTimeLineLiveSummary (options, type, summaryData, handleSuccess, handleError) {
   let optionsInfo = {
-    url: 'http://bilprod-livedev.azurewebsites.net/getTimelineLiveSummary',
+    url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
@@ -95,9 +95,10 @@ export function getTimeLineLiveSummary (options, type, summaryData, handleSucces
 
 }
 function processSummaryData(type,data,summaryData){
-  // if (__DEV__)console.log('processSummaryData',type)
-  // if (__DEV__)console.log('data',data)
-  // if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
+  if (__DEV__)console.log('processSummaryData',type)
+  if (__DEV__)console.log('data',data)
+  if (__DEV__)console.log('summaryData.live',summaryData.live)
+  if (__DEV__)console.log('summaryData.timeline',summaryData.timeline)
   let result=summaryData.timeline
   if (type==='init'&&data.length>0&&(result.length===0||(result.length>0&&data[0].sequenceId>result[0].seq))) {
     if(result.length===0) {
@@ -117,27 +118,30 @@ function processSummaryData(type,data,summaryData){
           }
         })
     }
+    if(summaryData.live!==undefined&&summaryData.live!==null) {
+      let toast = Toast.show('THERE ARE NEW MESSAGES', {
+                      duration: Toast.durations.SHORT,
+                      position: Toast.positions.BOTTOM,
+                      shadow: true,
+                      animation: true,
+                      hideOnPress: true,
+                      delay: 0,
+                      onShow: () => {
+                          // calls on toast\`s appear animation start
+                      },
+                      onShown: () => {
+                          // calls on toast\`s appear animation end.
+                      },
+                      onHide: () => {
+                          // calls on toast\`s hide animation start.
+                      },
+                      onHidden: () => {
+                          
+                      }
+                  })      
+    }
     
-    let toast = Toast.show('THERE ARE NEW MESSAGES', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                    delay: 0,
-                    onShow: () => {
-                        // calls on toast\`s appear animation start
-                    },
-                    onShown: () => {
-                        // calls on toast\`s appear animation end.
-                    },
-                    onHide: () => {
-                        // calls on toast\`s hide animation start.
-                    },
-                    onHidden: () => {
-                        
-                    }
-                })
+
   }
   else if(type==='extend'){
     if(data.length>0) {      
@@ -174,7 +178,7 @@ function processSummaryData(type,data,summaryData){
 function processMomentumData(data){
     if(__DEV__)console.log('@@@@processMomentumData',data)
     let result=[]
-    let fullTime=80
+    let fullTime=160
     if(data&&data.team_momentum&&data.score_advantage) {
         for(let i=0;i<fullTime;i=i+10){
             let momentum={score_advantage:[],team_momentum:[],isFirst:false,finished:false,integrity:false,timeMark:0}

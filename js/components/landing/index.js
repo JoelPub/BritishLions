@@ -34,6 +34,7 @@ import { getUserId, removeToken, getUserFullName,getRefreshToken } from '../util
 import { service } from '../utility/services'
 import { sortBy } from 'lodash'
 import { actionsApi } from '../utility/urlStorage'
+import Toast from 'react-native-root-toast'
 
 class Landing extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class Landing extends Component {
         this.latestUpdatesFeeds = []
 
         this.state = {
-            apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news.php',
+            apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
             apiGalleriesUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php',
             apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyDZ_Oe-ZMxv-3vL3SX3BB2KE5wKVwkF64U',
             isLoaded: false,
@@ -171,11 +172,26 @@ class Landing extends Component {
                 isNetwork: false
             })
         }
-        Alert.alert(
-            'An error occured',
-            error,
-            [{text: 'Dismiss'}]
-        )
+        let toast = Toast.show('An error occured', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        delay: 0,
+                        onShow: () => {
+                            // calls on toast\`s appear animation start
+                        },
+                        onShown: () => {
+                            // calls on toast\`s appear animation end.
+                        },
+                        onHide: () => {
+                            // calls on toast\`s hide animation start.
+                        },
+                        onHidden: () => {
+                            
+                        }
+                    })
     }
 
     _replaceRoute(route) {

@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator,Alert} from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator,Alert,DeviceEventEmitter} from 'react-native'
 import { Container, Content, Text, Button, Icon, Input } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import LinearGradient from 'react-native-linear-gradient'
@@ -74,6 +74,7 @@ class CompetitionLadderShare extends Component {
     this.backNav()
   }
   backNav = () => {
+    
     this.props.popRoute()
   }
   shareSnapshot = (context,callback) => {
@@ -142,6 +143,7 @@ class CompetitionLadderShare extends Component {
   }
   componentWillUnmount() {
     this.isUnMounted = true
+    DeviceEventEmitter.emit('ladderratingpopup', true)
   }
   componentDidMount() {
     setTimeout(()=>{

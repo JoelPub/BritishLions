@@ -33,6 +33,7 @@ import { getSoticFullPlayerList} from '../../utility/apiasyncstorageservice/soti
 import TeamModel from  '../../../modes/Team'
 import {convertTeamToShow} from '../components/teamToShow'
 import { setTeamToShow } from '../../../actions/squad'
+import RatingPopUp from '../../global/ratingPopUp'
 
 
 const locStyle = styleSheetCreate({
@@ -303,9 +304,11 @@ class MyLionsCompetitionGameResults extends Component {
             resultInfo: [],
             modalResults: false,
             drillDownItem: this.props.drillDownItem,
-            isPop:false
+            isPop:false,
+            modalRate: false
         }
         this.uniondata = Data
+        this.subscriptionRate = null
     }
     goShare = () => {
         //if (__DEV__)console.log(this.state.rating)
@@ -323,6 +326,14 @@ class MyLionsCompetitionGameResults extends Component {
          isPop:true
         })
         this.props.popToRoute('myLionsCompetitionGameListing')
+    }
+    popToCenter = () => {
+        this.props.popToRoute('myLionsCompetitionCentre')
+        if(strToUpper(this.state.resultInfo.is_won)==='TRUE') {
+            setTimeout(()=>{
+                DeviceEventEmitter.emit('centerratingpopup', true)
+            },2000)
+        }
     }
 
     render() {
@@ -402,7 +413,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     <ButtonFeedback 
                                         rounded 
                                         style={[styles.roundButton, {marginBottom: 30}]}
-                                        onPress={() => this.props.popToRoute('myLionsCompetitionCentre')}>
+                                        onPress={this.popToCenter}>
                                         <Icon name='md-analytics' style={styles.roundButtonIcon} />
                                         <Text style={styles.roundButtonLabel}>
                                             COMPETITION CENTRE
@@ -424,6 +435,7 @@ class MyLionsCompetitionGameResults extends Component {
                                 <Text style={styles.modalContentText}>The EY analytics engine will take into account your selections and the random factors you have been given to determine the outcome of the match. You can share the result of the match with your friends on social media, or return to the competition centre and prepare for the next match.</Text>
                             </View>
                     </SquadModal>
+                    {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
 
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
@@ -445,13 +457,32 @@ class MyLionsCompetitionGameResults extends Component {
                 })
             }
         })
+        this.subscriptionRate = DeviceEventEmitter.addListener('resultratingpopup',this.popupRating)
     }
     componentWillUnmount() {
 
             setTimeout(() => DeviceEventEmitter.emit('_getList', this.state.drillDownItem.round_id), 600)
+            this.subscriptionRate.remove()
+            if(strToUpper(this.state.resultInfo.is_won)==='TRUE') {
+                setTimeout(()=>{
+                    DeviceEventEmitter.emit('listratingpopup', true)
+                },2000)
+            }
         
 
 
+    }
+    popupRating = (v) => {
+        if(__DEV__)console.log('popupRating',v)
+        if(v===false) {
+          this.setState({modalRate:false})
+        }
+        else if(v===true) {
+          this.setState({modalRate:false},()=>{
+
+            if(strToUpper(this.state.resultInfo.is_won)==='TRUE')this.setState({modalRate:true})
+          })
+        }
     }
 
     getInfo(token,userProfile){

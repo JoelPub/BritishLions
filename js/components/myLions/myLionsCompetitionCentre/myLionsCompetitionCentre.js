@@ -26,6 +26,7 @@ import { actionsApi } from '../../utility/urlStorage'
 import { pushNewRoute } from '../../../actions/route'
 import { setTeamDataTemp,setTeamData,setTeamToShow } from '../../../actions/squad'
 import { strToUpper,strToLower } from '../../utility/helper'
+import RatingPopUp from '../../global/ratingPopUp'
 
 const locStyle = styleSheetCreate({
     round: {
@@ -141,9 +142,11 @@ class MyLionsCompetitionCentre extends Component {
             isLoaded: false,
             competitionInfo:[],
             needReflash: false,
-            userProfile: this.props.userProfile
+            userProfile: this.props.userProfile,
+            modalRate: false
         }
         this.subscription = null
+        this.subscriptionRate = null
     }
 
     componentDidMount() {
@@ -152,8 +155,24 @@ class MyLionsCompetitionCentre extends Component {
             this.props.setTeamData()
             this.props.setTeamToShow()            
         },1000)
-      if(__DEV__)console.log('***************')
-        if(__DEV__)console.log(this.props.jumpRoute)
+        if(__DEV__)console.log('***************')
+        if(__DEV__)console.log(this.props.jumpRoute)            
+        this.subscriptionRate = DeviceEventEmitter.addListener('centerratingpopup',this.popupRating)
+    }
+    componentWillUnmount() {
+        this.subscriptionRate.remove()
+    }
+    popupRating = (v) => {
+        if(__DEV__)console.log('popupRating',v)
+        if(v===false) {
+          this.setState({modalRate:false})
+        }
+        else if(v===true) {
+          this.setState({modalRate:false},()=>{
+
+            this.setState({modalRate:true})
+          })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -241,6 +260,7 @@ class MyLionsCompetitionCentre extends Component {
                             <ActivityIndicator style={loader.centered} size='large' />
                             }
                             <LionsFooter isLoaded={true} />
+                            {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
                         </ScrollView>
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire onFinish={this._renderLogic.bind(this)} />

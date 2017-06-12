@@ -148,9 +148,9 @@ class MatchSummary extends Component {
                                 <Text style={styles.rightCol}>{isHost?opposition&&opposition.pen_con:bil&&bil.pen_con}%</Text>
                             </View>
 
-                          </ScrollView>    
-                    }                    
-                                  
+                          </ScrollView>
+                    }
+
                     </View>
               </View>
         )

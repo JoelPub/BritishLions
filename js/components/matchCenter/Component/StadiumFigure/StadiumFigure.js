@@ -43,10 +43,9 @@ class StadiumFigure extends Component {
 
 
   render() {
-    let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith} = this.props
+    let {redPoints, blackPoints, orangePoints, bluePoints ,titles,imageWith,isDrawFullPoint} = this.props
     let pointWidth = 14
     let extraHeight = 98
-
     return (
       <View style={[styles.container,{width:imageWith}]} >
         <Image style={[styles.image,{width:imageWith}]} source={stadiumImage} >
@@ -62,7 +61,7 @@ class StadiumFigure extends Component {
               }
               return(
                 <View
-                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(208,7,41)'},item.is_successful&&strToLower(item.is_successful)==='true'&&{backgroundColor:'rgb(208,7,41)'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(208,7,41)'},(isDrawFullPoint || (item.is_successful&&strToLower(item.is_successful)==='true'))&&{backgroundColor:'rgb(208,7,41)'},loactionStyle]}
                   key={index}
                 />
                 )
@@ -80,7 +79,7 @@ class StadiumFigure extends Component {
               }
               return(
                 <View
-                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(0,0,0)'},item.is_successful&&strToLower(item.is_successful)==='true'&&{backgroundColor:'rgb(0,0,0)'},loactionStyle]}
+                  style={[{width:pointWidth,height:pointWidth,borderWidth:1,borderColor:'rgb(0,0,0)'},(isDrawFullPoint||(item.is_successful&&strToLower(item.is_successful)==='true'))&&{backgroundColor:'rgb(0,0,0)'},loactionStyle]}
                   key={index}
                 />
               )
@@ -103,7 +102,7 @@ class StadiumFigure extends Component {
                   color={'rgb(255,204,40)'}
                   style={[loactionStyle]}
                   key={index}
-                  trans={item.is_successful&&strToLower(item.is_successful)==='true'}
+                  trans={!isDrawFullPoint && item.is_successful&&strToLower(item.is_successful)==='false'}
                 />
               )
             })
@@ -125,7 +124,7 @@ class StadiumFigure extends Component {
                   color={'rgb(31,188,210)'}
                   style={[loactionStyle]}
                   key={index}
-                  trans={item.is_successful&&strToLower(item.is_successful)==='true'}
+                  trans={!isDrawFullPoint && item.is_successful&&strToLower(item.is_successful)==='false'}
                 />
               )
             })

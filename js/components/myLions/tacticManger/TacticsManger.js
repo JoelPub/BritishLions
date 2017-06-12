@@ -345,7 +345,8 @@ class TacticsManger extends Component {
           <SquadModal
             modalVisible={this.state.modalResults}
             callbackParent={this.iconPress}>
-            <View style={[styles.modalContent]}>
+            <ScrollView  style={[styles.modalContent]}>
+            <View >
               <Text style={styles.modalContentTitleText}>SELECT TACTICS</Text>
               
               <Text style={styles.modalContentText}>Select your tactics to best defeat your opponent.</Text>
@@ -361,6 +362,7 @@ class TacticsManger extends Component {
               <Text style={styles.modalContentText}>10-man - Utilising the strength of the forwards and kickers to keep ball possession up front</Text>
               <Text style={styles.modalContentText}>Balanced - a mixture of the other two</Text>
             </View>
+            </ScrollView>
           </SquadModal>
           <EYSFooter mySquadBtn={true}/>
         </View>

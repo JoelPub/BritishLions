@@ -19,6 +19,7 @@ import styleVar from '../../../../themes/variable'
 import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper,splitName,mapJSON } from '../../../utility/helper'
 import { service } from '../../../utility/services'
+import Toast from 'react-native-root-toast'
 
 
 const styles = styleSheetCreate({
@@ -138,35 +139,48 @@ const PositionTitle =({pos,data}) =>(
 
 
 class MatchMan extends Component {
-	constructor(props){
-        	super(props)
-			this.uniondata = Data
-			this.state = {
-			    isLoaded: false,
-			    matchMan: {},
-			    isNetwork: true,
+    constructor(props){
+            super(props)
+            this.uniondata = Data
+            this.state = {
+                isLoaded: false,
+                matchMan: {},
+                isNetwork: true,
                 selectedPosition:null,
                 selectedSequence:null,
                 gameID:this.props.detail.id
 
-			}
+            }
     }
 
     _showError(error) {
         if(!this.state.isNetwork) return
 
-       if(error === 'Please make sure that you\'re connected to the network.') {
+        if(error === 'Please make sure that you\'re connected to the network.') {
            this.setState({
                isNetwork: false
            })
-       }
-        if(error !== ''){
-            Alert.alert(
-                'An error occured',
-                error,
-                [{text: 'Dismiss'}]
-            )
         }
+        let toast = Toast.show('An error occured', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                
+            }
+        })
     }
 
     componentDidMount() {
@@ -199,7 +213,7 @@ class MatchMan extends Component {
                   // })
 
                     let optionsInfo = {
-                        url: 'https://bilprod-livedev.azurewebsites.net/GetManOfMatchInfo',
+                        url: 'https://bilprod.azurewebsites.net/GetManOfMatchInfo',
                         data: {id:this.state.gameID},
                         onAxiosStart: null,
                         onAxiosEnd: null,

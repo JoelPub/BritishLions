@@ -20,6 +20,7 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import Data from '../../../../contents/unions/data'
 import { actionsApi } from '../../utility/urlStorage'
 import loader from '../../../themes/loader-position'
+import Toast from 'react-native-root-toast'
 
 const locStyle = styleSheetCreate({
     btnBg: {
@@ -143,13 +144,26 @@ class TeamWidget extends Component {
                isNetwork: false
            })
        }
-        if(error !== ''){
-            Alert.alert(
-                'An error occured',
-                error,
-                [{text: 'Dismiss'}]
-            )
-        }
+        let toast = Toast.show('An error occured', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+            onShow: () => {
+                // calls on toast\`s appear animation start
+            },
+            onShown: () => {
+                // calls on toast\`s appear animation end.
+            },
+            onHide: () => {
+                // calls on toast\`s hide animation start.
+            },
+            onHidden: () => {
+                
+            }
+        })
     }
 
     _getTeam(){

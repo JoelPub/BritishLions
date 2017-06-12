@@ -20,7 +20,10 @@ import Immutable, { Map, List,Iterable } from 'immutable'
 import { strToUpper,splitName,mapJSON } from '../../utility/helper'
 import { isEmptyObject } from '../../utility/helper'
 
-const styles = styleSheetCreate({    
+const styles = styleSheetCreate({
+    wrapper:{
+        backgroundColor:'rgb(0,0,0)'
+    },  
     individaulPositionRow:{
         flexDirection:'row',
     },
@@ -465,7 +468,7 @@ class GamedayTeam extends Component {
 
 	render() {
 		return (
-		<View>
+		<View style={styles.wrapper}>
 		{
 		    this.state.teamAvaliable ?
 			<View>

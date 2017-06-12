@@ -98,10 +98,10 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
         
         <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
         
-        <View style={[styles.bannerDetails, locStyle.bannerDetails]}>
+        <ButtonFeedback style={[styles.bannerDetails, locStyle.bannerDetails]} onPress={pressCoachBox}>
             <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
-        </View>
-        <View style={locStyle.infoBox}>
+        </ButtonFeedback>
+        <ButtonFeedback style={locStyle.infoBox} onPress={pressCoachBox}>
             <Text style={locStyle.infoBoxText}>
                 Visit The British & Irish Lions Coaches' Box for live match coverage and statistics.
             </Text>
@@ -116,7 +116,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
                     COACHES' BOX
                 </Text>
             </ButtonFeedback>
-        </View>
+        </ButtonFeedback>
     </View>
 )
 
@@ -303,6 +303,7 @@ class PlayerFigure extends Component {
     }
 
     _goToCoachBox = (data) => {
+        console.log(data)
         this._drillDown(data, 'coachBox')
     }
 
@@ -372,7 +373,7 @@ class PlayerFigure extends Component {
                 return <LiveGame
                             gameStatus={gameStatus}
                             data={fixture}
-                            pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}
+                            pressBanner={()=> this._goToCoachBox(fixture)}
                             pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':

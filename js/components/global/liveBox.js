@@ -124,6 +124,7 @@ export default class LiveBox extends Component {
                       bil_score: this.props.data.statics&&this.props.data.statics.bil&&this.props.data.statics.bil.score,
                       op_score: this.props.data.statics&&this.props.data.statics.opposition&&this.props.data.statics.opposition.score,
                       is_full_time: this.props.data.is_full_time,
+                      is_parse_time : this.props.data.is_ticking === 'false',
                       previous_time : this.props.data.game_time
                     })
         }
@@ -142,6 +143,7 @@ export default class LiveBox extends Component {
                       bil_score: nextProps.data.statics&&nextProps.data.statics.bil&&nextProps.data.statics.bil.score,
                       op_score: nextProps.data.statics&&nextProps.data.statics.opposition&&nextProps.data.statics.opposition.score,
                       is_full_time: nextProps.data.is_full_time,
+                      is_parse_time : nextProps.data.is_ticking === 'false',
                       previous_time : nextProps.data.game_time
                     })
         }

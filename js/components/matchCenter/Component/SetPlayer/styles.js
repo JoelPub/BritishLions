@@ -4,6 +4,14 @@ import { styleSheetCreate } from '../../../../themes/lions-stylesheet'
 import styleVar from '../../../../themes/variable'
 
 module.exports = styleSheetCreate({
+  wrapper:{
+    marginTop:50,
+    paddingTop:10,
+    marginHorizontal:10,
+    borderRadius:0,
+    backgroundColor:'rgb(255,255,255)',  
+    flex: 1,
+  },
   background: {
     flex: 1,
     width: null,
@@ -93,9 +101,18 @@ module.exports = styleSheetCreate({
   },
   headerWrapper: {
     flexDirection:'row',
-    paddingHorizontal:10,
-    justifyContent:'space-between'
+    //paddingLeft:10,
+    justifyContent:'flex-end',
+    alignItems:'center',
   },
+    indicatorWrapper: {
+      flexDirection:'row',
+      paddingLeft:(styleVar.deviceWidth-320)/15,
+      paddingRight:styleVar.deviceWidth/13,
+      justifyContent:'space-between',
+      alignItems:'center',
+      width:styleVar.deviceWidth - 80
+    },
   rect:{
     width:14,
     height:14,
