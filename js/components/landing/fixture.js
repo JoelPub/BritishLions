@@ -151,6 +151,7 @@ class PlayerFigure extends Component {
         this.state = {
             getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo,
             fixture: FixtureInfoModel().toJS(),
+            lastFixture:{},
             fixturesList:[],
             isLastFixture: false,
             gameStatus: null,
@@ -265,18 +266,22 @@ class PlayerFigure extends Component {
         if (liveFixturesArr.length > 0) {
             // it means, there's a current live game
             // show live game
+            let liveLength = liveFixturesArr.length
             this.setState({
                 fixture: liveFixturesArr[0],
                 gameStatus: 'live',
-                isLoaded: true
+                isLoaded: true,
+                lastFixture : liveFixturesArr[liveLength - 1]
             })
         } else if (preFixturesArr.length > 0) {
             // there's no current live game but there's upcoming fixture
             // show the the upcoming fixture
+            let preLength = preLength.length
             this.setState({
                 fixture: preFixturesArr[0],
                 gameStatus: 'pre',
-                isLoaded: true
+                isLoaded: true,
+                lastFixture: preFixturesArr[preLength - 1]
             })
         } else if (postFixturesArr.length > 0) {
             // there's no current live game and no upcoming fixture
@@ -369,7 +374,8 @@ class PlayerFigure extends Component {
 
     _gameMode(data) {
         let fixture = this.state.fixture
-        let gameStatus = strToLower(this.state.gameStatus)
+        let lastFixture = this.state.lastFixture
+        let gameStatus =strToLower(this.state.gameStatus)
         //if (__DEV__) console.log('_gameMode Status: ', gameStatus, fixture)
 
         switch (gameStatus) {
@@ -381,11 +387,25 @@ class PlayerFigure extends Component {
                             pressCoachBox={()=>this._goToCoachBox(fixture)}/>
                 break;
             case 'pre':
-                return <PreGame 
+                let lastFixturedateOfEvent = new Date(`${lastFixture.date} ${lastFixture.time}`) // UTC Format
+                let nowTime = new Date() // UTC Format Now time
+                //console.warn(nowTime)
+                //console.warn('now time + 14', nowTime.setHours(nowTime.getHours() + 14))
+                //console.warn('lastFixturedateOfEvent',lastFixturedateOfEvent)
+                //console.warn('lastFixturedateOfEvent+14',lastFixturedateOfEvent.setHours(lastFixturedateOfEvent.getHours() + 14))
+                if(nowTime > lastFixturedateOfEvent.setHours(lastFixturedateOfEvent.getHours() + 14)){
+                    return <PreGame
                             gameStatus={gameStatus}
                             data={fixture} 
                             pressBanner={()=> this._drillDown({details: fixture, list: this.state.fixturesList }, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
+                }else{
+                    return <PostGame
+                              gameStatus={gameStatus}
+                              isLastFixture={true}
+                              data={lastFixture}
+                              pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}/>
+                }
                 break;
             case 'post':
                 return <PostGame 
