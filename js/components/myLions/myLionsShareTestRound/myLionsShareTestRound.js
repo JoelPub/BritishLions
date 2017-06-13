@@ -22,7 +22,6 @@ import Versus from '../components/versus'
 const ShareHeaderView = ({detail}) => (
   <View style={styles.viewShareHeader}>
     <Image resizeMode='contain' style={styles.viewHeaderImage} source={logo} />
-    <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
     <Text style={styles.headerText}>Here's my team selection for the next test!Download the Offical British & Lions app to select and submit your team.</Text>
   </View>
 )

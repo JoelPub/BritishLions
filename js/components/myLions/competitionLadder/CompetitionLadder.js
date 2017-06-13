@@ -45,7 +45,6 @@ import fetch from '../../utility/fetch'
 import { shareTextWithTitle } from '../../utility/socialShare'
 import { setPrivateLeagues} from '../../../actions/squad'
 import RatingPopUp from '../../global/ratingPopUp'
-import Toast from 'react-native-root-toast'
 
 
 
@@ -162,26 +161,13 @@ class CompetitionLadder extends Component {
         isNetwork: false
       })
     }
-    let toast = Toast.show('An error occured', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        delay: 0,
-        onShow: () => {
-            // calls on toast\`s appear animation start
-        },
-        onShown: () => {
-            // calls on toast\`s appear animation end.
-        },
-        onHide: () => {
-            // calls on toast\`s hide animation start.
-        },
-        onHidden: () => {
-            
-        }
-    })
+    if(error !== ''){
+      Alert.alert(
+        'An error occured',
+        error,
+        [{text: 'Dismiss'}]
+      )
+    }
   }
   /*get Data*/
   fetchData = (aceess_token,userID) => {
@@ -281,7 +267,11 @@ class CompetitionLadder extends Component {
       last_name:this.props.userProfile.lastName,
     }
     if(group_name===''||!group_name) {
-      this._showError("League Name can't be empty")
+      
+      this.setState({
+                createType: 'error',
+                modalData: {message:'League Name can\'t be empty'}
+              })
       return
     }
     if (__DEV__)console.log(JSON.stringify(query))
@@ -310,7 +300,6 @@ class CompetitionLadder extends Component {
                 modalData: res.data
               })
           }
-          if (__DEV__)console.log('去更新UI')
           this.updateDataAndUI()
         }else {
           this.setState({
@@ -321,8 +310,7 @@ class CompetitionLadder extends Component {
       },
       onError: (error)=>{
         if (__DEV__)console.log(error)
-        this.setState({isLoaded:false})
-        this._showError(error)
+        this.setState({createType: 'error', modalData: {message:error},isLoaded:false})
       },
       onAuthorization: () => {
 

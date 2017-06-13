@@ -40,12 +40,11 @@ const ShareHeaderView = ({success,message}) => {
     height= styleVar.deviceWidth*0.45
   }
   return(
-    <View style={[styles.viewShareHeader,{height:height}]}>
+    <View style={[styles.viewShareHeader,{height:success? 90:height}]}>
     {
       success?
       <View>
           <Text style={styles.headerTextBold}> Thank you for submitting your team.</Text>
-          <Text style={styles.headerText}>Here's my team selection for the next test!Download the Offical British & Lions app to select and submit your team.</Text>
       </View>
       :
       <Text style={styles.headerTextBold}> {message}</Text>
