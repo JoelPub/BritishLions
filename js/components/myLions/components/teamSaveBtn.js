@@ -9,7 +9,7 @@ import { styleSheetCreate } from '../../../themes/lions-stylesheet'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styleVar from '../../../themes/variable'
 import { strToUpper } from '../../utility/helper'
-import ButtonFeedback from '../../utility/buttonFeedback'
+import ButtonNetwork from '../../utility/buttonNetwork'
 import TeamModel from  '../../../modes/Team'
 import { service } from '../../utility/services'
 import {convertTeamToShow,removePlayer,addPlayer} from '../components/teamToShow'
@@ -68,10 +68,10 @@ class TeamSaveBtn extends Component {
 	render() {
         return (
         <View style={styles.wrapper}>
-            <ButtonFeedback rounded onPress={() => this._saveTeam()}
+            <ButtonNetwork rounded onPress={() => this._saveTeam()}
                 style={[styles.btn, styles.btnGreen ]}>
                 <Text style={styles.btnText}>SAVE</Text>
-            </ButtonFeedback>
+            </ButtonNetwork>
         </View>
         )
 	}
