@@ -5,7 +5,7 @@ import { Container, Text, Button, Icon, Input } from 'native-base'
 import SquadModal from '../../global/squadModal'
 import ButtonFeedback from '../../utility/buttonFeedback'
 
-import { shareTextWithTitle } from '../../utility/socialShare'
+import Share from 'react-native-share'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from '../styles'
@@ -55,7 +55,24 @@ class ModalInviteCodeVIew extends Component {
     let { data} = this.props
     let invitation_code = data ? data.invitationCode : ''
     let deccribe = 'I’ve joined a private league on the Lions Official App. Use this code: '+invitation_code+' to join! #LionsNZ2017'
-    shareTextWithTitle(deccribe,'',this.popupRating(true))
+    // shareTextWithTitle(deccribe,'',this.popupRating(true))
+    Share.open({
+            title:'LionsNZ2017',
+            message:deccribe,
+            subject:'LionsNZ2017'
+          }).then((info)=>{
+            this.popupRating(true)
+          }).catch((errorMessage)=>{
+            // if (__DEV__)console.log("error message: " + error)
+            if(errorMessage !== 'undefined' && errorMessage.error !== 'undefined' && errorMessage.error !== 'User did not share'){
+              alertBox(
+                '',
+                'Code is not shared',
+                'Dismiss'
+              )
+            }
+            this.popupRating(true)
+          })
   }
   popupRating = (v) => {
       if(__DEV__)console.log('popupRating',v)

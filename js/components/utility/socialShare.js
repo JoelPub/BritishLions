@@ -1,7 +1,7 @@
 import { Alert, Share, Platform } from 'react-native'
 import { alertBox } from './alertBox'
 
-export function shareTextWithTitle (text, posturl,callback) {
+export function shareTextWithTitle (text, posturl) {
         Share.share(posturl===''?{
             title: '',
             message: text
@@ -18,15 +18,9 @@ export function shareTextWithTitle (text, posturl,callback) {
             // tintColor: 'red'
         })
         .then(
-                result => {
-                    Platform.OS==='ios'&&result.action === 'sharedAction' ? alertBox('Success','The content has been shared successfully') : null
-                    if(callback) callback
-                }
+            result => Platform.OS==='ios'&&result.action === 'sharedAction' ? alertBox('Success','The content has been shared successfully') : null
             )
         .catch(
-            err => {
-                alertBox('Ooops','Failed to share. please try again later')
-                if(callback) callback
-                }
+            err => alertBox('Ooops','Failed to share. please try again later')
             )
 }

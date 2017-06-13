@@ -89,7 +89,7 @@ export default class RatingPopUp extends Component{
                 if(this.savedVote.type==='later') {
                     let gap=new Date()-new Date(this.savedVote.time)
                     if(__DEV__)console.log('time gap',gap/3600000)
-                    if(gap/3600000>72) this.setState({modalVisible:true})
+                    if(gap/3600000>1/60) this.setState({modalVisible:true})
                 }
             }
         })
