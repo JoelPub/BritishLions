@@ -200,7 +200,7 @@ class PlayerFigure extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                //if (__DEV__) console.log('res', res.data)
+                if (__DEV__) console.log('res', res.data)
                 if(res.data) {
                     this.setState({
                         fixturesList:res.data
@@ -271,17 +271,17 @@ class PlayerFigure extends Component {
                 fixture: liveFixturesArr[0],
                 gameStatus: 'live',
                 isLoaded: true,
-                lastFixture : liveFixturesArr[liveLength - 1]
+                // lastFixture : liveFixturesArr[liveLength - 1]
             })
         } else if (preFixturesArr.length > 0) {
             // there's no current live game but there's upcoming fixture
             // show the the upcoming fixture
-            let preLength = preLength.length
+            // let preLength = preLength.length
             this.setState({
                 fixture: preFixturesArr[0],
                 gameStatus: 'pre',
                 isLoaded: true,
-                lastFixture: preFixturesArr[preLength - 1]
+                lastFixture:postFixturesArr.length > 0 ?  postFixturesArr[postFixturesArr.length- 1] : preFixturesArr[0]
             })
         } else if (postFixturesArr.length > 0) {
             // there's no current live game and no upcoming fixture
@@ -404,7 +404,7 @@ class PlayerFigure extends Component {
                               gameStatus={gameStatus}
                               isLastFixture={true}
                               data={lastFixture}
-                              pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}/>
+                              pressBanner={()=> this._drillDown({details: lastFixture}, 'fixtureDetails')}/>
                 }
                 break;
             case 'post':
