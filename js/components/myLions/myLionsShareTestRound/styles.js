@@ -240,5 +240,5 @@ module.exports = styleSheetCreate({
     fontWeight:'bold',
     marginTop:10,
     marginHorizontal:24,
-    },
+    }
 })
