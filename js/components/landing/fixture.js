@@ -92,7 +92,11 @@ const Banner = ({data, pressBanner, gameStatus}) => (
 
 const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
     <View>
-        <PageTitle title='GAME NOW LIVE' />
+        <ButtonFeedback
+            onPress={pressCoachBox}
+        >
+            <PageTitle title='GAME NOW LIVE' />
+        </ButtonFeedback>
         
         <LiveBox data={Object.assign({feededData:false,hasTitle:false,title:data.title},data)} inverse={true}/>
         
