@@ -400,11 +400,13 @@ class PlayerFigure extends Component {
                             pressBanner={()=> this._drillDown({details: fixture, list: this.state.fixturesList }, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
                 }else{
-                    return <PostGame
-                              gameStatus={gameStatus}
-                              isLastFixture={true}
-                              data={lastFixture}
-                              pressBanner={()=> this._drillDown({details: lastFixture}, 'fixtureDetails')}/>
+                    return <View>
+                              <PageTitle title='LAST FIXTURE' />
+                              <LiveBox data={Object.assign({feededData:false,hasTitle:false,title:lastFixture.title},lastFixture)} inverse={true}/>
+                              <Banner data={lastFixture}
+                               pressBanner={()=> this._drillDown({details: lastFixture}, 'fixtureDetails')}
+                               gameStatus={gameStatus}/>
+                           </View>
                 }
                 break;
             case 'post':
