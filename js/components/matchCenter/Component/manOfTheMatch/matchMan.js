@@ -288,7 +288,7 @@ class MatchMan extends Component {
 		return (
 			<View>
 				{
-	                this.state.isLoaded?
+	                (this.state.isLoaded && this.state.matchMan.is_available)?
 	                <View>
 		                <PositionTitle pos='FORWARDS' data={this.state.matchMan.forwards}/>
 		                <Swiper
