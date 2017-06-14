@@ -103,7 +103,7 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
         <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
         
         <ButtonFeedback style={[styles.bannerDetails, locStyle.bannerDetails]} onPress={pressCoachBox}>
-            <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>Provincial Union vs British & Irish Lions</Text>
+            <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>data.title</Text>
         </ButtonFeedback>
         <ButtonFeedback style={locStyle.infoBox} onPress={pressCoachBox}>
             <Text style={locStyle.infoBoxText}>
