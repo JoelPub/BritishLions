@@ -59,12 +59,12 @@ class ManOfTheMatchLanding extends Component {
                             // calls on toast\`s hide animation start.
                         },
                         onHidden: () => {
-                            
+
                         }
                     })
         }
         else {
-            
+
 
             if(Array.isArray(this.savedVote)){
                 let i=this.savedVote.findIndex(v=>v.id===this.props.detail.id)
@@ -93,13 +93,13 @@ class ManOfTheMatchLanding extends Component {
                     this.setState({
                         savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)
                     })
-                }            
+                }
         })
     }
     componentWillUnmount() {
       if(__DEV__)console.log('@@@landing componentWillUnmount')
     }
-    
+
     render() {
         return (
                <View style={styles.wrapper}>
@@ -109,7 +109,7 @@ class ManOfTheMatchLanding extends Component {
                     <View style={styles.desc}>
                         <Text style={styles.descText}>Vote for the player you think has been the stand out performer for the Lions in this match. After you have voted you will see the top 3 overall fan picks.</Text>
                     </View>
-                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan} detail={this.props.detail} />
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan} detail={this.props.detail} setSubPage={this.props.setSubPage} setShowModal={this.props.setShowModal}/>
                     <View style={styles.guther}>
                         <Text style={styles.noteText}>Vote for your man of the match now! You may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
@@ -123,7 +123,7 @@ class ManOfTheMatchLanding extends Component {
                     </View>
                     <View onLayout={this._measurePage.bind(this,'Landing')} />
                 </View>
-            
+
         )
     }
 }

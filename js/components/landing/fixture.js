@@ -20,7 +20,7 @@ import FixtureInfoModel from  '../../modes/Fixtures'
 import Immutable, { Map, List, Iterable } from 'immutable'
 import Countdown from '../global/countdown'
 
-const locStyle = styleSheetCreate({ 
+const locStyle = styleSheetCreate({
     activityIndicatorWrapper: {
         padding: 20
     },
@@ -76,7 +76,7 @@ const Banner = ({data, pressBanner, gameStatus}) => (
                     source={{uri: data.banner}} />
             </LinearGradient>
         </ImagePlaceholder>
-        
+
         {
             gameStatus !== 'live' &&
             <View>
@@ -97,20 +97,20 @@ const LiveGame = ({data, pressCoachBox, pressBanner, gameStatus}) => (
         >
             <PageTitle title='GAME NOW LIVE' />
         </ButtonFeedback>
-        
+
         <LiveBox data={Object.assign({feededData:false,hasTitle:false,title:data.title},data)} inverse={true}/>
-        
+
         <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
-        
+
         <ButtonFeedback style={[styles.bannerDetails, locStyle.bannerDetails]} onPress={pressCoachBox}>
-            <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>data.title</Text>
+            <Text style={[styles.bannerDesc, locStyle.bannerDesc]}>{data.title}</Text>
         </ButtonFeedback>
         <ButtonFeedback style={locStyle.infoBox} onPress={pressCoachBox}>
             <Text style={locStyle.infoBoxText}>
                 Visit The British & Irish Lions Coaches' Box for live match coverage and statistics.
             </Text>
-            <ButtonFeedback 
-                rounded 
+            <ButtonFeedback
+                rounded
                 style={[styles.roundButton]}
                 onPress={pressCoachBox}
             >
@@ -128,9 +128,9 @@ const PreGame = ({data, pressBanner, onCountDownEnd, gameStatus}) => (
     <View>
         <PageTitle title='UPCOMING FIXTURE' />
         <Banner data={data} pressBanner={pressBanner} gameStatus={gameStatus}/>
-        <Countdown 
+        <Countdown
             isHideUI={true}
-            endDate={`${data.date} ${data.time}`} 
+            endDate={`${data.date} ${data.time}`}
             onCountDownEnd={onCountDownEnd}/>
     </View>
 )
@@ -225,16 +225,16 @@ class PlayerFigure extends Component {
         let preFixturesArr = []
         let liveFixturesArr = []
         let postFixturesArr = []
-        
+
         fixtures.map(function(fixture, index){
             let fixtureInfo = FixtureInfoModel.fromJS(fixture)
 
             if (fixtureInfo.pre) {
                 preFixturesArr.push(fixtureInfo)
             }
-            
+
             if (fixtureInfo.live) {
-                liveFixturesArr.push(fixtureInfo) 
+                liveFixturesArr.push(fixtureInfo)
             }
 
             if (fixtureInfo.post) {
@@ -285,7 +285,7 @@ class PlayerFigure extends Component {
             })
         } else if (postFixturesArr.length > 0) {
             // there's no current live game and no upcoming fixture
-            // show the last post game 
+            // show the last post game
             let postLength = postFixturesArr.length
             let isLastFixture = true
             let fixture = postFixturesArr[postLength - 1]
@@ -297,7 +297,7 @@ class PlayerFigure extends Component {
             // if(lastFixture.id === fixture.id) {
             //     // isLastFixture = true
             // }
-                
+
 
             this.setState({
                 fixture: fixture, // get the last post
@@ -349,16 +349,16 @@ class PlayerFigure extends Component {
 
                     if(res.data) {
                         let fixtureID = this.state.fixture.id // get the current fuxture id we targeted
-                        let item = findObjByID(res.data, fixtureID) // map the array and get specific object 
-                        
+                        let item = findObjByID(res.data, fixtureID) // map the array and get specific object
+
                         if (__DEV__) console.log('REGET RES: ', fixtureID, res.data)
                         if (__DEV__) console.log('REGET ITEM: ', fixtureID, item)
-                       
+
                         if (item) {
                             // check if the api is now updated to 'live' from 'pre'
                             if (item.live) {
                                 // clear the timer
-                                clearInterval(this._timer) 
+                                clearInterval(this._timer)
 
                                 // analyze the fixture and rerender the compoenents
                                 this._analyzeFixtures(res.data)
@@ -396,7 +396,7 @@ class PlayerFigure extends Component {
                 if(nowTime > lastFixturedateOfEvent.setHours(lastFixturedateOfEvent.getHours() + 14)){
                     return <PreGame
                             gameStatus={gameStatus}
-                            data={fixture} 
+                            data={fixture}
                             pressBanner={()=> this._drillDown({details: fixture, list: this.state.fixturesList }, 'fixtureDetails')}
                             onCountDownEnd={() => this._onCountDownEnd()}/>
                 }else{
@@ -410,10 +410,10 @@ class PlayerFigure extends Component {
                 }
                 break;
             case 'post':
-                return <PostGame 
+                return <PostGame
                             gameStatus={gameStatus}
                             isLastFixture={this.state.isLastFixture}
-                            data={fixture} 
+                            data={fixture}
                             pressBanner={()=> this._drillDown({details: fixture}, 'fixtureDetails')}/>
                 break;
             default:
@@ -435,10 +435,10 @@ class PlayerFigure extends Component {
                         this._gameMode()
                     :
                         <View style={locStyle.activityIndicatorWrapper}>
-                            <ActivityIndicator size='small' /> 
+                            <ActivityIndicator size='small' />
                         </View>
                 }
-            </View>           
+            </View>
         )
     }
 }

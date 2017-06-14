@@ -56,7 +56,7 @@ class MatchCenter extends Component {
         this.setState({swiperHeight:h},()=>{this._scrollView.scrollTo({ y: 0, animated: true })})
     }
     _setSubPage(page) {
-      if(__DEV__)console.log('_setSubPage',page)      
+      if(__DEV__)console.log('_setSubPage',page)
       this.setState({subPage:page})
     }
     pullHistorySummary(){
@@ -69,7 +69,7 @@ class MatchCenter extends Component {
         else {
           optionData={id:this.state.detail.id}
         }
-        
+
         apiActions.getTimeLineLiveSummary(optionData,type,this.state.summaryData,(timelineData)=>{
                       if (__DEV__)console.log('extend timelineData',timelineData)
                       this.statusArray.fill(false)
@@ -103,14 +103,14 @@ class MatchCenter extends Component {
                       // if (__DEV__)console.log('init timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
-                      apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{                               
+                      apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{
                           this.setState({
                             statusArray: this.statusArray,
                             summaryData:Object.assign(data,this.state.detail,{timeline:timelineData})
                           },()=>{
                             if(__DEV__)console.log('data.is_full_time',data.is_full_time)
                             if(strToLower(data.is_full_time)==='true') this.timer&&clearTimeout(this.timer)
-                          })     
+                          })
                       },(error)=>{
                       })
         },(error)=>{
@@ -192,16 +192,16 @@ class MatchCenter extends Component {
       if(this.state.index===5){
         if (__DEV__)console.log('@@@call man of the match Api')
         setTimeout(()=>{
-          if (this.state.detail.post!==null) {
-            this.setState({subPage:'final'},()=>{              
-              this.statusArray.fill(false)
-              this.statusArray[5]=true
-              this.setState({
-                statusArray: this.statusArray
-              })
-            })
-          }
-          else {
+          // if (this.state.detail.post!==null) {
+          //   this.setState({subPage:'final'},()=>{
+          //     this.statusArray.fill(false)
+          //     this.statusArray[5]=true
+          //     this.setState({
+          //       statusArray: this.statusArray
+          //     })
+          //   })
+          // }
+          // else {
             getMatchMan().then((data)=>{
               let player=JSON.parse(data)
               if(__DEV__)console.log('index getMatchMan player',player)
@@ -214,7 +214,7 @@ class MatchCenter extends Component {
                 subPage='landing'
               }
               if(__DEV__)console.log('subPage',subPage)
-              this.setState({subPage:subPage},()=>{              
+              this.setState({subPage:subPage},()=>{
                   this.statusArray.fill(false)
                   this.statusArray[5]=true
                   this.setState({
@@ -223,7 +223,7 @@ class MatchCenter extends Component {
                 })
 
             })
-          }
+          // }
         },2000)
       }
     }
@@ -233,7 +233,7 @@ class MatchCenter extends Component {
             this.callApi()
             if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
         })},500)
-        
+
     }
     componentWillUnmount() {
       if(__DEV__)console.log('@@@matchCenter componentWillUnmount')
@@ -257,14 +257,14 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)              
+              if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
             })
           }
           else {
             this.timer&&clearTimeout(this.timer)
           }
         },1000)
-        
+
       })
     }
     render() {
@@ -272,8 +272,8 @@ class MatchCenter extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title={this.subjects[this.state.index]}
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -391,4 +391,3 @@ export default connect((state) => {
     netWork: state.network
   }
 }, bindAction)(MatchCenter)
-

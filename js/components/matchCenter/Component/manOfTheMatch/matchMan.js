@@ -95,17 +95,17 @@ const styles = styleSheetCreate({
         marginLeft:-1
     },
     paginationDot: {
-        backgroundColor: 'rgba(255, 255, 255, 0.3)', 
-        width: 10, 
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        width: 10,
         height: 10,
-        borderRadius: 5, 
-        marginLeft: 3, 
-        marginRight: 3, 
-        marginTop: 3, 
+        borderRadius: 5,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
         marginBottom: 3
     },
     paginationDotActive: {
-        backgroundColor: 'rgb(239,239,244)', 
+        backgroundColor: 'rgb(239,239,244)',
     },
     paginationBottom: {
         bottom: styleVar.deviceWidth/21
@@ -114,7 +114,7 @@ const styles = styleSheetCreate({
 
 const PlayerImgCell =({data,selected,onPress}) =>(
     <ButtonFeedback onPress={onPress} style={styles.posBtn}>
-        <ImagePlaceholder 
+        <ImagePlaceholder
             width = {styleVar.deviceWidth / 3}
             height = {styleVar.deviceWidth / 3}>
             <Image transparent
@@ -178,7 +178,7 @@ class MatchMan extends Component {
                 // calls on toast\`s hide animation start.
             },
             onHidden: () => {
-                
+
             }
         })
     }
@@ -201,7 +201,7 @@ class MatchMan extends Component {
                   //           this.setState({matchMan:showSquadFeed.toJS()},()=>{
                   //               this.setState({isLoaded:true})
                   //           })
-                            
+
                   //       }
                   //       else {
                   //           this.setState({ isLoaded: true })
@@ -221,27 +221,33 @@ class MatchMan extends Component {
                         onSuccess: (json)=>{
                                         if(json.data) {
                                                     if (__DEV__)console.log('json.data',json.data)
-                                                    let showSquadFeed=convertSquadToShow(MatchManModel(json.data),catchedFullPlayerList,this.uniondata)
-                                                    if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
-                                                    // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
-                                                    if (__DEV__)console.log('this.props.preSelect',this.props.preSelect)
-                                                    if(this.props.preSelect&&this.props.preSelect.current) {
-                                                        showSquadFeed.forEach((value,index)=>{
-                                                            if (__DEV__)console.log('index',index)
-                                                            value.map((v,i)=>{
-                                                                if (__DEV__)console.log('i',i)
-                                                                if(v.info.id===this.props.preSelect.current) {
-                                                                    if (__DEV__)console.log('v',v)
-                                                                    this.setState({selectedPosition:index,selectedSequence:i},()=>{
-                                                                                        this.props.selectMan(v.info)
-                                                                                    })
-                                                                }
+                                                    if(json.data.is_available) {
+                                                        let showSquadFeed=convertSquadToShow(MatchManModel(json.data),catchedFullPlayerList,this.uniondata)
+                                                        if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
+                                                        // this.props.setOfficialSquadToShow(showSquadFeed.toJS())
+                                                        if (__DEV__)console.log('this.props.preSelect',this.props.preSelect)
+                                                        if(this.props.preSelect&&this.props.preSelect.current) {
+                                                            showSquadFeed.forEach((value,index)=>{
+                                                                if (__DEV__)console.log('index',index)
+                                                                value.map((v,i)=>{
+                                                                    if (__DEV__)console.log('i',i)
+                                                                    if(v.info.id===this.props.preSelect.current) {
+                                                                        if (__DEV__)console.log('v',v)
+                                                                        this.setState({selectedPosition:index,selectedSequence:i},()=>{
+                                                                                            this.props.selectMan(v.info)
+                                                                                        })
+                                                                    }
+                                                                })
                                                             })
-                                                        })                                                        
-                                                    }
-                                                    this.setState({matchMan:showSquadFeed.toJS()},()=>{
-                                                        this.setState({isLoaded:true})
-                                                    })
+                                                        }
+                                                        this.setState({matchMan:showSquadFeed.toJS()},()=>{
+                                                            this.setState({isLoaded:true})
+                                                        })
+                                                   }
+                                                   else {
+                                                         this.props.setSubPage('final')
+                                                         this.props.setShowModal(false)
+                                                     }
                                         }
                                         else {
                                             this.setState({ isLoaded: true })
@@ -288,7 +294,7 @@ class MatchMan extends Component {
 		return (
 			<View>
 				{
-	                (this.state.isLoaded && this.state.matchMan.is_available)?
+	                this.state.isLoaded?
 	                <View>
 		                <PositionTitle pos='FORWARDS' data={this.state.matchMan.forwards}/>
 		                <Swiper
@@ -316,7 +322,7 @@ class MatchMan extends Component {
 		                        },this)
 		                    }
 		                </Swiper>
-		                
+
 		                <PositionTitle pos='BACKS' data={this.state.matchMan.backs}/>
 		                <Swiper
 		                height={this.state.matchMan.backs.length>3?styleVar.deviceWidth*0.63:styleVar.deviceWidth*0.49}
