@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAccessGranted } from './actions/token'
-import { getAccessToken, getRefreshToken, updateToken, removeToken, getCurrentVersionNumber, setCurrentVersionNumber } from './components/utility/asyncStorageServices'
+import { getAccessToken, getRefreshToken, updateToken, removeToken, getCurrentVersionNumber, setCurrentVersionNumber, getUserId } from './components/utility/asyncStorageServices'
 import { service } from './components/utility/services'
 import { Drawer } from 'native-base'
 import { BackAndroid, Platform, StatusBar, View, Alert,AsyncStorage,NativeModules } from 'react-native'
@@ -175,6 +175,12 @@ class AppNavigator extends Component {
     componentWillMount() {
         getAccessToken().then((accessToken) => {
             if (accessToken) {
+                getUserId().then((userID)=>{
+                    if(__DEV__)console.log('userID',userID)
+                    if(Platform.OS === 'android') {
+                        NativeModules.GlassBoxManger.reportEvent('appNavigator',userID)
+                    }
+                })
                 this._refreshToken() // update the token
             } 
         }).catch((error) => {
