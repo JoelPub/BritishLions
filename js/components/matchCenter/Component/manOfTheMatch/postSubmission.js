@@ -59,7 +59,7 @@ class ManOfTheMatchPostSubission extends Component {
                             // calls on toast\`s hide animation start.
                         },
                         onHidden: () => {
-                            
+
                         }
                     })
         }
@@ -79,7 +79,7 @@ class ManOfTheMatchPostSubission extends Component {
                 this.savedVote=[{id:this.props.detail.id,current:this.selectedMan.id,previous:this.state.savedMan.current}]
             }
                 if(__DEV__)console.log('this.savedVote',this.savedVote)
-            
+
             this.props.setShowModal(true)
 
             setMatchMan(this.savedVote).then(()=>{
@@ -97,10 +97,10 @@ class ManOfTheMatchPostSubission extends Component {
                     this.setState({
                         savedMan:this.savedVote.find(v=>v.id===this.props.detail.id)
                     })
-                }            
+                }
         })
     }
-    
+
     render() {
         return (
                 <View style={styles.wrapper}>
@@ -115,7 +115,7 @@ class ManOfTheMatchPostSubission extends Component {
                     <View style={styles.desc}>
                         <Text style={styles.descText}>The Lions Man of the Match as voted by you.</Text>
                     </View>
-                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail}/>
+                    <MatchMan selectMan={this._onPressPlayer.bind(this)} preSelect={this.state.savedMan}   detail={this.props.detail} setSubPage={this.props.setSubPage} setShowModal={this.props.setShowModal}/>
                     <View style={styles.guther}>
                         <Text style={styles.noteText}>Vote for your man of the match now! You may change your vote by resubmitting up until the end of the match.</Text>
                     </View>
@@ -128,7 +128,7 @@ class ManOfTheMatchPostSubission extends Component {
                         </ButtonNetwork>
                     </View>
                     <View onLayout={this._measurePage.bind(this,'PostSubission')} />
-                    
+
                 </View>
         )
     }

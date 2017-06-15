@@ -14,7 +14,7 @@ import LiveBox from '../../../global/liveBox'
 import loader from '../../../../themes/loader-position'
 import _fetch from '../../../utility/fetch'
 import SquadModal from '../../../global/squadModal'
-import { strToUpper } from '../../../utility/helper'
+import { strToUpper,strToLower } from '../../../utility/helper'
 
 class Momentum extends Component {
 
@@ -26,9 +26,9 @@ class Momentum extends Component {
                 isHost:false,
                 sRadius:0,
                 dotWidth:2,
-                dotLen:4  
+                dotLen:4
             }
-            
+
         }
     }
     measurePage(page,event) {
@@ -41,7 +41,7 @@ class Momentum extends Component {
         // if (__DEV__)console.log('height',height)
         let h=y+330>styleVar.deviceHeight-345?y+330:styleVar.deviceHeight-345
         this.props.setHeight(h,'momentum')
-        
+
     }
     iconPress = () =>{
         this.setState({modalInfo: !this.state.modalInfo,modalAble:false},()=>{
@@ -54,9 +54,38 @@ class Momentum extends Component {
             let u=this.props.data.opposition.trim().replace(/\s+/g,' ')
             // if (__DEV__)console.log('userName',userName)
             initName = ''
-            u.split(' ').map((value, index)=>{
-                initName = initName + value[0]
-            })
+            switch(strToLower(u)) {
+              case 'provincial barbarians':
+                initName='bar'
+                break
+              case 'blues':
+                initName='blu'
+                break
+              case 'crusaders':
+                initName='cru'
+                break
+              case 'highlanders':
+                initName='hig'
+                break
+              case 'maori all blacks':
+                initName='mab'
+                break
+              case 'chiefs':
+                initName='chi'
+                break
+              case 'new zealand all blacks':
+                initName='nzl'
+                break
+              case 'hurricanes':
+                initName='hur'
+                break
+              default:
+                u.split(' ').map((value, index)=>{
+                    initName = initName + value[0]
+                })
+                break
+            }
+
             // if (__DEV__)console.log('initName',initName)
         }
         return (
@@ -100,7 +129,7 @@ class Momentum extends Component {
                                         )
                                     })
                             }
-                            
+
                             <View style={styles.bottomLine} onLayout={this.measurePage.bind(this,'momentum')} />
                         </View>
                     </View>

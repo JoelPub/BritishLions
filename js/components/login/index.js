@@ -147,7 +147,7 @@ class Login extends Component {
         if(Platform.OS === 'android') {
             NativeModules.GlassBoxManger.reportEvent('/signIn/password',this.state.email)
         }
-        console.log('password',this.state.email)
+        if(__DEV__)console.log('email',this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,this.state.password,'password')

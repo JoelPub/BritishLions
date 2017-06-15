@@ -33,7 +33,7 @@ const styles = styleSheetCreate({
         textAlign:'center'
     },
     logoImg:{
-        height: styleVar.deviceWidth*0.4, 
+        height: styleVar.deviceWidth*0.4,
         width: styleVar.deviceWidth*0.4,
         marginBottom:10
     },
@@ -48,7 +48,8 @@ const styles = styleSheetCreate({
         fontFamily: styleVar.fontGeorgia,
         color:'rgb(255,255,255)',
         fontSize:14,
-        lineHeight:16
+        lineHeight:16,
+        textAlign:'center'
     },
     btn:{
         borderColor:'rgb(255,255,255)',
@@ -107,7 +108,7 @@ export default class RatingPopUp extends Component{
     buttonClick(name){
         this.savedVote={type:name,time:new Date()}
         setVote(this.savedVote).then(()=>{
-            this.setState({modalVisible:false},()=>{                    
+            this.setState({modalVisible:false},()=>{
                 switch(name){
                     case 'rate':
                         if(Platform.OS==='android') {
@@ -131,7 +132,7 @@ export default class RatingPopUp extends Component{
                 this.props.callbackParent(false)
             })
         })
-        
+
     }
     render() {
         return (
@@ -161,7 +162,7 @@ export default class RatingPopUp extends Component{
                         <ButtonFeedback onPress={()=>this.buttonClick('later')}  style={styles.btnClose}>
                             <Icon name='md-close' style={styles.btnCloseIcon}/>
                         </ButtonFeedback>
-                        
+
                     </View>
             </Modal>
             )

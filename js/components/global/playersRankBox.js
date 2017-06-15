@@ -18,7 +18,7 @@ import { searchPlayer } from '../myLions/components/searchPlayer'
 import loader from '../../themes/loader-position'
 import Accordion from 'react-native-collapsible/Accordion';
 
-const locStyle = styleSheetCreate({ 
+const locStyle = styleSheetCreate({
     listNoTitle: {
         borderTopWidth: 1,
         borderColor: styleVar.colorGrey2
@@ -209,7 +209,7 @@ const locStyle = styleSheetCreate({
         backgroundColor: styleVar.brandLightColor,
         marginTop:19,
         marginBottom:20
-    }, 
+    },
 })
 
 const LineGraph = (data) => {
@@ -234,7 +234,7 @@ export default class PlayersRankBox extends Component {
         this.uniondata = Data
         this.state = {
             modalVisible: false,
-            players:[],            
+            players:[],
             modalContent:this.getModalContent(),
             gameID:this.props.detail.id,
             isOn_tour:true,
@@ -287,11 +287,11 @@ export default class PlayersRankBox extends Component {
                     if(Array.isArray(JSON.parse(data))) {
                         player=JSON.parse(data).find(v=>v.id===this.state.gameID)
                     }
-                    
+
                     if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
                         url: player&&player.previous!==null?'http://bilprod.azurewebsites.net/resubmitManOfMatch':'http://bilprod.azurewebsites.net/GetManOfMatchVoteResult',
-                        data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal?player.current:'0' },
+                        data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal&&player?player.current:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
                         method: 'post',
@@ -308,13 +308,13 @@ export default class PlayersRankBox extends Component {
                                         if(__DEV__)console.log('player:',searchPlayer(catchedFullPlayerList,value.player_id,this.uniondata))
                                         if(searchPlayer(catchedFullPlayerList,value.player_id,this.uniondata)!==null) {
                                             players.push(Object.assign(value,{info:searchPlayer(catchedFullPlayerList,value.player_id,this.uniondata)}))
-                                                    // if(index===l-1) {                                                        
+                                                    // if(index===l-1) {
                                                     //     if(__DEV__)console.log('players:',players)
                                                     //     this.setState({isLoaded:true,players:players})
-                                                    // }                                            
+                                                    // }
                                         }
 
-                                        
+
                                     })
                                 }
                                 if(players.length>0) {
@@ -375,7 +375,7 @@ export default class PlayersRankBox extends Component {
                         channel: 'EYC3',
                         isQsStringify:false
                       }
-                    service(optionsInfo) 
+                    service(optionsInfo)
                 })
             }).catch((error) => {
                 this.setState({isLoaded:true})
@@ -389,11 +389,11 @@ _renderHeader(section,i) {
     if (isShowBorderTop) {
         listRowStyle = listRowStyle.concat([locStyle.listRowWithBorderTop])
     }
-    
+
     return (
         <View style={listRowStyle}>
             <View style={locStyle.listRowImage}>
-                <ImagePlaceholder 
+                <ImagePlaceholder
                     width={50}
                     height={50}>
                     <Image transparent
@@ -404,7 +404,7 @@ _renderHeader(section,i) {
             </View>
             <View style={locStyle.listRowContent}>
                 <View style={locStyle.detailRow}>
-                    <View style={locStyle.detail}> 
+                    <View style={locStyle.detail}>
                         <View style={locStyle.labels}>
                             <Text style={locStyle.order}>{section.rank}.</Text>
                             <Text style={locStyle.name}>{section.info.name}</Text>
@@ -421,16 +421,16 @@ _renderHeader(section,i) {
         </View>
     )
   }
- 
+
   _renderContent(section,i) {
     let figureData = this.state.isOn_tour ? section.profileListOn_tour : section.profileListHistorical
     return (
         <View style={(i===this.state.players.length-1)?[locStyle.content, locStyle.contentLast] : [locStyle.content]}>
         {
             this.state.activeSection===i?
-            <PlayerFigure 
+            <PlayerFigure
                 pressInfo={this._setModalVisible.bind(this)}
-                wideLayout={true} 
+                wideLayout={true}
                 profile={figureData}
                 onTitleClick={this.onTiltleClick}/>
             :
@@ -468,12 +468,12 @@ _renderHeader(section,i) {
                                 onChange={this._setSection.bind(this)}
                               />
                         </View>
-                        
+
                         <SquadModal
                             modalVisible={this.state.modalVisible}
                             callbackParent={this._setModalVisible}>
                             {this.state.modalContent}
-                                
+
                         </SquadModal>
                     </View>
                     :
