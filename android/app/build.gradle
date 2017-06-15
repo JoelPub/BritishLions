@@ -205,9 +205,6 @@ dependencies {
     compile(project(':react-native-facebook-login')) {
 		exclude group: 'com.facebook.react', module: 'react-native'
 	}
-    compile(project(':react-native-one')) {
-		exclude group: 'com.facebook.react', module: 'react-native'
-	}
     compile(project(':react-native-google-analytics-bridge')) {
 		exclude group: 'com.facebook.react', module: 'react-native'
 	}

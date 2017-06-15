@@ -23,7 +23,6 @@ import com.lionsofficial.reactPackager.calendarReactPackage;
 import com.lionsofficial.reactPackager.GlassBoxReactPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.BV.LinearGradient.LinearGradientPackage; // APD | Paul | LIONS :  add it for linear gradient
-import com.thunderhead.one.react.OnePackage;
 import android.support.multidex.MultiDex;
 
 import java.util.Arrays;
