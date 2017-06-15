@@ -31,7 +31,6 @@
 1.    Clone the git repo -> git@bitbucket.org:apdmageprojects/LionsOfficial.git
 2.    cd to the local project directory
 3.    $ npm i
-4.    $ rnpm link
 
 
 ### Run the app for IOS ###
