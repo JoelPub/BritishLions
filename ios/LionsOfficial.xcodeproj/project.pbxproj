@@ -50,9 +50,6 @@
 		C22238AD1E694F90004608C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AC1E694F90004608C5 /* QuartzCore.framework */; };
 		C22238AF1E694FAF004608C5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238AE1E694FAF004608C5 /* libsqlite3.tbd */; };
 		C22238B11E694FB8004608C5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22238B01E694FB8004608C5 /* Security.framework */; };
-		C22C92701E94D3C90040311A /* ThunderheadBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C22C926E1E94D3C90040311A /* ThunderheadBundle.bundle */; };
-		C22C92711E94D3C90040311A /* Thunderhead.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22C926F1E94D3C90040311A /* Thunderhead.framework */; };
-		C22C92721E94D3F70040311A /* libRCTOne.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C22C925A1E94D38F0040311A /* libRCTOne.a */; };
 		C23DA0AA1E34BEEA005E1727 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0921E34BEC6005E1727 /* libRCTGoogleAnalyticsBridge.a */; };
 		C23DA0AC1E34BFC0005E1727 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0AB1E34BFC0005E1727 /* CoreData.framework */; };
 		C23DA0AE1E34BFE2005E1727 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C23DA0AD1E34BFE2005E1727 /* libsqlite3.0.tbd */; };
@@ -260,13 +257,6 @@
 			remoteGlobalIDString = 4F3A6B5B1ACFBCC500CA65F7;
 			remoteInfo = RCTFBLogin;
 		};
-		C22C92591E94D38F0040311A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C22C924A1E94D38F0040311A /* RCTOne.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 599C3B941E548B2600041061;
-			remoteInfo = RCTOne;
-		};
 		C23DA0911E34BEC6005E1727 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C23DA0891E34BEC6005E1727 /* RCTGoogleAnalyticsBridge.xcodeproj */;
@@ -362,9 +352,6 @@
 		C22238AC1E694F90004608C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C22238AE1E694FAF004608C5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C22238B01E694FB8004608C5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		C22C924A1E94D38F0040311A /* RCTOne.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOne.xcodeproj; path = "../node_modules/react-native-one/ios/RCTOne.xcodeproj"; sourceTree = "<group>"; };
-		C22C926E1E94D3C90040311A /* ThunderheadBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ThunderheadBundle.bundle; sourceTree = "<group>"; };
-		C22C926F1E94D3C90040311A /* Thunderhead.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Thunderhead.framework; sourceTree = "<group>"; };
 		C23DA0891E34BEC6005E1727 /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		C23DA0AB1E34BFC0005E1727 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C23DA0AD1E34BFE2005E1727 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -402,9 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2C703EA1EA609F3007E3A0F /* libRCTAnimation.a in Frameworks */,
-				C22C92721E94D3F70040311A /* libRCTOne.a in Frameworks */,
 				C22238B11E694FB8004608C5 /* Security.framework in Frameworks */,
-				C22C92711E94D3C90040311A /* Thunderhead.framework in Frameworks */,
 				C22238AF1E694FAF004608C5 /* libsqlite3.tbd in Frameworks */,
 				C243C17C1E24D99F0052394C /* SystemConfiguration.framework in Frameworks */,
 				C22238AD1E694F90004608C5 /* QuartzCore.framework in Frameworks */,
@@ -552,7 +537,6 @@
 		13B07FAE1A68108700A75B9A /* LionsOfficial */ = {
 			isa = PBXGroup;
 			children = (
-				C22C926C1E94D3C90040311A /* Thunderhead.embeddedframework */,
 				04267D711E36C1F5007F7C41 /* LionsOfficial.entitlements */,
 				C243C18D1E24DA190052394C /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -620,7 +604,6 @@
 			isa = PBXGroup;
 			children = (
 				C2C703C41EA609E4007E3A0F /* RCTAnimation.xcodeproj */,
-				C22C924A1E94D38F0040311A /* RCTOne.xcodeproj */,
 				C23DA0891E34BEC6005E1727 /* RCTGoogleAnalyticsBridge.xcodeproj */,
 				C22013071E2DC66100BA63D9 /* RCTFBLogin.xcodeproj */,
 				C243C1581E24D9500052394C /* RNGoogleSignin.xcodeproj */,
@@ -697,31 +680,6 @@
 				C22013291E2DCA6000BA63D9 /* Bolts.framework */,
 			);
 			name = FBSdk;
-			sourceTree = "<group>";
-		};
-		C22C924B1E94D38F0040311A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C22C925A1E94D38F0040311A /* libRCTOne.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C22C926C1E94D3C90040311A /* Thunderhead.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				C22C926D1E94D3C90040311A /* Resources */,
-				C22C926F1E94D3C90040311A /* Thunderhead.framework */,
-			);
-			path = Thunderhead.embeddedframework;
-			sourceTree = "<group>";
-		};
-		C22C926D1E94D3C90040311A /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C22C926E1E94D3C90040311A /* ThunderheadBundle.bundle */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		C23DA08A1E34BEC6005E1727 /* Products */ = {
@@ -922,10 +880,6 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
-				},
-				{
-					ProductGroup = C22C924B1E94D38F0040311A /* Products */;
-					ProjectRef = C22C924A1E94D38F0040311A /* RCTOne.xcodeproj */;
 				},
 				{
 					ProductGroup = 762AF5F21E2606F60072255F /* Products */;
@@ -1160,13 +1114,6 @@
 			remoteRef = C220130D1E2DC66100BA63D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C22C925A1E94D38F0040311A /* libRCTOne.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTOne.a;
-			remoteRef = C22C92591E94D38F0040311A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		C23DA0921E34BEC6005E1727 /* libRCTGoogleAnalyticsBridge.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1226,7 +1173,6 @@
 				F7E67D08BFB744D3A3F34D02 /* Foundation.ttf in Resources */,
 				54837F46F84549F393AA286B /* Ionicons.ttf in Resources */,
 				9A0128A8939841F2A7CB7C9D /* MaterialIcons.ttf in Resources */,
-				C22C92701E94D3C90040311A /* ThunderheadBundle.bundle in Resources */,
 				035BF556FEF44158A39B5105 /* Octicons.ttf in Resources */,
 				4FE0B1F108364FF99A9601FE /* Zocial.ttf in Resources */,
 				C243C1B31E24E18C0052394C /* GoogleSignIn.bundle in Resources */,

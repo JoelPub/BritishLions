@@ -4,7 +4,7 @@
 
 import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../../../themes/base-theme'
 import styles from './styles'

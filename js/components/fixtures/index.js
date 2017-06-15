@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView ,NativeModules, ActivityIndicator} from 'react-native'
+import { Image, View, ScrollView , ActivityIndicator} from 'react-native'
 import { drillDown } from '../../actions/content'
 import { Container, Text } from 'native-base'
 import theme from '../../themes/base-theme'
@@ -38,7 +38,7 @@ const  TitleCell = ({status,onPress}) => {
 const  BlackView = () => {
   return(
     <View style={[styles.blackView]}>
-      
+
     </View>
   )
 }
@@ -50,7 +50,7 @@ class Fixtures extends Component {
          this._scrollView = ScrollView
 
          this.state = {
-            getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo, 
+            getFixtureInfoURL: actionsApi.eyc3GetFixtureInfo,
             fixtures: [],
             isLoaded: false,
         }
@@ -61,7 +61,6 @@ class Fixtures extends Component {
     }
 
     componentDidMount() {
-        NativeModules.One.sendInteraction("/fixtures", { emailAddress : "" })
         setTimeout(() => {
             this._getFixtures()
         }, 600)
@@ -125,7 +124,7 @@ class Fixtures extends Component {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='FIXTURES AND SCORES'
                         contentLoaded={true}
                         titleStyle={titleStyle}

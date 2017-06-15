@@ -87,8 +87,6 @@ class Login extends Component {
         // just to make sure that token was removed and
         // isAccessGranted flag is set to false when
         // user is in the login page
-        NativeModules.One.sendInteraction('/signInView',
-          {});
         setTimeout(() => {
             removeToken()
             this.props.setAccessGranted(false)
@@ -139,11 +137,6 @@ class Login extends Component {
     _createTokenByPassword(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
-        NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.email,
-            first_name:first_name,
-            last_name:last_name
-        })
         if(Platform.OS === 'android') {
             NativeModules.GlassBoxManger.reportEvent('/signIn/password',this.state.email)
         }
@@ -204,11 +197,6 @@ class Login extends Component {
                   this.setState({
                       email:json.email
                   })
-                  NativeModules.One.sendInteraction('/signIn/button', {
-                      emailAddress:json.email,
-                      first_name:first_name,
-                      last_name:last_name
-                  })
                   if(Platform.OS === 'android') {
                       NativeModules.GlassBoxManger.reportEvent('/signIn/facebook',json.email)
                   }
@@ -262,11 +250,6 @@ class Login extends Component {
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
          if (__DEV__)console.log('this.state.email: ', this.state.email)
-        NativeModules.One.sendInteraction('/signIn/button', {
-            emailAddress:this.state.user.email,
-            first_name:first_name,
-            last_name:last_name
-        })
         if(Platform.OS === 'android') {
             NativeModules.GlassBoxManger.reportEvent('/signIn/google',this.state.user.email)
         }
@@ -611,8 +594,6 @@ class Login extends Component {
         }
     }
     _signIn = () => {
-        NativeModules.One.sendInteraction('/signIn/google',
-          null);
         if(this.state.isFormSubmitting) return;
         GoogleSignin.signIn()
           .then((user) => {
@@ -629,8 +610,6 @@ class Login extends Component {
 
     /* facebook sign in func */
     _handleFBLogin = () => {
-        NativeModules.One.sendInteraction('/signIn/facebook',
-          null);
         if(this.state.isFormSubmitting) return;
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
            if (!error) {

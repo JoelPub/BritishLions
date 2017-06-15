@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, ScrollView, ListView ,NativeModules} from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView, ListView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -31,10 +31,8 @@ class Galleries extends Component {
     _drillDown(data) {
         this.props.drillDown(data, 'galleriesDetails')
     }
-    
+
     componentDidMount() {
-        NativeModules.One.sendInteraction("/galleries",
-          { emailAddress : "" });
         this.props.fetchContent(this.url)
     }
 
@@ -44,11 +42,11 @@ class Galleries extends Component {
             this.setState({
                 isLoaded: nextProps.isLoaded,
                 galleriesFeed: this.ds.cloneWithRows(nextProps.galleriesFeed.filter(x=>x.images.length>0))
-            })           
+            })
         }
     }
     _renderRow(rowData, sectionID, rowID, highlightRow) {
-        
+
         return (
             <ButtonFeedback
                 style={styles.btn}
@@ -59,7 +57,7 @@ class Galleries extends Component {
                 {
                     rowData.thumb50&&<Image source={{uri: rowData.thumb50}} style={styles.galleriesImage} />
                 }
-                    
+
                 </ImagePlaceholder>
                 <View style={[shapes.triangle, styles.triangle]} />
                 <View style={styles.galleriesContent}>
@@ -74,16 +72,16 @@ class Galleries extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='GALLERIES'
                         contentLoaded={this.state.isLoaded}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <StickyFooter>
-                            <ListView 
+                            <ListView
                                 dataSource={this.state.galleriesFeed}
                                 renderRow={this._renderRow.bind(this)}
-                                enableEmptySections = {true} 
+                                enableEmptySections = {true}
                                 contentContainerStyle={styles.backgroundList}
                             />
                         </StickyFooter>

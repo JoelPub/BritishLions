@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, ScrollView,NativeModules } from 'react-native'
+import { Image, View, ActivityIndicator, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Header, Content, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -21,7 +21,7 @@ class LionsTV extends Component {
          this._scrollView = ScrollView
          this.state = {
               isLoaded: false,
-              videosFeed: {items:[]}, 
+              videosFeed: {items:[]},
          }
          this.url = 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyDZ_Oe-ZMxv-3vL3SX3BB2KE5wKVwkF64U'
     }
@@ -31,8 +31,6 @@ class LionsTV extends Component {
     }
 
     componentDidMount() {
-      NativeModules.One.sendInteraction("/lionsTV",
-        { emailAddress : "" });
         this.props.fetchContent(this.url)
     }
 
@@ -51,8 +49,8 @@ class LionsTV extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader 
-                        title='LIONS TV' 
+                    <LionsHeader
+                        title='LIONS TV'
                         contentLoaded={this.state.isLoaded}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {

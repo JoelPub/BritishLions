@@ -2,7 +2,7 @@
 
 import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -110,7 +110,7 @@ class OnFire extends Component {
               />
             </View>
           </View>
-          
+
           {
             this.state.page===0&&
             <View tabLabel='HALF-TIME'>
@@ -122,9 +122,9 @@ class OnFire extends Component {
                 <OnFireItem isLastItem={true} title={'TACKLES'} data={on_fire.half_time.tackles} playerData={playerList}/>
               </View>
             </View>
-          }         
+          }
           {
-            this.state.page===1&&            
+            this.state.page===1&&
             <View tabLabel='FULL-TIME'>
               <IconHeader onPress={this.iconPress} modalAble={this.state.modalAble}/>
               <View style={{ padding: 20,paddingTop:3}}>

@@ -1,13 +1,12 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Linking, Image, View, Text ,NativeModules} from 'react-native'
+import { Linking, Image, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LinearGradient from 'react-native-linear-gradient'
 import { styleSheetCreate } from '../../themes/lions-stylesheet'
 import styleVar from '../../themes/variable'
 import ButtonFeedback from '../utility/buttonFeedback'
-var One = NativeModules.One;
 
 const styles = styleSheetCreate({
     container: {
@@ -97,30 +96,6 @@ export default class Footer extends Component {
 	}
 
 	goToURL(url, platformName) {
-      NativeModules.One.sendInteraction("/social/"+platformName,null)
-      if (__DEV__)console.log("!!!!!!!!!!!/social/"+platformName)
-      One.sendInteractionForOutboundLink(url).catch(function(error) {
-          if (__DEV__)console.log(error);
-          alert(error);
-      });
-
-      One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-          if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
-          if(urlWithOneTid){
-              Linking.canOpenURL(urlWithOneTid).then(supported => {
-                  if (supported) {
-                      Linking.openURL(urlWithOneTid)
-                  } else {
-                      Alert.alert(
-                        'Error',
-                        'This device doesnt support URI: ' + urlWithOneTid
-                      )
-                  }
-              })
-          }
-      },function(error) {
-          if (__DEV__)console.log('error');
-          if (__DEV__)console.log(error);
           if(url){
               Linking.canOpenURL(url).then(supported => {
                   if (supported) {
@@ -133,7 +108,6 @@ export default class Footer extends Component {
                   }
               })
           }
-      });
 
   }
 

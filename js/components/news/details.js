@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder,NativeModules} from 'react-native'
+import { Image, View, Platform, ScrollView,WebView , ActivityIndicator,Linking,PanResponder} from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -19,7 +19,6 @@ import PaginationButton from '../utility/paginationButton'
 import loader from '../../themes/loader-position'
 import { drillReplace } from '../../actions/content'
 import { debounce } from 'lodash'
-var One = NativeModules.One
 
 class NewsDetails extends Component {
     constructor(props) {
@@ -44,28 +43,6 @@ class NewsDetails extends Component {
         }
     }
     bindingTID(url){
-       One.sendInteractionForOutboundLink(url).catch(function(error) {
-           if (__DEV__)console.log(error);
-           alert(error);
-       });
-
-       One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-           if(urlWithOneTid){
-                if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
-               Linking.canOpenURL(urlWithOneTid).then(supported => {
-                   if (supported) {
-                       Linking.openURL(urlWithOneTid)
-                   } else {
-                       Alert.alert(
-                         'Error',
-                         'This device doesnt support URI: ' + urlWithOneTid
-                       )
-                   }
-               })
-           }
-       },function(error) {
-           if (__DEV__)console.log('error');
-           if (__DEV__)console.log(error);
            if(url){
                Linking.canOpenURL(url).then(supported => {
                    if (supported) {
@@ -78,17 +55,11 @@ class NewsDetails extends Component {
                    }
                })
            }
-       });
     }
     goToURL(url) {
         // if (__DEV__)console.log('gotoURL',url)
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
-//              if(Platform.OS === 'android'){
-//                NativeModules.One.getURLWithOneTid(url)
-//                NativeModules.One.sendInteractionForOutboundLink(url)
-//
-//              }
                 this.webview.stopLoading()
                 //Linking.openURL(url)
                 this.bindingTID(url)
@@ -105,7 +76,7 @@ class NewsDetails extends Component {
     onMessage = e => {
         this.stopPost=true
         this.setState({height:parseInt(e.nativeEvent.data)+250,isLoaded:true})
-      }    
+      }
     componentWillMount() {
         this._panResponder = PanResponder.create({
           onStartShouldSetPanResponderCapture: this._handleStartShouldSetPanResponderCapture,
@@ -115,12 +86,10 @@ class NewsDetails extends Component {
           onPanResponderMove: this._handlePanResponderMove.bind(this),
           onPanResponderRelease: this._handlePanResponderEnd.bind(this),
           onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
-          
+
         })
     }
     componentDidMount() {
-      NativeModules.One.sendInteraction("/news",
-        { emailAddress : "" });
       setTimeout(()=>{
         this.setState({startLoad:true})
       },1000)
@@ -135,12 +104,12 @@ class NewsDetails extends Component {
        // }
        // if (__DEV__)console.log('_handleStartShouldSetPanResponderCapture getstureState',gestureState)
        if (e._targetInst._currentElement === 'SHARE' ||
-           e._targetInst._currentElement === 'NEXT STORY' || 
-           (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') || 
+           e._targetInst._currentElement === 'NEXT STORY' ||
+           (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children === 'SHARE') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement && e._targetInst._currentElement.props && e._targetInst._currentElement.props.children && e._targetInst._currentElement.props.children[0] && e._targetInst._currentElement.props.children[0].props && e._targetInst._currentElement.props.children[0].props.children && e._targetInst._currentElement.props.children[0].props.children[0] === 'NEXT STORY') ||
            (e._targetInst._currentElement.props && e._targetInst._currentElement.props.swipeException)
-           
+
            ){
                   if (__DEV__)console.log('return false')
                   return false
@@ -170,8 +139,8 @@ class NewsDetails extends Component {
                 if (__DEV__)console.log('@@@@@this.state.height',this.state.height)
                 this._scrollView.scrollTo({ y: this.currentPosition, animated: true })
             }
-            
-            
+
+
        }
        if (__DEV__)console.log('return true')
         return true
@@ -187,7 +156,7 @@ class NewsDetails extends Component {
             let item = rtl?this._items[index - 1]:this._items[index+1]
             if(item) {
                 this.props.drillReplace(item, 'newsDetailsSub', false,false,rtl)
-            }  
+            }
        }
        if (__DEV__)console.log('return true')
         return true
@@ -199,8 +168,6 @@ class NewsDetails extends Component {
         })
     }
   sharePress = () => {
-    NativeModules.One.sendInteraction("/news/share",
-      { emailAddress : "" });
     shareTextWithTitle(this.props.article.headline, this.props.article.link)
   }
   handleScroll(event) {
@@ -213,8 +180,8 @@ class NewsDetails extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                  <LionsHeader 
-                        back={true} 
+                  <LionsHeader
+                        back={true}
                         title='NEWS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -225,7 +192,7 @@ class NewsDetails extends Component {
                             <View>
                               <ImagePlaceholder height={270}>
                                   <Image source={{uri: this.props.article.image}} style={styles.banner}>
-                                      <Image 
+                                      <Image
                                           transparent
                                           resizeMode='cover'
                                           source={require('../../../images/shadows/rectangle.png')}
@@ -288,7 +255,7 @@ class NewsDetails extends Component {
                 }
                     <EYSFooter/>
 
-                    
+
                 </View>
 
             </Container>

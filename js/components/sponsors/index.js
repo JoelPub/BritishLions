@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Linking, ScrollView,NativeModules } from 'react-native'
+import { Image, View, Linking, ScrollView } from 'react-native'
 import { drillDown, saveContent } from '../../actions/content'
 import { Container, Text } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
@@ -37,7 +37,7 @@ class Sponsors extends Component {
         let sponsors = data.filter((item) => {
             return item.category == cat
         })
-        
+
         let length = sponsors.length
         // extract by colMax
         for( i = 0; i <= length; (i += colMax)) {
@@ -58,20 +58,17 @@ class Sponsors extends Component {
     }
 
     componentDidMount() {
-
-        NativeModules.One.sendInteraction("/sponsors",
-         null);
         this.props.saveContent(Data)
     }
 
     render() {
         let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers', 'Regional Partners', 'Charity', 'Media']
         //let catSponsors = ['Principal Partners', 'Official Sponsors', 'Official Suppliers']
-                                        
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='SPONSORS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import Swiper from 'react-native-swiper'
 import theme from '../../themes/base-theme'
@@ -48,12 +48,12 @@ class Gallery extends Component {
                 Object.assign(value,{'width':width,'height':height})
                 if(index===this.content.images.length-1) {
                     // if (__DEV__)console.log('this.content.images',this.content.images)
-                    this.setState({isLoaded:true}) 
+                    this.setState({isLoaded:true})
                 }
-                
+
             })
         })
-        
+
     }
     renderContent() {
         let imgStyle = Slider.galleryPoster
@@ -70,23 +70,23 @@ class Gallery extends Component {
             ]
         } else {
             viewStyle = {
-                flex:1, 
-                flexDirection:'row', 
+                flex:1,
+                flexDirection:'row',
                 alignItems: 'center',
                 justifyContent: 'center'
             }
             nScale = Math.min((styleVar.deviceHeight-20)/(styleVar.deviceWidth), (this.children.props.w)/(this.children.props.h))
             imgStyle = [
-                    Slider.galleryPoster, 
+                    Slider.galleryPoster,
                     {
                         transform:[{rotateZ:'90deg'}, {scale: nScale}],
-                        flex:1, 
+                        flex:1,
                         alignSelf: 'center',
                         marginTop: Platform.OS === 'android'? 25 : -20
                     }
                 ]
         }
-        
+
         return (
                 <View style={viewStyle}>
                     {/*<Text style={styles.galleryPosterCaption}> {this.children.props.caption}</Text>*/}
@@ -97,9 +97,6 @@ class Gallery extends Component {
 
     shareImg(context, imgUrl,callback){
 
-        NativeModules.One.sendInteraction("/galleries/share",
-          { emailAddress : "" });
-
         this.setState({
             isSubmitting:true
         })
@@ -107,7 +104,7 @@ class Gallery extends Component {
         .then(
             function(res) {
                 callback()
-                
+
                 Share.open({
                     title:context,
                     message:context,
@@ -137,13 +134,13 @@ class Gallery extends Component {
             isSubmitting:false
         })
     }
-    
+
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='GALLERIES'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -176,7 +173,7 @@ class Gallery extends Component {
                             </Swiper>:
                             <ActivityIndicator style={loader.centered} size='small' />
                         }
-                            
+
                         </View>
 
                         <View style={styles.shareWrapper}>
@@ -187,11 +184,11 @@ class Gallery extends Component {
                                 <Text style={styles.shareLinkText}>SHARE</Text>
                                 {
                                     this.state.isSubmitting?
-                                        <ActivityIndicator color={styleVar.colorScarlet} size='small' /> 
+                                        <ActivityIndicator color={styleVar.colorScarlet} size='small' />
                                     :
-                                        
+
                                         <Icon name='md-share-alt' style={styles.shareLinkIcon} />
-                                }   
+                                }
                             </TouchableOpacity>
                         </View>
 

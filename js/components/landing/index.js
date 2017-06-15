@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert ,NativeModules} from 'react-native'
+import { Image, View, Text, ScrollView, ActivityIndicator, Platform, Alert } from 'react-native'
 import { Container, Icon } from 'native-base'
 import { drillDown } from '../../actions/content'
 import { limitArrayList } from '../utility/helper'
@@ -50,7 +50,7 @@ class Landing extends Component {
             isLoaded: false,
             isFetchContent: false,
             isProfileSummaryLoaded: false,
-            latestUpdatesFeeds: [], 
+            latestUpdatesFeeds: [],
             isFullPlayer: true,
             totalPlayerSelected: 0,
             isLoadedSquad: false,
@@ -95,7 +95,7 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                
+
                 this._latestUpdate('news', json.data, 1)
             },
             onError: (res) => {
@@ -105,7 +105,7 @@ class Landing extends Component {
             }
         }
 
-        service(options)    
+        service(options)
     }
 
     _fetchGalleries() {
@@ -116,7 +116,7 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                
+
                 this._latestUpdate('galleries', json.data, 3)
             },
             onError: (res) => {
@@ -124,7 +124,7 @@ class Landing extends Component {
             }
         }
 
-        service(options)    
+        service(options)
     }
 
     _fetchTV() {
@@ -135,7 +135,7 @@ class Landing extends Component {
             onAxiosStart: () => {},
             onAxiosEnd: () => {},
             onSuccess: (json) => {
-                
+
                 this._latestUpdate('lions tv', json.data.items, 2)
             },
             onError: (res) => {
@@ -143,12 +143,12 @@ class Landing extends Component {
             }
         }
 
-        service(options)    
+        service(options)
     }
 
     _fetchContent() {
         this._fetchNews()
-        this._fetchGalleries() 
+        this._fetchGalleries()
         this._fetchTV()
     }
 
@@ -189,7 +189,7 @@ class Landing extends Component {
                             // calls on toast\`s hide animation start.
                         },
                         onHidden: () => {
-                            
+
                         }
                     })
     }
@@ -210,7 +210,7 @@ class Landing extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
@@ -234,12 +234,10 @@ class Landing extends Component {
                 let data = eval(`(${catchedSquad.data})`)
                 this._countPlayerSelected(data)
             }
-        })   
+        })
     }
 
     componentDidMount() {
-        NativeModules.One.sendInteraction("/home",
-          { emailAddress : "" });
 
         setTimeout(() => {
             this._fetchContent()
@@ -265,7 +263,7 @@ class Landing extends Component {
                             }
                             this._getProfileSummary(userName,firstName,lastName,initName)
                         }).catch((error) => {})
-                        
+
                     })
                 }).catch((error) => {})
             }
@@ -285,10 +283,10 @@ class Landing extends Component {
                 if(res.data) {
                     if (__DEV__)console.log('res.data',res.data)
                     let userProfile = Object.assign(res.data, {
-                        userName: userName, 
-                        initName: initName, 
+                        userName: userName,
+                        initName: initName,
                         firstName: firstName,
-                        lastName: lastName, 
+                        lastName: lastName,
                         userID: this.state.userID
                     })
 
@@ -305,7 +303,7 @@ class Landing extends Component {
             },
             isRequiredToken: true
         }
-        service(optionsUserProfile)        
+        service(optionsUserProfile)
     }
 
     _countPlayerSelected(data) {
@@ -337,7 +335,7 @@ class Landing extends Component {
     _convertToArr(str) {
         // clean
         str =  str.trim().replace(/["']/g, '')
-        
+
         // convert
         if (str) {
             return str.split('|')
@@ -379,7 +377,7 @@ class Landing extends Component {
             onSuccess: (rating) => {
                 this.setState({
                     rating: rating.data
-                },()=>{      
+                },()=>{
                     removeUserCustomizedSquad()
                 })
             },
@@ -393,7 +391,7 @@ class Landing extends Component {
             channel: 'EYC3'
         }
 
-        service(optionsSquadRating)        
+        service(optionsSquadRating)
     }
 
     _renderNewsFeed() {
@@ -435,7 +433,7 @@ class Landing extends Component {
                                         {
                                             imageURL?
                                                 <Image
-                                                    resizeMode='cover' 
+                                                    resizeMode='cover'
                                                     style={styles.bannerImg}
                                                     source={{uri: imageURL}} />
                                             :
@@ -447,7 +445,7 @@ class Landing extends Component {
                                         <Text style={styles.bannerTitle} numberOfLines={1}>
                                             {category.toUpperCase()}
                                         </Text>
-                                    </View>  
+                                    </View>
                                 </ButtonFeedback>
                             )
                         }, this)
@@ -457,11 +455,11 @@ class Landing extends Component {
         )
     }
 
-    render() {    
+    render() {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='LANDING'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -473,13 +471,13 @@ class Landing extends Component {
                             !this.props.isAccessGranted?
                                 <ButtonFeedback onPress={() => this._isSignIn('myLions')}>
                                     <ImagePlaceholder height={styleVar.deviceWidth*0.645} width={styleVar.deviceWidth}>
-                                        <Image 
+                                        <Image
                                             resizeMode='cover'
                                             source={require('../../../images/content/myLionsHomeBanner.png')} style={styles.mainBanner}>
                                         </Image>
                                     </ImagePlaceholder>
                                 </ButtonFeedback>
-                            : 
+                            :
                                 null
                         }
 
@@ -496,28 +494,28 @@ class Landing extends Component {
                                 this.props.isAccessGranted?
                                     !this.state.isProfileSummaryLoaded?
                                         <View style={styles.squadIndicator}>
-                                            <ActivityIndicator style={styles.scoreCard} size='small' /> 
+                                            <ActivityIndicator style={styles.scoreCard} size='small' />
                                         </View>
                                     :
                                         <View style={styles.squad}>
                                             <ProfileSummaryCard profile={this.props.userProfile}/>
                                         </View>
-                                : 
+                                :
                                     null
                             }
                             <View style={styles.btnWrapper}>
-                                <ButtonFeedback 
-                                    rounded 
-                                    style={[styles.roundButton]} 
+                                <ButtonFeedback
+                                    rounded
+                                    style={[styles.roundButton]}
                                     onPress={() => this._isSignIn('myLions')}>
                                     <Icon name='md-heart' style={styles.roundButtonIcon} />
                                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.roundButtonLabel} >
                                         MY LIONS
                                     </Text>
                                 </ButtonFeedback>
-                                {/*<ButtonFeedback 
-                                    rounded 
-                                    style={[styles.button, styles.btnMysquad]} 
+                                {/*<ButtonFeedback
+                                    rounded
+                                    style={[styles.button, styles.btnMysquad]}
                                     onPress={() => this._myLions([{backRoute: 'landing'}], 'myLionsSquad')}
                                 >
                                     <Image resizeMode='contain' source={require('../../../contents/my-lions/squadLogo.png')}
@@ -529,7 +527,7 @@ class Landing extends Component {
                                 </ButtonFeedback>*/}
                             </View>
                         </View>
-                        
+
                         <View>
                             <View style={styles.pageTitle}>
                                 <Text style={styles.pageTitleText}>
@@ -541,7 +539,7 @@ class Landing extends Component {
                                 onPress={() => this._isSignIn('myLionsOfficialSquad')}>
                                 <ImagePlaceholder height={200}>
                                     <Image
-                                        resizeMode='stretch' 
+                                        resizeMode='stretch'
                                         style={styles.bannerImg}
                                         source={require('../../../contents/landing/landing-squad.png')} />
                                 </ImagePlaceholder>
@@ -550,7 +548,7 @@ class Landing extends Component {
                                     <Text style={styles.bannerTitle} numberOfLines={1}>
                                         VIEW SQUAD
                                     </Text>
-                                </View>  
+                                </View>
                             </ButtonFeedback>
                         </View>
 
@@ -563,7 +561,7 @@ class Landing extends Component {
                             {
                                 !this.state.isLoaded?
                                     <View style={styles.latestUpdateIndicator}>
-                                        <ActivityIndicator style={styles.scoreCard} size='small' /> 
+                                        <ActivityIndicator style={styles.scoreCard} size='small' />
                                     </View>
                                 :
                                     this._renderNewsFeed()

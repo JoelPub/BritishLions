@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Alert,NativeModules } from 'react-native'
+import { Alert } from 'react-native'
 import { setAccessGranted } from '../../actions/token'
 import { replaceOrPushRoute } from '../../actions/route'
 import { closeDrawer } from '../../actions/drawer'
@@ -135,8 +135,6 @@ class LionsSidebar extends Component {
             'Are you sure you want to logout?',
             [
                 {text: 'Yes', onPress: () => {
-                    NativeModules.One.sendInteraction('/logout',
-                      { emailAddress : this.props.userProfile.userID });
                     this.props.setAccessGranted(false)
                     removeToken(true)
                     removeGoodFormFavoritePlayerList()

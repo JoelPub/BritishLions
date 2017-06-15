@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView,NativeModules } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -32,25 +32,21 @@ class SponsorDetails extends Component {
         let  reallyTitle = titleNoSpace.toLowerCase()
        let interaction = "/sponsors/" + reallyTitle
         if (__DEV__)console.log(interaction)
-        NativeModules.One.sendInteraction(interaction,
-          null);
     }
     linkCallBack = () => {
         let titleNoSpace   = this.props.details.title.replace(/\s+/g, '')
         let  reallyTitle = titleNoSpace.toLowerCase()
         let interaction = "/sponsors/" + reallyTitle + '/visit'
-        NativeModules.One.sendInteraction(interaction,
-          null);
     }
     render() {
         let shareLinkIcon = this.props.details.url? <Icon name='md-open' style={styles.shareLinkIcon} /> : null
-        
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
 
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='SPONSORS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -63,7 +59,7 @@ class SponsorDetails extends Component {
 
                                 {this.props.details.partner? <Text style={styles.wrapperPartner}>{this.props.details.partner}</Text> : null }
                             </View>
-                            
+
                             <View style={styles.bannerContainer}>
                                 <Image transparent
                                     resizeMode='contain'

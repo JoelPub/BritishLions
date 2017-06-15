@@ -1,9 +1,8 @@
 'use strict'
 
 import React, { Component,PropTypes } from 'react'
-import { Linking, Alert ,NativeModules} from 'react-native'
+import { Linking, Alert } from 'react-native'
 import ButtonFeedback from './buttonFeedback'
-var One = NativeModules.One;
 export default class ExternalLink extends Component {
 	constructor(props){
 		super(props)
@@ -23,38 +22,9 @@ export default class ExternalLink extends Component {
         if(this.props.callBack){
             this.props.callBack()
         }
-        if(url==='https://tours.lionsrugby.com'){
-            NativeModules.One.sendInteraction("/toursOpen",
-              { emailAddress : "" });
-        }
-        if(url==='http://www.lionsrugby.com/fanzone/competitions.php#.V9ozFJh96rM'){
-            NativeModules.One.sendInteraction("/competitionOpen",
-              { emailAddress : "" });
-        }
        if (this.isCorrectUrl(url)){
           if (__DEV__)console.log('isCorrectUrl')
-           One.sendInteractionForOutboundLink(url).catch(function(error) {
-               if (__DEV__)console.log(error);
-               alert(error);
-           });
 
-           One.getURLWithOneTid(url).then(function(urlWithOneTid) {
-               if(urlWithOneTid){
-                    if (__DEV__)console.log('urlWithOneTid',urlWithOneTid)
-                   Linking.canOpenURL(urlWithOneTid).then(supported => {
-                       if (supported) {
-                           Linking.openURL(urlWithOneTid)
-                       } else {
-                           Alert.alert(
-                             'Error',
-                             'This device doesnt support URI: ' + urlWithOneTid
-                           )
-                       }
-                   })
-               }
-           },function(error) {
-               if (__DEV__)console.log('error');
-               if (__DEV__)console.log(error);
                if(url){
                    Linking.canOpenURL(url).then(supported => {
                        if (supported) {
@@ -67,7 +37,6 @@ export default class ExternalLink extends Component {
                        }
                    })
                }
-           });
        }else {
           if (__DEV__)console.log('it not a url ')
           if(url){

@@ -90,7 +90,6 @@ class SignUp extends Component {
           .done();
     }
     _FBSignIn = () => {
-        NativeModules.One.sendInteraction('/register/facebook', null);
         FBLoginManager.loginWithPermissions(["email"],(error, data) => {
             if (!error) {
                 if (__DEV__)console.log(data);
@@ -139,10 +138,6 @@ class SignUp extends Component {
                         this.setState({ isFormSubmitting: false })
                     },
                     onSuccess: () => {
-                        NativeModules.One.sendInteraction('/register/facebook', {
-                            username: json.name,
-                            emailAddress:json.email
-                        });
                         this.setState({
                             loginType:'facebook',
                             loginToken:token,
@@ -211,10 +206,6 @@ class SignUp extends Component {
                     this.setState({ isFormSubmitting: false })
                 },
                 onSuccess: () => {
-                    NativeModules.One.sendInteraction('/register/google', {
-                        username: this.this.state.user.name,
-                        emailAddress:this.state.user.email
-                    });
                    if (__DEV__)console.log(JSON.stringify(this.state.user.accessToken))
                    if(!this.state.user.accessToken){
                        NativeModules.RNGoogleSignin.getAccessToken(this.state.user)
@@ -272,14 +263,10 @@ class SignUp extends Component {
                 },
                 onSuccess: (res) => {
                     let name = this.state.firstName +' ' + this.state.lastName
-                    NativeModules.One.sendInteraction('/register/button', {
-                        username: name,
-                        emailAddress:this.state.email
-                    });
                     this._userSignUp()
                 },
                 onError: (res) => {
-                    this.setState({ 
+                    this.setState({
                         customMessages: res,
                         customMessagesType: 'error',
                         isFormSubmitting: false
@@ -313,7 +300,7 @@ class SignUp extends Component {
         this._login()
 
         // this._scrollView.scrollToPosition(0,0,false)
-        // this.setState({ 
+        // this.setState({
         //     customMessages: 'Your account has been created successfully.',
         //     customMessagesType: 'success'
         // })
@@ -333,7 +320,7 @@ class SignUp extends Component {
                 'grant_type': 'password'
             },
             onAxiosStart: () => {
-                this.setState({ 
+                this.setState({
                     isFormSubmitting: true,
                     username: '',
                     password: '',
@@ -344,7 +331,7 @@ class SignUp extends Component {
             },
             onSuccess: this._createToken.bind(this),
             onError: (res) => {
-                this.setState({ 
+                this.setState({
                     customMessages: res,
                     customMessagesType: 'error',
                     isFormSubmitting: false
@@ -360,10 +347,10 @@ class SignUp extends Component {
 
     _createToken(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        
+
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in, this.state.email)
         this.props.setAccessGranted(true)
-        
+
         // reset the fields and hide loader
         this.setState({
             email: '',
@@ -376,7 +363,7 @@ class SignUp extends Component {
                    text: 'Go to My Lions Page',
                    onPress: () => { this._replaceRoute('myLions') }
                }]
-           ) 
+           )
         })
     }
 
@@ -397,7 +384,6 @@ class SignUp extends Component {
         return false
       }
     componentDidMount () {
-        NativeModules.One.sendInteraction('/registerView', null);
     }
     render() {
         return (
@@ -462,12 +448,12 @@ class SignUp extends Component {
 
                                     <View style={styles.inputGroup}>
                                         {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
-                                        <Input defaultValue={this.state.password} 
-                                            onChange={(event) => this.setState({password: event.nativeEvent.text})} 
+                                        <Input defaultValue={this.state.password}
+                                            onChange={(event) => this.setState({password: event.nativeEvent.text})}
                                             onFocus={()=> this.setState({isShowPasswordTips: true})}
                                             onBlur={()=> this.setState({isShowPasswordTips: false})}
-                                            placeholder='Password' 
-                                            secureTextEntry={true} 
+                                            placeholder='Password'
+                                            secureTextEntry={true}
                                             style={styles.input} />
                                     </View>
 

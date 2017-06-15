@@ -3,7 +3,7 @@
 import React, { Component ,PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Image, View, Platform, PanResponder,TouchableOpacity,
-  ActivityIndicator, ScrollView,NativeModules,DeviceEventEmitter} from 'react-native'
+  ActivityIndicator, ScrollView,DeviceEventEmitter} from 'react-native'
 import { Container, Header, Text, Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'
@@ -171,7 +171,7 @@ class SetPlayer extends Component {
                </View>
              </View>
           }
-         
+
          {
             this.state.page===1&&
             <View tabLabel='SCRUMS'>
@@ -202,7 +202,7 @@ class SetPlayer extends Component {
               </View>
             </View>
           }
-         
+
          {
             this.state.page===2&&
             <View tabLabel='LINEOUTS'>

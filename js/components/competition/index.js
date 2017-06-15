@@ -2,7 +2,7 @@
 
 import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView ,NativeModules} from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
@@ -38,8 +38,6 @@ class Competition extends Component {
          }
 
          componentDidMount() {
-           NativeModules.One.sendInteraction("/competition",
-             { emailAddress : "" });
              setTimeout(()=>{this._setUpImage()},600)
          }
 
@@ -47,7 +45,7 @@ class Competition extends Component {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='COMPETITIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />

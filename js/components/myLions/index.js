@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView, ActivityIndicator, Modal, Alert,NativeModules } from 'react-native'
+import { Image, View, ScrollView, ActivityIndicator, Modal, Alert } from 'react-native'
 import { isFirstLogIn, getUserId,removeToken,getUserFullName } from '../utility/asyncStorageServices'
 import { drillDown } from '../../actions/content'
 import { Container, Text, Icon } from 'native-base'
@@ -132,14 +132,10 @@ class MyLions extends Component {
 
     _officialSquad(){
         this._setModalVisible(false)
-        NativeModules.One.sendInteraction("/myLions/mySquad",
-          { userName : this.props.userProfile.userName });
         this.props.drillDown({},'myLionsOfficialSquad')
     }
 
     _myExpertsPick = () => {
-        NativeModules.One.sendInteraction("/myLions/experts",
-          { userName : this.props.userProfile.userName });
         this.props.drillDown({}, 'myLionsExpertsList')
     }
 
@@ -418,8 +414,6 @@ class MyLions extends Component {
         service(optionsUserProfile)
     }
     privateLeagues(){
-        NativeModules.One.sendInteraction("/myLions/privateLeagues",
-          { userName : this.props.userProfile.userName });
         this.props.setPrivateLeagues(true)
         this.props.pushNewRoute('competitionLadder')
     }
@@ -448,13 +442,9 @@ class MyLions extends Component {
         )
     }
     navToRouterCenter = () =>  {
-        NativeModules.One.sendInteraction("/myLions/myCompetitionCentre",
-          { userName : this.props.userProfile.userName });
         this.props.pushNewRoute('myLionsCompetitionCentre')
     }
     navToRouterLadder = () =>  {
-        NativeModules.One.sendInteraction("/myLions/myCompetitionLadder",
-          { userName : this.props.userProfile.userName });
         this.props.pushNewRoute('competitionLadder')
     }
 

@@ -71,7 +71,6 @@ class FixtureDetails extends Component {
 
         let  interaction = "/fixtures/" + reallyDate + '/calendar'
         if (__DEV__)console.log(interaction)
-        NativeModules.One.sendInteraction(interaction, { emailAddress : "" });
 
         let dateOfEvent = new Date(`${params.details.date} ${params.details.time}`) // UTC Format
         let isDyLightSaving = moment.utc(dateOfEvent).isDST()
@@ -90,7 +89,7 @@ class FixtureDetails extends Component {
             getAddedToCalanderCheck().then((status) =>{
                 if (status && status === "added") {
                     alertBox('Warning','You have added the events to the calendar')
-                } else{ 
+                } else{
                   let addedSuccess = true
 
                   this.state.data.list.map(function(item) {
@@ -174,7 +173,6 @@ class FixtureDetails extends Component {
 
         let  interaction = "/fixtures/" +reallyDate
         //if (__DEV__)console.log(interaction)
-        NativeModules.One.sendInteraction(interaction,{ emailAddress : "" })
         //if (__DEV__)console.log('this.state.details',this.state.details)
 
         this._analyzeGameStatus()
@@ -182,7 +180,7 @@ class FixtureDetails extends Component {
 
     _analyzeGameStatus() {
         let fixture = this.state.data.details
-        
+
         if (fixture.live) {
             this.setState({
                 isLoaded: true,
@@ -212,17 +210,17 @@ class FixtureDetails extends Component {
 
         switch (gameStatus) {
             case 'live':
-                return <LiveGame 
+                return <LiveGame
                             details={fixtureDetails} />
                 break;
             case 'pre':
-                return <PreGame 
-                            details={fixtureDetails} 
+                return <PreGame
+                            details={fixtureDetails}
                             pressAddCalendar={()=>this.calendarAddEvent(this.props.details)}
                             onPress={this.pickYourXVClick}/>
                 break;
             case 'post':
-                return <PostGame 
+                return <PostGame
                             details={fixtureDetails} />
                 break;
             default:
@@ -265,8 +263,8 @@ class FixtureDetails extends Component {
       return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.background}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='FIXTURES AND SCORES'
                         contentLoaded={true}
                         titleStyle={titleStyle}
@@ -279,7 +277,7 @@ class FixtureDetails extends Component {
                                     this._gameMode()
                                 :
                                     <View style={styles.activityIndicatorWrapper}>
-                                        <ActivityIndicator size='small' /> 
+                                        <ActivityIndicator size='small' />
                                     </View>
                             }
                         </View>

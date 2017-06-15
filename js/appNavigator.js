@@ -138,7 +138,7 @@ class AppNavigator extends Component {
         }
     }
 
-    _refreshToken() {    
+    _refreshToken() {
         getRefreshToken().then((refreshToken) => {
             let options = {
                 url: this.serviceUrl,
@@ -147,10 +147,10 @@ class AppNavigator extends Component {
                     'grant_type': 'refresh_token'
                 },
                 onSuccess: (res) => {
-                    // Update token 
+                    // Update token
                     let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
                     updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
-                    
+
                     // Flag user access granted
                     this.props.setAccessGranted(true)
                 },
@@ -170,7 +170,7 @@ class AppNavigator extends Component {
             // In this situation, user will not logged in
             // By default: the redux isAccessGranted is set to 'false'
         })
-    } 
+    }
 
     componentWillMount() {
         getAccessToken().then((accessToken) => {
@@ -182,7 +182,7 @@ class AppNavigator extends Component {
                     }
                 })
                 this._refreshToken() // update the token
-            } 
+            }
         }).catch((error) => {
             // Nothing to do here since user don't have an existing ACCESS TOKEN
             // In this situation, user is not logged in
@@ -222,14 +222,6 @@ class AppNavigator extends Component {
             if(this.props.store.getState().drawer.drawerState == 'closed')
                 this._drawer.close()
         })
-        NativeModules.One.init(
-            "ONE-X1Q7UKTXW6-4730",
-            "lions",
-            "7c9a6a65-3569-4338-94e0-589a64457784",
-            "ce32efd4-7d0d-4c4f-bd11-b45f3f727739",
-            "api@lionsrugby",
-            false,
-            "eu2.thunderhead.com");
         BackAndroid.addEventListener('hardwareBackPress', () => {
             // if (__DEV__)console.log('this._navigator',this._navigator)
             // if (__DEV__)console.log('globalNav.navigator',globalNav.navigator)
@@ -243,7 +235,7 @@ class AppNavigator extends Component {
                 return true
             }
         })
-        
+
         register(this.props.store)
         configure.then(
             schedule()

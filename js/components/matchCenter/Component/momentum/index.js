@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,NativeModules,Text,DeviceEventEmitter} from 'react-native'
+import { Image, View, Platform, PanResponder,TouchableOpacity, ActivityIndicator, ScrollView,Text,DeviceEventEmitter} from 'react-native'
 import { Container, Header,  Button, Icon } from 'native-base'
 import theme from '../../../../themes/base-theme'
 import styles from './styles'

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView ,NativeModules} from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
@@ -39,15 +39,13 @@ class LionsStore extends Component {
     }
 
     componentDidMount() {
-        NativeModules.One.sendInteraction("/store",
-          { emailAddress : "" });
         setTimeout(()=>{this._setUpImage()},600)
     }
     render() {
         return (
             <Container theme={theme} style={styles.container}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         title='OFFICIAL STORE'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />

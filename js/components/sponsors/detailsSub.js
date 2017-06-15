@@ -2,7 +2,7 @@
 
 import React, { Component , } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView ,NativeModules} from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from './styles'
@@ -29,8 +29,6 @@ class SponsorDetailsSub extends Component {
         if (__DEV__)console.log('***********sendInteraction1')
         if (__DEV__)console.log( this.props.details.title)
         let interaction = "/sponsors/" + this.props.details.title
-        NativeModules.One.sendInteraction(interaction,
-          null);
     }
     render() {
         let shareLinkIcon = this.props.details.url? <Icon name='md-open' style={styles.shareLinkIcon} /> : null
@@ -39,7 +37,7 @@ class SponsorDetailsSub extends Component {
             <Container theme={theme}>
                 <View style={styles.container}>
 
-                    <LionsHeader 
+                    <LionsHeader
                         back={true}
                         title='SPONSORS'
                         contentLoaded={true}
@@ -53,7 +51,7 @@ class SponsorDetailsSub extends Component {
 
                                 {this.props.details.partner? <Text style={styles.wrapperPartner}>{this.props.details.partner}</Text> : null }
                             </View>
-                            
+
                             <View style={styles.bannerContainer}>
                                 <Image transparent
                                     resizeMode='contain'

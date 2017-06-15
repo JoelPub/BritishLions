@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder ,NativeModules } from 'react-native'
+import { Keyboard, Dimensions, Platform, KeyboardAvoidingView, Alert, ScrollView, PanResponder  } from 'react-native'
 import { replaceRoute, popRoute } from '../../actions/route'
 import { service } from '../utility/services'
 import { setAccessGranted } from '../../actions/token'
@@ -127,8 +127,6 @@ class MyAccount extends Component {
                             // logout the user when successfully changed the email
                             removeToken()
                             this.props.setAccessGranted(false)
-                            NativeModules.One.sendInteraction("/myAccount/newEmail",
-                              { emailAddress : this.props.userProfile.userID });
                             Alert.alert(
                                 'Messages',
                                 'Your email has been successfully changed.',
@@ -221,8 +219,6 @@ class MyAccount extends Component {
       }
     componentDidMount() {
         if (__DEV__)console.log(this.props.userProfile)
-        NativeModules.One.sendInteraction("/myAccount",
-          { emailAddress : this.props.userProfile.userID });
     }
     render() {
         return (
@@ -260,13 +256,13 @@ class MyAccount extends Component {
 
                                     <View style={styles.inputGroup}>
                                         {/*<Icon name='ios-unlock-outline' style={styles.inputIcon} />*/}
-                                        <Input 
-                                            defaultValue={this.state.password} 
-                                            onChange={(event) => this.setState({password:event.nativeEvent.text})} 
+                                        <Input
+                                            defaultValue={this.state.password}
+                                            onChange={(event) => this.setState({password:event.nativeEvent.text})}
                                             onFocus={()=> this.setState({isShowPasswordTips: true})}
                                             onBlur={()=> this.setState({isShowPasswordTips: false})}
-                                            placeholder='New Password' 
-                                            secureTextEntry={true}  
+                                            placeholder='New Password'
+                                            secureTextEntry={true}
                                             style={styles.input} />
                                     </View>
 

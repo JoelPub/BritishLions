@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ActivityIndicator, RefreshControl, ScrollView,NativeModules } from 'react-native'
+import { Image, View, ActivityIndicator, RefreshControl, ScrollView } from 'react-native'
 import { fetchContent, drillDown } from '../../actions/content'
 import { Container, Text, Button, Icon } from 'native-base'
 import LionsHeader from '../global/lionsHeader'
@@ -25,7 +25,7 @@ class News extends Component {
          this.state = {
               isLoaded: false,
               isRefreshing: false,
-              newsFeed: [], 
+              newsFeed: [],
               isFetchContent: false,
               apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
          }
@@ -43,18 +43,18 @@ class News extends Component {
             handleImgStyle(item)
 
         })
-            
+
         function handleImg(item) {
             let imgPathArr=[]
             let imgPath=''
-            if(item.image!==null) {             
+            if(item.image!==null) {
                 imgPathArr=item.image.split('/')
                 imgPathArr.pop()
-                imgPath=imgPathArr.join('/')   
+                imgPath=imgPathArr.join('/')
             }
             item.article=item.article.replace(/src="\/\//ig,'src="https:\/\/')
             item.article=item.article.replace(/src="\//ig,`src="${imgPath}\/`)
-            // item.article=item.article.replace(/https:\/\/www.lionsrugby.com\/learning-with-the-lions\/pick-of-the-pride\/pick-of-the-pride-ambassadors\//ig,'click link')               
+            // item.article=item.article.replace(/https:\/\/www.lionsrugby.com\/learning-with-the-lions\/pick-of-the-pride\/pick-of-the-pride-ambassadors\//ig,'click link')
         }
         function handleImgStyle(item) {
             if(__DEV__)console.log('article',item.article)
@@ -95,8 +95,8 @@ class News extends Component {
                             if(__DEV__)console.log('imgStr',imgStr)
                             ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
                             imgStylePos=imgStr.indexOf('\"',imgStylePos+7+styleLen)
-                        })           
-                    }                
+                        })
+                    }
                     imgStylePos=0
                     styleLen=0
                     orgWidth=0
@@ -110,7 +110,7 @@ class News extends Component {
                             imgStr=imgStr.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+imgStr.substring(imgStr.indexOf('\"',imgStylePos+8+styleLen))
                             if(__DEV__)console.log('imgStr',imgStr)
                             imgStylePos=imgStr.indexOf('\"',imgStylePos+8+styleLen)
-                        })           
+                        })
                     }
 
                     imgStylePos=0
@@ -128,8 +128,8 @@ class News extends Component {
                             if(__DEV__)console.log('imgStr',imgStr)
                             ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
                             imgStylePos=imgStr.indexOf('px',imgStylePos+6+styleLen)
-                        })           
-                    }                
+                        })
+                    }
                     imgStylePos=0
                     styleLen=0
                     orgWidth=0
@@ -143,12 +143,12 @@ class News extends Component {
                             imgStr=imgStr.substring(0,imgStylePos)+`height:${parseInt(orgHeight)*ratio[index]}`+imgStr.substring(imgStr.indexOf('px',imgStylePos+7+styleLen))
                             if(__DEV__)console.log('imgStr',imgStr)
                             imgStylePos=imgStr.indexOf('px',imgStylePos+7+styleLen)
-                        })           
-                    }        
+                        })
+                    }
                     item.article=item.article.substring(0,imgPos)+imgStr+item.article.substring(imgPos+imgStrLen)
                     if(__DEV__)console.log('item.article',item.article)
                     imgPos=imgPos+imgStrLen
-                })           
+                })
             }
 
             // if(item.article.match(/width:/ig)!==null) {
@@ -162,8 +162,8 @@ class News extends Component {
             //         if(__DEV__)console.log('article',item.article)
             //         ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
             //         imgStylePos=item.article.indexOf('\"',imgStylePos+6+styleLen)
-            //     })           
-            // }                
+            //     })
+            // }
             // imgStylePos=0
             // styleLen=0
             // orgWidth=0
@@ -177,8 +177,8 @@ class News extends Component {
             //         item.article=item.article.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+item.article.substring(item.article.indexOf('\"',imgStylePos+8+styleLen))
             //         if(__DEV__)console.log('article',item.article)
             //         imgStylePos=item.article.indexOf('\"',imgStylePos+8+styleLen)
-            //     })           
-            // }  
+            //     })
+            // }
             // imgStylePos=0
             // styleLen=0
             // orgWidth=0
@@ -194,8 +194,8 @@ class News extends Component {
             //         if(__DEV__)console.log('article',item.article)
             //         ratio.push((parseInt(styleVar.deviceWidth)-50)/orgWidth)
             //         imgStylePos=item.article.indexOf('\"',imgStylePos+7+styleLen)
-            //     })           
-            // }                
+            //     })
+            // }
             // imgStylePos=0
             // styleLen=0
             // orgWidth=0
@@ -209,8 +209,8 @@ class News extends Component {
             //         item.article=item.article.substring(0,imgStylePos)+`height="${parseInt(orgHeight)*ratio[index]}`+item.article.substring(item.article.indexOf('\"',imgStylePos+8+styleLen))
             //         if(__DEV__)console.log('article',item.article)
             //         imgStylePos=item.article.indexOf('\"',imgStylePos+8+styleLen)
-            //     })           
-            // }               
+            //     })
+            // }
         }
         function handleInlineScript(item) {
             let scriptPos=0
@@ -220,7 +220,7 @@ class News extends Component {
                     let styleLen=item.article.toLowerCase().indexOf('script>',scriptPos)-scriptPos
                     item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('script>',scriptPos)+7)
                     scriptPos=item.article.toLowerCase().indexOf('<script',scriptPos)
-                })           
+                })
             }
             // scriptPos=0
             // if(item.article.match(/\[caption/ig)!==null) {
@@ -229,7 +229,7 @@ class News extends Component {
             //         let styleLen=item.article.toLowerCase().indexOf('caption\]',scriptPos)-scriptPos
             //         item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('caption\]',scriptPos)+8)
             //         scriptPos=item.article.toLowerCase().indexOf('\[caption',scriptPos)
-            //     })           
+            //     })
             // }
             // scriptPos=0
             // if(item.article.match(/<blockquote/ig)!==null) {
@@ -238,7 +238,7 @@ class News extends Component {
             //         let styleLen=item.article.toLowerCase().indexOf('blockquote>',scriptPos)-scriptPos
             //         item.article=item.article.substring(0,scriptPos)+item.article.substring(item.article.toLowerCase().indexOf('blockquote>',scriptPos)+11)
             //         scriptPos=item.article.toLowerCase().indexOf('<blockquote',scriptPos)
-            //     })           
+            //     })
             // }
             item.article=item.article.replace(/blockquote/ig,'div')
 
@@ -271,8 +271,6 @@ class News extends Component {
 
     componentDidMount() {
         if(__DEV__)console.log('news compnentdidmount')
-      NativeModules.One.sendInteraction("/news",
-        { emailAddress : "" });
         setTimeout(() => {
             this._fetchContent()
         }, 1000)
@@ -293,14 +291,14 @@ class News extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return true
     }
-    
+
     render() {
         return (
             <Container theme={theme}>
                 <View style={styles.background}>
 
-                    <LionsHeader 
-                        title='NEWS' 
+                    <LionsHeader
+                        title='NEWS'
                         contentLoaded={this.state.isLoaded}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                     {

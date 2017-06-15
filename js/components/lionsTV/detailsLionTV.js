@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Linking, Image, View, NativeModules, WebView, Alert, TouchableOpacity, ScrollView } from 'react-native'
+import { Linking, Image, View, WebView, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { Container, Text, Button, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import LionsHeader from '../global/lionsHeader'
@@ -60,7 +60,7 @@ class DetailsLionsTV extends Component {
         poster:false
       })
     },3000)
-    
+
   }
 
   playVideo(connectionInfo) {
@@ -76,20 +76,18 @@ class DetailsLionsTV extends Component {
               videoId:this.props.details.contentDetails.upload.videoId
           })
         }
-               
+
     }
 
   componentDidMount(){
     if(this.props.connectionInfo===null||this.props.connectionInfo==='NONE') {
                 getNetinfo(this.playVideo.bind(this))
-            } 
-            else { 
-               this.playVideo(this.props.connectionInfo) 
+            }
+            else {
+               this.playVideo(this.props.connectionInfo)
             }
   }
   shareClick = () => {
-    NativeModules.One.sendInteraction("/lionsTV/share",
-      { emailAddress : "" });
     shareTextWithTitle(this.props.details.snippet.title, 'https://www.youtube.com/watch?v='+this.props.details.contentDetails.upload.videoId)
   }
 
@@ -97,8 +95,8 @@ class DetailsLionsTV extends Component {
     return(
       <Container theme={theme}>
           <View style={styles.background}>
-              <LionsHeader 
-                  title='LIONS TV' 
+              <LionsHeader
+                  title='LIONS TV'
                   back={true}
                   contentLoaded={true}
                   scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -115,7 +113,7 @@ class DetailsLionsTV extends Component {
 
                   <View style={styles.playerWrapper}>
                     {
-                    this.state.videoId!==null&& 
+                    this.state.videoId!==null&&
                         <YouTube
                         ref='youtubePlayer'
                         videoId= {this.state.videoId}
@@ -149,14 +147,14 @@ class DetailsLionsTV extends Component {
                       />
                 }
                 {
-                   
+
                     this.state.poster&&
                     <View style={styles.posterWrapper}>
                       <Image source={{uri: this.props.details.snippet.thumbnails.standard.url}} style={styles.poster}/>
                     </View>
                     }
                   </View>
-                 
+
                   <View style={styles.shareWrapper}>
                       <ButtonFeedback
                           onPress={this.shareClick}
