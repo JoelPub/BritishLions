@@ -62,8 +62,7 @@ public class MainApplication extends Application implements ReactApplication {
           new GlassBoxReactPackage(),
           new ReactNativeYouTube(),
           new LinearGradientPackage(),
-          new FacebookLoginPackage(),
-          new OnePackage()
+          new FacebookLoginPackage()
       );
     }
   };
