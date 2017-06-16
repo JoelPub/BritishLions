@@ -12,8 +12,6 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.os.Bundle;
 
-import com.clarisite.mobile.ClarisiteAgent;
-import com.clarisite.mobile.exceptions.EyeViewException;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
@@ -34,10 +32,6 @@ public class MainActivity extends ReactActivity {
         Fabric.with(this, new Crashlytics());
         adjustFontScale(getResources().getConfiguration());
 
-        try {
-            ClarisiteAgent.start();
-        } catch  (EyeViewException e) {
-        }
     }
 
     private void adjustFontScale(Configuration configuration) {

@@ -136,10 +136,6 @@ class Login extends Component {
 
     _createTokenByPassword(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
-        // if (__DEV__)console.log('this.state.email: ', this.state.email)
-        if(Platform.OS === 'android') {
-            NativeModules.GlassBoxManger.reportEvent('/signIn/password',this.state.email)
-        }
         if(__DEV__)console.log('email',this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
@@ -177,44 +173,41 @@ class Login extends Component {
         }
 
     }
-    _fbGlassBoxSender = (first_name,last_name) =>{
-        let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+this.state.fbUser.token
-
-        fetch(httpUrl.toString())
-          .then((response) => response.json())
-          .then( (json) => {
-              // if (__DEV__)console.log('json: ', JSON.stringify(json))
-              if(!json.email) {
-                  Alert.alert(
-                    'Sorry',
-                    'Sign up with Facebook is not yet supported, please sign up with a valid email address',
-                    [
-                        {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
-                    ]
-                  )
-              }
-              if(json.email) {
-                  this.setState({
-                      email:json.email
-                  })
-                  if(Platform.OS === 'android') {
-                      NativeModules.GlassBoxManger.reportEvent('/signIn/facebook',json.email)
-                  }
-              } else {
-              }
-              return json
-          }).catch((error)=>{
-            console.log(error)
-
-        })
-    }
+    // _fbGlassBoxSender = (first_name,last_name) =>{
+    //     let httpUrl ='https://graph.facebook.com/v2.5/me?fields=email,name&access_token='+this.state.fbUser.token
+    //
+    //     fetch(httpUrl.toString())
+    //       .then((response) => response.json())
+    //       .then( (json) => {
+    //           // if (__DEV__)console.log('json: ', JSON.stringify(json))
+    //           if(!json.email) {
+    //               Alert.alert(
+    //                 'Sorry',
+    //                 'Sign up with Facebook is not yet supported, please sign up with a valid email address',
+    //                 [
+    //                     {text: 'Sign up now', onPress: () => {this._pushNewRoute('signUp')}},
+    //                 ]
+    //               )
+    //           }
+    //           if(json.email) {
+    //               this.setState({
+    //                   email:json.email
+    //               })
+    //           } else {
+    //           }
+    //           return json
+    //       }).catch((error)=>{
+    //         console.log(error)
+    //
+    //     })
+    // }
     _createTokenByFB(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
         // if (__DEV__)console.log('this.state.email: ', this.state.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
 
-        this._fbGlassBoxSender(first_name,last_name,access_token)
+        // this._fbGlassBoxSender(first_name,last_name,access_token)
 
         SaveUserNameAndPassword(this.state.email,'Test1','fb')
         this.setState({
@@ -250,10 +243,6 @@ class Login extends Component {
     _createTokenByGoogle(res) {
         let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
          if (__DEV__)console.log('this.state.email: ', this.state.email)
-        if(Platform.OS === 'android') {
-            NativeModules.GlassBoxManger.reportEvent('/signIn/google',this.state.user.email)
-        }
-       // console.log('google',this.state.user.email)
         updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in,this.state.email)
         // reset the fields and hide loader
         SaveUserNameAndPassword(this.state.email,'Test1','google')
