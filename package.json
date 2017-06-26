@@ -31,7 +31,7 @@
     "react-native-scrollable-tab-view": "0.6.2",
     "react-native-share": "1.0.17",
     "react-native-simple-modal": "^3.0.4",
-    "react-native-snap-carousel": "^2.1.1",
+    "react-native-snap-carousel": "2.1.1",
     "react-native-storage": "^0.1.4",
     "react-native-swiper": "^1.4.5",
     "react-native-timeline-listview": "^0.2.0",
