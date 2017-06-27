@@ -84,7 +84,9 @@ class FixtureDetails extends Component {
         if (Platform.OS === 'android') {
             // Used third party for Calendar Event
             // On Function Params : String eventTitle, String descEvent, String locationEvent, String dateOfEvent
-            NativeModules.CalendarMAndroid.addCalendarEvent(params.details.title, params.details.description, params.details.stadium, dateOfEvent)
+            dateOfEvent.setTime(dateOfEvent.getTime()-dateOfEvent.getTimezoneOffset()*60*1000)
+            if(__DEV__)console.log('dateofEvent',dateOfEvent)
+            NativeModules.CalendarMAndroid.addCalendarEvent(params.details.title, params.details.description, params.details.stadium, dateOfEvent.toISOString().replace('T',' '))
         } else{
             getAddedToCalanderCheck().then((status) =>{
                 if (status && status === "added") {

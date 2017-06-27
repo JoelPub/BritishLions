@@ -4,6 +4,9 @@ package com.lionsofficial.utilities;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.CalendarContract;
+import com.facebook.common.logging.FLog;
+
+import com.facebook.react.common.ReactConstants;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -31,8 +34,10 @@ public class CalendarManagerAndroid extends ReactContextBaseJavaModule {
     @ReactMethod
     public void addCalendarEvent(String eventTitle, String notesEvent, String locationEvent, String dateOfEvent){
 
+        FLog.w(ReactConstants.TAG,dateOfEvent);
+        FLog.w(ReactConstants.TAG,dateOfEvent);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//EEE MMM dd HH:mm:ss z yyyy
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");//EEE MMM dd HH:mm:ss z yyyy
         //Date fromGmt = new Date(dateOfEvent);
        try {
             Date date= sdf.parse(dateOfEvent);
