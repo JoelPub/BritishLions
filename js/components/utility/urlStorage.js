@@ -6,7 +6,8 @@ const LOCAL_APP_VERSION_NO = '5'
 
 const EYC3_BASE_URL = 'http://bilwebapp.azurewebsites.net'
 const EYC3_BASE_URL_DUMMY= 'http://bilprod.azurewebsites.net'
-const EYC3_BASE_URL_R4_DUMMY= 'http://bilprod.azurewebsites.net'
+// const EYC3_BASE_URL_R4_DUMMY= 'http://bilprod.azurewebsites.net'
+const EYC3_BASE_URL_R4_DUMMY= 'https://bitbucket.org/!api/2.0/snippets/JoelPub'
 
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
 const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
@@ -69,10 +70,10 @@ const EYC3_SAVEUSERCUSTOMIZEDSQUAD_URL = '/SaveUserCustomizedSquad'
 
 // R4
 const EYC3_GET_GAME_DAY_TEAM_URL_NAME = 'EYC3_GET_GAME_DAY_TEAM'
-const EYC3_GET_GAME_DAY_TEAM_URL = '/GetGameDayTeam'
+const EYC3_GET_GAME_DAY_TEAM_URL = '/ybzqr/3b17986e18069b37c9ba6f67f988b9d7bed442f1/files/snippet.json'
 
 const EYC3_GET_FIXTURE_INFO_URL_NAME = 'EYC3_GET_FIXTURE_INFO'
-const EYC3_GET_FIXTURE_INFO_URL = '/GetFixturesInfo'
+const EYC3_GET_FIXTURE_INFO_URL = '/5bBdx/e7eccf1aa42f77f2ad8b405a77e9cf39028bd4bb/files/snippet.json'
 
 
 export function getAssembledUrl(urlName) {
@@ -194,5 +195,5 @@ export const actionsApi = {
     eyc3GetGameDayTeam: getAssembledUrl(EYC3_GET_GAME_DAY_TEAM_URL_NAME),
     eyc3GetFixtureInfo: getAssembledUrl(EYC3_GET_FIXTURE_INFO_URL_NAME),
 }
-export const APP_VERSION = APP_VERSION_NO 
+export const APP_VERSION = APP_VERSION_NO
 export const LOCAL_APP_VERSION = LOCAL_APP_VERSION_NO

@@ -27,7 +27,8 @@ class News extends Component {
               isRefreshing: false,
               newsFeed: [],
               isFetchContent: false,
-              apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
+              // apiUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
+              apiUrl: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/jz9Gr/149a54e6dc36f10f252d424ccd516bcef51a8225/files/news.json',
          }
     }
 
@@ -241,6 +242,7 @@ class News extends Component {
             //     })
             // }
             item.article=item.article.replace(/blockquote/ig,'div')
+            item.article=item.article.replace(/<a /ig,'<br \/><a ')
 
         }
         function handleVideo(item) {

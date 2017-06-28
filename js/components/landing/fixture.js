@@ -200,7 +200,7 @@ class PlayerFigure extends Component {
             onSuccess: (res) => {
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
-                if (__DEV__) console.log('res', res.data)
+                if (__DEV__) console.log('res.config', res.config)
                 if(res.data) {
                     this.setState({
                         fixturesList:res.data

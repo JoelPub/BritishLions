@@ -25,7 +25,8 @@ class Galleries extends Component {
             isLoaded: false,
             galleriesFeed: this.ds.cloneWithRows([{title:'Galleries',thumb50:null}]),
         }
-        this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php'
+        // this.url='https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php'
+        this.url='https://bitbucket.org/!api/2.0/snippets/JoelPub/5bB7j/5a4815be39368f260351fc0d0b1b3125fd1581e0/files/snippet.json'
     }
 
     _drillDown(data) {

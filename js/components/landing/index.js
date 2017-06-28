@@ -44,8 +44,10 @@ class Landing extends Component {
         this.latestUpdatesFeeds = []
 
         this.state = {
-            apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
-            apiGalleriesUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php',
+            // apiNewsUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/news2.php',
+            apiNewsUrl: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/jz9Gr/149a54e6dc36f10f252d424ccd516bcef51a8225/files/news.json',
+            // apiGalleriesUrl: 'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/galleries_json_v15.php',
+            apiGalleriesUrl: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/5bB7j/5a4815be39368f260351fc0d0b1b3125fd1581e0/files/snippet.json',
             apiTvUrl: 'https://www.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=UC5Pw6iUW8Dgmb_JSEqzXH3w&maxResults=20&key=AIzaSyDZ_Oe-ZMxv-3vL3SX3BB2KE5wKVwkF64U',
             isLoaded: false,
             isFetchContent: false,

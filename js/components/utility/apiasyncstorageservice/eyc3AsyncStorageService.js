@@ -191,7 +191,7 @@ export async function getEYC3ExpertsSquads() {
                     }).catch(err => {
                         //if (__DEV__)console.log('Warning error: ',err)
                         reject && reject(err)
-                    }) 
+                    })
                 })
             })
         }
@@ -223,11 +223,12 @@ export async function getEYC3GameDayTeam(gameID) {
         EYC3GameDayTeam(params) {
           let { id, resolve, reject} = params
           fetch(actionsApi.eyc3GetGameDayTeam, {
-              method: 'POST',
-              headers: {"content-Type":"application/json;charset=utf-8"},
-              body: JSON.stringify({
-                  id: gameID
-              })
+              method: 'GET',
+              // method: 'POST',
+              // headers: {"content-Type":"application/json;charset=utf-8"},
+              // body: JSON.stringify({
+              //     id: gameID
+              // })
           })
           .then(response=>{
               if (__DEV__)console.log('response', response)
@@ -248,7 +249,10 @@ export async function getEYC3GameDayTeam(gameID) {
                   reject&&reject(new Error('data parse error'))
               }
           })
-          .catch(err=>reject&&reject(err))
+          .catch(err=>{
+            if(__DEV__)console.log('err',err)
+            reject&&reject(err)
+          })
         }
     }
 
@@ -271,6 +275,3 @@ export async function getEYC3GameDayTeam(gameID) {
         }
     })
 }
-
-
-
