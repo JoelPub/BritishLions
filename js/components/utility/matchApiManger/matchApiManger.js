@@ -68,11 +68,11 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 }
 export function getTimeLineLiveSummary (options, type, summaryData, handleSuccess, handleError) {
   let optionsInfo = {
-    url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
+    url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/px8B9/31d25a42bbe5ea4bfd6e7082dc3b6ea3326dbe68/files/snippet.json',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
-    method: 'post',
+    method: 'get',
     onSuccess: (json)=>{
               if (__DEV__)console.log('json',json)
               if (__DEV__)console.log('typeof json.data',typeof json.data)
@@ -91,7 +91,7 @@ export function getTimeLineLiveSummary (options, type, summaryData, handleSucces
     channel: 'EYC3',
     isQsStringify:false
   }
-  service(optionsInfo) 
+  service(optionsInfo)
 
 }
 function processSummaryData(type,data,summaryData){
@@ -136,15 +136,15 @@ function processSummaryData(type,data,summaryData){
                           // calls on toast\`s hide animation start.
                       },
                       onHidden: () => {
-                          
+
                       }
-                  })      
+                  })
     }
-    
+
 
   }
   else if(type==='extend'){
-    if(data.length>0) {      
+    if(data.length>0) {
       data.map((value,index)=>{
         result.push({seq:value.sequenceId,time:value.gameTime,description:value.eventString})
       })
@@ -167,7 +167,7 @@ function processSummaryData(type,data,summaryData){
                         // calls on toast\`s hide animation start.
                     },
                     onHidden: () => {
-                        
+
                     }
                 })
     }
@@ -205,7 +205,7 @@ function processMomentumData(data){
             else {
                 result.push(null)
             }
-        }      
+        }
     }
 
 

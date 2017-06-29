@@ -395,13 +395,17 @@ class Login extends Component {
                     'app_version': APP_VERSION,
                     'grant_type': 'password'
                 },
+                // method: 'get',
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
                 onAxiosEnd: () => {
                     this.setState({ isFormSubmitting: false })
                 },
-                onSuccess: this._createTokenByPassword.bind(this),
+                onSuccess: (res) => {
+                    if(__DEV__)console.log('res',res)
+                    this._createTokenByPassword(res)
+                },
                 onError: (res) => {
                     this.setState({
                         customMessages: res,

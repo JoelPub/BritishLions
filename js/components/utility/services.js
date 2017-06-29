@@ -129,7 +129,7 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 					if (opt.onAxiosEnd) {
 						opt.onAxiosEnd()
 					}
-					
+
 					if (opt.onSuccess) {
 						opt.onSuccess(res)
 					}
@@ -140,9 +140,9 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 					if (opt.onAxiosEnd) {
 						opt.onAxiosEnd()
 					}
-					
+
 					if (opt.isRefreshToken) {
-						// if the request is from appNavigator.js 
+						// if the request is from appNavigator.js
 						if (opt.onError) {
 							opt.onError(error)
 						}
@@ -172,9 +172,9 @@ export function callApi(opt, axiosInstance, tryTimes = 0) {
 					if (opt.onAxiosEnd) {
 						opt.onAxiosEnd()
 					}
-					
+
 					if (opt.isRefreshToken) {
-						// if the request is from appNavigator.js 
+						// if the request is from appNavigator.js
 						if (opt.onError) {
 							opt.onError(error)
 						}
@@ -214,6 +214,7 @@ export function service(options) {
 		data: {},
 		auth:{},
 		method: 'post',
+		// method: 'get',
 		onSuccess: null,
 		onError: null,
 		onAuthorization: null,

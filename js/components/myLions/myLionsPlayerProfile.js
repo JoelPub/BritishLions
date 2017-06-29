@@ -169,18 +169,19 @@ class MyLionsPlayerProfile extends Component {
     getPlayerProfile() {
         let optionsPlayerProfile = {
             // url: this.PlayersProfileUrl,
-            url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
-            data:{id:this.playerid},
+            // url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
+            url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/AaobX/1d84eb86124a4ea2f03a53906f04857674e0626b/files/snippet.txt',
+            // data:{id:this.playerid},
             onAxiosStart: () => {},
-            method: 'post',
+            // method: 'post',
+            method: 'get',
             isQsStringify:false,
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })
             },
             isRequiredToken: false,
             onSuccess: (res) => {
-                if (__DEV__)console.log('profile res.data',res.data)
-                if(__DEV__)console.log('什么鬼1')
+                if (__DEV__)console.log('profile res.request',res.request)
                 let profileListOn_tour = ProfileListModel.fromJS([new ProfileModel()])
                 let profileListHistorical = ProfileListModel.fromJS([new ProfileModel()])
                 //console.log('什么鬼2')

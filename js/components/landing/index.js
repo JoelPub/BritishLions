@@ -282,6 +282,7 @@ class Landing extends Component {
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
+                if(__DEV__)console.log('res.request',res.request)
                 if(res.data) {
                     if (__DEV__)console.log('res.data',res.data)
                     let userProfile = Object.assign(res.data, {
@@ -377,6 +378,7 @@ class Landing extends Component {
                 this.setState({ isLoadedSquad: true })
             },
             onSuccess: (rating) => {
+                if(__DEV__)console.log('rating.request',rating.request)
                 this.setState({
                     rating: rating.data
                 },()=>{

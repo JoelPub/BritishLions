@@ -10,13 +10,18 @@ const EYC3_BASE_URL_DUMMY= 'http://bilprod.azurewebsites.net'
 const EYC3_BASE_URL_R4_DUMMY= 'https://bitbucket.org/!api/2.0/snippets/JoelPub'
 
 const GODDFORM_BASE_URL = 'https://www.api-ukchanges2.co.uk/api'
-const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
+// const GODDFORM_BASE_URL = 'https://bitbucket.org/!api/2.0/snippets/JoelPub'
+// const SOTIC_BASE_URL = 'https://f3k8a7j4.ssl.hwcdn.net'
+const SOTIC_BASE_URL = 'https://bitbucket.org/!api/2.0/snippets/JoelPub'
 
-const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=410'
+// const SOTIC_GET_PLAYER_URL = '/tools/feeds?id=410'
+const SOTIC_GET_PLAYER_URL = '/djb48/ee509e67fa11f90f86d8920dd40e78169f47ae9a/files/snippet.json'
 const SOTIC_GET_PLAYER_URL_NAME = 'SoticFullPlayers'
-const SOTIC_GET_PLAYER_URL_R2 = '/tools/feeds?id=408'
+// const SOTIC_GET_PLAYER_URL_R2 = '/tools/feeds?id=408'
+const SOTIC_GET_PLAYER_URL_R2 = '/e9bBk/760cc37aedad4a1252f59794feb510281c16192c/files/snippet.json'
 const SOTIC_GET_PLAYER_URL_R2_NAME = 'SoticFullPlayersR2'
-const SOTIC_GET_SUPPLIED_IMAGE_URL = '/feeds/app/graphics_json.php'
+// const SOTIC_GET_SUPPLIED_IMAGE_URL = '/feeds/app/graphics_json.php'
+const SOTIC_GET_SUPPLIED_IMAGE_URL = '/6x8nL/11aeae2c743c61f5706ccae2a90479d967d89ac8/files/snippet.txt'
 const SOTIC_GET_SUPPLIED_IMAGE_URL_NAME = 'SoticSuppliedImage'
 
 const EYC3_AUTO_POPULATED_SQUAD_URL = '/getAutoPopulatedSquad'
@@ -43,7 +48,9 @@ const GOODFORM_GET_USER_CUSROMIZED_SQUAD_URL_NAME = 'GoodFormUserCustomizedSquad
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL = '/protected/squad/save'
 const GOODFORM_SAVE_USER_CUSROMIZED_SQUAD_URL_NAME = 'SaveGoodFormUserCustomizedSquad'
 const GOODFORM_REFRESH_TOKEN_URL = '/sessions/create'
+// const GOODFORM_REFRESH_TOKEN_URL = '/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json'
 const GOODFORM_USERS_URL = '/users'
+// const GOODFORM_USERS_URL = '/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json'
 
 //R3
 //Squad
@@ -57,6 +64,7 @@ const EYC3_GETHISTORICALGAMERESULT_URL_NAME = 'EYC3GetHistoricalGameResult'
 const EYC3_GETHISTORICALGAMERESULT_URL = '/GetHistoricalGameResult'
 
 const EYC3_GETUSERPROFILESUMMARY_URL_NAME = 'EYC3GetuserProfileSummary'
+// const EYC3_GETUSERPROFILESUMMARY_URL_NAME = 'https://bitbucket.org/!api/2.0/snippets/JoelPub/odBgq/d6d67f497d6aa4c63d58f9be3bc81dbfe30afda1/files/snippet.txt'
 const EYC3_GETUSERPROFILESUMMARY_URL = '/GetuserProfileSummary'
 
 const EYC3_GETONBOARDINGINFO_URL_NAME = 'EYC3GetOnBoardingInfo'

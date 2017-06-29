@@ -258,10 +258,12 @@ class SignUp extends Component {
                     'newPartners': this.state.newPartners,
                     'tc': this.state.tc
                 },
+                // method: 'get',
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
                 onSuccess: (res) => {
+                    if(__DEV__)console.log('res.request',res.request)
                     let name = this.state.firstName +' ' + this.state.lastName
                     this._userSignUp()
                 },
@@ -319,6 +321,7 @@ class SignUp extends Component {
                 'app_version': APP_VERSION,
                 'grant_type': 'password'
             },
+            // method: 'get',
             onAxiosStart: () => {
                 this.setState({
                     isFormSubmitting: true,

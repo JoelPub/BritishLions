@@ -198,6 +198,7 @@ class PlayerFigure extends Component {
             url: this.state.getFixtureInfoURL,
             method: 'get',
             onSuccess: (res) => {
+                if(__DEV__)console.log('getfixtureinfourl res.request',res.request)
                 if (this.isUnMounted) return // return nothing if the component is already unmounted
 
                 if (__DEV__) console.log('res.config', res.config)

@@ -231,7 +231,7 @@ export async function getEYC3GameDayTeam(gameID) {
               // })
           })
           .then(response=>{
-              if (__DEV__)console.log('response', response)
+              if (__DEV__)console.log('gameday team response', response)
               return response.json()
           })
           .then(json=>{

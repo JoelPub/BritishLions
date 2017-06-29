@@ -30,6 +30,7 @@ export async function getSoticFullPlayerList() {
           fetch(getAssembledUrl(SOTIC_FULL_PLAYERS), {
             method: 'GET'
           }).then(response => {
+            if(__DEV__)console.log('full player list response.url',response.url)
             return response.json()
           }).then(json => {
             if(json){
@@ -83,6 +84,7 @@ export async function getSoticFullPlayerList() {
           fetch(actionsApi.soticGetSuppliedImage, {
             method: 'GET'
           }).then(response => {
+            if(__DEV__)console.log('suppliedimage response',response)
             return response.json()
           }).then(json => {
             if(json){
@@ -146,6 +148,7 @@ export async function getSoticFullPlayerListR2() {
           fetch(getAssembledUrl(SOTIC_FULL_PLAYERS_R2), {
             method: 'GET'
           }).then(response => {
+            if(__DEV__)console.log('full player listR2 response.url',response.url)
             return response.json()
           }).then(json => {
             if(json){
@@ -186,4 +189,3 @@ export async function getSoticFullPlayerListR2() {
           }
         })
 }
-
