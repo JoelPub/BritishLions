@@ -165,8 +165,9 @@ class MatchCenter extends Component {
         if (__DEV__)console.log('@@@call  set Play  Api')
         if (__DEV__)console.log(apiActions)
         apiActions.getGameSetPlays(this.state.detail.id,(json)=>{
-            if (__DEV__)console.log('set Play  Api',json.data)
-            this.statusArray.fill(false)
+          if (__DEV__)console.log('set Play  json.request',json.request)
+          if (__DEV__)console.log('set Play  json.request.responseURL',json.request.responseURL)
+          this.statusArray.fill(false)
             this.statusArray[3]=true
             this.setState({
               setPlayerData:json.data,
@@ -178,6 +179,8 @@ class MatchCenter extends Component {
       if(this.state.index===4){
         if (__DEV__)console.log('@@@on fire Api')
         apiActions.getGameOnFire(this.state.detail.id,(json)=>{
+          if (__DEV__)console.log('onfire  json.request',json.request)
+          if (__DEV__)console.log('onfire  json.request.responseURL',json.request.responseURL)
           this.statusArray.fill(false)
           this.statusArray[4]=true
           this.setState({

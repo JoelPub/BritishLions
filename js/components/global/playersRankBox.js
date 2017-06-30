@@ -290,13 +290,15 @@ export default class PlayersRankBox extends Component {
 
                     if(__DEV__)console.log('rank getMatchMan player',player)
                     let optionsInfo = {
-                        url: player&&player.previous!==null?'http://bilprod.azurewebsites.net/resubmitManOfMatch':'http://bilprod.azurewebsites.net/GetManOfMatchVoteResult',
-                        data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal&&player?player.current:'0' },
+                      // url: player&&player.previous!==null?'http://bilprod.azurewebsites.net/resubmitManOfMatch':'http://bilprod.azurewebsites.net/GetManOfMatchVoteResult',
+                      url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/ABMqL/85f4d24054e63421b7c152e1192b2e8df79856ff/files/snippet.json',
+                      data: player&&player.previous!==null?{id:this.state.gameID,old_man_of_match:this.props.showModal?player.previous:'0',new_man_of_match:this.props.showModal?player.current:'0' }:{id:this.state.gameID,man_of_match : this.props.showModal&&player?player.current:'0' },
                         onAxiosStart: null,
                         onAxiosEnd: null,
-                        method: 'post',
+                        // method: 'post',
+                        method: 'get',
                         onSuccess: (res) => {
-                            // if (__DEV__)console.log('res',res)
+                            if (__DEV__)console.log('getmatchman res',res)
                             if(res.data) {
                                 if(this.props.showModal) this._setModalVisible(true,'message','SUCCESS', 'Your vote for Man of the Match has been recorded. Check back to see if other fans agree. You can also come back any time prior to the end of the match to change your vote.', 'CLOSE')
                                 let players=[]
@@ -320,13 +322,15 @@ export default class PlayersRankBox extends Component {
                                 if(players.length>0) {
                                     players.map((value,index)=>{
                                         let optionsPlayerProfile = {
-                                                    url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
+                                                    // url: 'https://bilprod.azurewebsites.net/getTourPlayerProfile',
+                                                    url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/AaobX/1d84eb86124a4ea2f03a53906f04857674e0626b/files/snippet.txt',
                                                     data:{id:value.player_id},
                                                     isRequiredToken: false,
-                                                    method: 'post',
+                                                    // method: 'post',
+                                                    method: 'get',
                                                     isQsStringify:false,
                                                     onSuccess: (res) => {
-                                                        if (__DEV__)console.log('profile res.data',res.data)
+                                                        if (__DEV__)console.log('profile res',res)
                                                         let profileListOn_tour = ProfileListModel.fromJS([new ProfileModel()])
                                                         let profileListHistorical = ProfileListModel.fromJS([new ProfileModel()])
 

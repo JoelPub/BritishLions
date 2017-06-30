@@ -5,13 +5,16 @@ import Toast from 'react-native-root-toast'
 
 export function getGameMomentum(type,gameID,handleSuccess,handleError) {
     let optionsInfo = {
-      url: 'http://bilprod.azurewebsites.net/getGameMomentum',
+      // url: 'http://bilprod.azurewebsites.net/getGameMomentum',
+      url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/d5xAX/abdaccf2252b05734a32d48f0d2a728b38d70dc2/files/snippet.json',
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,
-      method: 'post',
+      // method: 'post',
+      method: 'get',
       onSuccess: (json)=>{
-              if (__DEV__)console.log('json',json)
+              if (__DEV__)console.log('momentum json.request',json.request)
+              if (__DEV__)console.log('momentum json.request.responseURL',json.request.responseURL)
               if (__DEV__)console.log('typeof json.data',typeof json.data)
               if(json.data&& (typeof json.data!=='string')) {
                 if (__DEV__)console.log('json.data.is_full_time',json.data.is_full_time)
@@ -35,11 +38,13 @@ export function getGameMomentum(type,gameID,handleSuccess,handleError) {
 }
 export function  getGameSetPlays(gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'http://bilprod.azurewebsites.net/getGameSetPlays',
+    // url: 'http://bilprod.azurewebsites.net/getGameSetPlays',
+    url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/r5X7k/8b7aa0ac1028e128c5ae4f76ed023cb5e8a60a8a/files/snippet.json',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
-    method: 'post',
+    // method: 'post',
+    method: 'get',
     onSuccess: onSuccess,
     onError: OnError,
     isRequiredToken: false,
@@ -53,11 +58,13 @@ export function GetManOfMatchInfo  () {
 }
 export function getGameOnFire  (gameId , onSuccess,OnError) {
   let optionsInfo = {
-    url: 'http://bilprod.azurewebsites.net/getGameOnFire',
+    // url: 'http://bilprod.azurewebsites.net/getGameOnFire',
+    url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/n5x97/5964be1a90a1641e973909f2bce41fde02d4a764/files/snippet.json',
     data: {id:gameId},
     onAxiosStart: null,
     onAxiosEnd: null,
-    method: 'post',
+    // method: 'post',
+    method: 'get',
     onSuccess: onSuccess,
     onError: OnError,
     isRequiredToken: false,
@@ -68,13 +75,15 @@ export function getGameOnFire  (gameId , onSuccess,OnError) {
 }
 export function getTimeLineLiveSummary (options, type, summaryData, handleSuccess, handleError) {
   let optionsInfo = {
+    // url: 'http://bilprod.azurewebsites.net/getTimelineLiveSummary',
     url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/px8B9/31d25a42bbe5ea4bfd6e7082dc3b6ea3326dbe68/files/snippet.json',
     data: options,
     onAxiosStart: null,
     onAxiosEnd: null,
+    // method: 'post',
     method: 'get',
     onSuccess: (json)=>{
-              if (__DEV__)console.log('json',json)
+              if (__DEV__)console.log('timeline json.request',json.request)
               if (__DEV__)console.log('typeof json.data',typeof json.data)
                   if(json.data&& (typeof json.data!=='string')) {
                     // if (__DEV__)console.log('json.data',json.data)

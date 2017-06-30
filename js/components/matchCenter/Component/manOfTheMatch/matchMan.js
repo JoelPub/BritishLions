@@ -213,14 +213,16 @@ class MatchMan extends Component {
                   // })
 
                     let optionsInfo = {
-                        url: 'https://bilprod.azurewebsites.net/GetManOfMatchInfo',
+                        // url: 'https://bilprod.azurewebsites.net/GetManOfMatchInfo',
+                        url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/enx94/bdf8e168664de3c1d62dfeebb7a4c67ae872800c/files/snippet.json',
                         data: {id:this.state.gameID},
                         onAxiosStart: null,
                         onAxiosEnd: null,
-                        method: 'post',
+                        // method: 'post',
+                        method: 'get',
                         onSuccess: (json)=>{
                                         if(json.data) {
-                                                    if (__DEV__)console.log('json.data',json.data)
+                                                    if (__DEV__)console.log('manofmatch json.request',json.request)
                                                     if(json.data.is_available) {
                                                         let showSquadFeed=convertSquadToShow(MatchManModel(json.data),catchedFullPlayerList,this.uniondata)
                                                         if (__DEV__)console.log('showSquadFeed',showSquadFeed.toJS())
