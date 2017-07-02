@@ -43,7 +43,7 @@ export async function getGoodFormFavoritePlayerList() {
           		method: 'get',
           		onSuccess: (res) => {
           		     if(res){
-                         //if (__DEV__)console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         if (__DEV__)console.log('Fresh uncached Goodformfavoriteplayers: ',JSON.stringify(res))
                          storage.save({
                            key: GOODFORM_FAVORITE_PLAYERS,
                            id,
@@ -78,7 +78,7 @@ export async function getGoodFormFavoritePlayerList() {
           	}
 
             service(opt)
-          
+
         }
       }
 
@@ -115,7 +115,7 @@ export async function getUserCustomizedSquad() {
               method: 'get',
               onSuccess: (res) => {
                    if(res){
-                         //if (__DEV__)console.log('Fresh uncached Goodform Data: ',JSON.stringify(res))
+                         if (__DEV__)console.log('GoodFormUserCustomizedSquad  res.request ',res.request)
                          storage.save({
                            key: GOODFORM_USER_SQUAD,
                            id,
@@ -166,6 +166,3 @@ export async function getUserCustomizedSquad() {
           return errData
         })
 }
-
-
-

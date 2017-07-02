@@ -108,7 +108,7 @@ const Round = ({title, lock, detail}) => {
 
             <View style={locStyle.roundStatus}>
                 {
-                    lock? 
+                    lock?
                         <Icon name='md-lock' style={locStyle.roundStatusIcon} />
                     :
                         <View style={locStyle.roundPlay}>
@@ -119,8 +119,8 @@ const Round = ({title, lock, detail}) => {
 
             <View style={locStyle.roundHeader}>
                 <View style={locStyle.roundHeaderImage}>
-                    <Image 
-                        style={locStyle.roundHeaderImg} 
+                    <Image
+                        style={locStyle.roundHeaderImg}
                         source={require('../../../../images/logo.png')}></Image>
                 </View>
                 <View style={locStyle.roundHeaderTitle}>
@@ -153,10 +153,10 @@ class MyLionsCompetitionCentre extends Component {
         setTimeout(()=>{
             this.props.setTeamDataTemp()
             this.props.setTeamData()
-            this.props.setTeamToShow()            
+            this.props.setTeamToShow()
         },1000)
         if(__DEV__)console.log('***************')
-        if(__DEV__)console.log(this.props.jumpRoute)            
+        if(__DEV__)console.log(this.props.jumpRoute)
         this.subscriptionRate = DeviceEventEmitter.addListener('centerratingpopup',this.popupRating)
     }
     componentWillUnmount() {
@@ -210,18 +210,18 @@ class MyLionsCompetitionCentre extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                        <LionsHeader 
+                        <LionsHeader
                             back={true}
                             title='MY LIONS'
                             contentLoaded={true}
                             scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                        
+
                         <View style={styles.pageTitle}>
                             <Text style={styles.pageTitleText}>COMPETITION CENTRE</Text>
                         </View>
 
                         <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                            
+
                             <View style={styles.guther}>
                                 <ProfileSummaryCard profile={this.state.userProfile}/>
 
@@ -317,13 +317,13 @@ class MyLionsCompetitionCentre extends Component {
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data&&res.data.rounds) {
-                    // if (__DEV__)console.log('res.data',res.data)
+                    if (__DEV__)console.log('competitioninfo res.request',res.request)
                     this.setState({isLoaded:true,competitionInfo:res.data.rounds},()=>{
                         let userInfo = Object.assign(res.data, {
-                        userName: userName, 
-                        initName: initName, 
+                        userName: userName,
+                        initName: initName,
                         firstName: firstName,
-                        lastName: lastName, 
+                        lastName: lastName,
                         userID: userID
                     })
                         this.props.setUserProfile(userInfo)
@@ -341,7 +341,7 @@ class MyLionsCompetitionCentre extends Component {
             },
             isRequiredToken: true
         }
-        service(optionsInfo)        
+        service(optionsInfo)
     }
 
     _replaceRoute(route) {
@@ -359,7 +359,7 @@ class MyLionsCompetitionCentre extends Component {
             'Warning',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )

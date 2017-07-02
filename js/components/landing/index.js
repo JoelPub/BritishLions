@@ -279,10 +279,11 @@ class Landing extends Component {
             onAxiosStart: null,
             onAxiosEnd: null,
             method: 'post',
+            // method: 'get',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
-                if(__DEV__)console.log('res.request',res.request)
+                if(__DEV__)console.log('profile res.request',res.request)
                 if(res.data) {
                     if (__DEV__)console.log('res.data',res.data)
                     let userProfile = Object.assign(res.data, {

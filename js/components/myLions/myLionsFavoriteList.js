@@ -61,20 +61,20 @@ class MyLionsFavoriteList extends Component {
     _renderRow(rowData, sectionID, rowID, highlightRow) {
         let styleGridBoxImgWrapper = (rowID%2 === 0)? [styles.gridBoxImgWrapper, styles.gridBoxImgWrapperRight] : [styles.gridBoxImgWrapper]
         let styleGridBoxTitle = (rowID %2 ===  0)? [styles.gridBoxTitle, styles.gridBoxTitleRight] : [styles.gridBoxTitle]
-        
+
         return (
             <View style={styles.gridBoxCol} key={rowID}>
-                <ButtonFeedback 
+                <ButtonFeedback
                     style={styles.gridBoxTouchable}
                     onPress={() => this._showDetail(rowData,'myLionsPlayerDetails')}>
                     <View style={styles.gridBoxTouchableView}>
                         <View style={styleGridBoxImgWrapper}>
-                            <ImagePlaceholder 
+                            <ImagePlaceholder
                                 width = {styleVar.deviceWidth / 2}
                                 height = {styleVar.deviceWidth / 2}>
                                 <Image transparent
                                     resizeMode='contain'
-                                    source={{uri:rowData.image}} 
+                                    source={{uri:rowData.image}}
                                     style={styles.gridBoxImg}
                                     key={rowID}/>
                             </ImagePlaceholder>
@@ -87,7 +87,7 @@ class MyLionsFavoriteList extends Component {
                         </View>
                     </View>
                 </ButtonFeedback>
-            </View> 
+            </View>
         )
     }
 
@@ -104,14 +104,14 @@ class MyLionsFavoriteList extends Component {
             let image = item.image
             let union = this.uniondata.find((n)=> n.id===item.countryid)
             Object.assign(item, {
-                logo: union.image, 
+                logo: union.image,
                 country: union.displayname.toUpperCase(),
                 countryid: union.id,
                 isFav: true
             })
             if(strToUpper(item.position)==='FLANKER'||strToUpper(item.position)==='NO. 8') players[index].position='Back Row'
             if(strToUpper(item.position)==='Utility Back') players[index].position='Full Back'
-            
+
         })
         return players
     }
@@ -157,7 +157,7 @@ class MyLionsFavoriteList extends Component {
                     this.props.setSquadData(JSON.stringify(tmpSquad))
                     this.props.setSquadToShow(showSquadFeed.toJS())
                 }
-                
+
             },
             isRequiredToken: true
         }
@@ -283,11 +283,11 @@ class MyLionsFavoriteList extends Component {
             // means user refresh the page
             this.setState({ isRefreshing: true })
         }
-        
+
         getGoodFormFavoritePlayerList().then((data)=>{
             // if (__DEV__)console.log('final data:', JSON.stringify(data))
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-            
+
             if(data.auth){
                 if(data.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true, isRefreshing: false }, () => {
@@ -313,7 +313,7 @@ class MyLionsFavoriteList extends Component {
                 } else {
                     // empty favorite player list
                     this.setState({
-                        isLoaded: true, 
+                        isLoaded: true,
                         isRefreshing: false,
                         favoritePlayers: this.ds.cloneWithRows([])
                     })
@@ -330,9 +330,9 @@ class MyLionsFavoriteList extends Component {
 
     componentWillReceiveProps(nextProps) {
         let routes = globalNav.navigator.getCurrentRoutes()
-        
+
         // re render after 'back nav' pressed
-        if (!this.isUnMounted && routes[routes.length - 2].id === 'myLionsFavoriteList') {
+        if (!this.isUnMounted && routes[routes.length - 2]&&routes[routes.length - 2].id === 'myLionsFavoriteList') {
             this.setState({
                 isRefreshing: false,
                 isLoaded: false,
@@ -371,14 +371,14 @@ class MyLionsFavoriteList extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
     }
 
     _showDetail(item, route) {
-        
+
         this.props.setPositionToAdd(null)
         this.props.setPositionToRemove(null)
         this.props.drillDown(item, 'myLionsPlayerDetails')
@@ -407,9 +407,9 @@ class MyLionsFavoriteList extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
-                        back={true} 
-                        title='MY LIONS' 
+                    <LionsHeader
+                        back={true}
+                        title='MY LIONS'
                         contentLoaded={this.state.isLoaded}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
                      <View style={styles.myLionsSharedHeader}>
@@ -422,24 +422,24 @@ class MyLionsFavoriteList extends Component {
                             this.state.isLoaded?
                                 <View>
                                     {
-                                        !this.state.favoritePlayers.getRowCount()? 
+                                        !this.state.favoritePlayers.getRowCount()?
                                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                                 <View style={styles.emptyPlayer}>
                                                     <Text style={styles.emptyPlayerText}>Your Favourite Players list is currently empty, you can add Favourite Players from the Player Detail screen.</Text>
                                                 </View>
                                                 <LionsFooter isLoaded={true} />
                                             </ScrollView>
-                                        : 
+                                        :
                                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
-                                                <ListView 
+                                                <ListView
                                                     dataSource={this.state.favoritePlayers}
                                                     renderRow={this._renderRow.bind(this)}
-                                                    enableEmptySections = {true} 
+                                                    enableEmptySections = {true}
                                                     contentContainerStyle={styles.gridList}
                                                     renderFooter ={this._renderFooter}
                                                 />
                                             </ScrollView>
-                                    } 
+                                    }
                                 </View>
                             :
                                 <ActivityIndicator style={styles.loaderPos2} size='large' />
@@ -470,4 +470,3 @@ export default connect((state) => {
         route: state.route,
     }
 }, bindAction)(MyLionsFavoriteList)
-

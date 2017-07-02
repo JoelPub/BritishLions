@@ -20,7 +20,7 @@ import Data from '../../../../contents/unions/data'
 import { getAssembledUrl,actionsApi } from '../../utility/urlStorage'
 import { popRoute,pushNewRoute } from '../../../actions/route'
 import { drillDown } from '../../../actions/content'
-const styles = styleSheetCreate({    
+const styles = styleSheetCreate({
     playBtn:{
         height: 80,
         borderRadius:40,
@@ -66,7 +66,7 @@ class GamePlayBtn extends Component {
 	}
     componentWillReceiveProps(nextProps) {
         if (__DEV__)console.log('this.props.connectionInfo',this.props.connectionInfo)
-        
+
         if (__DEV__)console.log('nextProps.connectionInfo',nextProps.connectionInfo)
         if (__DEV__)console.log('nextProps.teamStatus',nextProps.teamStatus)
         if (__DEV__)console.log('nextProps.tactics',nextProps.tactics)
@@ -83,7 +83,7 @@ class GamePlayBtn extends Component {
         else {
             this.setState({isActive:nextProps.teamStatus&&nextProps.tactics!==null})
         }
-        
+
     }
   getProfile = (userName,firstName,lastName,initName)=>{
     let optionsUserProfile = {
@@ -92,11 +92,12 @@ class GamePlayBtn extends Component {
       onAxiosStart: null,
       onAxiosEnd: null,
       method: 'post',
+      // method: 'get',
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
         if(res.data) {
-          // if (__DEV__)console.log('res.data',res.data)
+            if(__DEV__)console.log('profile res.request',res.request)
           let userProfile = Object.assign(res.data, {
             userName: userName,
             initName: initName,
@@ -151,7 +152,7 @@ class GamePlayBtn extends Component {
               this.getProfile(userName,firstName,lastName,initName)
                 if (__DEV__)console.log('res',res)
                 if (__DEV__)console.log('typeof res.data',typeof res.data)
-                if(typeof res.data ==='object') {                    
+                if(typeof res.data ==='object') {
                     this.props._setModalVisible(false)
                     this.props.drillDown(Object.assign(res.data,{isLiveResult:true,title:this.props.title,image:this.props.image,round_id:this.props.round_id}), 'myLionsCompetitionGameResults')
                 }

@@ -94,7 +94,7 @@ class MyLionsGroupView extends Component {
                 // calls on toast\`s hide animation start.
             },
             onHidden: () => {
-                
+
             }
         })
   }
@@ -128,7 +128,7 @@ class MyLionsGroupView extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        if (__DEV__)console.log(res)
+        if (__DEV__)console.log('groupinfo res.request',res.request)
         if(res.data){
           this.setState({
             isLoaded:false,
@@ -173,7 +173,7 @@ class MyLionsGroupView extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        if (__DEV__)console.log(res)
+        if (__DEV__)console.log('leavegroup res.request',res.request)
         this.setState({
           isLoaded:false,
         })

@@ -188,7 +188,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        if (__DEV__)console.log(res)
+        if (__DEV__)console.log('competitionladder res.request',res.request)
         if(res.data){
           this.setState({
             isLoaded:false,
@@ -267,7 +267,7 @@ class CompetitionLadder extends Component {
       last_name:this.props.userProfile.lastName,
     }
     if(group_name===''||!group_name) {
-      
+
       this.setState({
                 createType: 'error',
                 modalData: {message:'League Name can\'t be empty'}
@@ -284,7 +284,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        if (__DEV__)console.log(res)
+        if (__DEV__)console.log('create group res.request',res.request)
         this.setState({
           isLoaded:false,
         })
@@ -345,7 +345,7 @@ class CompetitionLadder extends Component {
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
-        if (__DEV__)console.log(res)
+        if (__DEV__)console.log('joingroup res.request',res.request)
         this.setState({
           isLoaded:false,
         })

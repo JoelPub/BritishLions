@@ -275,8 +275,8 @@ class MyLions extends Component {
                             // check if user is first login
                             isFirstLogIn().then((isFirst) => {
                                 // when first login, it will show the onboarding
-                                isFirst = isFirst === 'yes'? true : false
-                                // isFirst = true
+                                // isFirst = isFirst === 'yes'? true : false
+                                isFirst = true
                                 let squadData={ "backs" : [],
                                                 "wildcard" : "",
                                                 "captain" : "",
@@ -341,8 +341,9 @@ class MyLions extends Component {
             onAxiosStart: null,
             onAxiosEnd: null,
             method: 'post',
+            // method: 'get',
             onSuccess: (res) => {
-                // if (__DEV__)console.log('res',r es)
+                if (__DEV__)console.log('GetOnBoardingInfo res.request',res.request)
                 // if (__DEV__)console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
                 // if (__DEV__)console.log('this.state.userID',this.state.userID)
                 this.setState({onBordingModalVisible:false})
@@ -389,12 +390,13 @@ class MyLions extends Component {
             data: {id:this.state.userID,first_name:firstName,last_name:lastName},
             onAxiosStart: null,
             onAxiosEnd: null,
+            // method: 'get',
             method: 'post',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    // if (__DEV__)console.log('res.data',res.data)
+                    if(__DEV__)console.log('profile res.request',res.request)
                         let userProfile = Object.assign(res.data, {
                             userName: userName,
                             initName: initName,

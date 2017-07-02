@@ -300,6 +300,7 @@ class MyLionsSquad extends Component {
     }
 
     _getSquad(){
+      if(__DEV__)console.log('_getSquad')
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
@@ -388,6 +389,7 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded: true })
             },
             onSuccess: (res) => {
+                if(__DEV__)console.log('savesquad res.request',res.request)
                 this.setState({
                     isLoaded:true,
                     isScoreLoaded: isPop||!fullFeed?true:false,
@@ -450,6 +452,7 @@ class MyLionsSquad extends Component {
                 this.setState({ isLoaded:true })
             },
             onSuccess: (res) => {
+              if(__DEV__)console.log('autopop res.request',res.request)
                  this.setState({
                     isLoaded:true
                 },()=>{
@@ -510,6 +513,7 @@ class MyLionsSquad extends Component {
             onAxiosEnd: () => {
                 },
             onSuccess: (res) => {
+                    if(__DEV__)console.log('getrating res.request',res.request)
                     let rating=Rating()
                     rating.forEach((value,index)=>{
                         rating=rating.set(index,res.data[index])

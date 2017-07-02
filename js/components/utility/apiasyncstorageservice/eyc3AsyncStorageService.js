@@ -40,12 +40,13 @@ export async function getEYC3OfficialSquad() {
     EYC3OfficialSquad(params) {
       let {id,resolve,reject}=params
       fetch(actionsApi.eyc3GetOfficalSquad,{
-        method:'POST',
-        headers: {"content-Type":"application/json;charset=utf-8"},
-        body: JSON.stringify({})
+        // method:'POST',
+        method:'GET',
+        // headers: {"content-Type":"application/json;charset=utf-8"},
+        // body: JSON.stringify({})
       })
       .then(response=>{
-        // if (__DEV__)console.log('response',response)
+        if (__DEV__)console.log('eyc3officialsquad response',response)
         return response.json()
       })
       .then(json=>{
@@ -113,6 +114,7 @@ export async function getEYC3FullPlayerList() {
                       'id':userID
                     })
                   }).then(response => {
+                    if(__DEV__)console.log('eyc3fullplayer respsone.url',response.url)
                     return response.json()
                   }).then(json => {
                     if(json){
@@ -174,6 +176,7 @@ export async function getEYC3ExpertsSquads() {
                             'id':userID
                         })
                     }).then(response => {
+                        if(__DEV__)console.log('expertlist response',response)
                         return response.json()
                     }).then(json => {
                         if (json) {

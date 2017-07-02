@@ -85,7 +85,7 @@ class MyLionsOfficialSquad extends Component {
                 // calls on toast\`s hide animation start.
             },
             onHidden: () => {
-                
+
             }
         })
     }
@@ -123,8 +123,8 @@ class MyLionsOfficialSquad extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -160,7 +160,7 @@ class MyLionsOfficialSquad extends Component {
         this._getCoachAndStaffData()
       },2000)
     }
-    
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
@@ -175,15 +175,16 @@ class MyLionsOfficialSquad extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
     }
     _getCoachAndStaffData = () => {
         let coachAndStaff = [];
-        _fetch({url:'https://f3k8a7j4.ssl.hwcdn.net/feeds/app/coaches.php'}).then((json)=>{
-            json.map((item)=>{
+        _fetch({url:'https://bitbucket.org/!api/2.0/snippets/JoelPub/XGzpx/50f03495af046dc61905f1b5d13b389dbf328c62/files/snippet.json'}).then((json)=>{
+            if(__DEV__)console.log('coachandstaff json',JSON.stringify(json))
+            JSON.parse(json).map((item)=>{
                 coachAndStaff.push(item)
                     })
 
@@ -283,4 +284,3 @@ export default connect((state) => {
         coachAndStaffData: state.squad.coachData
     }
 }, bindAction)(MyLionsOfficialSquad)
-
