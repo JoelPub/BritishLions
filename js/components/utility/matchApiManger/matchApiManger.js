@@ -3,10 +3,19 @@ import _fetch from '../../utility/fetch'
 import { service } from '../../utility/services'
 import Toast from 'react-native-root-toast'
 
-export function getGameMomentum(type,gameID,handleSuccess,handleError) {
+export function getGameMomentum(seq,type,gameID,handleSuccess,handleError) {
+    console.log('seq',seq)
+    let urls=['https://bitbucket.org/!api/2.0/snippets/JoelPub/kdpM9/5c6684a1a400be7e784740f47408f7ed5b9d42cf/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/GbG5B/4e1d6760e7635113bb6a9f0f6a70273df91b03d1/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/kdpBj/bf789b634aa2406647ca05ab40ba9a7f33c185db/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/bXReq/2061959753a3cdf84d615928772a583d2e2ce9e2/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/y9qAn/479c486ef82fc511e50e422261f557a5c5459eef/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/KbKrB/dfd73ede3ed70324e73fce6d2c20887884fcf814/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/7pEXn/25b3eb8181e2122b2fc3dd857958820dcf5323bb/files/snippet.json',
+    'https://bitbucket.org/!api/2.0/snippets/JoelPub/EzAj8/ef84930c48063c03dafee65dc4a97d21199cfdf9/files/snippet.json']
     let optionsInfo = {
       // url: 'http://bilprod.azurewebsites.net/getGameMomentum',
-      url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/d5xAX/abdaccf2252b05734a32d48f0d2a728b38d70dc2/files/snippet.json',
+      url: urls[seq%8],
       data: {id:gameID},
       onAxiosStart: null,
       onAxiosEnd: null,

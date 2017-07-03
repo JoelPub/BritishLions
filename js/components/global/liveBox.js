@@ -11,7 +11,7 @@ import { strToLower } from '../utility/helper'
 
 let containerWidth = styleVar.deviceWidth
 
-const locStyle = styleSheetCreate({ 
+const locStyle = styleSheetCreate({
     liveBox: {
         flexDirection: 'row',
         paddingVertical: 9,
@@ -86,11 +86,13 @@ export default class LiveBox extends Component {
             is_parse_time:false,
             previous_time:0
         }
+        this.seq=0
     }
     callApi = () => {
         if (__DEV__)console.log('call livebox Api(self extract)')
-        apiActions.getGameMomentum('time',this.props.data.id,(data)=>{
+        apiActions.getGameMomentum(this.seq,'time',this.props.data.id,(data)=>{
                     if(__DEV__)console.log('this.state.previous_time1',this.state.previous_time)
+                      this.seq++
                     this.setState({
                       game_time: data.game_time,
                       bil_score: data.statics&&data.statics.bil&&data.statics.bil.score,
@@ -115,7 +117,7 @@ export default class LiveBox extends Component {
         console.log('livebox componentDidMount',this.props.data)
         if(this.props.data&&!this.props.data.feededData) {
             this.callApi()
-            this.timer = setInterval(this.callApi,120000)
+            this.timer = setInterval(this.callApi,5000)
 
         }
         else {
@@ -152,7 +154,7 @@ export default class LiveBox extends Component {
       this.timer&&clearTimeout(this.timer)
     }
     render() {
-       
+
         let inverse = this.props.inverse || false
         let styleLiveBox = inverse? [locStyle.liveBox] : [locStyle.liveBox, locStyle.liveBoxInverse]
         let styleCircle = inverse? [locStyle.circle] : [locStyle.circle, locStyle.circleInverse]
@@ -199,7 +201,7 @@ export default class LiveBox extends Component {
                     </View>
                 </View>
             }
-                
+
                 {
                     this.props.data&&this.props.data.hasTitle&&
                     <View style={{height:styleVar.deviceWidth*0.13,backgroundColor:'rgb(0,0,0)',justifyContent:'center'}}>

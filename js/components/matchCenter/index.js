@@ -49,6 +49,8 @@ class MatchCenter extends Component {
         this._scrollView = ScrollView
         this.timer  = null
         this.statusArray=[false,false,false,false,false,false]
+        this.mseq=0
+        this.tseq=0
 
     }
     _setHeight(h,source) {
@@ -103,7 +105,8 @@ class MatchCenter extends Component {
                       // if (__DEV__)console.log('init timelineData',timelineData)
                       this.statusArray.fill(false)
                       this.statusArray[0]=true
-                      apiActions.getGameMomentum('time',this.state.detail.id,(data)=>{
+                      apiActions.getGameMomentum(this.tseq,'time',this.state.detail.id,(data)=>{
+                          this.tseq++
                           this.setState({
                             statusArray: this.statusArray,
                             summaryData:Object.assign(data,this.state.detail,{timeline:timelineData})
@@ -137,7 +140,8 @@ class MatchCenter extends Component {
       }
       if(this.state.index===2){
         if (__DEV__)console.log('call momentum Api')
-        apiActions.getGameMomentum('momentum',this.state.detail.id,(data)=>{
+        apiActions.getGameMomentum(this.mseq,'momentum',this.state.detail.id,(data)=>{
+                    this.mseq++
                     this.statusArray.fill(false)
                     this.statusArray[2]=true
                     this.setState({
@@ -234,7 +238,7 @@ class MatchCenter extends Component {
         if(__DEV__)console.log('@@@matchCenter componentDidMount this.state.detail',this.state.detail)
         setTimeout(()=>{this.setState({isLoaded:true},()=>{
             this.callApi()
-            if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
+            if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,5000)
         })},500)
 
     }
@@ -260,7 +264,7 @@ class MatchCenter extends Component {
               scrollEnabled:true
             },()=>{
               this.callApi()
-              if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,120000)
+              if((this.state.index!==1&&this.state.index!==5)&&this.state.detail.live!==null) this.timer = setInterval(this.callApi,5000)
             })
           }
           else {
