@@ -55,8 +55,10 @@ class MyAccount extends Component {
             theme: React.PropTypes.object,
         }
 
-        this.changePasswordServiceUrl = 'https://www.api-ukchanges2.co.uk/api/password/change'
-        this.changeEmailServiceUrl = 'https://www.api-ukchanges2.co.uk/api/email/change'
+        // this.changePasswordServiceUrl = 'https://www.api-ukchanges2.co.uk/api/password/change'
+        this.changePasswordServiceUrl = 'https://bitbucket.org/!api/2.0/snippets/JoelPub/6aKz9/fc3bd6b2afc0061d3bc72c627bd441b95aa66288/files/snippet.json'
+        // this.changeEmailServiceUrl = 'https://www.api-ukchanges2.co.uk/api/email/change'
+        this.changeEmailServiceUrl = 'https://bitbucket.org/!api/2.0/snippets/JoelPub/6aKz9/fc3bd6b2afc0061d3bc72c627bd441b95aa66288/files/snippet.json'
 
         // debounce
         this._onSuccessValidateEmail = debounce(this._onSuccessValidateEmail, 1000, {leading: true, maxWait: 0, trailing: false})
@@ -110,9 +112,9 @@ class MyAccount extends Component {
             if(isFormValidate) {
                 let options = {
                     url: this.changeEmailServiceUrl,
-                    data: {
-                        'newEmail': this.state.email
-                    },
+                    // data: {
+                    //     'newEmail': this.state.email
+                    // },
                     onAxiosStart: () => {
                         this.setState({ isFormSubmittingEmail: true })
                     },
@@ -168,9 +170,9 @@ class MyAccount extends Component {
 
                 let options = {
                     url: this.changePasswordServiceUrl,
-                    data: {
-                        'newPassword': this.state.confirmPassword
-                    },
+                    // data: {
+                    //     'newPassword': this.state.confirmPassword
+                    // },
                     onAxiosStart: () => {
                         this.setState({ isFormSubmitting: true })
                     },

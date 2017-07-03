@@ -235,7 +235,7 @@ const Summary = ({data,shareView}) => (
                     </View>
                 </View>
             </View>
-            
+
             <View style={locStyle.summaryRow}>
                 <Text style={locStyle.summaryValue}>{ data.ai.tries || 0 }</Text>
                 <View style={locStyle.summaryTextWrapper}>
@@ -340,17 +340,17 @@ class MyLionsCompetitionGameResults extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         back={true}
                         isOnResultPage={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    
+
                     <View style={styles.pageTitle}>
                         <Text style={styles.pageTitleText}>RESULTS</Text>
-                        <ButtonFeedback 
-                            style={styles.pageTitleBtnIconRight} 
+                        <ButtonFeedback
+                            style={styles.pageTitleBtnIconRight}
                             onPress={() => { this.setState({modalResults: true}) }}>
                             <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                         </ButtonFeedback>
@@ -392,7 +392,7 @@ class MyLionsCompetitionGameResults extends Component {
                                     </View>
                             }
                                 <Versus gameData={this.state.drillDownItem} userData={this.props.userProfile} />
-                                
+
                                 <View style={styles.guther}>
                                     <SummaryCardWrapper>
                                         <Summary data={this.state.resultInfo} shareView={this.goShare}/>
@@ -410,8 +410,8 @@ class MyLionsCompetitionGameResults extends Component {
                                             BACK TO ROUND
                                         </Text>
                                     </ButtonFeedback>
-                                    <ButtonFeedback 
-                                        rounded 
+                                    <ButtonFeedback
+                                        rounded
                                         style={[styles.roundButton, {marginBottom: 30}]}
                                         onPress={this.popToCenter}>
                                         <Icon name='md-analytics' style={styles.roundButtonIcon} />
@@ -427,7 +427,7 @@ class MyLionsCompetitionGameResults extends Component {
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
 
-                    <SquadModal 
+                    <SquadModal
                         modalVisible={this.state.modalResults}
                         callbackParent={() => {}}>
                             <View style={[styles.modalContent]}>
@@ -468,7 +468,7 @@ class MyLionsCompetitionGameResults extends Component {
                     DeviceEventEmitter.emit('listratingpopup', true)
                 },2000)
             }
-        
+
 
 
     }
@@ -489,32 +489,33 @@ class MyLionsCompetitionGameResults extends Component {
         // console.warn('this.state.drillDownItem',this.state.drillDownItem)
         let optionsInfo = {
             url: actionsApi.eyc3GetHistoricalGameResult,
-            data:
-             {
-                access_token: token,
-                id:userProfile.userId,
-                first_name:userProfile.firstName,
-                last_name:userProfile.lastName,
-                round_id:this.state.drillDownItem.round_id,
-                game_id:this.state.drillDownItem.game
-             },
+            // data:
+            //  {
+            //     access_token: token,
+            //     id:userProfile.userId,
+            //     first_name:userProfile.firstName,
+            //     last_name:userProfile.lastName,
+            //     round_id:this.state.drillDownItem.round_id,
+            //     game_id:this.state.drillDownItem.game
+            //  },
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'post',
+            // method: 'post',
+            method: 'get',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
                 if(res.data) {
-                    if (__DEV__)console.log('res.data',res.data)
+                    if (__DEV__)console.log('GetHistoricalGameResult res.request',res.request)
                     this.setState({isLoaded: true, resultInfo: res.data})
-                    getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+                    getSoticFullPlayerList().then((catchedFullPlayerList) => {
                         if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                             if (__DEV__)console.log('true')
                             let showTeamFeed=convertTeamToShow(TeamModel.fromJS(res.data.team),catchedFullPlayerList,this.uniondata)
                             this.props.setTeamToShow(showTeamFeed.toJS())
                         }
                     }).catch((error) => {
-                                this._showError(error) 
+                                this._showError(error)
                     })
                 }
             },
@@ -526,7 +527,7 @@ class MyLionsCompetitionGameResults extends Component {
             },
             isRequiredToken: true
         }
-        service(optionsInfo)        
+        service(optionsInfo)
     }
 }
 

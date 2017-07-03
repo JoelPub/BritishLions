@@ -47,7 +47,8 @@ const styles = styleSheetCreate({
 class GamePlayBtn extends Component {
 	constructor(props){
         super(props)
-        this.getGameResultUrl='http://bilprod.azurewebsites.net/GetGameResult'
+        // this.getGameResultUrl='http://bilprod.azurewebsites.net/GetGameResult'
+        this.getGameResultUrl='https://bitbucket.org/!api/2.0/snippets/JoelPub/AK7zo/aef584bef1b3d7d22f57adcaec72ebb82da46cf8/files/snippet.json'
         this.submitting=false
         this.state = {
             isActive:this.props.teamStatus&&this.props.tactics!==null
@@ -88,11 +89,11 @@ class GamePlayBtn extends Component {
   getProfile = (userName,firstName,lastName,initName)=>{
     let optionsUserProfile = {
       url: actionsApi.eyc3GetuserProfileSummary,
-      data: {id:this.props.userProfile.userID,first_name:firstName,last_name:lastName},
+      // data: {id:this.props.userProfile.userID,first_name:firstName,last_name:lastName},
       onAxiosStart: null,
       onAxiosEnd: null,
-      method: 'post',
-      // method: 'get',
+      // method: 'post',
+      method: 'get',
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
@@ -128,21 +129,22 @@ class GamePlayBtn extends Component {
         if (__DEV__)console.log('playgame this.props.tactics',this.props.tactics)
        let options = {
             url: this.getGameResultUrl,
-            data: {
-                "id" : this.props.userProfile.userID,
-                "round_id":this.props.round_id,
-                "game_id":this.props.game,
-                "weather_id":this.props.weather_id,
-                "referee_id":this.props.referees_id,
-                "ground_id":this.props.grounds_id,
-                "team":this.props.teamData,
-                "tactics":{
-                    "boost_player":this.props.tactics.starPlayer.info&&this.props.tactics.starPlayer.info.id?this.props.tactics.starPlayer.info.id:'',
-                    "interchange":this.props.tactics.replacements,
-                    "play_style":this.props.tactics.tactic
-                }
-            },
-            method: 'post',
+            // data: {
+            //     "id" : this.props.userProfile.userID,
+            //     "round_id":this.props.round_id,
+            //     "game_id":this.props.game,
+            //     "weather_id":this.props.weather_id,
+            //     "referee_id":this.props.referees_id,
+            //     "ground_id":this.props.grounds_id,
+            //     "team":this.props.teamData,
+            //     "tactics":{
+            //         "boost_player":this.props.tactics.starPlayer.info&&this.props.tactics.starPlayer.info.id?this.props.tactics.starPlayer.info.id:'',
+            //         "interchange":this.props.tactics.replacements,
+            //         "play_style":this.props.tactics.tactic
+            //     }
+            // },
+            // method: 'post',
+            method: 'get',
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 if (__DEV__)console.log('onAxiosEnd')
@@ -150,7 +152,7 @@ class GamePlayBtn extends Component {
             onSuccess: (res) => {
               let {userName,initName,firstName,lastName} = this.props.userProfile
               this.getProfile(userName,firstName,lastName,initName)
-                if (__DEV__)console.log('res',res)
+                if (__DEV__)console.log('getGameResult res.request',res.request)
                 if (__DEV__)console.log('typeof res.data',typeof res.data)
                 if(typeof res.data ==='object') {
                     this.props._setModalVisible(false)

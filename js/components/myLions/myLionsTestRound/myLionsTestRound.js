@@ -86,7 +86,7 @@ class MyLionsTestRound extends Component {
                 // calls on toast\`s hide animation start.
             },
             onHidden: () => {
-                
+
             }
         })
     }
@@ -107,8 +107,8 @@ class MyLionsTestRound extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
-                        back={true} 
+                    <LionsHeader
+                        back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
@@ -116,8 +116,8 @@ class MyLionsTestRound extends Component {
                         this.state.isLoaded?
                             <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                                 <Text style={[styles.headerTitle,styles.squadTitle]}>SELECT TEAM</Text>
-                                <ButtonFeedback 
-                                    style={styles.pageTitleBtnIconRight} 
+                                <ButtonFeedback
+                                    style={styles.pageTitleBtnIconRight}
                                     onPress={() => { this.setState({modalVisible: true}) }}>
                                     <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                                 </ButtonFeedback>
@@ -153,29 +153,30 @@ class MyLionsTestRound extends Component {
     }
     _getTeam(){
         if (__DEV__)console.log('_getTeam',this.props.teamDataTemp)
-        getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 if (__DEV__)console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
-                    data: { "id":this.props.userProfile.userID,
-                            "first_name":this.props.userProfile.firstName,
-                            "last_name":this.props.userProfile.lastName,
-                            "round_id":this.state.drillDownItem.round_id, 
-                            "game_id": 0},
+                    // data: { "id":this.props.userProfile.userID,
+                    //         "first_name":this.props.userProfile.firstName,
+                    //         "last_name":this.props.userProfile.lastName,
+                    //         "round_id":this.state.drillDownItem.round_id,
+                    //         "game_id": 0},
                     onAxiosStart: null,
                     onAxiosEnd: null,
-                    method: 'post',
+                    // method: 'post',
+                    method: 'get',
                     onSuccess: (res) => {
-                        if (__DEV__)console.log('res.data',res.data)
+                        if (__DEV__)console.log('GetUserCustomizedSquad res.request',res.request)
                         if(res.data&&(typeof res.data==='object')) {
                             this.setTeam(TeamModel.fromJS(res.data))
                         }
                         else {
                             this.setTeam(TeamModel.fromJS({}))
                         }
-                        
+
                     },
                     isRequiredToken: true,
                     channel: 'EYC3',
@@ -184,9 +185,9 @@ class MyLionsTestRound extends Component {
                 service(optionsTeam)
             }
         }).catch((error) => {
-                    this._showError(error) 
+                    this._showError(error)
         })
-    }  
+    }
 
     setTeam(team){
         if (__DEV__)console.log('!!!setTeam',team.toJS())
@@ -198,7 +199,7 @@ class MyLionsTestRound extends Component {
             if (__DEV__)console.log('!!!team not equal')
             this.props.setTeamDataTemp(team.toJS())
         }
-        
+
 
     }
 
@@ -206,7 +207,7 @@ class MyLionsTestRound extends Component {
         if (__DEV__)console.log('componentWillReceiveProps nextProps.teamDataTemp',nextProps.teamDataTemp)
         if (__DEV__)console.log('componentWillReceiveProps this.props.teamDataTemp',this.props.teamDataTemp)
         if(Immutable.is(TeamModel.fromJS(nextProps.teamDataTemp),TeamModel.fromJS(this.props.teamDataTemp))===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))  
+            this.setTeam(TeamModel.fromJS(nextProps.teamDataTemp))
         }
     }
     _saveTeam() {
@@ -220,17 +221,17 @@ class MyLionsTestRound extends Component {
 
            let options = {
                url: actionsApi.eyc3SaveUserCustomizedSquad,
-               data: {  "id": this.props.userProfile.userID,
-                        "first_name": this.props.userProfile.firstName,
-                        "last_name": this.props.userProfile.lastName,
-                        "round_id":this.state.drillDownItem.round_id,
-                        "game_id": 0,
-                        "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
+              //  data: {  "id": this.props.userProfile.userID,
+              //           "first_name": this.props.userProfile.firstName,
+              //           "last_name": this.props.userProfile.lastName,
+              //           "round_id":this.state.drillDownItem.round_id,
+              //           "game_id": 0,
+              //           "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
                onAxiosStart: () => {},
                onAxiosEnd: () => {
                },
                onSuccess: (res) => {
-                if (__DEV__)console.log('res.data',res.data)
+                if (__DEV__)console.log('saveusercustomizedsquad res.request',res.request)
                     if(res.data&&res.data.success) {
                         this.props.drillDown(this.state.drillDownItem,'myLionsTestRoundSubmit')
                     }
@@ -240,7 +241,8 @@ class MyLionsTestRound extends Component {
                },
                 onAuthorization: null,
                 isQsStringify:false,
-                method: 'post',
+                // method: 'post',
+                method: 'get',
                 channel: 'EYC3',
                 isRequiredToken: true
            }
@@ -256,7 +258,7 @@ class MyLionsTestRound extends Component {
             )
         }
     }
-    
+
     _replaceRoute(route) {
         this.props.replaceRoute(route)
     }
@@ -272,7 +274,7 @@ class MyLionsTestRound extends Component {
             'Your session has expired',
             'Please sign into your account.',
             [{
-                text: 'SIGN IN', 
+                text: 'SIGN IN',
                 onPress: this._reLogin.bind(this)
             }]
         )
@@ -302,4 +304,3 @@ export default connect((state) => {
         drillDownItem: state.content.drillDownItem,
     }
 }, bindAction)(MyLionsTestRound)
-

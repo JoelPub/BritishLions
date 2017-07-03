@@ -39,7 +39,7 @@ class MyLionsPlayerProfile extends Component {
     constructor(props){
         super(props)
         this._scrollView = ScrollView
-        this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
+        // this.PlayersProfileUrl=getAssembledUrl('EYC3GetPlayersProfile')
         this.playerid = this.props.detail.id,
         this.playerName = this.props.detail.name,
         this.playerPos=null,

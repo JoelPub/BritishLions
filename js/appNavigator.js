@@ -142,10 +142,10 @@ class AppNavigator extends Component {
         getRefreshToken().then((refreshToken) => {
             let options = {
                 url: this.serviceUrl,
-                data: {
-                    'refresh_token': refreshToken,
-                    'grant_type': 'refresh_token'
-                },
+                // data: {
+                //     'refresh_token': refreshToken,
+                //     'grant_type': 'refresh_token'
+                // },
                 onSuccess: (res) => {
                     // Update token
                     let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data

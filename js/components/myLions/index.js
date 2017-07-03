@@ -337,11 +337,11 @@ class MyLions extends Component {
         // if (__DEV__)console.log('getRating',squadData)
         let optionsSquadRating = {
             url: actionsApi.eyc3GetOnBoardingInfo,
-            data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
+            // data: Object.assign(squadData,{id:this.state.userID,first_name:firstName,last_name:lastName,userName:userName}),
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'post',
-            // method: 'get',
+            // method: 'post',
+            method: 'get',
             onSuccess: (res) => {
                 if (__DEV__)console.log('GetOnBoardingInfo res.request',res.request)
                 // if (__DEV__)console.log('this.props.visitedOnboarding',this.props.visitedOnboarding)
@@ -387,11 +387,11 @@ class MyLions extends Component {
         // if (__DEV__)console.log('getProfile')
         let optionsUserProfile = {
             url: actionsApi.eyc3GetuserProfileSummary,
-            data: {id:this.state.userID,first_name:firstName,last_name:lastName},
+            // data: {id:this.state.userID,first_name:firstName,last_name:lastName},
             onAxiosStart: null,
             onAxiosEnd: null,
-            // method: 'get',
-            method: 'post',
+            method: 'get',
+            // method: 'post',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {

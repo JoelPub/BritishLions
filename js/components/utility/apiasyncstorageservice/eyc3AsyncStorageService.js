@@ -105,14 +105,15 @@ export async function getEYC3FullPlayerList() {
                   //if (__DEV__)console.log('userID: ',userID)
                   let {id, resolve, reject } = params
                   fetch(getAssembledUrl(EYC3_FULL_PLAYERS), {
-                    method: 'POST',
-                    headers: {
-                              "Content-Type": "application/json; charset=utf-8"
-                            },
-                    body: JSON.stringify({
-                      'access_token':accessToken,
-                      'id':userID
-                    })
+                    // method: 'POST',
+                    method: 'GET',
+                    // headers: {
+                    //           "Content-Type": "application/json; charset=utf-8"
+                    //         },
+                    // body: JSON.stringify({
+                    //   'access_token':accessToken,
+                    //   'id':userID
+                    // })
                   }).then(response => {
                     if(__DEV__)console.log('eyc3fullplayer respsone.url',response.url)
                     return response.json()
@@ -167,14 +168,15 @@ export async function getEYC3ExpertsSquads() {
                     //if (__DEV__)console.log('userID: ', userID)
                     let {id, resolve, reject } = params
                     fetch(getAssembledUrl(EYC3_EXPERTS_SQUADS), {
-                        method: 'POST',
-                        headers: {
-                            "Content-Type": "application/json; charset=utf-8"
-                        },
-                        body: JSON.stringify({
-                            'access_token':accessToken,
-                            'id':userID
-                        })
+                      // method: 'POST',
+                      method: 'GET',
+                      // headers: {
+                      //       "Content-Type": "application/json; charset=utf-8"
+                      //   },
+                      //   body: JSON.stringify({
+                      //       'access_token':accessToken,
+                      //       'id':userID
+                      //   })
                     }).then(response => {
                         if(__DEV__)console.log('expertlist response',response)
                         return response.json()

@@ -24,7 +24,7 @@ const styles = styleSheetCreate({
     wrapper:{
         backgroundColor: 'rgb(4, 79, 38)',
         paddingVertical:styleVar.deviceWidth*0.06,
-    }, 
+    },
     btn: {
         backgroundColor: 'rgb(10, 127, 64)',
         height: styleVar.deviceWidth*0.13,
@@ -52,7 +52,6 @@ const styles = styleSheetCreate({
 class TeamSaveBtn extends Component {
 	constructor(props){
         super(props)
-        this.saveSquadUrl='http://bilprod.azurewebsites.net/SaveUserCustomizedSquad'
         this.state = {
             isMyTeamPlayerUpdating: false,
             inTeam: false,
@@ -80,20 +79,21 @@ class TeamSaveBtn extends Component {
 
        let options = {
             url: actionsApi.eyc3SaveUserCustomizedSquad,
-            data: {         "id":this.props.userProfile.userID,
-                            "first_name":this.props.userProfile.firstName,
-                            "last_name":this.props.userProfile.lastName,
-                            "round_id":this.props.gameData.round_id, 
-                            "game_id": this.props.gameData.game,
-                            "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
+            // data: {         "id":this.props.userProfile.userID,
+            //                 "first_name":this.props.userProfile.firstName,
+            //                 "last_name":this.props.userProfile.lastName,
+            //                 "round_id":this.props.gameData.round_id,
+            //                 "game_id": this.props.gameData.game,
+            //                 "team":TeamModel.fromJS(this.props.teamDataTemp).toJS()},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
             },
-            method: 'post',
+            // method: 'post',
+            method: 'get',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {
-                if (__DEV__)console.log('res',res)
+                if (__DEV__)console.log('SaveUserCustomizedSquad res.request',res.request)
                 this.props.setTeamData(this.props.teamDataTemp)
                 this.props.popRoute()
             },

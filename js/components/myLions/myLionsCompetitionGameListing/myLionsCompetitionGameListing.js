@@ -187,7 +187,7 @@ class MyLionsCompetitionGameListing extends Component {
                                     <View style={gridBoxTouchable}>
                                         <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
                                             <View style={styleGridBoxImgWrapper}>
-                                                <ImagePlaceholder 
+                                                <ImagePlaceholder
                                                     width = {styleVar.deviceWidth / 2}
                                                     height = {styleVar.deviceWidth / 2}>
                                                     <Image transparent
@@ -233,12 +233,12 @@ class MyLionsCompetitionGameListing extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    
+
                     <View style={styles.pageTitle}>
                         <Text style={styles.pageTitleText}>{strToUpper(this.state.drillDownItem.name)}</Text>
                     </View>
@@ -254,7 +254,7 @@ class MyLionsCompetitionGameListing extends Component {
                         :
                         <ActivityIndicator style={loader.centered} size='large' />
                     }
-                        
+
                     <EYSFooter mySquadBtn={true}/>
                     {this.state.modalRate&&<RatingPopUp callbackParent={this.popupRating}/>}
                     <LoginRequire/>
@@ -295,16 +295,18 @@ class MyLionsCompetitionGameListing extends Component {
             if (__DEV__)console.log('userProfile',userProfile)
             this.round_id=round_id
             let optionsGameList = {
-                url: 'http://bilprod.azurewebsites.net/GetGameList',
-                data: {
-                    id:userProfile.userID,
-                    first_name:userProfile.firstName,
-                    last_name:userProfile.lastName,
-                    round_id:round_id
-                },
+              // url: 'http://bilprod.azurewebsites.net/GetGameList',
+              url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/nazdr/e37e9c79d8f51f76b39d450a0dec16293fe20c9e/files/snippet.json',
+              // data: {
+              //       id:userProfile.userID,
+              //       first_name:userProfile.firstName,
+              //       last_name:userProfile.lastName,
+              //       round_id:round_id
+              //   },
                 onAxiosStart: null,
                 onAxiosEnd: null,
-                method: 'post',
+                // method: 'post',
+                method: 'get',
                 channel: 'EYC3',
                 isQsStringify:false,
                 onSuccess: (res) => {
@@ -333,21 +335,23 @@ class MyLionsCompetitionGameListing extends Component {
             if (__DEV__)console.log('userProfile',userProfile)
             this.round_id=drillDownItem.round_id
             let optionsGameList = {
-                url: 'http://bilprod.azurewebsites.net/GetGameList',
-                data: {
-                  id:userProfile.userID,
-                  first_name:userProfile.firstName,
-                  last_name:userProfile.lastName,
-                  round_id:drillDownItem.round_id
-                },
+              // url: 'http://bilprod.azurewebsites.net/GetGameList',
+              url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/nazdr/e37e9c79d8f51f76b39d450a0dec16293fe20c9e/files/snippet.json',
+              // data: {
+              //     id:userProfile.userID,
+              //     first_name:userProfile.firstName,
+              //     last_name:userProfile.lastName,
+              //     round_id:drillDownItem.round_id
+              //   },
                 onAxiosStart: null,
                 onAxiosEnd: null,
-                method: 'post',
+                // method: 'post',
+                method: 'get',
                 channel: 'EYC3',
                 isQsStringify:false,
                 onSuccess: (res) => {
                     if(res.data) {
-                        if (__DEV__)console.log('res.data',res.data)
+                        if (__DEV__)console.log('getgamelist res.request',res.request)
                         this.setState({isLoaded:true,gameList:this.ds.cloneWithRows(this._mapJSON(res.data.games))})
                     }
                 },
@@ -359,7 +363,7 @@ class MyLionsCompetitionGameListing extends Component {
                 },
                 isRequiredToken: true
             }
-            service(optionsGameList)        
+            service(optionsGameList)
       })
     }
 }

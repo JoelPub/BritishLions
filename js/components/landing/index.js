@@ -218,27 +218,6 @@ class Landing extends Component {
         )
     }
 
-    _getSquad() {
-        if (__DEV__)console.log('get squad...')
-        getUserCustomizedSquad().then((catchedSquad)=>{
-            if(catchedSquad.auth) {
-                if(catchedSquad.auth === 'Sign In is Required'){
-
-                    this.setState({ isLoadedSquad: true }, () => {
-                        this._signInRequired()
-                    })
-                }
-            }else if(catchedSquad.error){
-                this.setState({ isLoadedSquad: true }, () => {
-                    this._showError(catchedSquad.error)
-                })
-            }else{
-                let data = eval(`(${catchedSquad.data})`)
-                this._countPlayerSelected(data)
-            }
-        })
-    }
-
     componentDidMount() {
 
         setTimeout(() => {
@@ -275,11 +254,11 @@ class Landing extends Component {
     _getProfileSummary(userName,firstName,lastName,initName){
         let optionsUserProfile = {
             url: actionsApi.eyc3GetuserProfileSummary,
-            data: {id:this.state.userID,first_name:firstName,last_name:lastName},
+            // data: {id:this.state.userID,first_name:firstName,last_name:lastName},
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'post',
-            // method: 'get',
+            // method: 'post',
+            method: 'get',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {

@@ -305,14 +305,15 @@ class MyLionsCompetitionCentre extends Component {
         // if (__DEV__)console.log('getInfo')
         let optionsInfo = {
             url: actionsApi.eyc3GetCompetitionCentreInfo,
-            data: {
-              id:userID,
-              first_name:firstName,
-              last_name:lastName
-            },
+            // data: {
+            //   id:userID,
+            //   first_name:firstName,
+            //   last_name:lastName
+            // },
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'post',
+            // method: 'post',
+            method: 'get',
             channel: 'EYC3',
             isQsStringify:false,
             onSuccess: (res) => {

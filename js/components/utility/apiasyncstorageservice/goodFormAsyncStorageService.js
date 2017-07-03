@@ -128,7 +128,7 @@ export async function getUserCustomizedSquad() {
                      }
               },
               onError: (error) =>{
-                  //if (__DEV__)console.log('Warning error: ',error)
+                  if (__DEV__)console.log('Warning error: ',error)
                   let errData = {
                         error:error,
                         auth:null

@@ -277,6 +277,7 @@ class Login extends Component {
            this._replaceRoute('myLions')
     }
     _SignInWithGoogle = (isFormValidate) => {
+        if(__DEV__)console.log('signup res.request',isFormValidate.request)
         this.setState({
             errorCheck:{
                 submit: false
@@ -299,11 +300,11 @@ class Login extends Component {
             // if (__DEV__)console.log(accessToken)
             let options = {
                 url: this.serviceUrl,
-                data: {
-                    'google': accessToken ,
-                    'app_version': APP_VERSION,
-                    'grant_type': 'password'
-                },
+                // data: {
+                //     'google': accessToken ,
+                //     'app_version': APP_VERSION,
+                //     'grant_type': 'password'
+                // },
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
@@ -343,11 +344,11 @@ class Login extends Component {
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
-                data: {
-                    'facebook': this.state.fbUser.token,
-                    'app_version': APP_VERSION,
-                    'grant_type': 'password'
-                },
+                // data: {
+                //     'facebook': this.state.fbUser.token,
+                //     'app_version': APP_VERSION,
+                //     'grant_type': 'password'
+                // },
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
@@ -389,12 +390,12 @@ class Login extends Component {
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
-                data: {
-                    'username': this.state.email,
-                    'password': this.state.password,
-                    'app_version': APP_VERSION,
-                    'grant_type': 'password'
-                },
+                // data: {
+                //     'username': this.state.email,
+                //     'password': this.state.password,
+                //     'app_version': APP_VERSION,
+                //     'grant_type': 'password'
+                // },
                 // method: 'get',
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
@@ -439,16 +440,17 @@ class Login extends Component {
                 firstName=  this.state.user.givenName
             }
             let options = {
-                url: 'https://www.api-ukchanges2.co.uk/api/users',
-                data: {
-                    'firstName': firstName,
-                    'lastName': lastName,
-                    'email': this.state.user.email,
-                    'password': 'Text1234',
-                    'newEvent': true,
-                    'newPartners': true,
-                    'tc': true
-                },
+              // url: 'https://www.api-ukchanges2.co.uk/api/users',
+              url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json',
+              // data: {
+              //       'firstName': firstName,
+              //       'lastName': lastName,
+              //       'email': this.state.user.email,
+              //       'password': 'Text1234',
+              //       'newEvent': true,
+              //       'newPartners': true,
+              //       'tc': true
+              //   },
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
@@ -503,16 +505,17 @@ class Login extends Component {
                     email:json.email
                 })
                 let options = {
-                    url: 'https://www.api-ukchanges2.co.uk/api/users',
-                    data: {
-                        'firstName': firstName,
-                        'lastName': lastName,
-                        'email': json.email,
-                        'password': 'Text1234',
-                        'newEvent': true,
-                        'newPartners': true,
-                        'tc': true
-                    },
+                  // url: 'https://www.api-ukchanges2.co.uk/api/users',
+                  url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json',
+                  // data: {
+                  //       'firstName': firstName,
+                  //       'lastName': lastName,
+                  //       'email': json.email,
+                  //       'password': 'Text1234',
+                  //       'newEvent': true,
+                  //       'newPartners': true,
+                  //       'tc': true
+                  //   },
                     onAxiosStart: () => {
                         this.setState({ isFormSubmitting: true })
                     },

@@ -121,16 +121,17 @@ class SignUp extends Component {
             let firstName=  nameArr[1]
             if(isFormValidate) {
                 let options = {
-                    url: 'https://www.api-ukchanges2.co.uk/api/users',
-                    data: {
-                        'firstName': firstName,
-                        'lastName': lastName,
-                        'email': json.email,
-                        'password': 'Text1234',
-                        'newEvent': true,
-                        'newPartners': true,
-                        'tc': true
-                    },
+                  // url: 'https://www.api-ukchanges2.co.uk/api/users',
+                  url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json',
+                  // data: {
+                  //       'firstName': firstName,
+                  //       'lastName': lastName,
+                  //       'email': json.email,
+                  //       'password': 'Text1234',
+                  //       'newEvent': true,
+                  //       'newPartners': true,
+                  //       'tc': true
+                  //   },
                     onAxiosStart: () => {
                         this.setState({ isFormSubmitting: true })
                     },
@@ -145,7 +146,6 @@ class SignUp extends Component {
                         this._userSignUp()
                     },
                     onError: (res) => {
-                        if (__DEV__)console.log('注册失败')
                         if (__DEV__)console.log(res)
                         this.setState({
                             customMessages: res,
@@ -189,16 +189,17 @@ class SignUp extends Component {
                 firstName=  this.state.user.givenName
             }
             let options = {
-                url: 'https://www.api-ukchanges2.co.uk/api/users',
-                data: {
-                    'firstName': firstName,
-                    'lastName': lastName,
-                    'email': this.state.user.email,
-                    'password': 'Text1234',
-                    'newEvent': true,
-                    'newPartners': true,
-                    'tc': true
-                },
+              // url: 'https://www.api-ukchanges2.co.uk/api/users',
+              url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/5xek4/267b9dbd83db380edc89dc12e855c61d9b349bfe/files/snippet.json',
+              // data: {
+              //       'firstName': firstName,
+              //       'lastName': lastName,
+              //       'email': this.state.user.email,
+              //       'password': 'Text1234',
+              //       'newEvent': true,
+              //       'newPartners': true,
+              //       'tc': true
+              //   },
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
@@ -232,7 +233,6 @@ class SignUp extends Component {
                     this._scrollView.scrollToPosition(0,0,false)
                 }
             }
-            if (__DEV__)console.log('postion 111,', JSON.stringify(options))
             service(options)
 
         } else {
@@ -249,15 +249,15 @@ class SignUp extends Component {
         if(isFormValidate) {
             let options = {
                 url: this.serviceUsersUrl,
-                data: {
-                    'firstName': this.state.firstName,
-                    'lastName': this.state.lastName,
-                    'email': this.state.email,
-                    'password': this.state.password,
-                    'newEvent': this.state.newEvent,
-                    'newPartners': this.state.newPartners,
-                    'tc': this.state.tc
-                },
+                // data: {
+                //     'firstName': this.state.firstName,
+                //     'lastName': this.state.lastName,
+                //     'email': this.state.email,
+                //     'password': this.state.password,
+                //     'newEvent': this.state.newEvent,
+                //     'newPartners': this.state.newPartners,
+                //     'tc': this.state.tc
+                // },
                 // method: 'get',
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
@@ -313,14 +313,14 @@ class SignUp extends Component {
         if (__DEV__)console.log('starting....loginType: ', this.state.loginType)
         let options = {
             url: this.serviceRefreshTokenUrl,
-            data: {
-                'username': this.state.email,
-                'password': this.state.password,
-                'facebook': this.state.loginType === 'facebook' ? this.state.loginToken : '',
-                'google': this.state.loginType === 'google' ? this.state.loginToken : '',
-                'app_version': APP_VERSION,
-                'grant_type': 'password'
-            },
+            // data: {
+            //     'username': this.state.email,
+            //     'password': this.state.password,
+            //     'facebook': this.state.loginType === 'facebook' ? this.state.loginToken : '',
+            //     'google': this.state.loginType === 'google' ? this.state.loginToken : '',
+            //     'app_version': APP_VERSION,
+            //     'grant_type': 'password'
+            // },
             // method: 'get',
             onAxiosStart: () => {
                 this.setState({

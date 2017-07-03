@@ -23,15 +23,16 @@ export async function getGroupInfo (accessToken,group_id,userID) {
   storage.sync = {
     EYC3GetGroupInfo(){
           fetch((actionsApi.eyc3GroupInfo), {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-              'access_token':accessToken,
-              'id':userID,
-              'group_id':group_id
-            })
+            // method: 'POST',
+            method: 'GET',
+            // headers: {
+            //   "Content-Type": "application/json; charset=utf-8"
+            // },
+            // body: JSON.stringify({
+            //   'access_token':accessToken,
+            //   'id':userID,
+            //   'group_id':group_id
+            // })
           }).then(response => {
             return response.json()
           }).then(json => {

@@ -5,7 +5,7 @@ import { Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { pushNewRoute } from '../../actions/route'
 import { setAccessGranted } from '../../actions/token'
-import OverlayLoader from '../utility/overlayLoader' 
+import OverlayLoader from '../utility/overlayLoader'
 import { removeToken, checkIfLogin, getRefreshToken, updateToken } from '../utility/asyncStorageServices'
 import { actionsApi } from '../utility/urlStorage'
 import { service } from '../utility/services'
@@ -48,16 +48,16 @@ class LoginRequire extends Component {
 
     _refreshToken(route) {
         let refreshTokenUrl = actionsApi.goodFormRefreshToken
-        
+
         getRefreshToken().then((refreshToken) => {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
 
             service({
                 url: refreshTokenUrl,
-                data: {
-                    'refresh_token': refreshToken,
-                    'grant_type': 'refresh_token'
-                },
+                // data: {
+                //     'refresh_token': refreshToken,
+                //     'grant_type': 'refresh_token'
+                // },
                 onAxiosStart: () => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
                     this.setState({ isOverlayLoaderVisible: true })
@@ -69,7 +69,7 @@ class LoginRequire extends Component {
                 onSuccess: (res) => {
                     if (this.isUnMounted) return // return nothing if the component is already unmounted
                     // successfully refresh the token
-                    // then lets update user's token 
+                    // then lets update user's token
                     let { access_token, refresh_token, first_name, last_name, is_first_log_in } = res.data
                     updateToken(access_token, refresh_token, first_name, last_name, is_first_log_in)
 
@@ -88,7 +88,7 @@ class LoginRequire extends Component {
             })
         }).catch((error) => {
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-                
+
             // We can't get the existing refresh token of the user here
             // ask user to sign in again
             console.warn('error2: ', error)
@@ -150,4 +150,3 @@ export default connect((state) => {
         isAccessGranted: state.token.isAccessGranted
     }
 },  bindActions)(LoginRequire)
-

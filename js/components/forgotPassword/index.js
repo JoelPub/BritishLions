@@ -40,7 +40,8 @@ class ForgotPassword extends Component {
             theme: React.PropTypes.object
         }
 
-        this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/password/reset'
+        // this.serviceUrl = 'https://www.api-ukchanges2.co.uk/api/password/reset'
+        this.serviceUrl = 'https://bitbucket.org/!api/2.0/snippets/JoelPub/6aKz9/fc3bd6b2afc0061d3bc72c627bd441b95aa66288/files/snippet.json'
 
         // debounce
         this._onValidateSuccess = debounce(this._onValidateSuccess, 1000, {leading: true, maxWait: 0, trailing: false})
@@ -70,9 +71,11 @@ class ForgotPassword extends Component {
         if(isFormValidate) {
             let options = {
                 url: this.serviceUrl,
-                data: {
-                    'email': this.state.email
-                },
+                // method:'post',
+                method:'get',
+                // data: {
+                //     'email': this.state.email
+                // },
                 onAxiosStart: () => {
                     this.setState({ isFormSubmitting: true })
                 },
@@ -99,6 +102,7 @@ class ForgotPassword extends Component {
     _resetPassword(res) {
         // successful sent to the server
         // reset the email field
+        if(__DEV__)console.log('resetpassword res.request',res.request)
         this.setState({
             email: '',
             customMessages: 'Your password has been reset. You will receive an email shortly with a temporary password, which you may update once you have logged in.',

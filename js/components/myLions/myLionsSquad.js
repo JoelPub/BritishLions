@@ -68,7 +68,8 @@ class MyLionsSquad extends Component {
         this.fullPlayerList={}
         this.catchedSquad={}
         this.saveSquadUrl=getAssembledUrl('SaveGoodFormUserCustomizedSquad')
-        this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
+        // this.autoPopulatedSquadUrl=getAssembledUrl('EYC3AutoPopulatedSquad')
+        this.autoPopulatedSquadUrl='https://bitbucket.org/!api/2.0/snippets/JoelPub/oa6M5/130fc8ad35a442fd9bbd754b0ece889c35412dec/files/snippet.json'
         this.getMySquadRatingUrl=getAssembledUrl('EYC3GetMySquadRating')
     }
     getModalContent(mode){
@@ -196,7 +197,7 @@ class MyLionsSquad extends Component {
     }
     render() {
         let { drillDownItem } = this.props
-        let backRoute = drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
+        let backRoute = drillDownItem&&drillDownItem[0] && drillDownItem[0].backRoute? drillDownItem[0].backRoute : null
 
         return (
             <Container theme={theme}>
@@ -304,7 +305,6 @@ class MyLionsSquad extends Component {
         this.setState({ isLoaded: false })
         getUserCustomizedSquad().then((catchedSquad)=>{
             if (this.isUnMounted) return // return nothing if the component is already unmounted
-
             if(catchedSquad.auth) {
                 if(catchedSquad.auth === 'Sign In is Required'){
                     this.setState({ isLoaded: true }, () => {
@@ -322,7 +322,7 @@ class MyLionsSquad extends Component {
                     if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                         this.fullPlayerList=catchedFullPlayerList
                         // this.catchedSquad=catchedSquad.data
-                        this.setSquadData(SquadModel.format(eval(`(${catchedSquad.data})`)))
+                        this.setSquadData(SquadModel.format(catchedSquad.data))
                     }
                 }).catch((error) => {
                     this.setState({ isLoaded: true }, () => {
@@ -334,7 +334,7 @@ class MyLionsSquad extends Component {
     }
 
     setSquadData(squad,isPop){
-        //if (__DEV__)console.log('!!!setSquadData')
+        if (__DEV__)console.log('!!!setSquadData')
         let tmpSquad=new SquadModel()
         let emptyFeed=true
         let fullFeed=true
@@ -446,7 +446,7 @@ class MyLionsSquad extends Component {
     autoPop() {
         let optionsAutoPop = {
             url: this.autoPopulatedSquadUrl,
-            data:{id:this.state.userID},
+            // data:{id:this.state.userID},
             onAxiosStart: () => {},
             onAxiosEnd: () => {
                 this.setState({ isLoaded:true })

@@ -69,7 +69,7 @@ const locStyle = styleSheetCreate({
         paddingBottom: 5,
         paddingHorizontal: 12,
         backgroundColor: styleVar.colorGrey
-        
+
     },
     gridBoxTitleText: {
         textAlign: 'center',
@@ -148,16 +148,16 @@ class MyLionsManageGame extends Component {
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    
+
                     <View style={styles.pageTitle}>
                         <Text style={styles.pageTitleText}>MANAGE GAME</Text>
-                        <ButtonFeedback 
-                            style={styles.pageTitleBtnIconRight} 
+                        <ButtonFeedback
+                            style={styles.pageTitleBtnIconRight}
                             onPress={() => this._setModalVisible(true,'info')}>
                             <Icon name='ios-information-circle-outline' style={styles.pageTitleBtnIcon} />
                         </ButtonFeedback>
@@ -170,9 +170,9 @@ class MyLionsManageGame extends Component {
                         <View style={[locStyle.headerStadium]}>
                             <Text style={locStyle.headerStadiumText}>{this.grounds_name}</Text>
                         </View>
-                        
+
                         <Grid>
-                            <Row>                                
+                            <Row>
                                 <Col >
                                     <View style={[styles.gridBoxTouchable, styles.gridBoxTitleRight, locStyle.gridBoxWrapper]}>
                                         <View style={[locStyle.header]}>
@@ -181,7 +181,7 @@ class MyLionsManageGame extends Component {
                                             </Text>
                                         </View>
                                         <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
-                                            
+
                                             <View style={locStyle.gridBoxTitle}>
                                                 <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
                                                     {strToUpper(this.weather_name)}
@@ -199,7 +199,7 @@ class MyLionsManageGame extends Component {
                                             </Text>
                                         </View>
                                         <View style={[styles.gridBoxTouchableView, locStyle.gridBoxWrapper, ]}>
-                                            
+
                                             <View style={locStyle.gridBoxTitle}>
                                                 <Text style={locStyle.gridBoxTitleText} numberOfLines={2}>
                                                     {strToUpper(this.referees_name)}
@@ -211,7 +211,7 @@ class MyLionsManageGame extends Component {
                             </Row>
                         </Grid>
 
-                        
+
                         <View style={[styles.btns,styles.manageTeam,this.props.teamStatus&&(this.props.tactics!==null)&&styles.greenBackground]}>
                             <TeamWidget text={'TEAM'} iconText={'1'} onPress={()=>this.props.drillDown(this.state.drillDownItem, 'myLionsManageTeam')}  round_id={this.round_id} game={this.game}/>
                         </View>
@@ -230,7 +230,7 @@ class MyLionsManageGame extends Component {
                     :
                     <ActivityIndicator style={loader.centered} size='large' />
                     }
-                        
+
                     <EYSFooter mySquadBtn={true}/>
                     <LoginRequire/>
                     <SquadModal
@@ -282,13 +282,15 @@ class MyLionsManageGame extends Component {
         this.image=drillDownItem.image
         this.game=drillDownItem.game
         let optionsInfo = {
-            url: 'http://bilprod.azurewebsites.net/GetGameElements',
-            data: {id:this.props.userProfile.userID},
+          // url: 'http://bilprod.azurewebsites.net/GetGameElements',
+          url: 'https://bitbucket.org/!api/2.0/snippets/JoelPub/9aM9A/c9cb95c630d48b9855316beadf1d97dd8c6111e4/files/snippet.json',
+          // data: {id:this.props.userProfile.userID},
             onAxiosStart: null,
             onAxiosEnd: null,
-            method: 'post',
+            // method: 'post',
+            method: 'get',
             onSuccess: (res) => {
-                if (__DEV__)console.log('res',res)
+                if (__DEV__)console.log('getgameelements res.request',res.request)
                 if(res.data) {
                     if (__DEV__)console.log('res.data',res.data)
                     this.grounds_id=res.data[0].grounds[Math.trunc(Math.random()*res.data[0].grounds.length)].id
@@ -310,7 +312,7 @@ class MyLionsManageGame extends Component {
             channel: 'EYC3',
             isQsStringify:false
         }
-        service(optionsInfo)     
+        service(optionsInfo)
     }
 }
 
@@ -323,7 +325,6 @@ function bindAction(dispatch) {
 }
 
 export default connect((state) => {
-    if (__DEV__)console.log(state)
     return {
         drillDownItem: state.content.drillDownItem,
         isAccessGranted: state.token.isAccessGranted,

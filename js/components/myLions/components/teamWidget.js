@@ -76,7 +76,7 @@ class TeamWidget extends Component {
         super(props)
         this.uniondata = Data
         this.state = {
-            fullTeam:false,            
+            fullTeam:false,
             isNetwork: true,
             disabled:true
     	}
@@ -90,7 +90,7 @@ class TeamWidget extends Component {
                         <View style={[locStyle.btnBg,{backgroundColor:'#FFF'}]}>
                              <ButtonFeedback style={locStyle.btn} onPress={this.pressBtn.bind(this)} disabled={this.state.disabled}>
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
-                                    <Icon name='md-checkmark' style={locStyle.icon} /> 
+                                    <Icon name='md-checkmark' style={locStyle.icon} />
                                 </View>
                                 <View style={locStyle.titleText}>
                                     <Text style={[locStyle.btnText,{color:'rgb(10, 127, 64)'}]}>
@@ -105,13 +105,13 @@ class TeamWidget extends Component {
                              {
                                 this.state.fullTeam?
                                 <View style={[locStyle.btnCircle,{backgroundColor:'rgb(10, 127, 64)'}]}>
-                                    <Icon name='md-checkmark' style={locStyle.icon} /> 
+                                    <Icon name='md-checkmark' style={locStyle.icon} />
                                 </View>
                                 :
                                 <View style={locStyle.btnCircle}>
                                     <Text style={locStyle.iconText}>{this.props.iconText}</Text>
                                 </View>
-                             }                        
+                             }
                                 <View style={locStyle.titleText}>
                                     <Text style={locStyle.btnText}>
                                          {this.props.text}
@@ -121,7 +121,7 @@ class TeamWidget extends Component {
                         </LinearGradient>
                 }
                 </View>
-                
+
 		)
 	}
     pressBtn = () => {
@@ -161,27 +161,28 @@ class TeamWidget extends Component {
                 // calls on toast\`s hide animation start.
             },
             onHidden: () => {
-                
+
             }
         })
     }
 
     _getTeam(){
         // if (__DEV__)console.log('teamWidget _getTeam')
-        getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
         // if (__DEV__)console.log('teamWidget catchedFullPlayerList')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
-                    data: { "id":this.props.userProfile.userID,
-                            "first_name":this.props.userProfile.firstName,
-                            "last_name":this.props.userProfile.lastName,
-                            "round_id":this.props.round_id, 
-                            "game_id": this.props.game},
+                    // data: { "id":this.props.userProfile.userID,
+                    //         "first_name":this.props.userProfile.firstName,
+                    //         "last_name":this.props.userProfile.lastName,
+                    //         "round_id":this.props.round_id,
+                    //         "game_id": this.props.game},
                     onAxiosStart: null,
                     onAxiosEnd: null,
-                    method: 'post',
+                    // method: 'post',
+                    method: 'get',
                     onSuccess: (res) => {
                         // if (__DEV__)console.log('res.data',res.data)
                         // if (__DEV__)console.log('typeof res.data',typeof res.data)
@@ -191,7 +192,7 @@ class TeamWidget extends Component {
                         else {
                             this.setTeam(TeamModel.fromJS({}))
                         }
-                        
+
                     },
                     onError: ()=>{
                         this.setState({disabled:false})
@@ -204,14 +205,14 @@ class TeamWidget extends Component {
             }
         }).catch((error) => {
                 this.setState({disabled:false},()=>{
-                    this._showError(error) 
+                    this._showError(error)
                 })
         })
     }
     componentWillReceiveProps(nextProps) {
         // if (__DEV__)console.log('teamWidget componentWillReceiveProps nextProps',nextProps)
         if(Immutable.is(TeamModel.fromJS(nextProps.teamData),TeamModel())===false) {
-            this.setTeam(TeamModel.fromJS(nextProps.teamData))  
+            this.setTeam(TeamModel.fromJS(nextProps.teamData))
         }
     }
     setTeam(team){
@@ -229,7 +230,7 @@ class TeamWidget extends Component {
          }
             this.setState({fullTeam:fullFeed,disabled:false})
             this.props.setTeamStatus(fullFeed)
-        
+
 
     }
 }

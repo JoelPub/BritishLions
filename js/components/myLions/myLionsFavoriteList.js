@@ -45,7 +45,7 @@ class MyLionsFavoriteList extends Component {
         super(props)
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         this.isUnMounted = false
-        this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
+        // this.favUrl = getAssembledUrl('GoodFormFavoritePlayers')
         this.playerFullUrl = getAssembledUrl('SoticFullPlayers')
         this.squadUrl = getAssembledUrl('GoodFormUserCustomizedSquad')
         this.uniondata = Data

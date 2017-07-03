@@ -121,10 +121,11 @@ class MyLionsGroupView extends Component {
     if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3GroupInfo,
-      data: query,
+      // data: query,
       onAxiosStart: null,
       onAxiosEnd: null,
-      method: 'post',
+      // method: 'post',
+      method: 'get',
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {
@@ -166,10 +167,11 @@ class MyLionsGroupView extends Component {
     if (__DEV__)console.log(JSON.stringify(query))
     let optionsInfo = {
       url: actionsApi.eyc3LeaveGroup,
-      data: query,
+      // data: query,
       onAxiosStart: null,
       onAxiosEnd: null,
-      method: 'post',
+      // method: 'post',
+      method: 'get',
       channel: 'EYC3',
       isQsStringify:false,
       onSuccess: (res) => {

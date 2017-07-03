@@ -49,7 +49,7 @@ const ShareHeaderView = ({success,message}) => {
       :
       <Text style={styles.headerTextBold}> {message}</Text>
     }
-          
+
     </View>
   )}
 
@@ -74,7 +74,7 @@ const RankNubText = ({num,name,colWidth}) => (
         <Col style={{width: Platform.OS === 'android'? colWidth + 1 : colWidth}}>
           <Text style={styles.rankNumber}>{num+'. '}</Text>
         </Col>
-        <Col> 
+        <Col>
           <Text style={styles.rankPlayerName}>{name}</Text>
         </Col>
       </Grid>
@@ -129,17 +129,17 @@ class MyLionsTestRoundSubmit extends Component {
 
     render() {
         let players=[]
-        
+
         return (
             <Container theme={theme}>
                 <View style={styles.container}>
-                    <LionsHeader 
+                    <LionsHeader
                         back={true}
                         title='MY LIONS'
                         contentLoaded={true}
                         scrollToTop={ ()=> { this._scrollView.scrollTo({ y: 0, animated: true }) }} />
-                    
-                    
+
+
 
                     <ScrollView ref={(scrollView) => { this._scrollView = scrollView }}>
                         <View style={styles.pageTitle}>
@@ -154,14 +154,14 @@ class MyLionsTestRoundSubmit extends Component {
                               this.state.isLoaded?
                               <View style={styles.listContainer}>
                               {
-                                 
+
                                   this.props.teamToShow.indivPos.concat(this.props.teamToShow.forwards).concat(this.props.teamToShow.backs).map((value,index)=>{
-                                    if (value.info!==null&&value.info.name&&players.indexOf(value.info.name)===-1) players.push(value.info.name) 
+                                    if (value.info!==null&&value.info.name&&players.indexOf(value.info.name)===-1) players.push(value.info.name)
                                   })
                               }
 
                                   <RankingTable title={'TEAM'}  array={players} />
-                            
+
                                   <View style={styles.jobBoxContainer}>
                                   {
                                     this.props.teamToShow.indivPos.map((item,i)=>{
@@ -171,7 +171,7 @@ class MyLionsTestRoundSubmit extends Component {
                                       return( <NoteName firstName={firstName} title={position} lastName={lastName} key={i}/>)
                                     })
                                   }
-                                  </View>        
+                                  </View>
                                   <View style={styles.summaryGuther}>
                                           <ButtonFeedback
                                               rounded label='Share'
@@ -191,12 +191,12 @@ class MyLionsTestRoundSubmit extends Component {
                             }
                         </View>
                         }
-                        
-                            
-                            
+
+
+
                         <View style={[styles.guther, styles.borderTop]}>
-                            <ButtonFeedback 
-                                rounded 
+                            <ButtonFeedback
+                                rounded
                                 style={[styles.roundButton, {marginBottom: 30}]}
                                 onPress={() => this.props.popToRoute('myLionsCompetitionCentre')}>
                                 <Icon name='md-analytics' style={styles.roundButtonIcon} />
@@ -204,8 +204,8 @@ class MyLionsTestRoundSubmit extends Component {
                                     COMPETITION CENTRE
                                 </Text>
                             </ButtonFeedback>
-                            <ButtonFeedback 
-                                rounded 
+                            <ButtonFeedback
+                                rounded
                                 style={[styles.roundButton, {marginBottom: 30}]} onPress={() => this.props.pushNewRoute('competitionLadder')}>
                                 <Icon name='md-trophy' style={styles.roundButtonIcon} />
                                 <Text style={styles.roundButtonLabel}>
@@ -227,20 +227,21 @@ class MyLionsTestRoundSubmit extends Component {
     }
     _getTeam(){
         if (__DEV__)console.log('_getTeam')
-        getSoticFullPlayerList().then((catchedFullPlayerList) => {                        
+        getSoticFullPlayerList().then((catchedFullPlayerList) => {
             if (catchedFullPlayerList !== null && catchedFullPlayerList !== 0 && catchedFullPlayerList !== -1) {
                 if (__DEV__)console.log('true')
                 this.fullPlayerList=catchedFullPlayerList
                 let optionsTeam = {
                     url: actionsApi.eyc3GetUserCustomizedSquad,
-                    data: { "id":this.props.userProfile.userID,
-                            "first_name":this.props.userProfile.firstName,
-                            "last_name":this.props.userProfile.lastName,
-                            "round_id":this.state.drillDownItem.round_id, 
-                            "game_id": 0},
+                    // data: { "id":this.props.userProfile.userID,
+                    //         "first_name":this.props.userProfile.firstName,
+                    //         "last_name":this.props.userProfile.lastName,
+                    //         "round_id":this.state.drillDownItem.round_id,
+                    //         "game_id": 0},
                     onAxiosStart: null,
                     onAxiosEnd: null,
-                    method: 'post',
+                    // method: 'post',
+                    method: 'get',
                     onSuccess: (res) => {
                         if (__DEV__)console.log('res.data',res.data)
                         if(res.data&&(typeof res.data==='object')) {
@@ -249,13 +250,13 @@ class MyLionsTestRoundSubmit extends Component {
                               this.setTeam(TeamModel.fromJS({}))
                             }
                             else {
-                              this.setTeam(TeamModel.fromJS(res.data))                              
+                              this.setTeam(TeamModel.fromJS(res.data))
                             }
                         }
                         else {
                             this.setTeam(TeamModel.fromJS({}))
                         }
-                        
+
                     },
                     isRequiredToken: true,
                     channel: 'EYC3',
@@ -270,16 +271,16 @@ class MyLionsTestRoundSubmit extends Component {
                 //               this.setTeam(TeamModel.fromJS({}))
                 //             }
                 //             else {
-                //               this.setTeam(TeamModel.fromJS(json))                              
+                //               this.setTeam(TeamModel.fromJS(json))
                 //             }
                 //       }
 
                 // })
             }
         }).catch((error) => {
-                    this._showError(error) 
+                    this._showError(error)
         })
-    }  
+    }
 
     setTeam(team){
         if (__DEV__)console.log('!!!setTeam',team.toJS())
@@ -287,7 +288,7 @@ class MyLionsTestRoundSubmit extends Component {
         if (__DEV__)console.log('showTeamFeed',showTeamFeed.toJS())
         this.props.setTeamToShow(showTeamFeed.toJS())
         this.setState({ isLoaded: true })
-        
+
 
     }
 }
