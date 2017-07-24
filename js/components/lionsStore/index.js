@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView, TouchableHighlight } from 'react-native'
 import { Container, Text, Icon } from 'native-base'
 import theme from '../../themes/base-theme'
 import styles from '../../themes/static-page'
@@ -13,6 +13,7 @@ import ImagePlaceholder from '../utility/imagePlaceholder'
 import ExternalLink from '../utility/externalLink'
 import styleVar from '../../themes/variable'
 import {getSoticSuppliedImage} from '../utility/apiasyncstorageservice/soticAsyncStorageService'
+import { NativeModules} from 'react-native'
 
 class LionsStore extends Component {
     constructor(props) {
@@ -40,6 +41,12 @@ class LionsStore extends Component {
 
     componentDidMount() {
         setTimeout(()=>{this._setUpImage()},600)
+    }
+    nativeAndroid(){
+        var sign = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCObG1l8i0tmmgOO+137QN+pfvZ4D9v24EaTyeVJWiPvtVdIfBkG8LjS7sI70zfqWeHEdBISWxSsUdFbtkTF9aqdF3APH+6EhVkG2+2rY4OD6+Xiyrl0CsJSMn6n3/k9JkhWHp0kPGIayk4LEFff5wtXaUQAy+wyCzefc3OHdxViQIDAQAB'
+        if(sign){
+            NativeModules.MyNativeModule.rnCallNative(sign)
+        }
     }
     render() {
         return (
@@ -82,6 +89,13 @@ class LionsStore extends Component {
                                     Shop at the Lions Official Shop <Icon name='md-open' style={styles.icon} />
                                 </Text>
                             </ExternalLink>
+                            <TouchableHighlight style={{width:80,height:40,alignItems:'center',marginTop:50}} underlayColor='#28780b'
+                                                                onPress={()=>this.nativeAndroid()}>
+                            <View style={{width:80,height:40,alignItems:'center',justifyContent:'center',
+                                backgroundColor:'#35a40c',borderRadius:5}}>
+                                <Text style={{color:'white',fontSize:17}}>确定</Text>
+                            </View>
+                            </TouchableHighlight>
                         </View>
                         <LionsFooter isLoaded={true} />
                     </ScrollView>
